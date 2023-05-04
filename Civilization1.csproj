@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{55F5F1A4-2E16-46FC-90E1-8E8E52869226}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Civilization1</RootNamespace>
+    <AssemblyName>Civilization1</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="API\FileStreamItem.cs" />
+    <Compile Include="Civilization.cs" />
+    <Compile Include="Collections\Generic\BDictionary.cs" />
+    <Compile Include="Collections\Generic\BHashSet.cs" />
+    <Compile Include="Collections\Generic\BKeyValuePair.cs" />
+    <Compile Include="Collections\Generic\Trees\BTree.cs" />
+    <Compile Include="Collections\Generic\Trees\BTreeNode.cs" />
+    <Compile Include="CPU\CPU.cs" />
+    <Compile Include="CPU\CPUFlags.cs" />
+    <Compile Include="CPU\CPURegister.cs" />
+    <Compile Include="CPU\CPUMemory.cs" />
+    <Compile Include="CPU\CPUMemoryRegion.cs" />
+    <Compile Include="GPU\VGACard.cs" />
+    <Compile Include="GPU\VGACardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GPU\VGACardForm.Designer.cs">
+      <DependentUpon>VGACardForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MZ\MZExecutable.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomMT19937.cs" />
+    <Compile Include="Segments\EGA.cs" />
+    <Compile Include="Segments\Misc.cs" />
+    <Compile Include="API\MSCAPI.cs" />
+    <Compile Include="Segments\NSound.cs" />
+    <Compile Include="Segments\Overlay_1.cs" />
+    <Compile Include="Segments\Overlay_10.cs" />
+    <Compile Include="Segments\Overlay_11.cs" />
+    <Compile Include="Segments\Overlay_12.cs" />
+    <Compile Include="Segments\Overlay_13.cs" />
+    <Compile Include="Segments\Overlay_14.cs" />
+    <Compile Include="Segments\Overlay_15.cs" />
+    <Compile Include="Segments\Overlay_16.cs" />
+    <Compile Include="Segments\Overlay_17.cs" />
+    <Compile Include="Segments\Overlay_18.cs" />
+    <Compile Include="Segments\Overlay_19.cs" />
+    <Compile Include="Segments\Overlay_2.cs" />
+    <Compile Include="Segments\Overlay_20.cs" />
+    <Compile Include="Segments\Overlay_21.cs" />
+    <Compile Include="Segments\Overlay_22.cs" />
+    <Compile Include="Segments\Overlay_23.cs" />
+    <Compile Include="Segments\Overlay_3.cs" />
+    <Compile Include="Segments\Overlay_4.cs" />
+    <Compile Include="Segments\Overlay_5.cs" />
+    <Compile Include="Segments\Overlay_6.cs" />
+    <Compile Include="Segments\Overlay_7.cs" />
+    <Compile Include="Segments\Overlay_8.cs" />
+    <Compile Include="Segments\Overlay_9.cs" />
+    <Compile Include="Segments\Segment_1000.cs" />
+    <Compile Include="Segments\Segment_1182.cs" />
+    <Compile Include="Segments\Segment_1199.cs" />
+    <Compile Include="Segments\Segment_11a8.cs" />
+    <Compile Include="Segments\Segment_1238.cs" />
+    <Compile Include="Segments\Segment_1403.cs" />
+    <Compile Include="Segments\Segment_1866.cs" />
+    <Compile Include="Segments\Segment_1ade.cs" />
+    <Compile Include="Segments\Segment_1d12.cs" />
+    <Compile Include="Segments\Segment_2459.cs" />
+    <Compile Include="Segments\Segment_2517.cs" />
+    <Compile Include="Segments\Segment_25fb.cs" />
+    <Compile Include="Segments\Segment_29f3.cs" />
+    <Compile Include="Segments\Segment_2aea.cs" />
+    <Compile Include="Segments\Segment_2c84.cs" />
+    <Compile Include="Segments\Segment_2d05.cs" />
+    <Compile Include="Segments\Segment_2dc4.cs" />
+    <Compile Include="Segments\Segment_2e31.cs" />
+    <Compile Include="Segments\Segment_2f4d.cs" />
+    <Compile Include="Segments\Segment_2fa1.cs" />
+    <Compile Include="Segments\Segment_302a.cs" />
+    <Compile Include="Segments\Segment_3045.cs" />
+    <EmbeddedResource Include="GPU\VGACardForm.resx">
+      <DependentUpon>VGACardForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
