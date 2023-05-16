@@ -18,7 +18,7 @@ namespace Disassembler
 		private byte[] aMemory = new byte[uiMemorySize];
 		private List<CPUMemoryRegion> aMemoryRegions = new List<CPUMemoryRegion>();
 
-		private CPUMemoryRegion oGPURegion_B0 = new CPUMemoryRegion((ushort)0xb000, 0, 0xffff);
+		private CPUMemoryRegion oGPURegion_B0 = new CPUMemoryRegion((ushort)0xa000, 0, 0xffff);
 		private VGACard oGPU;
 
 		private CPU oParent;

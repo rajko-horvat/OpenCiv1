@@ -61,11 +61,12 @@ namespace Civilization1
 		private Overlay_16 oOverlay_16;
 		private MSCAPI oMSCAPI;
 		private Misc oMisc;
-		private EGA oEGA;
+		private VGADriver oEGA;
 		private NSound oNSound;
 		#endregion
 
-		public StreamWriter oLog;
+		private StreamWriter oLog;
+		private int iLogTabLevel = 0;
 
 		#region Global Data
 
@@ -126,22 +127,22 @@ namespace Civilization1
 			this.oOverlay_16 = new Overlay_16(this);
 			this.oMSCAPI = new MSCAPI(this);
 			this.oMisc = new Misc(this);
-			this.oEGA = new EGA(this);
+			this.oEGA = new VGADriver(this);
 			this.oNSound = new NSound(this);
 			#endregion
 
 			this.oLog = new StreamWriter("Log.txt");
 
 			// load old image to memory
-			oEXE = new MZExecutable("c:\\CIV\\civ.exe");
+			oEXE = new MZExecutable("c:\\DOS\\CIV\\civ.exe");
 			oEXE.ApplyRelocations(usStartSegment);
 
 			// copy EXE to memory and allocate resources
-			string sEnvironment = "COMSPEC=C:\\WINDOWS\\SYSTEM32\\COMMAND.COM CLIENTNAME=Console COMPUTERNAME=KORISNIK FP_NO_HOST_CHECK=NO HOMEDRIVE=C: "+
-				"NUMBER_OF_PROCESSORS=1 OS=Windows_NT PATH=C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\BORLANDC\\bin "+
-				"PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH PROCESSOR_ARCHITECTURE=x86 "+
+			string sEnvironment = "COMSPEC=C:\\WINDOWS\\SYSTEM32\\COMMAND.COM FP_NO_HOST_CHECK=NO HOMEDRIVE=C: "+
+				"NUMBER_OF_PROCESSORS=1 OS=Windows_NT PATH=C:\\DOS "+
+				"PATHEXT=.COM;.EXE;.BAT;.CMD PROCESSOR_ARCHITECTURE=x86 "+
 				"PROCESSOR_IDENTIFIER=x86 Family 6 Model 69 Stepping 1, GenuineIntel PROCESSOR_LEVEL=6 PROCESSOR_REVISION=4501 PROMPT=$P$G "+
-				"SESSIONNAME=Console SYSTEMDRIVE=C: SYSTEMROOT=C: TEMP=C:\\TEMP TMP=C:\\TEMP BLASTER=A220 I5 D1 P330 T3";
+				"SYSTEMDRIVE=C: SYSTEMROOT=C: TEMP=C:\\TEMP TMP=C:\\TEMP BLASTER=A220 I5 D1 P330 T3";
 			uint uiEnvirenmentLength = (uint)(((sEnvironment.Length + 1) + 0xf) & 0xfff0);
 			uint uiEnvironment = (uint)(0xff00 - uiEnvirenmentLength);
 
@@ -248,15 +249,46 @@ namespace Civilization1
 			return value;
 		}
 
+		public void LogEnterBlock(string text)
+		{
+			if (this.oLog != null)
+			{
+				WriteTabs();
+				this.oLog.WriteLine($"// Entering block {text}");
+				WriteTabs();
+				this.oLog.WriteLine("{");
+				this.oLog.Flush();
+				this.iLogTabLevel++;
+			}
+		}
+
+		public void LogExitBlock(string text)
+		{
+			if (this.oLog != null)
+			{
+				this.iLogTabLevel = Math.Max(0, this.iLogTabLevel - 1);
+				//WriteTabs();
+				//this.oLog.WriteLine($"// Exiting block {text}");
+				WriteTabs();
+				this.oLog.WriteLine("}");
+				this.oLog.Flush();
+			}
+		}
+
 		public void LogWriteLine(string text)
 		{
 			if (this.oLog != null)
 			{
+				WriteTabs();
 				this.oLog.WriteLine(text);
 				this.oLog.Flush();
 			}
 		}
 
+		private void WriteTabs()
+		{
+			this.oLog.Write($"{new string('\t', this.iLogTabLevel)}");
+		}
 		#endregion
 
 		#region Public Segment getters
@@ -495,7 +527,7 @@ namespace Civilization1
 			get { return this.oMisc; }
 		}
 
-		public EGA EGA
+		public VGADriver EGA
 		{
 			get { return this.oEGA; }
 		}

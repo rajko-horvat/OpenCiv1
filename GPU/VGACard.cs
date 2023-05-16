@@ -5,6 +5,8 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+using System.Globalization;
+using System.Runtime.CompilerServices;
 
 namespace Disassembler
 {
@@ -579,6 +581,8 @@ namespace Disassembler
 		private Color[] aCustomColorPalette256 = new Color[256];
 		#endregion
 
+		private CPU oParent;
+
 		private object oLock = new object();
 		private Bitmap oBitmap;
 		private ModeEnum eMode = ModeEnum.Text80x25Color;
@@ -586,17 +590,34 @@ namespace Disassembler
 		private VGACardForm oForm;
 
 		// printing
-		int iXPosition = 0;
-		int iYPosition = 0;
-		int iTextWidth = 80;
-		int iTextHeight = 25;
-		int iFontWidth = 8;
-		int iFontHeight = 8;
-		int iTextForeColor = 15;
-		int iTextBackColor = 0;
+		private int iXPosition = 0;
+		private int iYPosition = 0;
+		private int iTextWidth = 80;
+		private int iTextHeight = 25;
+		private int iFontWidth = 8;
+		private int iFontHeight = 8;
+		private int iTextForeColor = 15;
+		private int iTextBackColor = 0;
+		private int iBytesPerLine = 160;
+		private int iPixelsPerByte = 0;
 
-		public VGACard()
+		// specific EGA mode 0xd stuff
+		private static int iNumberOfPlanes = 4;
+		private static int iPlaneMemorySize = 65536;
+		private byte biSequencerAddress = 0xff;
+		private byte biMapWriteMask = 0xf;
+
+		private byte biGraphicsAddress = 0xff;
+		private byte biWriteSetReset = 0xf;
+		private byte biEnableSetReset = 0;
+		private byte biMapReadSelect = 0;
+		private byte biWriteBitMask = 0xff;
+		private byte[,] abMemoryPlanes = new byte[iNumberOfPlanes, iPlaneMemorySize];
+
+		public VGACard(CPU parent)
 		{
+			this.oParent = parent;
+
 			this.oForm = new VGACardForm(this);
 
 			// assume default 80x25 text mode
@@ -607,6 +628,11 @@ namespace Disassembler
 			ClearInternal();
 
 			Application.DoEvents();
+		}
+
+		public CPU Parent
+		{
+			get { return this.oParent; }
 		}
 
 		public byte Mode
@@ -631,6 +657,8 @@ namespace Disassembler
 							this.iTextHeight = 25;
 							this.iTextForeColor = 15;
 							this.iTextBackColor = 0;
+							this.iPixelsPerByte = 0;
+							this.iBytesPerLine = 160;
 							break;
 
 						case 0xd:
@@ -643,6 +671,18 @@ namespace Disassembler
 							this.iTextHeight = 25;
 							this.iTextForeColor = 15;
 							this.iTextBackColor = 0;
+							this.iPixelsPerByte = 8;
+							this.iBytesPerLine = 320 / this.iPixelsPerByte;
+
+							// GPU HW stuff
+							this.biSequencerAddress = 0xff;
+							this.biMapWriteMask = 0xf;
+
+							this.biGraphicsAddress = 0xff;
+							this.biWriteSetReset = 0xf;
+							this.biEnableSetReset = 0xf;
+							this.biMapReadSelect = 0;
+							this.biWriteBitMask = 0xff;
 							break;
 
 						case 0x13:
@@ -656,6 +696,8 @@ namespace Disassembler
 							this.iTextHeight = 25;
 							this.iTextForeColor = 15;
 							this.iTextBackColor = 0;
+							this.iPixelsPerByte = 1;
+							this.iBytesPerLine = 320;
 							break;
 
 						default:
@@ -681,6 +723,128 @@ namespace Disassembler
 				return this.oBitmap.Height;
 			}
 		}
+
+		public int TextWidth
+		{
+			get
+			{
+				return this.iTextWidth;
+			}
+		}
+
+		public int TextHeight
+		{
+			get
+			{
+				return this.iTextHeight;
+			}
+		}
+
+		#region EGA mode 0xd specific stuff
+
+		public void SetSequencerValue(byte value)
+		{
+			switch (this.biSequencerAddress)
+			{
+				case 2:
+					// Map Write Mask
+					this.biMapWriteMask = value;
+					break;
+
+				case 0xff:
+					// ignore this value
+					break;
+
+				default:
+					this.oParent.Parent.LogWriteLine($"Unknown Sequencer address 0x{this.biSequencerAddress:x2}");
+					break;
+			}
+		}
+
+		public void SetGraphicsValue(byte value)
+		{
+			switch (this.biGraphicsAddress)
+			{
+				case 0:
+					// Write plane mask bits
+					this.biWriteSetReset = value;
+					break;
+
+				case 1:
+					// Enable write plane mask bits
+					this.biEnableSetReset = value;
+					break;
+
+				case 3:
+					// Data rotate, ignore for now
+					break;
+
+				case 4:
+					// Read plane select
+					this.biMapReadSelect = (byte)(value & 0x3);
+					break;
+
+				case 8:
+					// Write bit mask
+					this.biWriteBitMask = value;
+					break;
+
+				case 0xff:
+					// ignore this value
+					break;
+
+				default:
+					this.oParent.Parent.LogWriteLine($"Unknown Graphics address 0x{this.biGraphicsAddress:x2}");
+					break;
+			}
+		}
+
+		public byte HWStatus
+		{
+			get { return 0xd; }
+		}
+
+		public byte HWSequencerAddress
+		{
+			get { return this.biSequencerAddress; }
+			set { this.biSequencerAddress = value; }
+		}
+
+		public byte HWMapWriteMask
+		{
+			get { return this.biMapWriteMask; }
+			set { this.biMapWriteMask = value; }
+		}
+
+		public byte HWGraphicsAddress
+		{
+			get { return this.biGraphicsAddress; }
+			set { this.biGraphicsAddress = value; }
+		}
+
+		public byte HWWriteSetReset
+		{
+			get { return this.biWriteSetReset; }
+			set { this.biWriteSetReset = value; }
+		}
+
+		public byte HWEnableSetReset
+		{
+			get { return this.biEnableSetReset; }
+			set { this.biEnableSetReset = value; }
+		}
+
+		public byte HWMapReadSelect
+		{
+			get { return this.biMapReadSelect; }
+		}
+
+		public byte HWWriteBitMask
+		{
+			get { return this.biWriteBitMask; }
+			set { this.biWriteBitMask = value; }
+		}
+		#endregion
 
 		public VGACardForm Form
 		{
@@ -710,92 +874,332 @@ namespace Disassembler
 				g.Clear(Color.Black);
 				g.Flush();
 				g.Dispose();
-				for (int i = 0; i < this.abMemory.Length; i++)
+
+				switch (this.eMode)
 				{
-					this.abMemory[i] = 0;
+					case ModeEnum.Text80x25Color:
+					case ModeEnum.Graphics320x200x256:
+						for (int i = 0; i < this.abMemory.Length; i++)
+						{
+							this.abMemory[i] = 0;
+						}
+						break;
+
+					case ModeEnum.Graphics320x200x16:
+						for (int i = 0; i < iNumberOfPlanes; i++)
+						{
+							for (int j = 0; j < iPlaneMemorySize; j++)
+							{
+								this.abMemoryPlanes[i, j] = 0;
+							}
+						}
+						break;
 				}
 			}
 		}
 
 		public byte ReadByte(uint address)
 		{
-			if (address < 0 || address >= this.abMemory.Length)
+			switch (this.eMode)
 			{
-				throw new Exception("Video address outside bounds");
+				case ModeEnum.Text80x25Color:
+				case ModeEnum.Graphics320x200x256:
+					if (address < 0 || address >= this.abMemory.Length)
+					{
+						throw new Exception("Video address outside bounds");
+					}
+					return this.abMemory[address];
+
+				case ModeEnum.Graphics320x200x16:
+					address &= 0x1fff;
+					if (address < 0 || address >= iPlaneMemorySize)
+					{
+						throw new Exception("Video address outside bounds");
+					}
+					return this.abMemoryPlanes[this.biMapReadSelect, address];
 			}
 
-			return this.abMemory[address];
+			return 0;
 		}
 
 		public ushort ReadWord(uint address)
 		{
-			if (address < 0 || address + 2 >= this.abMemory.Length)
+			switch (this.eMode)
 			{
-				throw new Exception("Video address outside bounds");
+				case ModeEnum.Text80x25Color:
+				case ModeEnum.Graphics320x200x256:
+					if (address < 0 || address + 1 >= this.abMemory.Length)
+					{
+						throw new Exception("Video address outside bounds");
+					}
+					return (ushort)((ushort)this.abMemory[address] |
+						(ushort)((ushort)this.abMemory[address + 1] << 8));
+
+				case ModeEnum.Graphics320x200x16:
+					address &= 0x1fff;
+					if (address < 0 || address + 1 >= iPlaneMemorySize)
+					{
+						throw new Exception("Video address outside bounds");
+					}
+					return (ushort)((ushort)this.abMemoryPlanes[this.biMapReadSelect, address] |
+						(ushort)((ushort)this.abMemoryPlanes[this.biMapReadSelect, address + 1] << 8));
 			}
 
-			return (ushort)((ushort)this.abMemory[address] | (ushort)((ushort)this.abMemory[address + 1] << 8));
+			return 0;
 		}
 
 		public uint ReadDWord(uint address)
 		{
-			if (address < 0 || address + 4 >= this.abMemory.Length)
+			switch (this.eMode)
 			{
-				throw new Exception("Video address outside bounds");
+				case ModeEnum.Text80x25Color:
+				case ModeEnum.Graphics320x200x256:
+					if (address < 0 || address + 3 >= this.abMemory.Length)
+					{
+						throw new Exception("Video address outside bounds");
+					}
+					return (uint)((uint)this.abMemory[address] |
+						(uint)((uint)this.abMemory[address + 1] << 8) |
+						(uint)((uint)this.abMemory[address + 2] << 16) |
+						(uint)((uint)this.abMemory[address + 3] << 24));
+
+				case ModeEnum.Graphics320x200x16:
+					address &= 0x1fff;
+					if (address < 0 || address + 3 >= iPlaneMemorySize)
+					{
+						throw new Exception("Video address outside bounds");
+					}
+					return (uint)((uint)this.abMemoryPlanes[this.biMapReadSelect, address] |
+						(uint)((uint)this.abMemoryPlanes[this.biMapReadSelect, address + 1] << 8) |
+						(uint)((uint)this.abMemoryPlanes[this.biMapReadSelect, address + 2] << 16) |
+						(uint)((uint)this.abMemoryPlanes[this.biMapReadSelect, address + 3] << 24));
 			}
 
-			return (uint)((uint)this.abMemory[address] |
-				(uint)((uint)this.abMemory[address + 1] << 8) |
-				(uint)((uint)this.abMemory[address + 2] << 16) |
-				(uint)((uint)this.abMemory[address + 3] << 24));
+			return 0;
 		}
 
 		public void WriteByte(uint address, byte value)
 		{
-			if (address < 0 || address >= this.abMemory.Length)
+			switch (this.eMode)
 			{
-				throw new Exception("Video address outside bounds");
+				case ModeEnum.Text80x25Color:
+				case ModeEnum.Graphics320x200x256:
+					if (address < 0 || address >= this.abMemory.Length)
+					{
+						throw new Exception("Video address outside bounds");
+					}
+					lock (this.oLock)
+					{
+						this.abMemory[address] = value;
+						RenderAddress(address, 1);
+					}
+					break;
+
+				case ModeEnum.Graphics320x200x16:
+					address &= 0x1fff;
+					if (address < 0 || address >= iPlaneMemorySize)
+					{
+						throw new Exception("Video address outside bounds");
+					}
+					lock (this.oLock)
+					{
+						byte biValue = (byte)(value & this.biWriteBitMask);
+
+						for (int i = 0; i < iNumberOfPlanes; i++)
+						{
+							int iBitMask = 1 << i;
+
+							if ((this.biMapWriteMask & iBitMask) != 0)
+							{
+								if ((this.biEnableSetReset & iBitMask) != 0)
+								{
+									if ((this.biWriteSetReset & iBitMask) != 0)
+									{
+										// write all 1's
+										byte biNewValue = this.abMemoryPlanes[i, address];
+										biNewValue |= this.biWriteBitMask;
+										biNewValue ^= this.biWriteBitMask;
+										biNewValue |= (byte)(0xff & this.biWriteBitMask);
+										this.abMemoryPlanes[i, address] = biNewValue;
+									}
+									else
+									{
+										// write all 0's
+										byte biNewValue = this.abMemoryPlanes[i, address];
+										biNewValue |= this.biWriteBitMask;
+										biNewValue ^= this.biWriteBitMask;
+										this.abMemoryPlanes[i, address] = biNewValue;
+									}
+								}
+								else
+								{
+									byte biNewValue = this.abMemoryPlanes[i, address];
+									biNewValue |= this.biWriteBitMask;
+									biNewValue ^= this.biWriteBitMask;
+									biNewValue |= biValue;
+									this.abMemoryPlanes[i, address] = biNewValue;
+								}
+							}
+						}
+						RenderAddress(address, 1);
+					}
+					break;
 			}
 
-			lock (this.oLock)
-			{
-				this.abMemory[address] = value;
-				RenderAddress(address, 1);
-			}
 			RefreshScreen();
 		}
 
 		public void WriteWord(uint address, ushort value)
 		{
-			if (address < 0 || address + 2 >= this.abMemory.Length)
+			switch (this.eMode)
 			{
-				throw new Exception("Video address outside bounds");
+				case ModeEnum.Text80x25Color:
+				case ModeEnum.Graphics320x200x256:
+					if (address < 0 || address + 1 >= this.abMemory.Length)
+					{
+						throw new Exception("Video address outside bounds");
+					}
+					lock (this.oLock)
+					{
+						this.abMemory[address] = (byte)(value & 0xff);
+						this.abMemory[address + 1] = (byte)((value & 0xff00) >> 8);
+						RenderAddress(address, 2);
+					}
+					break;
+
+				case ModeEnum.Graphics320x200x16:
+					address &= 0x1fff;
+					if (address < 0 || address + 1 >= iPlaneMemorySize)
+					{
+						throw new Exception("Video address outside bounds");
+					}
+					lock (this.oLock)
+					{
+						for (int j = 0; j < 2; j++)
+						{
+							byte biValue = (byte)((value & 0xff) & this.biWriteBitMask);
+
+							for (int i = 0; i < iNumberOfPlanes; i++)
+							{
+								int iBitMask = 1 << i;
+
+								if ((this.biMapWriteMask & iBitMask) != 0)
+								{
+									if ((this.biEnableSetReset & iBitMask) != 0)
+									{
+										if ((this.biWriteSetReset & iBitMask) != 0)
+										{
+											// write all 1's
+											byte biNewValue = this.abMemoryPlanes[i, address + j];
+											biNewValue |= this.biWriteBitMask;
+											biNewValue ^= this.biWriteBitMask;
+											biNewValue |= (byte)(0xff & this.biWriteBitMask);
+											this.abMemoryPlanes[i, address + j] = biNewValue;
+										}
+										else
+										{
+											// write all 0's
+											byte biNewValue = this.abMemoryPlanes[i, address + j];
+											biNewValue |= this.biWriteBitMask;
+											biNewValue ^= this.biWriteBitMask;
+											this.abMemoryPlanes[i, address + j] = biNewValue;
+										}
+									}
+									else
+									{
+										byte biNewValue = this.abMemoryPlanes[i, address + j];
+										biNewValue |= this.biWriteBitMask;
+										biNewValue ^= this.biWriteBitMask;
+										biNewValue |= biValue;
+										this.abMemoryPlanes[i, address + j] = biNewValue;
+									}
+								}
+							}
+							value >>= 8;
+						}
+						RenderAddress(address, 2);
+					}
+					break;
 			}
 
-			lock (this.oLock)
-			{
-				this.abMemory[address] = (byte)(value & 0xff);
-				this.abMemory[address + 1] = (byte)((value & 0xff00) >> 8);
-				RenderAddress(address, 2);
-			}
 			RefreshScreen();
 		}
 
 		public void WriteDWord(uint address, uint value)
 		{
-			if (address < 0 || address + 4 >= this.abMemory.Length)
+			switch (this.eMode)
 			{
-				throw new Exception("Video address outside bounds");
+				case ModeEnum.Text80x25Color:
+				case ModeEnum.Graphics320x200x256:
+					if (address < 0 || address + 3 >= this.abMemory.Length)
+					{
+						throw new Exception("Video address outside bounds");
+					}
+					lock (this.oLock)
+					{
+						this.abMemory[address] = (byte)(value & 0xff);
+						this.abMemory[address + 1] = (byte)((value & 0xff00) >> 8);
+						this.abMemory[address + 2] = (byte)((value & 0xff0000) >> 16);
+						this.abMemory[address + 3] = (byte)((value & 0xff000000) >> 24);
+						RenderAddress(address, 4);
+					}
+					break;
+
+				case ModeEnum.Graphics320x200x16:
+					address &= 0x1fff;
+					if (address < 0 || address + 3 >= iPlaneMemorySize)
+					{
+						throw new Exception("Video address outside bounds");
+					}
+					lock (this.oLock)
+					{
+						for (int j = 0; j < 4; j++)
+						{
+							byte biValue = (byte)((value & 0xff) & this.biWriteBitMask);
+
+							for (int i = 0; i < iNumberOfPlanes; i++)
+							{
+								int iBitMask = 1 << i;
+
+								if ((this.biMapWriteMask & iBitMask) != 0)
+								{
+									if ((this.biEnableSetReset & iBitMask) != 0)
+									{
+										if ((this.biWriteSetReset & iBitMask) != 0)
+										{
+											// write all 1's
+											byte biNewValue = this.abMemoryPlanes[i, address + j];
+											biNewValue |= this.biWriteBitMask;
+											biNewValue ^= this.biWriteBitMask;
+											biNewValue |= (byte)(0xff & this.biWriteBitMask);
+											this.abMemoryPlanes[i, address + j] = biNewValue;
+										}
+										else
+										{
+											// write all 0's
+											byte biNewValue = this.abMemoryPlanes[i, address + j];
+											biNewValue |= this.biWriteBitMask;
+											biNewValue ^= this.biWriteBitMask;
+											this.abMemoryPlanes[i, address + j] = biNewValue;
+										}
+									}
+									else
+									{
+										byte biNewValue = this.abMemoryPlanes[i, address + j];
+										biNewValue |= this.biWriteBitMask;
+										biNewValue ^= this.biWriteBitMask;
+										biNewValue |= biValue;
+										this.abMemoryPlanes[i, address + j] = biNewValue;
+									}
+								}
+							}
+							value >>= 8;
+						}
+						RenderAddress(address, 4);
+					}
+					break;
 			}
 
-			lock (this.oLock)
-			{
-				this.abMemory[address] = (byte)(value & 0xff);
-				this.abMemory[address + 1] = (byte)((value & 0xff00) >> 8);
-				this.abMemory[address + 2] = (byte)((value & 0xff0000) >> 16);
-				this.abMemory[address + 3] = (byte)((value & 0xff000000) >> 24);
-				RenderAddress(address, 4);
-			}
 			RefreshScreen();
 		}
 
@@ -840,6 +1244,7 @@ namespace Disassembler
 					case ModeEnum.Graphics320x200x16:
 						this.iTextForeColor &= 0xf;
 						break;
+
 					case ModeEnum.Graphics320x200x256:
 						this.iTextForeColor &= 0xff;
 						break;
@@ -862,6 +1267,7 @@ namespace Disassembler
 					case ModeEnum.Graphics320x200x16:
 						this.iTextBackColor &= 0xf;
 						break;
+
 					case ModeEnum.Graphics320x200x256:
 						this.iTextBackColor &= 0xff;
 						break;
@@ -878,8 +1284,9 @@ namespace Disassembler
 					case ModeEnum.Text80x25Color:
 					case ModeEnum.Graphics320x200x16:
 						return this.aColorPalette[this.iTextForeColor];
+
 					case ModeEnum.Graphics320x200x256:
-						return this.aColorPalette256[this.iTextForeColor & 0xff];
+						return this.aCustomColorPalette256[this.iTextForeColor & 0xff];
 				}
 				return this.aColorPalette[this.iTextForeColor];
 			}
@@ -894,8 +1301,9 @@ namespace Disassembler
 					case ModeEnum.Text80x25Color:
 					case ModeEnum.Graphics320x200x16:
 						return this.aColorPalette[this.iTextBackColor];
+
 					case ModeEnum.Graphics320x200x256:
-						return this.aColorPalette256[this.iTextBackColor & 0xff];
+						return this.aCustomColorPalette256[this.iTextBackColor & 0xff];
 				}
 				return this.aColorPalette[this.iTextBackColor];
 			}
@@ -1119,15 +1527,25 @@ namespace Disassembler
 				case ModeEnum.Graphics320x200x16:
 					for (uint i = address; i < address + size; i++)
 					{
-						uint uiWidth = (uint)(this.oBitmap.Width >> 1);
-						int iYPos = (int)((i & 0xffff) / uiWidth);
-						int iXPos = (int)((i & 0xffff) - (iYPos * uiWidth));
+						int iYPos = (int)((i & 0xffff) / this.iBytesPerLine);
+						int iXPos = (int)((i & 0xffff) - (iYPos * this.iBytesPerLine)) * iPixelsPerByte;
 
-						if (iXPos < uiWidth && iYPos < this.oBitmap.Height)
+						for (int j = 0; j < iPixelsPerByte; j++)
 						{
-							uiWidth <<= 1;
-							this.oBitmap.SetPixel((int)uiWidth, iYPos, this.ToColor(this.abMemory[i] & 0xf));
-							this.oBitmap.SetPixel((int)uiWidth + 1, iYPos, this.ToColor((this.abMemory[i] & 0xf0) >> 4));
+							int iBitMask = 1 << j;
+							int iColor = 0;
+
+							for (int k = 0; k < iNumberOfPlanes; k++)
+							{
+								int iBit = (this.abMemoryPlanes[k, i] & iBitMask) != 0 ? 1 : 0;
+								iBit <<= k;
+								iColor |= iBit;
+							}
+
+							if (iXPos + j < this.oBitmap.Width && iYPos < this.oBitmap.Height)
+							{
+								this.oBitmap.SetPixel((int)iXPos + (iPixelsPerByte - (j + 1)), iYPos, this.ToColor(iColor));
+							}
 						}
 					}
 					break;
@@ -1188,6 +1606,7 @@ namespace Disassembler
 					int iLineWidth;
 					int iLineSize;
 					byte attr;
+					byte bTemp;
 
 					switch (this.eMode)
 					{
@@ -1233,6 +1652,53 @@ namespace Disassembler
 							}
 							break;
 
+						case ModeEnum.Graphics320x200x16:
+							iBlockWidth = (this.iFontWidth * width) >> 1;
+							iLineWidth = (this.iFontWidth * this.iTextWidth) >> 1;
+							iLineSize = iLineWidth * this.iFontHeight;
+
+							if (dir > 0)
+							{
+								iBlockSrc = ((y + height - 2) * iLineSize) + (x * this.iFontWidth);
+								iBlockDst = ((y + height - 1) * iLineSize) + (x * this.iFontWidth);
+							}
+							else
+							{
+								iBlockSrc = ((y + 1) * iLineSize) + (x * this.iFontWidth);
+								iBlockDst = (y * iLineSize) + (x * this.iFontWidth);
+							}
+
+							for (int i = 0; i < (height - 1) * this.iFontHeight; i++)
+							{
+								for (int j = 0; j < iBlockWidth; j++)
+								{
+									this.abMemory[iBlockDst + j] = this.abMemory[iBlockSrc + j];
+								}
+								iBlockSrc += (dir > 0) ? -iLineWidth : iLineWidth;
+								iBlockDst += (dir > 0) ? -iLineWidth : iLineWidth;
+							}
+
+							// clear empty line
+							if (dir > 0)
+							{
+								iBlockDst = (y * iLineSize) + (x * this.iFontWidth);
+							}
+							else
+							{
+								iBlockDst = ((y + height - 1) * iLineSize) + (x * this.iFontWidth);
+							}
+
+							bTemp = (byte)this.iTextBackColor;
+							for (int i = 0; i < this.iFontHeight; i++)
+							{
+								for (int j = 0; j < iBlockWidth; j++)
+								{
+									this.abMemory[iBlockDst + j] = bTemp;
+								}
+								iBlockDst += (dir > 0) ? -iLineWidth : iLineWidth;
+							}
+							break;
+
 						case ModeEnum.Graphics320x200x256:
 							iBlockWidth = this.iFontWidth * width;
 							iLineWidth = this.iFontWidth * this.iTextWidth;
@@ -1269,7 +1735,7 @@ namespace Disassembler
 								iBlockDst = ((y + height - 1) * iLineSize) + (x * this.iFontWidth);
 							}
 
-							byte bTemp = (byte)this.iTextBackColor;
+							bTemp = (byte)this.iTextBackColor;
 							for (int i = 0; i < this.iFontHeight; i++)
 							{
 								for (int j = 0; j < iBlockWidth; j++)
@@ -1315,25 +1781,52 @@ namespace Disassembler
 
 		public void SetPixel(int x, int y, int color)
 		{
-			if (this.eMode == ModeEnum.Graphics320x200x256 &&
-				x >= 0 && x < this.oBitmap.Width && y >= 0 && y < this.oBitmap.Height)
+			lock (this.oLock)
 			{
-				lock (this.oLock)
-				{
-					SetPixelInternal(x, y, color);
-				}
-
-				RefreshScreen();
+				SetPixelInternal(x, y, color);
 			}
+
+			RefreshScreen();
 		}
 
 		private void SetPixelInternal(int x, int y, int color)
 		{
-			color &= 0xff;
-			int iAddress = (y * this.oBitmap.Width) + x;
-			this.abMemory[iAddress] = (byte)color;
+			switch (this.eMode)
+			{
+				case ModeEnum.Graphics320x200x16:
+					if (x >= 0 && x < this.oBitmap.Width && y >= 0 && y < this.oBitmap.Height)
+					{
+						color &= 0xf;
+						int iAddress = (y * this.oBitmap.Width) + x;
+						bool bSecondByte = (iAddress & 1) != 0;
+						iAddress >>= 1;
 
-			this.oBitmap.SetPixel(x, y, this.aCustomColorPalette256[color]);
+						if (bSecondByte)
+						{
+							this.abMemory[iAddress] &= 0xf0;
+							this.abMemory[iAddress] = (byte)color;
+							this.oBitmap.SetPixel(x, y, this.aColorPalette[color]);
+						}
+						else
+						{
+							this.abMemory[iAddress] &= 0xf;
+							this.abMemory[iAddress] = (byte)(color << 4);
+							this.oBitmap.SetPixel(x, y, this.aColorPalette[color]);
+						}
+					}
+					break;
+
+				case ModeEnum.Graphics320x200x256:
+					if (x >= 0 && x < this.oBitmap.Width && y >= 0 && y < this.oBitmap.Height)
+					{
+						color &= 0xff;
+						int iAddress = (y * this.oBitmap.Width) + x;
+						this.abMemory[iAddress] = (byte)color;
+
+						this.oBitmap.SetPixel(x, y, this.aCustomColorPalette256[color]);
+					}
+					break;
+			}
 		}
 
 		private void PrintChar(char ch)
@@ -1372,6 +1865,11 @@ namespace Disassembler
 					RenderCharacter(this.iXPosition, this.iYPosition, ch, ToForeColor(this.abMemory[iAddress]), ToBackColor(this.abMemory[iAddress]));
 					break;
 
+				case ModeEnum.Graphics320x200x16:
+					// render to bitmap
+					RenderCharacter(this.iXPosition, this.iYPosition, ch, this.iTextForeColor, this.iTextBackColor);
+					break;
+
 				case ModeEnum.Graphics320x200x256:
 					// render to bitmap
 					RenderCharacter(this.iXPosition, this.iYPosition, ch, this.iTextForeColor, this.iTextBackColor);
@@ -1394,10 +1892,15 @@ namespace Disassembler
 			{
 				for (int j = 0; j < this.iFontWidth; j++)
 				{
-					if (this.eMode == ModeEnum.Graphics320x200x256)
+					if (this.eMode == ModeEnum.Graphics320x200x16 ||
+						this.eMode == ModeEnum.Graphics320x200x256)
+					{
 						SetPixelInternal(iXPos + j, iYPos + i, ((iChMask & 0x80) != 0) ? fore : back);
+					}
 					else
+					{
 						this.oBitmap.SetPixel(iXPos + j, iYPos + i, ((iChMask & 0x80) != 0) ? cFore : cBack);
+					}
 					iChMask <<= 1;
 					iBitCount++;
 					if (iBitCount > 7)

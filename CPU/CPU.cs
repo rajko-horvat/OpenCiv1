@@ -2,17 +2,10 @@
 using Disassembler.MZ;
 using IRB.Collections.Generic;
 using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows;
-using System.Windows.Documents;
 
 namespace Disassembler
 {
@@ -44,12 +37,18 @@ namespace Disassembler
 		// GPU
 		private VGACard oGPU;
 
+		// Timer
+		private bool bEnableTimer = false;
+		private bool bTimerFlag = false;
+		private bool bInTimer = false;
+		private Timer oTimer;
+
 		// DOS file stuff
 		private uint uiDOSDTA = 0;
 		private int iFileCount = 0;
 		private FileStream[] aFileHandles = new FileStream[256];
 
-		private string sDefaultDirectory = "C:\\CIV\\";
+		private string sDefaultDirectory = "C:\\DOS\\CIV\\";
 		private short sFileHandleCount = 0x20;
 		private BDictionary<short, FileStreamItem> aOpenFiles = new BDictionary<short, FileStreamItem>();
 
@@ -57,9 +56,46 @@ namespace Disassembler
 
 		public CPU(Civilization parent)
 		{
-			this.oGPU = new VGACard();
-			this.oMemory = new CPUMemory(this, this.oGPU);
 			this.oParent = parent;
+			this.oGPU = new VGACard(this);
+			this.oMemory = new CPUMemory(this, this.oGPU);
+			this.oTimer = new Timer(oTimer_Tick, null, 500, 500);
+			this.oTimer.Dispose();
+		}
+
+		public bool EnableTimer
+		{
+			get { return this.bEnableTimer; }
+			set { this.bEnableTimer = value; this.bTimerFlag = false; }
+		}
+
+		private void oTimer_Tick(object state)
+		{
+			if (this.bEnableTimer && !this.bTimerFlag)
+			{
+				this.bTimerFlag = true;
+			}
+		}
+
+		public void DoEvents()
+		{
+			System.Windows.Forms.Application.DoEvents();
+			if (this.bEnableTimer && this.bTimerFlag && !this.bInTimer)
+			{
+				this.bInTimer = true;
+				ushort usCS = this.oCS.Word;
+				ushort usBP = this.oBP.Word;
+				this.PushF();
+				this.PushWord(0x0);
+				this.PushWord(usCS);
+				this.oParent.Segment_1000.F0_1000_01a7();
+				PopDWord();
+				PopF();
+				this.oBP.Word = usBP;
+				this.oCS.Word = usCS;
+				this.bTimerFlag = false;
+				this.bInTimer = false;
+			}
 		}
 
 		public Civilization Parent
@@ -165,49 +201,37 @@ namespace Disassembler
 
 		public byte ReadByte(ushort segment, ushort offset)
 		{
-			System.Windows.Forms.Application.DoEvents();
+			this.DoEvents();
 			return this.oMemory.ReadByte(segment, offset);
-		}
-
-		public byte ReadByte(uint address)
-		{
-			System.Windows.Forms.Application.DoEvents();
-			return this.oMemory.ReadByte(address);
 		}
 
 		public ushort ReadWord(ushort segment, ushort offset)
 		{
-			System.Windows.Forms.Application.DoEvents();
+			this.DoEvents();
 			return this.oMemory.ReadWord(segment, offset);
 		}
 
 		public uint ReadDWord(ushort segment, ushort offset)
 		{
-			System.Windows.Forms.Application.DoEvents();
+			this.DoEvents();
 			return this.oMemory.ReadDWord(segment, offset);
 		}
 
 		public void WriteByte(ushort segment, ushort offset, byte value)
 		{
-			System.Windows.Forms.Application.DoEvents();
+			this.DoEvents();
 			this.oMemory.WriteByte(segment, offset, value);
-		}
-
-		public void WriteByte(uint address, byte value)
-		{
-			System.Windows.Forms.Application.DoEvents();
-			this.oMemory.WriteByte(address, value);
 		}
 
 		public void WriteWord(ushort segment, ushort offset, ushort value)
 		{
-			System.Windows.Forms.Application.DoEvents();
+			this.DoEvents();
 			this.oMemory.WriteWord(segment, offset, value);
 		}
 
 		public void WriteDWord(ushort segment, ushort offset, uint value)
 		{
-			System.Windows.Forms.Application.DoEvents();
+			this.DoEvents();
 			this.oMemory.WriteDWord(segment, offset, value);
 		}
 		#endregion
@@ -221,7 +245,7 @@ namespace Disassembler
 			StringBuilder sb = new StringBuilder();
 			byte ch;
 
-			while ((ch = this.ReadByte(address)) != 0)
+			while ((ch = this.oMemory.ReadByte(address)) != 0)
 			{
 				sb.Append((char)ch);
 				address++;
@@ -238,7 +262,7 @@ namespace Disassembler
 			StringBuilder sb = new StringBuilder();
 			byte ch;
 
-			while ((ch = this.ReadByte(address)) != (byte)'$')
+			while ((ch = this.oMemory.ReadByte(address)) != (byte)'$')
 			{
 				sb.Append((char)ch);
 				address++;
@@ -254,11 +278,11 @@ namespace Disassembler
 
 			for (int i = 0; i < text.Length && i < maxLength; i++)
 			{
-				this.WriteByte(address, (byte)text[i]);
+				this.oMemory.WriteByte(address, (byte)text[i]);
 				address++;
 			}
 
-			this.WriteByte(address, 0);
+			this.oMemory.WriteByte(address, 0);
 		}
 		#endregion
 
@@ -302,34 +326,32 @@ namespace Disassembler
 
 		public void PushWord(ushort value)
 		{
-			System.Windows.Forms.Application.DoEvents();
 			if ((int)this.oSP.Word - 2 < 0)
 			{
 				throw new Exception("Stack overflow");
 				//return;
 			}
 			this.oSP.Word -= 1;
-			this.WriteByte(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff00) >> 8));
+			this.oMemory.WriteByte(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff00) >> 8));
 			this.oSP.Word -= 1;
-			this.WriteByte(this.oSS.Word, this.oSP.Word, (byte)(value & 0xff));
+			this.oMemory.WriteByte(this.oSS.Word, this.oSP.Word, (byte)(value & 0xff));
 		}
 
 		public void PushDWord(uint value)
 		{
-			System.Windows.Forms.Application.DoEvents();
 			if ((int)this.oSP.Word - 4 < 0)
 			{
 				throw new Exception("Stack overflow");
 				//return;
 			}
 			this.oSP.Word -= 1;
-			this.WriteByte(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff000000) >> 24));
+			this.oMemory.WriteByte(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff000000) >> 24));
 			this.oSP.Word -= 1;
-			this.WriteByte(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff0000) >> 16));
+			this.oMemory.WriteByte(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff0000) >> 16));
 			this.oSP.Word -= 1;
-			this.WriteByte(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff00) >> 8));
+			this.oMemory.WriteByte(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff00) >> 8));
 			this.oSP.Word -= 1;
-			this.WriteByte(this.oSS.Word, this.oSP.Word, (byte)(value & 0xff));
+			this.oMemory.WriteByte(this.oSS.Word, this.oSP.Word, (byte)(value & 0xff));
 		}
 
 		public void PopAWord(CPURegister regAX, CPURegister regCX, CPURegister regDX, CPURegister regBX,
@@ -352,30 +374,28 @@ namespace Disassembler
 
 		public ushort PopWord()
 		{
-			System.Windows.Forms.Application.DoEvents();
 			if ((int)this.oSP.Word + 2 >= 0x10000)
 			{
 				throw new Exception("Stack underflow");
 				//return 0;
 			}
 
-			return (ushort)((ushort)this.ReadByte(this.oSS.Word, this.oSP.Word++) |
-				((ushort)this.ReadByte(this.oSS.Word, this.oSP.Word++) << 8));
+			return (ushort)((ushort)this.oMemory.ReadByte(this.oSS.Word, this.oSP.Word++) |
+				((ushort)this.oMemory.ReadByte(this.oSS.Word, this.oSP.Word++) << 8));
 		}
 
 		public uint PopDWord()
 		{
-			System.Windows.Forms.Application.DoEvents();
 			if ((int)this.oSP.Word + 4 >= 0x10000)
 			{
 				throw new Exception("Stack underflow");
 				//return 0;
 			}
 
-			return (uint)(((uint)this.ReadByte(this.oSS.Word, this.oSP.Word++)) |
-				((uint)this.ReadByte(this.oSS.Word, this.oSP.Word++) << 8) |
-				((uint)this.ReadByte(this.oSS.Word, this.oSP.Word++) << 16) |
-				((uint)this.ReadByte(this.oSS.Word, this.oSP.Word++) << 24));
+			return (uint)(((uint)this.oMemory.ReadByte(this.oSS.Word, this.oSP.Word++)) |
+				((uint)this.oMemory.ReadByte(this.oSS.Word, this.oSP.Word++) << 8) |
+				((uint)this.oMemory.ReadByte(this.oSS.Word, this.oSP.Word++) << 16) |
+				((uint)this.oMemory.ReadByte(this.oSS.Word, this.oSP.Word++) << 24));
 		}
 		#endregion
 
@@ -1408,17 +1428,62 @@ namespace Disassembler
 		#region IO instructions
 		public byte INByte(ushort port)
 		{
+			switch (port)
+			{
+				case 0x61:
+					// 8255 Port B output - reset keyboard
+					break;
+
+				case 0x3da:
+					// Status Register
+					return this.oGPU.HWStatus;
+
+				default:
+					this.oParent.LogWriteLine($"Input byte from port 0x{port:x4}");
+					break;
+			}
+
 			return 0;
 		}
 
 		public void OUTByte(byte port, byte value)
-		{ }
+		{
+			this.oParent.LogWriteLine($"Output to port 0x{port:x2}, byte value 0x{value:x2}");
+		}
 
 		public void OUTByte(ushort port, byte value)
-		{ }
+		{
+			this.oParent.LogWriteLine($"Output to port 0x{port:x4}, byte value 0x{value:x2}");
+
+			switch (port)
+			{
+				case 0x3c4:
+					this.oGPU.HWSequencerAddress = value;
+					break;
+
+				case 0x3c5:
+					this.oGPU.SetSequencerValue(value);
+					break;
+
+				case 0x3ce:
+					this.oGPU.HWGraphicsAddress = value;
+					break;
+
+				case 0x3cf:
+					this.oGPU.SetGraphicsValue(value);
+					break;
+
+				default:
+					//this.oParent.LogWriteLine($"Output to port 0x{port:x4}, byte value 0x{value:x2}");
+					break;
+			}
+		}
 
 		public void OUTWord(ushort port, ushort value)
-		{ }
+		{
+			OUTByte(port, (byte)(value & 0xff));
+			OUTByte((ushort)(port + 1), (byte)((value & 0xff00) >> 8));
+		}
 
 		public void REPEOUTSByte(CPURegister regSeg, CPURegister regSI, CPURegister regCX)
 		{
@@ -1434,6 +1499,8 @@ namespace Disassembler
 
 		public void Exit(int code)
 		{
+			this.EnableTimer = false;
+
 			Console.WriteLine();
 			Console.WriteLine($"Exiting program with code {code}, press any key...");
 
@@ -1528,6 +1595,13 @@ namespace Disassembler
 							this.oFlags.C = false;
 							break;
 
+						case 0xf:
+							this.oAX.High = (byte)this.oGPU.TextWidth;
+							this.oAX.Low = this.oGPU.Mode;
+							this.oBX.High = 0;
+							this.oFlags.C = false;
+							break;
+
 						default:
 							throw new Exception($"Unknown 0x10 interrupt 0x{this.oAX.High:x2}");
 					}
@@ -1536,6 +1610,10 @@ namespace Disassembler
 				case 0x21:
 					switch (this.oAX.High)
 					{
+						case 0:
+							DOSTerminateProcess();
+							break;
+
 						case 1:
 							DOSKeyboardInputWithEcho();
 							break;
@@ -1655,6 +1733,18 @@ namespace Disassembler
 					}
 					break;
 
+				case 0x16:
+					switch (this.oAX.High)
+					{
+						case 0:
+							this.oAX.Word = (ushort)this.oParent.MSCAPI.getch();
+							break;
+
+						default:
+							throw new Exception($"Unknown 0x16 interrupt 0x{this.oAX.High:x2}");
+					}
+					break;
+
 				default:
 					throw new Exception(string.Format("Unknown 0x{0:x2} interrupt", value));
 			}
@@ -1665,7 +1755,7 @@ namespace Disassembler
 			while (this.oGPU.Form.Keys.Count == 0)
 			{
 				Thread.Sleep(200);
-				System.Windows.Forms.Application.DoEvents();
+				this.DoEvents();
 			}
 
 			this.oAX.Low = (byte)this.oGPU.Form.Keys.Dequeue();
@@ -2327,6 +2417,11 @@ namespace Disassembler
 		private void DOSTerminateProcessWithReturnCode()
 		{
 			this.Exit(this.oAX.Low);
+		}
+
+		private void DOSTerminateProcess()
+		{
+			this.Exit(-1);
 		}
 
 		public class DOS_FCB
