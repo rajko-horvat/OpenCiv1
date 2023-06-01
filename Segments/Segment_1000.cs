@@ -51,7 +51,7 @@ namespace Civilization1
 			this.oCPU.DX.Word = this.oCPU.ReadWord(this.oCPU.CS.Word, 0x1a3);
 			this.oCPU.DS.Word = this.oCPU.ReadWord(this.oCPU.CS.Word, (ushort)(0x1a3 + 2));
 			this.oCPU.INT(0x21);
-			//this.oCPU.EnableTimer = true;
+			this.oCPU.EnableTimer = true;
 
 		L004f:
 			this.oCPU.DS.Word = this.oCPU.PopWord();
@@ -1324,7 +1324,7 @@ namespace Civilization1
 			return;
 		}
 
-		public void F0_1000_07f4(ushort param1, ushort param2, ushort param3, ushort param4, ushort param5)
+		public void F0_1000_07f4(ushort param1, short param2, ushort param3, ushort param4, ushort param5)
 		{
 			this.oParent.LogEnterBlock($"Graphics overlay 'F0_1000_07f4'(0x{param1:x4}, 0x{param2:x4}, 0x{param3:x4}, {param4}, {param5})");
 
@@ -1568,62 +1568,62 @@ namespace Civilization1
 
 		public void F0_1000_0a2b()
 		{
-			this.oParent.LogEnterBlock("Sound overlay 'F0_1000_0a2b'");
+			//this.oParent.LogEnterBlock("Sound overlay 'F0_1000_0a2b'");
 
 			// Instruction address 0x1000:0x0a2b, size: 5
 			this.oParent.NSound.F0_0000_0048();
-			this.oParent.LogExitBlock("Sound overlay 'F0_1000_0a2b'");
+			//this.oParent.LogExitBlock("Sound overlay 'F0_1000_0a2b'");
 			return;
 		}
 
 		public void F0_1000_0a32()
 		{
-			this.oParent.LogEnterBlock("Sound overlay 'F0_1000_0a32'");
+			//this.oParent.LogEnterBlock("Sound overlay 'F0_1000_0a32'");
 
 			// Instruction address 0x1000:0x0a32, size: 5
 			this.oParent.NSound.F0_0000_0062();
-			this.oParent.LogExitBlock("Sound overlay 'F0_1000_0a32'");
+			//this.oParent.LogExitBlock("Sound overlay 'F0_1000_0a32'");
 			return;
 		}
 
 		public void F0_1000_0a39()
 		{
-			this.oParent.LogEnterBlock("Sound overlay 'F0_1000_0a39'");
+			//this.oParent.LogEnterBlock("Sound overlay 'F0_1000_0a39'");
 
 			// Instruction address 0x1000:0x0a39, size: 5
 			this.oParent.NSound.F0_0000_006a();
-			this.oParent.LogExitBlock("Sound overlay 'F0_1000_0a39'");
+			//this.oParent.LogExitBlock("Sound overlay 'F0_1000_0a39'");
 			return;
 		}
 
 		public void F0_1000_0a40()
 		{
-			this.oParent.LogEnterBlock("Sound overlay 'F0_1000_0a40'");
+			//this.oParent.LogEnterBlock("Sound overlay 'F0_1000_0a40'");
 
 			// Instruction address 0x1000:0x0a40, size: 5
 			this.oParent.NSound.F0_0000_0055();
-			this.oParent.LogExitBlock("Sound overlay 'F0_1000_0a40'");
+			//this.oParent.LogExitBlock("Sound overlay 'F0_1000_0a40'");
 			return;
 		}
 
 		public void F0_1000_0a47()
 		{
-			this.oParent.LogEnterBlock("Sound overlay 'F0_1000_0a47'");
+			//this.oParent.LogEnterBlock("Sound overlay 'F0_1000_0a47'");
 
 			// function body
 			// Instruction address 0x1000:0x0a47, size: 5
 			this.oParent.NSound.F0_0000_005c();
-			this.oParent.LogExitBlock("Sound overlay 'F0_1000_0a47'");
+			//this.oParent.LogExitBlock("Sound overlay 'F0_1000_0a47'");
 			return;
 		}
 
 		public void F0_1000_0a4e()
 		{
-			this.oParent.LogEnterBlock("Sound overlay 'F0_1000_0a4e'");
+			//this.oParent.LogEnterBlock("Sound overlay 'F0_1000_0a4e'");
 
 			// Instruction address 0x1000:0x0a4e, size: 5
 			this.oParent.NSound.F0_0000_005d();
-			this.oParent.LogExitBlock("Sound overlay 'F0_1000_0a4e'");
+			//this.oParent.LogExitBlock("Sound overlay 'F0_1000_0a4e'");
 			return;
 		}
 
@@ -2394,7 +2394,7 @@ namespace Civilization1
 			this.oParent.LogExitBlock("'F0_1000_104f'");
 		}
 
-		public void F0_1000_108e()
+		public void F0_1000_108e(ushort param1, ushort handle)
 		{
 			this.oParent.LogEnterBlock("'F0_1000_108e'(Cdecl, Far) at 0x1000:0x108e");
 			this.oCPU.CS.Word = 0x1000; // set this function segment
@@ -2404,6 +2404,7 @@ namespace Civilization1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.PushWord(this.oCPU.SI.Word);
 			this.oCPU.PushWord(this.oCPU.DI.Word);
+
 			this.oCPU.AX.Word = 0x0;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
@@ -2415,8 +2416,8 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 		L109e:
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
-			this.oCPU.CMPWord(this.oCPU.SI.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5528));
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
+			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
 			if (this.oCPU.Flags.B) goto L10b6;
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -2424,18 +2425,17 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x10af); // stack management - push return offset
 			// Instruction address 0x1000:0x10ab, size: 4
-			//this.oCPU.CallF(this.oCPU.ReadDWord(this.oCPU.DS.Word, 0xd91a));
-			this.oParent.Segment_2fa1.F0_2fa1_0644();
+			this.oParent.Segment_2fa1.F0_2fa1_0644(handle);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1000; // restore this function segment
 			this.oCPU.DX.Word = this.oCPU.PopWord();
 			this.oCPU.CX.Word = this.oCPU.PopWord();
 			this.oCPU.BX.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
 
 		L10b6:
 			this.oCPU.LODSWord();
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xb26e, this.oCPU.SI.Word);
+			this.oParent.Var_b26e = this.oCPU.SI.Word;
 			this.oCPU.CMPByte(this.oCPU.AX.Low, 0x58);
 			if (this.oCPU.Flags.E) goto L1138;
 			this.oCPU.DI.Word = this.oCPU.DS.Word;
@@ -2444,10 +2444,10 @@ namespace Civilization1
 			this.oCPU.DI.Word = 0xba06;
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x304d);
 			if (this.oCPU.Flags.NE) goto L10dd;
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0x1);
+			this.oCPU.CMPWord(param1, 0x1);
 			if (this.oCPU.Flags.B) goto L10da;
 			if (this.oCPU.Flags.E) goto L10dd;
-			this.oCPU.DI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
+			this.oCPU.DI.Word = param1;
 			goto L10dd;
 
 		L10da:
@@ -2456,8 +2456,8 @@ namespace Civilization1
 		L10dd:
 			this.oCPU.PushWord(this.oCPU.DI.Word);
 			this.oCPU.STOSWord();
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
-			this.oCPU.CMPWord(this.oCPU.SI.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5528));
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
+			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
 			if (this.oCPU.Flags.B) goto L10f7;
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -2465,26 +2465,25 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x10f0); // stack management - push return offset
 			// Instruction address 0x1000:0x10ec, size: 4
-			//this.oCPU.CallF(this.oCPU.ReadDWord(this.oCPU.DS.Word, 0xd91a));
-			this.oParent.Segment_2fa1.F0_2fa1_0644();
+			this.oParent.Segment_2fa1.F0_2fa1_0644(handle);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1000; // restore this function segment
 			this.oCPU.DX.Word = this.oCPU.PopWord();
 			this.oCPU.CX.Word = this.oCPU.PopWord();
 			this.oCPU.BX.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
 
 		L10f7:
 			this.oCPU.LODSWord();
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xb26e, this.oCPU.SI.Word);
+			this.oParent.Var_b26e = this.oCPU.SI.Word;
 			this.oCPU.STOSWord();
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.CX.Word = this.oCPU.SHRWord(this.oCPU.CX.Word, 0x1);
 			if (this.oCPU.CX.Word == 0) goto L1123;
 
 		L1103:
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
-			this.oCPU.CMPWord(this.oCPU.SI.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5528));
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
+			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
 			if (this.oCPU.Flags.B) goto L111b;
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -2492,18 +2491,17 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x1114); // stack management - push return offset
 			// Instruction address 0x1000:0x1110, size: 4
-			// this.oCPU.CallF(this.oCPU.ReadDWord(this.oCPU.DS.Word, 0xd91a));
-			this.oParent.Segment_2fa1.F0_2fa1_0644();
+			this.oParent.Segment_2fa1.F0_2fa1_0644(handle);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1000; // restore this function segment
 			this.oCPU.DX.Word = this.oCPU.PopWord();
 			this.oCPU.CX.Word = this.oCPU.PopWord();
 			this.oCPU.BX.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
 
 		L111b:
 			this.oCPU.LODSWord();
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xb26e, this.oCPU.SI.Word);
+			this.oParent.Var_b26e = this.oCPU.SI.Word;
 			this.oCPU.STOSWord();
 			if (this.oCPU.Loop(this.oCPU.CX)) goto L1103;
 
@@ -2527,9 +2525,9 @@ namespace Civilization1
 
 		L1138:
 			this.oCPU.AX.High = this.oCPU.ANDByte(this.oCPU.AX.High, 0x1);
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x68f7, this.oCPU.AX.High);
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
-			this.oCPU.CMPWord(this.oCPU.SI.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5528));
+			this.oParent.Var_68f7 = this.oCPU.AX.High;
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
+			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
 			if (this.oCPU.Flags.B) goto L1157;
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -2537,21 +2535,20 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x1150); // stack management - push return offset
 			// Instruction address 0x1000:0x114c, size: 4
-			//this.oCPU.CallF(this.oCPU.ReadDWord(this.oCPU.DS.Word, 0xd91a));
-			this.oParent.Segment_2fa1.F0_2fa1_0644();
+			this.oParent.Segment_2fa1.F0_2fa1_0644(handle);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1000; // restore this function segment
 			this.oCPU.DX.Word = this.oCPU.PopWord();
 			this.oCPU.CX.Word = this.oCPU.PopWord();
 			this.oCPU.BX.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
 
 		L1157:
 			this.oCPU.LODSWord();
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xb26e, this.oCPU.SI.Word);
+			this.oParent.Var_b26e = this.oCPU.SI.Word;
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68e6, this.oCPU.AX.Word);
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
-			this.oCPU.CMPWord(this.oCPU.SI.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5528));
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
+			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
 			if (this.oCPU.Flags.B) goto L1177;
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -2559,21 +2556,20 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x1170); // stack management - push return offset
 			// Instruction address 0x1000:0x116c, size: 4
-			//this.oCPU.CallF(this.oCPU.ReadDWord(this.oCPU.DS.Word, 0xd91a));
-			this.oParent.Segment_2fa1.F0_2fa1_0644();
+			this.oParent.Segment_2fa1.F0_2fa1_0644(handle);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1000; // restore this function segment
 			this.oCPU.DX.Word = this.oCPU.PopWord();
 			this.oCPU.CX.Word = this.oCPU.PopWord();
 			this.oCPU.BX.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
 
 		L1177:
 			this.oCPU.LODSWord();
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xb26e, this.oCPU.SI.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68e2, this.oCPU.AX.Word);
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
-			this.oCPU.CMPWord(this.oCPU.SI.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5528));
+			this.oParent.Var_b26e = this.oCPU.SI.Word;
+			this.oParent.Var_68e2 = this.oCPU.AX.Word;
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
+			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
 			if (this.oCPU.Flags.B) goto L1197;
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -2581,22 +2577,21 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x1190); // stack management - push return offset
 			// Instruction address 0x1000:0x118c, size: 4
-			//this.oCPU.CallF(this.oCPU.ReadDWord(this.oCPU.DS.Word, 0xd91a));
-			this.oParent.Segment_2fa1.F0_2fa1_0644();
+			this.oParent.Segment_2fa1.F0_2fa1_0644(handle);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1000; // restore this function segment
 			this.oCPU.DX.Word = this.oCPU.PopWord();
 			this.oCPU.CX.Word = this.oCPU.PopWord();
 			this.oCPU.BX.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
 
 		L1197:
 			this.oCPU.LODSWord();
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xb26e, this.oCPU.SI.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68e4, this.oCPU.AX.Word);
+			this.oParent.Var_b26e = this.oCPU.SI.Word;
+			this.oParent.Var_68e4 = this.oCPU.AX.Word;
 			this.oCPU.PushWord(0x11a2); // stack management - push return offset
 			// Instruction address 0x1000:0x119f, size: 3
-			F0_1000_1227();
+			F0_1000_1227(handle);
 			this.oCPU.PopWord(); // stack management - pop return offset
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SI.Word = this.oCPU.PopWord();
@@ -2605,7 +2600,7 @@ namespace Civilization1
 			this.oParent.LogExitBlock("'F0_1000_108e'");
 		}
 
-		public void F0_1000_1208()
+		public void F0_1000_1208(ushort param1, ushort handle)
 		{
 			this.oParent.LogEnterBlock("'F0_1000_1208'(Cdecl, Far) at 0x1000:0x1208");
 			this.oCPU.CS.Word = 0x1000; // set this function segment
@@ -2617,14 +2612,79 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.DI.Word);
 			this.oCPU.AX.Word = this.oCPU.DS.Word;
 			this.oCPU.ES.Word = this.oCPU.AX.Word;
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
-			this.oCPU.DI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.CX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x68e2);
-			this.oCPU.PushWord(0x121f); // stack management - push return offset
-			// Instruction address 0x1000:0x121c, size: 3
-			F0_1000_12a6();
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
+			this.oCPU.DI.Word = param1;
+			this.oCPU.CX.Word = this.oParent.Var_68e2;
+
+			this.oCPU.CMPByte(this.oParent.Var_68f7, 0x0);
+			if (this.oCPU.Flags.E) goto L12b0;
+			this.oCPU.CX.Word = this.oCPU.INCWord(this.oCPU.CX.Word);
+			this.oCPU.CX.Word = this.oCPU.SHRWord(this.oCPU.CX.Word, 0x1);
+
+		L12b0:
+			this.oParent.Var_68ea = this.oCPU.CX.Word;
+			this.oCPU.DX.Word = this.oParent.Var_68f2;
+			this.oCPU.Temp.Word = this.oParent.Var_68e8;
+			this.oParent.Var_68e8 = this.oCPU.SP.Word;
+			this.oCPU.SP.Word = this.oCPU.Temp.Word;
+
+		L12bc:
+			this.oCPU.CMPByte(this.oParent.Var_68ec, 0x0);
+			if (this.oCPU.Flags.NE) goto L12e4;
+			this.oCPU.PushWord(0x12c6); // stack management - push return offset
+										// Instruction address 0x1000:0x12c3, size: 3
+			F0_1000_1318(0x12c6, handle);
 			this.oCPU.PopWord(); // stack management - pop return offset
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xb26e, this.oCPU.SI.Word);
+			this.oCPU.CMPByte(this.oCPU.AX.Low, 0x90);
+			if (this.oCPU.Flags.E) goto L12d0;
+			this.oParent.Var_68ed = this.oCPU.AX.Low;
+			goto L12eb;
+
+		L12d0:
+			this.oCPU.PushWord(0x12d3); // stack management - push return offset
+										// Instruction address 0x1000:0x12d0, size: 3
+			F0_1000_1318(0x12d3, handle);
+			this.oCPU.PopWord(); // stack management - pop return offset
+			this.oCPU.AX.Low = this.oCPU.ORByte(this.oCPU.AX.Low, this.oCPU.AX.Low);
+			if (this.oCPU.Flags.NE) goto L12df;
+			this.oCPU.AX.Low = 0x90;
+			this.oParent.Var_68ed = this.oCPU.AX.Low;
+			goto L12eb;
+
+		L12df:
+			this.oCPU.AX.Low = this.oCPU.DECByte(this.oCPU.AX.Low);
+			this.oParent.Var_68ec = this.oCPU.AX.Low;
+
+		L12e4:
+			this.oCPU.AX.Low = this.oParent.Var_68ed;
+			this.oParent.Var_68ec--;
+
+		L12eb:
+			this.oCPU.CMPByte(this.oParent.Var_68f7, 0x0);
+			if (this.oCPU.Flags.E) goto L1308;
+			this.oCPU.AX.High = this.oCPU.AX.Low;
+			this.oCPU.AX.Low = this.oCPU.ANDByte(this.oCPU.AX.Low, 0xf);
+			this.oCPU.AX.High = this.oCPU.SHRByte(this.oCPU.AX.High, 0x1);
+			this.oCPU.AX.High = this.oCPU.SHRByte(this.oCPU.AX.High, 0x1);
+			this.oCPU.AX.High = this.oCPU.SHRByte(this.oCPU.AX.High, 0x1);
+			this.oCPU.AX.High = this.oCPU.SHRByte(this.oCPU.AX.High, 0x1);
+			this.oCPU.STOSWord();
+			this.oParent.Var_68ea = this.oCPU.DECWord(this.oParent.Var_68ea);
+			if (this.oCPU.Flags.NE) goto L12bc;
+			goto L130f;
+
+		L1308:
+			this.oCPU.STOSByte();
+			this.oParent.Var_68ea = this.oCPU.DECWord(this.oParent.Var_68ea);
+			if (this.oCPU.Flags.NE) goto L12bc;
+
+			L130f:
+			this.oParent.Var_68f2 = this.oCPU.DX.Word;
+			this.oCPU.Temp.Word = this.oParent.Var_68e8;
+			this.oParent.Var_68e8 = this.oCPU.SP.Word;
+			this.oCPU.SP.Word = this.oCPU.Temp.Word;
+
+			this.oParent.Var_b26e = this.oCPU.SI.Word;
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
@@ -2632,27 +2692,25 @@ namespace Civilization1
 			this.oParent.LogExitBlock("'F0_1000_1208'");
 		}
 
-		public void F0_1000_1227()
+		public void F0_1000_1227(ushort handle)
 		{
 			this.oParent.LogEnterBlock("'F0_1000_1227'(Cdecl, Near) at 0x1000:0x1227");
 			this.oCPU.CS.Word = 0x1000; // set this function segment
 
 			// function body
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x68e2);
-			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x68e4));
+			this.oCPU.AX.Word = this.oParent.Var_68e2;
+			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oParent.Var_68e4);
 			if (this.oCPU.Flags.NE) goto L1231;
 			// Near return
 			this.oParent.LogExitBlock("'F0_1000_1227'");
 			return;
 
 		L1231:
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x68ec, 0x0);
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x68ed, 0x0);
-			// LEA
-			this.oCPU.AX.Word = 0x6afb;
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68e8, this.oCPU.AX.Word);
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
-			this.oCPU.CMPWord(this.oCPU.SI.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5528));
+			this.oParent.Var_68ec = 0x0;
+			this.oParent.Var_68ed = 0x0;
+			this.oParent.Var_68e8 = 0x6afb;
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
+			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
 			if (this.oCPU.Flags.B) goto L125a;
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -2660,30 +2718,29 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x1253); // stack management - push return offset
 			// Instruction address 0x1000:0x124f, size: 4
-			//this.oCPU.CallF(this.oCPU.ReadDWord(this.oCPU.DS.Word, 0xd91a));
-			this.oParent.Segment_2fa1.F0_2fa1_0644();
+			this.oParent.Segment_2fa1.F0_2fa1_0644(handle);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1000; // restore this function segment
 			this.oCPU.DX.Word = this.oCPU.PopWord();
 			this.oCPU.CX.Word = this.oCPU.PopWord();
 			this.oCPU.BX.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
 
 		L125a:
 			this.oCPU.LODSWord();
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xb26e, this.oCPU.SI.Word);
+			this.oParent.Var_b26e = this.oCPU.SI.Word;
 			this.oCPU.CMPByte(this.oCPU.AX.Low, 0xb);
 			if (this.oCPU.Flags.BE) goto L1265;
 			this.oCPU.AX.Low = 0xb;
 
 		L1265:
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x68ef, this.oCPU.AX.Low);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68f4, this.oCPU.AX.Word);
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x68f6, 0x8);
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x68ee, 0x9);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68f0, 0x1ff);
+			this.oParent.Var_68ef = this.oCPU.AX.Low;
+			this.oParent.Var_68f4 = this.oCPU.AX.Word;
+			this.oParent.Var_68f6 = 0x8;
+			this.oParent.Var_68ee = 0x9;
+			this.oParent.Var_68f0 = 0x1ff;
 			this.oCPU.DX.Word = 0x100;
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68f2, this.oCPU.DX.Word);
+			this.oParent.Var_68f2 = this.oCPU.DX.Word;
 			this.oCPU.AX.Word = 0xffff;
 			this.oCPU.BX.Word = 0x0;
 			this.oCPU.CX.Word = 0x800;
@@ -2711,10 +2768,10 @@ namespace Civilization1
 			this.oCPU.CS.Word = 0x1000; // set this function segment
 
 			// function body
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x68ee, 0x9);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68f0, 0x1ff);
+			this.oParent.Var_68ee = 0x9;
+			this.oParent.Var_68f0 = 0x1ff;
 			this.oCPU.DX.Word = 0x100;
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68f2, this.oCPU.DX.Word);
+			this.oParent.Var_68f2 = this.oCPU.DX.Word;
 			this.oCPU.AX.Word = 0xffff;
 			this.oCPU.BX.Word = 0x0;
 			this.oCPU.CX.Word = 0x800;
@@ -2736,84 +2793,7 @@ namespace Civilization1
 			this.oParent.LogExitBlock("'F0_1000_1270'");
 		}
 
-		public void F0_1000_12a6()
-		{
-			this.oParent.LogEnterBlock("'F0_1000_12a6'(Cdecl, Near) at 0x1000:0x12a6");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
-
-			// function body
-			this.oCPU.CMPByte(this.oCPU.ReadByte(this.oCPU.DS.Word, 0x68f7), 0x0);
-			if (this.oCPU.Flags.E) goto L12b0;
-			this.oCPU.CX.Word = this.oCPU.INCWord(this.oCPU.CX.Word);
-			this.oCPU.CX.Word = this.oCPU.SHRWord(this.oCPU.CX.Word, 0x1);
-
-		L12b0:
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68ea, this.oCPU.CX.Word);
-			this.oCPU.DX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x68f2);
-			this.oCPU.Temp.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x68e8);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68e8, this.oCPU.SP.Word);
-			this.oCPU.SP.Word = this.oCPU.Temp.Word;
-
-		L12bc:
-			this.oCPU.CMPByte(this.oCPU.ReadByte(this.oCPU.DS.Word, 0x68ec), 0x0);
-			if (this.oCPU.Flags.NE) goto L12e4;
-			this.oCPU.PushWord(0x12c6); // stack management - push return offset
-			// Instruction address 0x1000:0x12c3, size: 3
-			F0_1000_1318(0x12c6);
-			this.oCPU.PopWord(); // stack management - pop return offset
-			this.oCPU.CMPByte(this.oCPU.AX.Low, 0x90);
-			if (this.oCPU.Flags.E) goto L12d0;
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x68ed, this.oCPU.AX.Low);
-			goto L12eb;
-
-		L12d0:
-			this.oCPU.PushWord(0x12d3); // stack management - push return offset
-			// Instruction address 0x1000:0x12d0, size: 3
-			F0_1000_1318(0x12d3);
-			this.oCPU.PopWord(); // stack management - pop return offset
-			this.oCPU.AX.Low = this.oCPU.ORByte(this.oCPU.AX.Low, this.oCPU.AX.Low);
-			if (this.oCPU.Flags.NE) goto L12df;
-			this.oCPU.AX.Low = 0x90;
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x68ed, this.oCPU.AX.Low);
-			goto L12eb;
-
-		L12df:
-			this.oCPU.AX.Low = this.oCPU.DECByte(this.oCPU.AX.Low);
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x68ec, this.oCPU.AX.Low);
-
-		L12e4:
-			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, 0x68ed);
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x68ec, this.oCPU.DECByte(this.oCPU.ReadByte(this.oCPU.DS.Word, 0x68ec)));
-
-		L12eb:
-			this.oCPU.CMPByte(this.oCPU.ReadByte(this.oCPU.DS.Word, 0x68f7), 0x0);
-			if (this.oCPU.Flags.E) goto L1308;
-			this.oCPU.AX.High = this.oCPU.AX.Low;
-			this.oCPU.AX.Low = this.oCPU.ANDByte(this.oCPU.AX.Low, 0xf);
-			this.oCPU.AX.High = this.oCPU.SHRByte(this.oCPU.AX.High, 0x1);
-			this.oCPU.AX.High = this.oCPU.SHRByte(this.oCPU.AX.High, 0x1);
-			this.oCPU.AX.High = this.oCPU.SHRByte(this.oCPU.AX.High, 0x1);
-			this.oCPU.AX.High = this.oCPU.SHRByte(this.oCPU.AX.High, 0x1);
-			this.oCPU.STOSWord();
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68ea, this.oCPU.DECWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x68ea)));
-			if (this.oCPU.Flags.NE) goto L12bc;
-			goto L130f;
-
-		L1308:
-			this.oCPU.STOSByte();
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68ea, this.oCPU.DECWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x68ea)));
-			if (this.oCPU.Flags.NE) goto L12bc;
-
-		L130f:
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68f2, this.oCPU.DX.Word);
-			this.oCPU.Temp.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x68e8);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68e8, this.oCPU.SP.Word);
-			this.oCPU.SP.Word = this.oCPU.Temp.Word;
-			// Near return
-			this.oParent.LogExitBlock("'F0_1000_12a6'");
-		}
-
-		public void F0_1000_1318(ushort value)
+		public void F0_1000_1318(ushort value, ushort handle)
 		{
 			this.oParent.LogEnterBlock("'F0_1000_1318'(Undefined) at 0x1000:0x1318");
 			this.oCPU.CS.Word = 0x1000; // set this function segment
@@ -2835,17 +2815,17 @@ namespace Civilization1
 			return;
 
 		L1322:
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x68f4);
+			this.oCPU.BX.Word = this.oParent.Var_68f4;
 			this.oCPU.CX.Low = 0x10;
-			this.oCPU.CX.High = this.oCPU.ReadByte(this.oCPU.DS.Word, 0x68f6);
+			this.oCPU.CX.High = this.oParent.Var_68f6;
 			this.oCPU.CX.Low = this.oCPU.SUBByte(this.oCPU.CX.Low, this.oCPU.CX.High);
 			this.oCPU.BX.Word = this.oCPU.SHRWord(this.oCPU.BX.Word, this.oCPU.CX.Low);
 			this.oCPU.CX.Low = this.oCPU.CX.High;
 
 		L1332:
-			this.oCPU.CMPByte(this.oCPU.CX.Low, this.oCPU.ReadByte(this.oCPU.DS.Word, 0x68ee));
+			this.oCPU.CMPByte(this.oCPU.CX.Low, this.oParent.Var_68ee);
 			if (this.oCPU.Flags.GE) goto L1359;
-			this.oCPU.CMPWord(this.oCPU.SI.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5528));
+			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
 			if (this.oCPU.Flags.B) goto L134c;
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -2853,28 +2833,27 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x1345); // stack management - push return offset
 			// Instruction address 0x1000:0x1341, size: 4
-			//this.oCPU.CallF(this.oCPU.ReadDWord(this.oCPU.DS.Word, 0xd91a));
-			this.oParent.Segment_2fa1.F0_2fa1_0644();
+			this.oParent.Segment_2fa1.F0_2fa1_0644(handle);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1000; // restore this function segment
 			this.oCPU.DX.Word = this.oCPU.PopWord();
 			this.oCPU.CX.Word = this.oCPU.PopWord();
 			this.oCPU.BX.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
+			this.oCPU.SI.Word = this.oParent.Var_b26e;
 
 		L134c:
 			this.oCPU.LODSWord();
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68f4, this.oCPU.AX.Word);
+			this.oParent.Var_68f4 = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.BX.Word = this.oCPU.ORWord(this.oCPU.BX.Word, this.oCPU.AX.Word);
 			this.oCPU.CX.Low = this.oCPU.ADDByte(this.oCPU.CX.Low, 0x10);
 			goto L1332;
 
 		L1359:
-			this.oCPU.CX.Low = this.oCPU.SUBByte(this.oCPU.CX.Low, this.oCPU.ReadByte(this.oCPU.DS.Word, 0x68ee));
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x68f6, this.oCPU.CX.Low);
+			this.oCPU.CX.Low = this.oCPU.SUBByte(this.oCPU.CX.Low, this.oParent.Var_68ee);
+			this.oParent.Var_68f6 = this.oCPU.CX.Low;
 			this.oCPU.AX.Word = this.oCPU.BX.Word;
-			this.oCPU.AX.Word = this.oCPU.ANDWord(this.oCPU.AX.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x68f0));
+			this.oCPU.AX.Word = this.oCPU.ANDWord(this.oCPU.AX.Word, this.oParent.Var_68f0);
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.CMPWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
 			if (this.oCPU.Flags.L) goto L1377;
@@ -2906,15 +2885,17 @@ namespace Civilization1
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x68f8);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word - 0x45fa), this.oCPU.AX.Word);
 			this.oCPU.DX.Word = this.oCPU.INCWord(this.oCPU.DX.Word);
-			this.oCPU.CMPWord(this.oCPU.DX.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x68f0));
+			this.oCPU.CMPWord(this.oCPU.DX.Word, this.oParent.Var_68f0);
 			if (this.oCPU.Flags.LE) goto L13b5;
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x68ee, this.oCPU.INCByte(this.oCPU.ReadByte(this.oCPU.DS.Word, 0x68ee)));
-			this.oCPU.Flags.C = true;
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68f0, this.oCPU.RCLWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x68f0), 0x1));
+			this.oParent.Var_68ee++;
+			this.oParent.Var_68f0 <<= 1;
+			this.oParent.Var_68f0 |= 1;
+			//this.oCPU.Flags.C = true;
+			//this.oParent.Var_68f0 = this.oCPU.RCLWord(this.oParent.Var_68f0, 0x1);
 
 		L13b5:
-			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, 0x68ee);
-			this.oCPU.CMPByte(this.oCPU.AX.Low, this.oCPU.ReadByte(this.oCPU.DS.Word, 0x68ef));
+			this.oCPU.AX.Low = this.oParent.Var_68ee;
+			this.oCPU.CMPByte(this.oCPU.AX.Low, this.oParent.Var_68ef);
 			if (this.oCPU.Flags.LE) goto L13c1;
 			this.oCPU.PushWord(0x13c1); // stack management - push return offset
 			// Instruction address 0x1000:0x13be, size: 3
@@ -2958,7 +2939,7 @@ namespace Civilization1
 			this.oCPU.STOSWord();
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa));
 			this.oCPU.STOSWord();
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xb26e, this.oCPU.DI.Word);
+			this.oParent.Var_b26e = this.oCPU.DI.Word;
 			this.oCPU.AX.Word = 0x0;
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x6b08, this.oCPU.AX.Low);
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x6b09, this.oCPU.AX.Low);
@@ -3127,9 +3108,9 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x6b00, this.oCPU.DI.Word);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x6b02, this.oCPU.AX.Word);
 			this.oCPU.AX.Low = 0xb;
-			this.oCPU.DI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
+			this.oCPU.DI.Word = this.oParent.Var_b26e;
 			this.oCPU.STOSByte();
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xb26e, this.oCPU.DI.Word);
+			this.oParent.Var_b26e = this.oCPU.DI.Word;
 			this.oCPU.PushWord(0x1520); // stack management - push return offset
 			// Instruction address 0x1000:0x151d, size: 3
 			F0_1000_1524();
@@ -3278,11 +3259,11 @@ namespace Civilization1
 			if (this.oCPU.Flags.S) goto L1617;
 			this.oCPU.CMPByte(this.oCPU.DX.Low, 0x8);
 			if (this.oCPU.Flags.B) goto L160f;
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
+			this.oCPU.BX.Word = this.oParent.Var_b26e;
 			this.oCPU.WriteByte(this.oCPU.DS.Word, this.oCPU.BX.Word, this.oCPU.DX.High);
 			this.oCPU.BX.Word = this.oCPU.INCWord(this.oCPU.BX.Word);
 			this.oCPU.DX.Word = 0x0;
-			this.oCPU.CMPWord(this.oCPU.BX.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5528));
+			this.oCPU.CMPWord(this.oCPU.BX.Word, Civilization.Constant_5528);
 			if (this.oCPU.Flags.B) goto L160b;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -3301,7 +3282,7 @@ namespace Civilization1
 			this.oCPU.BX.Word = 0xd936;
 
 		L160b:
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xb26e, this.oCPU.BX.Word);
+			this.oParent.Var_b26e = this.oCPU.BX.Word;
 
 		L160f:
 			this.oCPU.AX.Word = this.oCPU.SHRWord(this.oCPU.AX.Word, 0x1);
@@ -3330,7 +3311,7 @@ namespace Civilization1
 			this.oCPU.PopWord(); // stack management - pop return offset
 			this.oCPU.AX.High = 0x40;
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x6afe);
-			this.oCPU.CX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb26e);
+			this.oCPU.CX.Word = this.oParent.Var_b26e;
 			// LEA
 			this.oCPU.DX.Word = 0xd936;
 			this.oCPU.CX.Word = this.oCPU.SUBWord(this.oCPU.CX.Word, this.oCPU.DX.Word);

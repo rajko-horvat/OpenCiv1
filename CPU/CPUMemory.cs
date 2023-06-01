@@ -308,6 +308,9 @@ namespace Disassembler
 				this.oParent.Parent.LogWriteLine($"Error: Attempt to write dword at undefined address 0x{address:x8}");
 		}
 
+		#endregion
+
+		#region Block instructions
 		public void WriteBlock(ushort segment, ushort offset, byte[] srcData, int pos, int length)
 		{
 			WriteBlock(CPUMemory.ToLinearAddress(segment, offset), srcData, pos, length);

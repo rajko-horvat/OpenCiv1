@@ -28,42 +28,34 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.imgScreen = new System.Windows.Forms.PictureBox();
-			((System.ComponentModel.ISupportInitialize)(this.imgScreen)).BeginInit();
+			this.components = new System.ComponentModel.Container();
+			this.tmrRefresh = new System.Windows.Forms.Timer(this.components);
 			this.SuspendLayout();
 			// 
-			// imgScreen
+			// tmrRefresh
 			// 
-			this.imgScreen.BackColor = System.Drawing.Color.Black;
-			this.imgScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.imgScreen.Location = new System.Drawing.Point(0, 0);
-			this.imgScreen.Margin = new System.Windows.Forms.Padding(0);
-			this.imgScreen.Name = "imgScreen";
-			this.imgScreen.Size = new System.Drawing.Size(624, 384);
-			this.imgScreen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.imgScreen.TabIndex = 0;
-			this.imgScreen.TabStop = false;
+			this.tmrRefresh.Enabled = true;
+			this.tmrRefresh.Tick += new System.EventHandler(this.tmrRefresh_Tick);
 			// 
 			// VGACardForm
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-			this.ClientSize = new System.Drawing.Size(624, 384);
+			this.BackColor = System.Drawing.Color.Black;
+			this.ClientSize = new System.Drawing.Size(616, 376);
 			this.ControlBox = false;
-			this.Controls.Add(this.imgScreen);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.KeyPreview = true;
 			this.MaximizeBox = false;
 			this.Name = "VGACardForm";
 			this.ShowIcon = false;
 			this.Text = "VGA display";
+			this.Paint += new System.Windows.Forms.PaintEventHandler(this.VGACardForm_Paint);
 			this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.VGACardForm_KeyPress);
-			((System.ComponentModel.ISupportInitialize)(this.imgScreen)).EndInit();
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
-
-		public System.Windows.Forms.PictureBox imgScreen;
+		private System.Windows.Forms.Timer tmrRefresh;
 	}
 }

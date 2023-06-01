@@ -788,7 +788,7 @@ namespace Civilization1
 			this.oParent.LogExitBlock("'F0_0000_09af'");
 		}
 
-		public void F0_0000_0a23(ushort param1, ushort param2, ushort param3, ushort param4, ushort width)
+		public void F0_0000_0a23(ushort param1, short param2, ushort param3, ushort param4, ushort width)
 		{
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
@@ -2739,6 +2739,9 @@ namespace Civilization1
 				case 0x1a3c:
 					this.F0_0000_1a3c();
 					break;
+				case 0x1a08:
+					this.F0_0000_1a08();
+					break;
 				default:
 					throw new Exception($"Unknown jump address 0x{this.oCPU.ReadWord(this.oCPU.CS.Word, 0x15ec):x4} in graphics overlay");
 			}
@@ -2913,6 +2916,43 @@ namespace Civilization1
 			this.oCPU.AX.Low = this.oCPU.ORByte(this.oCPU.AX.Low, this.oCPU.BX.Low);
 			// Near return
 			this.oParent.LogExitBlock("'F0_0000_19b8'");
+		}
+
+		public void F0_0000_1a08()
+		{
+			this.oParent.LogEnterBlock("'F0_0000_1a08'(Cdecl, Near) at 0x0000:0x1a08");
+			this.oCPU.CS.Word = this.usSegment; // set this function segment
+
+			// function body
+			this.oCPU.BX.Word = 0x0;
+			this.oCPU.DX.Word = 0x0;
+			this.oCPU.DX.High = this.oCPU.INCByte(this.oCPU.DX.High);
+
+		L1a0e:
+			this.oCPU.LODSByte();
+			this.oCPU.AX.Low = this.oCPU.SHRByte(this.oCPU.AX.Low, 0x1);
+			this.oCPU.BX.Low = this.oCPU.RCLByte(this.oCPU.BX.Low, 0x1);
+			this.oCPU.AX.Low = this.oCPU.SHRByte(this.oCPU.AX.Low, 0x1);
+			this.oCPU.BX.High = this.oCPU.RCLByte(this.oCPU.BX.High, 0x1);
+			this.oCPU.AX.Low = this.oCPU.SHRByte(this.oCPU.AX.Low, 0x1);
+			this.oCPU.DX.Low = this.oCPU.RCLByte(this.oCPU.DX.Low, 0x1);
+			this.oCPU.AX.Low = this.oCPU.SHRByte(this.oCPU.AX.Low, 0x1);
+			this.oCPU.DX.High = this.oCPU.RCLByte(this.oCPU.DX.High, 0x1);
+			if (this.oCPU.Flags.AE) goto L1a0e;
+			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.CS.Word, 0x15ea), 0x1);
+			if (this.oCPU.Flags.NE) goto L1a33;
+			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.CS.Word, 0x15f0);
+			this.oCPU.AX.High = this.oCPU.AX.Low;
+			this.oCPU.BX.Word = this.oCPU.ANDWord(this.oCPU.BX.Word, this.oCPU.AX.Word);
+			this.oCPU.DX.Word = this.oCPU.ANDWord(this.oCPU.DX.Word, this.oCPU.AX.Word);
+
+		L1a33:
+			this.oCPU.AX.Low = this.oCPU.DX.High;
+			this.oCPU.AX.Low = this.oCPU.ORByte(this.oCPU.AX.Low, this.oCPU.DX.Low);
+			this.oCPU.AX.Low = this.oCPU.ORByte(this.oCPU.AX.Low, this.oCPU.BX.High);
+			this.oCPU.AX.Low = this.oCPU.ORByte(this.oCPU.AX.Low, this.oCPU.BX.Low);
+			// Near return
+			this.oParent.LogExitBlock("'F0_0000_1a08'");
 		}
 
 		public void F0_0000_1a3c()
@@ -3861,6 +3901,7 @@ namespace Civilization1
 			// Instruction address 0x0000:0x2472, size: 3
 			F0_0000_25aa();
 			this.oCPU.PopWord(); // stack management - pop return offset
+
 			this.oCPU.PushWord(0x2478); // stack management - push return offset
 			// Instruction address 0x0000:0x2475, size: 3
 			F0_0000_24de();
@@ -4156,7 +4197,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = this.oCPU.INCWord(this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x4ee, this.oCPU.AX.Word);
-			// Probably a switch statement - near jump to register value
+			
 			this.oCPU.Jmp(this.oCPU.SI.Word);
 		}
 	}

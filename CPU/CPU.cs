@@ -59,8 +59,8 @@ namespace Disassembler
 			this.oParent = parent;
 			this.oGPU = new VGACard(this);
 			this.oMemory = new CPUMemory(this, this.oGPU);
-			this.oTimer = new Timer(oTimer_Tick, null, 500, 500);
-			this.oTimer.Dispose();
+			this.oTimer = new Timer(oTimer_Tick, null, 100, 100);
+			//this.oTimer.Dispose();
 		}
 
 		public bool EnableTimer
@@ -1531,15 +1531,7 @@ namespace Disassembler
 
 		public void CallF(uint address)
 		{
-			switch (address)
-			{
-				case 0x2fa10644:
-					this.oParent.Segment_2fa1.F0_2fa1_0644();
-					break;
-				default:
-					this.oParent.LogWriteLine($"Trying to call function at 0x{address:x8}");
-					break;
-			}
+			this.oParent.LogWriteLine($"Trying to call function at 0x{address:x8}");
 		}
 
 		public void Jmp(ushort offset)

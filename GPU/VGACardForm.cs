@@ -13,7 +13,8 @@ namespace Disassembler
 	public partial class VGACardForm : Form
 	{
 		private VGACard oGPU = null;
-		Queue<char> aKeys = new Queue<char>();
+		private Queue<char> aKeys = new Queue<char>();
+		private Graphics oGraphics;
 
 		public VGACardForm()
 		{
@@ -25,13 +26,11 @@ namespace Disassembler
 			this.oGPU = gpu;
 
 			InitializeComponent();
-		}
+			this.SetStyle(ControlStyles.Opaque, true);
+			this.SetStyle(ControlStyles.UserPaint, true);
+			//this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 
-		public delegate void RefreshScreenDelegate();
-
-		public void RefreshScreen()
-		{
-			this.imgScreen.Image = this.oGPU.Screen;
+			this.oGraphics = Graphics.FromHwnd(this.Handle);
 		}
 
 		private void VGACardForm_KeyPress(object sender, KeyPressEventArgs e)
@@ -42,6 +41,38 @@ namespace Disassembler
 		public Queue<char> Keys
 		{
 			get { return this.aKeys; }
+		}
+
+		private void tmrRefresh_Tick(object sender, EventArgs e)
+		{
+			if (this.oGPU.BitmapChanged)
+			{
+				lock (this.oGPU.oBitmapLock)
+				{
+					Graphics g = Graphics.FromHwnd(this.Handle);
+					Rectangle rect = this.ClientRectangle;
+					//rect.Inflate(-1, -1);
+					g.DrawImage(this.oGPU.ScreenBitmap, rect);
+					//g.DrawRectangle(Pens.Purple, rect);
+					g.Flush();
+					g.Dispose();
+					this.oGPU.BitmapChanged = false;
+				}
+			}
+		}
+
+		private void VGACardForm_Paint(object sender, PaintEventArgs e)
+		{
+			lock (this.oGPU.oBitmapLock)
+			{
+				Graphics g = e.Graphics;
+				Rectangle rect = this.ClientRectangle;
+				//rect.Inflate(-1, -1);
+				g.DrawImage(this.oGPU.ScreenBitmap, rect);
+				//g.DrawRectangle(Pens.Purple, rect);
+				g.Flush();
+				this.oGPU.BitmapChanged = false;
+			}
 		}
 	}
 }

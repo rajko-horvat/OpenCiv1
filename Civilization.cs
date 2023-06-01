@@ -69,7 +69,23 @@ namespace Civilization1
 		private int iLogTabLevel = 0;
 
 		#region Global Data
+		public static ushort Constant_5528 = 0xdb36;
+		public ushort Var_552a = 0xffff;
+		public ushort Var_68e2 = 0;
+		public ushort Var_68e4 = 0;
+		public ushort Var_68e8 = 0;
+		public ushort Var_68ea = 0;
+		public byte Var_68ec = 0;
+		public byte Var_68ed = 0;
+		public byte Var_68ef = 0;
+		public ushort Var_68f2 = 0;
+		public byte Var_68f7 = 0;
+		public ushort Var_b26e = 0;
 
+		public ushort Var_68f4 = 0;
+		public byte Var_68f6 = 0;
+		public byte Var_68ee = 0;
+		public ushort Var_68f0 = 0;
 		#endregion
 
 		private ushort usStartSegment = 0x1000;
@@ -78,6 +94,9 @@ namespace Civilization1
 		public Civilization()
 		{
 			this.oCPU = new CPU(this);
+
+			//this.oCPU.VGA.PrintStdOut("Proba...", 0x01);
+			//return;
 
 			#region Initialize Segments
 			this.oSegment_3045 = new Segment_3045(this);
