@@ -61,14 +61,22 @@ namespace Civilization1
 		private Overlay_16 oOverlay_16;
 		private MSCAPI oMSCAPI;
 		private Misc oMisc;
-		private VGADriver oEGA;
+		private VGADriver oVGA;
 		private NSound oNSound;
 		#endregion
 
 		private StreamWriter oLog;
 		private int iLogTabLevel = 0;
+		private StreamWriter oInterruptLog;
+		private int iInterruptLogTabLevel = 0;
+		private StreamWriter oVGALog;
+		private int iVGALogTabLevel = 0;
+		private StreamWriter oVGADriverLog;
+		private int iVGADriverLogTabLevel = 0;
 
 		#region Global Data
+		public ushort OverlaySegment = 0;
+
 		public static ushort Constant_5528 = 0xdb36;
 		public ushort Var_552a = 0xffff;
 		public ushort Var_68e2 = 0;
@@ -86,6 +94,8 @@ namespace Civilization1
 		public byte Var_68f6 = 0;
 		public byte Var_68ee = 0;
 		public ushort Var_68f0 = 0;
+
+		public ushort Var_d768 = 0;
 		#endregion
 
 		private ushort usStartSegment = 0x1000;
@@ -94,9 +104,6 @@ namespace Civilization1
 		public Civilization()
 		{
 			this.oCPU = new CPU(this);
-
-			//this.oCPU.VGA.PrintStdOut("Proba...", 0x01);
-			//return;
 
 			#region Initialize Segments
 			this.oSegment_3045 = new Segment_3045(this);
@@ -146,11 +153,14 @@ namespace Civilization1
 			this.oOverlay_16 = new Overlay_16(this);
 			this.oMSCAPI = new MSCAPI(this);
 			this.oMisc = new Misc(this);
-			this.oEGA = new VGADriver(this);
+			this.oVGA = new VGADriver(this);
 			this.oNSound = new NSound(this);
 			#endregion
 
 			this.oLog = new StreamWriter("Log.txt");
+			this.oInterruptLog = new StreamWriter("InterruptLog.txt");
+			this.oVGALog = new StreamWriter("VGALog.txt");
+			this.oVGADriverLog = new StreamWriter("VGADriverLog.txt");
 
 			// load old image to memory
 			oEXE = new MZExecutable("c:\\DOS\\CIV\\civ.exe");
@@ -192,89 +202,48 @@ namespace Civilization1
 			this.oCPU.ES.Word = (ushort)(usStartSegment - 0x10);
 			this.oCPU.SP.Word = oEXE.InitialSP;
 
+			// allocate memory for overlays, allocate entire 64k
+			this.OverlaySegment = 0x3374; // as set by F0_3045_2b44 as overlay base segment
+			this.SetOverlayBase();
+
 			this.oSegment_3045.Start();
 		}
 
+		private void SetOverlayBase()
+		{
+			this.oOverlay_1.Segment = this.OverlaySegment;
+			this.oOverlay_2.Segment = this.OverlaySegment;
+			this.oOverlay_6.Segment = this.OverlaySegment;
+			this.oOverlay_7.Segment = this.OverlaySegment;
+			this.oOverlay_4.Segment = this.OverlaySegment;
+			this.oOverlay_11.Segment = this.OverlaySegment;
+			this.oOverlay_3.Segment = this.OverlaySegment;
+			this.oOverlay_5.Segment = this.OverlaySegment;
+			this.oOverlay_23.Segment = this.OverlaySegment;
+			this.oOverlay_14.Segment = this.OverlaySegment;
+			this.oOverlay_8.Segment = this.OverlaySegment;
+			this.oOverlay_21.Segment = this.OverlaySegment;
+			this.oOverlay_19.Segment = this.OverlaySegment;
+			this.oOverlay_18.Segment = this.OverlaySegment;
+			this.oOverlay_22.Segment = this.OverlaySegment;
+			this.oOverlay_9.Segment = this.OverlaySegment;
+			this.oOverlay_13.Segment = this.OverlaySegment;
+			this.oOverlay_12.Segment = this.OverlaySegment;
+			this.oOverlay_20.Segment = this.OverlaySegment;
+			this.oOverlay_17.Segment = this.OverlaySegment;
+			this.oOverlay_10.Segment = this.OverlaySegment;
+			this.oOverlay_15.Segment = this.OverlaySegment;
+			this.oOverlay_16.Segment = this.OverlaySegment;
+		}
+
 		#region Helper functions
-
-		public ushort SumSizes(ushort[] sizes)
-		{
-			ushort res = 0;
-
-			if (sizes != null)
-			{
-				for (int i = 0; i < sizes.Length; i++)
-					res += sizes[i];
-			}
-
-			return res;
-		}
-
-		public ushort GetCWordParameter(bool callAdjust, int param, ushort offset, ushort[] sizes)
-		{
-			// sizes (zero based): first to last parameter size
-
-			// SP frame (with callAdjust):
-			// SP+n = last param
-			// SP+4 = first param
-			// SP+2 = CS
-			// SP+0 = IP
-			// SP-n = free..., local stack
-
-			// SP frame (without callAdjust):
-			// SP+n = last param
-			// SP+0 = first param
-
-			ushort uiOffset = (ushort)(callAdjust ? 4 : 0);
-			uiOffset += oCPU.SP.Word;
-			uiOffset += offset;
-
-			for (int i = 0; i < param; i++)
-			{
-				uiOffset += sizes[i];
-			}
-
-			return oCPU.ReadWord(oCPU.SS.Word, uiOffset);
-		}
-
-		public uint GetCDWordParameter(bool callAdjust, int param, ushort offset, ushort[] sizes)
-		{
-			// sizes (zero based): first to last parameter size
-
-			// SP frame (with callAdjust):
-			// SP+n = last param
-			// SP+4 = first param
-			// SP+2 = CS
-			// SP+0 = IP
-			// SP-n = free..., local stack
-
-			// SP frame (without callAdjust):
-			// SP+n = last param
-			// SP+0 = first param
-
-			ushort uiOffset = (ushort)(callAdjust ? 4 : 0);
-			uiOffset += oCPU.SP.Word;
-			uiOffset += offset;
-
-			for (int i = 0; i < param; i++)
-			{
-				uiOffset += sizes[i];
-			}
-
-			uint value = oCPU.ReadDWord(oCPU.SS.Word, uiOffset);
-			// reverse value from stack
-			//value = ((value & 0xffff0000) >> 16) | ((value & 0xffff) << 16);
-
-			return value;
-		}
-
 		public void LogEnterBlock(string text)
 		{
 			if (this.oLog != null)
 			{
-				WriteTabs();
-				this.oLog.WriteLine($"// Entering block {text}");
-				WriteTabs();
+				WriteTabs(this.oLog, this.iLogTabLevel);
+				this.oLog.WriteLine($"// Entering block {text}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
+				WriteTabs(this.oLog, this.iLogTabLevel);
 				this.oLog.WriteLine("{");
 				this.oLog.Flush();
 				this.iLogTabLevel++;
@@ -286,10 +255,8 @@ namespace Civilization1
 			if (this.oLog != null)
 			{
 				this.iLogTabLevel = Math.Max(0, this.iLogTabLevel - 1);
-				//WriteTabs();
-				//this.oLog.WriteLine($"// Exiting block {text}");
-				WriteTabs();
-				this.oLog.WriteLine("}");
+				WriteTabs(this.oLog, this.iLogTabLevel);
+				this.oLog.WriteLine($"}}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
 				this.oLog.Flush();
 			}
 		}
@@ -298,15 +265,123 @@ namespace Civilization1
 		{
 			if (this.oLog != null)
 			{
-				WriteTabs();
+				WriteTabs(this.oLog, this.iLogTabLevel);
 				this.oLog.WriteLine(text);
 				this.oLog.Flush();
 			}
 		}
 
-		private void WriteTabs()
+		public void InterruptLogEnterBlock(string text)
 		{
-			this.oLog.Write($"{new string('\t', this.iLogTabLevel)}");
+			if (this.oInterruptLog != null)
+			{
+				WriteTabs(this.oInterruptLog, this.iInterruptLogTabLevel);
+				this.oInterruptLog.WriteLine($"// Entering block {text}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
+				WriteTabs(this.oInterruptLog, this.iInterruptLogTabLevel);
+				this.oInterruptLog.WriteLine("{");
+				this.oInterruptLog.Flush();
+				this.iInterruptLogTabLevel++;
+			}
+		}
+
+		public void InterruptLogExitBlock(string text)
+		{
+			if (this.oInterruptLog != null)
+			{
+				this.iInterruptLogTabLevel = Math.Max(0, this.iInterruptLogTabLevel - 1);
+				WriteTabs(this.oInterruptLog, this.iInterruptLogTabLevel);
+				this.oInterruptLog.WriteLine($"}}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
+				this.oInterruptLog.Flush();
+			}
+		}
+
+		public void InterruptLogWriteLine(string text)
+		{
+			if (this.oInterruptLog != null)
+			{
+				WriteTabs(this.oInterruptLog, this.iInterruptLogTabLevel);
+				this.oInterruptLog.WriteLine(text);
+				this.oInterruptLog.Flush();
+			}
+		}
+
+		public void VGALogEnterBlock(string text)
+		{
+			if (this.oVGALog != null)
+			{
+				WriteTabs(this.oVGALog, this.iVGALogTabLevel);
+				this.oVGALog.WriteLine($"// Entering block {text}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
+				WriteTabs(this.oVGALog, this.iVGALogTabLevel);
+				this.oVGALog.WriteLine("{");
+				this.oVGALog.Flush();
+				this.iVGALogTabLevel++;
+			}
+		}
+
+		public void VGALogExitBlock(string text)
+		{
+			if (this.oVGALog != null)
+			{
+				this.iVGALogTabLevel = Math.Max(0, this.iVGALogTabLevel - 1);
+				WriteTabs(this.oVGALog, this.iVGALogTabLevel);
+				this.oVGALog.WriteLine($"}}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
+				this.oVGALog.Flush();
+			}
+		}
+
+		public void VGALogWriteLine(string text)
+		{
+			if (this.oVGALog != null)
+			{
+				WriteTabs(this.oVGALog, this.iVGALogTabLevel);
+				this.oVGALog.WriteLine(text);
+				this.oVGALog.Flush();
+			}
+		}
+
+		public void VGADriverLogEnterBlock(string text)
+		{
+			if (this.oVGADriverLog != null)
+			{
+				// also disable interrupts
+				this.oCPU.CLI();
+
+				WriteTabs(this.oVGADriverLog, this.iVGADriverLogTabLevel);
+				this.oVGADriverLog.WriteLine($"// Entering block {text}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
+				WriteTabs(this.oVGADriverLog, this.iVGADriverLogTabLevel);
+				this.oVGADriverLog.WriteLine("{");
+				this.oVGADriverLog.Flush();
+				this.iVGADriverLogTabLevel++;
+			}
+		}
+
+		public void VGADriverLogExitBlock(string text)
+		{
+			if (this.oVGADriverLog != null)
+			{
+				// also enable interrupts
+				this.oCPU.STI();
+
+				this.iVGADriverLogTabLevel = Math.Max(0, this.iVGADriverLogTabLevel - 1);
+				WriteTabs(this.oVGADriverLog, this.iVGADriverLogTabLevel);
+				this.oVGADriverLog.WriteLine($"}}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
+				this.oVGADriverLog.Flush();
+			}
+		}
+
+		public void VGADriverLogWriteLine(string text)
+		{
+			if (this.oVGADriverLog != null)
+			{
+				WriteTabs(this.oVGADriverLog, this.iVGADriverLogTabLevel);
+				this.oVGADriverLog.WriteLine(text);
+				this.oVGADriverLog.Flush();
+			}
+		}
+
+		private void WriteTabs(StreamWriter writer, int level)
+		{
+			writer.Write($"{new string('\t', level)}");
 		}
 		#endregion
 
@@ -546,9 +621,9 @@ namespace Civilization1
 			get { return this.oMisc; }
 		}
 
-		public VGADriver EGA
+		public VGADriver VGA
 		{
-			get { return this.oEGA; }
+			get { return this.oVGA; }
 		}
 
 		public NSound NSound

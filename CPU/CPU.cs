@@ -37,7 +37,8 @@ namespace Disassembler
 		// GPU
 		private VGACard oGPU;
 
-		// Timer
+		// Timer(s)
+		private bool bEnableInterrupt = true;
 		private bool bEnableTimer = false;
 		private bool bTimerFlag = false;
 		private bool bInTimer = false;
@@ -77,22 +78,37 @@ namespace Disassembler
 			}
 		}
 
+		public void STI()
+		{
+			this.bEnableInterrupt = true;
+		}
+
+		public void CLI()
+		{
+			this.bEnableInterrupt = false;
+		}
+
 		public void DoEvents()
 		{
 			System.Windows.Forms.Application.DoEvents();
-			if (this.bEnableTimer && this.bTimerFlag && !this.bInTimer)
+			if (this.bEnableInterrupt && this.bEnableTimer && this.bTimerFlag && !this.bInTimer)
 			{
 				this.bInTimer = true;
+
+				MainRegistersCheck registersCheck = new MainRegistersCheck(this);
 				ushort usCS = this.oCS.Word;
-				ushort usBP = this.oBP.Word;
 				this.PushF();
+
 				this.PushWord(0x0);
 				this.PushWord(usCS);
-				this.oParent.Segment_1000.F0_1000_01a7();
+				this.oParent.Segment_1000.F0_1000_01a7_Interrupt();
 				PopDWord();
+
 				PopF();
-				this.oBP.Word = usBP;
 				this.oCS.Word = usCS;
+				if (!registersCheck.CheckMainRegisters(this))
+					throw new Exception("Return main registers doesn't match");
+
 				this.bTimerFlag = false;
 				this.bInTimer = false;
 			}
@@ -400,7 +416,6 @@ namespace Disassembler
 		#endregion
 
 		#region CPU instructions
-
 		public void AAA()
 		{
 			this.oFlags.S = (this.oAX.Low >= 0x7a) && (this.oAX.Low <= 0xf9);
@@ -1430,8 +1445,29 @@ namespace Disassembler
 		{
 			switch (port)
 			{
+				case 0x40:
+					// 8253 or 8254 Programmable Interval Timer
+					break;
+
 				case 0x61:
 					// 8255 Port B output - reset keyboard
+					break;
+
+				case 0x3c7:
+					// DAC Status
+					return this.oGPU.DACReadAddress;
+
+				case 0x3c8:
+					// DAC Palette Address, write
+					return this.oGPU.DACWriteAddress;
+
+				case 0x3c9:
+					// DAC Palette Data
+					return this.oGPU.DACPalette;
+
+				case 0x3d5:
+					// CRT Controller data, read
+					this.oParent.VGALogWriteLine($"Input byte from port 0x{port:x4} (CRT Controller data, read)");
 					break;
 
 				case 0x3da:
@@ -1448,21 +1484,55 @@ namespace Disassembler
 
 		public void OUTByte(byte port, byte value)
 		{
-			this.oParent.LogWriteLine($"Output to port 0x{port:x2}, byte value 0x{value:x2}");
+			this.OUTByte((ushort)port, value);
 		}
 
 		public void OUTByte(ushort port, byte value)
 		{
-			this.oParent.LogWriteLine($"Output to port 0x{port:x4}, byte value 0x{value:x2}");
+			//this.oParent.LogWriteLine($"Output to port 0x{port:x4}, byte value 0x{value:x2}");
 
 			switch (port)
 			{
+				case 0x20:
+					// 8259A Master Programmable Interrupt Controller
+					break;
+
+				case 0x40:
+				case 0x43:
+					// 8253 or 8254 Programmable Interval Timer
+					break;
+
+				case 0x61:
+					// system control port (for compatibility with 8255)
+					break;
+
+				case 0x3c0:
+					// Attribute controller
+					//this.oParent.VGALogWriteLine($"Output to port 0x{port:x4} (Old palette register), byte value 0x{value:x2}");
+					this.oGPU.AttributeControllerWrite(value);
+					break;
+
 				case 0x3c4:
 					this.oGPU.HWSequencerAddress = value;
 					break;
 
 				case 0x3c5:
 					this.oGPU.SetSequencerValue(value);
+					break;
+
+				case 0x3c7:
+					// DAC Palette Address, read
+					this.oGPU.DACReadAddress = value;
+					break;
+
+				case 0x3c8:
+					// DAC Palette Address, write
+					this.oGPU.DACWriteAddress = value;
+					break;
+
+				case 0x3c9:
+					// DAC Palette data, write
+					this.oGPU.DACPalette = value;
 					break;
 
 				case 0x3ce:
@@ -1473,8 +1543,30 @@ namespace Disassembler
 					this.oGPU.SetGraphicsValue(value);
 					break;
 
+				case 0x3d0:
+				case 0x3d2:
+				case 0x3d6:
+					// ignore this port
+					break;
+
+				case 0x3d4:
+					// CRT Controller address
+					this.oParent.VGALogWriteLine($"Output to port 0x{port:x4} (CRT Controller address), byte value 0x{value:x2}");
+					break;
+
+				case 0x3d1:
+				case 0x3d3:
+				case 0x3d7:
+					// ignore this port
+					break;
+
+				case 0x3d5:
+					// CRT Controller data, write
+					this.oParent.VGALogWriteLine($"Output to port 0x{port:x4} (CRT Controller data, write), byte value 0x{value:x2}");
+					break;
+
 				default:
-					//this.oParent.LogWriteLine($"Output to port 0x{port:x4}, byte value 0x{value:x2}");
+					this.oParent.LogWriteLine($"Output to port 0x{port:x4}, byte value 0x{value:x2}");
 					break;
 			}
 		}
@@ -1496,7 +1588,6 @@ namespace Disassembler
 		#endregion
 
 		#region Flow control instructions
-
 		public void Exit(int code)
 		{
 			this.EnableTimer = false;
@@ -1546,7 +1637,6 @@ namespace Disassembler
 		#endregion
 
 		#region Interrupt instruction
-
 		public void INT(byte value)
 		{
 			int iCount;
@@ -1729,7 +1819,29 @@ namespace Disassembler
 					switch (this.oAX.High)
 					{
 						case 0:
-							this.oAX.Word = (ushort)this.oParent.MSCAPI.getch();
+							this.oParent.MSCAPI.getch();
+							if (this.oAX.Word == 0)
+							{
+								this.oParent.MSCAPI.getch();
+								switch (this.oAX.Word)
+								{
+									case 0x4b:
+										this.oAX.Word = 0x4b00; // Left
+										break;
+
+									case 0x48:
+										this.oAX.Word = 0x4800; // Up
+										break;
+
+									case 0x4d:
+										this.oAX.Word = 0x4d00; // Right
+										break;
+
+									case 0x50:
+										this.oAX.Word = 0x5000; // Down
+										break;
+								}
+							}
 							break;
 
 						default:

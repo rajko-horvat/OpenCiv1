@@ -41,7 +41,7 @@
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.BackColor = System.Drawing.Color.Black;
-			this.ClientSize = new System.Drawing.Size(616, 376);
+			this.ClientSize = new System.Drawing.Size(612, 372);
 			this.ControlBox = false;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.KeyPreview = true;
@@ -50,6 +50,7 @@
 			this.ShowIcon = false;
 			this.Text = "VGA display";
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.VGACardForm_Paint);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.VGACardForm_KeyDown);
 			this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.VGACardForm_KeyPress);
 			this.ResumeLayout(false);
 

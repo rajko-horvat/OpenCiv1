@@ -788,7 +788,7 @@ namespace Civilization1
 		#region Keyboard operations
 		public short kbhit()
 		{
-			this.oCPU.AX.Word = (ushort)((this.oCPU.VGA.Form.Keys.Count > 0) ? 1 : 0);
+			this.oCPU.AX.Word = (ushort)((this.oCPU.VGA.Form.Keys.Count > 0) ? 0xffff : 0);
 
 			return (short)this.oCPU.AX.Word;
 		}
@@ -801,7 +801,7 @@ namespace Civilization1
 				this.oCPU.DoEvents();
 			}
 
-			this.oCPU.AX.Word = (ushort)((short)this.oCPU.VGA.Form.Keys.Dequeue());
+			this.oCPU.AX.Word = (ushort)(this.oCPU.VGA.Form.Keys.Dequeue() & 0xff);
 
 			return (short)this.oCPU.AX.Word;
 		}
@@ -1953,19 +1953,16 @@ namespace Civilization1
 
 		public int time(uint timeAddress)
 		{
-			this.oParent.LogEnterBlock("'time'(Cdecl) at 0x3045:0x25e6");
 			int iTotalSeconds = (int)Math.Floor((DateTime.Now - (new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds);
 
 			if (timeAddress != 0)
 				this.oCPU.Memory.WriteDWord(timeAddress, (uint)iTotalSeconds);
-			this.oParent.LogExitBlock("'time'");
 
 			return iTotalSeconds;
 		}
 		#endregion
 
 		#region Math operations
-
 		public void abs()
 		{
 			this.oCPU.AX.Word = (ushort)abs((short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)));
@@ -1996,7 +1993,7 @@ namespace Civilization1
 			this.oParent.LogExitBlock("'F0_3045_31de'");
 			return;
 
-			L31f9:
+		L31f9:
 			this.oCPU.MULWord(this.oCPU.DX, this.oCPU.AX, this.oCPU.BX.Word);
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
@@ -2011,7 +2008,7 @@ namespace Civilization1
 		}
 		#endregion
 
-		#region Random operations
+		#region Random number generator operations
 		public void srand()
 		{
 			srand(this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)));

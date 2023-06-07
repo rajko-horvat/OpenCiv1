@@ -33,11 +33,6 @@ namespace Disassembler
 			this.oGraphics = Graphics.FromHwnd(this.Handle);
 		}
 
-		private void VGACardForm_KeyPress(object sender, KeyPressEventArgs e)
-		{
-			aKeys.Enqueue(e.KeyChar);
-		}
-
 		public Queue<char> Keys
 		{
 			get { return this.aKeys; }
@@ -72,6 +67,95 @@ namespace Disassembler
 				//g.DrawRectangle(Pens.Purple, rect);
 				g.Flush();
 				this.oGPU.BitmapChanged = false;
+			}
+		}
+
+		private void VGACardForm_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			aKeys.Enqueue(e.KeyChar);
+		}
+
+		private void VGACardForm_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Modifiers == System.Windows.Forms.Keys.None)
+			{
+				switch (e.KeyCode)
+				{
+					case System.Windows.Forms.Keys.F1:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x3b');
+						break;
+
+					case System.Windows.Forms.Keys.F2:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x3c');
+						break;
+
+					case System.Windows.Forms.Keys.F3:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x3d');
+						break;
+
+					case System.Windows.Forms.Keys.F4:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x3e');
+						break;
+
+					case System.Windows.Forms.Keys.F5:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x3f');
+						break;
+
+					case System.Windows.Forms.Keys.F6:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x40');
+						break;
+
+					case System.Windows.Forms.Keys.F7:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x41');
+						break;
+
+					case System.Windows.Forms.Keys.F8:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x42');
+						break;
+
+					case System.Windows.Forms.Keys.F9:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x43');
+						break;
+
+					case System.Windows.Forms.Keys.F10:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x44');
+						break;
+
+					case System.Windows.Forms.Keys.Down:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x50');
+						break;
+
+					case System.Windows.Forms.Keys.Left:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x4b');
+						break;
+
+					case System.Windows.Forms.Keys.Right:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x4d');
+						break;
+
+					case System.Windows.Forms.Keys.Up:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x48');
+						break;
+
+					case System.Windows.Forms.Keys.Home:
+						aKeys.Enqueue('\x0');
+						aKeys.Enqueue('\x47');
+						break;
+				}
 			}
 		}
 	}

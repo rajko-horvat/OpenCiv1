@@ -564,6 +564,7 @@ namespace Disassembler
 		private byte[] aBitmapMemory = new byte[0x20000];
 		private GCHandle oBitmapMemoryHandle;
 		private IntPtr oBitmapMemoryAddress;
+		private uint uiBitmapPage = 0;
 
 		private VGACardForm oForm;
 		private Bitmap oBitmap;
@@ -592,12 +593,33 @@ namespace Disassembler
 
 		private byte biSequencerAddress = 0xff;
 		private byte biMapWriteMask = 0xf;
+
 		private byte biGraphicsAddress = 0xff;
 		private byte biWriteSetReset = 0xf;
 		private byte biEnableSetReset = 0;
+		private byte biColorCompare = 0;
 		private byte biMapReadSelect = 0;
 		private byte biWriteBitMask = 0xff;
+		private byte biGraphicsMode = 0x0;
+
+		private bool bAttributeAddressFlag = true;
+		private byte biAttributeAddress = 0xff;
+
+		private byte biDACState = 0x0;
+		private byte biDACReadAddress = 0x0;
+		private int iDACReadIndex = -1;
+		private byte biDACReadRed = 0x0;
+		private byte biDACReadGreen = 0x0;
+		private byte biDACReadBlue = 0x0;
+		private byte biDACWriteAddress = 0x0;
+		private int iDACWriteIndex = -1;
+		private byte biDACWriteRed = 0x0;
+		private byte biDACWriteGreen = 0x0;
+		private byte biDACWriteBlue = 0x0;
+
 		private byte[,] abMemoryPlanes = new byte[iNumberOfPlanes, iPlaneMemorySize];
+
+		private byte ubHWStatus = 0xd;
 
 		public VGACard(CPU parent)
 		{
@@ -752,6 +774,21 @@ namespace Disassembler
 			this.oBitmap.Palette = bmpPalette;
 		}
 
+		public void SetPalette18(int index, int red, int green, int blue)
+		{
+			SetPaletteColor(index & 0xff, Color.FromArgb((255 * (red & 0x3f)) / 64, (255 * (green & 0x3f)) / 64, (255 * (blue & 0x3f)) / 64));
+		}
+
+		private void SetPaletteColor(int index, Color value)
+		{
+			// what a stupid way to change palette, we have to assign new ColorPalette to bitmap object to modify any palette entry!
+			ColorPalette bmpPalette = this.oBitmap.Palette;
+
+			bmpPalette.Entries[index] = value;
+
+			this.oBitmap.Palette = bmpPalette;
+		}
+
 		public int Width
 		{
 			get
@@ -784,8 +821,7 @@ namespace Disassembler
 			}
 		}
 
-		#region VGA mode 0xd specific stuff
-
+		#region VGA HW specific stuff
 		public void SetSequencerValue(byte value)
 		{
 			switch (this.biSequencerAddress)
@@ -793,6 +829,7 @@ namespace Disassembler
 				case 2:
 					// Map Write Mask
 					this.biMapWriteMask = value;
+					this.oParent.Parent.VGALogWriteLine($"Sequencer Map Write Mask changed to 0x{value:x2}");
 					break;
 
 				case 0xff:
@@ -800,7 +837,7 @@ namespace Disassembler
 					break;
 
 				default:
-					this.oParent.Parent.LogWriteLine($"Unknown Sequencer address 0x{this.biSequencerAddress:x2}");
+					this.oParent.Parent.VGALogWriteLine($"Unknown Sequencer address 0x{this.biSequencerAddress:x2}, value 0x{value:x2}");
 					break;
 			}
 		}
@@ -812,25 +849,48 @@ namespace Disassembler
 				case 0:
 					// Write plane mask bits
 					this.biWriteSetReset = value;
+					this.oParent.Parent.VGALogWriteLine($"Graphics Write plane mask bits changed to 0x{value:x2}");
 					break;
 
 				case 1:
 					// Enable write plane mask bits
 					this.biEnableSetReset = value;
+					this.oParent.Parent.VGALogWriteLine($"Graphics Enable write plane mask bits changed to 0x{value:x2}");
+					break;
+
+				case 2:
+					// Color Compare
+					this.biColorCompare = value;
+					this.oParent.Parent.VGALogWriteLine($"Graphics Color Compare changed to 0x{value:x2}");
 					break;
 
 				case 3:
 					// Data rotate, ignore for now
+					if (value != 0)
+					{
+						this.oParent.Parent.VGALogWriteLine($"Graphics data rotate 0x{this.biGraphicsAddress:x2}, value 0x{value:x2}");
+					}
+					break;
+
+				case 0x5:
+					// Graphics Mode Register
+					this.biGraphicsMode = value;
+					if (this.biGraphicsMode != 0)
+					{
+						this.oParent.Parent.VGALogWriteLine($"Graphics mode 0x{this.biGraphicsAddress:x2}, value 0x{value:x2}");
+					}
 					break;
 
 				case 4:
 					// Read plane select
 					this.biMapReadSelect = (byte)(value & 0x3);
+					this.oParent.Parent.VGALogWriteLine($"Graphics Read plane select changed to 0x{value:x2}");
 					break;
 
 				case 8:
 					// Write bit mask
 					this.biWriteBitMask = value;
+					this.oParent.Parent.VGALogWriteLine($"Graphics Write bit mask changed to 0x{value:x2}");
 					break;
 
 				case 0xff:
@@ -838,14 +898,86 @@ namespace Disassembler
 					break;
 
 				default:
-					this.oParent.Parent.LogWriteLine($"Unknown Graphics address 0x{this.biGraphicsAddress:x2}");
+					this.oParent.Parent.VGALogWriteLine($"Unknown Graphics address 0x{this.biGraphicsAddress:x2}, value 0x{value:x2}");
 					break;
+			}
+		}
+
+		public void AttributeControllerWrite(byte value)
+		{
+			if (this.bAttributeAddressFlag)
+			{
+				this.biAttributeAddress = value;
+				if (this.biAttributeAddress > 0x20)
+					this.oParent.Parent.VGALogWriteLine($"Attribute address is greater than 0x20, 0x{this.biAttributeAddress:x2}");
+				this.bAttributeAddressFlag = false;
+			}
+			else if((this.biAttributeAddress & 0x20) == 0)
+			{
+				switch (this.biAttributeAddress)
+				{
+					case 0:
+					case 1:
+					case 2:
+					case 3:
+					case 4:
+					case 5:
+					case 6:
+					case 7:
+					case 8:
+					case 9:
+					case 0xa:
+					case 0xb:
+					case 0xc:
+					case 0xd:
+					case 0xe:
+					case 0xf:
+						int iRed = (value & 4) >> 2 | (value & 0x20) >> 4;
+						iRed = (255 * iRed) / 3;
+						int iGreen = (value & 2) >> 1 | (value & 0x10) >> 3;
+						iGreen = (255 * iGreen) / 3;
+						int iBlue = (value & 1) | (value & 0x8) >> 2;
+						iBlue = (255 * iBlue) / 3;
+						SetPaletteColor(this.biAttributeAddress, Color.FromArgb(iRed, iGreen, iBlue));
+						break;
+
+					case 0x10:
+						// Attribute Mode Control Register, ignore if zero
+						if (value != 0)
+						{
+							this.oParent.Parent.VGALogWriteLine($"Undefined Attribute mode address 0x{this.biAttributeAddress:x2}, value 0x{value:x2}");
+						}
+						break;
+
+					case 0x11:
+						// Overscan Color Register, not supported, ignore
+						break;
+
+					case 0x13:
+						// Horizontal PEL Panning Register, ignore for now
+						break;
+
+					case 0xff:
+						// ignore this value
+						break;
+
+					default:
+						this.oParent.Parent.VGALogWriteLine($"Unknown Attribute address 0x{this.biAttributeAddress:x2}, value 0x{value:x2}");
+						break;
+				}
+				this.bAttributeAddressFlag = true;
+			}
+
+			if ((this.biAttributeAddress & 0x20) != 0)
+			{
+				this.bAttributeAddressFlag = true;
 			}
 		}
 
 		public byte HWStatus
 		{
-			get { return 0xd; }
+			// alternate horizontal retrace status
+			get { this.ubHWStatus ^= 0x8; this.bAttributeAddressFlag = true; return this.ubHWStatus; }
 		}
 
 		public byte HWSequencerAddress
@@ -887,6 +1019,72 @@ namespace Disassembler
 		{
 			get { return this.biWriteBitMask; }
 			set { this.biWriteBitMask = value; }
+		}
+
+		public byte DACWriteAddress
+		{
+			get { return this.biDACWriteAddress; }
+			set { this.biDACWriteAddress = value; this.iDACWriteIndex = -1; }
+		}
+
+		public byte DACReadAddress
+		{
+			get { return this.biDACState; }
+			set { this.biDACReadAddress = value; this.iDACReadIndex = -1; }
+		}
+
+		public byte DACPalette
+		{
+			get
+			{
+				switch (this.iDACReadIndex)
+				{
+					case -1:
+						Color color = this.oBitmap.Palette.Entries[this.biDACReadAddress];
+						this.biDACReadRed = (byte)((64 * color.R) / 255);
+						this.biDACReadGreen = (byte)((64 * color.G) / 255);
+						this.biDACReadBlue = (byte)((64 * color.B) / 255);
+						this.iDACReadIndex++;
+						return this.biDACReadRed;
+
+					case 0:
+						this.iDACReadIndex++;
+						return this.biDACReadGreen;
+
+					case 1:
+						this.biDACReadAddress++;
+						this.iDACReadIndex = -1;
+						this.biDACState = 0x3;
+						return this.biDACReadBlue;
+
+					default:
+						return 0;   // Happy compiler
+				}
+			}
+			set
+			{
+				value &= 0x3f;
+				switch (this.iDACWriteIndex)
+				{
+					case -1:
+						this.biDACWriteRed = (byte)((255 * value) / 64);
+						this.iDACWriteIndex++;
+						break;
+
+					case 0:
+						this.biDACWriteGreen = (byte)((255 * value) / 64);
+						this.iDACWriteIndex++;
+						break;
+
+					case 1:
+						this.biDACWriteBlue = (byte)((255 * value) / 64);
+						SetPaletteColor(this.biDACWriteAddress, Color.FromArgb(this.biDACWriteRed, this.biDACWriteGreen, this.biDACWriteBlue));
+						this.biDACWriteAddress++;
+						this.iDACWriteIndex = -1;
+						this.biDACState = 0x0;
+						break;
+				}
+			}
 		}
 		#endregion
 
@@ -1005,45 +1203,54 @@ namespace Disassembler
 			}
 			lock (this.oBitmapLock)
 			{
-				byte biValue = (byte)(value & this.biWriteBitMask);
-
-				for (int i = 0; i < iNumberOfPlanes; i++)
+				switch (this.eMode)
 				{
-					int iBitMask = 1 << i;
+					case ModeEnum.Graphics320x200x16:
+						byte biValue = (byte)(value & this.biWriteBitMask);
 
-					if ((this.biMapWriteMask & iBitMask) != 0)
-					{
-						if ((this.biEnableSetReset & iBitMask) != 0)
+						for (int i = 0; i < iNumberOfPlanes; i++)
 						{
-							if ((this.biWriteSetReset & iBitMask) != 0)
+							int iBitMask = 1 << i;
+
+							if ((this.biMapWriteMask & iBitMask) != 0)
 							{
-								// write all 1's
-								byte biNewValue = this.abMemoryPlanes[i, address];
-								biNewValue |= this.biWriteBitMask;
-								biNewValue ^= this.biWriteBitMask;
-								biNewValue |= (byte)(0xff & this.biWriteBitMask);
-								this.abMemoryPlanes[i, address] = biNewValue;
-							}
-							else
-							{
-								// write all 0's
-								byte biNewValue = this.abMemoryPlanes[i, address];
-								biNewValue |= this.biWriteBitMask;
-								biNewValue ^= this.biWriteBitMask;
-								this.abMemoryPlanes[i, address] = biNewValue;
+								if ((this.biEnableSetReset & iBitMask) != 0)
+								{
+									if ((this.biWriteSetReset & iBitMask) != 0)
+									{
+										// write all 1's
+										byte biNewValue = this.abMemoryPlanes[i, address];
+										biNewValue |= this.biWriteBitMask;
+										biNewValue ^= this.biWriteBitMask;
+										biNewValue |= this.biWriteBitMask;
+										this.abMemoryPlanes[i, address] = biNewValue;
+									}
+									else
+									{
+										// write all 0's
+										byte biNewValue = this.abMemoryPlanes[i, address];
+										biNewValue |= this.biWriteBitMask;
+										biNewValue ^= this.biWriteBitMask;
+										this.abMemoryPlanes[i, address] = biNewValue;
+									}
+								}
+								else
+								{
+									byte biNewValue = this.abMemoryPlanes[i, address];
+									biNewValue |= this.biWriteBitMask;
+									biNewValue ^= this.biWriteBitMask;
+									biNewValue |= biValue;
+									this.abMemoryPlanes[i, address] = biNewValue;
+								}
 							}
 						}
-						else
-						{
-							byte biNewValue = this.abMemoryPlanes[i, address];
-							biNewValue |= this.biWriteBitMask;
-							biNewValue ^= this.biWriteBitMask;
-							biNewValue |= biValue;
-							this.abMemoryPlanes[i, address] = biNewValue;
-						}
+						RenderAddress(address);
+						break;
 
-						RenderAddress(i, address);
-					}
+					case ModeEnum.Graphics320x200x256:
+						this.abMemoryPlanes[0, address] = value;
+						RenderAddress(address);
+						break;
 				}
 			}
 		}
@@ -1057,49 +1264,60 @@ namespace Disassembler
 			}
 			lock (this.oBitmapLock)
 			{
-				for (int j = 0; j < 2; j++)
+				switch (this.eMode)
 				{
-					byte biValue = (byte)((value & 0xff) & this.biWriteBitMask);
-
-					for (int i = 0; i < iNumberOfPlanes; i++)
-					{
-						int iBitMask = 1 << i;
-
-						if ((this.biMapWriteMask & iBitMask) != 0)
+					case ModeEnum.Graphics320x200x16:
+						for (int j = 0; j < 2; j++)
 						{
-							if ((this.biEnableSetReset & iBitMask) != 0)
-							{
-								if ((this.biWriteSetReset & iBitMask) != 0)
-								{
-									// write all 1's
-									byte biNewValue = this.abMemoryPlanes[i, address + j];
-									biNewValue |= this.biWriteBitMask;
-									biNewValue ^= this.biWriteBitMask;
-									biNewValue |= (byte)(0xff & this.biWriteBitMask);
-									this.abMemoryPlanes[i, address + j] = biNewValue;
-								}
-								else
-								{
-									// write all 0's
-									byte biNewValue = this.abMemoryPlanes[i, address + j];
-									biNewValue |= this.biWriteBitMask;
-									biNewValue ^= this.biWriteBitMask;
-									this.abMemoryPlanes[i, address + j] = biNewValue;
-								}
-							}
-							else
-							{
-								byte biNewValue = this.abMemoryPlanes[i, address + j];
-								biNewValue |= this.biWriteBitMask;
-								biNewValue ^= this.biWriteBitMask;
-								biNewValue |= biValue;
-								this.abMemoryPlanes[i, address + j] = biNewValue;
-							}
+							byte biValue = (byte)((value & 0xff) & this.biWriteBitMask);
 
-							RenderAddress(i, (uint)(address + j));
+							for (int i = 0; i < iNumberOfPlanes; i++)
+							{
+								int iBitMask = 1 << i;
+
+								if ((this.biMapWriteMask & iBitMask) != 0)
+								{
+									if ((this.biEnableSetReset & iBitMask) != 0)
+									{
+										if ((this.biWriteSetReset & iBitMask) != 0)
+										{
+											// write all 1's
+											byte biNewValue = this.abMemoryPlanes[i, address + j];
+											biNewValue |= this.biWriteBitMask;
+											biNewValue ^= this.biWriteBitMask;
+											biNewValue |= (byte)(0xff & this.biWriteBitMask);
+											this.abMemoryPlanes[i, address + j] = biNewValue;
+										}
+										else
+										{
+											// write all 0's
+											byte biNewValue = this.abMemoryPlanes[i, address + j];
+											biNewValue |= this.biWriteBitMask;
+											biNewValue ^= this.biWriteBitMask;
+											this.abMemoryPlanes[i, address + j] = biNewValue;
+										}
+									}
+									else
+									{
+										byte biNewValue = this.abMemoryPlanes[i, address + j];
+										biNewValue |= this.biWriteBitMask;
+										biNewValue ^= this.biWriteBitMask;
+										biNewValue |= biValue;
+										this.abMemoryPlanes[i, address + j] = biNewValue;
+									}
+								}
+							}
+							value >>= 8;
+							RenderAddress((uint)(address + j));
 						}
-					}
-					value >>= 8;
+						break;
+
+					case ModeEnum.Graphics320x200x256:
+						this.abMemoryPlanes[0, address] = (byte)((value & 0xff00) >> 8);
+						this.abMemoryPlanes[0, address + 1] = (byte)(value & 0xff);
+						RenderAddress(address);
+						RenderAddress(address + 1);
+						break;
 				}
 			}
 		}
@@ -1113,49 +1331,64 @@ namespace Disassembler
 			}
 			lock (this.oBitmapLock)
 			{
-				for (int j = 0; j < 4; j++)
+				switch (this.eMode)
 				{
-					byte biValue = (byte)((value & 0xff) & this.biWriteBitMask);
-
-					for (int i = 0; i < iNumberOfPlanes; i++)
-					{
-						int iBitMask = 1 << i;
-
-						if ((this.biMapWriteMask & iBitMask) != 0)
+					case ModeEnum.Graphics320x200x16:
+						for (int j = 0; j < 4; j++)
 						{
-							if ((this.biEnableSetReset & iBitMask) != 0)
-							{
-								if ((this.biWriteSetReset & iBitMask) != 0)
-								{
-									// write all 1's
-									byte biNewValue = this.abMemoryPlanes[i, address + j];
-									biNewValue |= this.biWriteBitMask;
-									biNewValue ^= this.biWriteBitMask;
-									biNewValue |= (byte)(0xff & this.biWriteBitMask);
-									this.abMemoryPlanes[i, address + j] = biNewValue;
-								}
-								else
-								{
-									// write all 0's
-									byte biNewValue = this.abMemoryPlanes[i, address + j];
-									biNewValue |= this.biWriteBitMask;
-									biNewValue ^= this.biWriteBitMask;
-									this.abMemoryPlanes[i, address + j] = biNewValue;
-								}
-							}
-							else
-							{
-								byte biNewValue = this.abMemoryPlanes[i, address + j];
-								biNewValue |= this.biWriteBitMask;
-								biNewValue ^= this.biWriteBitMask;
-								biNewValue |= biValue;
-								this.abMemoryPlanes[i, address + j] = biNewValue;
-							}
+							byte biValue = (byte)((value & 0xff) & this.biWriteBitMask);
 
-							RenderAddress(i, (uint)(address + j));
+							for (int i = 0; i < iNumberOfPlanes; i++)
+							{
+								int iBitMask = 1 << i;
+
+								if ((this.biMapWriteMask & iBitMask) != 0)
+								{
+									if ((this.biEnableSetReset & iBitMask) != 0)
+									{
+										if ((this.biWriteSetReset & iBitMask) != 0)
+										{
+											// write all 1's
+											byte biNewValue = this.abMemoryPlanes[i, address + j];
+											biNewValue |= this.biWriteBitMask;
+											biNewValue ^= this.biWriteBitMask;
+											biNewValue |= (byte)(0xff & this.biWriteBitMask);
+											this.abMemoryPlanes[i, address + j] = biNewValue;
+										}
+										else
+										{
+											// write all 0's
+											byte biNewValue = this.abMemoryPlanes[i, address + j];
+											biNewValue |= this.biWriteBitMask;
+											biNewValue ^= this.biWriteBitMask;
+											this.abMemoryPlanes[i, address + j] = biNewValue;
+										}
+									}
+									else
+									{
+										byte biNewValue = this.abMemoryPlanes[i, address + j];
+										biNewValue |= this.biWriteBitMask;
+										biNewValue ^= this.biWriteBitMask;
+										biNewValue |= biValue;
+										this.abMemoryPlanes[i, address + j] = biNewValue;
+									}
+								}
+							}
+							value >>= 8;
+							RenderAddress((uint)(address + j));
 						}
-					}
-					value >>= 8;
+						break;
+
+					case ModeEnum.Graphics320x200x256:
+						this.abMemoryPlanes[0, address] = (byte)((value & 0xff000000) >> 24);
+						this.abMemoryPlanes[0, address + 1] = (byte)((value & 0xff0000) >> 16);
+						this.abMemoryPlanes[0, address + 2] = (byte)((value & 0xff00) >> 8);
+						this.abMemoryPlanes[0, address + 3] = (byte)(value & 0xff);
+						RenderAddress(address);
+						RenderAddress(address + 1);
+						RenderAddress(address + 2);
+						RenderAddress(address + 3);
+						break;
 				}
 			}
 		}
@@ -1410,8 +1643,9 @@ namespace Disassembler
 			}
 		}
 
-		private void RenderAddress(int plane, uint address)
+		private void RenderAddress(uint address)
 		{
+			uint address1 = address;
 			int iXPos;
 			int iYPos;
 
@@ -1422,8 +1656,8 @@ namespace Disassembler
 					{
 						int iY = (int)(address / (this.iTextWidth * 2));
 						int iX = (int)((address - (iY * (this.iTextWidth * 2))) / 2);
-						int ch = this.abMemoryPlanes[plane, address];
-						byte attr = this.abMemoryPlanes[plane, address + 1];
+						int ch = this.abMemoryPlanes[0, address];
+						byte attr = this.abMemoryPlanes[0, address + 1];
 						if (iX < this.iTextWidth && iY < this.iTextHeight)
 						{
 							RenderCharacter(iX, iY, ch, (byte)(attr & 0xf), (byte)((attr & 0xf0) >> 4));
@@ -1432,22 +1666,28 @@ namespace Disassembler
 					break;
 
 				case ModeEnum.Graphics320x200x16:
-					iYPos = (int)((address & 0xffff) / this.iBytesPerLine);
-					iXPos = (int)((address & 0xffff) - (iYPos * this.iBytesPerLine)) * iPixelsPerByte;
-
-					for (int j = 0; j < iPixelsPerByte; j++)
+					address &= 0x7fff;
+					address1 &= 0x7fff;
+					address1 -= 0x2000 * this.uiBitmapPage;
+					if (address1 < 0x1f40)
 					{
-						int iBitMask = 1 << j;
-						byte biColor = 0;
+						iYPos = (int)(address1 / this.iBytesPerLine);
+						iXPos = (int)(address1 - (iYPos * this.iBytesPerLine)) * iPixelsPerByte;
 
-						for (int k = 0; k < iNumberOfPlanes; k++)
+						for (int j = 0; j < iPixelsPerByte; j++)
 						{
-							byte biBit = (byte)((this.abMemoryPlanes[k, address] & iBitMask) != 0 ? 1 : 0);
-							biBit <<= k;
-							biColor |= biBit;
-						}
+							int iBitMask = 1 << j;
+							byte biColor = 0;
 
-						SetPixelInternal((int)iXPos + (iPixelsPerByte - (j + 1)), iYPos, biColor);
+							for (int k = 0; k < iNumberOfPlanes; k++)
+							{
+								byte biBit = (byte)((this.abMemoryPlanes[k, address] & iBitMask) != 0 ? 1 : 0);
+								biBit <<= k;
+								biColor |= biBit;
+							}
+
+							SetPixelInternal((int)iXPos + (iPixelsPerByte - (j + 1)), iYPos, biColor);
+						}
 					}
 					break;
 
@@ -1455,7 +1695,7 @@ namespace Disassembler
 					iYPos = (int)((address & 0xffff) / this.iWidth);
 					iXPos = (int)((address & 0xffff) - (iYPos * this.iWidth));
 
-					SetPixelInternal(iXPos, iYPos, this.abMemoryPlanes[plane, address]);
+					SetPixelInternal(iXPos, iYPos, this.abMemoryPlanes[0, address]);
 					break;
 			}
 		}

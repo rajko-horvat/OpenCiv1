@@ -38,7 +38,7 @@ namespace Civilization1
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
-			this.oCPU.AX.High = this.oCPU.SUBByte(this.oCPU.AX.High, this.oCPU.AX.High);
+			this.oCPU.AX.High = 0;
 			this.oCPU.INT(0x16);
 			// Far return
 			this.oParent.LogExitBlock("'F0_0000_0047'");

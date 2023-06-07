@@ -179,12 +179,8 @@ namespace Civilization1
 					this.oCPU.CS.Word = 0x2fa1; // restore this function segment
 					//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
-					this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-					this.oCPU.PushWord(0x0203); // stack management - push return offset
 					// Instruction address 0x2fa1:0x01fe, size: 5
-					this.oParent.Segment_1000.F0_1000_07f4(0xe17e, param1, param2, (ushort)(param3 + i), this.oParent.Var_68e2);
-					this.oCPU.PopDWord(); // stack management - pop return offset and segment
-					this.oCPU.CS.Word = 0x2fa1; // restore this function segment
+					this.oParent.VGA.F0_VGA_03df_CopyLine(0xe17e, param1, param2, (ushort)(param3 + i), this.oParent.Var_68e2);
 				}
 			}
 

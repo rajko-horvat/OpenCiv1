@@ -34,8 +34,10 @@ namespace Civilization1
 			this.oCPU.SI.Word = 0x1000;
 
 		L0030:
+			this.oCPU.CLI();
 			this.oCPU.SS.Word = this.oCPU.DI.Word;
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0xe8be);
+			this.oCPU.STI();
 			if (this.oCPU.Flags.AE) goto L004e;
 			this.oCPU.PushWord(this.oCPU.SS.Word);
 			this.oCPU.DS.Word = this.oCPU.PopWord();
@@ -523,42 +525,6 @@ namespace Civilization1
 			this.oCPU.AX.Word = this.oCPU.PopWord();
 			// Near return
 			this.oParent.LogExitBlock("'F0_3045_2ed2'");
-		}
-
-		public void F0_3045_31de()
-		{
-			this.oParent.LogEnterBlock("'F0_3045_31de'(Pascal, Far) at 0x3045:0x31de");
-			this.oCPU.CS.Word = 0x3045; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc));
-			this.oCPU.BX.Word = this.oCPU.ORWord(this.oCPU.BX.Word, this.oCPU.AX.Word);
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa));
-			if (this.oCPU.Flags.NE) goto L31f9;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.MULWord(this.oCPU.DX, this.oCPU.AX, this.oCPU.BX.Word);
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oParent.LogExitBlock("'F0_3045_31de'");
-			return;
-
-		L31f9:
-			this.oCPU.MULWord(this.oCPU.DX, this.oCPU.AX, this.oCPU.BX.Word);
-			this.oCPU.CX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.MULWord(this.oCPU.DX, this.oCPU.AX, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)));
-			this.oCPU.CX.Word = this.oCPU.ADDWord(this.oCPU.CX.Word, this.oCPU.AX.Word);
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.MULWord(this.oCPU.DX, this.oCPU.AX, this.oCPU.BX.Word);
-			this.oCPU.DX.Word = this.oCPU.ADDWord(this.oCPU.DX.Word, this.oCPU.CX.Word);
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oParent.LogExitBlock("'F0_3045_31de'");
 		}
 	}
 }
