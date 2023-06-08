@@ -65,14 +65,10 @@ namespace Civilization1
 		private NSound oNSound;
 		#endregion
 
-		private StreamWriter oLog;
-		private int iLogTabLevel = 0;
-		private StreamWriter oInterruptLog;
-		private int iInterruptLogTabLevel = 0;
-		private StreamWriter oVGALog;
-		private int iVGALogTabLevel = 0;
-		private StreamWriter oVGADriverLog;
-		private int iVGADriverLogTabLevel = 0;
+		private LogWrapper oLog;
+		private LogWrapper oInterruptLog;
+		private LogWrapper oVGALog;
+		private LogWrapper oVGADriverLog;
 
 		#region Global Data
 		public ushort OverlaySegment = 0;
@@ -103,7 +99,12 @@ namespace Civilization1
 
 		public Civilization()
 		{
-			this.oCPU = new CPU(this);
+			this.oLog = new LogWrapper("Log.txt");
+			this.oInterruptLog = new LogWrapper("InterruptLog.txt");
+			this.oVGALog = new LogWrapper("VGALog.txt");
+			this.oVGADriverLog = new LogWrapper("VGADriverLog.txt");
+
+			this.oCPU = new CPU(this, this.oLog);
 
 			#region Initialize Segments
 			this.oSegment_3045 = new Segment_3045(this);
@@ -157,11 +158,6 @@ namespace Civilization1
 			this.oNSound = new NSound(this);
 			#endregion
 
-			this.oLog = new StreamWriter("Log.txt");
-			this.oInterruptLog = new StreamWriter("InterruptLog.txt");
-			this.oVGALog = new StreamWriter("VGALog.txt");
-			this.oVGADriverLog = new StreamWriter("VGADriverLog.txt");
-
 			// load old image to memory
 			oEXE = new MZExecutable("c:\\DOS\\CIV\\civ.exe");
 			oEXE.ApplyRelocations(usStartSegment);
@@ -191,9 +187,9 @@ namespace Civilization1
 			this.oCPU.Memory.AllocateMemoryBlock(0x10000, (uint)((uint)oEXE.Data.Length + ((uint)oEXE.MinimumAllocation << 4)));
 			this.oCPU.Memory.WriteBlock(0x10000, oEXE.Data, 0, oEXE.Data.Length);
 			this.oCPU.Memory.MemoryRegions[3].AccessFlags = CPUMemoryFlagsEnum.ReadWrite | CPUMemoryFlagsEnum.WriteWarning;
-			uint uiTemp = this.oCPU.Memory.MemoryRegions[3].End;
-			this.oCPU.Memory.MemoryRegions[3].End = 0x3ffff;
-			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x40000, uiTemp - 0x40000));
+			//uint uiTemp = this.oCPU.Memory.MemoryRegions[3].End;
+			//this.oCPU.Memory.MemoryRegions[3].End = 0x3ffff;
+			//this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x40000, uiTemp - 0x40000));
 
 			// initialize CPU
 			this.oCPU.CS.Word = (ushort)(oEXE.InitialCS + usStartSegment);
@@ -236,152 +232,25 @@ namespace Civilization1
 			this.oOverlay_16.Segment = this.OverlaySegment;
 		}
 
-		#region Helper functions
-		public void LogEnterBlock(string text)
+		#region Logs
+		public LogWrapper Log
 		{
-			if (this.oLog != null)
-			{
-				WriteTabs(this.oLog, this.iLogTabLevel);
-				this.oLog.WriteLine($"// Entering block {text}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
-				WriteTabs(this.oLog, this.iLogTabLevel);
-				this.oLog.WriteLine("{");
-				this.oLog.Flush();
-				this.iLogTabLevel++;
-			}
+			get { return this.oLog; }
 		}
 
-		public void LogExitBlock(string text)
+		public LogWrapper InterruptLog
 		{
-			if (this.oLog != null)
-			{
-				this.iLogTabLevel = Math.Max(0, this.iLogTabLevel - 1);
-				WriteTabs(this.oLog, this.iLogTabLevel);
-				this.oLog.WriteLine($"}}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
-				this.oLog.Flush();
-			}
+			get { return this.oInterruptLog; }
 		}
 
-		public void LogWriteLine(string text)
+		public LogWrapper VGALog
 		{
-			if (this.oLog != null)
-			{
-				WriteTabs(this.oLog, this.iLogTabLevel);
-				this.oLog.WriteLine(text);
-				this.oLog.Flush();
-			}
+			get { return this.oVGALog; }
 		}
 
-		public void InterruptLogEnterBlock(string text)
+		public LogWrapper VGADriverLog
 		{
-			if (this.oInterruptLog != null)
-			{
-				WriteTabs(this.oInterruptLog, this.iInterruptLogTabLevel);
-				this.oInterruptLog.WriteLine($"// Entering block {text}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
-				WriteTabs(this.oInterruptLog, this.iInterruptLogTabLevel);
-				this.oInterruptLog.WriteLine("{");
-				this.oInterruptLog.Flush();
-				this.iInterruptLogTabLevel++;
-			}
-		}
-
-		public void InterruptLogExitBlock(string text)
-		{
-			if (this.oInterruptLog != null)
-			{
-				this.iInterruptLogTabLevel = Math.Max(0, this.iInterruptLogTabLevel - 1);
-				WriteTabs(this.oInterruptLog, this.iInterruptLogTabLevel);
-				this.oInterruptLog.WriteLine($"}}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
-				this.oInterruptLog.Flush();
-			}
-		}
-
-		public void InterruptLogWriteLine(string text)
-		{
-			if (this.oInterruptLog != null)
-			{
-				WriteTabs(this.oInterruptLog, this.iInterruptLogTabLevel);
-				this.oInterruptLog.WriteLine(text);
-				this.oInterruptLog.Flush();
-			}
-		}
-
-		public void VGALogEnterBlock(string text)
-		{
-			if (this.oVGALog != null)
-			{
-				WriteTabs(this.oVGALog, this.iVGALogTabLevel);
-				this.oVGALog.WriteLine($"// Entering block {text}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
-				WriteTabs(this.oVGALog, this.iVGALogTabLevel);
-				this.oVGALog.WriteLine("{");
-				this.oVGALog.Flush();
-				this.iVGALogTabLevel++;
-			}
-		}
-
-		public void VGALogExitBlock(string text)
-		{
-			if (this.oVGALog != null)
-			{
-				this.iVGALogTabLevel = Math.Max(0, this.iVGALogTabLevel - 1);
-				WriteTabs(this.oVGALog, this.iVGALogTabLevel);
-				this.oVGALog.WriteLine($"}}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
-				this.oVGALog.Flush();
-			}
-		}
-
-		public void VGALogWriteLine(string text)
-		{
-			if (this.oVGALog != null)
-			{
-				WriteTabs(this.oVGALog, this.iVGALogTabLevel);
-				this.oVGALog.WriteLine(text);
-				this.oVGALog.Flush();
-			}
-		}
-
-		public void VGADriverLogEnterBlock(string text)
-		{
-			if (this.oVGADriverLog != null)
-			{
-				// also disable interrupts
-				this.oCPU.CLI();
-
-				WriteTabs(this.oVGADriverLog, this.iVGADriverLogTabLevel);
-				this.oVGADriverLog.WriteLine($"// Entering block {text}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
-				WriteTabs(this.oVGADriverLog, this.iVGADriverLogTabLevel);
-				this.oVGADriverLog.WriteLine("{");
-				this.oVGADriverLog.Flush();
-				this.iVGADriverLogTabLevel++;
-			}
-		}
-
-		public void VGADriverLogExitBlock(string text)
-		{
-			if (this.oVGADriverLog != null)
-			{
-				// also enable interrupts
-				this.oCPU.STI();
-
-				this.iVGADriverLogTabLevel = Math.Max(0, this.iVGADriverLogTabLevel - 1);
-				WriteTabs(this.oVGADriverLog, this.iVGADriverLogTabLevel);
-				this.oVGADriverLog.WriteLine($"}}, Stack 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
-				this.oVGADriverLog.Flush();
-			}
-		}
-
-		public void VGADriverLogWriteLine(string text)
-		{
-			if (this.oVGADriverLog != null)
-			{
-				WriteTabs(this.oVGADriverLog, this.iVGADriverLogTabLevel);
-				this.oVGADriverLog.WriteLine(text);
-				this.oVGADriverLog.Flush();
-			}
-		}
-
-		private void WriteTabs(StreamWriter writer, int level)
-		{
-			writer.Write($"{new string('\t', level)}");
+			get { return this.oVGADriverLog; }
 		}
 		#endregion
 

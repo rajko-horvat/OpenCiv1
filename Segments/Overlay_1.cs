@@ -22,7 +22,7 @@ namespace Civilization1
 
 		public void F1_0000_0000_MainMenu()
 		{
-			this.oParent.LogEnterBlock("'F1_0000_0000'(Cdecl, Far) at 0x0000:0x0000");
+			this.oCPU.Log.EnterBlock("'F1_0000_0000'(Cdecl, Far) at 0x0000:0x0000");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -578,7 +578,7 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F1_0000_0000'");
+			this.oCPU.Log.ExitBlock("'F1_0000_0000'");
 		}
 	}
 }

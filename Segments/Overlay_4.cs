@@ -22,7 +22,7 @@ namespace Civilization1
 
 		public void F4_0000_0000()
 		{
-			this.oParent.LogEnterBlock("'F4_0000_0000'(Cdecl, Far) at 0x0000:0x0000");
+			this.oCPU.Log.EnterBlock("'F4_0000_0000'(Cdecl, Far) at 0x0000:0x0000");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -149,12 +149,12 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F4_0000_0000'");
+			this.oCPU.Log.ExitBlock("'F4_0000_0000'");
 		}
 
 		public void F4_0000_00af()
 		{
-			this.oParent.LogEnterBlock("'F4_0000_00af'(Cdecl, Far) at 0x0000:0x00af");
+			this.oCPU.Log.EnterBlock("'F4_0000_00af'(Cdecl, Far) at 0x0000:0x00af");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -440,12 +440,12 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F4_0000_00af'");
+			this.oCPU.Log.ExitBlock("'F4_0000_00af'");
 		}
 
 		public void F4_0000_02d3()
 		{
-			this.oParent.LogEnterBlock("'F4_0000_02d3'(Cdecl, Far) at 0x0000:0x02d3");
+			this.oCPU.Log.EnterBlock("'F4_0000_02d3'(Cdecl, Far) at 0x0000:0x02d3");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -588,12 +588,12 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F4_0000_02d3'");
+			this.oCPU.Log.ExitBlock("'F4_0000_02d3'");
 		}
 
 		public void F4_0000_03aa()
 		{
-			this.oParent.LogEnterBlock("'F4_0000_03aa'(Cdecl, Far) at 0x0000:0x03aa");
+			this.oCPU.Log.EnterBlock("'F4_0000_03aa'(Cdecl, Far) at 0x0000:0x03aa");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -732,7 +732,7 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F4_0000_03aa'");
+			this.oCPU.Log.ExitBlock("'F4_0000_03aa'");
 		}
 	}
 }

@@ -15,7 +15,7 @@ namespace Civilization1
 
 		public void F0_3045_0014()
 		{
-			this.oParent.LogEnterBlock("'F0_3045_0014'(Undefined) at 0x3045:0x0014");
+			this.oCPU.Log.EnterBlock("'F0_3045_0014'(Undefined) at 0x3045:0x0014");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -119,6 +119,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x00b6); // stack management - push return offset
 			// Instruction address 0x3045:0x00b1, size: 5
+			// this.oCPU.Call(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x588e));
 			this.oParent.MSCAPI.exit();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -126,7 +127,7 @@ namespace Civilization1
 
 		public void F0_3045_0229()
 		{
-			this.oParent.LogEnterBlock("'F0_3045_0229'(Cdecl, Near) at 0x3045:0x0229");
+			this.oCPU.Log.EnterBlock("'F0_3045_0229'(Cdecl, Near) at 0x3045:0x0229");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -148,12 +149,12 @@ namespace Civilization1
 
 		L023b:
 			// Near return
-			this.oParent.LogExitBlock("'F0_3045_0229'");
+			this.oCPU.Log.ExitBlock("'F0_3045_0229'");
 		}
 
 		public void F0_3045_056e()
 		{
-			this.oParent.LogEnterBlock("'F0_3045_056e'(Cdecl, Near) at 0x3045:0x056e");
+			this.oCPU.Log.EnterBlock("'F0_3045_056e'(Cdecl, Near) at 0x3045:0x056e");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -184,7 +185,7 @@ namespace Civilization1
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x58fb, this.oCPU.AX.Word);
 			// Near return
-			this.oParent.LogExitBlock("'F0_3045_056e'");
+			this.oCPU.Log.ExitBlock("'F0_3045_056e'");
 			return;
 
 		L0598:
@@ -194,7 +195,7 @@ namespace Civilization1
 
 		public void F0_3045_2b12()
 		{
-			this.oParent.LogEnterBlock("'F0_3045_2b12'(Cdecl, Near) at 0x3045:0x2b12");
+			this.oCPU.Log.EnterBlock("'F0_3045_2b12'(Cdecl, Near) at 0x3045:0x2b12");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -217,12 +218,12 @@ namespace Civilization1
 			this.oCPU.DX.Word = this.oCPU.PopWord();
 			this.oCPU.AX.Word = this.oCPU.PopWord();
 			// Near return
-			this.oParent.LogExitBlock("'F0_3045_2b12'");
+			this.oCPU.Log.ExitBlock("'F0_3045_2b12'");
 		}
 
 		public void Start()
 		{
-			this.oParent.LogEnterBlock("'Start'(Cdecl, Far) at 0x3045:0x2e7f");
+			this.oCPU.Log.EnterBlock("'Start'(Cdecl, Far) at 0x3045:0x2e7f");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -242,7 +243,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x0;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			// Far return
-			this.oParent.LogExitBlock("'Start'");
+			this.oCPU.Log.ExitBlock("'Start'");
 			return;
 
 		L2e98:
@@ -273,13 +274,13 @@ namespace Civilization1
 			this.oCPU.ES.Word = this.oCPU.AX.Word;
 			// Instruction address 0x3045:0x2ecd, size: 5
 			F0_3045_0014();
-			this.oParent.LogExitBlock("'Start'");
+			this.oCPU.Log.ExitBlock("'Start'");
 			return;
 		}
 
 		public void F0_3045_2ed2()
 		{
-			this.oParent.LogEnterBlock("'F0_3045_2ed2'(Cdecl, Near) at 0x3045:0x2ed2");
+			this.oCPU.Log.EnterBlock("'F0_3045_2ed2'(Cdecl, Near) at 0x3045:0x2ed2");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -524,7 +525,7 @@ namespace Civilization1
 			this.oCPU.BX.Word = this.oCPU.PopWord();
 			this.oCPU.AX.Word = this.oCPU.PopWord();
 			// Near return
-			this.oParent.LogExitBlock("'F0_3045_2ed2'");
+			this.oCPU.Log.ExitBlock("'F0_3045_2ed2'");
 		}
 	}
 }

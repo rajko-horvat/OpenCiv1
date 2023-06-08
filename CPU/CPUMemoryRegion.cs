@@ -103,7 +103,7 @@ namespace Disassembler
 
 		public bool CheckBounds(uint address, uint size)
 		{
-			if (address >= this.uiStart && address + size - 1 < this.uiStart + this.uiSize)
+			if (address >= this.uiStart && ((address + size) - 1) < (this.uiStart + this.uiSize))
 			{
 				return true;
 			}

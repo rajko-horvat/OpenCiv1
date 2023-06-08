@@ -22,7 +22,7 @@ namespace Civilization1
 
 		public void F19_0000_0000()
 		{
-			this.oParent.LogEnterBlock("'F19_0000_0000'(Cdecl, Far) at 0x0000:0x0000");
+			this.oCPU.Log.EnterBlock("'F19_0000_0000'(Cdecl, Far) at 0x0000:0x0000");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1905,12 +1905,12 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F19_0000_0000'");
+			this.oCPU.Log.ExitBlock("'F19_0000_0000'");
 		}
 
 		public void F19_0000_0ff4()
 		{
-			this.oParent.LogEnterBlock("'F19_0000_0ff4'(Cdecl, Far) at 0x0000:0x0ff4");
+			this.oCPU.Log.EnterBlock("'F19_0000_0ff4'(Cdecl, Far) at 0x0000:0x0ff4");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1943,12 +1943,12 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x8);
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F19_0000_0ff4'");
+			this.oCPU.Log.ExitBlock("'F19_0000_0ff4'");
 		}
 
 		public void F19_0000_102e()
 		{
-			this.oParent.LogEnterBlock("'F19_0000_102e'(Cdecl, Far) at 0x0000:0x102e");
+			this.oCPU.Log.EnterBlock("'F19_0000_102e'(Cdecl, Far) at 0x0000:0x102e");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1984,12 +1984,12 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F19_0000_102e'");
+			this.oCPU.Log.ExitBlock("'F19_0000_102e'");
 		}
 
 		public void F19_0000_106c()
 		{
-			this.oParent.LogEnterBlock("'F19_0000_106c'(Cdecl, Far) at 0x0000:0x106c");
+			this.oCPU.Log.EnterBlock("'F19_0000_106c'(Cdecl, Far) at 0x0000:0x106c");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -2086,12 +2086,12 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x8);
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F19_0000_106c'");
+			this.oCPU.Log.ExitBlock("'F19_0000_106c'");
 		}
 
 		public void F19_0000_111f()
 		{
-			this.oParent.LogEnterBlock("'F19_0000_111f'(Cdecl, Far) at 0x0000:0x111f");
+			this.oCPU.Log.EnterBlock("'F19_0000_111f'(Cdecl, Far) at 0x0000:0x111f");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -2425,12 +2425,12 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F19_0000_111f'");
+			this.oCPU.Log.ExitBlock("'F19_0000_111f'");
 		}
 
 		public void F19_0000_137f()
 		{
-			this.oParent.LogEnterBlock("'F19_0000_137f'(Cdecl, Far) at 0x0000:0x137f");
+			this.oCPU.Log.EnterBlock("'F19_0000_137f'(Cdecl, Far) at 0x0000:0x137f");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -2799,12 +2799,12 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F19_0000_137f'");
+			this.oCPU.Log.ExitBlock("'F19_0000_137f'");
 		}
 
 		public void F19_0000_1606()
 		{
-			this.oParent.LogEnterBlock("'F19_0000_1606'(Cdecl, Far) at 0x0000:0x1606");
+			this.oCPU.Log.EnterBlock("'F19_0000_1606'(Cdecl, Far) at 0x0000:0x1606");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -2854,12 +2854,12 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F19_0000_1606'");
+			this.oCPU.Log.ExitBlock("'F19_0000_1606'");
 		}
 
 		public void F19_0000_167b()
 		{
-			this.oParent.LogEnterBlock("'F19_0000_167b'(Cdecl, Far) at 0x0000:0x167b");
+			this.oCPU.Log.EnterBlock("'F19_0000_167b'(Cdecl, Far) at 0x0000:0x167b");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -3235,12 +3235,12 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F19_0000_167b'");
+			this.oCPU.Log.ExitBlock("'F19_0000_167b'");
 		}
 
 		public void F19_0000_18c1()
 		{
-			this.oParent.LogEnterBlock("'F19_0000_18c1'(Cdecl, Far) at 0x0000:0x18c1");
+			this.oCPU.Log.EnterBlock("'F19_0000_18c1'(Cdecl, Far) at 0x0000:0x18c1");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -3572,12 +3572,12 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F19_0000_18c1'");
+			this.oCPU.Log.ExitBlock("'F19_0000_18c1'");
 		}
 
 		public void F19_0000_1ae1()
 		{
-			this.oParent.LogEnterBlock("'F19_0000_1ae1'(Cdecl, Far) at 0x0000:0x1ae1");
+			this.oCPU.Log.EnterBlock("'F19_0000_1ae1'(Cdecl, Far) at 0x0000:0x1ae1");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -3863,7 +3863,7 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F19_0000_1ae1'");
+			this.oCPU.Log.ExitBlock("'F19_0000_1ae1'");
 		}
 	}
 }

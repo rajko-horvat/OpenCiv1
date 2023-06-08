@@ -22,7 +22,7 @@ namespace Civilization1
 
 		public void F16_0000_0000()
 		{
-			this.oParent.LogEnterBlock("'F16_0000_0000'(Cdecl, Far) at 0x0000:0x0000");
+			this.oCPU.Log.EnterBlock("'F16_0000_0000'(Cdecl, Far) at 0x0000:0x0000");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -72,12 +72,12 @@ namespace Civilization1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			// Far return
-			this.oParent.LogExitBlock("'F16_0000_0000'");
+			this.oCPU.Log.ExitBlock("'F16_0000_0000'");
 		}
 
 		public void F16_0000_002c()
 		{
-			this.oParent.LogEnterBlock("'F16_0000_002c'(Cdecl, Far) at 0x0000:0x002c");
+			this.oCPU.Log.EnterBlock("'F16_0000_002c'(Cdecl, Far) at 0x0000:0x002c");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -850,7 +850,7 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oParent.LogExitBlock("'F16_0000_002c'");
+			this.oCPU.Log.ExitBlock("'F16_0000_002c'");
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace Civilization1
 
 		public void DivisionByZero()
 		{
-			this.oParent.LogEnterBlock("'DivisionByZero'(Cdecl) at 0x0000:0x0000");
+			this.oCPU.Log.EnterBlock("'DivisionByZero'(Cdecl) at 0x0000:0x0000");
 			this.oCPU.CS.Word = 0x0000; // set this function segment
 
 			// function body
@@ -30,7 +30,7 @@ namespace Civilization1
 
 		public void _cinit()
 		{
-			this.oParent.LogEnterBlock("'_cinit'(Cdecl) at 0x3045:0x00da");
+			this.oCPU.Log.EnterBlock("'_cinit'(Cdecl) at 0x3045:0x00da");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -174,7 +174,7 @@ namespace Civilization1
 			// Instruction address 0x3045:0x019a, size: 3
 			this.oParent.Segment_3045.F0_3045_0229();
 			this.oCPU.PopWord(); // stack management - pop return offset and segment
-			this.oParent.LogExitBlock("'_cinit'");
+			this.oCPU.Log.ExitBlock("'_cinit'");
 			return;
 
 		L0260:
@@ -189,13 +189,13 @@ namespace Civilization1
 
 		public void exit(short code)
 		{
-			this.oParent.LogEnterBlock("'exit'(Cdecl) at 0x3045:0x019e");
+			this.oCPU.Log.EnterBlock("'exit'(Cdecl) at 0x3045:0x019e");
 			this.oCPU.Exit(code);
 		}
 
 		public void _FF_MSGBANNER()
 		{
-			this.oParent.LogEnterBlock("'_FF_MSGBANNER'(Cdecl) at 0x3045:0x023c");
+			this.oCPU.Log.EnterBlock("'_FF_MSGBANNER'(Cdecl) at 0x3045:0x023c");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -229,12 +229,12 @@ namespace Civilization1
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'_FF_MSGBANNER'");
+			this.oCPU.Log.ExitBlock("'_FF_MSGBANNER'");
 		}
 
 		public void _setargv()
 		{
-			this.oParent.LogEnterBlock("'_setargv'(Cdecl) at 0x3045:0x02b0");
+			this.oCPU.Log.EnterBlock("'_setargv'(Cdecl) at 0x3045:0x02b0");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -507,13 +507,13 @@ namespace Civilization1
 			// Instruction address 0x3045:0x043e, size: 4
 			//this.oCPU.JmpF(this.oCPU.ReadDWord(this.oCPU.DS.Word, 0x593c));
 			this.oCPU.PushDWord(0); // preserve stack integrity
-			this.oParent.LogExitBlock("'_setargv'");
+			this.oCPU.Log.ExitBlock("'_setargv'");
 			return;
 		}
 
 		public void getenv()
 		{
-			this.oParent.LogEnterBlock("'getenv'(Cdecl) at 0x3045:0x1f86");
+			this.oCPU.Log.EnterBlock("'getenv'(Cdecl) at 0x3045:0x1f86");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -582,12 +582,12 @@ namespace Civilization1
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'getenv'");
+			this.oCPU.Log.ExitBlock("'getenv'");
 		}
 
 		public void _NMSG_TEXT()
 		{
-			this.oParent.LogEnterBlock("'_NMSG_TEXT'(Pascal) at 0x3045:0x04b0");
+			this.oCPU.Log.EnterBlock("'_NMSG_TEXT'(Pascal) at 0x3045:0x04b0");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -626,12 +626,12 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'_NMSG_TEXT'");
+			this.oCPU.Log.ExitBlock("'_NMSG_TEXT'");
 		}
 
 		public void _NMSG_WRITE()
 		{
-			this.oParent.LogEnterBlock("'_NMSG_WRITE'(Pascal) at 0x3045:0x04db");
+			this.oCPU.Log.EnterBlock("'_NMSG_WRITE'(Pascal) at 0x3045:0x04db");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -664,12 +664,12 @@ namespace Civilization1
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'_NMSG_WRITE'");
+			this.oCPU.Log.ExitBlock("'_NMSG_WRITE'");
 		}
 
 		public void _maperror()
 		{
-			this.oParent.LogEnterBlock("'_maperror'(Cdecl) at 0x3045:0x0568");
+			this.oCPU.Log.EnterBlock("'_maperror'(Cdecl) at 0x3045:0x0568");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -678,12 +678,12 @@ namespace Civilization1
 			// Instruction address 0x3045:0x056a, size: 3
 			this.oParent.Segment_3045.F0_3045_056e();
 			this.oCPU.PopWord(); // stack management - pop return offset and segment
-			this.oParent.LogExitBlock("'_maperror'");
+			this.oCPU.Log.ExitBlock("'_maperror'");
 		}
 
 		public void perror()
 		{
-			this.oParent.LogEnterBlock("'perror'(Cdecl) at 0x3045:0x200e");
+			this.oCPU.Log.EnterBlock("'perror'(Cdecl) at 0x3045:0x200e");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -782,7 +782,7 @@ namespace Civilization1
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'perror'");
+			this.oCPU.Log.ExitBlock("'perror'");
 		}
 
 		#region Keyboard operations
@@ -810,7 +810,7 @@ namespace Civilization1
 		#region Memory operations
 		public void memcpy()
 		{
-			this.oParent.LogEnterBlock("'memcpy'(Cdecl) at 0x3045:0x2a08");
+			this.oCPU.Log.EnterBlock("'memcpy'(Cdecl) at 0x3045:0x2a08");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -840,12 +840,12 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.BX.Word;
 			this.oCPU.DI.Word = this.oCPU.DX.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'memcpy'");
+			this.oCPU.Log.ExitBlock("'memcpy'");
 		}
 
 		public void memset()
 		{
-			this.oParent.LogEnterBlock("'memset'(Cdecl) at 0x3045:0x2a34");
+			this.oCPU.Log.EnterBlock("'memset'(Cdecl) at 0x3045:0x2a34");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -877,12 +877,12 @@ namespace Civilization1
 			this.oCPU.AX.Word = this.oCPU.BX.Word;
 			this.oCPU.BX.Word = this.oCPU.Temp.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'memset'");
+			this.oCPU.Log.ExitBlock("'memset'");
 		}
 
 		public void movedata()
 		{
-			this.oParent.LogEnterBlock("'movedata'(Cdecl) at 0x3045:0x25c8");
+			this.oCPU.Log.EnterBlock("'movedata'(Cdecl) at 0x3045:0x25c8");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -902,12 +902,12 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'movedata'");
+			this.oCPU.Log.ExitBlock("'movedata'");
 		}
 
 		public void _dos_freemem()
 		{
-			this.oParent.LogEnterBlock("'_dos_freemem'(Cdecl) at 0x3045:0x3120");
+			this.oCPU.Log.EnterBlock("'_dos_freemem'(Cdecl) at 0x3045:0x3120");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -917,7 +917,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x0;
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'_dos_freemem'");
+			this.oCPU.Log.ExitBlock("'_dos_freemem'");
 			return;
 
 			L0550:
@@ -930,7 +930,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = this.oCPU.PopWord();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'_dos_freemem'");
+			this.oCPU.Log.ExitBlock("'_dos_freemem'");
 			return;
 
 			L3120:
@@ -994,7 +994,7 @@ namespace Civilization1
 			string sPath = $"{this.oCPU.DefaultDirectory}{sName}";
 			if (File.Exists(sPath))
 			{
-				this.oParent.LogWriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
+				this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 				this.oCPU.Files.Add(this.oCPU.FileHandleCount, new FileStreamItem(new FileStream($"{sPath}", eMode, eAccess), eType));
 				sHandle = this.oCPU.FileHandleCount;
 				this.oCPU.FileHandleCount++;
@@ -1079,7 +1079,7 @@ namespace Civilization1
 			}
 			else
 			{
-				this.oParent.LogWriteLine($"Can't find file handle {handle}");
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
 			return usItemCount;
@@ -1120,7 +1120,7 @@ namespace Civilization1
 			}
 			else
 			{
-				this.oParent.LogWriteLine($"Can't find file handle {handle}");
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
 			return sCount;
@@ -1195,7 +1195,7 @@ namespace Civilization1
 			}
 			else
 			{
-				this.oParent.LogWriteLine($"Can't find file handle {handle}");
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
 			return usItemCount;
@@ -1213,7 +1213,7 @@ namespace Civilization1
 			}
 			else
 			{
-				this.oParent.LogWriteLine($"Can't find file handle {handle}");
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 				sTemp = -1;
 			}
 
@@ -1258,7 +1258,7 @@ namespace Civilization1
 			}
 			else
 			{
-				this.oParent.LogWriteLine($"Can't find file handle {handle}");
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
 			return sRetVal;
@@ -1281,7 +1281,7 @@ namespace Civilization1
 			}
 			else
 			{
-				this.oParent.LogWriteLine($"Can't find file handle {handle}");
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
 			return iPosition;
@@ -1325,7 +1325,7 @@ namespace Civilization1
 			}
 			else
 			{
-				this.oParent.LogWriteLine($"Can't find file handle {handle}");
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
 			return iRetVal;
@@ -1389,7 +1389,7 @@ namespace Civilization1
 			string sPath = $"{this.oCPU.DefaultDirectory}{sName}";
 			if (File.Exists(sPath))
 			{
-				this.oParent.LogWriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
+				this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 				this.oCPU.Files.Add(this.oCPU.FileHandleCount, new FileStreamItem(new FileStream($"{sPath}", eMode, eAccess), eType));
 				sHandle = this.oCPU.FileHandleCount;
 				this.oCPU.FileHandleCount++;
@@ -1409,13 +1409,13 @@ namespace Civilization1
 
 			if (this.oCPU.Files.ContainsKey(handle))
 			{
-				this.oParent.LogWriteLine($"Closing file handle {handle}");
+				this.oCPU.Log.WriteLine($"Closing file handle {handle}");
 				this.oCPU.Files.GetValueByKey(handle).Stream.Close();
 				this.oCPU.Files.RemoveByKey(handle);
 			}
 			else
 			{
-				this.oParent.LogWriteLine($"Trying to close unknown handle {handle}");
+				this.oCPU.Log.WriteLine($"Trying to close unknown handle {handle}");
 				sTemp = -1;
 			}
 
@@ -1454,7 +1454,7 @@ namespace Civilization1
 			}
 			else
 			{
-				this.oParent.LogWriteLine($"Can't find file handle {handle}");
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
 			return sItemCount;
@@ -1501,7 +1501,7 @@ namespace Civilization1
 			}
 			else
 			{
-				this.oParent.LogWriteLine($"Can't find file handle {handle}");
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
 			return sItemCount;
@@ -1557,7 +1557,7 @@ namespace Civilization1
 			string sPath = $"{this.oCPU.DefaultDirectory}{sName}";
 			if (File.Exists(sPath))
 			{
-				this.oParent.LogWriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
+				this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 				this.oCPU.Files.Add(this.oCPU.FileHandleCount, new FileStreamItem(new FileStream(sPath, eMode, eAccess), eType));
 				short sHandle = this.oCPU.FileHandleCount;
 				this.oCPU.FileHandleCount++;
@@ -1615,7 +1615,7 @@ namespace Civilization1
 			}
 			else
 			{
-				this.oParent.LogWriteLine($"Can't find file handle {handle}");
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
 			return usRetVal;
@@ -1623,7 +1623,7 @@ namespace Civilization1
 
 		public void _bios_disk()
 		{
-			this.oParent.LogEnterBlock("'_bios_disk'(Cdecl) at 0x3045:0x3062");
+			this.oCPU.Log.EnterBlock("'_bios_disk'(Cdecl) at 0x3045:0x3062");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -1651,12 +1651,12 @@ namespace Civilization1
 			L308a:
 			this.oCPU.INT(0x13);
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'_bios_disk'");
+			this.oCPU.Log.ExitBlock("'_bios_disk'");
 		}
 
 		public void _dos_getdrive()
 		{
-			this.oParent.LogEnterBlock("'_dos_getdrive'(Cdecl) at 0x3045:0x312e");
+			this.oCPU.Log.EnterBlock("'_dos_getdrive'(Cdecl) at 0x3045:0x312e");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -1670,7 +1670,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.DS.Word, this.oCPU.BX.Word, this.oCPU.AX.Word);
 			this.oCPU.AX.Word = 0x0;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'_dos_getdrive'");
+			this.oCPU.Log.ExitBlock("'_dos_getdrive'");
 		}
 		#endregion
 
@@ -1725,7 +1725,7 @@ namespace Civilization1
 
 		public void strncmp()
 		{
-			this.oParent.LogEnterBlock("'strncmp'(Cdecl) at 0x3045:0x1ed8");
+			this.oCPU.Log.EnterBlock("'strncmp'(Cdecl) at 0x3045:0x1ed8");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -1764,12 +1764,12 @@ namespace Civilization1
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'strncmp'");
+			this.oCPU.Log.ExitBlock("'strncmp'");
 		}
 
 		public void stricmp()
 		{
-			this.oParent.LogEnterBlock("'stricmp'(Cdecl) at 0x3045:0x28f0");
+			this.oCPU.Log.EnterBlock("'stricmp'(Cdecl) at 0x3045:0x28f0");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -1812,12 +1812,12 @@ namespace Civilization1
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.SI.Word = this.oCPU.DX.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'stricmp'");
+			this.oCPU.Log.ExitBlock("'stricmp'");
 		}
 
 		public void strnicmp()
 		{
-			this.oParent.LogEnterBlock("'strnicmp'(Cdecl) at 0x3045:0x2932");
+			this.oCPU.Log.EnterBlock("'strnicmp'(Cdecl) at 0x3045:0x2932");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -1882,7 +1882,7 @@ namespace Civilization1
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'strnicmp'");
+			this.oCPU.Log.ExitBlock("'strnicmp'");
 		}
 
 		public void strupr()
@@ -1975,7 +1975,7 @@ namespace Civilization1
 
 		public void _aFlmul()
 		{
-			this.oParent.LogEnterBlock("'F0_3045_31de'(Pascal) at 0x3045:0x31de");
+			this.oCPU.Log.EnterBlock("'F0_3045_31de'(Pascal) at 0x3045:0x31de");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -1990,7 +1990,7 @@ namespace Civilization1
 			this.oCPU.MULWord(this.oCPU.DX, this.oCPU.AX, this.oCPU.BX.Word);
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'F0_3045_31de'");
+			this.oCPU.Log.ExitBlock("'F0_3045_31de'");
 			return;
 
 		L31f9:
@@ -2004,7 +2004,7 @@ namespace Civilization1
 			this.oCPU.DX.Word = this.oCPU.ADDWord(this.oCPU.DX.Word, this.oCPU.CX.Word);
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'F0_3045_31de'");
+			this.oCPU.Log.ExitBlock("'F0_3045_31de'");
 		}
 		#endregion
 
@@ -2029,23 +2029,23 @@ namespace Civilization1
 		#region Shifting operations
 		public void _aFlshl()
 		{
-			this.oParent.LogEnterBlock("'_aFlshl'(Cdecl) at 0x3045:0x32b4");
+			this.oCPU.Log.EnterBlock("'_aFlshl'(Cdecl) at 0x3045:0x32b4");
 			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Word);
-			this.oParent.LogExitBlock("'_aFlshl'");
+			this.oCPU.Log.ExitBlock("'_aFlshl'");
 		}
 
 		public void _aFlshr()
 		{
-			this.oParent.LogEnterBlock("'_aFlshr'(Cdecl) at 0x3045:0x32c0");
+			this.oCPU.Log.EnterBlock("'_aFlshr'(Cdecl) at 0x3045:0x32c0");
 			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) >> this.oCPU.CX.Word);
-			this.oParent.LogExitBlock("'_aFlshr'");
+			this.oCPU.Log.ExitBlock("'_aFlshr'");
 		}
 		#endregion
 
 		#region Interrupt and vector operations
 		public void int86()
 		{
-			this.oParent.LogEnterBlock("'int86'(Cdecl) at 0x3045:0x20c4");
+			this.oCPU.Log.EnterBlock("'int86'(Cdecl) at 0x3045:0x20c4");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -2120,12 +2120,12 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'int86'");
+			this.oCPU.Log.ExitBlock("'int86'");
 		}
 
 		public void intdos()
 		{
-			this.oParent.LogEnterBlock("'intdos'(Cdecl) at 0x3045:0x257e");
+			this.oCPU.Log.EnterBlock("'intdos'(Cdecl) at 0x3045:0x257e");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -2169,12 +2169,12 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'intdos'");
+			this.oCPU.Log.ExitBlock("'intdos'");
 		}
 
 		public void _dos_getvect()
 		{
-			this.oParent.LogEnterBlock("'_dos_getvect'(Cdecl) at 0x3045:0x30bc");
+			this.oCPU.Log.EnterBlock("'_dos_getvect'(Cdecl) at 0x3045:0x30bc");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -2187,12 +2187,12 @@ namespace Civilization1
 			this.oCPU.AX.Word = this.oCPU.BX.Word;
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'_dos_getvect'");
+			this.oCPU.Log.ExitBlock("'_dos_getvect'");
 		}
 
 		public void _dos_setvect()
 		{
-			this.oParent.LogEnterBlock("'_dos_setvect'(Cdecl) at 0x3045:0x310a");
+			this.oCPU.Log.EnterBlock("'_dos_setvect'(Cdecl) at 0x3045:0x310a");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -2209,7 +2209,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x0;
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oParent.LogExitBlock("'_dos_setvect'");
+			this.oCPU.Log.ExitBlock("'_dos_setvect'");
 		}
 		#endregion
 	}

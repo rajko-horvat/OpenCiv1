@@ -54,14 +54,26 @@ namespace Disassembler
 		private BDictionary<short, FileStreamItem> aOpenFiles = new BDictionary<short, FileStreamItem>();
 
 		private Civilization oParent;
+		private LogWrapper oLog;
 
-		public CPU(Civilization parent)
+		public CPU(Civilization parent, LogWrapper log)
 		{
 			this.oParent = parent;
+			this.oLog = log;
 			this.oGPU = new VGACard(this);
 			this.oMemory = new CPUMemory(this, this.oGPU);
 			this.oTimer = new Timer(oTimer_Tick, null, 100, 100);
 			//this.oTimer.Dispose();
+		}
+
+		public Civilization Parent
+		{
+			get { return this.oParent; }
+		}
+
+		public LogWrapper Log
+		{
+			get { return this.oLog; }
 		}
 
 		public bool EnableTimer
@@ -95,6 +107,9 @@ namespace Disassembler
 			{
 				this.bInTimer = true;
 
+				LogWrapper oLogTemp = this.oLog;
+				this.oLog = this.oParent.InterruptLog;
+
 				MainRegistersCheck registersCheck = new MainRegistersCheck(this);
 				ushort usCS = this.oCS.Word;
 				this.PushF();
@@ -109,14 +124,11 @@ namespace Disassembler
 				if (!registersCheck.CheckMainRegisters(this))
 					throw new Exception("Return main registers doesn't match");
 
+				this.oLog = oLogTemp;
+
 				this.bTimerFlag = false;
 				this.bInTimer = false;
 			}
-		}
-
-		public Civilization Parent
-		{
-			get { return this.oParent; }
 		}
 
 		#region Flags & registers
@@ -416,35 +428,6 @@ namespace Disassembler
 		#endregion
 
 		#region CPU instructions
-		public void AAA()
-		{
-			this.oFlags.S = (this.oAX.Low >= 0x7a) && (this.oAX.Low <= 0xf9);
-			if ((this.oAX.Low & 0xf) > 9)
-			{
-				this.oFlags.O = (this.oAX.Low & 0xf0) == 0x70;
-				this.oAX.Word += 0x106;
-				this.oFlags.C= true;
-				this.oFlags.Z = this.oAX.Low == 0;
-				//SETFLAGBIT(AF, true);
-			}
-			/*else if (get_AF())
-			{
-				this.oAX.Word += 0x106;
-				SETFLAGBIT(OF, false);
-				SETFLAGBIT(CF, true);
-				SETFLAGBIT(ZF, false);
-				SETFLAGBIT(AF, true);
-			}
-			else
-			{
-				SETFLAGBIT(OF, false);
-				SETFLAGBIT(CF, false);
-				SETFLAGBIT(ZF, (this.oAX.Low == 0));
-				SETFLAGBIT(AF, false);
-			}*/
-			this.oAX.Low &= 0x0F;
-		}
-
 		public byte ADCByte(byte value1, byte value2)
 		{
 			byte bCFlag = (byte)((this.oFlags.C) ? 1 : 0);
@@ -1467,7 +1450,7 @@ namespace Disassembler
 
 				case 0x3d5:
 					// CRT Controller data, read
-					this.oParent.VGALogWriteLine($"Input byte from port 0x{port:x4} (CRT Controller data, read)");
+					this.oLog.WriteLine($"Input byte from port 0x{port:x4} (CRT Controller data, read)");
 					break;
 
 				case 0x3da:
@@ -1475,7 +1458,7 @@ namespace Disassembler
 					return this.oGPU.HWStatus;
 
 				default:
-					this.oParent.LogWriteLine($"Input byte from port 0x{port:x4}");
+					this.oLog.WriteLine($"Input byte from port 0x{port:x4}");
 					break;
 			}
 
@@ -1489,7 +1472,7 @@ namespace Disassembler
 
 		public void OUTByte(ushort port, byte value)
 		{
-			//this.oParent.LogWriteLine($"Output to port 0x{port:x4}, byte value 0x{value:x2}");
+			//this.oLog.WriteLine($"Output to port 0x{port:x4}, byte value 0x{value:x2}");
 
 			switch (port)
 			{
@@ -1508,7 +1491,7 @@ namespace Disassembler
 
 				case 0x3c0:
 					// Attribute controller
-					//this.oParent.VGALogWriteLine($"Output to port 0x{port:x4} (Old palette register), byte value 0x{value:x2}");
+					//this.oLog.WriteLine($"Output to port 0x{port:x4} (Old palette register), byte value 0x{value:x2}");
 					this.oGPU.AttributeControllerWrite(value);
 					break;
 
@@ -1551,7 +1534,7 @@ namespace Disassembler
 
 				case 0x3d4:
 					// CRT Controller address
-					this.oParent.VGALogWriteLine($"Output to port 0x{port:x4} (CRT Controller address), byte value 0x{value:x2}");
+					this.oLog.WriteLine($"Output to port 0x{port:x4} (CRT Controller address), byte value 0x{value:x2}");
 					break;
 
 				case 0x3d1:
@@ -1562,11 +1545,11 @@ namespace Disassembler
 
 				case 0x3d5:
 					// CRT Controller data, write
-					this.oParent.VGALogWriteLine($"Output to port 0x{port:x4} (CRT Controller data, write), byte value 0x{value:x2}");
+					this.oLog.WriteLine($"Output to port 0x{port:x4} (CRT Controller data, write), byte value 0x{value:x2}");
 					break;
 
 				default:
-					this.oParent.LogWriteLine($"Output to port 0x{port:x4}, byte value 0x{value:x2}");
+					this.oLog.WriteLine($"Output to port 0x{port:x4}, byte value 0x{value:x2}");
 					break;
 			}
 		}
@@ -1612,27 +1595,27 @@ namespace Disassembler
 
 		public void Call(ushort offset)
 		{
-			this.oParent.LogWriteLine($"Trying to call function at 0x{this.oCS.Word:x4}:0x{offset:x4}");
+			this.oLog.WriteLine($"Trying to call function at 0x{this.oCS.Word:x4}:0x{offset:x4}");
 		}
 
 		public void Call(ushort segment, ushort offset)
 		{
-			this.oParent.LogWriteLine($"Trying to call function at 0x{segment:x4}:0x{offset:x4}");
+			this.oLog.WriteLine($"Trying to call function at 0x{segment:x4}:0x{offset:x4}");
 		}
 
 		public void CallF(uint address)
 		{
-			this.oParent.LogWriteLine($"Trying to call function at 0x{address:x8}");
+			this.oLog.WriteLine($"Trying to call function at 0x{address:x8}");
 		}
 
 		public void Jmp(ushort offset)
 		{
-			this.oParent.LogWriteLine($"Trying to jump to 0x{this.CS.Word:x4}:0x{offset:x4}");
+			this.oLog.WriteLine($"Trying to jump to 0x{this.CS.Word:x4}:0x{offset:x4}");
 		}
 
 		public void JmpF(uint address)
 		{
-			this.oParent.LogWriteLine($"Trying to jump to 0x{address:x8}");
+			this.oLog.WriteLine($"Trying to jump to 0x{address:x8}");
 		}
 		#endregion
 
@@ -1873,7 +1856,7 @@ namespace Disassembler
 				string sTemp = this.ReadString(CPUMemory.ToLinearAddress(this.DS.Word, this.DX.Word));
 				ushort usSegment = ReadWord(this.oES.Word, this.oBX.Word);
 				ushort usRelocationSegment = ReadWord(this.oES.Word, (ushort)(this.oBX.Word + 2));
-				this.oParent.LogWriteLine($"Loading overlay '{sTemp}' at segment 0x{usSegment:x4}");
+				this.oLog.WriteLine($"Loading overlay '{sTemp}' at segment 0x{usSegment:x4}");
 				MZExecutable oOverlay = new MZExecutable($"{sDefaultDirectory}{sTemp}");
 				oOverlay.ApplyRelocations(usRelocationSegment);
 				this.oMemory.WriteBlock(usSegment, 0, oOverlay.Data, 0, oOverlay.Data.Length);
@@ -1887,13 +1870,13 @@ namespace Disassembler
 
 		private void DOSSetInterruptVector()
 		{
-			this.oParent.LogWriteLine($"Setting interrupt vector 0x{this.oAX.Low:x2} to address 0x{this.oDS.Word:x4}:0x{this.oDX.Word:x4}");
+			this.oLog.WriteLine($"Setting interrupt vector 0x{this.oAX.Low:x2} to address 0x{this.oDS.Word:x4}:0x{this.oDX.Word:x4}");
 			this.oFlags.C = false;
 		}
 
 		private void DOSGetInterruptVector()
 		{
-			this.oParent.LogWriteLine($"Getting interrupt vector 0x{this.oAX.Low:x2} address");
+			this.oLog.WriteLine($"Getting interrupt vector 0x{this.oAX.Low:x2} address");
 			this.oES.Word = 0;
 			this.oBX.Word = 0;
 			this.oFlags.C = false;
@@ -1930,7 +1913,7 @@ namespace Disassembler
 			// I/O Control for Devices
 			if (this.oAX.Low == 0)
 			{
-				this.oParent.LogWriteLine($"Get Device Information for handle 0x{this.oBX.Word:x4}");
+				this.oLog.WriteLine($"Get Device Information for handle 0x{this.oBX.Word:x4}");
 				switch (this.oBX.Word)
 				{
 					case 0:
@@ -2040,7 +2023,7 @@ namespace Disassembler
 			{
 				try
 				{
-					this.oParent.LogWriteLine($"Opening file '{sDefaultDirectory}{sTemp}'");
+					this.oLog.WriteLine($"Opening file '{sDefaultDirectory}{sTemp}'");
 					this.aOpenFiles.Add(this.sFileHandleCount, new FileStreamItem(new FileStream($"{sDefaultDirectory}{sTemp}", FileMode.Open, access), FileStreamTypeEnum.Binary));
 					this.oAX.Word = (ushort)this.sFileHandleCount;
 					this.sFileHandleCount++;
@@ -2130,7 +2113,7 @@ namespace Disassembler
 		{
 			if (this.oDX.Low != 0 && this.oDX.Low != 2)
 			{
-				this.oParent.LogWriteLine($"Wrong drive number {this.oDX.Low}");
+				this.oLog.WriteLine($"Wrong drive number {this.oDX.Low}");
 			}
 			string sTemp = sDefaultDirectory.Substring(3);
 			this.WriteString(CPUMemory.ToLinearAddress(this.oDS.Word, this.oSI.Word), sTemp, sTemp.Length);

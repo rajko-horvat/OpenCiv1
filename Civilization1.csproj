@@ -69,6 +69,7 @@
     <Compile Include="GPU\VGACardForm.Designer.cs">
       <DependentUpon>VGACardForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="LogWrapper.cs" />
     <Compile Include="MainRegistersCheck.cs" />
     <Compile Include="MZ\MZExecutable.cs" />
     <Compile Include="Program.cs" />

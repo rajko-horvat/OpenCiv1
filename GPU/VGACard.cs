@@ -829,7 +829,7 @@ namespace Disassembler
 				case 2:
 					// Map Write Mask
 					this.biMapWriteMask = value;
-					this.oParent.Parent.VGALogWriteLine($"Sequencer Map Write Mask changed to 0x{value:x2}");
+					this.oParent.Parent.VGALog.WriteLine($"Sequencer Map Write Mask changed to 0x{value:x2}");
 					break;
 
 				case 0xff:
@@ -837,7 +837,7 @@ namespace Disassembler
 					break;
 
 				default:
-					this.oParent.Parent.VGALogWriteLine($"Unknown Sequencer address 0x{this.biSequencerAddress:x2}, value 0x{value:x2}");
+					this.oParent.Parent.VGALog.WriteLine($"Unknown Sequencer address 0x{this.biSequencerAddress:x2}, value 0x{value:x2}");
 					break;
 			}
 		}
@@ -849,26 +849,26 @@ namespace Disassembler
 				case 0:
 					// Write plane mask bits
 					this.biWriteSetReset = value;
-					this.oParent.Parent.VGALogWriteLine($"Graphics Write plane mask bits changed to 0x{value:x2}");
+					this.oParent.Parent.VGALog.WriteLine($"Graphics Write plane mask bits changed to 0x{value:x2}");
 					break;
 
 				case 1:
 					// Enable write plane mask bits
 					this.biEnableSetReset = value;
-					this.oParent.Parent.VGALogWriteLine($"Graphics Enable write plane mask bits changed to 0x{value:x2}");
+					this.oParent.Parent.VGALog.WriteLine($"Graphics Enable write plane mask bits changed to 0x{value:x2}");
 					break;
 
 				case 2:
 					// Color Compare
 					this.biColorCompare = value;
-					this.oParent.Parent.VGALogWriteLine($"Graphics Color Compare changed to 0x{value:x2}");
+					this.oParent.Parent.VGALog.WriteLine($"Graphics Color Compare changed to 0x{value:x2}");
 					break;
 
 				case 3:
 					// Data rotate, ignore for now
 					if (value != 0)
 					{
-						this.oParent.Parent.VGALogWriteLine($"Graphics data rotate 0x{this.biGraphicsAddress:x2}, value 0x{value:x2}");
+						this.oParent.Parent.VGALog.WriteLine($"Graphics data rotate 0x{this.biGraphicsAddress:x2}, value 0x{value:x2}");
 					}
 					break;
 
@@ -877,20 +877,20 @@ namespace Disassembler
 					this.biGraphicsMode = value;
 					if (this.biGraphicsMode != 0)
 					{
-						this.oParent.Parent.VGALogWriteLine($"Graphics mode 0x{this.biGraphicsAddress:x2}, value 0x{value:x2}");
+						this.oParent.Parent.VGALog.WriteLine($"Graphics mode 0x{this.biGraphicsAddress:x2}, value 0x{value:x2}");
 					}
 					break;
 
 				case 4:
 					// Read plane select
 					this.biMapReadSelect = (byte)(value & 0x3);
-					this.oParent.Parent.VGALogWriteLine($"Graphics Read plane select changed to 0x{value:x2}");
+					this.oParent.Parent.VGALog.WriteLine($"Graphics Read plane select changed to 0x{value:x2}");
 					break;
 
 				case 8:
 					// Write bit mask
 					this.biWriteBitMask = value;
-					this.oParent.Parent.VGALogWriteLine($"Graphics Write bit mask changed to 0x{value:x2}");
+					this.oParent.Parent.VGALog.WriteLine($"Graphics Write bit mask changed to 0x{value:x2}");
 					break;
 
 				case 0xff:
@@ -898,7 +898,7 @@ namespace Disassembler
 					break;
 
 				default:
-					this.oParent.Parent.VGALogWriteLine($"Unknown Graphics address 0x{this.biGraphicsAddress:x2}, value 0x{value:x2}");
+					this.oParent.Parent.VGALog.WriteLine($"Unknown Graphics address 0x{this.biGraphicsAddress:x2}, value 0x{value:x2}");
 					break;
 			}
 		}
@@ -909,7 +909,7 @@ namespace Disassembler
 			{
 				this.biAttributeAddress = value;
 				if (this.biAttributeAddress > 0x20)
-					this.oParent.Parent.VGALogWriteLine($"Attribute address is greater than 0x20, 0x{this.biAttributeAddress:x2}");
+					this.oParent.Parent.VGALog.WriteLine($"Attribute address is greater than 0x20, 0x{this.biAttributeAddress:x2}");
 				this.bAttributeAddressFlag = false;
 			}
 			else if((this.biAttributeAddress & 0x20) == 0)
@@ -945,7 +945,7 @@ namespace Disassembler
 						// Attribute Mode Control Register, ignore if zero
 						if (value != 0)
 						{
-							this.oParent.Parent.VGALogWriteLine($"Undefined Attribute mode address 0x{this.biAttributeAddress:x2}, value 0x{value:x2}");
+							this.oParent.Parent.VGALog.WriteLine($"Undefined Attribute mode address 0x{this.biAttributeAddress:x2}, value 0x{value:x2}");
 						}
 						break;
 
@@ -962,7 +962,7 @@ namespace Disassembler
 						break;
 
 					default:
-						this.oParent.Parent.VGALogWriteLine($"Unknown Attribute address 0x{this.biAttributeAddress:x2}, value 0x{value:x2}");
+						this.oParent.Parent.VGALog.WriteLine($"Unknown Attribute address 0x{this.biAttributeAddress:x2}, value 0x{value:x2}");
 						break;
 				}
 				this.bAttributeAddressFlag = true;
