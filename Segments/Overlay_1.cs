@@ -276,7 +276,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x01c6); // stack management - push return offset
 			// Instruction address 0x0000:0x01c1, size: 5
-			this.oParent.Segment_1000.F0_1000_09f3();
+			this.oParent.MiscDriver.F0_0000_0042();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.WriteByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc8), this.oCPU.AX.Low);
@@ -454,7 +454,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x032c); // stack management - push return offset
 			// Instruction address 0x0000:0x0327, size: 5
-			this.oParent.Segment_1000.F0_1000_09f3();
+			this.oParent.MiscDriver.F0_0000_0042();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.WriteByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc8), this.oCPU.AX.Low);
@@ -543,7 +543,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x03c3); // stack management - push return offset
 			// Instruction address 0x0000:0x03be, size: 5
-			this.oParent.Segment_1000.F0_1000_09f3();
+			this.oParent.MiscDriver.F0_0000_0042();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.WriteByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc8), this.oCPU.AX.Low);

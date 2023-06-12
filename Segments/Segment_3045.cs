@@ -115,14 +115,8 @@ namespace Civilization1
 			this.oParent.Segment_11a8.F0_11a8_0008_Main();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x00b6); // stack management - push return offset
-			// Instruction address 0x3045:0x00b1, size: 5
-			// this.oCPU.Call(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x588e));
-			this.oParent.MSCAPI.exit();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x3045; // restore this function segment
+
+			this.oParent.MSCAPI.exit((short)this.oCPU.AX.Word);
 		}
 
 		public void F0_3045_0229()

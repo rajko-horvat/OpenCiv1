@@ -1,6 +1,7 @@
 using Disassembler;
 using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Windows;
@@ -26,6 +27,7 @@ namespace Civilization1
 			this.oCPU.CS.Word = 0x0000; // set this function segment
 
 			// function body
+			this.oCPU.Log.ExitBlock("'DivisionByZero'");
 		}
 
 		public void _cinit()
@@ -189,7 +191,7 @@ namespace Civilization1
 
 		public void exit(short code)
 		{
-			this.oCPU.Log.EnterBlock("'exit'(Cdecl) at 0x3045:0x019e");
+			this.oCPU.Log.WriteLine($"exit({code})");
 			this.oCPU.Exit(code);
 		}
 
@@ -1117,6 +1119,8 @@ namespace Civilization1
 					default:
 						throw new Exception($"fscanf has undefined format '{sFormat}'");
 				}
+
+				this.oCPU.Log.WriteLine($"fscanf('%[^\\n]\\n') = '{sbResult.ToString()}'");
 			}
 			else
 			{
@@ -1514,11 +1518,11 @@ namespace Civilization1
 				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8))));
 		}
 
-		public short _dos_open(uint filenameAddress, ushort flags, uint handleAddress)
+		public short _dos_open(uint filenamePtr, ushort flags, uint handlePtr)
 		{
 			short sRetVal = -1;
 
-			string sName = this.oCPU.ReadString(filenameAddress);
+			string sName = this.oCPU.ReadString(filenamePtr);
 			FileMode eMode = FileMode.Open;
 			FileAccess eAccess = FileAccess.Read;
 			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
@@ -1561,7 +1565,7 @@ namespace Civilization1
 				this.oCPU.Files.Add(this.oCPU.FileHandleCount, new FileStreamItem(new FileStream(sPath, eMode, eAccess), eType));
 				short sHandle = this.oCPU.FileHandleCount;
 				this.oCPU.FileHandleCount++;
-				this.oCPU.Memory.WriteWord(handleAddress, (ushort)sHandle);
+				this.oCPU.Memory.WriteWord(handlePtr, (ushort)sHandle);
 				sRetVal = 0;
 			}
 
@@ -1675,7 +1679,6 @@ namespace Civilization1
 		#endregion
 
 		#region String operations
-
 		public void strcat()
 		{
 			ushort usDestSeg = this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4));
@@ -1690,6 +1693,8 @@ namespace Civilization1
 		{
 			string sDest = this.oCPU.ReadString(destinationAddress);
 			string sSource = this.oCPU.ReadString(sourceAddress);
+
+			this.oCPU.Log.WriteLine($"strcat('{sDest}', '{sSource}')");
 
 			this.oCPU.WriteString(destinationAddress, sDest + sSource, sDest.Length + sSource.Length);
 		}
@@ -1708,6 +1713,8 @@ namespace Civilization1
 		{
 			string sSource = this.oCPU.ReadString(sourceAddress);
 
+			this.oCPU.Log.WriteLine($"strcpy('{sSource}')");
+
 			this.oCPU.WriteString(destinationAddress, sSource, sSource.Length);
 		}
 
@@ -1720,12 +1727,14 @@ namespace Civilization1
 		{
 			string sSource = this.oCPU.ReadString(sourceAddress);
 
+			this.oCPU.Log.WriteLine($"strlen('{sSource}') = {sSource.Length}");
+
 			return sSource.Length;
 		}
 
 		public void strncmp()
 		{
-			this.oCPU.Log.EnterBlock("'strncmp'(Cdecl) at 0x3045:0x1ed8");
+			this.oCPU.Log.EnterBlock("'strncmp'");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -1769,7 +1778,7 @@ namespace Civilization1
 
 		public void stricmp()
 		{
-			this.oCPU.Log.EnterBlock("'stricmp'(Cdecl) at 0x3045:0x28f0");
+			this.oCPU.Log.EnterBlock("'stricmp'");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -1817,7 +1826,7 @@ namespace Civilization1
 
 		public void strnicmp()
 		{
-			this.oCPU.Log.EnterBlock("'strnicmp'(Cdecl) at 0x3045:0x2932");
+			this.oCPU.Log.EnterBlock("'strnicmp'");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
@@ -1897,6 +1906,9 @@ namespace Civilization1
 		public void strupr(uint sAddress)
 		{
 			string sTemp = this.oCPU.ReadString(sAddress).ToUpper();
+
+			this.oCPU.Log.WriteLine($"strupr('{sTemp}')");
+
 			this.oCPU.WriteString(sAddress, sTemp, sTemp.Length);
 		}
 
@@ -1912,7 +1924,7 @@ namespace Civilization1
 			}
 			else
 			{
-				this.oCPU.AX.Word = 0xffff;
+				this.oCPU.AX.Word = 0;
 			}
 		}
 
@@ -1920,6 +1932,8 @@ namespace Civilization1
 		{
 			string sS1 = this.oCPU.ReadString(s1Address);
 			string sS2 = this.oCPU.ReadString(s2Address);
+
+			this.oCPU.Log.WriteLine($"strstr('{sS1}', '{sS2}') = {sS1.IndexOf(sS2)}");
 
 			return sS1.IndexOf(sS2);
 		}
@@ -1938,6 +1952,8 @@ namespace Civilization1
 		public void itoa(short value, uint stringAddress, short radix)
 		{
 			string sValue = Convert.ToString(value, radix);
+
+			this.oCPU.Log.WriteLine($"itoa({value}, {radix}) = '{sValue}'");
 
 			this.oCPU.WriteString(stringAddress, sValue, sValue.Length);
 		}

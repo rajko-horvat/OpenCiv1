@@ -88,7 +88,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0055); // stack management - push return offset
 			// Instruction address 0x11a8:0x0050, size: 5
-			this.oParent.Segment_1000.F0_1000_0776();
+			this.oParent.VGADriver.F0_VGA_0492_GetFreeMemory();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
@@ -193,14 +193,14 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0107); // stack management - push return offset
 			// Instruction address 0x11a8:0x0102, size: 5
-			this.oParent.Segment_1000.F0_1000_07ed();
+			this.oParent.VGADriver.F0_VGA_0a1e();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0110); // stack management - push return offset
 			// Instruction address 0x11a8:0x010b, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_044c(0x277);
+			this.oParent.Segment_2fa1.F0_2fa1_044c_LoadIcon(0x277);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
@@ -209,7 +209,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x011b); // stack management - push return offset
 			// Instruction address 0x11a8:0x0116, size: 5
-			this.oParent.Segment_1000.F0_1000_07a0();
+			this.oParent.VGADriver.F0_VGA_0a4a();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x1a3c), 0x0);
@@ -244,18 +244,23 @@ namespace Civilization1
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 
 		L0145:
+			// Game type, load, etc. menu
+			// And then after menu Intro
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0149); // stack management - push return offset
 			// Instruction address 0x11a8:0x0146, size: 3
 			F0_11a8_0486();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
+
+			// Start Game menu, level, tribe, name
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x014d); // stack management - push return offset
 			// Instruction address 0x11a8:0x014a, size: 3
 			F0_11a8_087c();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
+
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x6b32), 0x1);
 			if (this.oCPU.Flags.NE) goto L016f;
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xd7ee);
@@ -888,6 +893,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.L) goto L051a;
 
 		L052e:
+			// Intro...
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0533); // stack management - push return offset
@@ -909,7 +915,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0553); // stack management - push return offset
 			// Instruction address 0x11a8:0x054e, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_01a2(1, 0, 0, 0x1b33, 0);
+			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadImageOrPalette(1, 0, 0, 0x1b33, 0);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
@@ -932,7 +938,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x057b); // stack management - push return offset
 			// Instruction address 0x11a8:0x0576, size: 5
-			this.oParent.Segment_1000.F0_1000_07fb();
+			this.oParent.VGADriver.F0_VGA_07d8();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x10);
@@ -1012,7 +1018,7 @@ namespace Civilization1
 			this.oCPU.PushWord(0x05e6); // stack management - push return offset
 			// Instruction address 0x11a8:0x05e1, size: 5
 			//this.oParent.Segment_2fa1.F0_2fa1_0220(1, 0x1b3d);
-			this.oParent.Segment_2fa1.F0_2fa1_01a2(1, 0, 0, 0x1b3d, 1);
+			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadImageOrPalette(1, 0, 0, 0x1b3d, 1);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
@@ -1045,7 +1051,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0616); // stack management - push return offset
 			// Instruction address 0x11a8:0x0611, size: 5
-			this.oParent.Segment_1000.F0_1000_07fb();
+			this.oParent.VGADriver.F0_VGA_07d8();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x10);
@@ -1321,7 +1327,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0553); // stack management - push return offset
 			// Instruction address 0x11a8:0x054e, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_01a2(1, 0, 0, 0x1c02, 0);
+			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadImageOrPalette(1, 0, 0, 0x1c02, 0);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
@@ -1452,7 +1458,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x086c); // stack management - push return offset
 			// Instruction address 0x11a8:0x0867, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_01a2(-1, 0, 0, 0x1c0c, 1);
+			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadImageOrPalette(-1, 0, 0, 0x1c0c, 1);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
@@ -1508,7 +1514,7 @@ namespace Civilization1
 			this.oCPU.PushWord(0x08ad); // stack management - push return offset
 			// Instruction address 0x11a8:0x08a8, size: 5
 			//this.oParent.Segment_2fa1.F0_2fa1_0220(1, 0x1c16);
-			this.oParent.Segment_2fa1.F0_2fa1_01a2(1, 0, 0, 0x1c16, 1);
+			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadImageOrPalette(1, 0, 0, 0x1c16, 1);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);

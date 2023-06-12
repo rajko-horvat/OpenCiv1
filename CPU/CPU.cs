@@ -74,6 +74,7 @@ namespace Disassembler
 		public LogWrapper Log
 		{
 			get { return this.oLog; }
+			set { this.oLog = value; }
 		}
 
 		public bool EnableTimer
@@ -116,7 +117,7 @@ namespace Disassembler
 
 				this.PushWord(0x0);
 				this.PushWord(usCS);
-				this.oParent.Segment_1000.F0_1000_01a7_Interrupt();
+				this.oParent.Segment_1000.F0_1000_01a7_Timer();
 				PopDWord();
 
 				PopF();
@@ -301,7 +302,7 @@ namespace Disassembler
 
 		public void WriteString(uint address, string text, int maxLength)
 		{
-			if (address == 0 || maxLength == 0)
+			if (address == 0)
 				return;
 
 			for (int i = 0; i < text.Length && i < maxLength; i++)
@@ -847,8 +848,7 @@ namespace Disassembler
 		/// </summary>
 		public void MOVSWord(CPURegister sReg, CPURegister regSI, CPURegister regES, CPURegister regDI)
 		{
-			ushort res = oMemory.ReadWord(sReg.Word, regSI.Word);
-			oMemory.WriteWord(regES.Word, regDI.Word, res);
+			oMemory.WriteWord(regES.Word, regDI.Word, oMemory.ReadWord(sReg.Word, regSI.Word));
 			// Modifies flags: None
 			if (this.oFlags.D)
 			{

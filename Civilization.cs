@@ -60,37 +60,36 @@ namespace Civilization1
 		private Overlay_15 oOverlay_15;
 		private Overlay_16 oOverlay_16;
 		private MSCAPI oMSCAPI;
-		private Misc oMisc;
-		private VGADriver oVGA;
-		private NSound oNSound;
+		private Misc oMiscDriver;
+		private VGADriver oVGADriver;
+		private NSound oSoundDriver;
 		#endregion
 
 		private LogWrapper oLog;
 		private LogWrapper oInterruptLog;
 		private LogWrapper oVGALog;
 		private LogWrapper oVGADriverLog;
+		private LogWrapper oStringLog;
 
 		#region Global Data
 		public ushort OverlaySegment = 0;
 
 		public static ushort Constant_5528 = 0xdb36;
-		public ushort Var_552a = 0xffff;
 		public ushort Var_68e2 = 0;
 		public ushort Var_68e4 = 0;
+		public ushort Var_68e6 = 0;
 		public ushort Var_68e8 = 0;
 		public ushort Var_68ea = 0;
 		public byte Var_68ec = 0;
 		public byte Var_68ed = 0;
 		public byte Var_68ef = 0;
-		public ushort Var_68f2 = 0;
-		public byte Var_68f7 = 0;
-		public ushort Var_b26e = 0;
-
-		public ushort Var_68f4 = 0;
-		public byte Var_68f6 = 0;
 		public byte Var_68ee = 0;
 		public ushort Var_68f0 = 0;
-
+		public ushort Var_68f2 = 0;
+		public ushort Var_68f4 = 0;
+		public byte Var_68f6 = 0;
+		public byte Var_68f7 = 0;
+		public ushort Var_b26e = 0;
 		public ushort Var_d768 = 0;
 		#endregion
 
@@ -103,8 +102,15 @@ namespace Civilization1
 			this.oInterruptLog = new LogWrapper("InterruptLog.txt");
 			this.oVGALog = new LogWrapper("VGALog.txt");
 			this.oVGADriverLog = new LogWrapper("VGADriverLog.txt");
+			this.oStringLog = new LogWrapper("StringLog.txt");
 
 			this.oCPU = new CPU(this, this.oLog);
+
+			this.oLog.CPU = this.oCPU;
+			this.oInterruptLog.CPU = this.oCPU;
+			this.oVGALog.CPU = this.oCPU;
+			this.oVGADriverLog.CPU = this.oCPU;
+			this.oStringLog.CPU = this.oCPU;
 
 			#region Initialize Segments
 			this.oSegment_3045 = new Segment_3045(this);
@@ -153,9 +159,9 @@ namespace Civilization1
 			this.oOverlay_15 = new Overlay_15(this);
 			this.oOverlay_16 = new Overlay_16(this);
 			this.oMSCAPI = new MSCAPI(this);
-			this.oMisc = new Misc(this);
-			this.oVGA = new VGADriver(this);
-			this.oNSound = new NSound(this);
+			this.oMiscDriver = new Misc(this);
+			this.oVGADriver = new VGADriver(this);
+			this.oSoundDriver = new NSound(this);
 			#endregion
 
 			// load old image to memory
@@ -251,6 +257,11 @@ namespace Civilization1
 		public LogWrapper VGADriverLog
 		{
 			get { return this.oVGADriverLog; }
+		}
+
+		public LogWrapper StringLog
+		{
+			get { return this.oStringLog; }
 		}
 		#endregion
 
@@ -485,19 +496,19 @@ namespace Civilization1
 			get { return this.oMSCAPI; }
 		}
 
-		public Misc Misc
+		public Misc MiscDriver
 		{
-			get { return this.oMisc; }
+			get { return this.oMiscDriver; }
 		}
 
-		public VGADriver VGA
+		public VGADriver VGADriver
 		{
-			get { return this.oVGA; }
+			get { return this.oVGADriver; }
 		}
 
-		public NSound NSound
+		public NSound SoundDriver
 		{
-			get { return this.oNSound; }
+			get { return this.oSoundDriver; }
 		}
 		#endregion
 

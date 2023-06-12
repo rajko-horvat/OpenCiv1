@@ -1313,8 +1313,8 @@ namespace Disassembler
 						break;
 
 					case ModeEnum.Graphics320x200x256:
-						this.abMemoryPlanes[0, address] = (byte)((value & 0xff00) >> 8);
-						this.abMemoryPlanes[0, address + 1] = (byte)(value & 0xff);
+						this.abMemoryPlanes[0, address] = (byte)(value & 0xff);
+						this.abMemoryPlanes[0, address + 1] = (byte)((value & 0xff00) >> 8);
 						RenderAddress(address);
 						RenderAddress(address + 1);
 						break;
@@ -1380,10 +1380,11 @@ namespace Disassembler
 						break;
 
 					case ModeEnum.Graphics320x200x256:
-						this.abMemoryPlanes[0, address] = (byte)((value & 0xff000000) >> 24);
-						this.abMemoryPlanes[0, address + 1] = (byte)((value & 0xff0000) >> 16);
-						this.abMemoryPlanes[0, address + 2] = (byte)((value & 0xff00) >> 8);
-						this.abMemoryPlanes[0, address + 3] = (byte)(value & 0xff);
+						this.abMemoryPlanes[0, address] = (byte)(value & 0xff);
+						this.abMemoryPlanes[0, address + 1] = (byte)((value & 0xff00) >> 8);
+						this.abMemoryPlanes[0, address + 2] = (byte)((value & 0xff0000) >> 16);
+						this.abMemoryPlanes[0, address + 3] = (byte)((value & 0xff000000) >> 24);
+
 						RenderAddress(address);
 						RenderAddress(address + 1);
 						RenderAddress(address + 2);

@@ -25,7 +25,10 @@ namespace Civilization1
 
 		public void F0_VGA_009a_ReplaceColor(ushort struct1, ushort xPos, ushort yPos, ushort width, ushort height, byte oldColor, byte newColor)
 		{
-			this.oCPU.Log.EnterBlock("'F0_VGA_009a_ReplaceColor'(Cdecl, Far) at 0x0000:0x009a");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_009a_ReplaceColor'(0x{struct1:x4}, {xPos}, {yPos}, {width}, {height}, {oldColor}, {newColor})");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock($"'F0_VGA_009a_ReplaceColor'(0x{struct1:x4}, {xPos}, {yPos}, {width}, {height}, {oldColor}, {newColor})");
 
 			// function body
 			ushort usXOffset = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(struct1 + 0x2));
@@ -40,8 +43,8 @@ namespace Civilization1
 			if (usYOffset >= usMaxHeight)
 				throw new Exception("Y coordinate is too large");
 
-			ushort usDestinationAddress = (ushort)(usYOffset * usMaxWidth);
-			usDestinationAddress += usXOffset;
+			ushort usDestinationPtr = (ushort)(usYOffset * usMaxWidth);
+			usDestinationPtr += usXOffset;
 						
 			ushort usNewRowOffset = (ushort)(usMaxWidth - width);
 
@@ -51,28 +54,27 @@ namespace Civilization1
 			{
 				for (int j = 0; j < width; j++)
 				{
-					if (oldColor != this.oCPU.Memory.ReadByte(usDestinationSegment, usDestinationAddress))
+					if (oldColor == this.oCPU.Memory.ReadByte(usDestinationSegment, usDestinationPtr))
 					{
-						usDestinationAddress++;
+						this.oCPU.Memory.WriteByte(usDestinationSegment, usDestinationPtr, newColor);
 					}
-					else
-					{
-						//this.oCPU.STOSByte();
-						this.oCPU.Memory.WriteByte(usDestinationSegment, usDestinationAddress, newColor);
-						usDestinationAddress++;
-					}
+					usDestinationPtr++;
 				}
 
-				usDestinationAddress += usNewRowOffset;
+				usDestinationPtr += usNewRowOffset;
 			}
 
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_VGA_009a_ReplaceColor'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_010c()
+		public void F0_VGA_010c()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_010c'(Cdecl, Far) at 0x0000:0x010c");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_010c'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_010c'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -94,7 +96,7 @@ namespace Civilization1
 			this.oCPU.BX.High = this.oCPU.BX.Low;
 			this.oCPU.PushWord(0x012a); // stack management - push return offset
 			// Instruction address 0x0000:0x0127, size: 3
-			F0_0000_01ed();
+			F0_VGA_01ed();
 			this.oCPU.PopWord(); // stack management - pop return offset
 
 		L012a:
@@ -120,41 +122,44 @@ namespace Civilization1
 			this.oCPU.MOVSByte(this.oCPU.DS, this.oCPU.SI, this.oCPU.ES, this.oCPU.DI);
 			if (this.oCPU.Loop(this.oCPU.CX)) goto L013d;
 
-			this.oCPU.BX.Word = 0x0;
-			this.oCPU.CX.Word = 0x10;
-			// LEA
-			this.oCPU.DX.Word = 0x1d0;
+			//this.oCPU.BX.Word = 0x0;
+			//this.oCPU.CX.Word = 0x10;
+			//this.oCPU.DX.Word = 0x1d0;
 
 			// Instruction address 0x0000:0x015a, size: 3
-			F0_VGA_01a1_SetColorBlock(this.oCPU.ES.Word, this.oCPU.DX.Word, this.oCPU.BX.Word, this.oCPU.CX.Word);
+			F0_VGA_01a1_SetColorBlock(this.oCPU.ES.Word, 0x1d0, 0, 16);
 
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_010c'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_010c'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_VGA_0162_SetColorsFromStruct(ushort struct1)
+		public void F0_VGA_0162_SetColorsFromStruct(ushort structPtr)
 		{
-			this.oCPU.Log.EnterBlock("'F0_VGA_0162_SetColorsFromStruct'(Cdecl, Far)");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0162_SetColorsFromStruct'(0x{structPtr:x4})");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock($"'F0_VGA_0162_SetColorsFromStruct'(0x{structPtr:x4})");
 
 			// function body
-			if (this.oCPU.ReadByte(this.oCPU.DS.Word, struct1) == 0x4d &&
-				this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(struct1 + 1)) == 0x30)
+			if (this.oCPU.ReadWord(this.oCPU.DS.Word, structPtr) == 0x304d)
 			{
-				this.oCPU.CX.Word = this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(struct1 + 0x5));
-				this.oCPU.BX.Word = this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(struct1 + 0x4));
+				ushort usFromIndex = this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(structPtr + 0x4));
+				ushort usToIndex = this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(structPtr + 0x5));
 
-				this.oCPU.CX.Word -= this.oCPU.BX.Word;
-				this.oCPU.CX.Word++;
+				usToIndex -= usFromIndex;
+				usToIndex++;
 
-				F0_VGA_01a1_SetColorBlock(this.oCPU.DS.Word, (ushort)(struct1 + 6), this.oCPU.BX.Word, this.oCPU.CX.Word);
+				F0_VGA_01a1_SetColorBlock(this.oCPU.DS.Word, (ushort)(structPtr + 6), usFromIndex, usToIndex);
 			}
 
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_VGA_0162_SetColorsFromStruct'");
+			this.oCPU.Log = oTempLog;
 		}
 
 		public void F0_VGA_01a1_SetColorBlock(ushort segment, ushort offset, ushort index, ushort count)
@@ -166,12 +171,16 @@ namespace Civilization1
 					this.oCPU.Memory.ReadByte(segment, (ushort)(offset + (i * 3))),
 					this.oCPU.Memory.ReadByte(segment, (ushort)(offset + (i * 3) + 1)),
 					this.oCPU.Memory.ReadByte(segment, (ushort)(offset + (i * 3) + 2)));
+				this.oCPU.Log.WriteLine($"Setting palette index {index + i}, #{this.oCPU.Memory.ReadByte(segment, (ushort)(offset + (i * 3))):x2}" +
+					$"{this.oCPU.Memory.ReadByte(segment, (ushort)(offset + (i * 3) + 1)):x2}{this.oCPU.Memory.ReadByte(segment, (ushort)(offset + (i * 3) + 2)):x2}");
 			}
 		}
 
-		public void F0_0000_01ed()
+		public void F0_VGA_01ed()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_01ed'(Cdecl, Near) at 0x0000:0x01ed");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_01ed'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// set overscan color
@@ -193,12 +202,16 @@ namespace Civilization1
 			this.oCPU.OUTByte(this.oCPU.DX.Word, this.oCPU.AX.Low);
 			this.oCPU.STI();
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_0000_01ed'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_01ed'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_020c()
+		public void F0_VGA_020c()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_020c'(Cdecl, Far) at 0x0000:0x020c");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_020c'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_020c'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -211,37 +224,34 @@ namespace Civilization1
 			this.oCPU.XLAT(this.oCPU.AX, this.oCPU.CS, this.oCPU.BX);
 			this.oCPU.WriteByte(this.oCPU.CS.Word, 0x198c, this.oCPU.AX.Low);
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_020c'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_020c'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0223()
+		public void F0_VGA_0224()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0223'(Cdecl, Far) at 0x0000:0x0223");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
-
-			// function body
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0223'");
-		}
-
-		public void F0_0000_0224()
-		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0224'(Cdecl, Far) at 0x0000:0x0224");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_0000_0224'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_0000_0224'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(0x0227); // stack management - push return offset
 			// Instruction address 0x0000:0x0224, size: 3
-			F0_0000_022f();
+			F0_VGA_022f();
 			this.oCPU.PopWord(); // stack management - pop return offset
 			this.oCPU.WriteWord(this.oCPU.CS.Word, 0x15d2, 0x0);
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_0000_0224'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_022f()
+		public void F0_VGA_022f()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_022f'(Cdecl, Near) at 0x0000:0x022f");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_022f'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -277,12 +287,16 @@ namespace Civilization1
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_0000_022f'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_022f'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0270()
+		public void F0_VGA_0270()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0270'(Cdecl, Far) at 0x0000:0x0270");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0270'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0270'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -355,7 +369,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0303); // stack management - push return offset
 			// Instruction address 0x0000:0x0300, size: 3
-			F0_0000_030e();
+			F0_VGA_030e();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 
@@ -363,7 +377,8 @@ namespace Civilization1
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0270'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0270'");
+			this.oCPU.Log = oTempLog;
 			return;
 
 		L0306:
@@ -371,9 +386,11 @@ namespace Civilization1
 			goto L0303;
 		}
 
-		public void F0_0000_030e()
+		public void F0_VGA_030e()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_030e'(Cdecl, Far) at 0x0000:0x030e");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_030e'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -426,7 +443,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0383); // stack management - push return offset
 			// Instruction address 0x0000:0x0380, size: 3
-			F0_0000_0c3e();
+			F0_VGA_0c3e();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x12);
@@ -437,12 +454,16 @@ namespace Civilization1
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_030e'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_030e'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_038c()
+		public void F0_VGA_038c()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_038c'(Cdecl, Far) at 0x0000:0x038c");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_038c'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_038c'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -461,12 +482,16 @@ namespace Civilization1
 			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.ES.Word, this.oCPU.BX.Word);
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_038c'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_038c'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_03b1()
+		public void F0_VGA_03b1()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_03b1'(Cdecl, Far) at 0x0000:0x03b1");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_03b1'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_03b1'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -492,12 +517,16 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_03b1'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_03b1'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_VGA_03df_CopyLine(ushort sourceAddress, ushort page, ushort xPos, ushort yPos, ushort width)
+		public void F0_VGA_03df_CopyLine(ushort bufferPtr, ushort page, ushort xPos, ushort yPos, ushort width)
 		{
-			this.oCPU.Log.EnterBlock($"'F0_VGA_03df_CopyLine'(Cdecl, Far) (0x{sourceAddress:x4}, {page}, {xPos}, {yPos}, {width})");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_03df_CopyLine'(0x{bufferPtr:x4}, {page}, {xPos}, {yPos}, {width})");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock($"'F0_VGA_03df_CopyLine'(0x{bufferPtr:x4}, {page}, {xPos}, {yPos}, {width})");
 
 			// function body
 			ushort usDestinationAddress = (ushort)((yPos * usMaxWidth) + xPos);
@@ -506,16 +535,20 @@ namespace Civilization1
 			for (int i = 0; i < width; i++)
 			{
 				this.oCPU.Memory.WriteByte(usDestinationSegment, (ushort)(usDestinationAddress + i), 
-					this.oCPU.Memory.ReadByte(this.oCPU.DS.Word, (ushort)(sourceAddress + i)));
+					this.oCPU.Memory.ReadByte(this.oCPU.DS.Word, (ushort)(bufferPtr + i)));
 			}
 
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_VGA_03df_CopyLine'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_040a()
+		public void F0_VGA_040a()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_040a'(Cdecl, Far) at 0x0000:0x040a");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_040a'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_040a'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -575,12 +608,16 @@ namespace Civilization1
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_040a'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_040a'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_046d()
+		public void F0_VGA_046d()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_046d'(Cdecl, Far) at 0x0000:0x046d");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_046d'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_046d'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -601,12 +638,16 @@ namespace Civilization1
 			this.oCPU.BX.Word = this.oCPU.Temp.Word;
 			this.oCPU.WriteWord(this.oCPU.CS.Word, 0x1980, this.oCPU.AX.Word);
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_046d'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_046d'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0484()
+		public void F0_VGA_0484()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0484'(Cdecl, Far) at 0x0000:0x0484");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0484'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0484'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -620,12 +661,16 @@ namespace Civilization1
 			this.oCPU.BX.Word = this.oCPU.Temp.Word;
 			this.oCPU.WriteWord(this.oCPU.CS.Word, 0x1980, this.oCPU.AX.Word);
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0484'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0484'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0492()
+		public void F0_VGA_0492_GetFreeMemory()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0492'(Cdecl, Far) at 0x0000:0x0492");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0492_GetFreeMemory'()");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0492_GetFreeMemory'()");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -634,40 +679,44 @@ namespace Civilization1
 			this.oCPU.INT(0x21);
 			this.oCPU.AX.Word = this.oCPU.BX.Word;
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0492'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0492_GetFreeMemory'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_049c()
+		public void F0_VGA_049c_SetSlotAddress(ushort slot, ushort address)
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_049c'(Cdecl, Far) at 0x0000:0x049c");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_049c_SetSlotAddress'({slot}, 0x{address:x4})");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock($"'F0_VGA_049c_SetSlotAddress'({slot}, 0x{address:x4})");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.BX.Word <<= 0x1;
-			this.oCPU.WriteWord(this.oCPU.CS.Word, (ushort)(0x1970 + this.oCPU.BX.Word), this.oCPU.AX.Word);
-			this.oCPU.BP.Word = this.oCPU.PopWord();
+			this.oCPU.WriteWord(this.oCPU.CS.Word, (ushort)(0x1970 + (slot << 1)), address);
+
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_049c'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_049c_SetSlotAddress'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_04ae()
+		public void F0_VGA_04ae_AllocateSlotMemory(ushort slot)
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_04ae'(Cdecl, Far) at 0x0000:0x04ae");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_04ae_AllocateSlotMemory'({slot})");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock($"'F0_VGA_04ae_AllocateSlotMemory'({slot})");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0x0);
+			this.oCPU.CMPWord(slot, 0x0);
 			if (this.oCPU.Flags.NE) goto L04bd;
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.CS.Word, 0x1970);
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_04ae'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_04ae_AllocateSlotMemory'");
+			this.oCPU.Log = oTempLog;
 			return;
 
 		L04bd:
@@ -680,12 +729,16 @@ namespace Civilization1
 		L04c8:
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_04ae'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_04ae_AllocateSlotMemory'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_04e8()
+		public void F0_VGA_04e8_InitVGA()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_04e8'(Cdecl, Far) at 0x0000:0x04e8");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_04e8_InitVGA'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_04e8_InitVGA'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -706,7 +759,8 @@ namespace Civilization1
 			
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_04e8'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_04e8_InitVGA'");
+			this.oCPU.Log = oTempLog;
 			return;
 
 		L0505:
@@ -721,9 +775,12 @@ namespace Civilization1
 			this.oCPU.INT(0x21);
 		}
 
-		public void F0_0000_0550()
+		public void F0_VGA_0550()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0550'(Cdecl, Far) at 0x0000:0x0550");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0550'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0550'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -738,7 +795,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x604, this.oCPU.BX.Word);
 			this.oCPU.PushWord(0x0570); // stack management - push return offset
 			// Instruction address 0x0000:0x056d, size: 3
-			F0_0000_057b();
+			F0_VGA_057b();
 			this.oCPU.PopWord(); // stack management - pop return offset
 			this.oCPU.WriteByte(this.oCPU.CS.Word, 0x576, this.oCPU.AX.High);
 			// 0x88 - MOV, 0x20 - AND, 0x8 - OR, 0x30 - XOR
@@ -751,12 +808,15 @@ namespace Civilization1
 			this.oCPU.ES.Word = this.oCPU.PopWord();
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0550'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0550'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_057b()
+		public void F0_VGA_057b()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_057b'(Cdecl, Near) at 0x0000:0x057b");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_057b'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -773,12 +833,16 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.CX.Word = this.oCPU.PopWord();
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_0000_057b'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_057b'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0599()
+		public void F0_VGA_0599()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0599'(Cdecl, Far) at 0x0000:0x0599");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0599'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0599'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -787,7 +851,7 @@ namespace Civilization1
 		L056d:
 			this.oCPU.PushWord(0x0570); // stack management - push return offset
 			// Instruction address 0x0000:0x056d, size: 3
-			F0_0000_057b();
+			F0_VGA_057b();
 			this.oCPU.PopWord(); // stack management - pop return offset
 			this.oCPU.WriteByte(this.oCPU.CS.Word, 0x576, this.oCPU.AX.High);
 			this.oCPU.WriteByte(this.oCPU.ES.Word, this.oCPU.DI.Word, this.oCPU.AX.Low);
@@ -797,7 +861,8 @@ namespace Civilization1
 			this.oCPU.ES.Word = this.oCPU.PopWord();
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0599'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0599'");
+			this.oCPU.Log = oTempLog;
 			return;
 
 		L0599:
@@ -863,7 +928,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.E) goto L0626;
 			this.oCPU.PushWord(0x0600); // stack management - push return offset
 			// Instruction address 0x0000:0x05fd, size: 3
-			F0_0000_057b();
+			F0_VGA_057b();
 			this.oCPU.PopWord(); // stack management - pop return offset
 			this.oCPU.WriteByte(this.oCPU.CS.Word, 0x613, this.oCPU.AX.High);
 			// 0x88 - MOV, 0x20 - AND, 0x8 - OR, 0x30 - XOR
@@ -892,7 +957,7 @@ namespace Civilization1
 		L0626:
 			this.oCPU.PushWord(0x0629); // stack management - push return offset
 			// Instruction address 0x0000:0x0626, size: 3
-			F0_0000_057b();
+			F0_VGA_057b();
 			this.oCPU.PopWord(); // stack management - pop return offset
 			this.oCPU.WriteByte(this.oCPU.CS.Word, 0x632, this.oCPU.AX.High);
 			// 0x88 - MOV, 0x20 - AND, 0x8 - OR, 0x30 - XOR
@@ -915,12 +980,16 @@ namespace Civilization1
 			this.oCPU.ES.Word = this.oCPU.PopWord();
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0599'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0599'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_063c()
+		public void F0_VGA_063c()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_063c'(Cdecl, Far) at 0x0000:0x063c");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_063c'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_063c'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -936,7 +1005,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0650); // stack management - push return offset
 			// Instruction address 0x0000:0x064d, size: 3
-			F0_0000_030e();
+			F0_VGA_030e();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SI.Word <<= 1;
@@ -953,12 +1022,16 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_063c'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_063c'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_06b7()
+		public void F0_VGA_06b7()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_06b7'(Cdecl, Far) at 0x0000:0x06b7");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_06b7'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_06b7'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -984,7 +1057,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.NE) goto L06ea;
 			this.oCPU.PushWord(0x06ea); // stack management - push return offset
 			// Instruction address 0x0000:0x06e7, size: 3
-			F0_0000_0776();
+			F0_VGA_0776();
 			this.oCPU.PopWord(); // stack management - pop return offset
 
 		L06ea:
@@ -1033,7 +1106,8 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_06b7'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_06b7'");
+			this.oCPU.Log = oTempLog;
 			return;
 
 		L0738:
@@ -1073,28 +1147,30 @@ namespace Civilization1
 			this.oCPU.AX.Word = this.oCPU.BX.Word;
 
 		L076f:
-			this.oCPU.AX.Word = 0; // this.oCPU.DECWord(this.oCPU.AX.Word);
+			this.oCPU.AX.Word = 0; // this.oCPU.AX.Word = this.oCPU.DECWord(this.oCPU.AX.Word);
 			//if (this.oCPU.Flags.NE) goto L076f;
 			if (this.oCPU.Loop(this.oCPU.CX)) goto L075b;
 			goto L0733;
 		}
 
-		public void F0_0000_0776()
+		public void F0_VGA_0776()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0776'(Cdecl, Near) at 0x0000:0x0776");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0776'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
 			this.oCPU.BX.Word = 0x1;
 			this.oCPU.PushWord(0x077c); // stack management - push return offset
 			// Instruction address 0x0000:0x0779, size: 3
-			F0_0000_07a4();
+			F0_VGA_07a4();
 			this.oCPU.PopWord(); // stack management - pop return offset
 			this.oCPU.WriteWord(this.oCPU.CS.Word, 0x6b3, this.oCPU.CX.Word);
 			this.oCPU.BX.Word = 0x11;
 			this.oCPU.PushWord(0x0787); // stack management - push return offset
 			// Instruction address 0x0000:0x0784, size: 3
-			F0_0000_07a4();
+			F0_VGA_07a4();
 			// here cx should be less than first value
 			this.oCPU.CX.Word = 0x13eb / 0x11;
 			this.oCPU.PopWord(); // stack management - pop return offset
@@ -1110,12 +1186,15 @@ namespace Civilization1
 			this.oCPU.AX.Word = this.oCPU.ADCWord(this.oCPU.AX.Word, 0x0);
 			this.oCPU.WriteWord(this.oCPU.CS.Word, 0x6b5, this.oCPU.AX.Word);
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_0000_0776'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0776'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_07a4()
+		public void F0_VGA_07a4()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_07a4'(Cdecl, Near) at 0x0000:0x07a4");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_07a4'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1160,12 +1239,16 @@ namespace Civilization1
 
 			this.oCPU.STI();
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_0000_07a4'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_07a4'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_07d8()
+		public void F0_VGA_07d8()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_07d8'(Cdecl, Far) at 0x0000:0x07d8");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_07d8'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_07d8'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1223,19 +1306,23 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_07d8'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_07d8'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0a1e()
+		public void F0_VGA_0a1e()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0a1e'(Cdecl, Far) at 0x0000:0x0a1e");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0a1e'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0a1e'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0a23); // stack management - push return offset
 			// Instruction address 0x0000:0x0a20, size: 3
-			F0_0000_0492();
+			F0_VGA_0492_GetFreeMemory();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
@@ -1256,12 +1343,16 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.CS.Word, 0x8a2, this.oCPU.AX.Word);
 			this.oCPU.WriteWord(this.oCPU.CS.Word, 0x8a4, this.oCPU.BX.Word);
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0a1e'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0a1e'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0a4a()
+		public void F0_VGA_0a4a()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0a4a'(Cdecl, Far) at 0x0000:0x0a4a");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0a4a'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0a4a'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1289,12 +1380,16 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.CS.Word, 0x8a2, this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.ES.Word;
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0a4a'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0a4a'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0a78()
+		public void F0_VGA_0a78()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0a78'(Cdecl, Far) at 0x0000:0x0a78");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0a78'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0a78'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1328,7 +1423,8 @@ namespace Civilization1
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0a78'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0a78'");
+			this.oCPU.Log = oTempLog;
 			return;
 
 		L0aba:
@@ -1337,12 +1433,16 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.CS.Word, 0x8a0, this.oCPU.AX.Word);
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0a78'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0a78'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0ac6()
+		public void F0_VGA_0ac6()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0ac6'(Cdecl, Far) at 0x0000:0x0ac6");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0ac6'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0ac6'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1360,12 +1460,16 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.CS.Word, 0x8a0, this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.Temp.Word;
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0ac6'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0ac6'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0ae3()
+		public void F0_VGA_0ae3()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0ae3'(Cdecl, Far) at 0x0000:0x0ae3");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0ae3'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0ae3'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1445,12 +1549,16 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0ae3'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0ae3'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0b85()
+		public void F0_VGA_0b85()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0b85'(Cdecl, Far) at 0x0000:0x0b85");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0b85'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0b85'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1463,7 +1571,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0b95); // stack management - push return offset
 			// Instruction address 0x0000:0x0b92, size: 3
-			F0_0000_0a78();
+			F0_VGA_0a78();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
@@ -1491,7 +1599,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0bd2); // stack management - push return offset
 			// Instruction address 0x0000:0x0bcf, size: 3
-			F0_0000_0ae3();
+			F0_VGA_0ae3();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
@@ -1503,19 +1611,23 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0be5); // stack management - push return offset
 			// Instruction address 0x0000:0x0be2, size: 3
-			F0_0000_0ac6();
+			F0_VGA_0ac6();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0b85'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0b85'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0c3e()
+		public void F0_VGA_0c3e()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0c3e'(Cdecl, Far) at 0x0000:0x0c3e");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0c3e'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0c3e'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1535,17 +1647,17 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.CS.Word, 0x8bc, this.oCPU.AX.Word);
 			this.oCPU.PushWord(0x0c62); // stack management - push return offset
 			// Instruction address 0x0000:0x0c5f, size: 3
-			F0_0000_0d12();
+			F0_VGA_0d12();
 			this.oCPU.PopWord(); // stack management - pop return offset
 			if (this.oCPU.Flags.E) goto L0c6c;
 			this.oCPU.PushWord(0x0c67); // stack management - push return offset
 			// Instruction address 0x0000:0x0c64, size: 3
-			F0_0000_0c77();
+			F0_VGA_0c77();
 			this.oCPU.PopWord(); // stack management - pop return offset
 			if (this.oCPU.Flags.B) goto L0c6c;
 			this.oCPU.PushWord(0x0c6c); // stack management - push return offset
 			// Instruction address 0x0000:0x0c69, size: 3
-			F0_0000_0d68();
+			F0_VGA_0d68();
 			this.oCPU.PopWord(); // stack management - pop return offset
 
 		L0c6c:
@@ -1557,12 +1669,15 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0c3e'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0c3e'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0c77()
+		public void F0_VGA_0c77()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0c77'(Cdecl, Near) at 0x0000:0x0c77");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0c77'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1613,7 +1728,8 @@ namespace Civilization1
 		L0cd6:
 			this.oCPU.Flags.C = true;
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_0000_0c77'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0c77'");
+			this.oCPU.Log = oTempLog;
 			return;
 
 		L0cd8:
@@ -1633,12 +1749,15 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.CS.Word, 0x8c8, this.oCPU.AX.Word);
 			this.oCPU.Flags.C = false;
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_0000_0c77'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0c77'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0d12()
+		public void F0_VGA_0d12()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0d12'(Cdecl, Near) at 0x0000:0x0d12");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0d12'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1662,12 +1781,16 @@ namespace Civilization1
 
 		L0d46:
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_0000_0d12'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0d12'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0d47()
+		public void F0_VGA_0d47()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0d47'(Cdecl, Far) at 0x0000:0x0d47");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0d47'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0d47'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1683,12 +1806,12 @@ namespace Civilization1
 			this.oCPU.BP.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
 			this.oCPU.PushWord(0x0d5e); // stack management - push return offset
 			// Instruction address 0x0000:0x0d5b, size: 3
-			F0_0000_0d12();
+			F0_VGA_0d12();
 			this.oCPU.PopWord(); // stack management - pop return offset
 			if (this.oCPU.Flags.E) goto L0d63;
 			this.oCPU.PushWord(0x0d63); // stack management - push return offset
 			// Instruction address 0x0000:0x0d60, size: 3
-			F0_0000_0d68();
+			F0_VGA_0d68();
 			this.oCPU.PopWord(); // stack management - pop return offset
 
 		L0d63:
@@ -1697,12 +1820,15 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0d47'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0d47'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_0d68()
+		public void F0_VGA_0d68()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0d68'(Cdecl, Near) at 0x0000:0x0d68");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0d68'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1778,7 +1904,8 @@ namespace Civilization1
 			this.oCPU.ES.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_0000_0d68'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0d68'");
+			this.oCPU.Log = oTempLog;
 			return;
 
 		L0df8:
@@ -1787,9 +1914,11 @@ namespace Civilization1
 			goto L0de8;
 		}
 
-		public void F0_0000_0fac()
+		public void F0_VGA_0fac()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0fac'(Cdecl, Near) at 0x0000:0x0fac");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_0fac'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1805,7 +1934,8 @@ namespace Civilization1
 			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, 0x60c);
 			this.oCPU.WriteByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc), this.oCPU.AX.Low);
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_0000_0fac'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_0fac'");
+			this.oCPU.Log = oTempLog;
 			return;
 
 		L0fac:
@@ -1815,7 +1945,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0fb7); // stack management - push return offset
 			// Instruction address 0x0000:0x0fb4, size: 3
-			F0_0000_020c();
+			F0_VGA_020c();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
@@ -1945,7 +2075,10 @@ namespace Civilization1
 
 		public void F0_VGA_10bb_ScrollLeft()
 		{
-			this.oCPU.Log.EnterBlock("'F0_VGA_10bb_ScrollLeft'(Cdecl, Far) at 0x0000:0x10bb");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_10bb_ScrollLeft'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_10bb_ScrollLeft'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -1970,11 +2103,15 @@ namespace Civilization1
 
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_VGA_10bb_ScrollLeft'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_115d()
+		public void F0_VGA_115d()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_115d'(Cdecl, Far) at 0x0000:0x115d");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_115d'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_115d'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -2015,12 +2152,16 @@ namespace Civilization1
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_115d'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_115d'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_11ae()
+		public void F0_VGA_11ae()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_11ae'(Cdecl, Far) at 0x0000:0x11ae");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_11ae'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_11ae'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -2043,12 +2184,16 @@ namespace Civilization1
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_11ae'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_11ae'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_11d7()
+		public void F0_VGA_11d7()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_11d7'(Cdecl, Far) at 0x0000:0x11d7");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_11d7'");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_11d7'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -2063,19 +2208,22 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x11ec); // stack management - push return offset
 			// Instruction address 0x0000:0x11e9, size: 3
-			F0_0000_11f0();
+			F0_VGA_11f0();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_11d7'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_11d7'");
+			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_0000_11f0()
+		public void F0_VGA_11f0()
 		{
-			this.oCPU.Log.EnterBlock("'F0_0000_11f0'(Cdecl, Far) at 0x0000:0x11f0");
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock("'F0_VGA_11f0'");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -2270,7 +2418,7 @@ namespace Civilization1
 
 			this.oCPU.PushWord(0x1311); // stack management - push return offset
 			// Instruction address 0x0000:0x130e, size: 3
-			F0_0000_0fac();
+			F0_VGA_0fac();
 			this.oCPU.PopWord(); // stack management - pop return offset
 
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x624);
@@ -2285,7 +2433,8 @@ namespace Civilization1
 			this.oCPU.ES.Word = this.oCPU.PopWord();
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_11f0'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_11f0'");
+			this.oCPU.Log = oTempLog;
 			return;
 
 		L1311:
