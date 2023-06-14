@@ -121,7 +121,7 @@
     <Compile Include="Segments\Segment_2dc4.cs" />
     <Compile Include="Segments\Segment_2e31.cs" />
     <Compile Include="Segments\Segment_2f4d.cs" />
-    <Compile Include="Segments\Segment_2fa1.cs" />
+    <Compile Include="Segments\ImageLoading.cs" />
     <Compile Include="Segments\Segment_302a.cs" />
     <Compile Include="Segments\Segment_3045.cs" />
     <EmbeddedResource Include="GPU\VGACardForm.resx">

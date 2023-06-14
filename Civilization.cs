@@ -21,7 +21,7 @@ namespace Civilization1
 		private Segment_1403 oSegment_1403;
 		private Segment_2dc4 oSegment_2dc4;
 		private Segment_1182 oSegment_1182;
-		private Segment_2fa1 oSegment_2fa1;
+		private ImageLoading oSegment_2fa1;
 		private Segment_2f4d oSegment_2f4d;
 		private Segment_2aea oSegment_2aea;
 		private Segment_1866 oSegment_1866;
@@ -122,7 +122,7 @@ namespace Civilization1
 			this.oSegment_1403 = new Segment_1403(this);
 			this.oSegment_2dc4 = new Segment_2dc4(this);
 			this.oSegment_1182 = new Segment_1182(this);
-			this.oSegment_2fa1 = new Segment_2fa1(this);
+			this.oSegment_2fa1 = new ImageLoading(this);
 			this.oSegment_2f4d = new Segment_2f4d(this);
 			this.oSegment_2aea = new Segment_2aea(this);
 			this.oSegment_1866 = new Segment_1866(this);
@@ -326,7 +326,7 @@ namespace Civilization1
 			get { return this.oSegment_1182; }
 		}
 
-		public Segment_2fa1 Segment_2fa1
+		public ImageLoading Segment_2fa1
 		{
 			get { return this.oSegment_2fa1; }
 		}
