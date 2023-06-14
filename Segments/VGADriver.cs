@@ -534,8 +534,29 @@ namespace Civilization1
 
 			for (int i = 0; i < width; i++)
 			{
-				this.oCPU.Memory.WriteByte(usDestinationSegment, (ushort)(usDestinationAddress + i), 
+				this.oCPU.Memory.WriteByte(usDestinationSegment, (ushort)(usDestinationAddress + i),
 					this.oCPU.Memory.ReadByte(this.oCPU.DS.Word, (ushort)(bufferPtr + i)));
+			}
+
+			// Far return
+			this.oCPU.Log.ExitBlock("'F0_VGA_03df_CopyLine'");
+			this.oCPU.Log = oTempLog;
+		}
+
+		public void F0_VGA_03df_CopyLine(ushort page, byte[] buffer, ushort xPos, ushort yPos, ushort width)
+		{
+			LogWrapper oTempLog = this.oCPU.Log;
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_03df_CopyLine'(buffer, {page}, {xPos}, {yPos}, {width})");
+			this.oCPU.Log = this.oParent.VGADriverLog;
+			this.oCPU.Log.EnterBlock($"'F0_VGA_03df_CopyLine'(buffer, {page}, {xPos}, {yPos}, {width})");
+
+			// function body
+			ushort usDestinationAddress = (ushort)((yPos * usMaxWidth) + xPos);
+			ushort usDestinationSegment = this.oCPU.Memory.ReadWord(this.usSegment, (ushort)(0x1970 + (page << 1)));
+
+			for (int i = 0; i < width; i++)
+			{
+				this.oCPU.Memory.WriteByte(usDestinationSegment, (ushort)(usDestinationAddress + i), buffer[i]);
 			}
 
 			// Far return

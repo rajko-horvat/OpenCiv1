@@ -1,11 +1,9 @@
 ﻿using Disassembler;
 using Disassembler.MZ;
-using IRB.Collections.Generic;
 using System;
-using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Civilization1
 {
@@ -36,7 +34,7 @@ namespace Civilization1
 		private Segment_2517 oSegment_2517;
 		private Segment_2c84 oSegment_2c84;
 		private Segment_302a oSegment_302a;
-		private Overlay_1 oOverlay_1;
+		private MainMenuOverlay oOverlay_1;
 		private Overlay_2 oOverlay_2;
 		private Overlay_6 oOverlay_6;
 		private Overlay_7 oOverlay_7;
@@ -89,6 +87,8 @@ namespace Civilization1
 		public ushort Var_68f4 = 0;
 		public byte Var_68f6 = 0;
 		public byte Var_68f7 = 0;
+		public ushort Var_68f8 = 0;
+		public byte Var_68fa = 0;
 		public ushort Var_b26e = 0;
 		public ushort Var_d768 = 0;
 		#endregion
@@ -135,7 +135,7 @@ namespace Civilization1
 			this.oSegment_2517 = new Segment_2517(this);
 			this.oSegment_2c84 = new Segment_2c84(this);
 			this.oSegment_302a = new Segment_302a(this);
-			this.oOverlay_1 = new Overlay_1(this);
+			this.oOverlay_1 = new MainMenuOverlay(this);
 			this.oOverlay_2 = new Overlay_2(this);
 			this.oOverlay_6 = new Overlay_6(this);
 			this.oOverlay_7 = new Overlay_7(this);
@@ -164,7 +164,22 @@ namespace Civilization1
 			this.oSoundDriver = new NSound(this);
 			#endregion
 
-			// load old image to memory
+
+			// export all bitmaps to file
+			/*string[] aFiles = Directory.GetFiles(this.oCPU.DefaultDirectory, "*.pic");
+			if (!Directory.Exists("Images"))
+				Directory.CreateDirectory("Images");
+
+			for (int i = 0; i < aFiles.Length; i++)
+			{
+				if (!Path.GetFileNameWithoutExtension(aFiles[i]).Equals("torch", StringComparison.InvariantCultureIgnoreCase))
+				{
+					Bitmap bitmap = this.Segment_2fa1.ReadBitmapFromFile(aFiles[i]);
+					bitmap.Save($"Images{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(aFiles[i])}.png", ImageFormat.Png);
+				}
+			}//*/
+
+			// load old exe image to memory
 			oEXE = new MZExecutable("c:\\DOS\\CIV\\civ.exe");
 			oEXE.ApplyRelocations(usStartSegment);
 
@@ -376,7 +391,7 @@ namespace Civilization1
 			get { return this.oSegment_302a; }
 		}
 
-		public Overlay_1 Overlay_1
+		public MainMenuOverlay Overlay_1
 		{
 			get { return this.oOverlay_1; }
 		}

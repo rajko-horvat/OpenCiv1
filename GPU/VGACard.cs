@@ -774,6 +774,11 @@ namespace Disassembler
 			this.oBitmap.Palette = bmpPalette;
 		}
 
+		public static Color GetColor18(int red, int green, int blue)
+		{
+			return Color.FromArgb((255 * (red & 0x3f)) / 64, (255 * (green & 0x3f)) / 64, (255 * (blue & 0x3f)) / 64);
+		}
+
 		public void SetPalette18(int index, int red, int green, int blue)
 		{
 			SetPaletteColor(index & 0xff, Color.FromArgb((255 * (red & 0x3f)) / 64, (255 * (green & 0x3f)) / 64, (255 * (blue & 0x3f)) / 64));
