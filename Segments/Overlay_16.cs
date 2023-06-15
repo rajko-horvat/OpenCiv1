@@ -99,7 +99,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0042); // stack management - push return offset
 			// Instruction address 0x0000:0x003d, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d();
+			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);

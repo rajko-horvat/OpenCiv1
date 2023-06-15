@@ -2175,9 +2175,9 @@ namespace Civilization1
 			this.oCPU.AX.Word = (ushort)strlen(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))));
 		}
 
-		public int strlen(uint sourceAddress)
+		public int strlen(uint sourcePtr)
 		{
-			string sSource = this.oCPU.ReadString(sourceAddress);
+			string sSource = this.oCPU.ReadString(sourcePtr);
 
 			this.oCPU.Log.WriteLine($"strlen('{sSource}') = {sSource.Length}");
 
@@ -2186,164 +2186,61 @@ namespace Civilization1
 
 		public void strncmp()
 		{
-			this.oCPU.Log.EnterBlock("'strncmp'");
-			this.oCPU.CS.Word = 0x3045; // set this function segment
+			this.oCPU.AX.Word = (ushort)strncmp(
+				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))),
+				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))),
+				this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8)));
+		}
 
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.PushWord(this.oCPU.DI.Word);
-			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.PushWord(this.oCPU.DS.Word);
-			this.oCPU.ES.Word = this.oCPU.PopWord();
-			this.oCPU.CX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa));
-			if (this.oCPU.CX.Word == 0) goto L1f0a;
-			this.oCPU.BX.Word = this.oCPU.CX.Word;
-			this.oCPU.DI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.SI.Word = this.oCPU.DI.Word;
-			this.oCPU.AX.Word = 0x0;
-			this.oCPU.REPNESCASByte();
-			this.oCPU.CX.Word = this.oCPU.NEGWord(this.oCPU.CX.Word);
-			this.oCPU.CX.Word = this.oCPU.ADDWord(this.oCPU.CX.Word, this.oCPU.BX.Word);
-			this.oCPU.DI.Word = this.oCPU.SI.Word;
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.REPECMPSByte(this.oCPU.ES, this.oCPU.DI, this.oCPU.DS, this.oCPU.SI);
-			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word - 0x1));
-			this.oCPU.CX.Word = 0x0;
-			this.oCPU.CMPByte(this.oCPU.AX.Low, this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word - 0x1)));
-			if (this.oCPU.Flags.A) goto L1f08;
-			if (this.oCPU.Flags.E) goto L1f0a;
-			this.oCPU.CX.Word = this.oCPU.DECWord(this.oCPU.CX.Word);
-			this.oCPU.CX.Word = this.oCPU.DECWord(this.oCPU.CX.Word);
+		public short strncmp(uint s1Ptr, uint s2Ptr, ushort maxlen)
+		{
+			string sS1 = this.oCPU.ReadString(s1Ptr);
+			string sS2 = this.oCPU.ReadString(s2Ptr);
 
-		L1f08:
-			this.oCPU.CX.Word = this.oCPU.NOTWord(this.oCPU.CX.Word);
+			if (sS1.Length > maxlen)
+				sS1 = sS1.Substring(0, maxlen);
 
-		L1f0a:
-			this.oCPU.AX.Word = this.oCPU.CX.Word;
-			this.oCPU.SI.Word = this.oCPU.PopWord();
-			this.oCPU.DI.Word = this.oCPU.PopWord();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oCPU.Log.ExitBlock("'strncmp'");
+			if (sS2.Length > maxlen)
+				sS2 = sS2.Substring(0, maxlen);
+
+			return (short)string.Compare(sS1, sS2, StringComparison.CurrentCulture);
 		}
 
 		public void stricmp()
 		{
-			this.oCPU.Log.EnterBlock("'stricmp'");
-			this.oCPU.CS.Word = 0x3045; // set this function segment
+			this.oCPU.AX.Word = (ushort)stricmp(
+				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))),
+				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))));
+		}
 
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.DX.Word = this.oCPU.SI.Word;
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.AX.Low = 0xff;
+		public short stricmp(uint s1Ptr, uint s2Ptr)
+		{
+			string sS1 = this.oCPU.ReadString(s1Ptr);
+			string sS2 = this.oCPU.ReadString(s2Ptr);
 
-			L28fd:
-			this.oCPU.AX.Low = this.oCPU.ORByte(this.oCPU.AX.Low, this.oCPU.AX.Low);
-			if (this.oCPU.Flags.E) goto L292d;
-			this.oCPU.LODSByte();
-			this.oCPU.AX.High = this.oCPU.ReadByte(this.oCPU.DS.Word, this.oCPU.BX.Word);
-			this.oCPU.BX.Word = this.oCPU.INCWord(this.oCPU.BX.Word);
-			this.oCPU.CMPByte(this.oCPU.AX.High, this.oCPU.AX.Low);
-			if (this.oCPU.Flags.E) goto L28fd;
-			this.oCPU.AX.Low = this.oCPU.SUBByte(this.oCPU.AX.Low, 0x41);
-			this.oCPU.CMPByte(this.oCPU.AX.Low, 0x1a);
-			this.oCPU.CX.Low = this.oCPU.SBBByte(this.oCPU.CX.Low, this.oCPU.CX.Low);
-			this.oCPU.CX.Low = this.oCPU.ANDByte(this.oCPU.CX.Low, 0x20);
-			this.oCPU.AX.Low = this.oCPU.ADDByte(this.oCPU.AX.Low, this.oCPU.CX.Low);
-			this.oCPU.AX.Low = this.oCPU.ADDByte(this.oCPU.AX.Low, 0x41);
-			this.oCPU.Temp.Low = this.oCPU.AX.Low;
-			this.oCPU.AX.Low = this.oCPU.AX.High;
-			this.oCPU.AX.High = this.oCPU.Temp.Low;
-			this.oCPU.AX.Low = this.oCPU.SUBByte(this.oCPU.AX.Low, 0x41);
-			this.oCPU.CMPByte(this.oCPU.AX.Low, 0x1a);
-			this.oCPU.CX.Low = this.oCPU.SBBByte(this.oCPU.CX.Low, this.oCPU.CX.Low);
-			this.oCPU.CX.Low = this.oCPU.ANDByte(this.oCPU.CX.Low, 0x20);
-			this.oCPU.AX.Low = this.oCPU.ADDByte(this.oCPU.AX.Low, this.oCPU.CX.Low);
-			this.oCPU.AX.Low = this.oCPU.ADDByte(this.oCPU.AX.Low, 0x41);
-			this.oCPU.CMPByte(this.oCPU.AX.Low, this.oCPU.AX.High);
-			if (this.oCPU.Flags.E) goto L28fd;
-			this.oCPU.AX.Low = this.oCPU.SBBByte(this.oCPU.AX.Low, this.oCPU.AX.Low);
-			this.oCPU.AX.Low = this.oCPU.SBBByte(this.oCPU.AX.Low, 0xff);
-
-			L292d:
-			this.oCPU.CBW(this.oCPU.AX);
-			this.oCPU.SI.Word = this.oCPU.DX.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oCPU.Log.ExitBlock("'stricmp'");
+			return (short)string.Compare(sS1, sS2, StringComparison.CurrentCultureIgnoreCase);
 		}
 
 		public void strnicmp()
 		{
-			this.oCPU.Log.EnterBlock("'strnicmp'");
-			this.oCPU.CS.Word = 0x3045; // set this function segment
+			this.oCPU.AX.Word = (ushort)strnicmp(
+				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))),
+				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))),
+				this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8)));
+		}
 
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.PushWord(this.oCPU.DI.Word);
-			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.DI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.PushWord(this.oCPU.DS.Word);
-			this.oCPU.ES.Word = this.oCPU.PopWord();
-			this.oCPU.CX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa));
-			if (this.oCPU.CX.Word == 0) goto L2981;
-			this.oCPU.BX.High = 0x41;
-			this.oCPU.BX.Low = 0x5a;
-			this.oCPU.DX.High = 0x20;
+		public short strnicmp(uint s1Ptr, uint s2Ptr, ushort maxlen)
+		{
+			string sS1 = this.oCPU.ReadString(s1Ptr);
+			string sS2 = this.oCPU.ReadString(s2Ptr);
 
-			L294a:
-			this.oCPU.AX.High = this.oCPU.ReadByte(this.oCPU.DS.Word, this.oCPU.SI.Word);
-			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, this.oCPU.DI.Word);
-			this.oCPU.AX.High = this.oCPU.ORByte(this.oCPU.AX.High, this.oCPU.AX.High);
-			if (this.oCPU.Flags.E) goto L2972;
-			this.oCPU.AX.Low = this.oCPU.ORByte(this.oCPU.AX.Low, this.oCPU.AX.Low);
-			if (this.oCPU.Flags.E) goto L2972;
-			this.oCPU.SI.Word = this.oCPU.INCWord(this.oCPU.SI.Word);
-			this.oCPU.DI.Word = this.oCPU.INCWord(this.oCPU.DI.Word);
-			this.oCPU.CMPByte(this.oCPU.AX.High, this.oCPU.BX.High);
-			if (this.oCPU.Flags.B) goto L2962;
-			this.oCPU.CMPByte(this.oCPU.AX.High, this.oCPU.BX.Low);
-			if (this.oCPU.Flags.A) goto L2962;
-			this.oCPU.AX.High = this.oCPU.ADDByte(this.oCPU.AX.High, this.oCPU.DX.High);
+			if (sS1.Length > maxlen)
+				sS1 = sS1.Substring(0, maxlen);
 
-			L2962:
-			this.oCPU.CMPByte(this.oCPU.AX.Low, this.oCPU.BX.High);
-			if (this.oCPU.Flags.B) goto L296c;
-			this.oCPU.CMPByte(this.oCPU.AX.Low, this.oCPU.BX.Low);
-			if (this.oCPU.Flags.A) goto L296c;
-			this.oCPU.AX.Low = this.oCPU.ADDByte(this.oCPU.AX.Low, this.oCPU.DX.High);
+			if (sS2.Length > maxlen)
+				sS2 = sS2.Substring(0, maxlen);
 
-			L296c:
-			this.oCPU.CMPByte(this.oCPU.AX.High, this.oCPU.AX.Low);
-			if (this.oCPU.Flags.NE) goto L2978;
-			if (this.oCPU.Loop(this.oCPU.CX)) goto L294a;
-
-			L2972:
-			this.oCPU.CX.Word = 0x0;
-			this.oCPU.CMPByte(this.oCPU.AX.High, this.oCPU.AX.Low);
-			if (this.oCPU.Flags.E) goto L2981;
-
-			L2978:
-			this.oCPU.CX.Word = 0x0;
-			if (this.oCPU.Flags.B) goto L297f;
-			this.oCPU.CX.Word = this.oCPU.DECWord(this.oCPU.CX.Word);
-			this.oCPU.CX.Word = this.oCPU.DECWord(this.oCPU.CX.Word);
-
-			L297f:
-			this.oCPU.CX.Word = this.oCPU.NOTWord(this.oCPU.CX.Word);
-
-			L2981:
-			this.oCPU.AX.Word = this.oCPU.CX.Word;
-			this.oCPU.SI.Word = this.oCPU.PopWord();
-			this.oCPU.DI.Word = this.oCPU.PopWord();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oCPU.Log.ExitBlock("'strnicmp'");
+			return (short)string.Compare(sS1, sS2, StringComparison.CurrentCultureIgnoreCase);
 		}
 
 		public void strupr()
@@ -2412,7 +2309,6 @@ namespace Civilization1
 		#endregion
 
 		#region Time operations
-
 		public void time()
 		{
 			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, 
@@ -2440,40 +2336,6 @@ namespace Civilization1
 		{
 			return Math.Abs(value);
 		}
-
-		public void _aFlmul()
-		{
-			this.oCPU.Log.EnterBlock("'F0_3045_31de'(Pascal) at 0x3045:0x31de");
-			this.oCPU.CS.Word = 0x3045; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc));
-			this.oCPU.BX.Word = this.oCPU.ORWord(this.oCPU.BX.Word, this.oCPU.AX.Word);
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa));
-			if (this.oCPU.Flags.NE) goto L31f9;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.MULWord(this.oCPU.DX, this.oCPU.AX, this.oCPU.BX.Word);
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oCPU.Log.ExitBlock("'F0_3045_31de'");
-			return;
-
-		L31f9:
-			this.oCPU.MULWord(this.oCPU.DX, this.oCPU.AX, this.oCPU.BX.Word);
-			this.oCPU.CX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.MULWord(this.oCPU.DX, this.oCPU.AX, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)));
-			this.oCPU.CX.Word = this.oCPU.ADDWord(this.oCPU.CX.Word, this.oCPU.AX.Word);
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.MULWord(this.oCPU.DX, this.oCPU.AX, this.oCPU.BX.Word);
-			this.oCPU.DX.Word = this.oCPU.ADDWord(this.oCPU.DX.Word, this.oCPU.CX.Word);
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oCPU.Log.ExitBlock("'F0_3045_31de'");
-		}
 		#endregion
 
 		#region Random number generator operations
@@ -2497,16 +2359,12 @@ namespace Civilization1
 		#region Shifting operations
 		public void _aFlshl()
 		{
-			this.oCPU.Log.EnterBlock("'_aFlshl'(Cdecl) at 0x3045:0x32b4");
-			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Word);
-			this.oCPU.Log.ExitBlock("'_aFlshl'");
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 		}
 
 		public void _aFlshr()
 		{
-			this.oCPU.Log.EnterBlock("'_aFlshr'(Cdecl) at 0x3045:0x32c0");
-			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) >> this.oCPU.CX.Word);
-			this.oCPU.Log.ExitBlock("'_aFlshr'");
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) >> this.oCPU.CX.Low);
 		}
 		#endregion
 

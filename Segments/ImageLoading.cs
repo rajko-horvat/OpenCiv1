@@ -12,152 +12,22 @@ using System.ComponentModel.Design;
 
 namespace Civilization1
 {
-	public class Segment_2fa1
+	/// <summary>
+	/// Image loading functions
+	/// It seems that LZW compression was used (like in a GIF)
+	/// </summary>
+	public class ImageLoading
 	{
 		private Civilization oParent;
 		private CPU oCPU;
 
-		public Segment_2fa1(Civilization parent)
+		public ImageLoading(Civilization parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
 		}
 
-		public void F0_2fa1_000a_OpenFile(ushort filenamePtr, ushort flags)
-		{
-			this.oCPU.Log.EnterBlock("'F0_2fa1_000a_OpenFile'(Cdecl, Far)");
-			this.oCPU.CS.Word = 0x2fa1; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x1a);
-
-			this.oCPU.AX.Word = (ushort)this.oParent.MSCAPI._dos_open(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr), flags, 
-				CPUMemory.ToLinearAddress(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
-
-			if (this.oCPU.AX.Word != 0)
-			{
-				this.oCPU.PushWord(filenamePtr);
-				this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-				this.oCPU.PushWord(0x0065); // stack management - push return offset
-											// Instruction address 0x2fa1:0x0062, size: 3
-				F0_2fa1_066e_FileError();
-				this.oCPU.PopDWord(); // stack management - pop return offset and segment
-				this.oCPU.CS.Word = 0x2fa1; // restore this function segment
-				this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
-			}
-		
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2fa1_000a_OpenFile'");
-		}
-
-		public void F0_2fa1_009e_CloseFile(ushort handle)
-		{
-			this.oCPU.Log.EnterBlock("'F0_2fa1_009e'(Cdecl, Far) at 0x2fa1:0x009e");
-			this.oCPU.CS.Word = 0x2fa1; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-
-			if (handle != 0xffff)
-			{
-				this.oCPU.AX.Word = (ushort)this.oParent.MSCAPI._dos_close((short)handle);
-				
-				if (this.oCPU.AX.Word != 0)
-				{
-					this.oCPU.PushWord(0);
-					this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-					this.oCPU.PushWord(0x00bf); // stack management - push return offset
-												// Instruction address 0x2fa1:0x00bc, size: 3
-					F0_2fa1_066e_FileError();
-					this.oCPU.PopDWord(); // stack management - pop return offset and segment
-					this.oCPU.CS.Word = 0x2fa1; // restore this function segment
-					this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
-				}
-			}
-		
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2fa1_009e'");
-		}
-
-		public void F0_2fa1_0644_FileRead(ushort handle)
-		{
-			this.oCPU.Log.EnterBlock($"'F0_2fa1_0644_FileRead'({handle})");
-			this.oCPU.CS.Word = 0x2fa1; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x2);
-
-			this.oParent.MSCAPI._dos_read((short)handle,
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, 0xd936),
-				0x200,
-				CPUMemory.ToLinearAddress(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
-
-			this.oParent.Var_b26e = 0xd936;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
-
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2fa1_0644_FileRead'");
-		}
-
-		public void F0_2fa1_066e_FileError()
-		{
-			this.oCPU.Log.EnterBlock("'F0_2fa1_066e'(Cdecl, Far) at 0x2fa1:0x066e");
-			this.oCPU.CS.Word = 0x2fa1; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.AX.Word = 0x3;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0679); // stack management - push return offset
-										// Instruction address 0x2fa1:0x0676, size: 3
-			F0_2fa1_0696();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2fa1; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0684); // stack management - push return offset
-										// Instruction address 0x2fa1:0x067f, size: 5
-			this.oParent.MSCAPI.perror();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2fa1; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
-
-			this.oParent.MSCAPI.exit(0x63);
-
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2fa1_066e'");
-		}
-
-		private ushort ReadUInt16FromStream(FileStream stream)
-		{
-			int iByte0 = stream.ReadByte();
-			int iByte1 = stream.ReadByte();
-
-			if (iByte0 < 0 || iByte1 < 0)
-			{
-				// end of stream, return 0
-				return 0;
-			}
-
-			return (ushort)(iByte0 | (iByte1 << 8));
-		}
-
-		private class DecoderState
+		private class ImageDecoderState
 		{
 			public bool WordMode = false;
 			public int Width = 0;
@@ -178,7 +48,7 @@ namespace Civilization1
 
 			public byte[] TranslationTable = new byte[0x1800];
 
-			public DecoderState(bool wordMode)
+			public ImageDecoderState(bool wordMode)
 			{
 				this.WordMode = wordMode;
 
@@ -191,13 +61,14 @@ namespace Civilization1
 			}
 		}
 
+		#region New image loading functions
 		public Bitmap ReadBitmapFromFile(string path)
 		{
 			Bitmap bitmap;
 			FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
 			List<BKeyValuePair<int, Color>> aPalette = new List<BKeyValuePair<int, Color>>();
 			bool bWordMode = LoadPaletteFromStream(stream, aPalette);
-			DecoderState state = new DecoderState(bWordMode);
+			ImageDecoderState state = new ImageDecoderState(bWordMode);
 
 			state.UnknownValue1 = ReadUInt16FromStream(stream);
 			state.Width = ReadUInt16FromStream(stream);
@@ -298,7 +169,7 @@ namespace Civilization1
 			return (usTemp & 0x100) != 0;
 		}
 
-		private void DecodeBitmapStream(FileStream stream, DecoderState state, byte[] dataBuffer)
+		private void DecodeBitmapStream(FileStream stream, ImageDecoderState state, byte[] dataBuffer)
 		{
 			int iBufferPos = 0;
 			int iWidth = state.Width;
@@ -388,176 +259,7 @@ namespace Civilization1
 			}
 		}
 
-		public void F0_2fa1_01a2_LoadBitmapOrPalette(short page, ushort xPos, ushort yPos, ushort filenamePtr, ushort palettePtr)
-		{
-			this.oCPU.Log.EnterBlock($"'F0_2fa1_01a2_LoadImageOrPalette'(0x{page:x4}, 0x{xPos:x4}, 0x{yPos:x4}, " +
-				$"'{this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr))}', 0x{palettePtr:x4})");
-			this.oCPU.CS.Word = 0x2fa1; // set this function segment
-
-			// function body
-			string filename = this.oCPU.DefaultDirectory + this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr));
-			FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read);
-
-			bool bWordMode = F0_1000_108e_LoadPalette(stream, palettePtr);
-
-			DecoderState state = new DecoderState(bWordMode);
-
-			state.UnknownValue1 = ReadUInt16FromStream(stream);
-			state.Width = ReadUInt16FromStream(stream);
-			state.Height = ReadUInt16FromStream(stream);
-
-			// init state
-			if (state.Width > 0 && state.Height > 0)
-			{
-				ushort usTemp = Math.Min(ReadUInt16FromStream(stream), (ushort)0xb);
-				state.Var_68ef = (byte)usTemp;
-				state.Var_68f4 = usTemp;
-
-				if (page >= 0)
-				{
-					byte[] abPixelBuffer = new byte[state.Width];
-
-					for (int i = 0; i < state.Height; i++)
-					{
-						F0_1000_1208_DecodeBitmapStream(stream, state, abPixelBuffer);
-						this.oParent.VGADriver.F0_VGA_03df_CopyLine((ushort)page, abPixelBuffer, xPos, (ushort)(yPos + i), (ushort)state.Width);
-					}
-				}
-			}
-
-			stream.Close();
-
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2fa1_01a2_LoadImageOrPalette'");
-		}
-
-		private bool F0_1000_108e_LoadPalette(FileStream stream, ushort palettePtr)
-		{
-			this.oCPU.Log.EnterBlock($"'F0_1000_108e_LoadPalette'(Cdecl, Far)(0x{palettePtr:x4})");
-
-			// function body
-			ushort usTemp;
-
-			while (((usTemp = ReadUInt16FromStream(stream)) & 0xff) != 0x58)
-			{
-				ushort usStartPtr = 0xba06;
-				if (usTemp == 0x304d)
-				{
-					switch (palettePtr)
-					{
-						case 0:
-							usStartPtr += 2;
-							break;
-						case 1:
-							break;
-						default:
-							usStartPtr = palettePtr;
-							break;
-					}
-				}
-
-				ushort usTempPtr = usStartPtr;
-				this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, usTempPtr, usTemp);
-				usTempPtr += 2;
-
-				usTemp = ReadUInt16FromStream(stream);
-				this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, usTempPtr, usTemp);
-				usTempPtr += 2;
-				ushort usCount = (ushort)(usTemp >> 1);
-
-				for (int i = 0; i < usCount; i++)
-				{
-					usTemp = ReadUInt16FromStream(stream);
-					this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, usTempPtr, usTemp);
-					usTempPtr += 2;
-				}
-
-				if (usStartPtr == 0xba06)
-				{
-					this.oParent.VGADriver.F0_VGA_0162_SetColorsFromStruct(0xba06);
-				}
-			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_108e_LoadPalette'");
-
-			return (usTemp & 0x100) != 0;
-		}
-
-		private void F0_1000_1208_DecodeBitmapStream(FileStream stream, DecoderState state, byte[] buffer)
-		{
-			this.oCPU.Log.EnterBlock("'F0_1000_1208'(Cdecl, Far) at 0x1000:0x1208");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
-
-			// function body
-			int iBufferPos = 0;
-			int iWidth = state.Width;
-
-			if (state.WordMode)
-			{
-				iWidth++;
-				iWidth >>= 1;
-			}
-
-			for (int i = 0; i < iWidth; i++)
-			{
-				byte ubPixelData = 0;
-
-				if (state.Var_68ec != 0)
-				{
-					ubPixelData = state.Var_68ed;
-					state.Var_68ec--;
-				}
-				else
-				{
-					// Instruction address 0x1000:0x12c3, size: 3
-					ubPixelData = F0_1000_1318(stream, state);
-
-					if (ubPixelData != 0x90)
-					{
-						state.Var_68ed = ubPixelData;
-					}
-					else
-					{
-						ubPixelData = F0_1000_1318(stream, state);
-
-						if (ubPixelData == 0)
-						{
-							ubPixelData = 0x90;
-							state.Var_68ed = ubPixelData;
-						}
-						else
-						{
-							state.Var_68ec = ubPixelData;
-							state.Var_68ec -= 2;
-							ubPixelData = state.Var_68ed;
-						}
-					}
-				}
-
-				if (state.WordMode)
-				{
-					//this.oCPU.AX.High = this.oCPU.AX.Low;
-					//this.oCPU.AX.Low &= 0xf;
-					//this.oCPU.AX.High >>= 4;
-					//this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, bufferPtr, (ushort)(((ushort)(this.oCPU.AX.Low & 0xf0) << 4) | (this.oCPU.AX.Low & 0xf)));
-					//bufferPtr += 2;
-					buffer[iBufferPos] = (byte)(ubPixelData & 0xf);
-					buffer[iBufferPos + 1] = (byte)((ushort)(ubPixelData & 0xf0) >> 4);
-					iBufferPos += 2;
-				}
-				else
-				{
-					buffer[iBufferPos] = ubPixelData;
-					iBufferPos++;
-				}
-			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_1208'");
-		}
-
-		private byte F0_1000_1318(FileStream stream, DecoderState state)
+		private byte F0_1000_1318(FileStream stream, ImageDecoderState state)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_1318'(Undefined) at 0x1000:0x1318");
 			this.oCPU.CS.Word = 0x1000; // set this function segment
@@ -647,6 +349,345 @@ namespace Civilization1
 			this.oCPU.Log.ExitBlock("'F0_1000_1318'");
 
 			return state.DataStack.Pop();
+		}
+
+		private ushort ReadUInt16FromStream(FileStream stream)
+		{
+			int iByte0 = stream.ReadByte();
+			int iByte1 = stream.ReadByte();
+
+			if (iByte0 < 0 || iByte1 < 0)
+			{
+				// end of stream, return 0
+				return 0;
+			}
+
+			return (ushort)(iByte0 | (iByte1 << 8));
+		}
+		#endregion
+
+		#region Old File management functions
+		public void F0_2fa1_000a_OpenFile(ushort filenamePtr, ushort flags)
+		{
+			this.oCPU.Log.EnterBlock("'F0_2fa1_000a_OpenFile'(Cdecl, Far)");
+			this.oCPU.CS.Word = 0x2fa1; // set this function segment
+
+			// function body
+			this.oCPU.PushWord(this.oCPU.BP.Word);
+			this.oCPU.BP.Word = this.oCPU.SP.Word;
+			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x1a);
+
+			this.oCPU.AX.Word = (ushort)this.oParent.MSCAPI._dos_open(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr), flags,
+				CPUMemory.ToLinearAddress(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
+
+			if (this.oCPU.AX.Word != 0)
+			{
+				this.oCPU.PushWord(filenamePtr);
+				this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+				this.oCPU.PushWord(0x0065); // stack management - push return offset
+											// Instruction address 0x2fa1:0x0062, size: 3
+				F0_2fa1_066e_FileError();
+				this.oCPU.PopDWord(); // stack management - pop return offset and segment
+				this.oCPU.CS.Word = 0x2fa1; // restore this function segment
+				this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			}
+
+			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
+			this.oCPU.SP.Word = this.oCPU.BP.Word;
+			this.oCPU.BP.Word = this.oCPU.PopWord();
+			// Far return
+			this.oCPU.Log.ExitBlock("'F0_2fa1_000a_OpenFile'");
+		}
+
+		public void F0_2fa1_009e_CloseFile(ushort handle)
+		{
+			this.oCPU.Log.EnterBlock("'F0_2fa1_009e'(Cdecl, Far) at 0x2fa1:0x009e");
+			this.oCPU.CS.Word = 0x2fa1; // set this function segment
+
+			// function body
+			this.oCPU.PushWord(this.oCPU.BP.Word);
+			this.oCPU.BP.Word = this.oCPU.SP.Word;
+
+			if (handle != 0xffff)
+			{
+				this.oCPU.AX.Word = (ushort)this.oParent.MSCAPI._dos_close((short)handle);
+
+				if (this.oCPU.AX.Word != 0)
+				{
+					this.oCPU.PushWord(0);
+					this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+					this.oCPU.PushWord(0x00bf); // stack management - push return offset
+												// Instruction address 0x2fa1:0x00bc, size: 3
+					F0_2fa1_066e_FileError();
+					this.oCPU.PopDWord(); // stack management - pop return offset and segment
+					this.oCPU.CS.Word = 0x2fa1; // restore this function segment
+					this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+				}
+			}
+
+			this.oCPU.BP.Word = this.oCPU.PopWord();
+			// Far return
+			this.oCPU.Log.ExitBlock("'F0_2fa1_009e'");
+		}
+
+		public void F0_2fa1_0644_FileRead(ushort handle)
+		{
+			this.oCPU.Log.EnterBlock($"'F0_2fa1_0644_FileRead'({handle})");
+			this.oCPU.CS.Word = 0x2fa1; // set this function segment
+
+			// function body
+			this.oCPU.PushWord(this.oCPU.BP.Word);
+			this.oCPU.BP.Word = this.oCPU.SP.Word;
+			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x2);
+
+			this.oParent.MSCAPI._dos_read((short)handle,
+				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, 0xd936),
+				0x200,
+				CPUMemory.ToLinearAddress(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
+
+			this.oParent.Var_b26e = 0xd936;
+			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
+
+			this.oCPU.SP.Word = this.oCPU.BP.Word;
+			this.oCPU.BP.Word = this.oCPU.PopWord();
+			// Far return
+			this.oCPU.Log.ExitBlock("'F0_2fa1_0644_FileRead'");
+		}
+
+		public void F0_2fa1_066e_FileError()
+		{
+			this.oCPU.Log.EnterBlock("'F0_2fa1_066e'(Cdecl, Far) at 0x2fa1:0x066e");
+			this.oCPU.CS.Word = 0x2fa1; // set this function segment
+
+			// function body
+			this.oCPU.PushWord(this.oCPU.BP.Word);
+			this.oCPU.BP.Word = this.oCPU.SP.Word;
+			this.oCPU.AX.Word = 0x3;
+			this.oCPU.PushWord(this.oCPU.AX.Word);
+			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0x0679); // stack management - push return offset
+										// Instruction address 0x2fa1:0x0676, size: 3
+			F0_2fa1_0696();
+			this.oCPU.PopDWord(); // stack management - pop return offset and segment
+			this.oCPU.CS.Word = 0x2fa1; // restore this function segment
+			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
+			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0x0684); // stack management - push return offset
+										// Instruction address 0x2fa1:0x067f, size: 5
+			this.oParent.MSCAPI.perror();
+			this.oCPU.PopDWord(); // stack management - pop return offset and segment
+			this.oCPU.CS.Word = 0x2fa1; // restore this function segment
+			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+
+			this.oParent.MSCAPI.exit(0x63);
+
+			this.oCPU.BP.Word = this.oCPU.PopWord();
+			// Far return
+			this.oCPU.Log.ExitBlock("'F0_2fa1_066e'");
+		}
+
+		public void F0_2fa1_0696()
+		{
+			this.oCPU.Log.EnterBlock("'F0_2fa1_0696'(Cdecl, Far) at 0x2fa1:0x0696");
+			this.oCPU.CS.Word = 0x2fa1; // set this function segment
+
+			// function body
+			this.oCPU.PushWord(this.oCPU.BP.Word);
+			this.oCPU.BP.Word = this.oCPU.SP.Word;
+			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x10);
+			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x58fb);
+			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.AX.Word);
+			this.oCPU.WriteByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xd), 0x0);
+			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
+			this.oCPU.WriteByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), this.oCPU.AX.Low);
+			this.oCPU.PushWord((ushort)(this.oCPU.BP.Word - 0xe));
+			this.oCPU.PushWord((ushort)(this.oCPU.BP.Word - 0xe));
+			this.oCPU.AX.Word = 0x10;
+			this.oCPU.PushWord(this.oCPU.AX.Word);
+			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0x06bd); // stack management - push return offset
+										// Instruction address 0x2fa1:0x06b8, size: 5
+			this.oParent.MSCAPI.int86();
+			this.oCPU.PopDWord(); // stack management - pop return offset and segment
+			this.oCPU.CS.Word = 0x2fa1; // restore this function segment
+			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10));
+			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x58fb, this.oCPU.AX.Word);
+			this.oCPU.SP.Word = this.oCPU.BP.Word;
+			this.oCPU.BP.Word = this.oCPU.PopWord();
+			// Far return
+			this.oCPU.Log.ExitBlock("'F0_2fa1_0696'");
+		}
+		#endregion
+
+		#region Old Image loading functions
+		public void F0_2fa1_01a2_LoadBitmapOrPalette(short page, ushort xPos, ushort yPos, ushort filenamePtr, ushort palettePtr)
+		{
+			this.oCPU.Log.EnterBlock($"'F0_2fa1_01a2_LoadImageOrPalette'(0x{page:x4}, 0x{xPos:x4}, 0x{yPos:x4}, " +
+				$"'{this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr))}', 0x{palettePtr:x4})");
+			this.oCPU.CS.Word = 0x2fa1; // set this function segment
+
+			// function body
+			string filename = this.oCPU.DefaultDirectory + this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr));
+			FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+
+			bool bWordMode = F0_1000_108e_LoadPalette(stream, palettePtr);
+
+			ImageDecoderState state = new ImageDecoderState(bWordMode);
+
+			state.UnknownValue1 = ReadUInt16FromStream(stream);
+			state.Width = ReadUInt16FromStream(stream);
+			state.Height = ReadUInt16FromStream(stream);
+
+			// init state
+			if (state.Width > 0 && state.Height > 0)
+			{
+				ushort usTemp = Math.Min(ReadUInt16FromStream(stream), (ushort)0xb);
+				state.Var_68ef = (byte)usTemp;
+				state.Var_68f4 = usTemp;
+
+				if (page >= 0)
+				{
+					byte[] abPixelBuffer = new byte[state.Width];
+
+					for (int i = 0; i < state.Height; i++)
+					{
+						F0_1000_1208_DecodeBitmapStream(stream, state, abPixelBuffer);
+						this.oParent.VGADriver.F0_VGA_03df_CopyLine((ushort)page, abPixelBuffer, xPos, (ushort)(yPos + i), (ushort)state.Width);
+					}
+				}
+			}
+
+			stream.Close();
+
+			// Far return
+			this.oCPU.Log.ExitBlock("'F0_2fa1_01a2_LoadImageOrPalette'");
+		}
+
+		private bool F0_1000_108e_LoadPalette(FileStream stream, ushort palettePtr)
+		{
+			this.oCPU.Log.EnterBlock($"'F0_1000_108e_LoadPalette'(Cdecl, Far)(0x{palettePtr:x4})");
+
+			// function body
+			ushort usTemp;
+
+			while (((usTemp = ReadUInt16FromStream(stream)) & 0xff) != 0x58)
+			{
+				ushort usStartPtr = 0xba06;
+				if (usTemp == 0x304d)
+				{
+					switch (palettePtr)
+					{
+						case 0:
+							usStartPtr += 2;
+							break;
+						case 1:
+							break;
+						default:
+							usStartPtr = palettePtr;
+							break;
+					}
+				}
+
+				ushort usTempPtr = usStartPtr;
+				this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, usTempPtr, usTemp);
+				usTempPtr += 2;
+
+				usTemp = ReadUInt16FromStream(stream);
+				this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, usTempPtr, usTemp);
+				usTempPtr += 2;
+				ushort usCount = (ushort)(usTemp >> 1);
+
+				for (int i = 0; i < usCount; i++)
+				{
+					usTemp = ReadUInt16FromStream(stream);
+					this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, usTempPtr, usTemp);
+					usTempPtr += 2;
+				}
+
+				if (usStartPtr == 0xba06)
+				{
+					this.oParent.VGADriver.F0_VGA_0162_SetColorsFromStruct(0xba06);
+				}
+			}
+
+			// Far return
+			this.oCPU.Log.ExitBlock("'F0_1000_108e_LoadPalette'");
+
+			return (usTemp & 0x100) != 0;
+		}
+
+		private void F0_1000_1208_DecodeBitmapStream(FileStream stream, ImageDecoderState state, byte[] buffer)
+		{
+			this.oCPU.Log.EnterBlock("'F0_1000_1208'(Cdecl, Far) at 0x1000:0x1208");
+			this.oCPU.CS.Word = 0x1000; // set this function segment
+
+			// function body
+			int iBufferPos = 0;
+			int iWidth = state.Width;
+
+			if (state.WordMode)
+			{
+				iWidth++;
+				iWidth >>= 1;
+			}
+
+			for (int i = 0; i < iWidth; i++)
+			{
+				byte ubPixelData = 0;
+
+				if (state.Var_68ec != 0)
+				{
+					ubPixelData = state.Var_68ed;
+					state.Var_68ec--;
+				}
+				else
+				{
+					// Instruction address 0x1000:0x12c3, size: 3
+					ubPixelData = F0_1000_1318(stream, state);
+
+					if (ubPixelData != 0x90)
+					{
+						state.Var_68ed = ubPixelData;
+					}
+					else
+					{
+						ubPixelData = F0_1000_1318(stream, state);
+
+						if (ubPixelData == 0)
+						{
+							ubPixelData = 0x90;
+							state.Var_68ed = ubPixelData;
+						}
+						else
+						{
+							state.Var_68ec = ubPixelData;
+							state.Var_68ec -= 2;
+							ubPixelData = state.Var_68ed;
+						}
+					}
+				}
+
+				if (state.WordMode)
+				{
+					//this.oCPU.AX.High = this.oCPU.AX.Low;
+					//this.oCPU.AX.Low &= 0xf;
+					//this.oCPU.AX.High >>= 4;
+					//this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, bufferPtr, (ushort)(((ushort)(this.oCPU.AX.Low & 0xf0) << 4) | (this.oCPU.AX.Low & 0xf)));
+					//bufferPtr += 2;
+					buffer[iBufferPos] = (byte)(ubPixelData & 0xf);
+					buffer[iBufferPos + 1] = (byte)((ushort)(ubPixelData & 0xf0) >> 4);
+					iBufferPos += 2;
+				}
+				else
+				{
+					buffer[iBufferPos] = ubPixelData;
+					iBufferPos++;
+				}
+			}
+
+			// Far return
+			this.oCPU.Log.ExitBlock("'F0_1000_1208'");
 		}
 
 		public void F0_2fa1_01a2_LoadBitmapOrPalette1(short page, ushort xPos, ushort yPos, ushort filenamePtr, ushort palettePtr)
@@ -1288,91 +1329,6 @@ namespace Civilization1
 
 			this.oCPU.Log.ExitBlock("'F0_1000_1318'");
 		}
-
-		public void F0_2fa1_0696()
-		{
-			this.oCPU.Log.EnterBlock("'F0_2fa1_0696'(Cdecl, Far) at 0x2fa1:0x0696");
-			this.oCPU.CS.Word = 0x2fa1; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x10);
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x58fb);
-			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.AX.Word);
-			this.oCPU.WriteByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xd), 0x0);
-			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.WriteByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), this.oCPU.AX.Low);
-			this.oCPU.PushWord((ushort)(this.oCPU.BP.Word - 0xe));
-			this.oCPU.PushWord((ushort)(this.oCPU.BP.Word - 0xe));
-			this.oCPU.AX.Word = 0x10;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x06bd); // stack management - push return offset
-			// Instruction address 0x2fa1:0x06b8, size: 5
-			this.oParent.MSCAPI.int86();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2fa1; // restore this function segment
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10));
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x58fb, this.oCPU.AX.Word);
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2fa1_0696'");
-		}
-
-		public void F0_2fa1_0728()
-		{
-			this.oCPU.Log.EnterBlock("'F0_2fa1_0728'(Cdecl, Far) at 0x2fa1:0x0728");
-			this.oCPU.CS.Word = 0x2fa1; // set this function segment
-
-			// function body
-			this.oCPU.AX.Word = 0;
-
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2fa1_0728'");
-		}
-
-		public void F0_2fa1_085a()
-		{
-			this.oCPU.Log.EnterBlock("'F0_2fa1_085a'(Cdecl, Far) at 0x2fa1:0x085a");
-			this.oCPU.CS.Word = 0x2fa1; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0xe);
-			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), 0x4200);
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa));
-			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), this.oCPU.AX.Word);
-			this.oCPU.PushWord((ushort)(this.oCPU.BP.Word - 0xe));
-			this.oCPU.PushWord((ushort)(this.oCPU.BP.Word - 0xe));
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0884); // stack management - push return offset
-			// Instruction address 0x2fa1:0x087f, size: 5
-			this.oParent.MSCAPI.intdos();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2fa1; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x0);
-			if (this.oCPU.Flags.NE) goto L0894;
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2fa1_085a'");
-			return;
-
-		L0894:
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe));
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2fa1_085a'");
-		}
+		#endregion
 	}
 }

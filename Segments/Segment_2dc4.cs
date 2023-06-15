@@ -42,48 +42,17 @@ namespace Civilization1
 			this.oCPU.Log.ExitBlock("'F0_2dc4_0042'");
 		}
 
-		public void F0_2dc4_005d()
+		public void F0_2dc4_005d_GetRandomNumber()
 		{
-			this.oCPU.Log.EnterBlock("'F0_2dc4_005d'(Cdecl, Far) at 0x2dc4:0x005d");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
+			this.oCPU.Log.EnterBlock("'F0_2dc4_005d_GetRandomNumber'(Cdecl, Far) at 0x2dc4:0x005d");
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX,
+				((uint)this.oParent.MSCAPI.rand() *
+				(uint)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))) >> 15);
 
-			this.oCPU.PushWord(this.oCPU.DX.Word);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x006b); // stack management - push return offset
-			// Instruction address 0x2dc4:0x0066, size: 5
-			this.oParent.MSCAPI.rand();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
-
-			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-
-			this.oCPU.PushWord(this.oCPU.DX.Word);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0073); // stack management - push return offset
-			// Instruction address 0x2dc4:0x006e, size: 5
-			this.oParent.MSCAPI._aFlmul();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x8);
-
-			this.oCPU.CX.Low = 0xf;
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x007a); // stack management - push return offset
-			// Instruction address 0x2dc4:0x0075, size: 5
-			this.oParent.MSCAPI._aFlshr();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
-			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2dc4_005d'");
+			this.oCPU.Log.ExitBlock("'F0_2dc4_005d_GetRandomNumber'");
 		}
 
 		public void F0_2dc4_007c()

@@ -68,6 +68,7 @@ namespace Civilization1
 		private LogWrapper oVGALog;
 		private LogWrapper oVGADriverLog;
 		private LogWrapper oStringLog;
+		private LogWrapper oIntroLog;
 
 		#region Global Data
 		public ushort OverlaySegment = 0;
@@ -103,6 +104,7 @@ namespace Civilization1
 			this.oVGALog = new LogWrapper("VGALog.txt");
 			this.oVGADriverLog = new LogWrapper("VGADriverLog.txt");
 			this.oStringLog = new LogWrapper("StringLog.txt");
+			this.oIntroLog = new LogWrapper("IntroLog.txt");
 
 			this.oCPU = new CPU(this, this.oLog);
 
@@ -111,6 +113,7 @@ namespace Civilization1
 			this.oVGALog.CPU = this.oCPU;
 			this.oVGADriverLog.CPU = this.oCPU;
 			this.oStringLog.CPU = this.oCPU;
+			this.oIntroLog.CPU = this.oCPU;
 
 			#region Initialize Segments
 			this.oSegment_3045 = new Segment_3045(this);
@@ -277,6 +280,11 @@ namespace Civilization1
 		public LogWrapper StringLog
 		{
 			get { return this.oStringLog; }
+		}
+
+		public LogWrapper IntroLog
+		{
+			get { return this.oIntroLog; }
 		}
 		#endregion
 

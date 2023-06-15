@@ -892,14 +892,23 @@ namespace Civilization1
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), 0x4);
 			if (this.oCPU.Flags.L) goto L051a;
 
-		L052e:
+			L052e:
 			// Intro...
 			// Call to overlay
+			this.oCPU.Log = this.oParent.IntroLog;
+			this.oCPU.Log.EnterBlock("'Intro start'");
+			this.oParent.VGADriverLog.EnterBlock("'Intro start'");
+			this.oParent.InterruptLog.EnterBlock("'Intro start'");
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0533); // stack management - push return offset
 			this.oParent.Overlay_7.F7_0000_0012();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
+			this.oParent.InterruptLog.ExitBlock("'Intro end'");
+			this.oParent.VGADriverLog.ExitBlock("'Intro end'");
+			this.oCPU.Log.ExitBlock("'Intro end'");
+			this.oCPU.Log = this.oParent.Log;
+
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, this.oCPU.BX.Word, 0x0);
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
