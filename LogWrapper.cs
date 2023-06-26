@@ -60,6 +60,15 @@ namespace Civilization1
 			}
 		}
 
+		public void Write(string text)
+		{
+			if (this.oLog != null)
+			{
+				this.oLog.Write(text);
+				this.oLog.Flush();
+			}
+		}
+
 		private void WriteTabs(int level)
 		{
 			this.oLog.Write($"{new string('\t', level)}");

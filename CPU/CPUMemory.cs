@@ -318,17 +318,18 @@ namespace Disassembler
 
 		public void WriteBlock(uint address, byte[] srcData, int pos, int length)
 		{
-			for (int i = 0; i < length; i++)
+			Array.Copy(srcData, pos, this.aMemory, address, length);
+			/*for (int i = 0; i < length; i++)
 			{
 				WriteByte((uint)(address + i), srcData[pos + i]);
-			}
+			}*/
 		}
 		#endregion
 
 		#region Memory allocation
 		public bool AllocateMemoryBlock(uint address, uint size)
 		{
-			return AllocateMemoryBlock(address, size, CPUMemoryFlagsEnum.ReadWrite);
+			return AllocateMemoryBlock(address, size, CPUMemoryFlagsEnum.ReadWrite | CPUMemoryFlagsEnum.WriteWarning);
 		}
 
 		public bool AllocateMemoryBlock(uint address, uint size, CPUMemoryFlagsEnum flags)
@@ -341,7 +342,7 @@ namespace Disassembler
 				}
 			}
 
-			this.aMemoryRegions.Add(new CPUMemoryRegion(address, size, CPUMemoryFlagsEnum.ReadWrite));
+			this.aMemoryRegions.Add(new CPUMemoryRegion(address, size, flags));
 
 			AdjustFreeMemoryRange();
 
@@ -362,7 +363,7 @@ namespace Disassembler
 
 			// allocate block
 			startSegment = (ushort)((this.aMemoryRegions[0].Start >> 4) & 0xffff);
-			this.aMemoryRegions.Add(new CPUMemoryRegion(this.aMemoryRegions[0].Start, uiSize, CPUMemoryFlagsEnum.ReadWrite));
+			this.aMemoryRegions.Add(new CPUMemoryRegion(this.aMemoryRegions[0].Start, uiSize, CPUMemoryFlagsEnum.ReadWrite | CPUMemoryFlagsEnum.WriteWarning));
 
 			AdjustFreeMemoryRange();
 

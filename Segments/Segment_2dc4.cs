@@ -42,14 +42,16 @@ namespace Civilization1
 			this.oCPU.Log.ExitBlock("'F0_2dc4_0042'");
 		}
 
-		public void F0_2dc4_005d_GetRandomNumber()
+		public void F0_2dc4_005d_GetRandomNumber(ushort maxValue)
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_005d_GetRandomNumber'(Cdecl, Far) at 0x2dc4:0x005d");
 
 			// function body
-			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX,
-				((uint)this.oParent.MSCAPI.rand() *
-				(uint)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))) >> 15);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(maxValue));
+
+			//this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX,
+			//	((uint)this.oParent.MSCAPI.rand() *
+			//	(uint)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))) >> 15);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_2dc4_005d_GetRandomNumber'");

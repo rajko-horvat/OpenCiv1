@@ -167,6 +167,15 @@ namespace Civilization1
 			this.oSoundDriver = new NSound(this);
 			#endregion
 
+			// test for reverse array copy
+			/*byte[] abBuffer = new byte[256];
+
+			for (int i = 0; i < 256; i++)
+			{
+				abBuffer[i] = (byte)i;
+			}
+
+			Array.Copy(abBuffer, 20, abBuffer, 25, 10);*/
 
 			// export all bitmaps to file
 			/*string[] aFiles = Directory.GetFiles(this.oCPU.DefaultDirectory, "*.pic");
@@ -182,6 +191,23 @@ namespace Civilization1
 				}
 			}//*/
 
+			/*FileStream fonts = new FileStream($"{oCPU.DefaultDirectory}fonts.cv", FileMode.Open);
+			for (int i = 0, j=0; i < fonts.Length; i++)
+			{
+				if (i > 0)
+					this.oStringLog.Write(", ");
+
+				if (j == 16)
+				{
+					j = 0;
+					this.oStringLog.Write("\r\n");
+				}
+
+				this.oStringLog.Write($"0x{fonts.ReadByte():x2}");
+				j++;
+			}
+			fonts.Close();*/
+
 			// load old exe image to memory
 			oEXE = new MZExecutable("c:\\DOS\\CIV\\civ.exe");
 			oEXE.ApplyRelocations(usStartSegment);
@@ -195,11 +221,11 @@ namespace Civilization1
 			uint uiEnvirenmentLength = (uint)(((sEnvironment.Length + 1) + 0xf) & 0xfff0);
 			uint uiEnvironment = (uint)(0xff00 - uiEnvirenmentLength);
 
-			this.oCPU.Memory.AllocateMemoryBlock(uiEnvironment, uiEnvirenmentLength);
+			this.oCPU.Memory.AllocateMemoryBlock(uiEnvironment, uiEnvirenmentLength, CPUMemoryFlagsEnum.ReadWrite);
 			this.oCPU.WriteString(uiEnvironment, sEnvironment, sEnvironment.Length);
 			this.oCPU.Memory.MemoryRegions[1].AccessFlags = CPUMemoryFlagsEnum.Read;
 
-			this.oCPU.Memory.AllocateMemoryBlock(0xff00, 0x100);
+			this.oCPU.Memory.AllocateMemoryBlock(0xff00, 0x100, CPUMemoryFlagsEnum.ReadWrite);
 
 			this.oCPU.Memory.WriteWord(0xff00, 0x20cd);
 			this.oCPU.Memory.WriteWord(0xff02, (ushort)(this.oCPU.Memory.FreeMemory.End >> 4));
@@ -208,12 +234,16 @@ namespace Civilization1
 
 			this.oCPU.Memory.MemoryRegions[2].AccessFlags = CPUMemoryFlagsEnum.ReadWrite | CPUMemoryFlagsEnum.WriteWarning | CPUMemoryFlagsEnum.ReadWarning;
 
-			this.oCPU.Memory.AllocateMemoryBlock(0x10000, (uint)((uint)oEXE.Data.Length + ((uint)oEXE.MinimumAllocation << 4)));
+			this.oCPU.Memory.AllocateMemoryBlock(0x10000, (uint)((uint)oEXE.Data.Length + ((uint)oEXE.MinimumAllocation << 4)), CPUMemoryFlagsEnum.ReadWrite);
 			this.oCPU.Memory.WriteBlock(0x10000, oEXE.Data, 0, oEXE.Data.Length);
-			this.oCPU.Memory.MemoryRegions[3].AccessFlags = CPUMemoryFlagsEnum.ReadWrite | CPUMemoryFlagsEnum.WriteWarning;
+			this.oCPU.Memory.MemoryRegions[3].AccessFlags |= CPUMemoryFlagsEnum.WriteWarning;
 			//uint uiTemp = this.oCPU.Memory.MemoryRegions[3].End;
 			//this.oCPU.Memory.MemoryRegions[3].End = 0x3ffff;
 			//this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x40000, uiTemp - 0x40000));
+
+			// define data and stack region(s)
+			this.oCPU.Memory.MemoryRegions[3].End = 0x3b00f;
+			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0, 0xf0d0, CPUMemoryFlagsEnum.ReadWrite));
 
 			// initialize CPU
 			this.oCPU.CS.Word = (ushort)(oEXE.InitialCS + usStartSegment);

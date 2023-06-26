@@ -118,9 +118,9 @@ namespace Disassembler
 				this.PushWord(0x0);
 				this.PushWord(usCS);
 				this.oParent.Segment_1000.F0_1000_01a7_Timer();
-				PopDWord();
+				this.PopDWord();
 
-				PopF();
+				this.PopF();
 				this.oCS.Word = usCS;
 				if (!registersCheck.CheckMainRegisters(this))
 					throw new Exception("Return main registers doesn't match");

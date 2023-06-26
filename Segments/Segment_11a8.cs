@@ -249,7 +249,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0149); // stack management - push return offset
 			// Instruction address 0x11a8:0x0146, size: 3
-			F0_11a8_0486();
+			F0_11a8_0486_LogoAndMainGameMenu();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 
@@ -257,7 +257,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x014d); // stack management - push return offset
 			// Instruction address 0x11a8:0x014a, size: 3
-			F0_11a8_087c();
+			F0_11a8_087c_NewGameMenu();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 
@@ -780,7 +780,7 @@ namespace Civilization1
 			this.oCPU.Log.ExitBlock("'F0_11a8_046c'");
 		}
 
-		public void F0_11a8_0486()
+		public void F0_11a8_0486_LogoAndMainGameMenu()
 		{
 			this.oCPU.Log.EnterBlock("'F0_11a8_0486'(Cdecl, Far) at 0x11a8:0x0486");
 			this.oCPU.CS.Word = 0x11a8; // set this function segment
@@ -901,7 +901,7 @@ namespace Civilization1
 			this.oParent.InterruptLog.EnterBlock("'Intro start'");
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0533); // stack management - push return offset
-			this.oParent.Overlay_7.F7_0000_0012();
+			this.oParent.Overlay_7.F7_0000_0012_GameIntro();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			this.oParent.InterruptLog.ExitBlock("'Intro end'");
@@ -1318,7 +1318,7 @@ namespace Civilization1
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x07a4); // stack management - push return offset
-			this.oParent.Overlay_7.F7_0000_0012();
+			this.oParent.Overlay_7.F7_0000_0012_GameIntro();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa);
@@ -1490,7 +1490,7 @@ namespace Civilization1
 			this.oCPU.Log.ExitBlock("'F0_11a8_0486'");
 		}
 
-		public void F0_11a8_087c()
+		public void F0_11a8_087c_NewGameMenu()
 		{
 			this.oCPU.Log.EnterBlock("'F0_11a8_087c'(Cdecl, Far) at 0x11a8:0x087c");
 			this.oCPU.CS.Word = 0x11a8; // set this function segment

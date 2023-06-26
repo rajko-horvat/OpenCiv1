@@ -1,0 +1,33 @@
+This is a direct reconstruction of 'Fonts.cv' file from code in VGADriver.cs
+
+File offset		Font count
+0x0		0x9
+
+FontTablePtr	Font table
+File offset		pointers
+0x2				0x7c
+0x4				0x3e4
+0x6				0x68c
+0x8				0xf2f
+0xa				0x1bac
+0xc				0x2890
+0xe				0x3438
+0x10			0x3b60
+0x12			0x4347
+
+FontTablePtr - 9 = byte[ASCII range], character width table
+FontTablePtr - 8 = First ASCII character code
+FontTablePtr - 7 = Last ASCII character code
+FontTablePtr - 6 = Byte(s) per character
+FontTablePtr - 5 = Character width (if = 0 Font has width table)
+FontTablePtr - 4 = Character height
+FontTablePtr - 3 = Character width spacing
+FontTablePtr - 2 = Line spacing?
+FontTablePtr - 1 = Always 0
+
+FontTablePtr = Font map (most significant bit is first pixel)
+
+* 'Character Code Range' = 'Last ASCII character code' - 'First ASCII character code'
+* 'Font Width Table Pointer' = FontTablePtr - 9 - 'Character Code Range'
+* Each character line is defined by 'Byte(s) per character' field
+* Each Font Table Row is calculated as (('Character Code Range' + 1) << ('Byte(s) per character' - 1))

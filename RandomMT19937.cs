@@ -44,7 +44,7 @@ using System.Runtime.InteropServices;
  
  ***********************************************************************************
  
-   C# version (revision 1.0) by:
+   C# version (revision 1.01) by:
    Rajko Horvat
    Laboratory for information systems, Division of Electronics
    Rudjer Boskovic Institute, Croatia
@@ -136,6 +136,12 @@ public class RandomMT19937
 		return (int)(this.InternalSample() >> 1);
 	}
 
+	/// <summary>
+	/// Generates a random number on [0, maxValue) Int32 interval
+	/// </summary>
+	/// <param name="maxValue"></param>
+	/// <returns></returns>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public virtual int Next(int maxValue)
 	{
 		if (maxValue <= 0)
@@ -169,13 +175,19 @@ public class RandomMT19937
 		}
 	}
 
-	/* generates a random number on [0,1)-real-interval */
+	/// <summary>
+	/// Generates a random number on [0,1) real interval
+	/// </summary>
+	/// <returns></returns>
 	public virtual double NextDouble()
 	{
 		return this.Sample();
 	}
 
-	/* generates a random number on [0,1)-real-interval */
+	/// <summary>
+	/// Generates a random number on [0,1) real interval
+	/// </summary>
+	/// <returns></returns>
 	protected virtual double Sample()
 	{
 		return (this.InternalSample() * 2.3283064365386962890625e-10);

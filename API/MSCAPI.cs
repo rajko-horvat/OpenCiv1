@@ -2315,12 +2315,12 @@ namespace Civilization1
 				(uint)time(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)))));
 		}
 
-		public int time(uint timeAddress)
+		public int time(uint timePtr)
 		{
 			int iTotalSeconds = (int)Math.Floor((DateTime.Now - (new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds);
 
-			if (timeAddress != 0)
-				this.oCPU.Memory.WriteDWord(timeAddress, (uint)iTotalSeconds);
+			if (timePtr != 0)
+				this.oCPU.Memory.WriteDWord(timePtr, (uint)iTotalSeconds);
 
 			return iTotalSeconds;
 		}
@@ -2353,6 +2353,11 @@ namespace Civilization1
 		{
 			this.oCPU.AX.Word = (ushort)(this.oRNG.UNext() & 0x7fff);
 			return (short)this.oCPU.AX.Word;
+		}
+
+		public RandomMT19937 RNG
+		{
+			get { return this.oRNG; }
 		}
 		#endregion
 
