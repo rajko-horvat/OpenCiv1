@@ -1640,6 +1640,24 @@ namespace Civilization1
 			string sFileName = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.DX.Word));
 			ushort usSegment = this.oCPU.Memory.ReadWord(CPUMemory.ToLinearAddress(this.oCPU.ES.Word, this.oCPU.BX.Word));
 
+			this.oCPU.PushWord(this.oCPU.BP.Word);
+			this.oCPU.PushWord(this.oCPU.SI.Word);
+			this.oCPU.PushWord(this.oCPU.DI.Word);
+			this.oCPU.PushWord(this.oCPU.DS.Word);
+			this.oCPU.PushWord(this.oCPU.ES.Word);
+			this.oCPU.WriteWord(this.oCPU.CS.Word, 0xbb8, this.oCPU.SS.Word);
+			this.oCPU.WriteWord(this.oCPU.CS.Word, 0xbb6, this.oCPU.SP.Word);
+
+			this.oCPU.INT(0x21);
+
+			this.oCPU.SS.Word = this.oCPU.ReadWord(this.oCPU.CS.Word, 0xbb8);
+			this.oCPU.SP.Word = this.oCPU.ReadWord(this.oCPU.CS.Word, 0xbb6);
+			this.oCPU.ES.Word = this.oCPU.PopWord();
+			this.oCPU.DS.Word = this.oCPU.PopWord();
+			this.oCPU.DI.Word = this.oCPU.PopWord();
+			this.oCPU.SI.Word = this.oCPU.PopWord();
+			this.oCPU.BP.Word = this.oCPU.PopWord();
+
 			switch (sFileName.ToLower())
 			{
 				case "misc.exe":
@@ -1658,21 +1676,6 @@ namespace Civilization1
 					throw new Exception("Unknown overlay name");
 			}
 
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.PushWord(this.oCPU.DI.Word);
-			this.oCPU.PushWord(this.oCPU.DS.Word);
-			this.oCPU.PushWord(this.oCPU.ES.Word);
-			this.oCPU.WriteWord(this.oCPU.CS.Word, 0xbb8, this.oCPU.SS.Word);
-			this.oCPU.WriteWord(this.oCPU.CS.Word, 0xbb6, this.oCPU.SP.Word);
-			this.oCPU.INT(0x21);
-			this.oCPU.SS.Word = this.oCPU.ReadWord(this.oCPU.CS.Word, 0xbb8);
-			this.oCPU.SP.Word = this.oCPU.ReadWord(this.oCPU.CS.Word, 0xbb6);
-			this.oCPU.ES.Word = this.oCPU.PopWord();
-			this.oCPU.DS.Word = this.oCPU.PopWord();
-			this.oCPU.DI.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.PopWord();
-			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Near return
 			this.oCPU.Log.ExitBlock("'F0_1000_0bba'");
 		}

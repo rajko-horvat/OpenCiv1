@@ -1,5 +1,5 @@
 Struct at Pointer 0xaa (size 0x12):
-0x0		- word, page
+0x0		- word, screen page
 0x2		- word, X offset
 0x4		- word, Y offset
 0x6		- word, maximum width

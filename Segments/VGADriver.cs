@@ -1,17 +1,24 @@
 using Disassembler;
+using IRB.Collections.Generic;
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 
 namespace Civilization1
 {
 	public class VGADriver
 	{
+		public static ushort ScreenWidth = 320;
+		public static ushort ScreenHeight = 200;
+		public static ushort ScreenStride = 320 / 4; // Stride has to be a multiple of 4 bytes
+
 		private Civilization oParent;
 		private CPU oCPU;
 		private ushort usSegment = 0;
-		private static ushort ScreenWidth = 320;
-		private static ushort ScreenHeight = 200;
+
+		private BDictionary<int, VGAPlane> aPlanes = new BDictionary<int, VGAPlane>();
+		private VGAPlane oMainPlane;
 
 		private ushort Var_6b3 = 0;
 		private ushort Var_6b5 = 0;
@@ -1275,6 +1282,9 @@ namespace Civilization1
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
+
+			this.oMainPlane = new VGAPlane();
+			this.aPlanes.Add(0, this.oMainPlane);
 		}
 
 		public ushort Segment
@@ -1287,24 +1297,25 @@ namespace Civilization1
 				this.oCPU.WriteWord(this.usSegment, 0x2a, (ushort)(this.usSegment + 0x13c));
 				this.oCPU.WriteWord(this.usSegment, 0x1988, (ushort)(this.usSegment + 0x13c));
 
-				int iFonts = this.Var_19f0_FontTable[0];
-				int iPos = iFonts * 2 + 2;
+				/*this.oCPU.Log.EnterBlock("Color block 1");
 
-				/*for (int i = 0; i < iFonts; i++)
+				for (int i = 0; i < 16; i++)
 				{
-					FileStream writer = new FileStream($"{this.oCPU.DefaultDirectory}Font{i + 1}.bin", FileMode.OpenOrCreate);
-					int iPtr = FontTableReadWord((i + 1) * 2);
-					writer.Write(this.Var_19f0_FontTable, iPos, iPtr - iPos);
-					writer.Close();
-					iPos = iPtr;
+					ushort usTemp = (ushort)(0x1410 + i * 3);
+					Color color = VGAPlane.GetColor18(this.oCPU.ReadByte(this.usSegment, usTemp),
+						this.oCPU.ReadByte(this.usSegment, (ushort)(usTemp + 1)),
+						this.oCPU.ReadByte(this.usSegment, (ushort)(usTemp + 2)));
+
+					this.oCPU.Log.WriteLine($"Palette index {i}, #{color.ToArgb():x6}");
 				}
-				Console.WriteLine($"Last offset: 0x{iPos:x4}");*/
+
+				this.oCPU.Log.ExitBlock("Color block 1");*/
 			}
 		}
 
-		private ushort FontTableReadWord(int tablePtr)
+		public VGAPlane MainPlane
 		{
-			return (ushort)((ushort)this.Var_19f0_FontTable[tablePtr] | ((ushort)this.Var_19f0_FontTable[tablePtr + 1] << 8));
+			get { return this.oMainPlane; }
 		}
 
 		public void F0_VGA_009a_ReplaceColor(ushort struct1, ushort xPos, ushort yPos, ushort width, ushort height, byte oldColor, byte newColor)
@@ -1321,16 +1332,16 @@ namespace Civilization1
 			ushort usYOffset = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(struct1 + 0x4));
 			usYOffset += yPos;
 
-			if (usXOffset >= ScreenWidth)
+			if (usXOffset >= VGADriver.ScreenWidth)
 				throw new Exception("X coordinate is too large");
 
-			if (usYOffset >= ScreenHeight)
+			if (usYOffset >= VGADriver.ScreenHeight)
 				throw new Exception("Y coordinate is too large");
 
-			ushort usDestinationPtr = (ushort)(usYOffset * ScreenWidth);
+			ushort usDestinationPtr = (ushort)(usYOffset * VGADriver.ScreenWidth);
 			usDestinationPtr += usXOffset;
 
-			ushort usNewRowOffset = (ushort)(ScreenWidth - width);
+			ushort usNewRowOffset = (ushort)(VGADriver.ScreenWidth - width);
 
 			//ushort usDestinationSegment = this.oCPU.Memory.ReadWord(this.usSegment, (ushort)(0x1970 + (this.oCPU.ReadWord(this.oCPU.DS.Word, struct1) << 1)));
 			ushort usDestinationSegment = this.Var_1970[this.oCPU.ReadWord(this.oCPU.DS.Word, struct1)];
@@ -1354,71 +1365,27 @@ namespace Civilization1
 			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_VGA_010c()
+		public void F0_VGA_010c_SetColorsByIndexArray(ushort indexArrayPtr)
 		{
 			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_010c'");
+			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_010c_SetColorsByIndexArray'");
 			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock("'F0_VGA_010c'");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
+			this.oCPU.Log.EnterBlock("'F0_VGA_010c_SetColorsByIndexArray'");
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.PushWord(this.oCPU.DI.Word);
-			this.oCPU.PushWord(this.oCPU.DS.Word);
+			Color[] aColors = new Color[16];
 
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.BX.Word = 0xffff;
-			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x10));
+			for (int i = 0; i < 16; i++)
+			{
+				aColors[i] = VGAPlane.Palette1[this.oCPU.ReadByte(this.oCPU.DS.Word, indexArrayPtr)];
 
-		L011b:
-			this.oCPU.BX.Word++;
-			this.oCPU.CMPWord(this.oCPU.BX.Word, 0xf);
-			if (this.oCPU.Flags.A) goto L012a;
-			this.oCPU.CMPByte(this.oCPU.AX.Low, this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + this.oCPU.BX.Word)));
-			if (this.oCPU.Flags.NE) goto L011b;
-			this.oCPU.BX.High = this.oCPU.BX.Low;
-		/*this.oCPU.PushWord(0x012a); // stack management - push return offset
-		// Instruction address 0x0000:0x0127, size: 3
-		F0_VGA_01ed_SetOverscanColor();
-		this.oCPU.PopWord(); // stack management - pop return offset*/
+				indexArrayPtr++;
+			}
 
-		L012a:
-			this.oCPU.DS.Word = this.oCPU.ReadWord(this.oCPU.CS.Word, 0x1988);
-			this.oCPU.ES.Word = this.oCPU.AX.Word;
-			this.oCPU.BX.Word = this.oCPU.SI.Word;
+			this.oMainPlane.SetColorsFromArray(aColors, 0, 0, 16);
 
-			this.oCPU.DI.Word = 0x1d0;
-			this.oCPU.AX.High = 0x0;
-			this.oCPU.CX.Word = 0x10;
-
-		L013d:
-			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, this.oCPU.BX.Word);
-			this.oCPU.BX.Word = this.oCPU.INCWord(this.oCPU.BX.Word);
-			this.oCPU.SI.Word = 0x50;
-			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
-			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
-			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
-			this.oCPU.MOVSByte(this.oCPU.DS, this.oCPU.SI, this.oCPU.ES, this.oCPU.DI);
-			this.oCPU.MOVSByte(this.oCPU.DS, this.oCPU.SI, this.oCPU.ES, this.oCPU.DI);
-			this.oCPU.MOVSByte(this.oCPU.DS, this.oCPU.SI, this.oCPU.ES, this.oCPU.DI);
-			if (this.oCPU.Loop(this.oCPU.CX)) goto L013d;
-
-			//this.oCPU.BX.Word = 0x0;
-			//this.oCPU.CX.Word = 0x10;
-			//this.oCPU.DX.Word = 0x1d0;
-
-			// Instruction address 0x0000:0x015a, size: 3
-			F0_VGA_01a1_SetColorBlock(this.oCPU.ES.Word, 0x1d0, 0, 16);
-
-			this.oCPU.DS.Word = this.oCPU.PopWord();
-			this.oCPU.DI.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.PopWord();
-			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_VGA_010c'");
+			this.oCPU.Log.ExitBlock("'F0_VGA_010c_SetColorsByIndexArray'");
 			this.oCPU.Log = oTempLog;
 		}
 
@@ -1761,7 +1728,7 @@ namespace Civilization1
 			this.oCPU.Log.EnterBlock($"'F0_VGA_03df_CopyLine'(0x{bufferPtr:x4}, {page}, {xPos}, {yPos}, {width})");
 
 			// function body
-			ushort usDestinationAddress = (ushort)((yPos * ScreenWidth) + xPos);
+			ushort usDestinationAddress = (ushort)((yPos * VGADriver.ScreenWidth) + xPos);
 			//ushort usDestinationSegment = this.oCPU.Memory.ReadWord(this.usSegment, (ushort)(0x1970 + (page << 1)));
 			ushort usDestinationSegment = this.Var_1970[page];
 
@@ -1784,7 +1751,7 @@ namespace Civilization1
 			this.oCPU.Log.EnterBlock($"'F0_VGA_03df_CopyLine'(buffer, {page}, {xPos}, {yPos}, {width})");
 
 			// function body
-			ushort usDestinationAddress = (ushort)((yPos * ScreenWidth) + xPos);
+			ushort usDestinationAddress = (ushort)((yPos * VGADriver.ScreenWidth) + xPos);
 			//ushort usDestinationSegment = this.oCPU.Memory.ReadWord(this.usSegment, (ushort)(0x1970 + (page << 1)));
 			ushort usDestinationSegment = this.Var_1970[page];
 
@@ -2003,7 +1970,6 @@ namespace Civilization1
 			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_04e8_InitVGA'");
 			this.oCPU.Log = this.oParent.VGADriverLog;
 			this.oCPU.Log.EnterBlock("'F0_VGA_04e8_InitVGA'");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -2965,10 +2931,10 @@ namespace Civilization1
 			this.Var_8ae--;
 			if (this.oCPU.Flags.NE) goto L0bcc;
 
-		L0be0:
+			L0be0:
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0be5); // stack management - push return offset
-			// Instruction address 0x0000:0x0be2, size: 3
+										// Instruction address 0x0000:0x0be2, size: 3
 			F0_VGA_0ac6();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
@@ -3308,6 +3274,12 @@ namespace Civilization1
 			this.oCPU.Log = oTempLog;
 		}
 
+		#region Fonts
+		private ushort FontTableReadWord(int tablePtr)
+		{
+			return (ushort)((ushort)this.Var_19f0_FontTable[tablePtr] | ((ushort)this.Var_19f0_FontTable[tablePtr + 1] << 8));
+		}
+
 		public void F0_VGA_115d_GetCharWidth(ushort fontID, byte ch)
 		{
 			LogWrapper oTempLog = this.oCPU.Log;
@@ -3321,9 +3293,7 @@ namespace Civilization1
 
 			if (fontID > 0 && fontID <= FontTableReadWord(0) && ch < 128)
 			{
-				// Word at CS:0x1988 + 0x630 is offset to Font table
 				ushort usFontPtr = FontTableReadWord(fontID << 1);
-				//this.oCPU.BX.Word = this.oCPU.ADDWord(this.oCPU.BX.Word, 0x630);
 
 				if (ch >= this.Var_19f0_FontTable[usFontPtr - 8] && ch <= this.Var_19f0_FontTable[usFontPtr - 7])
 				{
@@ -3423,7 +3393,6 @@ namespace Civilization1
 			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_11d7_DrawText'");
 			this.oCPU.Log = this.oParent.VGADriverLog;
 			this.oCPU.Log.EnterBlock("'F0_VGA_11d7_DrawText'");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			this.oCPU.Log.WriteLine("// Parameters: ({" +
 				$"Page: {this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(structPtr))}, " +
@@ -3630,5 +3599,6 @@ namespace Civilization1
 			this.oCPU.Log.ExitBlock("'F0_VGA_11d7_DrawText'");
 			this.oCPU.Log = oTempLog;
 		}
+		#endregion
 	}
 }
