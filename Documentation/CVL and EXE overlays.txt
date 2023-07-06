@@ -31,7 +31,7 @@ For example, the file MISC.EXE is mapped in main EXE (jmp instruction segment is
 * jmp instruction at offset 0xa10 is mapped to function 7
 * jmp instruction at offset 0xa17 is mapped to function 8
 
-Graphics drivers EGRAPHIC.EXE, MGRAPHIC.EXE and TGRAPHIC.EXE mappings:
+Graphics drivers EGRAPHIC.EXE, MGRAPHIC.EXE and TGRAPHIC.EXE (only one driver is loaded) mappings:
 * jmp instruction at offset 0x770 is mapped to function 1
 * jmp instruction at offset 0x777 is mapped to function 2
 * jmp instruction at offset 0x77e is mapped to function 3
@@ -85,7 +85,7 @@ Graphics drivers EGRAPHIC.EXE, MGRAPHIC.EXE and TGRAPHIC.EXE mappings:
 * jmp instruction at offset 0x8ce is mapped to function 51
 * jmp instruction at offset 0x8d5 is mapped to function 52
 
-Sound drivers ASOUND.CVL, ISOUND.CVL, NSOUND.CVL, RSOUND.CVL, TSOUND.CVL mappings:
+Sound drivers ASOUND.CVL, ISOUND.CVL, NSOUND.CVL, RSOUND.CVL and TSOUND.CVL (only one driver is loaded) mappings:
 * jmp instruction at offset 0xa2c is mapped to function 1
 * jmp instruction at offset 0xa33 is mapped to function 2
 * jmp instruction at offset 0xa3a is mapped to function 3
