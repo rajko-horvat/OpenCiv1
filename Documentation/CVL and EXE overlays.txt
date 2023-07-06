@@ -1,4 +1,4 @@
-This is the specification for the overlay files:
+This is the specification for the overlay (driver) files:
 * EGRAPHIC.EXE,
 * MGRAPHIC.EXE, 
 * MISC.EXE, 
