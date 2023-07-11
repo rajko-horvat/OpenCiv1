@@ -18,15 +18,12 @@ namespace Disassembler
 		private byte[] aMemory = new byte[uiMemorySize];
 		private List<CPUMemoryRegion> aMemoryRegions = new List<CPUMemoryRegion>();
 
-		private CPUMemoryRegion oGPURegion_B0 = new CPUMemoryRegion((ushort)0xa000, 0, 0x10000);
-		private VGACard oGPU;
-
+		private CPUMemoryRegion oGPURegion = new CPUMemoryRegion((ushort)0xa000, 0, 0x10000);
 		private CPU oCPU;
 
-		public CPUMemory(CPU cpu, VGACard gpu)
+		public CPUMemory(CPU cpu)
 		{
 			this.oCPU = cpu;
-			this.oGPU = gpu;
 			this.aMemoryRegions.Add(new CPUMemoryRegion(0, uiMaxFreeAddress, CPUMemoryFlagsEnum.ReadWrite | 
 				CPUMemoryFlagsEnum.ReadWarning | CPUMemoryFlagsEnum.WriteWarning));
 		}
@@ -90,7 +87,7 @@ namespace Disassembler
 		{
 			if (!this.HasAccess(address, 1, CPUMemoryFlagsEnum.Read))
 			{
-				this.oCPU.Log.WriteLine($"Attempt to read byte from protected area at 0x{address:x8}");
+				this.oCPU.Log.WriteLine($"// Attempt to read byte from protected area at 0x{address:x8}");
 				return 0;
 			}
 
@@ -99,18 +96,19 @@ namespace Disassembler
 				if (this.aMemoryRegions[i].CheckBounds(address, 1))
 				{
 					if ((this.aMemoryRegions[i].AccessFlags & CPUMemoryFlagsEnum.ReadWarning) == CPUMemoryFlagsEnum.ReadWarning)
-						this.oCPU.Log.WriteLine($"Warning: Read byte at 0x{address:x8}");
+						this.oCPU.Log.WriteLine($"// Warning: Read byte at 0x{address:x8}");
 
 					return this.aMemory[address];
 				}
 			}
 
-			if (this.oGPURegion_B0.CheckBounds(address, 1))
+			if (this.oGPURegion.CheckBounds(address, 1))
 			{
-				return this.oGPU.ReadByte(this.oGPURegion_B0.MapAddress(address));
+				this.oCPU.Log.WriteLine($"// Error: Attempt to read byte in VGA memory at address 0x{address:x8}");
+				return 0;
 			}
 
-			this.oCPU.Log.WriteLine($"Error: Attempt to read byte at undefined address 0x{address:x8}");
+			this.oCPU.Log.WriteLine($"// Error: Attempt to read byte at undefined address 0x{address:x8}");
 			return 0;
 		}
 
@@ -123,7 +121,7 @@ namespace Disassembler
 		{
 			if (!this.HasAccess(address, 2, CPUMemoryFlagsEnum.Read))
 			{
-				this.oCPU.Log.WriteLine($"Attempt to read word from protected area at 0x{address:x8}");
+				this.oCPU.Log.WriteLine($"// Attempt to read word from protected area at 0x{address:x8}");
 				return 0;
 			}
 
@@ -132,7 +130,7 @@ namespace Disassembler
 				if (this.aMemoryRegions[i].CheckBounds(address, 2))
 				{
 					if ((this.aMemoryRegions[i].AccessFlags & CPUMemoryFlagsEnum.ReadWarning) == CPUMemoryFlagsEnum.ReadWarning)
-						this.oCPU.Log.WriteLine($"Warning: Read word at 0x{address:x8}");
+						this.oCPU.Log.WriteLine($"// Warning: Read word at 0x{address:x8}");
 
 					uint uiLocation = address;
 
@@ -141,12 +139,13 @@ namespace Disassembler
 				}
 			}
 
-			if (this.oGPURegion_B0.CheckBounds(address))
+			if (this.oGPURegion.CheckBounds(address))
 			{
-				return this.oGPU.ReadWord(this.oGPURegion_B0.MapAddress(address));
+				this.oCPU.Log.WriteLine($"// Error: Attempt to read word in VGA memory at address 0x{address:x8}");
+				return 0;
 			}
 
-			this.oCPU.Log.WriteLine($"Error: Attempt to read word at undefined address 0x{address:x8}");
+			this.oCPU.Log.WriteLine($"// Error: Attempt to read word at undefined address 0x{address:x8}");
 			return 0;
 		}
 
@@ -159,7 +158,7 @@ namespace Disassembler
 		{
 			if (!this.HasAccess(address, 4, CPUMemoryFlagsEnum.Read))
 			{
-				this.oCPU.Log.WriteLine($"Attempt to read dword from protected area at 0x{address:x8}");
+				this.oCPU.Log.WriteLine($"// Attempt to read dword from protected area at 0x{address:x8}");
 				return 0;
 			}
 
@@ -168,7 +167,7 @@ namespace Disassembler
 				if (this.aMemoryRegions[i].CheckBounds(address, 4))
 				{
 					if ((this.aMemoryRegions[i].AccessFlags & CPUMemoryFlagsEnum.ReadWarning) == CPUMemoryFlagsEnum.ReadWarning)
-						this.oCPU.Log.WriteLine($"Warning: Read dword at 0x{address:x8}");
+						this.oCPU.Log.WriteLine($"// Warning: Read dword at 0x{address:x8}");
 
 					uint uiLocation = address;
 
@@ -179,9 +178,10 @@ namespace Disassembler
 				}
 			}
 
-			if (this.oGPURegion_B0.CheckBounds(address))
+			if (this.oGPURegion.CheckBounds(address))
 			{
-				return this.oGPU.ReadDWord(this.oGPURegion_B0.MapAddress(address));
+				this.oCPU.Log.WriteLine($"// Error: Attempt to read dword in VGA memory at address 0x{address:x8}");
+				return 0;
 			}
 
 			this.oCPU.Log.WriteLine($"Error: Attempt to read dword at undefined address 0x{address:x8}");
@@ -199,7 +199,7 @@ namespace Disassembler
 		{
 			if (!this.HasAccess(address, 1, CPUMemoryFlagsEnum.Write))
 			{
-				this.oCPU.Log.WriteLine($"Attempt to write to protected area at 0x{address:x8}");
+				this.oCPU.Log.WriteLine($"// Attempt to write to protected area at 0x{address:x8}");
 				return;
 			}
 
@@ -209,7 +209,7 @@ namespace Disassembler
 				if (this.aMemoryRegions[i].CheckBounds(address, 1))
 				{
 					if ((this.aMemoryRegions[i].AccessFlags & CPUMemoryFlagsEnum.WriteWarning) == CPUMemoryFlagsEnum.WriteWarning)
-						this.oCPU.Log.WriteLine($"Warning: Write byte at 0x{address:x8}");
+						this.oCPU.Log.WriteLine($"// Warning: Write byte at 0x{address:x8}");
 
 					this.aMemory[address] = value;
 					bFound = true;
@@ -217,14 +217,14 @@ namespace Disassembler
 				}
 			}
 
-			if (this.oGPURegion_B0.CheckBounds(address))
+			if (this.oGPURegion.CheckBounds(address))
 			{
-				this.oGPU.WriteByte(this.oGPURegion_B0.MapAddress(address), value);
+				this.oCPU.Log.WriteLine($"// Error: Attempt to write byte to VGA memory at address 0x{address:x8}");
 				bFound = true;
 			}
 
 			if (!bFound)
-				this.oCPU.Log.WriteLine($"Error: Attempt to write byte at undefined address 0x{address:x8}");
+				this.oCPU.Log.WriteLine($"// Error: Attempt to write byte at undefined address 0x{address:x8}");
 		}
 
 		public void WriteWord(ushort segment, ushort offset, ushort value)
@@ -236,7 +236,7 @@ namespace Disassembler
 		{
 			if (!this.HasAccess(address, 2, CPUMemoryFlagsEnum.Write))
 			{
-				this.oCPU.Log.WriteLine($"Attempt to write to protected area at 0x{address:x8}");
+				this.oCPU.Log.WriteLine($"// Attempt to write to protected area at 0x{address:x8}");
 				return;
 			}
 
@@ -246,7 +246,7 @@ namespace Disassembler
 				if (this.aMemoryRegions[i].CheckBounds(address, 2))
 				{
 					if ((this.aMemoryRegions[i].AccessFlags & CPUMemoryFlagsEnum.WriteWarning) == CPUMemoryFlagsEnum.WriteWarning)
-						this.oCPU.Log.WriteLine($"Warning: Write word at 0x{address:x8}");
+						this.oCPU.Log.WriteLine($"// Warning: Write word at 0x{address:x8}");
 
 					uint uiLocation = address;
 
@@ -257,14 +257,14 @@ namespace Disassembler
 				}
 			}
 
-			if (this.oGPURegion_B0.CheckBounds(address))
+			if (this.oGPURegion.CheckBounds(address))
 			{
-				this.oGPU.WriteWord(this.oGPURegion_B0.MapAddress(address), value);
+				this.oCPU.Log.WriteLine($"// Error: Attempt to write word to VGA memory at address 0x{address:x8}");
 				bFound = true;
 			}
 
 			if (!bFound)
-				this.oCPU.Log.WriteLine($"Error: Attempt to write word at undefined address 0x{address:x8}");
+				this.oCPU.Log.WriteLine($"// Error: Attempt to write word at undefined address 0x{address:x8}");
 		}
 
 		public void WriteDWord(ushort segment, ushort offset, uint value)
@@ -276,7 +276,7 @@ namespace Disassembler
 		{
 			if (!this.HasAccess(address, 4, CPUMemoryFlagsEnum.Write))
 			{
-				this.oCPU.Log.WriteLine($"Attempt to write to protected area at 0x{address:x8}");
+				this.oCPU.Log.WriteLine($"// Attempt to write to protected area at 0x{address:x8}");
 				return;
 			}
 
@@ -286,7 +286,7 @@ namespace Disassembler
 				if (this.aMemoryRegions[i].CheckBounds(address, 4))
 				{
 					if ((this.aMemoryRegions[i].AccessFlags & CPUMemoryFlagsEnum.WriteWarning) == CPUMemoryFlagsEnum.WriteWarning)
-						this.oCPU.Log.WriteLine($"Warning: Write dword at 0x{address:x8}");
+						this.oCPU.Log.WriteLine($"// Warning: Write dword at 0x{address:x8}");
 
 					uint uiLocation = address;
 
@@ -298,14 +298,14 @@ namespace Disassembler
 					break;
 				}
 			}
-			if (this.oGPURegion_B0.CheckBounds(address))
+			if (this.oGPURegion.CheckBounds(address))
 			{
-				this.oGPU.WriteDWord(this.oGPURegion_B0.MapAddress(address), value);
+				this.oCPU.Log.WriteLine($"// Error: Attempt to write dword to VGA memory at address 0x{address:x8}");
 				bFound = true;
 			}
 
 			if (!bFound)
-				this.oCPU.Log.WriteLine($"Error: Attempt to write dword at undefined address 0x{address:x8}");
+				this.oCPU.Log.WriteLine($"// Error: Attempt to write dword at undefined address 0x{address:x8}");
 		}
 
 		#endregion

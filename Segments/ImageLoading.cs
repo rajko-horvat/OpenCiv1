@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.ComponentModel.Design;
+using System.Collections;
 
 namespace Civilization1
 {
@@ -46,7 +47,7 @@ namespace Civilization1
 			public ushort Var_68f8 = 0;
 			public byte Var_68fa = 0;
 
-			public byte[] TranslationTable = new byte[0x1800];
+			public byte[] abDictionary = new byte[0x1800];
 
 			public ImageDecoderState(bool wordMode)
 			{
@@ -54,9 +55,9 @@ namespace Civilization1
 
 				for (int i = 0; i < 2048; i++)
 				{
-					this.TranslationTable[i * 3] = 0xff;
-					this.TranslationTable[i * 3 + 1] = 0xff;
-					this.TranslationTable[i * 3 + 2] = (byte)((i < 256) ? i : 0);
+					this.abDictionary[i * 3] = 0xff;
+					this.abDictionary[i * 3 + 1] = 0xff;
+					this.abDictionary[i * 3 + 2] = (byte)((i < 256) ? i : 0);
 				}
 			}
 		}
@@ -83,8 +84,6 @@ namespace Civilization1
 				state.Var_68ef = (byte)Math.Min((usTemp & 0xff), 0xb);
 				state.Var_68f4 = (ushort)((usTemp & 0xff00) | state.Var_68ef);
 
-				// bitmap, or image width has to be multiple of 4 for some reason!!!
-				// by me, this constitutes as a bug!
 				state.Stride = state.Width;
 				if ((state.Width & 0x3) != 0)
 				{
@@ -103,7 +102,6 @@ namespace Civilization1
 			}
 			else
 			{
-				// bitmap, or image width has to be multiple of 4 for some reason!!!
 				state.Stride = state.Width;
 				if (state.Width > 0 && (state.Width & 0x3) != 0)
 				{
@@ -299,23 +297,23 @@ namespace Civilization1
 				this.oCPU.BX.Word = this.oCPU.AX.Word;
 				this.oCPU.BX.Word += this.oCPU.AX.Word;
 				this.oCPU.BX.Word += this.oCPU.AX.Word;
-				this.oCPU.AX.Word = (ushort)((ushort)state.TranslationTable[this.oCPU.BX.Word] | ((ushort)state.TranslationTable[this.oCPU.BX.Word + 1] << 8));
+				this.oCPU.AX.Word = (ushort)((ushort)state.abDictionary[this.oCPU.BX.Word] | ((ushort)state.abDictionary[this.oCPU.BX.Word + 1] << 8));
 				this.oCPU.AX.Word++;
 				if (this.oCPU.AX.Word == 0) goto L138c;
 				this.oCPU.AX.Word--;
-				this.oCPU.BX.Low = state.TranslationTable[this.oCPU.BX.Word + 2];
+				this.oCPU.BX.Low = state.abDictionary[this.oCPU.BX.Word + 2];
 				state.DataStack.Push(this.oCPU.BX.Low);
 				goto L1377;
 
 			L138c:
-				this.oCPU.AX.Low = state.TranslationTable[this.oCPU.BX.Word + 2];
+				this.oCPU.AX.Low = state.abDictionary[this.oCPU.BX.Word + 2];
 				state.Var_68fa = this.oCPU.AX.Low;
 				state.DataStack.Push(this.oCPU.AX.Low);
 				this.oCPU.BX.Word = (ushort)(state.Var_68f2 * 3);
-				state.TranslationTable[this.oCPU.BX.Word + 2] = this.oCPU.AX.Low;
+				state.abDictionary[this.oCPU.BX.Word + 2] = this.oCPU.AX.Low;
 				this.oCPU.AX.Word = state.Var_68f8;
-				state.TranslationTable[this.oCPU.BX.Word] = (byte)(this.oCPU.AX.Word & 0xff);
-				state.TranslationTable[this.oCPU.BX.Word + 1] = (byte)((this.oCPU.AX.Word & 0xff00) >> 8);
+				state.abDictionary[this.oCPU.BX.Word] = (byte)(this.oCPU.AX.Word & 0xff);
+				state.abDictionary[this.oCPU.BX.Word + 1] = (byte)((this.oCPU.AX.Word & 0xff00) >> 8);
 				state.Var_68f2++;
 
 				if (state.Var_68f2 > state.Var_68f0)
@@ -333,9 +331,9 @@ namespace Civilization1
 
 					for (int i = 0; i < 2048; i++)
 					{
-						state.TranslationTable[i * 3] = 0xff;
-						state.TranslationTable[i * 3 + 1] = 0xff;
-						state.TranslationTable[i * 3 + 2] = (byte)((i < 256) ? i : 0);
+						state.abDictionary[i * 3] = 0xff;
+						state.abDictionary[i * 3 + 1] = 0xff;
+						state.abDictionary[i * 3 + 2] = (byte)((i < 256) ? i : 0);
 					}
 
 					state.Var_68f8 = 0;
@@ -521,47 +519,87 @@ namespace Civilization1
 		#endregion
 
 		#region Old Image loading functions
-		public void F0_2fa1_01a2_LoadBitmapOrPalette(short page, ushort xPos, ushort yPos, ushort filenamePtr, ushort palettePtr)
+		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, ushort xPos, ushort yPos, ushort filenamePtr, ushort palettePtr)
 		{
-			this.oCPU.Log.EnterBlock($"'F0_2fa1_01a2_LoadImageOrPalette'(0x{page:x4}, 0x{xPos:x4}, 0x{yPos:x4}, " +
-				$"'{this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr))}', 0x{palettePtr:x4})");
+			string filename = this.oCPU.DefaultDirectory + this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr));
+			this.oCPU.Log.EnterBlock($"'F0_2fa1_01a2_LoadBitmapOrPalette'(0x{screenID:x4}, 0x{xPos:x4}, 0x{yPos:x4}, " +
+				$"'{filename}', 0x{palettePtr:x4})");
 			this.oCPU.CS.Word = 0x2fa1; // set this function segment
 
-			// function body
-			string filename = this.oCPU.DefaultDirectory + this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr));
-			FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read);
-
-			bool bWordMode = F0_1000_108e_LoadPalette(stream, palettePtr);
-
-			ImageDecoderState state = new ImageDecoderState(bWordMode);
-
-			state.UnknownValue1 = ReadUInt16FromStream(stream);
-			state.Width = ReadUInt16FromStream(stream);
-			state.Height = ReadUInt16FromStream(stream);
-
-			// init state
-			if (state.Width > 0 && state.Height > 0)
+			if (screenID > 0 && Path.GetExtension(filename).Equals(".pic", StringComparison.InvariantCultureIgnoreCase))
 			{
-				ushort usTemp = Math.Min(ReadUInt16FromStream(stream), (ushort)0xb);
-				state.Var_68ef = (byte)usTemp;
-				state.Var_68f4 = usTemp;
-
-				if (page >= 0)
+				if (this.oParent.VGADriver.Screens.ContainsKey(screenID))
 				{
-					byte[] abPixelBuffer = new byte[state.Width];
+					byte[] paletteBuffer;
+					this.oParent.VGADriver.Screens.GetValueByKey(screenID).LoadBitmap(xPos, yPos, filename, out paletteBuffer);
 
-					for (int i = 0; i < state.Height; i++)
+					switch (palettePtr)
 					{
-						F0_1000_1208_DecodeBitmapStream(stream, state, abPixelBuffer);
-						this.oParent.VGADriver.F0_VGA_03df_CopyLine((ushort)page, abPixelBuffer, xPos, (ushort)(yPos + i), (ushort)state.Width);
+						case 0:
+							palettePtr = 0xba08;
+							for (int i = 2; i < paletteBuffer.Length; i++)
+							{
+								this.oCPU.Memory.WriteByte(this.oCPU.DS.Word, palettePtr, paletteBuffer[i]);
+							}
+							break;
+						case 1:
+							palettePtr = 0xba06;
+							for (int i = 0; i < paletteBuffer.Length; i++)
+							{
+								this.oCPU.Memory.WriteByte(this.oCPU.DS.Word, palettePtr, paletteBuffer[i]);
+							}
+							break;
+
+						default:
+							for (int i = 0; i < paletteBuffer.Length; i++)
+							{
+								this.oCPU.Memory.WriteByte(this.oCPU.DS.Word, palettePtr, paletteBuffer[i]);
+							}
+							break;
 					}
 				}
+				else
+				{
+					throw new Exception($"The page {screenID} is not allocated");
+				}
+			}
+			else
+			{
+				// function body
+				FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+
+				bool bWordMode = F0_1000_108e_LoadPalette(stream, palettePtr);
+
+				ImageDecoderState state = new ImageDecoderState(bWordMode);
+
+				state.UnknownValue1 = ReadUInt16FromStream(stream);
+				state.Width = ReadUInt16FromStream(stream);
+				state.Height = ReadUInt16FromStream(stream);
+
+				// init state
+				if (state.Width > 0 && state.Height > 0)
+				{
+					ushort usTemp = Math.Min(ReadUInt16FromStream(stream), (ushort)0xb);
+					state.Var_68ef = (byte)usTemp;
+					state.Var_68f4 = usTemp;
+
+					if (screenID >= 0)
+					{
+						byte[] abPixelBuffer = new byte[state.Width];
+
+						for (int i = 0; i < state.Height; i++)
+						{
+							F0_1000_1208_DecodeBitmapStream(stream, state, abPixelBuffer);
+							this.oParent.VGADriver.F0_VGA_03df_CopyLine((ushort)screenID, abPixelBuffer, xPos, (ushort)(yPos + i), (ushort)state.Width);
+						}
+					}
+				}
+
+				stream.Close();
 			}
 
-			stream.Close();
-
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2fa1_01a2_LoadImageOrPalette'");
+			this.oCPU.Log.ExitBlock("'F0_2fa1_01a2_LoadBitmapOrPalette'");
 		}
 
 		private bool F0_1000_108e_LoadPalette(FileStream stream, ushort palettePtr)

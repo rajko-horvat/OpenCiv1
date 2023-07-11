@@ -15,10 +15,6 @@ namespace Civilization1
 		[MTAThread]
 		static void Main()
 		{
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-			//Application.Run(new Form1());
-
 			Civilization oCivilization = new Civilization();
 
 			Console.WriteLine("Exiting, press any key...");

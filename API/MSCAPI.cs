@@ -1242,20 +1242,23 @@ namespace Civilization1
 		#region Keyboard operations
 		public short kbhit()
 		{
-			this.oCPU.AX.Word = (ushort)((this.oCPU.VGA.Form.Keys.Count > 0) ? 0xffff : 0);
+			this.oCPU.AX.Word = (ushort)((this.oParent.VGADriver.Keys.Count > 0) ? 0xffff : 0);
 
 			return (short)this.oCPU.AX.Word;
 		}
 
 		public short getch()
 		{
-			while (this.oCPU.VGA.Form.Keys.Count == 0)
+			while (this.oParent.VGADriver.Keys.Count == 0)
 			{
 				Thread.Sleep(200);
 				this.oCPU.DoEvents();
 			}
 
-			this.oCPU.AX.Word = (ushort)(this.oCPU.VGA.Form.Keys.Dequeue() & 0xff);
+			lock (this.oParent.VGADriver.VGALock)
+			{
+				this.oCPU.AX.Word = (ushort)(this.oParent.VGADriver.Keys.Dequeue() & 0xff);
+			}
 
 			return (short)this.oCPU.AX.Word;
 		}

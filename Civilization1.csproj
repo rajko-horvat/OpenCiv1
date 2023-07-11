@@ -62,7 +62,14 @@
     <Compile Include="CPU\CPURegister.cs" />
     <Compile Include="CPU\CPUMemory.cs" />
     <Compile Include="CPU\CPUMemoryRegion.cs" />
+    <Compile Include="GPU\StructureAA.cs" />
     <Compile Include="GPU\VGACard.cs" />
+    <Compile Include="GPU\VGAForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GPU\VGAForm.Designer.cs">
+      <DependentUpon>VGAForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GPU\VGACardForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,8 +82,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomMT19937.cs" />
-    <Compile Include="GPU\VGAPlane.cs" />
-    <Compile Include="Segments\VGADriver.cs" />
+    <Compile Include="GPU\VGABitmap.cs" />
+    <Compile Include="GPU\VGADriver.cs" />
     <Compile Include="Segments\Misc.cs" />
     <Compile Include="API\MSCAPI.cs" />
     <Compile Include="Segments\NSound.cs" />
@@ -125,6 +132,9 @@
     <Compile Include="Segments\ImageLoading.cs" />
     <Compile Include="Segments\Segment_302a.cs" />
     <Compile Include="Segments\Segment_3045.cs" />
+    <EmbeddedResource Include="GPU\VGAForm.resx">
+      <DependentUpon>VGAForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GPU\VGACardForm.resx">
       <DependentUpon>VGACardForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -155,7 +165,11 @@
     <Content Include="Documentation\CVL and EXE overlays.txt" />
     <Content Include="Documentation\Font.cv specification.txt" />
     <Content Include="Documentation\Structure 0xaa.txt" />
+    <Content Include="Icons\playback-32x32.png" />
+    <Content Include="Icons\windows-32x32.png" />
+    <Content Include="Icons\windows_24x24.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -14,7 +14,6 @@ namespace Disassembler
 	{
 		private VGACard oGPU = null;
 		private Queue<char> aKeys = new Queue<char>();
-		private Graphics oGraphics;
 
 		public VGACardForm()
 		{
@@ -29,8 +28,6 @@ namespace Disassembler
 			this.SetStyle(ControlStyles.Opaque, true);
 			this.SetStyle(ControlStyles.UserPaint, true);
 			//this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-
-			this.oGraphics = Graphics.FromHwnd(this.Handle);
 		}
 
 		public Queue<char> Keys

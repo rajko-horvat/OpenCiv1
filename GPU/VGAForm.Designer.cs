@@ -1,6 +1,6 @@
 ﻿namespace Disassembler
 {
-	partial class VGACardForm
+	partial class VGAForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -29,14 +29,14 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VGACardForm));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VGAForm));
 			this.tmrRefresh = new System.Windows.Forms.Timer(this.components);
 			this.tsMain = new System.Windows.Forms.ToolStrip();
 			this.cmdPause = new System.Windows.Forms.ToolStripButton();
 			this.cmdRun = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.lblPlane = new System.Windows.Forms.ToolStripLabel();
-			this.tsPlanes = new System.Windows.Forms.ToolStripSplitButton();
+			this.lblScreens = new System.Windows.Forms.ToolStripLabel();
+			this.tsScreens = new System.Windows.Forms.ToolStripSplitButton();
 			this.tsMain.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -48,17 +48,18 @@
 			// tsMain
 			// 
 			this.tsMain.BackColor = System.Drawing.SystemColors.Control;
+			this.tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.tsMain.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cmdPause,
             this.cmdRun,
             this.toolStripSeparator1,
-            this.lblPlane,
-            this.tsPlanes});
+            this.lblScreens,
+            this.tsScreens});
 			this.tsMain.Location = new System.Drawing.Point(0, 0);
 			this.tsMain.Name = "tsMain";
 			this.tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-			this.tsMain.Size = new System.Drawing.Size(600, 27);
+			this.tsMain.Size = new System.Drawing.Size(596, 31);
 			this.tsMain.TabIndex = 0;
 			this.tsMain.Text = "toolStrip1";
 			// 
@@ -68,7 +69,7 @@
 			this.cmdPause.Image = ((System.Drawing.Image)(resources.GetObject("cmdPause.Image")));
 			this.cmdPause.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.cmdPause.Name = "cmdPause";
-			this.cmdPause.Size = new System.Drawing.Size(29, 24);
+			this.cmdPause.Size = new System.Drawing.Size(29, 28);
 			this.cmdPause.Text = "Pause";
 			// 
 			// cmdRun
@@ -77,7 +78,7 @@
 			this.cmdRun.Image = ((System.Drawing.Image)(resources.GetObject("cmdRun.Image")));
 			this.cmdRun.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.cmdRun.Name = "cmdRun";
-			this.cmdRun.Size = new System.Drawing.Size(29, 24);
+			this.cmdRun.Size = new System.Drawing.Size(29, 28);
 			this.cmdRun.Text = "Run";
 			// 
 			// toolStripSeparator1
@@ -85,33 +86,33 @@
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 31);
 			// 
-			// lblPlane
+			// lblScreens
 			// 
-			this.lblPlane.BackColor = System.Drawing.SystemColors.Control;
-			this.lblPlane.Name = "lblPlane";
-			this.lblPlane.Size = new System.Drawing.Size(54, 28);
-			this.lblPlane.Text = "Planes:";
+			this.lblScreens.BackColor = System.Drawing.SystemColors.Control;
+			this.lblScreens.Name = "lblScreens";
+			this.lblScreens.Size = new System.Drawing.Size(59, 28);
+			this.lblScreens.Text = "Screens";
 			// 
-			// tsPlanes
+			// tsScreens
 			// 
-			this.tsPlanes.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.tsPlanes.Image = ((System.Drawing.Image)(resources.GetObject("tsPlanes.Image")));
-			this.tsPlanes.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsPlanes.Name = "tsPlanes";
-			this.tsPlanes.Size = new System.Drawing.Size(39, 24);
-			this.tsPlanes.Text = "Plane list";
+			this.tsScreens.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.tsScreens.Image = ((System.Drawing.Image)(resources.GetObject("tsScreens.Image")));
+			this.tsScreens.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsScreens.Name = "tsScreens";
+			this.tsScreens.Size = new System.Drawing.Size(39, 28);
+			this.tsScreens.Text = "Plane list";
 			// 
-			// VGACardForm
+			// VGAForm
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.BackColor = System.Drawing.Color.Black;
-			this.ClientSize = new System.Drawing.Size(600, 360);
+			this.ClientSize = new System.Drawing.Size(596, 356);
 			this.ControlBox = false;
 			this.Controls.Add(this.tsMain);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.KeyPreview = true;
 			this.MaximizeBox = false;
-			this.Name = "VGACardForm";
+			this.Name = "VGAForm";
 			this.ShowIcon = false;
 			this.Text = "VGA display";
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.VGACardForm_Paint);
@@ -130,7 +131,7 @@
 		private System.Windows.Forms.ToolStripButton cmdPause;
 		private System.Windows.Forms.ToolStripButton cmdRun;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripLabel lblPlane;
-		private System.Windows.Forms.ToolStripSplitButton tsPlanes;
+		private System.Windows.Forms.ToolStripLabel lblScreens;
+		private System.Windows.Forms.ToolStripSplitButton tsScreens;
 	}
 }

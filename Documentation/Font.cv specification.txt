@@ -15,7 +15,7 @@ File offset		pointers
 0x10			0x3b60
 0x12			0x4347
 
-FontTablePtr - 9 = byte[ASCII range], character width table
+FontTablePtr - 9 = byte[ASCII range], Character width table
 FontTablePtr - 8 = First ASCII character code
 FontTablePtr - 7 = Last ASCII character code
 FontTablePtr - 6 = Byte(s) per character
@@ -27,7 +27,7 @@ FontTablePtr - 1 = Always 0
 
 FontTablePtr = Font map (most significant bit is first pixel)
 
-* 'Character Code Range' = 'Last ASCII character code' - 'First ASCII character code'
-* 'Font Width Table Pointer' = FontTablePtr - 9 - 'Character Code Range'
+* 'ASCII Range' = 'Last ASCII character code' - 'First ASCII character code'
+* 'Character Width Table' = FontTablePtr - 9 - 'Character Code Range'
 * Each character line is defined by 'Byte(s) per character' field
-* Each Font Table Row is calculated as (('Character Code Range' + 1) << ('Byte(s) per character' - 1))
+* Each Font Table Row is calculated as (('ASCII Range' + 1) << ('Byte(s) per character' - 1))

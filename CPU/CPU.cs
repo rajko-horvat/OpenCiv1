@@ -34,9 +34,6 @@ namespace Disassembler
 		// memory
 		private CPUMemory oMemory;
 
-		// GPU
-		private VGACard oGPU;
-
 		// Timer(s)
 		private bool bEnableInterrupt = true;
 		private bool bEnableTimer = false;
@@ -60,8 +57,7 @@ namespace Disassembler
 		{
 			this.oParent = parent;
 			this.oLog = log;
-			this.oGPU = new VGACard(this);
-			this.oMemory = new CPUMemory(this, this.oGPU);
+			this.oMemory = new CPUMemory(this);
 			this.oTimer = new Timer(oTimer_Tick, null, 100, 100);
 			//this.oTimer.Dispose();
 		}
@@ -221,11 +217,6 @@ namespace Disassembler
 		public CPUMemory Memory
 		{
 			get { return this.oMemory; }
-		}
-
-		public VGACard VGA
-		{
-			get { return this.oGPU; }
 		}
 
 		public byte ReadByte(ushort segment, ushort offset)
@@ -1436,7 +1427,7 @@ namespace Disassembler
 					// 8255 Port B output - reset keyboard
 					break;
 
-				case 0x3c7:
+				/*case 0x3c7:
 					// DAC Status
 					return this.oGPU.DACReadAddress;
 
@@ -1455,7 +1446,7 @@ namespace Disassembler
 
 				case 0x3da:
 					// Status Register
-					return this.oGPU.HWStatus;
+					return this.oGPU.HWStatus;*/
 
 				default:
 					this.oLog.WriteLine($"Input byte from port 0x{port:x4}");
@@ -1489,7 +1480,7 @@ namespace Disassembler
 					// system control port (for compatibility with 8255)
 					break;
 
-				case 0x3c0:
+				/*case 0x3c0:
 					// Attribute controller
 					//this.oLog.WriteLine($"Output to port 0x{port:x4} (Old palette register), byte value 0x{value:x2}");
 					this.oGPU.AttributeControllerWrite(value);
@@ -1546,7 +1537,7 @@ namespace Disassembler
 				case 0x3d5:
 					// CRT Controller data, write
 					this.oLog.WriteLine($"Output to port 0x{port:x4} (CRT Controller data, write), byte value 0x{value:x2}");
-					break;
+					break;*/
 
 				default:
 					this.oLog.WriteLine($"Output to port 0x{port:x4}, byte value 0x{value:x2}");
@@ -1620,6 +1611,8 @@ namespace Disassembler
 		#endregion
 
 		#region Interrupt instruction
+		private byte bVGAMode = 3;
+
 		public void INT(byte value)
 		{
 			int iCount;
@@ -1632,37 +1625,38 @@ namespace Disassembler
 					switch (this.oAX.High)
 					{
 						case 0x0:
-							this.oGPU.Mode = this.oAX.Low;
+							this.bVGAMode = this.oAX.Low;
 							this.oFlags.C = false;
 							break;
 
 						case 0x2:
-							this.oGPU.XPosition = this.oDX.Low;
-							this.oGPU.YPosition = this.oDX.High;
+							Console.CursorLeft = this.oDX.Low;
+							Console.CursorTop = this.oDX.High;
 							this.oFlags.C = false;
 							break;
 
 						case 0x9:
-							iLeft = this.oGPU.XPosition;
-							iTop = this.oGPU.YPosition;
+							iLeft = Console.CursorLeft;
+							iTop = Console.CursorTop;
 							iCount = this.oCX.Word;
 							for (; iCount > 0; iCount--)
 							{
-								this.oGPU.PrintStdOut((char)this.oAX.Low, this.oBX.Low);
+								//this.oGPU.PrintStdOut((char)this.oAX.Low, this.oBX.Low);
+								Console.Write((char)this.oAX.Low);
 							}
-							this.oGPU.XPosition = iLeft;
-							this.oGPU.YPosition = iTop;
+							Console.CursorLeft = iLeft;
+							Console.CursorTop = iTop;
 							this.oFlags.C = false;
 							break;
 
 						case 0xe:
-							this.oGPU.PrintStdOut((char)this.oAX.Low);
+							Console.Write((char)this.oAX.Low);
 							this.oFlags.C = false;
 							break;
 
 						case 0xf:
-							this.oAX.High = (byte)this.oGPU.TextWidth;
-							this.oAX.Low = this.oGPU.Mode;
+							this.oAX.High = 80;
+							this.oAX.Low = this.bVGAMode;
 							this.oBX.High = 0;
 							this.oFlags.C = false;
 							break;
@@ -1839,14 +1833,17 @@ namespace Disassembler
 
 		private void DOSKeyboardInputWithEcho()
 		{
-			while (this.oGPU.Form.Keys.Count == 0)
+			while (this.oParent.VGADriver.Keys.Count == 0)
 			{
 				Thread.Sleep(200);
 				this.DoEvents();
 			}
 
-			this.oAX.Low = (byte)this.oGPU.Form.Keys.Dequeue();
-			this.oGPU.PrintStdOut((char)this.oAX.Low);
+			lock (this.oParent.VGADriver.VGALock)
+			{
+				this.oAX.Low = (byte)this.oParent.VGADriver.Keys.Dequeue();
+			}
+			Console.Write((char)this.oAX.Low);
 		}
 
 		private void DOSLoadOrExecuteProgram()
@@ -1892,7 +1889,7 @@ namespace Disassembler
 		/// </summary>
 		private void DOSPrintChar()
 		{
-			this.oGPU.PrintStdOut((char)this.oDX.Low);
+			Console.Write((char)this.oDX.Low);
 			this.oFlags.C = false;
 		}
 
@@ -1957,14 +1954,17 @@ namespace Disassembler
 		{
 			if (this.oDX.Low != 0xff)
 			{
-				this.oGPU.PrintStdOut((char)this.oDX.Low);
+				Console.Write((char)this.oDX.Low);
 			}
 			else
 			{
-				if (this.oGPU.Form.Keys.Count > 0)
+				if (this.oParent.VGADriver.Keys.Count > 0)
 				{
 					oFlags.Z = false;
-					this.oAX.Low = (byte)this.oGPU.Form.Keys.Dequeue();
+					lock (this.oParent.VGADriver.VGALock)
+					{
+						this.oAX.Low = (byte)this.oParent.VGADriver.Keys.Dequeue();
+					}
 				}
 				else
 				{
@@ -1987,7 +1987,7 @@ namespace Disassembler
 			string sTemp = this.ReadDosString(CPUMemory.ToLinearAddress(this.oDS.Word, this.oDX.Word));
 			if (sTemp.Length > 0)
 			{
-				this.oGPU.PrintStdOut(sTemp);
+				Console.Write(sTemp);
 			}
 			this.oFlags.C = false;
 		}
