@@ -2833,7 +2833,7 @@ namespace Civilization1
 			this.Var_8ae--;
 			if (this.oCPU.Flags.NE) goto L0bcc;
 
-			L0be0:
+		L0be0:
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0be5); // stack management - push return offset
 										// Instruction address 0x0000:0x0be2, size: 3
