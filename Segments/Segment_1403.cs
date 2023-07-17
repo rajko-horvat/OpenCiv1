@@ -1095,7 +1095,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0805); // stack management - push return offset
 			// Instruction address 0x1403:0x0800, size: 5
-			this.oParent.VGADriver.F0_VGA_07d8();
+			this.oParent.VGADriver.F0_VGA_07d8_DrawImage();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1403; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x10);
@@ -9722,7 +9722,8 @@ namespace Civilization1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1403; // restore this function segment
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdb3a), 0x0);
-			if (this.oCPU.Flags.NE) goto L4555;
+			//if (this.oCPU.Flags.NE) goto L4555;
+
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_1403_4545'");
 		}

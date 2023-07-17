@@ -19,6 +19,9 @@ namespace Disassembler
 		private delegate void ScreenCountChange();
 		private ScreenCountChange oScreenCountChange;
 		private Size oScreenSize;
+		private Rectangle oMouseRect = Rectangle.Empty;
+		private Point oMouseLocation = Point.Empty;
+		private MouseButtons oMouseButtons = MouseButtons.None;
 		private int iScreenColumns = 1;
 		private int iScreenRows = 1;
 		private Font oFont;
@@ -39,6 +42,16 @@ namespace Disassembler
 			this.oScreenCountChange = new ScreenCountChange(ScreenCountChangeMethod);
 			ScreenCountChangeMethod();
 			this.oFont = new Font("Verdana", 10.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+		}
+
+		public Point ScreenMouseLocation
+		{
+			get { return this.oMouseLocation; }
+		}
+
+		public MouseButtons ScreenMouseButtons
+		{
+			get { return this.oMouseButtons; }
 		}
 
 		public void OnScreenCountChange()
@@ -67,10 +80,10 @@ namespace Disassembler
 					BKeyValuePair<int, VGABitmap> item = this.oDriver.Screens[i];
 
 					ToolStripMenuItem menuItem = new ToolStripMenuItem($"Screen ({item.Key})");
-					menuItem.Checked = true;
+					//menuItem.Checked = true;
 					menuItem.CheckState = item.Value.Visible ? CheckState.Checked : CheckState.Unchecked;
 					menuItem.Tag = item.Key;
-					menuItem.CheckOnClick = true;
+					//menuItem.CheckOnClick = true;
 					menuItem.Click += MenuItem_Clicked;
 
 					this.tsScreens.DropDownItems.Add(menuItem);
@@ -131,10 +144,10 @@ namespace Disassembler
 						this.oScreenSize = new Size(320, 200);
 						break;
 				}
-				this.ClientSize = new Size(this.oScreenSize.Width * this.iScreenColumns + 1,
-					this.tsMain.Height + this.oScreenSize.Height * this.iScreenRows + 1);
-
-				this.Refresh();
+				this.ClientSize = new Size(this.oScreenSize.Width * this.iScreenColumns + 1 + this.iScreenColumns + 1,
+					this.tsMain.Height + this.oScreenSize.Height * this.iScreenRows + 1 + this.iScreenRows + 1);
+				this.oMouseRect = new Rectangle(Point.Empty, this.oScreenSize);
+				this.Invalidate();
 			}
 		}
 
@@ -186,22 +199,28 @@ namespace Disassembler
 			{
 				BKeyValuePair<int, VGABitmap> item = this.oDriver.Screens[i];
 
-				if (item.Value.Visible && (item.Value.Modified || forceRedraw))
+				if (item.Value.Visible)
 				{
-					Rectangle rect = new Rectangle(iColumn * this.oScreenSize.Width, this.tsMain.Height + iRow * this.oScreenSize.Height,
-						this.oScreenSize.Width, this.oScreenSize.Height);
-					g.DrawImage(item.Value.Bitmap, rect);
-					g.DrawString($"{item.Key}", this.oFont, Brushes.White, rect.Left + 5.0f, rect.Top + 5.0f);
-					// g.DrawRectangle(Pens.Purple, rect);
+					if (item.Value.Modified || forceRedraw)
+					{
+						Rectangle rect = new Rectangle((iColumn * this.oScreenSize.Width) + (iColumn + 1),
+							this.tsMain.Height + (iRow * this.oScreenSize.Height) + (iRow + 1),
+							this.oScreenSize.Width, this.oScreenSize.Height);
+						g.DrawImage(item.Value.Bitmap, rect);
+						g.DrawString($"{item.Key}", this.oFont, Brushes.White, rect.Left + 5.0f, rect.Top + 5.0f);
+						g.DrawRectangle(Pens.Purple, (iColumn * this.oScreenSize.Width) + iColumn,
+							this.tsMain.Height + (iRow * this.oScreenSize.Height) + iRow,
+							this.oScreenSize.Width + 1, this.oScreenSize.Height + 1);
 
-					item.Value.Modified = false;
-				}
+						item.Value.Modified = false;
+					}
 
-				iColumn++;
-				if (iColumn >= this.iScreenColumns)
-				{
-					iColumn = 0;
-					iRow++;
+					iColumn++;
+					if (iColumn >= this.iScreenColumns)
+					{
+						iColumn = 0;
+						iRow++;
+					}
 				}
 			}
 		}
@@ -222,6 +241,11 @@ namespace Disassembler
 				{
 					switch (e.KeyCode)
 					{
+						case Keys.NumPad0:
+							this.oDriver.Keys.Enqueue('\x0');
+							this.oDriver.Keys.Enqueue('\x3b');
+							break;
+
 						case System.Windows.Forms.Keys.F1:
 							this.oDriver.Keys.Enqueue('\x0');
 							this.oDriver.Keys.Enqueue('\x3b');
@@ -297,6 +321,53 @@ namespace Disassembler
 							this.oDriver.Keys.Enqueue('\x47');
 							break;
 					}
+				}
+			}
+		}
+
+		private void VGAForm_MouseMove(object sender, MouseEventArgs e)
+		{
+			Point location = new Point(e.Location.X, e.Location.Y - this.tsMain.Height);
+
+			if (this.oMouseRect.Contains(location))
+			{
+				this.oMouseLocation = location;
+				this.oMouseButtons = e.Button;
+			}
+		}
+
+		private void VGAForm_MouseDown(object sender, MouseEventArgs e)
+		{
+			Point location = new Point(e.Location.X, e.Location.Y - this.tsMain.Height);
+
+			if (this.oMouseRect.Contains(location))
+			{
+				if (e.Button == MouseButtons.Left)
+				{
+					this.oMouseButtons |= MouseButtons.Left;
+				}
+				else if (e.Button == MouseButtons.Right)
+				{
+					this.oMouseButtons |= MouseButtons.Right;
+				}
+			}
+		}
+
+		private void VGAForm_MouseUp(object sender, MouseEventArgs e)
+		{
+			Point location = new Point(e.Location.X, e.Location.Y - this.tsMain.Height);
+
+			if (this.oMouseRect.Contains(location))
+			{
+				if (e.Button == MouseButtons.Left)
+				{
+					this.oMouseButtons |= MouseButtons.Left;
+					this.oMouseButtons ^= MouseButtons.Left;
+				}
+				else if (e.Button == MouseButtons.Right)
+				{
+					this.oMouseButtons |= MouseButtons.Right;
+					this.oMouseButtons ^= MouseButtons.Right;
 				}
 			}
 		}

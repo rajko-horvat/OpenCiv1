@@ -672,7 +672,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x043a); // stack management - push return offset
 			// Instruction address 0x2dc4:0x0435, size: 5
-			this.oParent.VGADriver.F0_VGA_07d8();
+			this.oParent.VGADriver.F0_VGA_07d8_DrawImage();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x10);
@@ -744,7 +744,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.L) goto L049f;
 			
 			// Instruction address 0x2dc4:0x04b9, size: 5
-			this.oParent.VGADriver.F0_VGA_0162_SetColorsFromStruct(0xbdee);
+			this.oParent.VGADriver.F0_VGA_0162_SetColorsFromColorStruct(0xbdee);
 			
 			this.oCPU.AX.Word = 0x19;
 			this.oCPU.PushWord(this.oCPU.AX.Word);

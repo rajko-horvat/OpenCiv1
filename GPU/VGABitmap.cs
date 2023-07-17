@@ -1,4 +1,5 @@
-﻿using Disassembler;
+﻿using Civilization1.GPU;
+using Disassembler;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -20,11 +21,12 @@ namespace Civilization1
 
 	public class VGABitmap : IDisposable
 	{
+		private int iStride;
 		private byte[] aBitmapMemory;
 		private GCHandle oBitmapMemoryHandle;
 		private IntPtr oBitmapMemoryAddress;
 		private Bitmap oBitmap;
-		private Rectangle oBitmapRectangle;
+		private Rectangle oRectangle;
 		private bool bModified = true;
 		private bool bVisible = true;
 
@@ -182,14 +184,21 @@ namespace Civilization1
 		};
 		#endregion
 
-		public VGABitmap()
+		public VGABitmap() : this(new Size(320, 200))
+		{ }
+
+		public VGABitmap(Size size) : this(size.Width, size.Height)
+		{ }
+
+		public VGABitmap(int width, int height)
 		{
-			this.aBitmapMemory = new byte[VGADriver.ScreenStride * VGADriver.ScreenHeight];
+			// stride has to be a multiple of 4
+			this.iStride = (int)(Math.Ceiling((double)width / 4.0) * 4.0);
+			this.aBitmapMemory = new byte[this.iStride * height];
 			this.oBitmapMemoryHandle = GCHandle.Alloc(this.aBitmapMemory, GCHandleType.Pinned);
 			this.oBitmapMemoryAddress = Marshal.UnsafeAddrOfPinnedArrayElement(this.aBitmapMemory, 0);
-			this.oBitmap = new Bitmap(VGADriver.ScreenWidth, VGADriver.ScreenHeight, VGADriver.ScreenStride,
-				PixelFormat.Format8bppIndexed, this.oBitmapMemoryAddress);
-			this.oBitmapRectangle = new Rectangle(0, 0, VGADriver.ScreenWidth, VGADriver.ScreenHeight);
+			this.oBitmap = new Bitmap(width, height, this.iStride, PixelFormat.Format8bppIndexed, this.oBitmapMemoryAddress);
+			this.oRectangle = new Rectangle(0, 0, width, height);
 
 			// set default palette
 			ColorPalette palette = this.oBitmap.Palette;
@@ -223,6 +232,21 @@ namespace Civilization1
 			get { return this.oBitmap; }
 		}
 
+		public int Stride
+		{
+			get { return this.iStride; }
+		}
+
+		public Rectangle Rectangle
+		{
+			get { return this.oRectangle; }
+		}
+
+		public Size Size
+		{
+			get { return this.oRectangle.Size; }
+		}
+
 		public byte[] BitmapMemory
 		{
 			get { return this.aBitmapMemory; }
@@ -245,7 +269,31 @@ namespace Civilization1
 			return Color.FromArgb((255 * (red & 0x3f)) / 64, (255 * (green & 0x3f)) / 64, (255 * (blue & 0x3f)) / 64);
 		}
 
-		public void SetColorsFromArray(Color[] colors, ushort sourceIndex, ushort destinationIndex, ushort length)
+		public void SetColorsFromColorStruct(byte[] colorStruct)
+		{
+			int iStructPos = 0;
+
+			if (colorStruct.Length > 0 && colorStruct[iStructPos] == 0x4d && colorStruct[iStructPos + 1] == 0x30)
+			{
+				int iFrom = colorStruct[iStructPos + 4];
+				int iTo = colorStruct[iStructPos + 5];
+				int iCount = (iTo - iFrom) + 1;
+				iStructPos += 6;
+
+				Color[] aColors = new Color[iCount];
+
+				for (int i = 0; i < iCount; i++)
+				{
+					aColors[i] = VGABitmap.GetColor18(colorStruct[iStructPos + (i * 3)],
+						colorStruct[iStructPos + (i * 3) + 1],
+						colorStruct[iStructPos + (i * 3) + 2]);
+				}
+
+				this.SetColorsFromArray(aColors, iFrom, iFrom, iCount);
+			}
+		}
+
+		public void SetColorsFromArray(Color[] colors, int sourceIndex, int destinationIndex, int length)
 		{
 			ColorPalette palette = this.oBitmap.Palette;
 			for (int i = 0; i < length; i++)
@@ -259,35 +307,48 @@ namespace Civilization1
 
 		public void ReplaceColor(Rectangle rect, byte oldColor, byte newColor)
 		{
-			if (rect.IntersectsWith(this.oBitmapRectangle))
+			if (rect.IntersectsWith(this.oRectangle))
 			{
 				Rectangle newRect = new Rectangle(rect.Location, rect.Size);
-				newRect.Intersect(this.oBitmapRectangle);
+				newRect.Intersect(this.oRectangle);
 
-				int iBitmapMemoryPtr = (newRect.Top * VGADriver.ScreenStride) + newRect.Left;
+				int iBitmapMemoryPtr = (newRect.Top * this.iStride) + newRect.Left;
 
 				for (int i = 0; i < newRect.Height; i++)
 				{
 					for (int j = 0; j < newRect.Width; j++)
 					{
-						if (aBitmapMemory[iBitmapMemoryPtr + j] != oldColor)
+						if (aBitmapMemory[iBitmapMemoryPtr + j] == oldColor)
 						{
 							this.bModified = true;
 							aBitmapMemory[iBitmapMemoryPtr + j] = newColor;
 						}
 					}
 
-					iBitmapMemoryPtr += VGADriver.ScreenStride;
+					iBitmapMemoryPtr += this.iStride;
 				}
 				this.bModified = true;
 			}
 		}
 
+		public void CopyPalette(VGABitmap bitmap)
+		{
+			ColorPalette newPalette = this.oBitmap.Palette;
+			ColorPalette oldPalette = bitmap.Bitmap.Palette;
+
+			for (int i = 0; i < oldPalette.Entries.Length; i++)
+			{
+				newPalette.Entries[i] = oldPalette.Entries[i];
+			}
+
+			this.oBitmap.Palette = newPalette;
+		}
+
 		public byte GetPixel(int x, int y)
 		{
-			if (this.oBitmapRectangle.Contains(x, y))
+			if (this.oRectangle.Contains(x, y))
 			{
-				return aBitmapMemory[(y * VGADriver.ScreenStride) + x];
+				return aBitmapMemory[(y * this.iStride) + x];
 			}
 
 			return 0;
@@ -295,33 +356,33 @@ namespace Civilization1
 
 		public void SetPixel(int x, int y, byte color)
 		{
-			if (this.oBitmapRectangle.Contains(x, y))
+			if (this.oRectangle.Contains(x, y))
 			{
-				aBitmapMemory[(y * VGADriver.ScreenStride) + x] = color;
+				aBitmapMemory[(y * this.iStride) + x] = color;
 				this.bModified = true;
 			}
 		}
 
 		public void SetPixel(int x, int y, byte color, PixelWriteModeEnum mode)
 		{
-			if (this.oBitmapRectangle.Contains(x, y))
+			if (this.oRectangle.Contains(x, y))
 			{
 				switch (mode)
 				{
 					case PixelWriteModeEnum.Normal:
-						aBitmapMemory[(y * VGADriver.ScreenStride) + x] = color;
+						aBitmapMemory[(y * this.iStride) + x] = color;
 						break;
 
 					case PixelWriteModeEnum.And:
-						aBitmapMemory[(y * VGADriver.ScreenStride) + x] &= color;
+						aBitmapMemory[(y * this.iStride) + x] &= color;
 						break;
 
 					case PixelWriteModeEnum.Or:
-						aBitmapMemory[(y * VGADriver.ScreenStride) + x] |= color;
+						aBitmapMemory[(y * this.iStride) + x] |= color;
 						break;
 
 					case PixelWriteModeEnum.Xor:
-						aBitmapMemory[(y * VGADriver.ScreenStride) + x] ^= color;
+						aBitmapMemory[(y * this.iStride) + x] ^= color;
 						break;
 				}
 
@@ -329,14 +390,76 @@ namespace Civilization1
 			}
 		}
 
+		public void DrawLine(int x1, int y1, int x2, int y2, byte color, PixelWriteModeEnum mode)
+		{
+			int iWidth;
+			int iHeight;
+
+			if (x1 > x2)
+			{
+				int iTemp = x1;
+				x1 = x2;
+				x2 = iTemp;
+			}
+			iWidth = (x2 - x1) + 1;
+
+			if (y1 > y2)
+			{
+				int iTemp = y1;
+				y1 = y2;
+				y2 = iTemp;
+			}
+			iHeight = (y2 - y1) + 1;
+
+			if (iWidth == 1 && iHeight == 1)
+			{
+				// a single point
+				this.SetPixel(x1, y1, color, mode);
+			}
+			else if (iWidth > 1 && iHeight == 1)
+			{
+				// a horizontal line
+				for (int i = 0; i < iWidth; i++)
+				{
+					this.SetPixel(x1 + i, y1, color, mode);
+				}
+			}
+			else if (iWidth == 1 && iHeight > 1)
+			{
+				// a vertical line
+				for (int i = 0; i < iHeight; i++)
+				{
+					this.SetPixel(x1, y1 + i, color, mode);
+				}
+			}
+			else if(iWidth>iHeight)
+			{
+				double dYStep = (double)iHeight/ (double)iWidth;
+
+				for (int i = 0; i < iWidth; i++)
+				{
+					this.SetPixel(x1 + i, y1 + (int)(dYStep * i), color, mode);
+				}
+			}
+			else
+			{
+				double dXStep = (double)iWidth / (double)iHeight;
+
+				for (int i = 0; i < iHeight; i++)
+				{
+					this.SetPixel(x1 + (int)(dXStep * i), y1 + i, color, mode);
+				}
+			}
+		}
+
 		public void FillRectangle(Rectangle rect, byte color, PixelWriteModeEnum mode)
 		{
-			if (rect.IntersectsWith(this.oBitmapRectangle))
+			if (rect.IntersectsWith(this.oRectangle))
 			{
 				Rectangle newRect = new Rectangle(rect.Location, rect.Size);
-				newRect.Intersect(this.oBitmapRectangle);
+				newRect.Intersect(this.oRectangle);
 
-				int iBitmapMemoryPtr = (newRect.Top * VGADriver.ScreenStride) + newRect.Left;
+				int iBitmapMemoryPtr = (newRect.Top * this.iStride) + newRect.Left;
 
 				for (int i = 0; i < newRect.Height; i++)
 				{
@@ -362,20 +485,115 @@ namespace Civilization1
 						}
 					}
 
-					iBitmapMemoryPtr += VGADriver.ScreenStride;
+					iBitmapMemoryPtr += this.iStride;
 				}
 				this.bModified = true;
 			}
 		}
 
-		public void DrawImage(VGABitmap screen)
+		public void DrawImage(VGABitmap srcScreen)
 		{
-			if (this.aBitmapMemory.Length == screen.BitmapMemory.Length)
+			this.DrawImage(Point.Empty, srcScreen, srcScreen.Rectangle);
+		}
+
+		public void DrawImage(int x, int y, VGABitmap srcBitmap)
+		{
+			DrawImage(new Point(x, y), srcBitmap, srcBitmap.Rectangle);
+		}
+
+		public void DrawImage(int x, int y, VGABitmap srcBitmap, Rectangle srcRect)
+		{
+			DrawImage(new Point(x, y), srcBitmap, srcRect);
+		}
+
+		public void DrawImage(Point destPoint, VGABitmap srcBitmap, Rectangle srcRect)
+		{
+			Rectangle srcRect1 = new Rectangle(srcRect.Location, srcRect.Size);
+			srcRect1.Intersect(srcBitmap.Rectangle);
+
+			Rectangle destRect = new Rectangle(destPoint, srcRect1.Size);
+			destRect.Intersect(this.oRectangle);
+
+			if (destRect.Width > 0 && destRect.Height > 0)
 			{
-				for (int i = 0; i < this.aBitmapMemory.Length; i++)
+				srcRect1.Size = destRect.Size;
+
+				int iSrcPosition = (srcBitmap.Stride * srcRect1.Y) + srcRect1.X;
+				int iDestPosition = (this.iStride * destRect.Y) + destRect.X;
+
+				for (int i = 0; i < destRect.Height; i++)
 				{
-					this.aBitmapMemory[i] = screen.BitmapMemory[i];
+					Array.Copy(srcBitmap.BitmapMemory, iSrcPosition, this.aBitmapMemory, iDestPosition, destRect.Width);
+
+					iSrcPosition += srcBitmap.Stride;
+					iDestPosition += this.iStride;
 				}
+				this.bModified = true;
+			}
+		}
+
+		public void DrawString(string text, CivFont font, Rectangle rect, byte color, PixelWriteModeEnum writeMode)
+		{
+			Rectangle rect1 = new Rectangle(rect.Location, rect.Size);
+			rect1.Intersect(this.oRectangle);
+
+			if (rect1.Width > 0 && rect1.Height > 0)
+			{
+				int iXPosition = rect1.X;
+				int iYPosition = rect1.Y;
+				int iBitmapPosition = (this.iStride * rect1.Y) + rect1.X;
+
+				for (int i = 0; i < text.Length; i++)
+				{
+					char ch = text[i];
+					CivFontCharacter fontCh;
+
+					if (i > 0)
+						iBitmapPosition += font.CharacterWidthSpacing;
+
+					if (font.Characters.ContainsKey(ch))
+					{
+						fontCh = font.Characters.GetValueByKey(ch);
+					}
+					else
+					{
+						// unknown char, use '?'
+						fontCh = font.Characters.GetValueByKey('?');
+					}
+
+					int iBitmapPosition1 = iBitmapPosition;
+
+					for (int j = 0; j < fontCh.Height; j++)
+					{
+						for (int k = 0; k < fontCh.Width; k++)
+						{
+							if (fontCh.Bitmap[j][k] != 0)
+							{
+								switch (writeMode)
+								{
+									case PixelWriteModeEnum.Normal:
+										this.aBitmapMemory[iBitmapPosition1 + k] = color;
+										break;
+
+									case PixelWriteModeEnum.And:
+										this.aBitmapMemory[iBitmapPosition1 + k] &= color;
+										break;
+
+									case PixelWriteModeEnum.Or:
+										this.aBitmapMemory[iBitmapPosition1 + k] |= color;
+										break;
+
+									case PixelWriteModeEnum.Xor:
+										this.aBitmapMemory[iBitmapPosition1 + k] ^= color;
+										break;
+								}
+							}
+						}
+						iBitmapPosition1 += this.iStride;
+					}
+					iBitmapPosition += fontCh.Width;
+				}
+				this.bModified = true;
 			}
 		}
 
@@ -386,7 +604,9 @@ namespace Civilization1
 
 			bool bWordMode = LoadPalette(stream, out paletteBuffer);
 
-			LZWDecoder state = new LZWDecoder(bWordMode);
+			//SetColorsFromColorStruct(paletteBuffer);
+
+			LZWDecoderState state = new LZWDecoderState(bWordMode);
 
 			state.UnknownValue1 = ReadUInt16FromStream(stream);
 			state.Width = ReadUInt16FromStream(stream);
@@ -395,9 +615,9 @@ namespace Civilization1
 			// init state
 			if (state.Width > 0 && state.Height > 0)
 			{
-				ushort usTemp = Math.Min(ReadUInt16FromStream(stream), (ushort)0xb);
-				state.iMaxBits = (byte)usTemp;
-				state.Var_68f4 = usTemp;
+				ushort usTemp = ReadUInt16FromStream(stream);
+				state.ClearCode = (byte)Math.Min((usTemp & 0xff), 0xb);
+				state.InputData = (ushort)((usTemp & 0xff00) | state.ClearCode);
 
 				byte[] abPixelBuffer = new byte[state.Width];
 
@@ -415,7 +635,7 @@ namespace Civilization1
 			stream.Close();
 		}
 
-		private void DecodeBitmapRow(FileStream stream, LZWDecoder state, byte[] buffer)
+		private void DecodeBitmapRow(FileStream stream, LZWDecoderState state, byte[] dataBuffer)
 		{
 			int iBufferPos = 0;
 			int iWidth = state.Width;
@@ -426,121 +646,133 @@ namespace Civilization1
 				iWidth >>= 1;
 			}
 
-			for (int i = 0; i < iWidth; i++)
-			{
-				byte ubPixelData;
-
-				if (state.bCurrentData != 0)
+				for (int j = 0; j < iWidth; j++)
 				{
-					ubPixelData = state.Var_68ed;
-					state.bCurrentData--;
-				}
-				else
-				{
-					// Instruction address 0x1000:0x12c3, size: 3
-					ubPixelData = GetNextByte(stream, state);
+					byte ubPixelData;
 
-					if (ubPixelData != 0x90)
+					if (state.ChunkLength != 0)
 					{
-						state.Var_68ed = ubPixelData;
+						ubPixelData = state.ChunkData;
+						state.ChunkLength--;
 					}
 					else
 					{
+						// Instruction address 0x1000:0x12c3, size: 3
 						ubPixelData = GetNextByte(stream, state);
 
-						if (ubPixelData == 0)
+						if (ubPixelData != 0x90)
 						{
-							ubPixelData = 0x90;
-							state.Var_68ed = ubPixelData;
+							state.ChunkData = ubPixelData;
 						}
 						else
 						{
-							state.bCurrentData = ubPixelData;
-							state.bCurrentData -= 2;
-							ubPixelData = state.Var_68ed;
+							ubPixelData = GetNextByte(stream, state);
+
+							if (ubPixelData == 0)
+							{
+								ubPixelData = 0x90;
+								state.ChunkData = ubPixelData;
+							}
+							else
+							{
+								state.ChunkLength = ubPixelData;
+								state.ChunkLength -= 2;
+								ubPixelData = state.ChunkData;
+							}
+						}
+					}
+
+					if (iBufferPos < dataBuffer.Length)
+					{
+						if (state.WordMode)
+						{
+							dataBuffer[iBufferPos] = (byte)(ubPixelData & 0xf);
+							dataBuffer[iBufferPos + 1] = (byte)((ushort)(ubPixelData & 0xf0) >> 4);
+							iBufferPos += 2;
+						}
+						else
+						{
+							dataBuffer[iBufferPos] = ubPixelData;
+							iBufferPos++;
 						}
 					}
 				}
-
 				if (state.WordMode)
 				{
-					buffer[iBufferPos] = (byte)(ubPixelData & 0xf);
-					buffer[iBufferPos + 1] = (byte)((ushort)(ubPixelData & 0xf0) >> 4);
-					iBufferPos += 2;
+					for (int j = iWidth * 2; j < state.Stride; j++)
+					{
+						// overscan, just set to 0
+						dataBuffer[iBufferPos] = 0;
+						iBufferPos++;
+					}
 				}
 				else
 				{
-					buffer[iBufferPos] = ubPixelData;
-					iBufferPos++;
+					for (int j = iWidth; j < state.Stride; j++)
+					{
+						// overscan, just set to 0
+						dataBuffer[iBufferPos] = 0;
+						iBufferPos++;
+					}
 				}
-			}
 		}
 
-		private byte GetNextByte(FileStream stream, LZWDecoder state)
+		private byte GetNextByte(FileStream stream, LZWDecoderState state)
 		{
 			// function body
 			if (state.DataStack.Count == 0)
 			{
 				// buffer is empty, fill it
-				int iPosition;
-				int iOffset;
-				int iTemp;
-				int iCurrentBitPosition;
+				ushort usCode = state.InputData;
+				usCode >>= (16 - state.InputLength);
 
-				iOffset = state.Var_68f4;
-				iOffset >>= (16 - state.iBitPosition);
-				iCurrentBitPosition = state.iBitPosition;
-
-				while (iCurrentBitPosition < state.iBitCount)
+				while (state.InputLength < state.BitCount)
 				{
-					ushort usValue = ReadUInt16FromStream(stream);
-					state.Var_68f4 = usValue;
-					usValue <<= iCurrentBitPosition;
-					iOffset |= usValue;
-					iCurrentBitPosition += 16;
+					state.InputData = ReadUInt16FromStream(stream);
+					usCode |= (ushort)(state.InputData << state.InputLength);
+					state.InputLength += 0x10;
 				}
 
-				iCurrentBitPosition -= state.iBitCount;
-				state.iBitPosition = iCurrentBitPosition;
-				iOffset &= state.Var_68f0;
-				iTemp = iOffset;
-				if (iOffset >= state.Var_68f2)
+				state.InputLength -= state.BitCount;
+				usCode &= state.Mask;
+				ushort usNextPosition = usCode;
+				if (usCode >= state.DictionaryLength)
 				{
-					iTemp = state.Var_68f2;
-					iOffset = state.Var_68f8;
-					state.DataStack.Push(state.Var_68fa);
+					usNextPosition = state.DictionaryLength;
+					usCode = state.PreviousPosition;
+					state.DataStack.Push(state.NextPosition);
 				}
 
-				while (true)
+			L1377:
+				int iPosition = usCode * 3;
+				usCode = (ushort)((ushort)state.abDictionary[iPosition] | ((ushort)state.abDictionary[iPosition + 1] << 8));
+				usCode++;
+				if (usCode == 0) goto L138c;
+				usCode--;
+				state.DataStack.Push(state.abDictionary[iPosition + 2]);
+				goto L1377;
+
+			L138c:
+				state.NextPosition = state.abDictionary[iPosition + 2];
+				state.DataStack.Push(state.NextPosition);
+				iPosition = (ushort)(state.DictionaryLength * 3);
+				state.abDictionary[iPosition + 2] = state.NextPosition;
+				state.abDictionary[iPosition] = (byte)(state.PreviousPosition & 0xff);
+				state.abDictionary[iPosition + 1] = (byte)((state.PreviousPosition & 0xff00) >> 8);
+				state.DictionaryLength++;
+
+				if (state.DictionaryLength > state.Mask)
 				{
-					iPosition = iOffset * 3;
-					iOffset = (short)((ushort)state.abDictionary[iPosition] | ((ushort)state.abDictionary[iPosition + 1] << 8));
-					if (iOffset < 0)
-						break;
-					state.DataStack.Push(state.abDictionary[iPosition + 2]);
+					state.BitCount++;
+					state.Mask <<= 1;
+					state.Mask |= 1;
 				}
 
-				state.Var_68fa = state.abDictionary[iPosition + 2];
-				state.DataStack.Push(state.Var_68fa);
-
-				iPosition = state.Var_68f2 * 3;
-				state.abDictionary[iPosition] = (byte)(state.Var_68f8 & 0xff);
-				state.abDictionary[iPosition + 1] = (byte)((state.Var_68f8 & 0xff00) >> 8);
-				state.abDictionary[iPosition + 2] = state.Var_68fa;
-				state.Var_68f2++;
-
-				if (state.Var_68f2 > state.Var_68f0)
+				if (state.BitCount > state.ClearCode)
 				{
-					state.iBitCount++;
-					state.Var_68f0 <<= 1;
-					state.Var_68f0 |= 1;
-				}
-
-				if (state.iBitCount > state.iMaxBits)
-				{
-					state.iBitCount = 9;
-					state.Var_68f0 = 0x1ff;
-					state.Var_68f2 = 0x100;
+					state.BitCount = 9;
+					state.Mask = 511;
+					state.DictionaryLength = 256;
 
 					for (int i = 0; i < 2048; i++)
 					{
@@ -549,11 +781,11 @@ namespace Civilization1
 						state.abDictionary[i * 3 + 2] = (byte)((i < 256) ? i : 0);
 					}
 
-					state.Var_68f8 = 0;
+					state.PreviousPosition = 0;
 				}
 				else
 				{
-					state.Var_68f8 = (ushort)iTemp;
+					state.PreviousPosition = usNextPosition;
 				}
 			}
 
@@ -563,13 +795,13 @@ namespace Civilization1
 		private bool LoadPalette(FileStream stream, out byte[] paletteBuffer)
 		{
 			ushort usTemp;
-			int iPalettePos = 0;
 			paletteBuffer = new byte[0];
 
 			while (((usTemp = ReadUInt16FromStream(stream)) & 0xff) != 0x58)
 			{
 				if (usTemp == 0x304d)
 				{
+					int iPalettePos = 0;
 					int iByteCount = ReadUInt16FromStream(stream);
 					paletteBuffer = new byte[iByteCount + 4];
 
@@ -589,21 +821,6 @@ namespace Civilization1
 						{
 							paletteBuffer[iPalettePos++] = 0;
 						}
-					}
-
-					// set our palette
-					int iFromIndex = paletteBuffer[4];
-					int iToIndex = paletteBuffer[5];
-					int iCount = (iToIndex - iFromIndex) + 1;
-
-					Color[] aColors = new Color[iCount];
-					iPalettePos = 6;
-
-					for (int i = 0; i < iCount; i++)
-					{
-						aColors[i] = VGABitmap.GetColor18(paletteBuffer[iPalettePos],
-							paletteBuffer[iPalettePos + 1], paletteBuffer[iPalettePos + 2]);
-						iPalettePos += 3;
 					}
 				}
 				else
@@ -634,28 +851,28 @@ namespace Civilization1
 			return (ushort)(iByte0 | (iByte1 << 8));
 		}
 
-		private class LZWDecoder
+		private class LZWDecoderState
 		{
 			public bool WordMode = false;
 			public int Width = 0;
 			public int Stride = 0;
 			public int Height = 0;
 			public ushort UnknownValue1 = 0;
-			public byte bCurrentData = 0;
-			public byte Var_68ed = 0;
+			public byte ChunkLength = 0;
+			public byte ChunkData = 0;
 			public Stack<byte> DataStack = new Stack<byte>();
-			public int iMaxBits = 11;
-			public ushort Var_68f4 = 11;
-			public int iBitPosition = 8;
-			public int iBitCount = 9;
-			public ushort Var_68f0 = 0x1ff;
-			public ushort Var_68f2 = 0x100;
-			public ushort Var_68f8 = 0;
-			public byte Var_68fa = 0;
+			public byte ClearCode = 11;
+			public ushort InputData = 0;
+			public byte InputLength = 8;
+			public byte BitCount = 9;
+			public ushort Mask = 0x1ff;
+			public ushort DictionaryLength = 256;
+			public ushort PreviousPosition = 0;
+			public byte NextPosition = 0;
 
-			public byte[] abDictionary = new byte[0x1800];
+			public byte[] abDictionary = new byte[2048 * 3];
 
-			public LZWDecoder(bool wordMode)
+			public LZWDecoderState(bool wordMode)
 			{
 				this.WordMode = wordMode;
 

@@ -13,36 +13,31 @@ namespace Civilization1
 			this.oCPU = parent.CPU;
 		}
 
-		public void F0_1182_000a()
+		public void F0_1182_000a_DrawLine()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1182_000a'(Cdecl, Far) at 0x1182:0x000a");
+			this.oCPU.Log.EnterBlock("F0_1182_000a_DrawLine()");
 			this.oCPU.CS.Word = 0x1182; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xe)));
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)));
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)));
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa));
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0025); // stack management - push return offset
 			// Instruction address 0x1182:0x0020, size: 5
-			this.oParent.Segment_1000.F0_1000_100a();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x1182; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0xc);
+			this.oParent.VGADriver.F0_VGA_0599_DrawLine(
+				new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
+				(short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
+				(short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)),
+				(short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)),
+				(short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)),
+				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xe)));
 
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1182_000a'");
+			this.oCPU.Log.ExitBlock("F0_1182_000a_DrawLine");
 		}
 
-		public void F0_1182_002a(ushort stringPtr, ushort xPos, ushort yPos, ushort frontColor)
+		public void F0_1182_002a_DrawString(ushort stringPtr, ushort xPos, ushort yPos, ushort frontColor)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1182_002a'(Cdecl, Far) at 0x1182:0x002a");
 			this.oCPU.CS.Word = 0x1182; // set this function segment
@@ -55,16 +50,12 @@ namespace Civilization1
 				xPos <<= 1;
 			}
 
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0058); // stack management - push return offset
 			// Instruction address 0x1182:0x0053, size: 5
-			this.oParent.VGADriver.F0_VGA_11d7_DrawText(
+			this.oParent.VGADriver.F0_VGA_11d7_DrawString(
 				this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa),
 				(short)xPos,
 				(short)yPos,
 				stringPtr);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x1182; // restore this function segment
 
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_1182_002a'");
@@ -82,7 +73,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa) + 0xa), 0x0);
 
 			// Instruction address 0x1182:0x0075, size: 3
-			F0_1182_002a(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
+			F0_1182_002a_DrawString(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
 				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)),
 				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)),
 				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)));
@@ -153,7 +144,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x00e1); // stack management - push return offset
 			// Instruction address 0x1182:0x00de, size: 3
-			F0_1182_002a(stringPtr, xPos, value2, value3);
+			F0_1182_002a_DrawString(stringPtr, xPos, value2, value3);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1182; // restore this function segment
 
@@ -168,22 +159,12 @@ namespace Civilization1
 		public void F0_1182_00ef_GetStringWidth(ushort stringPtr)
 		{
 			this.oCPU.Log.EnterBlock($"'F0_1182_00ef_GetStringWidth'('{this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr))}')");
-			this.oCPU.CS.Word = 0x1182; // set this function segment
 
 			// function body
-			int iTextWidth = 0;
 			ushort usFontID = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa) + 0x10));
+			string text = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
-			while (this.oCPU.ReadByte(this.oCPU.DS.Word, stringPtr) != 0x0)
-			{
-				// Instruction address 0x1182:0x011a, size: 5
-				this.oParent.VGADriver.F0_VGA_115d_GetCharWidth(usFontID, this.oCPU.ReadByte(this.oCPU.DS.Word, stringPtr));
-
-				iTextWidth += this.oCPU.AX.Word;
-				stringPtr++;
-			}
-
-			this.oCPU.AX.Word = (ushort)iTextWidth;
+			this.oCPU.AX.Word = (ushort)this.oParent.VGADriver.GetDrawStringSize(usFontID, text).Width;
 
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_1182_00ef_GetStringWidth'");

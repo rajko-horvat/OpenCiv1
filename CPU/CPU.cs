@@ -2,10 +2,14 @@
 using Disassembler.MZ;
 using IRB.Collections.Generic;
 using System;
+using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Disassembler
 {
@@ -39,7 +43,11 @@ namespace Disassembler
 		private bool bEnableTimer = false;
 		private bool bTimerFlag = false;
 		private bool bInTimer = false;
-		private Timer oTimer;
+		private System.Threading.Timer oTimer;
+
+		// Mouse
+		private Point oMouseLocation = Point.Empty;
+		private ushort oMouseButtons = 0;
 
 		// DOS file stuff
 		private uint uiDOSDTA = 0;
@@ -58,7 +66,7 @@ namespace Disassembler
 			this.oParent = parent;
 			this.oLog = log;
 			this.oMemory = new CPUMemory(this);
-			this.oTimer = new Timer(oTimer_Tick, null, 100, 100);
+			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 100, 100);
 			//this.oTimer.Dispose();
 		}
 
@@ -103,9 +111,69 @@ namespace Disassembler
 			if (this.bEnableInterrupt && this.bEnableTimer && this.bTimerFlag && !this.bInTimer)
 			{
 				this.bInTimer = true;
-
+				
 				LogWrapper oLogTemp = this.oLog;
 				this.oLog = this.oParent.InterruptLog;
+
+				if (this.oMouseLocation != this.oParent.VGADriver.ScreenMouseLocation ||
+					this.oMouseButtons != this.oParent.VGADriver.ScreenMouseButtons)
+				{
+					this.PushWord(this.oAX.Word);
+					this.PushWord(this.oCX.Word);
+					this.PushWord(this.oDX.Word);
+					this.PushWord(this.oBX.Word);
+					this.PushWord(this.oBP.Word);
+					this.PushWord(this.oSI.Word);
+					this.PushWord(this.oDI.Word);
+					this.PushWord(this.oDS.Word);
+					this.PushWord(this.oES.Word);
+					this.PushF();
+
+					this.oAX.Word = 0;
+					if (this.oMouseLocation != this.oParent.VGADriver.ScreenMouseLocation)
+					{
+						this.oAX.Word |= 1;
+					}
+					this.oCX.Word = (ushort)this.oParent.VGADriver.ScreenMouseLocation.X;
+					this.oDX.Word = (ushort)this.oParent.VGADriver.ScreenMouseLocation.Y;
+
+					this.oBX.Word = 0;
+					ushort usLeft = (ushort)(this.oParent.VGADriver.ScreenMouseButtons & 1);
+					this.oBX.Word |= usLeft;
+					if ((this.oMouseButtons & 1) != usLeft)
+					{
+						if (usLeft != 0)
+							this.oAX.Word |= 2;
+						else
+							this.oAX.Word |= 4;
+					}
+
+					ushort usRight = (ushort)(this.oParent.VGADriver.ScreenMouseButtons & 2);
+					this.oBX.Word |= usRight;
+					if ((this.oMouseButtons & 2) != usRight)
+					{
+						if (usRight != 0)
+							this.oAX.Word |= 8;
+						else
+							this.oAX.Word |= 0x10;
+					}
+
+					this.oMouseLocation = this.oParent.VGADriver.ScreenMouseLocation;
+					this.oMouseButtons = this.oParent.VGADriver.ScreenMouseButtons;
+
+					this.oParent.Segment_1000.F0_1000_17db();
+
+					this.PopF();
+					this.oES.Word = this.PopWord();
+					this.oDS.Word = this.PopWord();
+					this.oDI.Word = this.PopWord();
+					this.oSI.Word = this.PopWord();
+					this.oBP.Word = this.PopWord();
+					this.oBX.Word = this.PopWord();
+					this.oDX.Word = this.PopWord();
+					this.oCX.Word = this.PopWord();
+					this.oAX.Word = this.PopWord();
+				}
 
 				MainRegistersCheck registersCheck = new MainRegistersCheck(this);
 				ushort usCS = this.oCS.Word;
@@ -633,11 +701,11 @@ namespace Disassembler
 			short num = (short)regAX.Word;
 			short quo = (short)(num / valuea);
 			sbyte rem = (sbyte)(num % valuea);
-			byte quo8 = (byte)((ushort)quo & 0xff);
+			sbyte quo8 = (sbyte)((ushort)quo & 0xff);
 			if (quo != quo8)
 				throw new Exception("Division error");
 			regAX.High = (byte)rem;
-			regAX.Low = quo8;
+			regAX.Low = (byte)quo8;
 		}
 
 		public void IDIVWord(CPURegister regAX, CPURegister regDX, ushort value)
@@ -648,11 +716,11 @@ namespace Disassembler
 			int num = (int)(((uint)regDX.Word << 16) | (uint)regAX.Word);
 			int quo = num / valuea;
 			short rem = (short)(num % valuea);
-			ushort quo16 = (ushort)((uint)quo & 0xffff);
+			short quo16 = (short)((uint)quo & 0xffff);
 			if (quo != quo16)
 				throw new Exception("Division error");
 			regDX.Word = (ushort)rem;
-			regAX.Word = quo16;
+			regAX.Word = (ushort)quo16;
 		}
 
 		public void IMULByte(CPURegister regAX, byte value1)
@@ -1747,6 +1815,10 @@ namespace Disassembler
 							DOSGetInterruptVector();
 							break;
 
+						case 0x3c:
+							DOSCreateFileUsingHandle();
+							break;
+
 						case 0x3d:
 							DOSOpenFileUsingHandle();
 							break;
@@ -1757,6 +1829,14 @@ namespace Disassembler
 
 						case 0x3f:
 							DOSReadFromFileOrDeviceUsingHandle();
+							break;
+
+						case 0x40:
+							DOSWriteFileUsingHandle();
+							break;
+
+						case 0x42:
+							DOSMoviFilePointerUsingHandle();
 							break;
 
 						case 0x44:
@@ -1824,6 +1904,9 @@ namespace Disassembler
 						default:
 							throw new Exception($"Unknown 0x16 interrupt 0x{this.oAX.High:x2}");
 					}
+					break;
+
+				case 0x33:
 					break;
 
 				default:
@@ -1990,6 +2073,109 @@ namespace Disassembler
 				Console.Write(sTemp);
 			}
 			this.oFlags.C = false;
+		}
+
+		private void DOSCreateFileUsingHandle()
+		{
+			// open file
+			string sTemp = Path.GetFileName(this.ReadString(CPUMemory.ToLinearAddress(this.DS.Word, this.DX.Word)));
+			FileAccess access = FileAccess.ReadWrite;
+			/*switch (this.oCX.Low & 0x7)
+			{
+				case 0:
+					access = FileAccess.Read;
+					break;
+
+				case 1:
+					access = FileAccess.Write;
+					break;
+
+				case 2:
+					access = FileAccess.ReadWrite;
+					break;
+
+				default:
+					break;
+
+			}*/
+			if (this.sFileHandleCount > 0x7fff)
+			{
+				this.oFlags.C = true;
+			}
+			else
+			{
+				try
+				{
+					this.oLog.WriteLine($"Creating file '{sDefaultDirectory}{sTemp}'");
+					this.aOpenFiles.Add(this.sFileHandleCount, new FileStreamItem(new FileStream($"{sDefaultDirectory}{sTemp}", FileMode.Create, access), FileStreamTypeEnum.Binary));
+					this.oAX.Word = (ushort)this.sFileHandleCount;
+					this.sFileHandleCount++;
+					this.oFlags.C = false;
+				}
+				catch
+				{
+					this.oFlags.C = true;
+				}
+			}
+		}
+
+		private void DOSWriteFileUsingHandle()
+		{
+			if (this.aOpenFiles.ContainsKey((short)this.oBX.Word))
+			{
+				FileStreamItem fileItem = this.aOpenFiles.GetValueByKey((short)this.oBX.Word);
+				ushort length = this.oCX.Word;
+				uint address = CPUMemory.ToLinearAddress(this.oDS.Word, this.oDX.Word);
+
+				for (int i = 0; i < length; i++)
+				{
+					fileItem.Stream.WriteByte(this.oMemory.ReadByte(address));
+					address++;
+				}
+
+				this.oAX.Word = length;
+				this.oFlags.C = false;
+			}
+			else
+			{
+				this.oFlags.C = true;
+			}
+		}
+
+		private void DOSMoviFilePointerUsingHandle()
+		{
+			if (this.aOpenFiles.ContainsKey((short)this.oBX.Word))
+			{
+				FileStreamItem fileItem = this.aOpenFiles.GetValueByKey((short)this.oBX.Word);
+				SeekOrigin origin = SeekOrigin.Begin;
+
+				switch (this.oAX.Low)
+				{
+					case 0:
+						origin = SeekOrigin.Begin;
+						break;
+
+					case 1:
+						origin = SeekOrigin.Current;
+						break;
+
+					case 2:
+						origin = SeekOrigin.End;
+						break;
+				}
+
+				int position = (int)(((uint)this.oCX.Word << 16) | (uint)this.oDX.Word);
+
+				fileItem.Stream.Seek(position, origin);
+
+				this.oDX.Word = (ushort)((fileItem.Stream.Position & 0xffff0000) >> 16);
+				this.oAX.Word = (ushort)(fileItem.Stream.Position & 0xffff);
+				this.oFlags.C = false;
+			}
+			else
+			{
+				this.oFlags.C = true;
+			}
 		}
 
 		private void DOSOpenFileUsingHandle()

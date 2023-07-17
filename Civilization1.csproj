@@ -62,19 +62,16 @@
     <Compile Include="CPU\CPURegister.cs" />
     <Compile Include="CPU\CPUMemory.cs" />
     <Compile Include="CPU\CPUMemoryRegion.cs" />
-    <Compile Include="GPU\StructureAA.cs" />
-    <Compile Include="GPU\VGACard.cs" />
+    <Compile Include="GPU\CivFontCharacter.cs" />
+    <Compile Include="GPU\CivFont.cs" />
+    <Compile Include="GPU\CivFonts.cs" />
+    <Compile Include="GPU\CivRectangle.cs" />
+    <Compile Include="GPU\LZWDecoder.cs" />
     <Compile Include="GPU\VGAForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GPU\VGAForm.Designer.cs">
       <DependentUpon>VGAForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GPU\VGACardForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GPU\VGACardForm.Designer.cs">
-      <DependentUpon>VGACardForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LogWrapper.cs" />
     <Compile Include="MainRegistersCheck.cs" />
@@ -135,9 +132,6 @@
     <EmbeddedResource Include="GPU\VGAForm.resx">
       <DependentUpon>VGAForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GPU\VGACardForm.resx">
-      <DependentUpon>VGACardForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -149,6 +143,9 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="Fonts.xml.gz">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="LICENSE" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

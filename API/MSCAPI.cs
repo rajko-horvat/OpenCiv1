@@ -1368,16 +1368,35 @@ namespace Civilization1
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
+			ushort usParam1 = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4));
+			if (usParam1 >= 0xb000)
+			{
+				// this is a graphics bitmap
+				if (this.oParent.VGADriver.Bitmaps.ContainsKey(usParam1))
+				{
+					this.oParent.VGADriver.Bitmaps.RemoveByKey(usParam1);
+
+					this.oCPU.AX.Word = 0;
+					this.oCPU.Flags.C = false;
+					this.oCPU.Log.ExitBlock("'_dos_freemem'");
+					return;
+				}
+				else
+				{
+					throw new Exception($"The bitmap 0x{usParam1:x4} is not allocated");
+				}
+			}
+
 			goto L3120;
 
-			L054a:
+		L054a:
 			this.oCPU.AX.Word = 0x0;
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			this.oCPU.Log.ExitBlock("'_dos_freemem'");
 			return;
 
-			L0550:
+		L0550:
 			if (this.oCPU.Flags.AE) goto L054a;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(0x0556); // stack management - push return offset
@@ -1390,7 +1409,7 @@ namespace Civilization1
 			this.oCPU.Log.ExitBlock("'_dos_freemem'");
 			return;
 
-			L3120:
+		L3120:
 			this.oCPU.PushWord(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.ES.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
@@ -1798,7 +1817,7 @@ namespace Civilization1
 
 		public short open(uint filenameAddress, ushort flags)
 		{
-			string sName = this.oCPU.ReadString(filenameAddress);
+			string sName = Path.GetFileName(this.oCPU.ReadString(filenameAddress));
 			FileMode eMode = FileMode.Open;
 			FileAccess eAccess = FileAccess.Read;
 			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
@@ -1808,37 +1827,39 @@ namespace Civilization1
 				// open for writing only
 				eAccess = FileAccess.Write;
 			}
-			if ((flags & 0x2) == 0x2)
+			else if ((flags & 0x2) == 0x2)
 			{
 				// open for reading and writing
 				eAccess = FileAccess.ReadWrite;
 			}
+
 			if ((flags & 0x8) == 0x8)
 			{
 				// append file
 				eMode = FileMode.Append;
 			}
-			if ((flags & 0x100) == 0x100)
+			else if ((flags & 0x100) == 0x100)
 			{
 				// create and open file
 				eMode = FileMode.OpenOrCreate;
 			}
-			if ((flags & 0x200) == 0x200)
+			else if ((flags & 0x200) == 0x200)
 			{
 				// open and truncate
 				eMode = FileMode.Truncate;
 			}
-			if ((flags & 0x400) == 0x400)
+			else if ((flags & 0x400) == 0x400)
 			{
 				// open only if file doesn't already exist
 				eMode = FileMode.Open;
 			}
+
 			if ((flags & 0x4000) == 0x4000)
 			{
 				// file mode is text (translated)
 				eType = FileStreamTypeEnum.Text;
 			}
-			if ((flags & 0x8000) == 0x8000)
+			else if ((flags & 0x8000) == 0x8000)
 			{
 				// file mode is binary (untranslated)
 				eType = FileStreamTypeEnum.Binary;
@@ -1846,12 +1867,16 @@ namespace Civilization1
 
 			short sHandle = -1;
 			string sPath = $"{this.oCPU.DefaultDirectory}{sName}";
-			if (File.Exists(sPath))
+			this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
+			try
 			{
-				this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 				this.oCPU.Files.Add(this.oCPU.FileHandleCount, new FileStreamItem(new FileStream($"{sPath}", eMode, eAccess), eType));
 				sHandle = this.oCPU.FileHandleCount;
 				this.oCPU.FileHandleCount++;
+			}
+			catch
+			{
+				sHandle = -1;
 			}
 
 			return sHandle;

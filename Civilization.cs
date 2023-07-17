@@ -185,8 +185,20 @@ namespace Civilization1
 			for (int i = 0; i < aFiles.Length; i++)
 			{
 				if (!Path.GetFileNameWithoutExtension(aFiles[i]).Equals("torch", StringComparison.InvariantCultureIgnoreCase))
-				{
-					Bitmap bitmap = this.Segment_2fa1.ReadBitmapFromFile(aFiles[i]);
+				{*/
+					/*VGABitmap bitmap1 = new VGABitmap(320, 200);
+					byte[] palette;
+					bitmap1.LoadBitmap(0, 0, aFiles[i], out palette);
+					bitmap1.SetColorsFromColorStruct(palette);
+					if (palette.Length == 0)
+					{
+						Console.WriteLine($"Image '{aFiles[i]}' has no palette");
+					}
+
+					//Bitmap bitmap = this.Segment_2fa1.ReadBitmapFromFile(aFiles[i]);
+					bitmap1.Bitmap.Save($"Images{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(aFiles[i])}.png", ImageFormat.Png);*/
+					
+					/*Bitmap bitmap = this.Segment_2fa1.ReadBitmapFromFile(aFiles[i]);
 					bitmap.Save($"Images{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(aFiles[i])}.png", ImageFormat.Png);
 				}
 			}//*/

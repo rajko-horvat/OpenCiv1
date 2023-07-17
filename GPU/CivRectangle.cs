@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Civilization1.GPU
+namespace Civilization1
 {
-	public class StructureAA
+	public class CivRectangle
 	{
 		private CPU oCPU;
 		private uint uiStructPtr;
 
-		public StructureAA(CPU cpu, uint structPtr)
+		public CivRectangle(CPU cpu, uint structPtr)
 		{
 			this.oCPU = cpu;
 			this.uiStructPtr = structPtr;
