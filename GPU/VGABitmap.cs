@@ -493,20 +493,20 @@ namespace Civilization1
 
 		public void DrawImage(VGABitmap srcScreen)
 		{
-			this.DrawImage(Point.Empty, srcScreen, srcScreen.Rectangle);
+			this.DrawImage(Point.Empty, srcScreen, srcScreen.Rectangle, false);
 		}
 
-		public void DrawImage(int x, int y, VGABitmap srcBitmap)
+		public void DrawImage(int x, int y, VGABitmap srcBitmap, bool transparent)
 		{
-			DrawImage(new Point(x, y), srcBitmap, srcBitmap.Rectangle);
+			DrawImage(new Point(x, y), srcBitmap, srcBitmap.Rectangle, transparent);
 		}
 
-		public void DrawImage(int x, int y, VGABitmap srcBitmap, Rectangle srcRect)
+		public void DrawImage(int x, int y, VGABitmap srcBitmap, Rectangle srcRect, bool transparent)
 		{
-			DrawImage(new Point(x, y), srcBitmap, srcRect);
+			DrawImage(new Point(x, y), srcBitmap, srcRect, transparent);
 		}
 
-		public void DrawImage(Point destPoint, VGABitmap srcBitmap, Rectangle srcRect)
+		public void DrawImage(Point destPoint, VGABitmap srcBitmap, Rectangle srcRect, bool transparent)
 		{
 			Rectangle srcRect1 = new Rectangle(srcRect.Location, srcRect.Size);
 			srcRect1.Intersect(srcBitmap.Rectangle);
@@ -523,7 +523,13 @@ namespace Civilization1
 
 				for (int i = 0; i < destRect.Height; i++)
 				{
-					Array.Copy(srcBitmap.BitmapMemory, iSrcPosition, this.aBitmapMemory, iDestPosition, destRect.Width);
+					for (int j = 0; j < destRect.Width; j++)
+					{
+						if (srcBitmap.BitmapMemory[iSrcPosition + j] != 0 || !transparent)
+						{
+							this.aBitmapMemory[iDestPosition + j] = srcBitmap.BitmapMemory[iSrcPosition + j];
+						}
+					}
 
 					iSrcPosition += srcBitmap.Stride;
 					iDestPosition += this.iStride;
@@ -532,7 +538,7 @@ namespace Civilization1
 			}
 		}
 
-		public void DrawString(string text, CivFont font, Rectangle rect, byte color, PixelWriteModeEnum writeMode)
+		public void DrawString(string text, CivFont font, Rectangle rect, byte frontColor, byte backColor, PixelWriteModeEnum writeMode)
 		{
 			Rectangle rect1 = new Rectangle(rect.Location, rect.Size);
 			rect1.Intersect(this.oRectangle);
@@ -567,7 +573,9 @@ namespace Civilization1
 					{
 						for (int k = 0; k < fontCh.Width; k++)
 						{
-							if (fontCh.Bitmap[j][k] != 0)
+							byte color = (byte)((fontCh.Bitmap[j][k] != 0) ? frontColor : backColor);
+
+							if (fontCh.Bitmap[j][k] != 0 ) //|| backColor != 0)
 							{
 								switch (writeMode)
 								{

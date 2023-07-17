@@ -2178,7 +2178,7 @@ namespace Civilization1
 					{
 						VGABitmap destBitmap = this.aScreens.GetValueByKey(rectTo.ScreenID);
 
-						destBitmap.DrawImage(iXOffsetTo, iYOffsetTo, srcBitmap, new Rectangle(iXOffsetFrom, iYOffsetFrom, iWidth, iHeight));
+						destBitmap.DrawImage(iXOffsetTo, iYOffsetTo, srcBitmap, new Rectangle(iXOffsetFrom, iYOffsetFrom, iWidth, iHeight), false);
 					}
 				}
 				else
@@ -2410,7 +2410,7 @@ namespace Civilization1
 					Rectangle rect = new Rectangle(usParam2, usParam3, usParam4, usParam5);
 					screen.CopyPalette(bitmap);
 
-					bitmap.DrawImage(Point.Empty, screen, rect);
+					bitmap.DrawImage(Point.Empty, screen, rect, false);
 
 					this.aBitmaps.Add(this.iBitmapNextID, bitmap);
 					this.oCPU.Log.WriteLine($"// Bitmap ID: 0x{this.iBitmapNextID:x4}");
@@ -2662,7 +2662,7 @@ namespace Civilization1
 						VGABitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 						VGABitmap bitmap = this.aBitmaps.GetValueByKey(usParam4);
 
-						screen.DrawImage(rect.X + usParam2, rect.Y + usParam3, bitmap);
+						screen.DrawImage(rect.X + usParam2, rect.Y + usParam3, bitmap, true);
 					}
 				}
 				else
@@ -2786,7 +2786,7 @@ namespace Civilization1
 						VGABitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 						Rectangle rect1 = new Rectangle(rect.X + xPos, rect.Y + yPos, rect.Width, rect.Height);
 
-						screen.DrawString(text, font, rect1, rect.FrontColor, (PixelWriteModeEnum)rect.PixelMode);
+						screen.DrawString(text, font, rect1, rect.FrontColor, rect.BackColor, (PixelWriteModeEnum)rect.PixelMode);
 					}
 				}
 				else

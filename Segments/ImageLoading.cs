@@ -511,7 +511,7 @@ namespace Civilization1
 					switch (palettePtr)
 					{
 						case 0:
-							startPtr = 0xba06;
+							startPtr = 0xba08;
 							for (int i = 0; i < paletteBuffer.Length; i++)
 							{
 								this.oCPU.Memory.WriteByte(this.oCPU.DS.Word, startPtr++, paletteBuffer[i]);
@@ -533,7 +533,7 @@ namespace Civilization1
 							}
 							break;
 					}
-					if (palettePtr == 0 || palettePtr == 1 || palettePtr == 0xba06)
+					if (palettePtr == 1 || palettePtr == 0xba06)
 						this.oParent.VGADriver.SetColorsFromColorStruct(paletteBuffer);
 				}
 				else
