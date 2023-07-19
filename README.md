@@ -3,7 +3,7 @@
 <p>The game is still a very popular and easy to play. But the obsoletness of DOS or Windows 3.1 16-bit platform and the bugs that have never been fixed
 are hindering the popularity of the game<p>
 
-##Running the code
+## Running the code
 If you want to run the code, it is assumed that:
 <ul>
 <li>You are using VS2022 community version (don't know if this is important).</li>
