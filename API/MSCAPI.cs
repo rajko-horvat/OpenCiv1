@@ -1257,7 +1257,7 @@ namespace Civilization1
 
 			lock (this.oParent.VGADriver.VGALock)
 			{
-				this.oCPU.AX.Word = (ushort)(this.oParent.VGADriver.Keys.Dequeue() & 0xff);
+				this.oCPU.AX.Word = (ushort)this.oParent.VGADriver.Keys.Dequeue();
 			}
 
 			return (short)this.oCPU.AX.Word;

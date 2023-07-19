@@ -25,7 +25,7 @@ namespace Civilization1
 		private BDictionary<int, VGABitmap> aScreens = new BDictionary<int, VGABitmap>();
 		private int iBitmapNextID = 0xb000;
 		private BDictionary<int, VGABitmap> aBitmaps = new BDictionary<int, VGABitmap>();
-		private Queue<char> aKeys = new Queue<char>();
+		private Queue<int> aKeys = new Queue<int>();
 		private CivFonts aFonts;
 
 		private ushort Var_6b3 = 0;
@@ -1348,7 +1348,7 @@ namespace Civilization1
 			get { return this.aBitmaps; }
 		}
 
-		public Queue<char> Keys
+		public Queue<int> Keys
 		{
 			get { return this.aKeys; }
 		}

@@ -1924,9 +1924,17 @@ namespace Disassembler
 
 			lock (this.oParent.VGADriver.VGALock)
 			{
-				this.oAX.Low = (byte)this.oParent.VGADriver.Keys.Dequeue();
+				int iTemp = this.oParent.VGADriver.Keys.Dequeue();
+				if (iTemp < 0x80)
+				{
+					this.oAX.Low = (byte)(iTemp & 0xff);
+					Console.Write((char)this.oAX.Low);
+				}
+				else
+				{
+					this.oAX.Low = 0;
+				}
 			}
-			Console.Write((char)this.oAX.Low);
 		}
 
 		private void DOSLoadOrExecuteProgram()
@@ -2046,7 +2054,15 @@ namespace Disassembler
 					oFlags.Z = false;
 					lock (this.oParent.VGADriver.VGALock)
 					{
-						this.oAX.Low = (byte)this.oParent.VGADriver.Keys.Dequeue();
+						int iTemp = this.oParent.VGADriver.Keys.Dequeue();
+						if (iTemp < 0x80)
+						{
+							this.oAX.Low = (byte)(iTemp & 0xff);
+						}
+						else
+						{
+							this.oAX.Low = 0;
+						}
 					}
 				}
 				else

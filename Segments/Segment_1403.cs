@@ -8084,7 +8084,7 @@ namespace Civilization1
 			goto L3c40;
 
 		L3abd:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2300);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2300); // Alt + H
 			if (this.oCPU.Flags.NE) goto L3ac5;
 			goto L389b;
 
@@ -8093,7 +8093,7 @@ namespace Civilization1
 			goto L3b7d;
 
 		L3aca:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3d);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3d); // '='
 			if (this.oCPU.Flags.NE) goto L3ad2;
 			goto L35ce;
 
@@ -8102,7 +8102,7 @@ namespace Civilization1
 			goto L3b22;
 
 		L3ad7:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1b);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1b); // ESC
 			if (this.oCPU.Flags.NE) goto L3adf;
 			goto L3903;
 
@@ -8111,17 +8111,17 @@ namespace Civilization1
 			goto L3aff;
 
 		L3ae4:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xfffe);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xfffe); // ??
 			if (this.oCPU.Flags.NE) goto L3aec;
 			goto L3542;
 
 		L3aec:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x9);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x9); // Tab
 			if (this.oCPU.Flags.NE) goto L3af4;
 			goto L3955;
 
 		L3af4:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xd);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xd); // Enter
 			if (this.oCPU.Flags.NE) goto L3afc;
 			goto L3511;
 
@@ -8129,22 +8129,22 @@ namespace Civilization1
 			goto L3c40;
 
 		L3aff:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x20);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x20); // Space
 			if (this.oCPU.Flags.NE) goto L3b07;
 			goto L3511;
 
 		L3b07:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2b);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2b); // '+'
 			if (this.oCPU.Flags.NE) goto L3b0f;
 			goto L35ce;
 
 		L3b0f:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2d);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2d); // '-'
 			if (this.oCPU.Flags.NE) goto L3b17;
 			goto L36b9;
 
 		L3b17:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2f);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2f); // '/'
 			if (this.oCPU.Flags.NE) goto L3b1f;
 			goto L3521;
 
@@ -8152,7 +8152,7 @@ namespace Civilization1
 			goto L3c40;
 
 		L3b22:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1000);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1000); // Alt + Q
 			if (this.oCPU.Flags.NE) goto L3b2a;
 			goto L38b6;
 
@@ -8161,22 +8161,22 @@ namespace Civilization1
 			goto L3b52;
 
 		L3b2f:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3f);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3f); // '?'
 			if (this.oCPU.Flags.NE) goto L3b37;
 			goto L3521;
 
 		L3b37:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x53);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x53); // 'S'
 			if (this.oCPU.Flags.NE) goto L3b3f;
 			goto L3529;
 
 		L3b3f:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x5f);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x5f); // '_'
 			if (this.oCPU.Flags.NE) goto L3b47;
 			goto L36b9;
 
 		L3b47:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x74);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x74); // 't'
 			if (this.oCPU.Flags.NE) goto L3b4f;
 			goto L37ab;
 
@@ -8184,27 +8184,27 @@ namespace Civilization1
 			goto L3c40;
 
 		L3b52:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1100);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1100); // Alt + W
 			if (this.oCPU.Flags.NE) goto L3b5a;
 			goto L3a7a;
 
 		L3b5a:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1300);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1300); // Alt + R
 			if (this.oCPU.Flags.NE) goto L3b62;
 			goto L37e5;
 
 		L3b62:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1800);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1800); // Alt + O
 			if (this.oCPU.Flags.NE) goto L3b6a;
 			goto L3a50;
 
 		L3b6a:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1e00);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1e00); // Alt + A
 			if (this.oCPU.Flags.NE) goto L3b72;
 			goto L3a65;
 
 		L3b72:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2200);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2200); // Alt + G
 			if (this.oCPU.Flags.NE) goto L3b7a;
 			goto L3a3b;
 
@@ -8212,7 +8212,7 @@ namespace Civilization1
 			goto L3c40;
 
 		L3b7d:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4100);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4100); // F7
 			if (this.oCPU.Flags.NE) goto L3b85;
 			goto L340b;
 
@@ -8221,7 +8221,7 @@ namespace Civilization1
 			goto L3bdd;
 
 		L3b8a:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3b00);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3b00); // F1
 			if (this.oCPU.Flags.NE) goto L3b92;
 			goto L336b;
 
@@ -8230,17 +8230,17 @@ namespace Civilization1
 			goto L3bb2;
 
 		L3b97:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2e00);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2e00); // Alt + C
 			if (this.oCPU.Flags.NE) goto L3b9f;
 			goto L3a8f;
 
 		L3b9f:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2f00);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2f00); // Alt + V
 			if (this.oCPU.Flags.NE) goto L3ba7;
 			goto L384e;
 
 		L3ba7:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3200);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3200); // Alt + M
 			if (this.oCPU.Flags.NE) goto L3baf;
 			goto L35c6;
 
@@ -8248,27 +8248,27 @@ namespace Civilization1
 			goto L3c40;
 
 		L3bb2:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3c00);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3c00); // F2
 			if (this.oCPU.Flags.NE) goto L3bba;
 			goto L338c;
 
 		L3bba:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3d00);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3d00); // F3
 			if (this.oCPU.Flags.NE) goto L3bc2;
 			goto L339b;
 
 		L3bc2:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3e00);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3e00); // F4
 			if (this.oCPU.Flags.NE) goto L3bca;
 			goto L33de;
 
 		L3bca:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3f00);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3f00); // F5
 			if (this.oCPU.Flags.NE) goto L3bd2;
 			goto L33ed;
 
 		L3bd2:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4000);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4000); // F6
 			if (this.oCPU.Flags.NE) goto L3bda;
 			goto L33fc;
 
@@ -8276,7 +8276,7 @@ namespace Civilization1
 			goto L3c40;
 
 		L3bdd:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4838);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4838); // Shift + Up
 			if (this.oCPU.Flags.NE) goto L3be5;
 			goto L349d;
 
@@ -8285,22 +8285,22 @@ namespace Civilization1
 			goto L3c0d;
 
 		L3bea:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4200);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4200); // F8
 			if (this.oCPU.Flags.NE) goto L3bf2;
 			goto L3442;
 
 		L3bf2:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4300);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4300); // F9
 			if (this.oCPU.Flags.NE) goto L3bfa;
 			goto L3461;
 
 		L3bfa:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4400);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4400); // F10
 			if (this.oCPU.Flags.NE) goto L3c02;
 			goto L348a;
 
 		L3c02:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4737);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4737); // Shift + Home
 			if (this.oCPU.Flags.NE) goto L3c0a;
 			goto L34d5;
 
@@ -8308,32 +8308,32 @@ namespace Civilization1
 			goto L3c40;
 
 		L3c0d:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4939);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4939); // Shift + PageUp
 			if (this.oCPU.Flags.NE) goto L3c15;
 			goto L34a5;
 
 		L3c15:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4b34);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4b34); // Shift + Left
 			if (this.oCPU.Flags.NE) goto L3c1d;
 			goto L34cd;
 
 		L3c1d:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4d36);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4d36); // Shift + Right
 			if (this.oCPU.Flags.NE) goto L3c25;
 			goto L34ad;
 
 		L3c25:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4f31);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4f31); // Shift + End
 			if (this.oCPU.Flags.NE) goto L3c2d;
 			goto L34c5;
 
 		L3c2d:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x5032);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x5032); // Shift + Down
 			if (this.oCPU.Flags.NE) goto L3c35;
 			goto L34bd;
 
 		L3c35:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x5133);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x5133); // Shift + PageDown
 			if (this.oCPU.Flags.NE) goto L3c3d;
 			goto L34b5;
 

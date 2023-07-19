@@ -1452,12 +1452,10 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x2);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0ad4); // stack management - push return offset
+
 			// Instruction address 0x2d05:0x0acf, size: 5
-			this.oParent.MiscDriver.F0_0000_0047();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2d05; // restore this function segment
+			this.oParent.MSCAPI.getch();
+
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4b34); // Shift + Left
 			if (this.oCPU.Flags.NE) goto L0adf;
@@ -1474,13 +1472,13 @@ namespace Civilization1
 			goto L0b79;
 
 		L0aee:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xf400);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xf400); // Another code for Right
 			if (this.oCPU.Flags.E) goto L0b17;
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4700); // Home
 			if (this.oCPU.Flags.E) goto L0b3a;
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4737); // shift + Home
 			if (this.oCPU.Flags.E) goto L0b72;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x475c);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x475c); // Another code for Home
 			if (this.oCPU.Flags.E) goto L0b3a;
 			goto L0b92;
 
@@ -1554,7 +1552,7 @@ namespace Civilization1
 		L0b79:
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4838); // Shift + Up
 			if (this.oCPU.Flags.E) goto L0b41;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x487e);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x487e); // Another code for Up
 			if (this.oCPU.Flags.E) goto L0b05;
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4900); // Page Up
 			if (this.oCPU.Flags.E) goto L0b10;
@@ -1576,9 +1574,9 @@ namespace Civilization1
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4f00); // End
 			if (this.oCPU.Flags.E) goto L0b2c;
 			if (this.oCPU.Flags.G) goto L0bca;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4b43);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4b43); // Another code for Shift + Left
 			if (this.oCPU.Flags.E) goto L0b6b;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4b7c);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4b7c);  // Another code for Left
 			if (this.oCPU.Flags.NE) goto L0bb6;
 			goto L0b33;
 
@@ -1590,7 +1588,7 @@ namespace Civilization1
 		L0bbe:
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4d36); // Shift + Right
 			if (this.oCPU.Flags.E) goto L0b4f;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4d46);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4d46);  // Another code for Shift + Right
 			if (this.oCPU.Flags.E) goto L0b4f;
 			goto L0b92;
 
@@ -1604,7 +1602,7 @@ namespace Civilization1
 		L0bd7:
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x5032); // Shift + Down
 			if (this.oCPU.Flags.E) goto L0b5d;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x5060);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x5060);  // Another code for Down
 			if (this.oCPU.Flags.NE) goto L0be4;
 			goto L0b25;
 

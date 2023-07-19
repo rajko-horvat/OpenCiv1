@@ -31,17 +31,5 @@ namespace Civilization1
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_0000_0042'");
 		}
-
-		public void F0_0000_0047()
-		{
-			this.oCPU.Log.EnterBlock("'F0_0000_0047'(Cdecl, Far) at 0x0000:0x0047");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
-
-			// function body
-			this.oCPU.AX.High = 0;
-			this.oCPU.INT(0x16);
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_0000_0047'");
-		}
 	}
 }

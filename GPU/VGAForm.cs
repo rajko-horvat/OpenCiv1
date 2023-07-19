@@ -237,88 +237,167 @@ namespace Disassembler
 		{
 			lock (this.oDriver.VGALock)
 			{
-				if (e.Modifiers == System.Windows.Forms.Keys.None)
+				if (e.Modifiers == Keys.None)
 				{
 					switch (e.KeyCode)
 					{
 						case Keys.NumPad0:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x3b');
+							// for testing
+							this.oDriver.Keys.Enqueue(0x475c);
 							break;
 
-						case System.Windows.Forms.Keys.F1:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x3b');
+						case Keys.F1:
+							this.oDriver.Keys.Enqueue(0x3b00);
 							break;
 
-						case System.Windows.Forms.Keys.F2:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x3c');
+						case Keys.F2:
+							this.oDriver.Keys.Enqueue(0x3c00);
 							break;
 
-						case System.Windows.Forms.Keys.F3:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x3d');
+						case Keys.F3:
+							this.oDriver.Keys.Enqueue(0x3d00);
 							break;
 
-						case System.Windows.Forms.Keys.F4:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x3e');
+						case Keys.F4:
+							this.oDriver.Keys.Enqueue(0x3e00);
 							break;
 
-						case System.Windows.Forms.Keys.F5:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x3f');
+						case Keys.F5:
+							this.oDriver.Keys.Enqueue(0x3f00);
 							break;
 
-						case System.Windows.Forms.Keys.F6:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x40');
+						case Keys.F6:
+							this.oDriver.Keys.Enqueue(0x4000);
 							break;
 
-						case System.Windows.Forms.Keys.F7:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x41');
+						case Keys.F7:
+							this.oDriver.Keys.Enqueue(0x4100);
 							break;
 
-						case System.Windows.Forms.Keys.F8:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x42');
+						case Keys.F8:
+							this.oDriver.Keys.Enqueue(0x4200);
 							break;
 
-						case System.Windows.Forms.Keys.F9:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x43');
+						case Keys.F9:
+							this.oDriver.Keys.Enqueue(0x4300);
 							break;
 
-						case System.Windows.Forms.Keys.F10:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x44');
+						case Keys.F10:
+							this.oDriver.Keys.Enqueue(0x4400);
 							break;
 
-						case System.Windows.Forms.Keys.Down:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x50');
+						case Keys.Down:
+							this.oDriver.Keys.Enqueue(0x5000);
 							break;
 
-						case System.Windows.Forms.Keys.Left:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x4b');
+						case Keys.Left:
+							this.oDriver.Keys.Enqueue(0x4b00);
 							break;
 
-						case System.Windows.Forms.Keys.Right:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x4d');
+						case Keys.Right:
+							this.oDriver.Keys.Enqueue(0x4d00);
 							break;
 
-						case System.Windows.Forms.Keys.Up:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x48');
+						case Keys.Up:
+							this.oDriver.Keys.Enqueue(0x4800);
 							break;
 
-						case System.Windows.Forms.Keys.Home:
-							this.oDriver.Keys.Enqueue('\x0');
-							this.oDriver.Keys.Enqueue('\x47');
+						case Keys.Home:
+							this.oDriver.Keys.Enqueue(0x4700);
+							break;
+
+						case Keys.End:
+							this.oDriver.Keys.Enqueue(0x4f00);
+							break;
+
+						case Keys.PageUp:
+							this.oDriver.Keys.Enqueue(0x4900);
+							break;
+
+						case Keys.PageDown:
+							this.oDriver.Keys.Enqueue(0x5100);
+							break;
+					}
+				}
+				else if ((e.Modifiers & Keys.Shift) == Keys.Shift)
+				{
+					switch (e.KeyCode)
+					{
+						case Keys.Down:
+							this.oDriver.Keys.Enqueue(0x5032);
+							break;
+
+						case Keys.Left:
+							this.oDriver.Keys.Enqueue(0x4b34);
+							break;
+
+						case Keys.Right:
+							this.oDriver.Keys.Enqueue(0x4d36);
+							break;
+
+						case Keys.Up:
+							this.oDriver.Keys.Enqueue(0x4838);
+							break;
+
+						case Keys.Home:
+							this.oDriver.Keys.Enqueue(0x4737);
+							break;
+
+						case Keys.End:
+							this.oDriver.Keys.Enqueue(0x4f31);
+							break;
+
+						case Keys.PageUp:
+							this.oDriver.Keys.Enqueue(0x4939);
+							break;
+
+						case Keys.PageDown:
+							this.oDriver.Keys.Enqueue(0x5133);
+							break;
+					}
+				}
+				else if ((e.Modifiers & Keys.Alt) == Keys.Alt)
+				{
+					switch (e.KeyCode)
+					{
+						case Keys.H:
+							this.oDriver.Keys.Enqueue(0x2300);
+							break;
+
+						case Keys.Q:
+							this.oDriver.Keys.Enqueue(0x1000);
+							break;
+
+						case Keys.W:
+							this.oDriver.Keys.Enqueue(0x1100);
+							break;
+
+						case Keys.R:
+							this.oDriver.Keys.Enqueue(0x1300);
+							break;
+
+						case Keys.O:
+							this.oDriver.Keys.Enqueue(0x1800);
+							break;
+
+						case Keys.A:
+							this.oDriver.Keys.Enqueue(0x1e00);
+							break;
+
+						case Keys.G:
+							this.oDriver.Keys.Enqueue(0x2200);
+							break;
+
+						case Keys.C:
+							this.oDriver.Keys.Enqueue(0x2e00);
+							break;
+
+						case Keys.V:
+							this.oDriver.Keys.Enqueue(0x2f00);
+							break;
+
+						case Keys.M:
+							this.oDriver.Keys.Enqueue(0x3200);
 							break;
 					}
 				}
