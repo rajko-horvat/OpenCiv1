@@ -20,7 +20,7 @@ namespace Civilization1
 		private ushort usSegment = 0;
 
 		private Thread oVGAThread;
-		private VGAForm oVGAForm;
+		private VGAForm oVGAForm = null;
 		public object VGALock = new object();
 		private BDictionary<int, VGABitmap> aScreens = new BDictionary<int, VGABitmap>();
 		private int iBitmapNextID = 0xb000;
@@ -1440,6 +1440,22 @@ namespace Civilization1
 			this.oCPU.Log = oTempLog;
 		}
 
+		public void SetColor18(ushort index, byte red, byte green, byte blue)
+		{
+			lock (this.VGALock)
+			{
+				Color oColor = VGABitmap.GetColor18(red, green, blue);
+
+				this.oCPU.Log.WriteLine($"Setting palette index {index}, #{oColor.A:x2}{oColor.R:x2}{oColor.G:x2}{oColor.B:x2}");
+
+				// set colors to all planes, as this is what original code does
+				for (int i = 0; i < this.aScreens.Count; i++)
+				{
+					this.aScreens[i].Value.SetColor(index, oColor);
+				}
+			}
+		}
+
 		public void F0_VGA_0162_SetColorsFromColorStruct(ushort colorStructPtr)
 		{
 			LogWrapper oTempLog = this.oCPU.Log;
@@ -1940,7 +1956,8 @@ namespace Civilization1
 				{
 					this.aScreens.Add(screenID, new VGABitmap());
 				}
-				this.oVGAForm.OnScreenCountChange();
+				if (this.oVGAForm != null)
+					this.oVGAForm.OnScreenCountChange();
 			}
 
 			/*this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -2147,24 +2164,20 @@ namespace Civilization1
 			return;
 		}
 
-		public void F0_VGA_07d8_DrawImage()
+		public void F0_VGA_07d8_DrawImage(ushort srcRectPtr, ushort xFrom, ushort yFrom, ushort width, ushort height, ushort destRectPtr, ushort xTo, ushort yTo)
 		{
-			CivRectangle rectFrom = new CivRectangle(this.oCPU,
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))));
-			int iXOffsetFrom = rectFrom.X + this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6));
-			int iYOffsetFrom = rectFrom.Y + this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8));
-			int iWidth = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0xa));
-			int iHeight = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0xc));
+			CivRectangle rectFrom = new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, srcRectPtr));
+			int iXOffsetFrom = rectFrom.X + xFrom;
+			int iYOffsetFrom = rectFrom.Y + yFrom;
 
-			CivRectangle rectTo = new CivRectangle(this.oCPU,
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0xe))));
-			int iXOffsetTo = rectTo.X + this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x10));
-			int iYOffsetTo = rectTo.Y + this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x12));
+			CivRectangle rectTo = new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destRectPtr));
+			int iXOffsetTo = rectTo.X + xTo;
+			int iYOffsetTo = rectTo.Y + yTo;
 
 			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_07d8_DrawImage({rectTo.ScreenID}, {iXOffsetTo}, {iYOffsetTo}, {rectFrom.ScreenID}, {iXOffsetFrom}, {iYOffsetFrom}, {iWidth}, {iHeight})");
+			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_07d8_DrawImage({rectTo.ScreenID}, {iXOffsetTo}, {iYOffsetTo}, {rectFrom.ScreenID}, {iXOffsetFrom}, {iYOffsetFrom}, {width}, {height})");
 			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_07d8_DrawImage({rectTo.ScreenID}, {iXOffsetTo}, {iYOffsetTo}, {rectFrom.ScreenID}, {iXOffsetFrom}, {iYOffsetFrom}, {iWidth}, {iHeight})");
+			this.oCPU.Log.EnterBlock($"F0_VGA_07d8_DrawImage({rectTo.ScreenID}, {iXOffsetTo}, {iYOffsetTo}, {rectFrom.ScreenID}, {iXOffsetFrom}, {iYOffsetFrom}, {width}, {height})");
 			//this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -2178,7 +2191,7 @@ namespace Civilization1
 					{
 						VGABitmap destBitmap = this.aScreens.GetValueByKey(rectTo.ScreenID);
 
-						destBitmap.DrawImage(iXOffsetTo, iYOffsetTo, srcBitmap, new Rectangle(iXOffsetFrom, iYOffsetFrom, iWidth, iHeight), false);
+						destBitmap.DrawImage(iXOffsetTo, iYOffsetTo, srcBitmap, new Rectangle(iXOffsetFrom, iYOffsetFrom, width, height), false);
 					}
 				}
 				else
@@ -2387,27 +2400,21 @@ namespace Civilization1
 			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_VGA_0b85_ScreenToBitmap()
+		public void F0_VGA_0b85_ScreenToBitmap(ushort screenID, ushort xPos, ushort yPos, ushort width, ushort height)
 		{
-			ushort usParam1 = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4));
-			ushort usParam2 = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6));
-			ushort usParam3 = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8));
-			ushort usParam4 = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0xa));
-			ushort usParam5 = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0xc));
-
 			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0b85_ScreenToBitmap({usParam1}, {usParam2}, {usParam3}, {usParam4}, {usParam5})");
+			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0b85_ScreenToBitmap({screenID}, {xPos}, {yPos}, {width}, {height})");
 			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_0b85_ScreenToBitmap({usParam1}, {usParam2}, {usParam3}, {usParam4}, {usParam5})");
+			this.oCPU.Log.EnterBlock($"F0_VGA_0b85_ScreenToBitmap({screenID}, {xPos}, {yPos}, {width}, {height})");
 
 			// function body
-			if (this.aScreens.ContainsKey(usParam1))
+			if (this.aScreens.ContainsKey(screenID))
 			{
 				lock (this.VGALock)
 				{
-					VGABitmap screen = this.aScreens.GetValueByKey(usParam1);
-					VGABitmap bitmap = new VGABitmap(usParam4, usParam5);
-					Rectangle rect = new Rectangle(usParam2, usParam3, usParam4, usParam5);
+					VGABitmap screen = this.aScreens.GetValueByKey(screenID);
+					VGABitmap bitmap = new VGABitmap(width, height);
+					Rectangle rect = new Rectangle(xPos, yPos, width, height);
 					screen.CopyPalette(bitmap);
 
 					bitmap.DrawImage(Point.Empty, screen, rect, false);
@@ -2423,7 +2430,7 @@ namespace Civilization1
 			}
 			else
 			{
-				throw new Exception($"The screen {usParam1} is not allocated");
+				throw new Exception($"The screen {screenID} is not allocated");
 			}
 
 			// Far return

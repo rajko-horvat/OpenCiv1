@@ -331,7 +331,8 @@ namespace Disassembler
 
 			if (this.oMouseRect.Contains(location))
 			{
-				this.oMouseLocation = location;
+				this.oMouseLocation = new Point(location.X / (this.oScreenSize.Width / 320),
+					location.Y / (this.oScreenSize.Height / 200));
 				this.oMouseButtons = e.Button;
 			}
 		}

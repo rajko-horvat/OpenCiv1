@@ -269,6 +269,16 @@ namespace Civilization1
 			return Color.FromArgb((255 * (red & 0x3f)) / 64, (255 * (green & 0x3f)) / 64, (255 * (blue & 0x3f)) / 64);
 		}
 
+		public void SetColor(int index, Color color)
+		{
+			ColorPalette palette = this.oBitmap.Palette;
+
+			palette.Entries[index] = color;
+
+			this.oBitmap.Palette = palette;
+			this.bModified = true;
+		}
+
 		public void SetColorsFromColorStruct(byte[] colorStruct)
 		{
 			int iStructPos = 0;
@@ -393,23 +403,29 @@ namespace Civilization1
 		public void DrawLine(int x1, int y1, int x2, int y2, byte color, PixelWriteModeEnum mode)
 		{
 			int iWidth;
+			int iWidthDir = 1;
 			int iHeight;
+			int iHeightDir = 1;
 
 			if (x1 > x2)
 			{
-				int iTemp = x1;
-				x1 = x2;
-				x2 = iTemp;
+				iWidth = (x1 - x2) + 1;
+				iWidthDir = -1;
 			}
-			iWidth = (x2 - x1) + 1;
+			else
+			{
+				iWidth = (x2 - x1) + 1;
+			}
 
 			if (y1 > y2)
 			{
-				int iTemp = y1;
-				y1 = y2;
-				y2 = iTemp;
+				iHeight = (y1 - y2) + 1;
+				iHeightDir = -1;
 			}
-			iHeight = (y2 - y1) + 1;
+			else
+			{
+				iHeight = (y2 - y1) + 1;
+			}
 
 			if (iWidth == 1 && iHeight == 1)
 			{
@@ -421,7 +437,7 @@ namespace Civilization1
 				// a horizontal line
 				for (int i = 0; i < iWidth; i++)
 				{
-					this.SetPixel(x1 + i, y1, color, mode);
+					this.SetPixel(x1 + i * iWidthDir, y1, color, mode);
 				}
 			}
 			else if (iWidth == 1 && iHeight > 1)
@@ -429,16 +445,16 @@ namespace Civilization1
 				// a vertical line
 				for (int i = 0; i < iHeight; i++)
 				{
-					this.SetPixel(x1, y1 + i, color, mode);
+					this.SetPixel(x1, y1 + i * iHeightDir, color, mode);
 				}
 			}
-			else if(iWidth>iHeight)
+			else if (iWidth > iHeight)
 			{
-				double dYStep = (double)iHeight/ (double)iWidth;
+				double dYStep = (double)iHeight / (double)iWidth;
 
 				for (int i = 0; i < iWidth; i++)
 				{
-					this.SetPixel(x1 + i, y1 + (int)(dYStep * i), color, mode);
+					this.SetPixel(x1 + i * iWidthDir, y1 + (int)(dYStep * i) * iHeightDir, color, mode);
 				}
 			}
 			else
@@ -447,7 +463,7 @@ namespace Civilization1
 
 				for (int i = 0; i < iHeight; i++)
 				{
-					this.SetPixel(x1 + (int)(dXStep * i), y1 + i, color, mode);
+					this.SetPixel(x1 + (int)(dXStep * i) * iWidthDir, y1 + i * iHeightDir, color, mode);
 				}
 			}
 		}

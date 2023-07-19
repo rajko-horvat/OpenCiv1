@@ -748,7 +748,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.DI.Word);
 			this.oCPU.DX.Word = 0x3da;
 
-		L0558:
+		//L0558:
 			//this.oCPU.AX.Low = this.oCPU.INByte(this.oCPU.DX.Word);
 			//this.oCPU.TESTByte(this.oCPU.AX.Low, 0x8);
 			//if (this.oCPU.Flags.E) goto L0558;
@@ -788,17 +788,17 @@ namespace Civilization1
 			this.oCPU.CLI();
 			this.oCPU.DX.Word = 0x3da;
 
-		L0584:
+		//L0584:
 			//this.oCPU.AX.Low = this.oCPU.INByte(this.oCPU.DX.Word);
 			//this.oCPU.TESTByte(this.oCPU.AX.Low, 0x8);
 			//if (this.oCPU.Flags.E) goto L0584;
 
-		L0589:
+		//L0589:
 			///this.oCPU.AX.Low = this.oCPU.INByte(this.oCPU.DX.Word);
 			//this.oCPU.TESTByte(this.oCPU.AX.Low, 0x8);
 			//if (this.oCPU.Flags.NE) goto L0589;
 
-		L058e:
+		//L058e:
 			this.oCPU.DX.Low = 0xc8;
 			this.oCPU.AX.Low = 0x0;
 			this.oCPU.OUTByte(this.oCPU.DX.Word, this.oCPU.AX.Low);
@@ -2168,7 +2168,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x5872, this.oParent.VGADriver.ScreenMouseButtons);
 			this.oCPU.AX.Word = 0xffff;
 
-		L1683:
+		//L1683:
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x587d, this.oCPU.AX.Low);
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_1000_163e_InitMouse'");
