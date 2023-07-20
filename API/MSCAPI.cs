@@ -1585,7 +1585,10 @@ namespace Civilization1
 						short ch;
 						while ((ch = fileItem.ReadChar()) != -1 && ch != (short)'\n')
 						{
-							sbResult.Append((char)ch);
+							if (ch != (short)'\r')
+							{
+								sbResult.Append((char)ch);
+							}
 						}
 						if (ch != -1 && sbResult.Length > 0)
 						{
