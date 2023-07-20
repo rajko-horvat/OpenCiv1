@@ -1297,7 +1297,31 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.BX.Word;
 			this.oCPU.DI.Word = this.oCPU.DX.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
+
+			// Far return
 			this.oCPU.Log.ExitBlock("'memcpy'");
+		}
+
+		public ushort memcpy(ushort destination, ushort source, ushort n)
+		{
+			this.oCPU.Log.EnterBlock($"memcpy(0x{destination:x4}, 0x{source:x4}, {n})");
+
+			// function body
+			uint uiDestination = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destination);
+			uint uiSource = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, source);
+			int iCount = n;
+
+			while (iCount > 0)
+			{
+				this.oCPU.Memory.WriteByte(uiDestination, this.oCPU.Memory.ReadByte(uiSource));
+				uiDestination++;
+				uiSource++;
+				iCount--;
+			}
+
+			// Far return
+			this.oCPU.Log.ExitBlock("memcpy");
+			return destination;
 		}
 
 		public void memset()
