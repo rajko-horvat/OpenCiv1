@@ -1587,7 +1587,15 @@ namespace Civilization1
 						{
 							sbResult.Append((char)ch);
 						}
-						this.oCPU.WriteString(varAddress, sbResult.ToString(), sbResult.Length);
+						if (ch != -1 && sbResult.Length > 0)
+						{
+							this.oCPU.WriteString(varAddress, sbResult.ToString(), sbResult.Length);
+							sCount = 1;
+						}
+						else
+						{
+							sCount = -1;
+						}
 						break;
 
 					default:

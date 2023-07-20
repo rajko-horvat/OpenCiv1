@@ -1644,7 +1644,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0b7b); // stack management - push return offset
 			// Instruction address 0x0000:0x0b76, size: 5
-			this.oParent.MSCAPI.strcat();
+			this.oParent.MSCAPI.strcpy(); // !!! was strcat
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
