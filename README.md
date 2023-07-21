@@ -12,8 +12,17 @@ It's where it's home directory resides (Images, palettes, overlays and save game
 </ul>
 
 ## Screenshots of the game
-<p align="center"><img src="Screenshots/Screenshot1.png" alt="Screenshot 1" /><br/>
-</p>
+<p align="center">Please note: There are currently problems with palette colors.</br>
+<img src="Screenshots/Screenshot1.png" alt="Screenshot 1" /><br/>
+<img src="Screenshots/Screenshot2.png" alt="Screenshot 2" /><br/>
+<img src="Screenshots/Screenshot3.png" alt="Screenshot 3" /><br/>
+<img src="Screenshots/Screenshot4.png" alt="Screenshot 4" /><br/>
+<img src="Screenshots/Screenshot5.png" alt="Screenshot 5" /><br/>
+<img src="Screenshots/Screenshot6.png" alt="Screenshot 6" /><br/>
+<img src="Screenshots/Screenshot7.png" alt="Screenshot 7" /><br/>
+<img src="Screenshots/Screenshot8.png" alt="Screenshot 8" /><br/>
+<img src="Screenshots/Screenshot9.png" alt="Screenshot 9" /><br/>
+<img src="Screenshots/Screenshot10.png" alt="Screenshot 10" /></p>
 
 ## Final Goal for this project
 <p>Is a reconstruction of the full functionality, fixing the bugs and porting it to modern platforms so everyone can play</p>
