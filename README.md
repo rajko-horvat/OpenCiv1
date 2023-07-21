@@ -4,7 +4,7 @@
 are hindering the popularity of the game<p>
 
 ## Status
-<p>The game is playable in current state, but requires Original game v475.05 to be present in 'c:\dos\civ' directory. The civ.exe needs to be in the unpacked state, see https://github.com/rajko-horvat/CivUnpack</p>
+<p>The game is playable in current state, but requires Original game v475.05 to be present.</p>
 
 ## Running the code
 If you want to run the code, it is assumed that:
