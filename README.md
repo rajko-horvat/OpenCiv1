@@ -28,7 +28,7 @@ For this stage of code reconstruction, the programmings skills needed are:
 <b>The planned milestones to reach:</b>
 <ul>
 <li>Reaching the initial playability of the game (passed),</li>
-<li>Reconstruction of the original functionalities and features (still in progress),</li>
+<li>Rewrite of the original code, functionalities and features (still in progress),</li>
 <li>Fixing the bugs and introduction of new features (multiplayer capabilities...),</li>
 <li>Porting to HTML5 platform,</li>
 <li>Redesigning graphics and music.</li>
