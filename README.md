@@ -45,4 +45,5 @@ The planned milestones to reach:
 <img src="Screenshots/Screenshot7.png" alt="Screenshot 7" /><br/>
 <img src="Screenshots/Screenshot8.png" alt="Screenshot 8" /><br/>
 <img src="Screenshots/Screenshot9.png" alt="Screenshot 9" /><br/>
-<img src="Screenshots/Screenshot10.png" alt="Screenshot 10" /></p>
+<img src="Screenshots/Screenshot10.png" alt="Screenshot 10" /><br/>
+<img src="Screenshots/Screenshot11.png" alt="Screenshot 11" /></p>
