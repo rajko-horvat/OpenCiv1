@@ -20,7 +20,7 @@ For this stage of code reconstruction, the programmings skills needed are:
 <ul>
 <li>Moderate knowledge of assembly language,</li>
 <li>Knowledge of C# language.</li>
-<li>For detail see: https://github.com/rajko-horvat/OpenCiv1/wiki/Introduction-to-code-translating</li>
+<li>For details see: https://github.com/rajko-horvat/OpenCiv1/wiki/Introduction-to-code-translating</li>
 </ul>
 
 ## Final Goal for this project
