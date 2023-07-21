@@ -11,6 +11,25 @@ If you want to run the code, it is assumed that:
 It's where it's home directory resides (Images, palettes, overlays and save games are loaded/saved there, for now).</li>
 </ul>
 
+## Help needed
+<p>All contributions are welcome.</p>
+For this stage of code reconstruction, the programmings skills needed are:
+<ul>
+<li>Moderate knowledge of assembly language,</li>
+<li>Knowledge of C# language.</li>
+</ul>
+
+## Final Goal for this project
+<p>Is a reconstruction of the full functionality, fixing the bugs and porting it to modern platforms so everyone can play</p>
+The planned milestones to reach:
+<ul>
+<li>Reaching the initial playability of the game (passed),</li>
+<li>Reconstruction of the original functionalities and features (still in progress),</li>
+<li>Fixing the bugs and intruduction of new features (multiplayer capabilities...),</li>
+<li>Porting to HTML5 platform,</li>
+<li>Redesigning graphics and music.</li>
+</ul>
+
 ## Screenshots of the game
 <p align="center">Please note: <span style="color:red;">There are currently problems with palette colors.</span></br></br>
 <img src="Screenshots/Screenshot1.png" alt="Screenshot 1" /><br/>
@@ -23,14 +42,3 @@ It's where it's home directory resides (Images, palettes, overlays and save game
 <img src="Screenshots/Screenshot8.png" alt="Screenshot 8" /><br/>
 <img src="Screenshots/Screenshot9.png" alt="Screenshot 9" /><br/>
 <img src="Screenshots/Screenshot10.png" alt="Screenshot 10" /></p>
-
-## Final Goal for this project
-<p>Is a reconstruction of the full functionality, fixing the bugs and porting it to modern platforms so everyone can play</p>
-The planned milestones to reach:
-<ul>
-<li>Reaching the initial playability of the game (passed),</li>
-<li>Reconstruction of the original functionalities and features (still in progress),</li>
-<li>Fixing the bugs and intruduction of new features (multiplayer capabilities...),</li>
-<li>Porting it to HTML5 platform,</li>
-<li>Redesigning graphics and music.</li>
-</ul>
