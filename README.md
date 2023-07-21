@@ -3,7 +3,7 @@
 <p>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform and the bugs that have never been fixed
 are hindering the popularity of the game<p>
 
-## Status
+## Current status
 <p>The game is playable in current state, but requires Original game v475.05 to be present.</p>
 
 ## Running the code
