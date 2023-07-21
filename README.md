@@ -3,6 +3,9 @@
 <p>The game is still a very popular and easy to play. But the obsoletness of DOS or Windows 3.1 16-bit platform and the bugs that have never been fixed
 are hindering the popularity of the game<p>
 
+## Status
+<p>The game is playable in current state, but requires Original game v475.05 to be present in 'c:\dos\civ' directory. The civ.exe needs to be in the unpacked state, see https://github.com/rajko-horvat/CivUnpack</p>
+
 ## Running the code
 If you want to run the code, it is assumed that:
 <ul>
