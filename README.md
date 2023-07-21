@@ -12,7 +12,7 @@ It's where it's home directory resides (Images, palettes, overlays and save game
 </ul>
 
 ## Screenshots of the game
-<p align="center"><img src="Flowchart.png" alt="Flowchart of the algorithm" style="width:577px; height:789px;" /><br/>
+<p align="center"><img src="Screenshots/Screenshot1.png" alt="Screenshot 1" /><br/>
 </p>
 
 ## Final Goal for this project

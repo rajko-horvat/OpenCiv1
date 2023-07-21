@@ -749,20 +749,17 @@ namespace Civilization1
 
 		public void F0_2dc4_04dd()
 		{
+			// !!! not needed, to be merged to underlying code
 			this.oCPU.Log.EnterBlock("'F0_2dc4_04dd'(Cdecl, Far) at 0x2dc4:0x04dd");
 			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x4);
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
-			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.DS.Word);
 
 			// Instruction address 0x2dc4:0x04f7, size: 5
 			this.oParent.MSCAPI.movedata(
-				this.oCPU.DS.Word, this.oCPU.AX.Word,
+				this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
 				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)),
 				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)),
 				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)));
@@ -774,22 +771,19 @@ namespace Civilization1
 
 		public void F0_2dc4_0500()
 		{
+			// !!! not needed, to be merged to underlying code
 			this.oCPU.Log.EnterBlock("'F0_2dc4_0500'(Cdecl, Far) at 0x2dc4:0x0500");
 			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x4);
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa));
-			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
-			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.DS.Word);
 
 			// Instruction address 0x2dc4:0x051a, size: 5
 			this.oParent.MSCAPI.movedata(
 				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)),
 				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
-				this.oCPU.DS.Word, this.oCPU.AX.Word,
+				this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)),
 				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)));
 
 			this.oCPU.BP.Word = this.oCPU.PopWord();

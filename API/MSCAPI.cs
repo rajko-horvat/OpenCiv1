@@ -1272,8 +1272,8 @@ namespace Civilization1
 
 			if (uiDestination > uiSource && (uiSource + iCount) >= uiDestination)
 			{
-				uiSource = (uint)(uiSource + iCount);
-				uiDestination = (uint)(uiDestination + iCount);
+				uiSource = (uint)(uiSource + iCount - 1);
+				uiDestination = (uint)(uiDestination + iCount - 1);
 				iDirection = -1;
 			}
 
@@ -1323,8 +1323,8 @@ namespace Civilization1
 
 			if (uiDestination > uiSource && (uiSource + iCount) >= uiDestination)
 			{
-				uiSource = (uint)(uiSource + iCount);
-				uiDestination = (uint)(uiDestination + iCount);
+				uiSource = (uint)(uiSource + iCount - 1);
+				uiDestination = (uint)(uiDestination + iCount - 1);
 				iDirection = -1;
 			}
 
@@ -1351,10 +1351,8 @@ namespace Civilization1
 				{
 					this.oParent.VGADriver.Bitmaps.RemoveByKey(segment);
 
-					this.oCPU.AX.Word = 0;
 					this.oCPU.Flags.C = false;
-					this.oCPU.Log.ExitBlock("'_dos_freemem'");
-					return;
+					this.oCPU.AX.Word = 0;
 				}
 				else
 				{
@@ -1556,6 +1554,7 @@ namespace Civilization1
 						}
 						else
 						{
+							this.oCPU.WriteString(varAddress, "", 1);
 							sCount = -1;
 						}
 						break;

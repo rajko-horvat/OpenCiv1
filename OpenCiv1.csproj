@@ -165,10 +165,18 @@
     <Content Include="Icons\playback-32x32.png" />
     <Content Include="Icons\windows-32x32.png" />
     <Content Include="Icons\windows_24x24.png" />
+    <Content Include="Screenshots\Screenshot1.png" />
+    <Content Include="Screenshots\Screenshot10.png" />
+    <Content Include="Screenshots\Screenshot2.png" />
+    <Content Include="Screenshots\Screenshot3.png" />
+    <Content Include="Screenshots\Screenshot4.png" />
+    <Content Include="Screenshots\Screenshot5.png" />
+    <Content Include="Screenshots\Screenshot6.png" />
+    <Content Include="Screenshots\Screenshot7.png" />
+    <Content Include="Screenshots\Screenshot8.png" />
+    <Content Include="Screenshots\Screenshot9.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Screenshots\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
