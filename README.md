@@ -11,10 +11,15 @@ If you want to run the code, it is assumed that:
 It's where it's home directory resides (Images, palettes, overlays and save games are loaded/saved there, for now).</li>
 </ul>
 
+## Screenshots of the game
+<p align="center"><img src="Flowchart.png" alt="Flowchart of the algorithm" style="width:577px; height:789px;" /><br/>
+</p>
+
 ## Final Goal for this project
 <p>Is a reconstruction of the full functionality, fixing the bugs and porting it to modern platforms so everyone can play</p>
 The planned milestones to reach:
 <ul>
+<li>Reaching the initial playability of the game (passed),</li>
 <li>Reconstruction of the original functionalities and features (still in progress),</li>
 <li>Fixing the bugs and intruduction of new features (multiplayer capabilities...),</li>
 <li>Porting it to HTML5 platform,</li>

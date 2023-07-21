@@ -7,8 +7,8 @@
     <ProjectGuid>{55F5F1A4-2E16-46FC-90E1-8E8E52869226}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Civilization1</RootNamespace>
-    <AssemblyName>Civilization1</AssemblyName>
+    <RootNamespace>OpenCiv1</RootNamespace>
+    <AssemblyName>OpenCiv1</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -166,7 +166,9 @@
     <Content Include="Icons\windows-32x32.png" />
     <Content Include="Icons\windows_24x24.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Screenshots\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

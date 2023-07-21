@@ -636,11 +636,6 @@ namespace Civilization1
 			goto L00c5;
 		}
 
-		public void exit()
-		{
-			exit((short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)));
-		}
-
 		public void exit(short code)
 		{
 			this.oCPU.Log.WriteLine($"exit({code})");
@@ -1265,140 +1260,96 @@ namespace Civilization1
 		#endregion
 
 		#region Memory operations
-		public void memcpy()
+		public ushort memcpy(ushort destination, ushort source, ushort count)
 		{
-			this.oCPU.Log.EnterBlock("'memcpy'(Cdecl) at 0x3045:0x2a08");
-			this.oCPU.CS.Word = 0x3045; // set this function segment
+			this.oCPU.Log.EnterBlock($"memcpy(0x{destination:x4}, 0x{source:x4}, {count})");
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.DX.Word = this.oCPU.DI.Word;
-			this.oCPU.BX.Word = this.oCPU.SI.Word;
-			this.oCPU.AX.Word = this.oCPU.DS.Word;
-			this.oCPU.ES.Word = this.oCPU.AX.Word;
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.DI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.AX.Word = this.oCPU.DI.Word;
-			this.oCPU.CX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa));
-			if (this.oCPU.CX.Word == 0) goto L2a2e;
-			this.oCPU.TESTByte(this.oCPU.AX.Low, 0x1);
-			if (this.oCPU.Flags.E) goto L2a26;
-			this.oCPU.MOVSByte(this.oCPU.DS, this.oCPU.SI, this.oCPU.ES, this.oCPU.DI);
-			this.oCPU.CX.Word = this.oCPU.DECWord(this.oCPU.CX.Word);
-
-			L2a26:
-			this.oCPU.CX.Word = this.oCPU.SHRWord(this.oCPU.CX.Word, 0x1);
-			this.oCPU.REPEMOVSWord(this.oCPU.DS, this.oCPU.SI, this.oCPU.ES, this.oCPU.DI, this.oCPU.CX);
-			this.oCPU.CX.Word = this.oCPU.ADCWord(this.oCPU.CX.Word, this.oCPU.CX.Word);
-			this.oCPU.REPEMOVSByte(this.oCPU.DS, this.oCPU.SI, this.oCPU.ES, this.oCPU.DI, this.oCPU.CX);
-
-			L2a2e:
-			this.oCPU.SI.Word = this.oCPU.BX.Word;
-			this.oCPU.DI.Word = this.oCPU.DX.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-
-			// Far return
-			this.oCPU.Log.ExitBlock("'memcpy'");
-		}
-
-		public ushort memcpy(ushort destination, ushort source, ushort n)
-		{
-			this.oCPU.Log.EnterBlock($"memcpy(0x{destination:x4}, 0x{source:x4}, {n})");
-
-			// function body
+			int iDirection = 1;
 			uint uiDestination = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destination);
 			uint uiSource = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, source);
-			int iCount = n;
+			int iCount = count;
+
+			if (uiDestination > uiSource && (uiSource + iCount) >= uiDestination)
+			{
+				uiSource = (uint)(uiSource + iCount);
+				uiDestination = (uint)(uiDestination + iCount);
+				iDirection = -1;
+			}
 
 			while (iCount > 0)
 			{
 				this.oCPU.Memory.WriteByte(uiDestination, this.oCPU.Memory.ReadByte(uiSource));
-				uiDestination++;
-				uiSource++;
+				uiDestination = (uint)((long)uiDestination + iDirection);
+				uiSource = (uint)((long)uiSource + iDirection);
 				iCount--;
 			}
 
 			// Far return
 			this.oCPU.Log.ExitBlock("memcpy");
+			this.oCPU.AX.Word = destination; // for compatibility reasons
 			return destination;
 		}
 
-		public void memset()
+		public ushort memset(ushort destination, byte value, ushort count)
 		{
-			this.oCPU.Log.EnterBlock("'memset'(Cdecl) at 0x3045:0x2a34");
-			this.oCPU.CS.Word = 0x3045; // set this function segment
+			this.oCPU.Log.EnterBlock($"memset(0x{destination:x4}, 0x{value:x2}, {count})");
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.DX.Word = this.oCPU.DI.Word;
-			this.oCPU.AX.Word = this.oCPU.DS.Word;
-			this.oCPU.ES.Word = this.oCPU.AX.Word;
-			this.oCPU.DI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.BX.Word = this.oCPU.DI.Word;
-			this.oCPU.CX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa));
-			if (this.oCPU.CX.Word == 0) goto L2a5c;
-			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.AX.High = this.oCPU.AX.Low;
-			this.oCPU.TESTWord(this.oCPU.DI.Word, 0x1);
-			if (this.oCPU.Flags.E) goto L2a54;
-			this.oCPU.STOSByte();
-			this.oCPU.CX.Word = this.oCPU.DECWord(this.oCPU.CX.Word);
+			uint uiDestination = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destination);
+			int iCount = count;
 
-			L2a54:
-			this.oCPU.CX.Word = this.oCPU.SHRWord(this.oCPU.CX.Word, 0x1);
-			this.oCPU.REPESTOSWord();
-			this.oCPU.CX.Word = this.oCPU.ADCWord(this.oCPU.CX.Word, this.oCPU.CX.Word);
-			this.oCPU.REPESTOSByte();
+			while (iCount > 0)
+			{
+				this.oCPU.Memory.WriteByte(uiDestination, value);
+				uiDestination++;
+				iCount--;
+			}
 
-			L2a5c:
-			this.oCPU.DI.Word = this.oCPU.DX.Word;
-			this.oCPU.Temp.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = this.oCPU.BX.Word;
-			this.oCPU.BX.Word = this.oCPU.Temp.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oCPU.Log.ExitBlock("'memset'");
+			this.oCPU.Log.ExitBlock("memset");
+			this.oCPU.AX.Word = destination; // for compatibility reasons
+			return destination;
 		}
 
-		public void movedata()
+		public void movedata(ushort sourceSegment, ushort sourceOffset, ushort destinationSegment, ushort destinationOffset, ushort count)
 		{
-			this.oCPU.Log.EnterBlock("'movedata'(Cdecl) at 0x3045:0x25c8");
-			this.oCPU.CS.Word = 0x3045; // set this function segment
+			this.oCPU.Log.EnterBlock($"memset(0x{sourceSegment:x4}, 0x{sourceOffset:x4}, 0x{destinationSegment:x4}, 0x{destinationOffset:x4}, {count})");
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.PushWord(this.oCPU.DI.Word);
-			this.oCPU.PushWord(this.oCPU.DS.Word);
-			this.oCPU.DS.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.ES.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa));
-			this.oCPU.DI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc));
-			this.oCPU.CX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xe));
-			this.oCPU.REPEMOVSByte(this.oCPU.DS, this.oCPU.SI, this.oCPU.ES, this.oCPU.DI, this.oCPU.CX);
-			this.oCPU.DS.Word = this.oCPU.PopWord();
-			this.oCPU.DI.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.PopWord();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oCPU.Log.ExitBlock("'movedata'");
+			int iDirection = 1;
+			uint uiDestination = CPUMemory.ToLinearAddress(destinationSegment, destinationOffset);
+			uint uiSource = CPUMemory.ToLinearAddress(sourceSegment, sourceOffset);
+			int iCount = count;
+
+			if (uiDestination > uiSource && (uiSource + iCount) >= uiDestination)
+			{
+				uiSource = (uint)(uiSource + iCount);
+				uiDestination = (uint)(uiDestination + iCount);
+				iDirection = -1;
+			}
+
+			while (iCount > 0)
+			{
+				this.oCPU.Memory.WriteByte(uiDestination, this.oCPU.Memory.ReadByte(uiSource));
+				uiDestination = (uint)((long)uiDestination + iDirection);
+				uiSource = (uint)((long)uiSource + iDirection);
+				iCount--;
+			}
+
+			this.oCPU.Log.ExitBlock("movedata");
 		}
 
-		public void _dos_freemem()
+		public void _dos_freemem(ushort segment)
 		{
-			this.oCPU.Log.EnterBlock("'_dos_freemem'(Cdecl) at 0x3045:0x3120");
-			this.oCPU.CS.Word = 0x3045; // set this function segment
+			this.oCPU.Log.EnterBlock($"_dos_freemem(0x{segment:x4})");
 
 			// function body
-			ushort usParam1 = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4));
-			if (usParam1 >= 0xb000)
+			if (segment >= 0xb000)
 			{
 				// this is a graphics bitmap
-				if (this.oParent.VGADriver.Bitmaps.ContainsKey(usParam1))
+				if (this.oParent.VGADriver.Bitmaps.ContainsKey(segment))
 				{
-					this.oParent.VGADriver.Bitmaps.RemoveByKey(usParam1);
+					this.oParent.VGADriver.Bitmaps.RemoveByKey(segment);
 
 					this.oCPU.AX.Word = 0;
 					this.oCPU.Flags.C = false;
@@ -1407,44 +1358,28 @@ namespace Civilization1
 				}
 				else
 				{
-					throw new Exception($"The bitmap 0x{usParam1:x4} is not allocated");
+					throw new Exception($"The bitmap 0x{segment:x4} is not allocated");
+				}
+			}
+			else
+			{
+				if (this.oCPU.Memory.FreeMemoryBlock(segment))
+				{
+					this.oCPU.Flags.C = false;
+					this.oCPU.AX.Word = 0x0;
+				}
+				else
+				{
+					this.oCPU.Flags.C = true;
+					this.oCPU.AX.Word = 9; // Invalid memory block address
 				}
 			}
 
-			goto L3120;
-
-		L054a:
-			this.oCPU.AX.Word = 0x0;
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oCPU.Log.ExitBlock("'_dos_freemem'");
-			return;
-
-		L0550:
-			if (this.oCPU.Flags.AE) goto L054a;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(0x0556); // stack management - push return offset
-			// Instruction address 0x3045:0x0553, size: 3
-			F0_3045_056e();
-			this.oCPU.PopWord(); // stack management - pop return offset and segment
-			this.oCPU.AX.Word = this.oCPU.PopWord();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oCPU.Log.ExitBlock("'_dos_freemem'");
-			return;
-
-		L3120:
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.ES.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.AX.High = 0x49;
-			this.oCPU.INT(0x21);
-			goto L0550;
+			this.oCPU.Log.ExitBlock("_dos_freemem");
 		}
 		#endregion
 
 		#region File operations
-
 		public void fopen()
 		{
 			this.oCPU.AX.Word = (ushort)fopen(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))),
