@@ -24,8 +24,8 @@ For this stage of code reconstruction, the programmings skills needed are:
 </ul>
 
 ## Final Goal for this project
-<p>Is a reconstruction of the full functionality, fixing the bugs and porting it to modern platforms so everyone can play</p>
-The planned milestones to reach:
+<p>Is a reconstruction of the full functionality, fixing the bugs and porting it to modern platform.</p>
+<b>The planned milestones to reach:</b>
 <ul>
 <li>Reaching the initial playability of the game (passed),</li>
 <li>Reconstruction of the original functionalities and features (still in progress),</li>
