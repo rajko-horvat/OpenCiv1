@@ -1,6 +1,6 @@
 ## Repository description
-<p>This a direct rewrite of Civilization game designed by Sid Meier and Bruce Shelley in year 1991.</p>
-<p>The game is still a very popular and easy to play. But the obsoletness of DOS or Windows 3.1 16-bit platform and the bugs that have never been fixed
+<p>This is a direct rewrite of Civilization game designed by Sid Meier and Bruce Shelley in year 1991.</p>
+<p>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform and the bugs that have never been fixed
 are hindering the popularity of the game<p>
 
 ## Status
