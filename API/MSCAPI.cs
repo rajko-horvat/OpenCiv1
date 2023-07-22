@@ -987,10 +987,10 @@ namespace Civilization1
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 			goto L1faf;
 
-			L1fac:
+		L1fac:
 			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, 0x2);
 
-			L1faf:
+		L1faf:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, this.oCPU.SI.Word), 0x0);
 			if (this.oCPU.Flags.E) goto L1fe2;
 			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.DS.Word, this.oCPU.SI.Word));
@@ -1023,10 +1023,10 @@ namespace Civilization1
 			this.oCPU.AX.Word = (ushort)(this.oCPU.BX.Word + this.oCPU.DI.Word + 0x1);
 			goto L1fe4;
 
-			L1fe2:
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
+		L1fe2:
+			this.oCPU.AX.Word = 0;
 
-			L1fe4:
+		L1fe4:
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;

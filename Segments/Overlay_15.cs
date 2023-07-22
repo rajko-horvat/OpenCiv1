@@ -142,7 +142,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.NE) goto L0105;
 
 		L0100:
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
+			this.oCPU.AX.Word = 0;
 			goto L0879;
 
 		L0105:
@@ -154,7 +154,7 @@ namespace Civilization1
 			goto L0115;
 
 		L0113:
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
+			this.oCPU.AX.Word = 0;
 
 		L0115:
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Word);
@@ -188,7 +188,7 @@ namespace Civilization1
 			goto L015d;
 
 		L015b:
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
+			this.oCPU.AX.Word = 0;
 
 		L015d:
 			this.oCPU.TESTWord(this.oCPU.AX.Word, this.oCPU.SI.Word);
