@@ -465,17 +465,10 @@ namespace Civilization1
 
 		L031c:
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x19c0, this.oCPU.ORByte(this.oCPU.ReadByte(this.oCPU.DS.Word, 0x19c0), 0x10));
-			this.oCPU.AX.Word = 0x32b2;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x32b5;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x032e); // stack management - push return offset
+
 			// Instruction address 0x0000:0x0329, size: 5
-			this.oParent.MSCAPI.fopen();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
+			this.oParent.MSCAPI.fopen(0x32b5, 0x32b2);
+
 			this.oParent.Var_d768 = this.oCPU.AX.Word;
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0339); // stack management - push return offset
@@ -2756,14 +2749,10 @@ namespace Civilization1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
-			this.oCPU.PushWord(this.oParent.Var_d768);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x14ba); // stack management - push return offset
+			
 			// Instruction address 0x0000:0x14b5, size: 5
-			this.oParent.MSCAPI.fclose();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.MSCAPI.fclose((short)this.oParent.Var_d768);
+
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x1);
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xd762), 0x0);
@@ -3527,20 +3516,15 @@ namespace Civilization1
 			this.oCPU.Log.EnterBlock("'F2_0000_19a3_ReadCredits'(Cdecl, Far) at 0x0000:0x19a3");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
+			// !!! to be removed and merged to underlaying code
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-			this.oCPU.AX.Word = 0x337b;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oParent.Var_d768);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x19b6); // stack management - push return offset
+
 			// Instruction address 0x0000:0x19b1, size: 5
-			this.oParent.MSCAPI.fscanf();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 
+				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
+
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
 			this.oCPU.Log.ExitBlock("'F2_0000_19a3_ReadCredits'");

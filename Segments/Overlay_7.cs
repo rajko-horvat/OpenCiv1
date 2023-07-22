@@ -3371,17 +3371,8 @@ namespace Civilization1
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x3b62), 0x0);
 			if (this.oCPU.Flags.NE) goto L18a1;
 
-			this.oCPU.AX.Word = 0x3b3e;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x3b41;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x186e); // stack management - push return offset
-										// Instruction address 0x0000:0x1869, size: 5
-			this.oParent.MSCAPI.fopen();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
+			// Instruction address 0x0000:0x1869, size: 5
+			this.oParent.MSCAPI.fopen(0x3b41, 0x3b3e);
 
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x6804, this.oCPU.AX.Word);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x3b62, 0x1); // Segment
@@ -3455,19 +3446,9 @@ namespace Civilization1
 			if (!registersCheck.CheckMainRegisters(this.oCPU))
 				throw new Exception("Return main registers doesn't match");
 
-			L18f3:
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x3b4c;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x6804));
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x1904); // stack management - push return offset
-										// Instruction address 0x0000:0x18ff, size: 5
-			this.oParent.MSCAPI.fscanf();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+		L18f3:
+			// Instruction address 0x0000:0x18ff, size: 5
+			this.oParent.MSCAPI.fscanf((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x6804), 0x3b4c, 0xba06);
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18), this.oCPU.AX.Word);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xffff);
@@ -3845,14 +3826,8 @@ namespace Civilization1
 				throw new Exception("Return main registers doesn't match");
 
 		L1b7c:
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x6804));
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x1b85); // stack management - push return offset
-										// Instruction address 0x0000:0x1b80, size: 5
-			this.oParent.MSCAPI.fclose();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			// Instruction address 0x0000:0x1b80, size: 5
+			this.oParent.MSCAPI.fclose((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x6804));
 
 			registersCheck = new MainRegistersCheck(this.oCPU);
 			this.oCPU.AX.Word = 0x1;

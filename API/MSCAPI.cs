@@ -51,7 +51,7 @@ namespace Civilization1
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0041); // stack management - push return offset
-										// Instruction address 0x3045:0x003c, size: 5
+										// Instruction uiAddress 0x3045:0x003c, size: 5
 			this.oParent.MSCAPI._FF_MSGBANNER();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -59,7 +59,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0049); // stack management - push return offset
-										// Instruction address 0x3045:0x0044, size: 5
+										// Instruction uiAddress 0x3045:0x0044, size: 5
 			this.oParent.MSCAPI._NMSG_WRITE();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -95,7 +95,7 @@ namespace Civilization1
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0091); // stack management - push return offset
-										// Instruction address 0x3045:0x008c, size: 5
+										// Instruction uiAddress 0x3045:0x008c, size: 5
 			this.oParent.MSCAPI._cinit();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -103,13 +103,13 @@ namespace Civilization1
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0098); // stack management - push return offset
-										// Instruction address 0x3045:0x0093, size: 5
+										// Instruction uiAddress 0x3045:0x0093, size: 5
 			this.oParent.Segment_11a8.F0_11a8_01c1();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x009d); // stack management - push return offset
-										// Instruction address 0x3045:0x0098, size: 5
+										// Instruction uiAddress 0x3045:0x0098, size: 5
 			this.oParent.MSCAPI._setargv();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -119,7 +119,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x591e));
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x00b0); // stack management - push return offset
-										// Instruction address 0x3045:0x00ab, size: 5
+										// Instruction uiAddress 0x3045:0x00ab, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0008_Main();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -143,7 +143,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.E) goto L0229;
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0239); // stack management - push return offset
-										// Instruction address 0x3045:0x0237, size: 2
+										// Instruction uiAddress 0x3045:0x0237, size: 2
 			this.oCPU.CallF(this.oCPU.ReadDWord(this.oCPU.DS.Word, this.oCPU.DI.Word));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -383,17 +383,17 @@ namespace Civilization1
 		L2fc4:
 			this.oCPU.DX.Word = 0x626a;
 			this.oCPU.PushWord(0x2fca); // stack management - push return offset
-										// Instruction address 0x3045:0x2fc7, size: 3
+										// Instruction uiAddress 0x3045:0x2fc7, size: 3
 			F0_3045_2b12();
 			this.oCPU.PopWord(); // stack management - pop return offset
 			this.oCPU.DX.Word = 0x63cc;
 			this.oCPU.PushWord(0x2fd0); // stack management - push return offset
-										// Instruction address 0x3045:0x2fcd, size: 3
+										// Instruction uiAddress 0x3045:0x2fcd, size: 3
 			F0_3045_2b12();
 			this.oCPU.PopWord(); // stack management - pop return offset
 			this.oCPU.DX.Word = 0x629a;
 			this.oCPU.PushWord(0x2fd6); // stack management - push return offset
-										// Instruction address 0x3045:0x2fd3, size: 3
+										// Instruction uiAddress 0x3045:0x2fd3, size: 3
 			F0_3045_2b12();
 			this.oCPU.PopWord(); // stack management - pop return offset
 			this.oCPU.DX.Word = 0x6054;
@@ -494,13 +494,13 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x00cb); // stack management - push return offset
-			// Instruction address 0x3045:0x00c6, size: 5
+			// Instruction uiAddress 0x3045:0x00c6, size: 5
 			_FF_MSGBANNER();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x00d0); // stack management - push return offset
-			// Instruction address 0x3045:0x00cb, size: 5
+			// Instruction uiAddress 0x3045:0x00cb, size: 5
 			_NMSG_WRITE();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -532,7 +532,7 @@ namespace Civilization1
 			this.oCPU.BX.Word = 0x0;
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x0116); // stack management - push return offset
-			// Instruction address 0x3045:0x0111, size: 5
+			// Instruction uiAddress 0x3045:0x0111, size: 5
 			this.oCPU.CallF(this.oCPU.ReadDWord(this.oCPU.SS.Word, 0x6304));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -549,7 +549,7 @@ namespace Civilization1
 			this.oCPU.BX.Word = 0x3;
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x012c); // stack management - push return offset
-			// Instruction address 0x3045:0x0127, size: 5
+			// Instruction uiAddress 0x3045:0x0127, size: 5
 			this.oCPU.CallF(this.oCPU.ReadDWord(this.oCPU.SS.Word, 0x6304));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -619,13 +619,13 @@ namespace Civilization1
 			this.oCPU.SI.Word = 0x6310;
 			this.oCPU.DI.Word = 0x6310;
 			this.oCPU.PushWord(0x0194); // stack management - push return offset
-			// Instruction address 0x3045:0x0191, size: 3
+			// Instruction uiAddress 0x3045:0x0191, size: 3
 			F0_3045_0229();
 			this.oCPU.PopWord(); // stack management - pop return offset and segment
 			this.oCPU.SI.Word = 0x6310;
 			this.oCPU.DI.Word = 0x6310;
 			this.oCPU.PushWord(0x019d); // stack management - push return offset
-			// Instruction address 0x3045:0x019a, size: 3
+			// Instruction uiAddress 0x3045:0x019a, size: 3
 			F0_3045_0229();
 			this.oCPU.PopWord(); // stack management - pop return offset and segment
 			this.oCPU.Log.ExitBlock("'_cinit'");
@@ -654,7 +654,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x0248); // stack management - push return offset
-			// Instruction address 0x3045:0x0243, size: 5
+			// Instruction uiAddress 0x3045:0x0243, size: 5
 			_NMSG_WRITE();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -662,7 +662,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.E) goto L0253;
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x0253); // stack management - push return offset
-			// Instruction address 0x3045:0x024f, size: 4
+			// Instruction uiAddress 0x3045:0x024f, size: 4
 			this.oCPU.CallF(this.oCPU.ReadDWord(this.oCPU.DS.Word, 0x5932));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -672,7 +672,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x025c); // stack management - push return offset
-			// Instruction address 0x3045:0x0257, size: 5
+			// Instruction uiAddress 0x3045:0x0257, size: 5
 			_NMSG_WRITE();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -953,7 +953,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.SS.Word);
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.WriteWord(this.oCPU.DS.Word, this.oCPU.BX.Word, 0x0);
-			// Instruction address 0x3045:0x043e, size: 4
+			// Instruction uiAddress 0x3045:0x043e, size: 4
 			//this.oCPU.JmpF(this.oCPU.ReadDWord(this.oCPU.DS.Word, 0x593c));
 			this.oCPU.PushDWord(0); // preserve stack integrity
 			this.oCPU.Log.ExitBlock("'_setargv'");
@@ -979,7 +979,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x1fa4); // stack management - push return offset
-										// Instruction address 0x3045:0x1f9f, size: 5
+										// Instruction uiAddress 0x3045:0x1f9f, size: 5
 			strlen();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -996,7 +996,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.DS.Word, this.oCPU.SI.Word));
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x1fbb); // stack management - push return offset
-										// Instruction address 0x3045:0x1fb6, size: 5
+										// Instruction uiAddress 0x3045:0x1fb6, size: 5
 			strlen();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -1011,7 +1011,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x1fd3); // stack management - push return offset
-										// Instruction address 0x3045:0x1fce, size: 5
+										// Instruction uiAddress 0x3045:0x1fce, size: 5
 			strncmp();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -1090,7 +1090,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x04e7); // stack management - push return offset
-			// Instruction address 0x3045:0x04e2, size: 5
+			// Instruction uiAddress 0x3045:0x04e2, size: 5
 			_NMSG_TEXT();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -1124,7 +1124,7 @@ namespace Civilization1
 			// function body
 			this.oCPU.AX.High = 0x0;
 			this.oCPU.PushWord(0x056d); // stack management - push return offset
-			// Instruction address 0x3045:0x056a, size: 3
+			// Instruction uiAddress 0x3045:0x056a, size: 3
 			F0_3045_056e();
 			this.oCPU.PopWord(); // stack management - pop return offset and segment
 			this.oCPU.Log.ExitBlock("'_maperror'");
@@ -1150,7 +1150,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.SI.Word);
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x202b); // stack management - push return offset
-			// Instruction address 0x3045:0x2026, size: 5
+			// Instruction uiAddress 0x3045:0x2026, size: 5
 			strlen();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -1161,7 +1161,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x2037); // stack management - push return offset
-										// Instruction address 0x3045:0x2032, size: 5
+										// Instruction uiAddress 0x3045:0x2032, size: 5
 										//write();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -1174,7 +1174,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x2049); // stack management - push return offset
-										// Instruction address 0x3045:0x2044, size: 5
+										// Instruction uiAddress 0x3045:0x2044, size: 5
 										//write();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -1200,7 +1200,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.SI.Word);
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x2072); // stack management - push return offset
-										// Instruction address 0x3045:0x206d, size: 5
+										// Instruction uiAddress 0x3045:0x206d, size: 5
 			strlen();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -1210,7 +1210,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.DI.Word);
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x207d); // stack management - push return offset
-										// Instruction address 0x3045:0x2078, size: 5
+										// Instruction uiAddress 0x3045:0x2078, size: 5
 										//write();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -1222,7 +1222,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.DI.Word);
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x208e); // stack management - push return offset
-										// Instruction address 0x3045:0x2089, size: 5
+										// Instruction uiAddress 0x3045:0x2089, size: 5
 										//write();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -1369,7 +1369,7 @@ namespace Civilization1
 				else
 				{
 					this.oCPU.Flags.C = true;
-					this.oCPU.AX.Word = 9; // Invalid memory block address
+					this.oCPU.AX.Word = 9; // Invalid memory block uiAddress
 				}
 			}
 
@@ -1378,16 +1378,10 @@ namespace Civilization1
 		#endregion
 
 		#region File operations
-		public void fopen()
+		public short fopen(ushort filenameAddress, ushort modeAddress)
 		{
-			this.oCPU.AX.Word = (ushort)fopen(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))),
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))));
-		}
-
-		public short fopen(uint filenameAddress, uint modeAddress)
-		{
-			string sName = this.oCPU.ReadString(filenameAddress);
-			string sMode = this.oCPU.ReadString(modeAddress);
+			string sName = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenameAddress));
+			string sMode = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, modeAddress));
 			FileMode eMode = FileMode.Open;
 			FileAccess eAccess = FileAccess.Write;
 			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
@@ -1433,12 +1427,8 @@ namespace Civilization1
 				this.oCPU.FileHandleCount++;
 			}
 
+			this.oCPU.AX.Word = (ushort)sHandle; // preserve compatibility
 			return sHandle;
-		}
-
-		public void fclose()
-		{
-			this.oCPU.AX.Word = (ushort)fclose((short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)));
 		}
 
 		public short fclose(short handle)
@@ -1446,17 +1436,10 @@ namespace Civilization1
 			return this.close(handle);
 		}
 
-		public void fread()
-		{
-			this.oCPU.AX.Word = fread(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))),
-				this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6)),
-				this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8)),
-				(short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0xa)));
-		}
-
-		public ushort fread(uint address, ushort itemSize, ushort itemCount, short handle)
+		public ushort fread(ushort ptr, ushort itemSize, ushort itemCount, short handle)
 		{
 			ushort usItemCount = 0;
+			uint uiAddress = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, ptr);
 
 			if (this.oCPU.Files.ContainsKey(handle))
 			{
@@ -1487,8 +1470,8 @@ namespace Civilization1
 								break;
 						}
 
-						this.oCPU.Memory.WriteBlock(address, aBuffer, 0, itemSize);
-						address += itemSize;
+						this.oCPU.Memory.WriteBlock(uiAddress, aBuffer, 0, itemSize);
+						uiAddress += itemSize;
 					}
 					else
 					{
@@ -1505,8 +1488,8 @@ namespace Civilization1
 						if (iLength != itemSize)
 							break;
 
-						this.oCPU.Memory.WriteBlock(address, aBuffer, 0, itemSize);
-						address += itemSize;
+						this.oCPU.Memory.WriteBlock(uiAddress, aBuffer, 0, itemSize);
+						uiAddress += itemSize;
 					}
 				}
 			}
@@ -1515,25 +1498,21 @@ namespace Civilization1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
+			this.oCPU.AX.Word = usItemCount; // preserve compatibility
 			return usItemCount;
 		}
 
-		public void fscanf()
-		{
-			this.oCPU.AX.Word = (ushort)fscanf((short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)),
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))),
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8))));
-		}
-
-		public short fscanf(short handle, uint formatAddress, uint varAddress)
+		public short fscanf(short handle, ushort formatPtr, ushort varPtr)
 		{
 			short sCount = -1;
+			uint uiFormatAddress = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, formatPtr);
+			uint uiVarAddress = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, varPtr);
 
 			if (this.oCPU.Files.ContainsKey(handle))
 			{
 				sCount = 0;
 				FileStreamItem fileItem = this.oCPU.Files.GetValueByKey(handle);
-				string sFormat = this.oCPU.ReadString(formatAddress);
+				string sFormat = this.oCPU.ReadString(uiFormatAddress);
 				StringBuilder sbResult = new StringBuilder();
 
 				switch (sFormat)
@@ -1549,12 +1528,12 @@ namespace Civilization1
 						}
 						if (ch != -1 && sbResult.Length > 0)
 						{
-							this.oCPU.WriteString(varAddress, sbResult.ToString(), sbResult.Length);
+							this.oCPU.WriteString(uiVarAddress, sbResult.ToString(), sbResult.Length);
 							sCount = 1;
 						}
 						else
 						{
-							this.oCPU.WriteString(varAddress, "", 1);
+							this.oCPU.WriteString(uiVarAddress, "", 1);
 							sCount = -1;
 						}
 						break;
@@ -1570,20 +1549,14 @@ namespace Civilization1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
+			this.oCPU.AX.Word = (ushort)sCount; // preserve compatibility
 			return sCount;
 		}
 
-		public void fwrite()
-		{
-			this.oCPU.AX.Word = fwrite(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))),
-				this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6)),
-				this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8)),
-				(short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0xa)));
-		}
-
-		public ushort fwrite(uint address, ushort itemSize, ushort itemCount, short handle)
+		public ushort fwrite(ushort ptr, ushort itemSize, ushort itemCount, short handle)
 		{
 			ushort usItemCount = 0;
+			uint uiAddress = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, ptr);
 
 			if (this.oCPU.Files.ContainsKey(handle))
 			{
@@ -1596,8 +1569,8 @@ namespace Civilization1
 					{
 						for (int j = 0; j < itemSize; j++)
 						{
-							aBuffer[j] = this.oCPU.Memory.ReadByte(address);
-							address++;
+							aBuffer[j] = this.oCPU.Memory.ReadByte(uiAddress);
+							uiAddress++;
 						}
 
 						fileItem.Stream.Write(aBuffer, 0, itemSize);
@@ -1612,7 +1585,7 @@ namespace Civilization1
 					{
 						for (int j = 0; j < itemSize; j++)
 						{
-							aBuffer[j] = this.oCPU.Memory.ReadByte(address);
+							aBuffer[j] = this.oCPU.Memory.ReadByte(uiAddress);
 							if (aBuffer[j] == (byte)'\n')
 							{
 								if (!bLF)
@@ -1622,12 +1595,12 @@ namespace Civilization1
 								}
 								else
 								{
-									address++;
+									uiAddress++;
 								}
 							}
 							else
 							{
-								address++;
+								uiAddress++;
 							}
 						}
 
@@ -1645,33 +1618,8 @@ namespace Civilization1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
+			this.oCPU.AX.Word = usItemCount; // preserve compatibility
 			return usItemCount;
-		}
-
-		public short fflush(short handle)
-		{
-			short sTemp = 0;
-
-			if (this.oCPU.Files.ContainsKey(handle))
-			{
-				FileStreamItem fileItem = this.oCPU.Files.GetValueByKey(handle);
-				fileItem.Stream.Flush();
-				short sTemp1 = fileItem.UnGetC;
-			}
-			else
-			{
-				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
-				sTemp = -1;
-			}
-
-			return sTemp;
-		}
-
-		public void fseek()
-		{
-			this.oCPU.AX.Word = (ushort)fseek((short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)),
-				(int)this.oCPU.Memory.ReadDWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6)),
-				(short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0xa)));
 		}
 
 		public short fseek(short handle, int offset, short whence)
@@ -1708,12 +1656,8 @@ namespace Civilization1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
+			this.oCPU.AX.Word = (ushort)sRetVal; // preserve compatibility
 			return sRetVal;
-		}
-
-		public void ftell()
-		{
-			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, (uint)ftell((short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))));
 		}
 
 		public int ftell(short handle)
@@ -1731,14 +1675,8 @@ namespace Civilization1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, (uint)iPosition); // preserve compatibility
 			return iPosition;
-		}
-
-		public void lseek()
-		{
-			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, (uint)lseek((short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)),
-				(int)this.oCPU.Memory.ReadDWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6)),
-				(short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0xa))));
 		}
 
 		public int lseek(short handle, int offset, short whence)
@@ -1775,60 +1713,60 @@ namespace Civilization1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, (uint)iRetVal); // preserve compatibility
 			return iRetVal;
 		}
 
-		public void open()
+		public short open(ushort filenamePtr, ushort access)
 		{
-			this.oCPU.AX.Word = (ushort)open(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))),
-				this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6)));
+			return open(filenamePtr, access, 0);
 		}
 
-		public short open(uint filenameAddress, ushort flags)
+		public short open(ushort filenamePtr, ushort access, ushort mode)
 		{
-			string sName = Path.GetFileName(this.oCPU.ReadString(filenameAddress));
+			string sName = Path.GetFileName(this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)));
 			FileMode eMode = FileMode.Open;
 			FileAccess eAccess = FileAccess.Read;
 			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
 
-			if ((flags & 0x1) == 0x1)
+			if ((access & 0x1) == 0x1)
 			{
 				// open for writing only
 				eAccess = FileAccess.Write;
 			}
-			else if ((flags & 0x2) == 0x2)
+			else if ((access & 0x2) == 0x2)
 			{
 				// open for reading and writing
 				eAccess = FileAccess.ReadWrite;
 			}
 
-			if ((flags & 0x8) == 0x8)
+			if ((access & 0x8) == 0x8)
 			{
 				// append file
 				eMode = FileMode.Append;
 			}
-			else if ((flags & 0x100) == 0x100)
+			else if ((access & 0x100) == 0x100)
 			{
 				// create and open file
 				eMode = FileMode.OpenOrCreate;
 			}
-			else if ((flags & 0x200) == 0x200)
+			else if ((access & 0x200) == 0x200)
 			{
 				// open and truncate
 				eMode = FileMode.Truncate;
 			}
-			else if ((flags & 0x400) == 0x400)
+			else if ((access & 0x400) == 0x400)
 			{
 				// open only if file doesn't already exist
 				eMode = FileMode.Open;
 			}
 
-			if ((flags & 0x4000) == 0x4000)
+			if ((access & 0x4000) == 0x4000)
 			{
 				// file mode is text (translated)
 				eType = FileStreamTypeEnum.Text;
 			}
-			else if ((flags & 0x8000) == 0x8000)
+			else if ((access & 0x8000) == 0x8000)
 			{
 				// file mode is binary (untranslated)
 				eType = FileStreamTypeEnum.Binary;
@@ -1848,12 +1786,8 @@ namespace Civilization1
 				sHandle = -1;
 			}
 
+			this.oCPU.AX.Word = (ushort)sHandle; // preserve compatibility
 			return sHandle;
-		}
-
-		public void close()
-		{
-			this.oCPU.AX.Word = (ushort)close((short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)));
 		}
 
 		public short close(short handle)
@@ -1872,18 +1806,13 @@ namespace Civilization1
 				sTemp = -1;
 			}
 
+			this.oCPU.AX.Word = (ushort)sTemp; // preserve compatibility
 			return sTemp;
 		}
 
-		public void read()
+		public short read(short handle, ushort buf, ushort length)
 		{
-			this.oCPU.AX.Word = (ushort)read((short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)),
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))),
-				this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8)));
-		}
-
-		public short read(short handle, uint address, ushort length)
-		{
+			uint address = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, buf);
 			short sItemCount = -1;
 
 			if (this.oCPU.Files.ContainsKey(handle))
@@ -1910,18 +1839,13 @@ namespace Civilization1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
+			this.oCPU.AX.Word = (ushort)sItemCount; // preserve compatibility
 			return sItemCount;
 		}
 
-		public void write()
+		public short write(short handle, ushort buf, ushort length)
 		{
-			this.oCPU.AX.Word = (ushort)write((short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)),
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))),
-				this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8)));
-		}
-
-		public short write(short handle, uint address, ushort length)
-		{
+			uint address = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, buf);
 			short sItemCount = -1;
 
 			if (this.oCPU.Files.ContainsKey(handle))
@@ -1957,21 +1881,16 @@ namespace Civilization1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
+			this.oCPU.AX.Word = (ushort)sItemCount; // preserve compatibility
 			return sItemCount;
 		}
 
-		public void _dos_open()
+		public short _dos_open(ushort filename, ushort flags, ushort handlePtr)
 		{
-			this.oCPU.AX.Word = (ushort)_dos_open(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))),
-				this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6)),
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8))));
-		}
-
-		public short _dos_open(uint filenamePtr, ushort flags, uint handlePtr)
-		{
+			uint uiHandleAddress = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, handlePtr);
 			short sRetVal = -1;
 
-			string sName = this.oCPU.ReadString(filenamePtr);
+			string sName = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filename));
 			FileMode eMode = FileMode.Open;
 			FileAccess eAccess = FileAccess.Read;
 			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
@@ -2014,33 +1933,25 @@ namespace Civilization1
 				this.oCPU.Files.Add(this.oCPU.FileHandleCount, new FileStreamItem(new FileStream(sPath, eMode, eAccess), eType));
 				short sHandle = this.oCPU.FileHandleCount;
 				this.oCPU.FileHandleCount++;
-				this.oCPU.Memory.WriteWord(handlePtr, (ushort)sHandle);
+				this.oCPU.Memory.WriteWord(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, handlePtr), (ushort)sHandle);
 				sRetVal = 0;
 			}
 
+			this.oCPU.AX.Word = (ushort)sRetVal; // preserve compatibility
 			return sRetVal;
 		}
 
-		public void _dos_close()
+		public ushort _dos_close(short handle)
 		{
-			this.oCPU.AX.Word = (ushort)_dos_close((short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)));
+			ushort usRetVal = (ushort)this.close(handle);
+
+			this.oCPU.AX.Word = usRetVal; // preserve compatibility
+			return usRetVal;
 		}
 
-		public short _dos_close(short handle)
+		public ushort _dos_read(short handle, ushort bufferPtr, ushort length, ushort nreadPtr)
 		{
-			return this.close(handle);
-		}
-
-		public void _dos_read()
-		{
-			this.oCPU.AX.Word = _dos_read((short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)),
-				CPUMemory.ToLinearAddress(this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8)), this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))),
-				this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0xa)),
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0xc))));
-		}
-
-		public ushort _dos_read(short handle, uint address, ushort length, uint nreadAddress)
-		{
+			uint uiBufferAddress = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, bufferPtr);
 			ushort usRetVal = 1;
 			ushort usItemCount = 0;
 
@@ -2053,8 +1964,8 @@ namespace Civilization1
 					short ch = fileItem.ReadChar();
 					if (ch >= 0)
 					{
-						this.oCPU.Memory.WriteByte(address, (byte)ch);
-						address++;
+						this.oCPU.Memory.WriteByte(uiBufferAddress, (byte)ch);
+						uiBufferAddress++;
 						usItemCount++;
 					}
 					else
@@ -2063,7 +1974,7 @@ namespace Civilization1
 					}
 				}
 
-				this.oCPU.Memory.WriteWord(nreadAddress, usItemCount);
+				this.oCPU.Memory.WriteWord(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, nreadPtr), usItemCount);
 				usRetVal = 0;
 			}
 			else
@@ -2071,6 +1982,7 @@ namespace Civilization1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
+			this.oCPU.AX.Word = usRetVal; // preserve compatibility
 			return usRetVal;
 		}
 
@@ -2410,7 +2322,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.BP.Word);
 			//this.oCPU.PushWord(0x3045); // stack management - push return segment
 			//this.oCPU.PushWord(0x2111); // stack management - push return offset
-			// Instruction address 0x3045:0x210e, size: 3
+			// Instruction uiAddress 0x3045:0x210e, size: 3
 			//this.oCPU.CallF(this.oCPU.ReadDWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)));
 			//this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			//this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -2432,7 +2344,7 @@ namespace Civilization1
 			L212e:
 			this.oCPU.PushWord(0x3045); // stack management - push return segment
 			this.oCPU.PushWord(0x2133); // stack management - push return offset
-										// Instruction address 0x3045:0x212e, size: 5
+										// Instruction uiAddress 0x3045:0x212e, size: 5
 			_maperror();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment

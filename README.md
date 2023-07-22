@@ -16,7 +16,7 @@ It's where it's home directory resides (Images, palettes, overlays and save game
 
 ## Help needed
 <p>All contributions are welcome.</p>
-For this stage of code reconstruction, the programmings skills needed are:
+For this stage of code rewrite, the programmings skills needed are:
 <ul>
 <li>Moderate knowledge of assembly language,</li>
 <li>Knowledge of C# language.</li>
