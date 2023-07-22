@@ -2324,14 +2324,12 @@ namespace Civilization1
 		#endregion
 
 		#region Math operations
-		public void abs()
-		{
-			this.oCPU.AX.Word = (ushort)abs((short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)));
-		}
-
 		public short abs(short value)
 		{
-			return Math.Abs(value);
+			short retval = Math.Abs(value);
+			this.oCPU.AX.Word = (ushort)retval; // for compatibility
+
+			return retval;
 		}
 		#endregion
 
@@ -2449,55 +2447,6 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			this.oCPU.Log.ExitBlock("'int86'");
-		}
-
-		public void intdos()
-		{
-			this.oCPU.Log.EnterBlock("'intdos'(Cdecl) at 0x3045:0x257e");
-			this.oCPU.CS.Word = 0x3045; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.PushWord(this.oCPU.DI.Word);
-			this.oCPU.DI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, this.oCPU.DI.Word);
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x2));
-			this.oCPU.CX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x4));
-			this.oCPU.DX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x6));
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x8));
-			this.oCPU.DI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0xa));
-			this.oCPU.INT(0x21);
-			this.oCPU.PushWord(this.oCPU.DI.Word);
-			this.oCPU.DI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.WriteWord(this.oCPU.DS.Word, this.oCPU.DI.Word, this.oCPU.AX.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x2), this.oCPU.BX.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x4), this.oCPU.CX.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x6), this.oCPU.DX.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x8), this.oCPU.SI.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0xa), this.oCPU.PopWord());
-			if (this.oCPU.Flags.B) goto L25b4;
-			this.oCPU.SI.Word = 0x0;
-			goto L25be;
-
-			L25b4:
-			this.oCPU.PushWord(0x3045); // stack management - push return segment
-			this.oCPU.PushWord(0x25b9); // stack management - push return offset
-										// Instruction address 0x3045:0x25b4, size: 5
-			_maperror();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x3045; // restore this function segment
-			this.oCPU.SI.Word = 0x1;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, this.oCPU.DI.Word);
-
-			L25be:
-			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0xc), this.oCPU.SI.Word);
-			this.oCPU.DI.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.PopWord();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oCPU.Log.ExitBlock("'intdos'");
 		}
 
 		public void _dos_getvect()
