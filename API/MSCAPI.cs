@@ -109,7 +109,7 @@ namespace Civilization1
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x009d); // stack management - push return offset
-										// Instruction uiAddress 0x3045:0x0098, size: 5
+			// Instruction uiAddress 0x3045:0x0098, size: 5
 			this.oParent.MSCAPI._setargv();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
@@ -683,12 +683,12 @@ namespace Civilization1
 
 		public void _setargv()
 		{
-			this.oCPU.Log.EnterBlock("'_setargv'(Cdecl) at 0x3045:0x02b0");
+			this.oCPU.Log.EnterBlock("_setargv()");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x593c, this.oCPU.PopWord());
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x593e, this.oCPU.PopWord());
+			//this.oCPU.WriteWord(this.oCPU.DS.Word, 0x593c, this.oCPU.PopWord());
+			//this.oCPU.WriteWord(this.oCPU.DS.Word, 0x593e, this.oCPU.PopWord());
 			this.oCPU.DX.Word = 0x2;
 			this.oCPU.CMPByte(this.oCPU.ReadByte(this.oCPU.DS.Word, 0x5903), this.oCPU.DX.Low);
 			if (this.oCPU.Flags.E) goto L02ea;
@@ -955,8 +955,8 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.DS.Word, this.oCPU.BX.Word, 0x0);
 			// Instruction uiAddress 0x3045:0x043e, size: 4
 			//this.oCPU.JmpF(this.oCPU.ReadDWord(this.oCPU.DS.Word, 0x593c));
-			this.oCPU.PushDWord(0); // preserve stack integrity
-			this.oCPU.Log.ExitBlock("'_setargv'");
+
+			this.oCPU.Log.ExitBlock("_setargv");
 			return;
 		}
 
@@ -976,14 +976,10 @@ namespace Civilization1
 			if (this.oCPU.Flags.E) goto L1fe2;
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0x0);
 			if (this.oCPU.Flags.E) goto L1fe2;
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-			this.oCPU.PushWord(0x3045); // stack management - push return segment
-			this.oCPU.PushWord(0x1fa4); // stack management - push return offset
-										// Instruction uiAddress 0x3045:0x1f9f, size: 5
-			strlen();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x3045; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+
+			// Instruction uiAddress 0x3045:0x1f9f, size: 5
+			strlen(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
+
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 			goto L1faf;
 
@@ -993,14 +989,10 @@ namespace Civilization1
 		L1faf:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, this.oCPU.SI.Word), 0x0);
 			if (this.oCPU.Flags.E) goto L1fe2;
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.DS.Word, this.oCPU.SI.Word));
-			this.oCPU.PushWord(0x3045); // stack management - push return segment
-			this.oCPU.PushWord(0x1fbb); // stack management - push return offset
-										// Instruction uiAddress 0x3045:0x1fb6, size: 5
-			strlen();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x3045; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+
+			// Instruction uiAddress 0x3045:0x1fb6, size: 5
+			strlen(this.oCPU.ReadWord(this.oCPU.DS.Word, this.oCPU.SI.Word));
+
 			this.oCPU.CMPWord(this.oCPU.AX.Word, this.oCPU.DI.Word);
 			if (this.oCPU.Flags.LE) goto L1fac;
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, this.oCPU.SI.Word);
@@ -1147,14 +1139,10 @@ namespace Civilization1
 			if (this.oCPU.Flags.E) goto L204c;
 			this.oCPU.CMPByte(this.oCPU.ReadByte(this.oCPU.DS.Word, this.oCPU.SI.Word), 0x0);
 			if (this.oCPU.Flags.E) goto L204c;
-			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.PushWord(0x3045); // stack management - push return segment
-			this.oCPU.PushWord(0x202b); // stack management - push return offset
+
 			// Instruction uiAddress 0x3045:0x2026, size: 5
-			strlen();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x3045; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, this.oCPU.DI.Word);
+			strlen(this.oCPU.SI.Word);
+
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.SI.Word);
 			this.oCPU.AX.Word = this.oCPU.DI.Word;
@@ -1180,31 +1168,26 @@ namespace Civilization1
 			this.oCPU.CS.Word = 0x3045; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
 
-			L204c:
+		L204c:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x58fb), 0x0);
 			if (this.oCPU.Flags.L) goto L205c;
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5dbc);
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x58fb), this.oCPU.AX.Word);
 			if (this.oCPU.Flags.L) goto L2062;
 
-			L205c:
+		L205c:
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5dbc);
 			goto L2066;
 
-			L2062:
+		L2062:
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x58fb);
 
-			L2066:
+		L2066:
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x5d70));
-			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.PushWord(0x3045); // stack management - push return segment
-			this.oCPU.PushWord(0x2072); // stack management - push return offset
-										// Instruction uiAddress 0x3045:0x206d, size: 5
-			strlen();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x3045; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			// Instruction uiAddress 0x3045:0x206d, size: 5
+			strlen(this.oCPU.SI.Word);
+
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.SI.Word);
 			this.oCPU.PushWord(this.oCPU.DI.Word);
@@ -2040,24 +2023,23 @@ namespace Civilization1
 		#endregion
 
 		#region String operations
-		public void strcat()
+		/// <summary>
+		/// Join two strings together
+		/// </summary>
+		/// <param name="destinationPtr">The destination string ptr</param>
+		/// <param name="sourcePtr">The source string ptr</param>
+		/// <returns></returns>
+		public ushort strcat(ushort destinationPtr, ushort sourcePtr)
 		{
-			ushort usDestSeg = this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4));
-
-			strcat(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, usDestSeg),
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))));
-
-			this.oCPU.AX.Word = usDestSeg;
-		}
-
-		public void strcat(uint destinationAddress, uint sourceAddress)
-		{
-			string sDest = this.oCPU.ReadString(destinationAddress);
-			string sSource = this.oCPU.ReadString(sourceAddress);
+			string sDest = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destinationPtr));
+			string sSource = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
 
 			this.oCPU.Log.WriteLine($"strcat('{sDest}', '{sSource}')");
 
-			this.oCPU.WriteString(destinationAddress, sDest + sSource, sDest.Length + sSource.Length);
+			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sDest + sSource, sDest.Length + sSource.Length);
+
+			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
+			return destinationPtr;
 		}
 
 		public void strcpy()
@@ -2079,18 +2061,14 @@ namespace Civilization1
 			this.oCPU.WriteString(destinationAddress, sSource, sSource.Length);
 		}
 
-		public void strlen()
+		public ushort strlen(ushort sourcePtr)
 		{
-			this.oCPU.AX.Word = (ushort)strlen(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))));
-		}
-
-		public int strlen(uint sourcePtr)
-		{
-			string sSource = this.oCPU.ReadString(sourcePtr);
+			string sSource = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
 
 			this.oCPU.Log.WriteLine($"strlen('{sSource}') = {sSource.Length}");
 
-			return sSource.Length;
+			this.oCPU.AX.Word = (ushort)sSource.Length; // preserve compatibility
+			return (ushort)sSource.Length;
 		}
 
 		public void strncmp()
