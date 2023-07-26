@@ -998,16 +998,10 @@ namespace Civilization1
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, this.oCPU.SI.Word);
 			this.oCPU.CMPByte(this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.DI.Word)), 0x3d);
 			if (this.oCPU.Flags.NE) goto L1fac;
-			this.oCPU.PushWord(this.oCPU.DI.Word);
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-			this.oCPU.PushWord(this.oCPU.BX.Word);
-			this.oCPU.PushWord(0x3045); // stack management - push return segment
-			this.oCPU.PushWord(0x1fd3); // stack management - push return offset
-										// Instruction uiAddress 0x3045:0x1fce, size: 5
-			strncmp();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x3045; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+
+			// Instruction uiAddress 0x3045:0x1fce, size: 5
+			strncmp(this.oCPU.BX.Word, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), this.oCPU.DI.Word);
+
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L1fac;
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, this.oCPU.SI.Word);
@@ -2042,6 +2036,19 @@ namespace Civilization1
 			return destinationPtr;
 		}
 
+		public ushort strcat(ushort destinationPtr, string sourceString)
+		{
+			string sDest = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destinationPtr));
+
+			this.oCPU.Log.WriteLine($"strcat('{sDest}', '{sourceString}')");
+
+			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sDest + sourceString, 
+				sDest.Length + sourceString.Length);
+
+			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
+			return destinationPtr;
+		}
+
 		public void strcpy()
 		{
 			ushort usDestSeg = this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4));
@@ -2061,9 +2068,9 @@ namespace Civilization1
 			this.oCPU.WriteString(destinationAddress, sSource, sSource.Length);
 		}
 
-		public ushort strlen(ushort sourcePtr)
+		public ushort strlen(ushort stringPtr)
 		{
-			string sSource = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
+			string sSource = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
 			this.oCPU.Log.WriteLine($"strlen('{sSource}') = {sSource.Length}");
 
@@ -2071,127 +2078,103 @@ namespace Civilization1
 			return (ushort)sSource.Length;
 		}
 
-		public void strncmp()
+		public short strncmp(ushort string1Ptr, ushort string2Ptr, ushort maxLength)
 		{
-			this.oCPU.AX.Word = (ushort)strncmp(
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))),
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))),
-				this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8)));
+			string sS1 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
+			string sS2 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
+
+			if (sS1.Length > maxLength)
+				sS1 = sS1.Substring(0, maxLength);
+
+			if (sS2.Length > maxLength)
+				sS2 = sS2.Substring(0, maxLength);
+
+			short sRetVal = (short)string.Compare(sS1, sS2, StringComparison.CurrentCulture);
+
+			this.oCPU.AX.Word = (ushort)sRetVal; // preserve compatibility
+			return sRetVal;
 		}
 
-		public short strncmp(uint s1Ptr, uint s2Ptr, ushort maxlen)
+		public short stricmp(ushort string1Ptr, ushort string2Ptr)
 		{
-			string sS1 = this.oCPU.ReadString(s1Ptr);
-			string sS2 = this.oCPU.ReadString(s2Ptr);
+			string sS1 = this.oCPU.ReadString(string1Ptr);
+			string sS2 = this.oCPU.ReadString(string2Ptr);
 
-			if (sS1.Length > maxlen)
-				sS1 = sS1.Substring(0, maxlen);
+			short sRetVal = (short)string.Compare(sS1, sS2, StringComparison.CurrentCultureIgnoreCase);
 
-			if (sS2.Length > maxlen)
-				sS2 = sS2.Substring(0, maxlen);
-
-			return (short)string.Compare(sS1, sS2, StringComparison.CurrentCulture);
+			this.oCPU.AX.Word = (ushort)sRetVal; // preserve compatibility
+			return sRetVal;
 		}
 
-		public void stricmp()
+		public short strnicmp(ushort string1Ptr, ushort string2Ptr, ushort maxLength)
 		{
-			this.oCPU.AX.Word = (ushort)stricmp(
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))),
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))));
+			string sS1 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
+			string sS2 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
+
+			if (sS1.Length > maxLength)
+				sS1 = sS1.Substring(0, maxLength);
+
+			if (sS2.Length > maxLength)
+				sS2 = sS2.Substring(0, maxLength);
+
+			short sRetVal = (short)string.Compare(sS1, sS2, StringComparison.CurrentCultureIgnoreCase);
+
+			this.oCPU.AX.Word = (ushort)sRetVal; // preserve compatibility
+			return sRetVal;
 		}
 
-		public short stricmp(uint s1Ptr, uint s2Ptr)
+		public ushort strupr(ushort stringPtr)
 		{
-			string sS1 = this.oCPU.ReadString(s1Ptr);
-			string sS2 = this.oCPU.ReadString(s2Ptr);
-
-			return (short)string.Compare(sS1, sS2, StringComparison.CurrentCultureIgnoreCase);
-		}
-
-		public void strnicmp()
-		{
-			this.oCPU.AX.Word = (ushort)strnicmp(
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4))),
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))),
-				this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8)));
-		}
-
-		public short strnicmp(uint s1Ptr, uint s2Ptr, ushort maxlen)
-		{
-			string sS1 = this.oCPU.ReadString(s1Ptr);
-			string sS2 = this.oCPU.ReadString(s2Ptr);
-
-			if (sS1.Length > maxlen)
-				sS1 = sS1.Substring(0, maxlen);
-
-			if (sS2.Length > maxlen)
-				sS2 = sS2.Substring(0, maxlen);
-
-			return (short)string.Compare(sS1, sS2, StringComparison.CurrentCultureIgnoreCase);
-		}
-
-		public void strupr()
-		{
-			ushort usS1 = this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4));
-
-			strupr(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, usS1));
-
-			this.oCPU.AX.Word = usS1;
-		}
-
-		public void strupr(uint sAddress)
-		{
-			string sTemp = this.oCPU.ReadString(sAddress).ToUpper();
+			string sTemp = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr)).ToUpper();
 
 			this.oCPU.Log.WriteLine($"strupr('{sTemp}')");
 
-			this.oCPU.WriteString(sAddress, sTemp, sTemp.Length);
+			this.oCPU.WriteString(stringPtr, sTemp, sTemp.Length);
+
+			this.oCPU.AX.Word = stringPtr; // preserve compatibility
+			return stringPtr;
 		}
 
-		public void strstr()
+		public int strstr(ushort string1Ptr, ushort string2Ptr)
 		{
-			ushort usS1 = this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4));
+			string sS1 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
+			string sS2 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
 
-			int iPos = strstr(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, usS1),
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))));
-			if (iPos >= 0)
+			short sRetVal = (short)sS1.IndexOf(sS2);
+
+			this.oCPU.Log.WriteLine($"strstr('{sS1}', '{sS2}') = {sRetVal}");
+
+			if (sRetVal >= 0) // preserve compatibility
 			{
-				this.oCPU.AX.Word = (ushort)(usS1 + iPos);
+				this.oCPU.AX.Word = (ushort)(string1Ptr + sRetVal);
 			}
 			else
 			{
 				this.oCPU.AX.Word = 0;
 			}
+
+			return sRetVal;
 		}
 
-		public int strstr(uint s1Address, uint s2Address)
-		{
-			string sS1 = this.oCPU.ReadString(s1Address);
-			string sS2 = this.oCPU.ReadString(s2Address);
-
-			this.oCPU.Log.WriteLine($"strstr('{sS1}', '{sS2}') = {sS1.IndexOf(sS2)}");
-
-			return sS1.IndexOf(sS2);
-		}
-
-		public void itoa()
-		{
-			ushort usDestination = this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6));
-
-			itoa((short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)),
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, usDestination),
-				(short)this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8)));
-
-			this.oCPU.AX.Word = usDestination;
-		}
-
-		public void itoa(short value, uint stringAddress, short radix)
+		public ushort itoa(short value, ushort stringPtr, short radix)
 		{
 			string sValue = Convert.ToString(value, radix);
 
 			this.oCPU.Log.WriteLine($"itoa({value}, {radix}) = '{sValue}'");
 
-			this.oCPU.WriteString(stringAddress, sValue, sValue.Length);
+			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr), sValue, sValue.Length);
+
+			this.oCPU.AX.Word = stringPtr; // preserve compatibility
+			return stringPtr;
+		}
+
+		public string itoa(short value, short radix)
+		{
+			string sValue = Convert.ToString(value, radix);
+
+			this.oCPU.Log.WriteLine($"itoa({value}, {radix}) = '{sValue}'");
+
+			return sValue;
 		}
 		#endregion
 
