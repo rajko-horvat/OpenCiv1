@@ -1355,10 +1355,10 @@ namespace Civilization1
 		#endregion
 
 		#region File operations
-		public short fopen(ushort filenameAddress, ushort modeAddress)
+		public short fopen(ushort filenamePtr, ushort modePtr)
 		{
-			string sName = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenameAddress));
-			string sMode = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, modeAddress));
+			string sName = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr));
+			string sMode = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, modePtr));
 			FileMode eMode = FileMode.Open;
 			FileAccess eAccess = FileAccess.Write;
 			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
@@ -2049,23 +2049,16 @@ namespace Civilization1
 			return destinationPtr;
 		}
 
-		public void strcpy()
+		public ushort strcpy(ushort destinationPtr, ushort sourcePtr)
 		{
-			ushort usDestSeg = this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4));
-
-			strcpy(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, usDestSeg),
-				CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6))));
-
-			this.oCPU.AX.Word = usDestSeg;
-		}
-
-		public void strcpy(uint destinationAddress, uint sourceAddress)
-		{
-			string sSource = this.oCPU.ReadString(sourceAddress);
+			string sSource = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
 
 			this.oCPU.Log.WriteLine($"strcpy('{sSource}')");
 
-			this.oCPU.WriteString(destinationAddress, sSource, sSource.Length);
+			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sSource, sSource.Length);
+
+			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
+			return destinationPtr;
 		}
 
 		public ushort strlen(ushort stringPtr)
