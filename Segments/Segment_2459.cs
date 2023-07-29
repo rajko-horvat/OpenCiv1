@@ -197,7 +197,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.NE) goto L01a8;
 
 			// Instruction address 0x2459:0x018f, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(2);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(2));
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0xaaaa;
@@ -1137,32 +1137,13 @@ namespace Civilization1
 			goto L0916;
 
 		L08e1:
-			this.oCPU.AX.Word = 0xd;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
-			// Instruction address 0x2459:0x08e9, size: 5
-			this.oParent.MSCAPI.strlen(0xba06);
-
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0xba06);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x1c;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Low = 0xd;
-			this.oCPU.MULByte(this.oCPU.AX, this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x7102)));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			// LEA
-			this.oCPU.AX.Word = (ushort)(this.oCPU.BX.Word + 0x0);
-			this.oCPU.DX.Word = 0x3604;
-			this.oCPU.PushWord(this.oCPU.DX.Word);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0913); // stack management - push return offset
-			// Instruction address 0x2459:0x090e, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0500();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2459; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x8);
+			this.oParent.MSCAPI.movedata(
+				0x3604,
+				(ushort)((sbyte)(0xd * (sbyte)this.oCPU.ReadByte(this.oCPU.DS.Word,
+					(ushort)((short)(0x1c * (short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))) + 0x7102)))),
+				this.oCPU.DS.Word,
+				(ushort)(0xba06 + this.oParent.MSCAPI.strlen(0xba06)),
+				0xd);
 
 		L0916:
 			this.oCPU.BP.Word = this.oCPU.PopWord();

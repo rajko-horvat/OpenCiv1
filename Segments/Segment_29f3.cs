@@ -373,12 +373,12 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 0x0);
 
 			// Instruction address 0x29f3:0x0317, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a)));
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a))));
 
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x29f3:0x0324, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)));
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))));
 
 			this.oCPU.CMPWord(this.oCPU.AX.Word, this.oCPU.SI.Word);
 			if (this.oCPU.Flags.LE) goto L0335;
@@ -391,12 +391,12 @@ namespace Civilization1
 			if (this.oCPU.Flags.E) goto L0362;
 
 			// Instruction address 0x29f3:0x0344, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a)));
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a))));
 
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x29f3:0x0351, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)));
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))));
 
 			this.oCPU.CMPWord(this.oCPU.AX.Word, this.oCPU.SI.Word);
 			if (this.oCPU.Flags.GE) goto L0362;
@@ -1293,7 +1293,7 @@ namespace Civilization1
 
 		L0af0:
 			// Instruction address 0x29f3:0x0af4, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(2);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(2));
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L0b03;
@@ -1327,7 +1327,7 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 			// Instruction address 0x29f3:0x0b3d, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(2);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(2));
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0b5e;
@@ -1800,7 +1800,7 @@ namespace Civilization1
 
 		L0ed1:
 			// Instruction address 0x29f3:0x0ed5, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(3);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(3));
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0f02;

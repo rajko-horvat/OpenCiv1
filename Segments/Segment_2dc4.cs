@@ -42,17 +42,6 @@ namespace Civilization1
 			this.oCPU.Log.ExitBlock("'F0_2dc4_0042'");
 		}
 
-		public void F0_2dc4_005d_GetRandomNumber(ushort maxValue)
-		{
-			this.oCPU.Log.EnterBlock("'F0_2dc4_005d_GetRandomNumber'(Cdecl, Far) at 0x2dc4:0x005d");
-
-			// function body
-			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(maxValue));
-
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2dc4_005d_GetRandomNumber'");
-		}
-
 		public void F0_2dc4_007c()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_007c'(Cdecl, Far) at 0x2dc4:0x007c");
@@ -654,50 +643,6 @@ namespace Civilization1
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_2dc4_047d'");
-		}
-
-		public void F0_2dc4_04dd()
-		{
-			// !!! not needed, to be merged to underlying code
-			this.oCPU.Log.EnterBlock("'F0_2dc4_04dd'(Cdecl, Far) at 0x2dc4:0x04dd");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-
-			// Instruction address 0x2dc4:0x04f7, size: 5
-			this.oParent.MSCAPI.movedata(
-				this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
-				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)),
-				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)),
-				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)));
-
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2dc4_04dd'");
-		}
-
-		public void F0_2dc4_0500()
-		{
-			// !!! not needed, to be merged to underlying code
-			this.oCPU.Log.EnterBlock("'F0_2dc4_0500'(Cdecl, Far) at 0x2dc4:0x0500");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-
-			// Instruction address 0x2dc4:0x051a, size: 5
-			this.oParent.MSCAPI.movedata(
-				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)),
-				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
-				this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)),
-				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)));
-
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2dc4_0500'");
 		}
 
 		public void F0_2dc4_0523()

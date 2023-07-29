@@ -73,7 +73,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x6c96, 0x0);
 
 			// Instruction address 0x2aea:0x0062, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(256);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(256));
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 0x0);

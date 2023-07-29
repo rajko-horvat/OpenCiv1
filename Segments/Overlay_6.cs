@@ -681,7 +681,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 0x0);
 
 			// Instruction address 0x0000:0x05a2, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(2);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(2));
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L05b3;
@@ -1146,7 +1146,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 0x0);
 
 			// Instruction address 0x0000:0x091c, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(2);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(2));
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L092d;
@@ -3121,7 +3121,7 @@ namespace Civilization1
 			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x18a8, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(4);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(4));
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L18cc;
@@ -3525,7 +3525,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.NE) goto L1caa;
 
 			// Instruction address 0x0000:0x1c6f, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(12);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(12));
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L1caa;
@@ -3569,7 +3569,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x1cd6, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(2);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(2));
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L1ce7;

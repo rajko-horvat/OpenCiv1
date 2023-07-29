@@ -2090,8 +2090,8 @@ namespace Civilization1
 
 		public short stricmp(ushort string1Ptr, ushort string2Ptr)
 		{
-			string sS1 = this.oCPU.ReadString(string1Ptr);
-			string sS2 = this.oCPU.ReadString(string2Ptr);
+			string sS1 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
+			string sS2 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
 
 			short sRetVal = (short)string.Compare(sS1, sS2, StringComparison.CurrentCultureIgnoreCase);
 

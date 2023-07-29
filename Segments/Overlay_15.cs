@@ -202,7 +202,7 @@ namespace Civilization1
 			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, 0xd7f4);
 
 			// Instruction address 0x0000:0x0173, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(2);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(2));
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0184;

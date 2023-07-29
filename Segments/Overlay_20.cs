@@ -736,7 +736,7 @@ namespace Civilization1
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x05b9, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(10);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(10));
 
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x9);
 			if (this.oCPU.Flags.BE) goto L05c9;
@@ -782,7 +782,7 @@ namespace Civilization1
 
 		L05ed:
 			// Instruction address 0x0000:0x05f1, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(24);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(24));
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.INCWord(this.oCPU.AX.Word);
@@ -1082,7 +1082,7 @@ namespace Civilization1
 
 		L0835:
 			// Instruction address 0x0000:0x0839, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(24);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(24));
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.INCWord(this.oCPU.AX.Word);
@@ -1178,7 +1178,7 @@ namespace Civilization1
 
 		L0908:
 			// Instruction address 0x0000:0x090c, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(3);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(3));
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0924;

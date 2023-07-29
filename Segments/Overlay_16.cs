@@ -95,7 +95,7 @@ namespace Civilization1
 
 		L0039:
 			// Instruction address 0x0000:0x003d, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(72);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(72));
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x5a), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = 0x16;

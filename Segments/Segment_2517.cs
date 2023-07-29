@@ -126,7 +126,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.E) goto L00e9;
 
 			// Instruction address 0x2517:0x00d2, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_005d_GetRandomNumber(3);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(3));
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L00e9;

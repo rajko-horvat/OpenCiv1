@@ -13,30 +13,6 @@ namespace Civilization1
 			this.oCPU = parent.CPU;
 		}
 
-		public void F0_1182_000a_DrawLine()
-		{
-			this.oCPU.Log.EnterBlock("F0_1182_000a_DrawLine()");
-			this.oCPU.CS.Word = 0x1182; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-
-			// Instruction address 0x1182:0x0020, size: 5
-			this.oParent.VGADriver.F0_VGA_0599_DrawLine(
-				new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
-				(short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
-				(short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)),
-				(short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)),
-				(short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)),
-				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xe)));
-
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1182_000a_DrawLine");
-		}
-
 		public void F0_1182_002a_DrawString(ushort stringPtr, ushort xPos, ushort yPos, ushort frontColor)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1182_002a'(Cdecl, Far) at 0x1182:0x002a");

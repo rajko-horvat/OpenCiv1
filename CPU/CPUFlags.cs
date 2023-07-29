@@ -23,6 +23,14 @@ namespace Disassembler
 			}
 		}
 
+		public bool NC
+		{
+			get
+			{
+				return (this.usValue & 0x1) == 0;
+			}
+		}
+
 		public bool Z
 		{
 			get

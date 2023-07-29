@@ -587,17 +587,16 @@ namespace Civilization1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x8);
+
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa);
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44));
 			this.oCPU.WriteWord(this.oCPU.DS.Word, this.oCPU.BX.Word, this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0473); // stack management - push return offset
 			// Instruction address 0x0000:0x046e, size: 5
-			this.oParent.Segment_1000.F0_1000_0846();
+			this.oParent.Segment_1000.F0_1000_0846(this.oCPU.AX.Word);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 		L0476:
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
@@ -694,16 +693,9 @@ namespace Civilization1
 			if (this.oCPU.Flags.NE) goto L053c;
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x5);
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
+			
 			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0539); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L053c:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x32);
@@ -713,30 +705,15 @@ namespace Civilization1
 		L0547:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x46);
 			if (this.oCPU.Flags.NE) goto L0558;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 
 			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0555); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L0558:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x78);
 			if (this.oCPU.Flags.NE) goto L0569;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0566); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L0569:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xa0);
@@ -746,114 +723,50 @@ namespace Civilization1
 		L0575:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xaa);
 			if (this.oCPU.Flags.NE) goto L0587;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0584); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L0587:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xbe);
 			if (this.oCPU.Flags.NE) goto L0599;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0596); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L0599:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xd2);
 			if (this.oCPU.Flags.NE) goto L05ab;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x05a8); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L05ab:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xe6);
 			if (this.oCPU.Flags.NE) goto L05bd;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x05ba); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L05bd:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xfa);
 			if (this.oCPU.Flags.NE) goto L05cf;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x05cc); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L05cf:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x10e);
 			if (this.oCPU.Flags.NE) goto L05e1;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x05de); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L05e1:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x122);
 			if (this.oCPU.Flags.NE) goto L05f3;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x05f0); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L05f3:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x136);
 			if (this.oCPU.Flags.NE) goto L0605;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0602); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L0605:
 			// Instruction address 0x0000:0x0609, size: 5
@@ -1016,17 +929,16 @@ namespace Civilization1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x8);
+
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa);
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44));
 			this.oCPU.WriteWord(this.oCPU.DS.Word, this.oCPU.BX.Word, this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x07cd); // stack management - push return offset
 			// Instruction address 0x0000:0x07c8, size: 5
-			this.oParent.Segment_1000.F0_1000_0846();
+			this.oParent.Segment_1000.F0_1000_0846(this.oCPU.AX.Word);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 		L07d0:
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
@@ -1127,30 +1039,14 @@ namespace Civilization1
 		L089f:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xa);
 			if (this.oCPU.Flags.NE) goto L08b0;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x08ad); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L08b0:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x1e);
 			if (this.oCPU.Flags.NE) goto L08c1;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x08be); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L08c1:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x32);
@@ -1160,30 +1056,14 @@ namespace Civilization1
 		L08cc:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x40);
 			if (this.oCPU.Flags.NE) goto L08dd;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x08da); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L08dd:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x54);
 			if (this.oCPU.Flags.NE) goto L08ee;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x08eb); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L08ee:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x74);
@@ -1193,128 +1073,56 @@ namespace Civilization1
 		L08f9:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x82);
 			if (this.oCPU.Flags.NE) goto L090b;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0908); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L090b:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x96);
 			if (this.oCPU.Flags.NE) goto L091d;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x091a); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L091d:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xaa);
 			if (this.oCPU.Flags.NE) goto L092f;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x092c); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L092f:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xbe);
 			if (this.oCPU.Flags.NE) goto L0941;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x093e); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L0941:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xd2);
 			if (this.oCPU.Flags.NE) goto L0953;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0950); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L0953:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xe6);
 			if (this.oCPU.Flags.NE) goto L0965;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0962); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L0965:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xfa);
 			if (this.oCPU.Flags.NE) goto L0977;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0974); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L0977:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x10e);
 			if (this.oCPU.Flags.NE) goto L0989;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0986); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L0989:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x122);
 			if (this.oCPU.Flags.NE) goto L099b;
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0998); // stack management - push return offset
-			F2_0000_19a3_ReadCredits();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
 
 		L099b:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x136);
@@ -1587,15 +1395,13 @@ namespace Civilization1
 				this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa),
 				0, 0);
 
-			this.oCPU.AX.Word = 0;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0bbb); // stack management - push return offset
 			// Instruction address 0x0000:0x0bb6, size: 5
-			this.oParent.Segment_1000.F0_1000_0846();
+			this.oParent.Segment_1000.F0_1000_0846(0);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x1);
 			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4e)));
@@ -2079,17 +1885,16 @@ namespace Civilization1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x8);
+
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa);
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x23a));
 			this.oCPU.WriteWord(this.oCPU.DS.Word, this.oCPU.BX.Word, this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x10a6); // stack management - push return offset
 			// Instruction address 0x0000:0x10a1, size: 5
-			this.oParent.Segment_1000.F0_1000_0846();
+			this.oParent.Segment_1000.F0_1000_0846(this.oCPU.AX.Word);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 		L10a9:
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5c);
@@ -2205,15 +2010,13 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, this.oCPU.BX.Word, 0x0);
-			this.oCPU.AX.Word = 0;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
+			
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x11bb); // stack management - push return offset
 			// Instruction address 0x0000:0x11b6, size: 5
-			this.oParent.Segment_1000.F0_1000_0846();
+			this.oParent.Segment_1000.F0_1000_0846(0);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x204));
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0xba07);
@@ -3238,21 +3041,15 @@ namespace Civilization1
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.AX.Word = 0xf; // Segment
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc));
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x6);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)));
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x1976); // stack management - push return offset
+			
 			// Instruction address 0x0000:0x1971, size: 5
-			this.oParent.Segment_1182.F0_1182_000a_DrawLine();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0xa);
+			this.oParent.VGADriver.F0_VGA_0599_DrawLine(
+				new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
+				(short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
+				(short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)),
+				(short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)),
+				(short)((short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)) + 6),
+				15);
 
 			// Instruction address 0x0000:0x1981, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, 0x3379);
@@ -3272,25 +3069,6 @@ namespace Civilization1
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
 			this.oCPU.Log.ExitBlock("'F2_0000_195a'");
-		}
-
-		public void F2_0000_19a3_ReadCredits()
-		{
-			this.oCPU.Log.EnterBlock("'F2_0000_19a3_ReadCredits'(Cdecl, Far) at 0x0000:0x19a3");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
-
-			// !!! to be removed and merged to underlaying code
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-
-			// Instruction address 0x0000:0x19b1, size: 5
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 
-				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oCPU.Log.ExitBlock("'F2_0000_19a3_ReadCredits'");
 		}
 	}
 }
