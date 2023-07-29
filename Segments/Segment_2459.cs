@@ -1139,8 +1139,8 @@ namespace Civilization1
 		L08e1:
 			this.oParent.MSCAPI.movedata(
 				0x3604,
-				(ushort)((sbyte)(0xd * (sbyte)this.oCPU.ReadByte(this.oCPU.DS.Word,
-					(ushort)((short)(0x1c * (short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))) + 0x7102)))),
+				(ushort)(0xd * (ushort)this.oCPU.ReadByte(this.oCPU.DS.Word,
+					(ushort)((0x1c * this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))) + 0x7102))),
 				this.oCPU.DS.Word,
 				(ushort)(0xba06 + this.oParent.MSCAPI.strlen(0xba06)),
 				0xd);

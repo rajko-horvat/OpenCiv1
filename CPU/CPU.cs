@@ -161,7 +161,7 @@ namespace Disassembler
 					this.oMouseLocation = this.oParent.VGADriver.ScreenMouseLocation;
 					this.oMouseButtons = this.oParent.VGADriver.ScreenMouseButtons;
 
-					this.oParent.Segment_1000.F0_1000_17db();
+					this.oParent.Segment_1000.F0_1000_17db_MouseEvent();
 
 					this.PopF();
 					this.oES.Word = this.PopWord();
@@ -175,19 +175,14 @@ namespace Disassembler
 					this.oAX.Word = this.PopWord();
 				}
 
-				MainRegistersCheck registersCheck = new MainRegistersCheck(this);
 				ushort usCS = this.oCS.Word;
 				this.PushF();
-
 				this.PushWord(0x0);
 				this.PushWord(usCS);
 				this.oParent.Segment_1000.F0_1000_01a7_Timer();
 				this.PopDWord();
-
 				this.PopF();
 				this.oCS.Word = usCS;
-				if (!registersCheck.CheckMainRegisters(this))
-					throw new Exception("Return main registers doesn't match");
 
 				this.oLog = oLogTemp;
 

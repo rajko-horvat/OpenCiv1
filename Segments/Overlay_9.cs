@@ -412,7 +412,7 @@ namespace Civilization1
 			
 			this.oParent.MSCAPI.movedata(
 				0x3604,
-				(ushort)((short)(0xd * (short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)))),
+				(ushort)(0xd * (short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))),
 				this.oCPU.DS.Word,
 				(ushort)(0xba06 + this.oParent.MSCAPI.strlen(0xba06)),
 				0xd);
@@ -428,7 +428,7 @@ namespace Civilization1
 		L0336:
 			this.oParent.MSCAPI.movedata(
 				0x3604,
-				(ushort)((short)(0xd * (short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)))),
+				(ushort)(0xd * this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))),
 				this.oCPU.DS.Word,
 				(ushort)(0xba06 + this.oParent.MSCAPI.strlen(0xba06)),
 				0xd);

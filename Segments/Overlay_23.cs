@@ -131,8 +131,8 @@ namespace Civilization1
 				this.oCPU.DS.Word,
 				0xba06,
 				0x3604,
-				(ushort)((sbyte)(0xd * (sbyte)this.oCPU.ReadByte(this.oCPU.DS.Word,
-					(ushort)((short)(0x1c * (short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))) + 0x7102)))),
+				(ushort)(0xd * (ushort)this.oCPU.ReadByte(this.oCPU.DS.Word,
+					(ushort)(0x1c * this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 0x7102))),
 				0xd);
 
 		L00c5:
@@ -612,7 +612,7 @@ namespace Civilization1
 
 			this.oParent.MSCAPI.movedata(
 				0x3604,
-				(ushort)(0xd * (short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14))),
+				(ushort)(0xd * this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14))),
 				this.oCPU.DS.Word,
 				(ushort)(this.oCPU.BP.Word - 0x10),
 				0xd);

@@ -859,7 +859,7 @@ namespace Civilization1
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 
 			this.oParent.MSCAPI.movedata(
-				(ushort)((short)((0x13 - (short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))) * 0x19)),
+				(ushort)((0x13 - this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))) * 0x19),
 				0x36d4,
 				this.oCPU.DS.Word,
 				0xba06,
@@ -906,7 +906,7 @@ namespace Civilization1
 
 			this.oParent.MSCAPI.movedata(
 				0x36d4,
-				(ushort)((short)((0x13 - (short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))) * 0x19)),
+				(ushort)((0x13 - this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))) * 0x19),
 				this.oCPU.DS.Word,
 				0xba06,
 				0x20);
@@ -949,7 +949,7 @@ namespace Civilization1
 
 			this.oParent.MSCAPI.movedata(
 				0x36d4,
-				(ushort)((short)((0x13 - (short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))) * 0x19)),
+				(ushort)((0x13 - this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))) * 0x19),
 				this.oCPU.DS.Word,
 				0xba06,
 				0x20);

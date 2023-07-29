@@ -1290,7 +1290,7 @@ namespace Civilization1
 
 		public void movedata(ushort sourceSegment, ushort sourceOffset, ushort destinationSegment, ushort destinationOffset, ushort count)
 		{
-			this.oCPU.Log.EnterBlock($"memset(0x{sourceSegment:x4}, 0x{sourceOffset:x4}, 0x{destinationSegment:x4}, 0x{destinationOffset:x4}, {count})");
+			this.oCPU.Log.EnterBlock($"movedata(0x{sourceSegment:x4}, 0x{sourceOffset:x4}, 0x{destinationSegment:x4}, 0x{destinationOffset:x4}, {count})");
 
 			// function body
 			int iDirection = 1;
