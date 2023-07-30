@@ -35,7 +35,7 @@ For this stage of code rewrite, the programmings skills needed are:
 </ul>
 
 ## Screenshots of the game
-<p align="center">Please note: <b>There are currently problems with palette colors.</b></br></br>
+<p align="center">Please note: <b>The problems with palette colors should be fixed now.</b></br></br>
 <img src="Screenshots/Screenshot1.png" alt="Screenshot 1" /><br/>
 <img src="Screenshots/Screenshot2.png" alt="Screenshot 2" /><br/>
 <img src="Screenshots/Screenshot3.png" alt="Screenshot 3" /><br/>
