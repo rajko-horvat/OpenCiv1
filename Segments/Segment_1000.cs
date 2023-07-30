@@ -1650,7 +1650,7 @@ namespace Civilization1
 
 			if (usWidth > 0 && usHeight > 0)
 			{
-				this.oParent.VGADriver.F0_VGA_020c_SetFrontColorAndPixelMode((byte)(usMode & 0xf), (byte)((usMode & 0xf0) >> 8));
+				this.oParent.VGADriver.F0_VGA_020c_SetFrontColorAndPixelMode((byte)(usMode & 0xff), (byte)((usMode & 0xff00) >> 8));
 
 				Rectangle rect1 = new Rectangle(rect.X + usXOffset, rect.Y + usYOffset, usWidth, usHeight);
 				this.oParent.VGADriver.F0_VGA_040a_FillRectangle(rect.ScreenID, rect1);
@@ -2168,7 +2168,8 @@ namespace Civilization1
 			//this.oCPU.INT(0x33);
 			//this.oCPU.AX.Word = 0x3;
 			//this.oCPU.INT(0x33);
-			this.oCPU.AX.Word = (ushort)this.oParent.VGADriver.ScreenMouseLocation.X;
+			this.oCPU.CX.Word = (ushort)this.oParent.VGADriver.ScreenMouseLocation.X;
+			this.oCPU.AX.Word = this.oCPU.CX.Word;
 			this.oCPU.CX.Low = this.oCPU.CX.High;
 			this.oCPU.AX.Word = this.oCPU.SHRWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x587c, this.oCPU.CX.Low);
@@ -2195,8 +2196,11 @@ namespace Civilization1
 			this.oCPU.AX.Low = this.oCPU.Temp.Low;
 			this.oCPU.AX.Low = this.oCPU.ORByte(this.oCPU.AX.Low, this.oCPU.AX.Low);
 			if (this.oCPU.Flags.E) goto L1696;
-			this.oCPU.AX.Word = 0x0;
-			this.oCPU.INT(0x33);
+
+			//this.oCPU.AX.Word = 0x0;
+			//this.oCPU.INT(0x33);
+			this.oCPU.AX.Word = 0xffff;
+			this.oCPU.BX.Word = 2;
 
 		L1696:
 			// Far return
@@ -2239,8 +2243,9 @@ namespace Civilization1
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, 0x587c);
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0x4;
-			this.oCPU.INT(0x33);
+			
+			//this.oCPU.AX.Word = 0x4;
+			//this.oCPU.INT(0x33);
 
 		L16d2:
 			this.oCPU.BP.Word = this.oCPU.PopWord();

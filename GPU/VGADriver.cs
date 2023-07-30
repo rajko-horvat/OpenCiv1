@@ -2721,6 +2721,7 @@ namespace Civilization1
 					}
 					iWidth += fontCh.Width;
 					iHeight = Math.Max(iHeight, fontCh.Height);
+					iHeight += font.LineSpacing;
 				}
 			}
 			else

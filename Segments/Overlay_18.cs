@@ -1395,13 +1395,13 @@ namespace Civilization1
 			if (this.oCPU.Flags.NE) goto L0b3a;
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8), this.oCPU.DECWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8))));
 			if (this.oCPU.Flags.E) goto L0b3a;
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdb3a), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_db3a, 0x0);
 			if (this.oCPU.Flags.E) goto L0af3;
 
 		L0b3a:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)), 0x0);
 			if (this.oCPU.Flags.E) goto L0b4f;
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdb3a), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_db3a, 0x0);
 			if (this.oCPU.Flags.NE) goto L0b4f;
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0b4c); // stack management - push return offset
@@ -1428,11 +1428,11 @@ namespace Civilization1
 			goto L0bfc;
 
 		L0b6c:
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdb3a), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_db3a, 0x0);
 			if (this.oCPU.Flags.E) goto L0b83;
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdb3c), 0xf2);
+			this.oCPU.CMPWord(this.oParent.Var_db3c, 0xf2);
 			if (this.oCPU.Flags.LE) goto L0b83;
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdb3e), 0xbe);
+			this.oCPU.CMPWord(this.oParent.Var_db3e, 0xbe);
 			if (this.oCPU.Flags.GE) goto L0b89;
 
 		L0b83:
@@ -1847,7 +1847,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0f13); // stack management - push return offset
 			// Instruction address 0x0000:0x0f0e, size: 5
-			this.oParent.Segment_2459.F0_2459_0918();
+			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 
@@ -2529,7 +2529,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x16ab); // stack management - push return offset
 			// Instruction address 0x0000:0x16a6, size: 5
-			this.oParent.Segment_2459.F0_2459_0918();
+			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.AX.Word = 0;

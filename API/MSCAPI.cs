@@ -2122,7 +2122,7 @@ namespace Civilization1
 
 			this.oCPU.Log.WriteLine($"strupr('{sTemp}')");
 
-			this.oCPU.WriteString(stringPtr, sTemp, sTemp.Length);
+			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr), sTemp, sTemp.Length);
 
 			this.oCPU.AX.Word = stringPtr; // preserve compatibility
 			return stringPtr;

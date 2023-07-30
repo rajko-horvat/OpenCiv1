@@ -92,6 +92,9 @@ namespace Civilization1
 		public byte Var_68fa = 0;
 		public ushort Var_b26e = 0;
 		public ushort Var_d768 = 0;
+		public ushort Var_db3a = 0;
+		public ushort Var_db3c = 0;
+		public ushort Var_db3e = 0;
 		#endregion
 
 		private ushort usStartSegment = 0x1000;

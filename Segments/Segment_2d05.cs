@@ -206,14 +206,14 @@ namespace Civilization1
 
 		L0159:
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xd2e2, 0x0);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xdb3a, 0x0);
+			this.oParent.Var_db3a = 0x0;
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x016a); // stack management - push return offset
 			// Instruction address 0x2d05:0x0165, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0223();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2d05; // restore this function segment
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdb3a), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_db3a, 0x0);
 			if (this.oCPU.Flags.NE) goto L0177;
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), 0x0);
 			if (this.oCPU.Flags.E) goto L01db;
@@ -222,12 +222,12 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x2fa2, this.oCPU.AX.Word);
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), this.oCPU.AX.Word);
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdb3a), 0x2);
+			this.oCPU.CMPWord(this.oParent.Var_db3a, 0x2);
 			if (this.oCPU.Flags.NE) goto L018a;
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x2f9c, this.oCPU.AX.Word);
 
 		L018a:
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdb3e);
+			this.oCPU.AX.Word = this.oParent.Var_db3e;
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)));
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, 0x4);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
@@ -235,11 +235,11 @@ namespace Civilization1
 			this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xb1ec));
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdb3c);
+			this.oCPU.AX.Word = this.oParent.Var_db3c;
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)), this.oCPU.AX.Word);
 			if (this.oCPU.Flags.G) goto L01b2;
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xde0e);
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdb3c), this.oCPU.AX.Word);
+			this.oCPU.CMPWord(this.oParent.Var_db3c, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.LE) goto L01b7;
 
 		L01b2:
@@ -258,7 +258,7 @@ namespace Civilization1
 			goto L0217;
 
 		L01cd:
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdb3a), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_db3a, 0x0);
 
 		L01d2:
 			if (this.oCPU.Flags.NE) goto L0217;

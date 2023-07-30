@@ -338,19 +338,20 @@ namespace Civilization1
 			this.oParent.Segment_1000.F0_1000_16d4();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
+
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5872));
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xdb3a, this.oCPU.AX.Word);
+			this.oParent.Var_db3a = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x586e);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xdb3c, this.oCPU.AX.Word);
+			this.oParent.Var_db3c = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5870);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xdb3e, this.oCPU.AX.Word);
+			this.oParent.Var_db3e = this.oCPU.AX.Word;
 			goto L024f;
 
 		L0244:
 			this.oCPU.AX.Word = 0;
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xdb3e, this.oCPU.AX.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xdb3c, this.oCPU.AX.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xdb3a, this.oCPU.AX.Word);
+			this.oParent.Var_db3e = 0;
+			this.oParent.Var_db3c = 0;
+			this.oParent.Var_db3a = 0;
 
 		L024f:
 			// Far return

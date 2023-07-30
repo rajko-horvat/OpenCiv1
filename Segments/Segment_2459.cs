@@ -1151,7 +1151,7 @@ namespace Civilization1
 			this.oCPU.Log.ExitBlock("'F0_2459_08c6'");
 		}
 
-		public void F0_2459_0918()
+		public void F0_2459_0918_WaitForKeyPressOrMouseClick()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2459_0918'(Cdecl, Far) at 0x2459:0x0918");
 			this.oCPU.CS.Word = 0x2459; // set this function segment
@@ -1171,7 +1171,7 @@ namespace Civilization1
 			this.oParent.Segment_11a8.F0_11a8_0223();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2459; // restore this function segment
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdb3a), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_db3a, 0x0);
 			if (this.oCPU.Flags.NE) goto L0932;
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x092e); // stack management - push return offset
@@ -1183,7 +1183,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.E) goto L091d;
 
 		L0932:
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdb3a), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_db3a, 0x0);
 			if (this.oCPU.Flags.NE) goto L0947;
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x093e); // stack management - push return offset
