@@ -1327,7 +1327,7 @@ namespace Civilization1
 				for (int i = 0; i < 16; i++)
 				{
 					ushort usTemp = (ushort)(0x1410 + i * 3);
-					Color color = VGAScreen.GetColor18(this.oCPU.ReadByte(this.usSegment, usTemp),
+					Color color = VGAScreen.Color18ToColor(this.oCPU.ReadByte(this.usSegment, usTemp),
 						this.oCPU.ReadByte(this.usSegment, (ushort)(usTemp + 1)),
 						this.oCPU.ReadByte(this.usSegment, (ushort)(usTemp + 2)));
 
@@ -2254,18 +2254,16 @@ namespace Civilization1
 			this.oCPU.Log = oTempLog;
 		}
 
-		public void SetColor18(ushort index, byte red, byte green, byte blue)
+		public void SetColor(int index, Color color)
 		{
 			lock (this.VGALock)
 			{
-				Color oColor = VGABitmap.GetColor18(red, green, blue);
-
-				this.oCPU.Log.WriteLine($"Setting palette index {index}, #{oColor.A:x2}{oColor.R:x2}{oColor.G:x2}{oColor.B:x2}");
+				this.oCPU.Log.WriteLine($"Setting palette index {index}, #{color.A:x2}{color.R:x2}{color.G:x2}{color.B:x2}");
 
 				// set colors to all planes, as this is what original code does
 				for (int i = 0; i < this.aScreens.Count; i++)
 				{
-					this.aScreens[i].Value.SetColor(index, oColor);
+					this.aScreens[i].Value.SetColor(index, color);
 				}
 			}
 		}
@@ -2291,7 +2289,7 @@ namespace Civilization1
 
 					for (int i = 0; i < iCount; i++)
 					{
-						aColors[i] = VGABitmap.GetColor18(this.oCPU.Memory.ReadByte(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3))),
+						aColors[i] = VGABitmap.Color18ToColor(this.oCPU.Memory.ReadByte(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3))),
 							this.oCPU.Memory.ReadByte(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3) + 1)),
 						this.oCPU.Memory.ReadByte(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3) + 2)));
 
@@ -2328,7 +2326,7 @@ namespace Civilization1
 
 					for (int i = 0; i < iCount; i++)
 					{
-						aColors[i] = VGABitmap.GetColor18(colorStruct[iStructPos + (i * 3)],
+						aColors[i] = VGABitmap.Color18ToColor(colorStruct[iStructPos + (i * 3)],
 							colorStruct[iStructPos + (i * 3) + 1],
 							colorStruct[iStructPos + (i * 3) + 2]);
 

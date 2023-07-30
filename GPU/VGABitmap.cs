@@ -264,9 +264,19 @@ namespace Civilization1
 			set { this.bVisible = value; }
 		}
 
-		public static Color GetColor18(int red, int green, int blue)
+		public static Color Color18ToColor(int red, int green, int blue)
 		{
-			return Color.FromArgb((255 * (red & 0x3f)) / 64, (255 * (green & 0x3f)) / 64, (255 * (blue & 0x3f)) / 64);
+			return Color.FromArgb((255 * (red & 0x3f)) / 63, (255 * (green & 0x3f)) / 63, (255 * (blue & 0x3f)) / 63);
+		}
+
+		public static Color ColorToColor18(Color color)
+		{
+			return Color.FromArgb((63 * color.R) / 255, (63 * color.G) / 255, (63 * color.B) / 255);
+		}
+
+		public Color GetColor(int index)
+		{
+			return this.oBitmap.Palette.Entries[index];
 		}
 
 		public void SetColor(int index, Color color)
@@ -294,7 +304,7 @@ namespace Civilization1
 
 				for (int i = 0; i < iCount; i++)
 				{
-					aColors[i] = VGABitmap.GetColor18(colorStruct[iStructPos + (i * 3)],
+					aColors[i] = VGABitmap.Color18ToColor(colorStruct[iStructPos + (i * 3)],
 						colorStruct[iStructPos + (i * 3) + 1],
 						colorStruct[iStructPos + (i * 3) + 2]);
 				}
@@ -313,6 +323,19 @@ namespace Civilization1
 
 			this.oBitmap.Palette = palette;
 			this.bModified = true;
+		}
+
+		public void CopyPalette(VGABitmap bitmap)
+		{
+			ColorPalette newPalette = this.oBitmap.Palette;
+			ColorPalette oldPalette = bitmap.Bitmap.Palette;
+
+			for (int i = 0; i < oldPalette.Entries.Length; i++)
+			{
+				newPalette.Entries[i] = oldPalette.Entries[i];
+			}
+
+			this.oBitmap.Palette = newPalette;
 		}
 
 		public void ReplaceColor(Rectangle rect, byte oldColor, byte newColor)
@@ -339,19 +362,6 @@ namespace Civilization1
 				}
 				this.bModified = true;
 			}
-		}
-
-		public void CopyPalette(VGABitmap bitmap)
-		{
-			ColorPalette newPalette = this.oBitmap.Palette;
-			ColorPalette oldPalette = bitmap.Bitmap.Palette;
-
-			for (int i = 0; i < oldPalette.Entries.Length; i++)
-			{
-				newPalette.Entries[i] = oldPalette.Entries[i];
-			}
-
-			this.oBitmap.Palette = newPalette;
 		}
 
 		public byte GetPixel(int x, int y)

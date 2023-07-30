@@ -27,11 +27,8 @@ namespace Civilization1
 
 			// function body
 			this.oCPU.WriteWord(this.oCPU.CS.Word, 0x74, 0x0);
-			this.oCPU.PushWord(0x0052); // stack management - push return offset
-			// Instruction address 0x0000:0x004f, size: 3
-			F0_0000_006d();
-			this.oCPU.PopWord(); // stack management - pop return offset
 			this.oCPU.AX.Word = 0x0;
+
 			// Far return
 			//this.oCPU.Log.ExitBlock("'F0_0000_0048'");
 		}
@@ -89,19 +86,6 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x0;
 			// Far return
 			//this.oCPU.Log.ExitBlock("'F0_0000_006a'");
-		}
-
-		public void F0_0000_006d()
-		{
-			//this.oCPU.Log.EnterBlock("'F0_0000_006d'(Cdecl, Near) at 0x0000:0x006d");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
-
-			// function body
-			this.oCPU.AX.Low = this.oCPU.INByte(0x61);
-			this.oCPU.AX.Low = this.oCPU.ANDByte(this.oCPU.AX.Low, 0xfc);
-			this.oCPU.OUTByte(0x61, this.oCPU.AX.Low);
-			// Near return
-			//this.oCPU.Log.ExitBlock("'F0_0000_006d'");
 		}
 	}
 }

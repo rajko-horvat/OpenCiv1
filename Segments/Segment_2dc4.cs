@@ -635,7 +635,7 @@ namespace Civilization1
 			this.oParent.VGADriver.F0_VGA_0162_SetColorsFromColorStruct(0xbdee);
 			
 			// Instruction address 0x2dc4:0x04d2, size: 3
-			this.oParent.VGADriver.SetColor18(0x2d, 0x33, 0x27, 0x19);
+			this.oParent.VGADriver.SetColor(0x2d, VGABitmap.Color18ToColor(0x33, 0x27, 0x19));
 
 		L04d8:
 			this.oCPU.SI.Word = this.oCPU.PopWord();

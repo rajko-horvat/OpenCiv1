@@ -2620,7 +2620,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.E) goto L16a0;
 
 			// Instruction address 0x0000:0x1698, size: 5
-			this.oParent.VGADriver.SetColor18(0xfd, 3, 3, 3);
+			this.oParent.VGADriver.SetColor(0xfd, VGABitmap.Color18ToColor(3, 3, 3));
 
 		L16a0:
 			// Instruction address 0x0000:0x16a0, size: 5

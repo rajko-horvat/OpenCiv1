@@ -150,7 +150,7 @@ namespace Civilization1
 
 					for (int i = 0; i < iColorCount; i++)
 					{
-						palette.Add(new BKeyValuePair<int, Color>(iIndex + i, VGABitmap.GetColor18(abBuffer[(i * 3) + 6], abBuffer[(i * 3) + 7], abBuffer[(i * 3) + 8])));
+						palette.Add(new BKeyValuePair<int, Color>(iIndex + i, VGABitmap.Color18ToColor(abBuffer[(i * 3) + 6], abBuffer[(i * 3) + 7], abBuffer[(i * 3) + 8])));
 					}
 				}
 			}
