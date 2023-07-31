@@ -1,0 +1,4 @@
+Overlay 8	Civilopedia
+Overlay 19 	City view
+Overlay 16	Civilization quiz
+Overlay 21	Newspaper news

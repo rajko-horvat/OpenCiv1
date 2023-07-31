@@ -59,7 +59,7 @@
 			this.tsMain.Location = new System.Drawing.Point(0, 0);
 			this.tsMain.Name = "tsMain";
 			this.tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-			this.tsMain.Size = new System.Drawing.Size(592, 27);
+			this.tsMain.Size = new System.Drawing.Size(588, 27);
 			this.tsMain.TabIndex = 0;
 			this.tsMain.Text = "toolStrip1";
 			// 
@@ -71,6 +71,7 @@
 			this.cmdPause.Name = "cmdPause";
 			this.cmdPause.Size = new System.Drawing.Size(29, 24);
 			this.cmdPause.Text = "Pause";
+			this.cmdPause.Click += new System.EventHandler(this.cmdPause_Click);
 			// 
 			// cmdRun
 			// 
@@ -80,6 +81,7 @@
 			this.cmdRun.Name = "cmdRun";
 			this.cmdRun.Size = new System.Drawing.Size(29, 24);
 			this.cmdRun.Text = "Run";
+			this.cmdRun.Click += new System.EventHandler(this.cmdRun_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -106,7 +108,7 @@
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.BackColor = System.Drawing.Color.Black;
-			this.ClientSize = new System.Drawing.Size(592, 352);
+			this.ClientSize = new System.Drawing.Size(588, 348);
 			this.ControlBox = false;
 			this.Controls.Add(this.tsMain);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

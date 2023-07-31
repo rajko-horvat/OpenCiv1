@@ -1066,52 +1066,6 @@ namespace Civilization1
 			this.oCPU.Log.ExitBlock("'F0_1000_066a'");
 		}
 
-		public void F0_1000_0797(ushort rectPtr, short xPos, short yPos, ushort bufferPtr)
-		{
-			this.oCPU.Log.EnterBlock("'F0_1000_0797'(Undefined) at 0x1000:0x0797");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
-
-			// function body
-			this.oParent.VGADriver.F0_VGA_0c3e(rectPtr, xPos, yPos, bufferPtr);
-			this.oCPU.CS.Word = 0x1000; // restore this function segment
-
-			if (this.oCPU.ReadByte(this.oCPU.DS.Word, 0x5403) != 0)
-			{
-				this.oCPU.WriteByte(this.oCPU.DS.Word, 0x5402, 0x1);
-
-			L075e:
-				this.oCPU.WriteByte(this.oCPU.DS.Word, 0x5402, this.oCPU.DECByte(this.oCPU.ReadByte(this.oCPU.DS.Word, 0x5402)));
-				if (this.oCPU.Flags.E) goto L0769;
-
-				this.oCPU.PushWord(this.oCPU.AX.Word);
-				this.oCPU.PushWord(this.oCPU.DX.Word);
-				this.oCPU.PushWord(this.oCPU.ES.Word);
-				this.oCPU.AX.Word = 0x1000;
-				this.oCPU.ES.Word = this.oCPU.AX.Word;
-				// Instruction address 0x1000:0x17a2, size: 5
-				this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
-
-				this.oCPU.AX.Word = 0x1000;
-				this.oCPU.ES.Word = this.oCPU.AX.Word;
-				// Instruction address 0x1000:0x17c0, size: 5
-				this.oParent.VGADriver.F0_VGA_0270(
-					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5878)),
-					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x587a)),
-					this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5876));
-				this.oCPU.CS.Word = 0x1000; // restore this function segment
-
-				this.oCPU.ES.Word = this.oCPU.PopWord();
-				this.oCPU.DX.Word = this.oCPU.PopWord();
-				this.oCPU.AX.Word = this.oCPU.PopWord();
-				goto L075e;
-
-			L0769:
-				this.oCPU.AX.Word |= 0;
-			}
-
-			this.oCPU.Log.ExitBlock("'F0_1000_0797'");
-		}
-
 		public void F0_1000_07d6()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_07d6'(Undefined) at 0x1000:0x07d6");
@@ -1250,14 +1204,58 @@ namespace Civilization1
 			this.oCPU.Log.ExitBlock("'F0_1000_0846'");
 		}
 
-		public void F0_1000_084d()
+		public void F0_1000_0797(ushort rectPtr, short xPos, short yPos, ushort bufferPtr)
+		{
+			this.oCPU.Log.EnterBlock("'F0_1000_0797'(Undefined) at 0x1000:0x0797");
+			this.oCPU.CS.Word = 0x1000; // set this function segment
+
+			// function body
+			this.oParent.VGADriver.F0_VGA_0c3e_DrawBitmapToScreen(rectPtr, xPos, yPos, bufferPtr);
+
+			if (this.oCPU.ReadByte(this.oCPU.DS.Word, 0x5403) != 0)
+			{
+				this.oCPU.WriteByte(this.oCPU.DS.Word, 0x5402, 0x1);
+
+			L075e:
+				this.oCPU.WriteByte(this.oCPU.DS.Word, 0x5402, this.oCPU.DECByte(this.oCPU.ReadByte(this.oCPU.DS.Word, 0x5402)));
+				if (this.oCPU.Flags.E) goto L0769;
+
+				this.oCPU.PushWord(this.oCPU.AX.Word);
+				this.oCPU.PushWord(this.oCPU.DX.Word);
+				this.oCPU.PushWord(this.oCPU.ES.Word);
+				this.oCPU.AX.Word = 0x1000;
+				this.oCPU.ES.Word = this.oCPU.AX.Word;
+				// Instruction address 0x1000:0x17a2, size: 5
+				this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
+
+				this.oCPU.AX.Word = 0x1000;
+				this.oCPU.ES.Word = this.oCPU.AX.Word;
+				// Instruction address 0x1000:0x17c0, size: 5
+				this.oParent.VGADriver.F0_VGA_0270(
+					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5878)),
+					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x587a)),
+					this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5876));
+				this.oCPU.CS.Word = 0x1000; // restore this function segment
+
+				this.oCPU.ES.Word = this.oCPU.PopWord();
+				this.oCPU.DX.Word = this.oCPU.PopWord();
+				this.oCPU.AX.Word = this.oCPU.PopWord();
+				goto L075e;
+
+			L0769:
+				this.oCPU.AX.Word |= 0;
+			}
+
+			this.oCPU.Log.ExitBlock("'F0_1000_0797'");
+		}
+
+		public void F0_1000_084d_DrawBitmapToScreen(ushort rectPtr, short xPos, short yPos, ushort bitmapPtr)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_084d'(Undefined) at 0x1000:0x084d");
 			this.oCPU.CS.Word = 0x1000; // set this function segment
 
 			// function body
-			this.oParent.VGADriver.F0_VGA_0d47_DrawBitmapToScreen();
-			this.oCPU.CS.Word = 0x1000; // restore this function segment
+			this.oParent.VGADriver.F0_VGA_0d47_DrawBitmapToScreen(rectPtr, xPos, yPos, bitmapPtr);
 
 			if (this.oCPU.ReadByte(this.oCPU.DS.Word, 0x5403) != 0)
 			{
@@ -2168,10 +2166,8 @@ namespace Civilization1
 			//this.oCPU.INT(0x33);
 			//this.oCPU.AX.Word = 0x3;
 			//this.oCPU.INT(0x33);
-			this.oCPU.CX.Word = (ushort)this.oParent.VGADriver.ScreenMouseLocation.X;
-			this.oCPU.AX.Word = this.oCPU.CX.Word;
-			this.oCPU.CX.Low = this.oCPU.CX.High;
-			this.oCPU.AX.Word = this.oCPU.SHRWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
+			this.oCPU.CX.Low = 0;
+			this.oCPU.AX.Word = (ushort)(this.oParent.VGADriver.ScreenMouseLocation.X >> this.oCPU.CX.Low);
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x587c, this.oCPU.CX.Low);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x586e, this.oCPU.AX.Word);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x5870, (ushort)this.oParent.VGADriver.ScreenMouseLocation.Y);

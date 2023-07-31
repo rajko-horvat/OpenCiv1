@@ -161,6 +161,7 @@
   <ItemGroup>
     <Content Include="Documentation\CVL and EXE overlays.txt" />
     <Content Include="Documentation\Font.cv specification.txt" />
+    <Content Include="Documentation\Overlay list.txt" />
     <Content Include="Documentation\Structure 0xaa.txt" />
     <Content Include="Icons\playback-32x32.png" />
     <Content Include="Icons\windows-32x32.png" />

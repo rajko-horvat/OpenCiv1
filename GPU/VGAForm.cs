@@ -25,6 +25,7 @@ namespace Disassembler
 		private int iScreenColumns = 1;
 		private int iScreenRows = 1;
 		private Font oFont;
+		private Font oLargeFont;
 
 		public VGAForm()
 		{
@@ -42,6 +43,18 @@ namespace Disassembler
 			this.oScreenCountChange = new ScreenCountChange(ScreenCountChangeMethod);
 			ScreenCountChangeMethod();
 			this.oFont = new Font("Verdana", 10.0f, FontStyle.Regular, GraphicsUnit.Pixel);
+			this.oLargeFont = new Font("Verdana", 40.0f, FontStyle.Bold, GraphicsUnit.Pixel);
+
+			if (this.oDriver.CPU.Pause)
+			{
+				this.cmdPause.Visible = false;
+				this.cmdRun.Visible = true;
+			}
+			else
+			{
+				this.cmdPause.Visible = true;
+				this.cmdRun.Visible = false;
+			}
 		}
 
 		public Point ScreenMouseLocation
@@ -222,6 +235,15 @@ namespace Disassembler
 						iRow++;
 					}
 				}
+			}
+			
+			if (this.oDriver.CPU.Pause)
+			{
+				string sTemp = "Game paused";
+				SizeF size = g.MeasureString(sTemp, this.oLargeFont);
+				g.DrawString(sTemp, this.oLargeFont, Brushes.White,
+					(float)((this.oScreenSize.Width * this.iScreenColumns) - size.Width) / 2.0f,
+					(float)((this.oScreenSize.Height * this.iScreenRows) - size.Height) / 2.0f);
 			}
 		}
 
@@ -448,6 +470,42 @@ namespace Disassembler
 				{
 					this.oMouseButtons |= MouseButtons.Right;
 					this.oMouseButtons ^= MouseButtons.Right;
+				}
+			}
+		}
+
+		private void cmdPause_Click(object sender, EventArgs e)
+		{
+			if (!this.oDriver.CPU.Pause)
+			{
+				this.oDriver.CPU.Pause = true;
+				this.cmdPause.Visible = false;
+				this.cmdRun.Visible = true;
+
+				lock (this.oDriver.VGALock)
+				{
+					Graphics g = Graphics.FromHwnd(this.Handle);
+					RedrawScreens(g, true);
+					g.Flush();
+					g.Dispose();
+				}
+			}
+		}
+
+		private void cmdRun_Click(object sender, EventArgs e)
+		{
+			if (this.oDriver.CPU.Pause)
+			{
+				this.oDriver.CPU.Pause = false;
+				this.cmdPause.Visible = true;
+				this.cmdRun.Visible = false;
+
+				lock (this.oDriver.VGALock)
+				{
+					Graphics g = Graphics.FromHwnd(this.Handle);
+					RedrawScreens(g, true);
+					g.Flush();
+					g.Dispose();
 				}
 			}
 		}

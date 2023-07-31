@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -15,6 +16,9 @@ namespace Disassembler
 {
 	public class CPU
 	{
+		// state
+		private bool bPause = false;
+
 		// flags
 		private CPUFlags oFlags = new CPUFlags();
 
@@ -87,6 +91,12 @@ namespace Disassembler
 			set { this.bEnableTimer = value; this.bTimerFlag = false; }
 		}
 
+		public bool Pause
+		{
+			get { return this.bPause; }
+			set { this.bPause = value; }
+		}
+
 		private void oTimer_Tick(object state)
 		{
 			if (this.bEnableTimer && !this.bTimerFlag)
@@ -95,6 +105,7 @@ namespace Disassembler
 			}
 		}
 
+		#region Interrupts and events
 		public void STI()
 		{
 			this.bEnableInterrupt = true;
@@ -108,6 +119,13 @@ namespace Disassembler
 		public void DoEvents()
 		{
 			System.Windows.Forms.Application.DoEvents();
+
+			while (this.bPause)
+			{
+				Thread.Sleep(200);
+				System.Windows.Forms.Application.DoEvents();
+			}
+
 			if (this.bEnableInterrupt && this.bEnableTimer && this.bTimerFlag && !this.bInTimer)
 			{
 				this.bInTimer = true;
@@ -190,6 +208,7 @@ namespace Disassembler
 				this.bInTimer = false;
 			}
 		}
+		#endregion
 
 		#region Flags & registers
 		public CPUFlags Flags
