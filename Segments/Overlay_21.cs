@@ -170,7 +170,7 @@ namespace Civilization1
 
 		L014d:
 			// Instruction address 0x0000:0x016e, size: 5
-			this.oParent.Segment_1000.F0_1000_0797(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa),
+			this.oParent.Segment_1000.F0_1000_0797_DrawBitmapToScreen(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa),
 				(short)(0x14 * (short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))),
 				(short)((short)0x64 - (short)this.oParent.MSCAPI.RNG.Next(2)),
 				this.oCPU.ReadWord(this.oCPU.DS.Word, 0xdf0c));

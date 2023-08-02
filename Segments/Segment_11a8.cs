@@ -167,7 +167,7 @@ namespace Civilization1
 
 		L0102:
 			// Instruction address 0x11a8:0x0102, size: 5
-			this.oParent.VGADriver.F0_VGA_0a1e_AllocateMemory();
+			//this.oParent.VGADriver.F0_VGA_0a1e_AllocateMemory();
 
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0110); // stack management - push return offset
@@ -180,7 +180,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x6e92, this.oCPU.AX.Word);
 
 			// Instruction address 0x11a8:0x0116, size: 5
-			this.oParent.VGADriver.F0_VGA_0a4a_FreeMemory();
+			//this.oParent.VGADriver.F0_VGA_0a4a_FreeMemory();
 
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x1a3c), 0x0);
 			if (this.oCPU.Flags.E) goto L012a;

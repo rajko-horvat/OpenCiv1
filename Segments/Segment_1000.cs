@@ -1204,13 +1204,13 @@ namespace Civilization1
 			this.oCPU.Log.ExitBlock("'F0_1000_0846'");
 		}
 
-		public void F0_1000_0797(ushort rectPtr, short xPos, short yPos, ushort bufferPtr)
+		public void F0_1000_0797_DrawBitmapToScreen(ushort rectPtr, short xPos, short yPos, ushort bitmapPtr)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_0797'(Undefined) at 0x1000:0x0797");
+			this.oCPU.Log.EnterBlock($"F0_1000_0797_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 			this.oCPU.CS.Word = 0x1000; // set this function segment
 
 			// function body
-			this.oParent.VGADriver.F0_VGA_0c3e_DrawBitmapToScreen(rectPtr, xPos, yPos, bufferPtr);
+			this.oParent.VGADriver.F0_VGA_0c3e_DrawBitmapToScreen(rectPtr, xPos, yPos, bitmapPtr);
 
 			if (this.oCPU.ReadByte(this.oCPU.DS.Word, 0x5403) != 0)
 			{
@@ -1246,12 +1246,12 @@ namespace Civilization1
 				this.oCPU.AX.Word |= 0;
 			}
 
-			this.oCPU.Log.ExitBlock("'F0_1000_0797'");
+			this.oCPU.Log.ExitBlock("'F0_1000_0797_DrawBitmapToScreen'");
 		}
 
 		public void F0_1000_084d_DrawBitmapToScreen(ushort rectPtr, short xPos, short yPos, ushort bitmapPtr)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_084d'(Undefined) at 0x1000:0x084d");
+			this.oCPU.Log.EnterBlock($"F0_1000_084d_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 			this.oCPU.CS.Word = 0x1000; // set this function segment
 
 			// function body
@@ -1291,7 +1291,7 @@ namespace Civilization1
 				this.oCPU.AX.Word |= 0;
 			}
 
-			this.oCPU.Log.ExitBlock("'F0_1000_084d'");
+			this.oCPU.Log.ExitBlock("F0_1000_084d_DrawBitmapToScreen");
 		}
 
 		public void F0_1000_0a2b()
@@ -1638,13 +1638,13 @@ namespace Civilization1
 			this.oCPU.Log.EnterBlock("'F0_1000_0bfa_FillRectangle'(Cdecl, Far) at 0x1000:0x0bfa");
 
 			// function body
-			ushort structAAPtr = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4));
+			ushort rectPtr = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4));
 			ushort usXOffset = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x6));
 			ushort usYOffset = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x8));
 			ushort usWidth = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0xa));
 			ushort usHeight = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0xc));
 			ushort usMode = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0xe));
-			CivRectangle rect = new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, structAAPtr));
+			CivRectangle rect = new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
 
 			if (usWidth > 0 && usHeight > 0)
 			{

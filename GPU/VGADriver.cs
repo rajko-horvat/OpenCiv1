@@ -1372,40 +1372,6 @@ namespace Civilization1
 		}
 
 		#region Memory and Initialization functions
-		public void F0_VGA_04e8_InitVGA(ushort flags)
-		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_04e8_InitVGA()");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock("F0_VGA_04e8_InitVGA()");
-
-			// function body
-			/*this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.AX.Word = this.oCPU.ANDWord(this.oCPU.AX.Word, 0x80);
-			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, 0x13);
-			this.oCPU.BX.Low = this.oCPU.AX.Low;
-			this.oCPU.INT(0x10);
-			this.oCPU.AX.High = 0xf;
-			this.oCPU.INT(0x10);
-			this.oCPU.CMPByte(this.oCPU.AX.Low, this.oCPU.BX.Low);
-			if (this.oCPU.Flags.NE)
-			{
-				throw new Exception("Can't initialize VGA");
-			}
-
-			// Set default palette
-			//F0_VGA_01a1_SetColorBlock(this.usSegment, 0x1410, 0, 0x80);
-
-			this.oCPU.BP.Word = this.oCPU.PopWord();*/
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_04e8_InitVGA");
-			this.oCPU.Log = oTempLog;
-			return;
-		}
-
 		public void F0_VGA_0a1e_AllocateMemory()
 		{
 			LogWrapper oTempLog = this.oCPU.Log;
@@ -1504,23 +1470,6 @@ namespace Civilization1
 				// Far return
 				this.oCPU.Log.ExitBlock("'F0_VGA_04ae_AllocateScreen'");
 				this.oCPU.Log = oTempLog;*/
-		}
-
-		public void F0_VGA_049c_SetScreenAddress(ushort screenID, ushort address)
-		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_049c_SetScreenAddress({screenID}, 0x{address:x4})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_049c_SetScreenAddress({screenID}, 0x{address:x4})");
-			//this.oCPU.CS.Word = this.usSegment; // set this function segment
-
-			// function body
-			//this.oCPU.WriteWord(this.oCPU.CS.Word, (ushort)(0x1970 + (screenID << 1)), address);
-			//this.Var_1970[screenID] = address;
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_049c_SetScreenAddress");
-			this.oCPU.Log = oTempLog;
 		}
 		#endregion
 
@@ -2298,7 +2247,7 @@ namespace Civilization1
 			LogWrapper oTempLog = this.oCPU.Log;
 			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0c3e(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock("F0_VGA_0c3e(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bufferPtr:x4})");
+			this.oCPU.Log.EnterBlock($"F0_VGA_0c3e(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
@@ -2312,6 +2261,11 @@ namespace Civilization1
 					{
 						VGABitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 						VGABitmap bitmap = this.aBitmaps.GetValueByKey(bitmapPtr);
+
+						if (xPos > 320 || yPos > 200)
+						{
+							Console.Write("");
+						}
 
 						screen.DrawImage(rect.X + xPos, rect.Y + yPos, bitmap, true);
 					}
@@ -2511,12 +2465,17 @@ namespace Civilization1
 			CivRectangle rect = new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
 
 			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0d47_DrawBitmapToScreen({xPos}, {yPos}, 0x{bitmapPtr:x4}, {rect.Width}, {rect.Height})");
+			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0d47_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_0d47_DrawBitmapToScreen({xPos}, {yPos}, 0x{bitmapPtr:x4}, {rect.Width}, {rect.Height})");
+			this.oCPU.Log.EnterBlock($"F0_VGA_0d47_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
+			if (bitmapPtr == 0xb103)
+			{
+				Console.Write("");
+			}
+
 			if (this.aScreens.ContainsKey(rect.ScreenID))
 			{
 				if (this.aBitmaps.ContainsKey(bitmapPtr))
@@ -2525,6 +2484,11 @@ namespace Civilization1
 					{
 						VGABitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 						VGABitmap bitmap = this.aBitmaps.GetValueByKey(bitmapPtr);
+
+						if (xPos > 320 || yPos > 200)
+						{
+							Console.Write("");
+						}
 
 						screen.DrawImage(rect.X + xPos, rect.Y + yPos, bitmap, true);
 					}

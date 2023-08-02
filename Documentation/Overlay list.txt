@@ -1,4 +1,5 @@
+Overlay 7	Intro and map initialization
 Overlay 8	Civilopedia
-Overlay 19 	City view
+Overlay 19 	City grphical view
 Overlay 16	Civilization quiz
 Overlay 21	Newspaper news

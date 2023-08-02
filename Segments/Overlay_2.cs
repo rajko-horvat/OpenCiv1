@@ -243,7 +243,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x1);
 			
 			// Instruction address 0x0000:0x0166, size: 5
-			this.oParent.VGADriver.F0_VGA_04e8_InitVGA(0);
+			//this.oParent.VGADriver.F0_VGA_04e8_InitVGA(0);
 
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x6dfc, 0x0);
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xd762), 0x0);
@@ -263,7 +263,8 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x6dfc, 0x1);
 
 		L0193:
-			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48), this.oCPU.INCWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48))));
+			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48), 
+				this.oCPU.INCWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48))));
 
 		L0196:
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
@@ -276,9 +277,6 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x32d6, this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L018d;
-
-			// Instruction address 0x0000:0x01b4, size: 5
-			this.oParent.VGADriver.F0_VGA_049c_SetScreenAddress(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), this.oCPU.AX.Word);
 
 			goto L0193;
 
@@ -343,7 +341,7 @@ namespace Civilization1
 			this.oParent.VGADriver.F0_VGA_010c_SetColorsByIndexArray(0x19fe);
 
 			// Instruction address 0x0000:0x0216, size: 5
-			this.oParent.VGADriver.F0_VGA_0a1e_AllocateMemory();
+			//this.oParent.VGADriver.F0_VGA_0a1e_AllocateMemory();
 			
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0228); // stack management - push return offset
@@ -359,7 +357,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4e), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x0249, size: 5
-			this.oParent.VGADriver.F0_VGA_0a4a_FreeMemory();
+			//this.oParent.VGADriver.F0_VGA_0a4a_FreeMemory();
 			
 			//this.oCPU.PushWord(0x3293);
 			//this.oCPU.PushWord(1);
@@ -1438,7 +1436,7 @@ namespace Civilization1
 			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 			// Instruction address 0x0000:0x0c01, size: 5
-			this.oParent.VGADriver.F0_VGA_0a1e_AllocateMemory();
+			//this.oParent.VGADriver.F0_VGA_0a1e_AllocateMemory();
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x23e), 0x0);
 
@@ -1457,7 +1455,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.L) goto L0c0c;
 
 			// Instruction address 0x0000:0x0c56, size: 5
-			this.oParent.VGADriver.F0_VGA_0a4a_FreeMemory();
+			//this.oParent.VGADriver.F0_VGA_0a4a_FreeMemory();
 
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0c60); // stack management - push return offset
