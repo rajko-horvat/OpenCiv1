@@ -293,8 +293,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xea));
-			// Instruction address 0x1d12:0x023c, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1c;
@@ -486,8 +485,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x70fc));
 			this.oCPU.DX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x70fe));
 			this.oCPU.CX.Low = 0x1a;
-			// Instruction address 0x1d12:0x03dd, size: 5
-			this.oParent.MSCAPI._aFlshr();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) >> this.oCPU.CX.Low);
 
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0xe8b8, this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xd7ee);
@@ -1507,8 +1505,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xea));
-			// Instruction address 0x1d12:0x0c8e, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.AX.Word = this.oCPU.NOTWord(this.oCPU.AX.Word);
 			this.oCPU.DX.Word = this.oCPU.NOTWord(this.oCPU.DX.Word);
@@ -1589,8 +1586,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xea));
-			// Instruction address 0x1d12:0x0d3e, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1c;
@@ -1643,8 +1639,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xea));
-			// Instruction address 0x1d12:0x0daa, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1c;
@@ -1675,8 +1670,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xea));
-			// Instruction address 0x1d12:0x0df4, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xee), this.oCPU.ORWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xee)), this.oCPU.AX.Word));
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xec), this.oCPU.ORWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xec)), this.oCPU.DX.Word));
@@ -1971,8 +1965,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108));
-			// Instruction address 0x1d12:0x106f, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xee), this.oCPU.ORWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xee)), this.oCPU.AX.Word));
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xec), this.oCPU.ORWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xec)), this.oCPU.DX.Word));
@@ -2181,8 +2174,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108));
-			// Instruction address 0x1d12:0x1279, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xee), this.oCPU.ORWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xee)), this.oCPU.AX.Word));
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xec), this.oCPU.ORWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xec)), this.oCPU.DX.Word));
@@ -2199,8 +2191,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x50));
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.Low = 0x1a;
-			// Instruction address 0x1d12:0x1298, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xee)));
 			this.oCPU.DX.Word = this.oCPU.ADCWord(this.oCPU.DX.Word, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xec)));
@@ -3288,8 +3279,7 @@ namespace Civilization1
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe8));
 			this.oCPU.CX.Low = this.oCPU.DECByte(this.oCPU.CX.Low);
-			// Instruction address 0x1d12:0x1bf7, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1c;
@@ -3369,8 +3359,7 @@ namespace Civilization1
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe8));
 			this.oCPU.CX.Low = this.oCPU.DECByte(this.oCPU.CX.Low);
-			// Instruction address 0x1d12:0x1c96, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1c;
@@ -6969,8 +6958,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xbc));
-			// Instruction address 0x1d12:0x3ba9, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1c; // Segment
@@ -8243,8 +8231,7 @@ namespace Civilization1
 			this.oCPU.CX.Low = this.oCPU.DECByte(this.oCPU.CX.Low);
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
-			// Instruction address 0x1d12:0x48e1, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.AX.Word = this.oCPU.ANDWord(this.oCPU.AX.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x70ec)));
 			this.oCPU.DX.Word = this.oCPU.ANDWord(this.oCPU.DX.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x70ee)));
@@ -9904,8 +9891,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xbc));
-			// Instruction address 0x1d12:0x5763, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1c;
@@ -9991,8 +9977,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xbc));
-			// Instruction address 0x1d12:0x5868, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1c;
@@ -10317,8 +10302,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xea));
-			// Instruction address 0x1d12:0x5b2a, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1c;
@@ -10351,8 +10335,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xea));
-			// Instruction address 0x1d12:0x5b78, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1c;
@@ -10364,8 +10347,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xea));
-			// Instruction address 0x1d12:0x5b9b, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1c;
@@ -10475,8 +10457,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x50));
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.Low = 0x1a;
-			// Instruction address 0x1d12:0x5c8a, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.CX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, this.oCPU.SI.Word);
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x2));
@@ -11832,8 +11813,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xbc));
-			// Instruction address 0x1d12:0x674e, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1c;
@@ -11939,8 +11919,7 @@ namespace Civilization1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xbc));
-			// Instruction address 0x1d12:0x6831, size: 5
-			this.oParent.MSCAPI._aFlshl();
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, this.oCPU.WordsToDWord(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
 
 			this.oCPU.AX.Word = this.oCPU.NOTWord(this.oCPU.AX.Word);
 			this.oCPU.DX.Word = this.oCPU.NOTWord(this.oCPU.DX.Word);

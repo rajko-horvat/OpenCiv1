@@ -603,10 +603,12 @@ namespace Disassembler
 			if (this.oFlags.D)
 			{
 				this.oSI.Word--;
+				this.oDI.Word--;
 			}
 			else
 			{
 				this.oSI.Word++;
+				this.oDI.Word++;
 			}
 		}
 
@@ -617,7 +619,7 @@ namespace Disassembler
 				CMPSByte(regES, regDI, sReg, regSI);
 				this.oCX.Word--;
 
-				if (!this.oFlags.Z)
+				if (this.oFlags.Z)
 					break;
 			}
 		}
@@ -1284,7 +1286,7 @@ namespace Disassembler
 				}
 				this.oCX.Word--;
 
-				if (this.oFlags.Z)
+				if (!this.oFlags.Z)
 					break;
 			}
 		}

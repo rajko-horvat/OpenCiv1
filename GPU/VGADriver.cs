@@ -2262,11 +2262,6 @@ namespace Civilization1
 						VGABitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 						VGABitmap bitmap = this.aBitmaps.GetValueByKey(bitmapPtr);
 
-						if (xPos > 320 || yPos > 200)
-						{
-							Console.Write("");
-						}
-
 						screen.DrawImage(rect.X + xPos, rect.Y + yPos, bitmap, true);
 					}
 				}
@@ -2484,11 +2479,6 @@ namespace Civilization1
 					{
 						VGABitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 						VGABitmap bitmap = this.aBitmaps.GetValueByKey(bitmapPtr);
-
-						if (xPos > 320 || yPos > 200)
-						{
-							Console.Write("");
-						}
 
 						screen.DrawImage(rect.X + xPos, rect.Y + yPos, bitmap, true);
 					}

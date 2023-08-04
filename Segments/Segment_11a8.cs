@@ -55,11 +55,6 @@ namespace Civilization1
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x1a30, 0x4e); // '1' - No sound 0x4e, '4' - Sound blaster 0x41, '5' - Roland MIDI board 0x52
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x1a3c, 0x1); // '1' - mouse and Keyboard
 
-			// intialize keyboard state
-			/*this.oCPU.ES.Word = 0x40;
-			this.oCPU.BX.Word = 0x17;
-			this.oCPU.WriteByte(this.oCPU.ES.Word, this.oCPU.BX.Word, this.oCPU.ANDByte(this.oCPU.ReadByte(this.oCPU.ES.Word, this.oCPU.BX.Word), 0xdf));*/
-
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x003b); // stack management - push return offset
 			// Instruction address 0x11a8:0x0038, size: 3
@@ -312,16 +307,6 @@ namespace Civilization1
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_11a8_0008'");
-		}
-
-		public void F0_11a8_01c1()
-		{
-			this.oCPU.Log.EnterBlock("'F0_11a8_01c1'(Cdecl, Far) at 0x11a8:0x01c1");
-			this.oCPU.CS.Word = 0x11a8; // set this function segment
-
-			// function body
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_11a8_01c1'");
 		}
 
 		public void F0_11a8_0223()

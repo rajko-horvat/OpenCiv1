@@ -62,7 +62,9 @@ namespace Civilization1
 
 				ushort usStack = this.aStack.Pop();
 				// _setargv pushes permanent data on the stack!
-				if (!text.Equals("_setargv", StringComparison.InvariantCultureIgnoreCase) && this.oCPU.SP.Word != usStack)
+				if (!text.Equals("_setargv", StringComparison.InvariantCultureIgnoreCase) &&
+					!text.Equals("start", StringComparison.InvariantCultureIgnoreCase) &&
+					this.oCPU.SP.Word != usStack)
 				{
 					this.oLog.Write($", Error: Stack leak detected in function '{text}', " +
 						$"stack position should be 0x{usStack:x4}, but is 0x{this.oCPU.SP.Word:x4}");

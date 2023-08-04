@@ -84,7 +84,7 @@
     <Compile Include="Segments\Misc.cs" />
     <Compile Include="API\MSCAPI.cs" />
     <Compile Include="Segments\NSound.cs" />
-    <Compile Include="Segments\MainMenuOverlay.cs" />
+    <Compile Include="Segments\Overlay_1.cs" />
     <Compile Include="Segments\Overlay_10.cs" />
     <Compile Include="Segments\Overlay_11.cs" />
     <Compile Include="Segments\Overlay_12.cs" />

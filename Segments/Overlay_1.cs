@@ -2,13 +2,13 @@ using Disassembler;
 
 namespace Civilization1
 {
-	public class MainMenuOverlay
+	public class Overlay_1
 	{
 		private Civilization oParent;
 		private CPU oCPU;
 		private ushort usSegment = 0;
 
-		public MainMenuOverlay(Civilization parent)
+		public Overlay_1(Civilization parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;

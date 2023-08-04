@@ -15,59 +15,81 @@ namespace Civilization1
 
 		public void Start()
 		{
-			this.oCPU.Log.EnterBlock("'Start'(Cdecl, Far) at 0x3045:0x2e7f");
+			this.oCPU.Log.EnterBlock("Start()");
 			this.oCPU.CS.Word = 0x3045; // set this function segment
+
+			ushort usDataSegment = 0x3b01;
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.DS.Word);
-			this.oCPU.AX.Word = 0x3b01;
-			this.oCPU.DS.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.High = 0x30;
-			this.oCPU.INT(0x21);
-			this.oCPU.CMPByte(this.oCPU.AX.Low, 0x2);
-			if (this.oCPU.Flags.AE) goto L2e98;
-			this.oCPU.DX.Word = 0x61a6;
-			this.oCPU.PushWord(0x2e93); // stack management - push return offset
-			// Instruction address 0x3045:0x2e90, size: 3
-			this.oParent.MSCAPI.F0_3045_2b12();
-			this.oCPU.PopWord(); // stack management - pop return offset
-			this.oCPU.PushWord(this.oCPU.ES.Word);
-			this.oCPU.AX.Word = 0x0;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			// Far return
-			this.oCPU.Log.ExitBlock("'Start'");
-			return;
+			this.oCPU.DS.Word = 0x3b01;
 
-		L2e98:
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x592c, 0x1);
-			this.oCPU.DI.Word = 0x63db;
-			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, this.oCPU.DI.Word);
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x592d, this.oCPU.AX.Low);
-			this.oCPU.PushWord(this.oCPU.ES.Word);
-			this.oCPU.AX.High = 0x35;
-			this.oCPU.INT(0x21);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x592e, this.oCPU.BX.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x5930, this.oCPU.ES.Word);
-			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, this.oCPU.DI.Word);
-			this.oCPU.DX.Word = this.oCPU.CS.Word;
-			this.oCPU.DS.Word = this.oCPU.DX.Word;
-			this.oCPU.DX.Word = 0x2d5a;
-			this.oCPU.AX.High = 0x25;
-			this.oCPU.INT(0x21);
-			this.oCPU.AX.Word = 0x3b01;
-			this.oCPU.DS.Word = this.oCPU.AX.Word;
-			this.oCPU.ES.Word = this.oCPU.PopWord();
-			this.oCPU.PushWord(0x2ec8); // stack management - push return offset
-			// Instruction address 0x3045:0x2ec5, size: 3
-			this.oParent.MSCAPI.F0_3045_2ed2();
-			this.oCPU.PopWord(); // stack management - pop return offset
+			string sPath = this.oCPU.DefaultDirectory + "CIV.EXE";
+			this.oCPU.Memory.WriteByte(this.oCPU.DS.Word, 0x61ee, (byte)'C');
+			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, 0x6156), sPath, sPath.Length);
+
 			this.oCPU.DS.Word = this.oCPU.PopWord();
-			this.oCPU.AX.Word = this.oCPU.DS.Word;
-			this.oCPU.ES.Word = this.oCPU.AX.Word;
-			// Instruction address 0x3045:0x2ecd, size: 5
-			this.oParent.MSCAPI.F0_3045_0014();
-			this.oCPU.Log.ExitBlock("'Start'");
-			return;
+			this.oCPU.ES.Word = this.oCPU.DS.Word;
+
+			this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, 0x5901, this.oCPU.ES.Word); // PSP segment
+			this.oCPU.SI.Word = (ushort)(this.oCPU.Memory.FreeMemory.End >> 4); // top of memory
+			this.oCPU.SI.Word = this.oCPU.SUBWord(this.oCPU.SI.Word, usDataSegment);
+
+			// init SS:SP
+			this.oCPU.CLI();
+			this.oCPU.SS.Word = usDataSegment;
+			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0xe8c0);
+			this.oCPU.STI();
+
+			// align SP
+			this.oCPU.SP.Word = this.oCPU.ANDWord(this.oCPU.SP.Word, 0xfffe);
+
+			this.oCPU.WriteWord(this.oCPU.SS.Word, 0x5890, this.oCPU.SP.Word);
+			this.oCPU.WriteWord(this.oCPU.SS.Word, 0x588c, this.oCPU.SP.Word);
+
+			this.oCPU.AX.Word = this.oCPU.SI.Word;
+			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 4);
+			this.oCPU.AX.Word = this.oCPU.DECWord(this.oCPU.AX.Word);
+			this.oCPU.WriteWord(this.oCPU.SS.Word, 0x588a, this.oCPU.AX.Word);
+
+			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, usDataSegment);
+			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x2, this.oCPU.SI.Word);
+			this.oCPU.BX.Word = this.oCPU.ES.Word;
+			this.oCPU.BX.Word = this.oCPU.SUBWord(this.oCPU.BX.Word, this.oCPU.SI.Word);
+			this.oCPU.BX.Word = this.oCPU.NEGWord(this.oCPU.BX.Word);
+			this.oCPU.AX.High = 0x4a;
+			this.oCPU.INT(0x21);
+
+			this.oCPU.WriteWord(this.oCPU.SS.Word, 0x5901, this.oCPU.DS.Word);
+
+			this.oCPU.ES.Word = this.oCPU.SS.Word;
+			this.oCPU.DS.Word = this.oCPU.SS.Word;
+
+			// clear the rest of data and stack segment 0x652e - 0xe8c0
+			for (int i = 0x652e; i < this.oCPU.SP.Word; i++)
+			{
+				this.oCPU.Memory.WriteByte(usDataSegment, (ushort)i, 0);
+			}
+
+			// DOS version
+			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x5903, 0x616);
+
+			// Environment block is not used
+			// Argument block in not used
+			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x5922, 0);
+			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x5920, 0);
+			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x591e, 0);
+
+			// Get special devices information
+			// Defaults are OK, no need to modify bytes at 0x590a - 0x590e
+
+			// call our 'short Main()' function
+			this.oCPU.BP.Word = 0x0;
+			this.oParent.Segment_11a8.F0_11a8_0008_Main();
+
+			this.oCPU.Log.ExitBlock("Start");
+
+			this.oParent.MSCAPI.exit((short)this.oCPU.AX.Word);
 		}
 	}
 }

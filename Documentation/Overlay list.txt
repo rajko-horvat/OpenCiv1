@@ -1,5 +1,9 @@
+Segment_11a8	Main entry segment
+Segment_2fa1	Image loading functions
+
+Overlay 1	Main menu (textual)
 Overlay 7	Intro and map initialization
 Overlay 8	Civilopedia
-Overlay 19 	City grphical view
+Overlay 19 	City graphical view
 Overlay 16	Civilization quiz
 Overlay 21	Newspaper news

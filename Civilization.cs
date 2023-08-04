@@ -34,7 +34,7 @@ namespace Civilization1
 		private Segment_2517 oSegment_2517;
 		private Segment_2c84 oSegment_2c84;
 		private Segment_302a oSegment_302a;
-		private MainMenuOverlay oOverlay_1;
+		private Overlay_1 oOverlay_1;
 		private Overlay_2 oOverlay_2;
 		private Overlay_6 oOverlay_6;
 		private Overlay_7 oOverlay_7;
@@ -141,7 +141,7 @@ namespace Civilization1
 			this.oSegment_2517 = new Segment_2517(this);
 			this.oSegment_2c84 = new Segment_2c84(this);
 			this.oSegment_302a = new Segment_302a(this);
-			this.oOverlay_1 = new MainMenuOverlay(this);
+			this.oOverlay_1 = new Overlay_1(this);
 			this.oOverlay_2 = new Overlay_2(this);
 			this.oOverlay_6 = new Overlay_6(this);
 			this.oOverlay_7 = new Overlay_7(this);
@@ -228,16 +228,17 @@ namespace Civilization1
 			oEXE.ApplyRelocations(usStartSegment);
 
 			// copy EXE to memory and allocate resources
-			string sEnvironment = "COMSPEC=C:\\WINDOWS\\SYSTEM32\\COMMAND.COM FP_NO_HOST_CHECK=NO HOMEDRIVE=C: "+
-				"NUMBER_OF_PROCESSORS=1 OS=Windows_NT PATH=C:\\DOS "+
-				"PATHEXT=.COM;.EXE;.BAT;.CMD PROCESSOR_ARCHITECTURE=x86 "+
-				"PROCESSOR_IDENTIFIER=x86 Family 6 Model 69 Stepping 1, GenuineIntel PROCESSOR_LEVEL=6 PROCESSOR_REVISION=4501 PROMPT=$P$G "+
-				"SYSTEMDRIVE=C: SYSTEMROOT=C: TEMP=C:\\TEMP TMP=C:\\TEMP BLASTER=A220 I5 D1 P330 T3";
-			uint uiEnvirenmentLength = (uint)(((sEnvironment.Length + 1) + 0xf) & 0xfff0);
+			string sEnvironment = "COMSPEC=C:\\WINDOWS\\SYSTEM32\\COMMAND.COM\0FP_NO_HOST_CHECK=NO\0HOMEDRIVE=C:\0" +
+				"NUMBER_OF_PROCESSORS=1\0OS=Windows_NT\0PATH=C:\\DOS\0"+
+				"PATHEXT=.COM;.EXE;.BAT;.CMD\0PROCESSOR_ARCHITECTURE=x86\0"+
+				"PROCESSOR_IDENTIFIER=x86\0PROCESSOR_LEVEL=6\0PROMPT=$P$G\0"+
+				"SYSTEMDRIVE=C:\0SYSTEMROOT=C:\0TEMP=C:\\TEMP\0TMP=C:\\TEMP\0BLASTER=A220 I5 D1 P330 T3\0";
+			uint uiEnvirenmentLength = (uint)(((sEnvironment.Length + 2) + 0xf) & 0xfff0);
 			uint uiEnvironment = (uint)(0xff00 - uiEnvirenmentLength);
 
 			this.oCPU.Memory.AllocateMemoryBlock(uiEnvironment, uiEnvirenmentLength, CPUMemoryFlagsEnum.ReadWrite);
-			this.oCPU.WriteString(uiEnvironment, sEnvironment, sEnvironment.Length);
+			this.oCPU.Memory.WriteByte(uiEnvironment, (byte)sEnvironment.Length);
+			this.oCPU.WriteString(uiEnvironment + 1, sEnvironment, sEnvironment.Length);
 			this.oCPU.Memory.MemoryRegions[1].AccessFlags = CPUMemoryFlagsEnum.Read;
 
 			this.oCPU.Memory.AllocateMemoryBlock(0xff00, 0x100, CPUMemoryFlagsEnum.ReadWrite);
@@ -258,7 +259,7 @@ namespace Civilization1
 
 			// define data and stack region(s)
 			this.oCPU.Memory.MemoryRegions[3].End = 0x3b00f;
-			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0, 0xf0d0, CPUMemoryFlagsEnum.ReadWrite));
+			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0, 0xf0c0, CPUMemoryFlagsEnum.ReadWrite));
 
 			// initialize CPU
 			this.oCPU.CS.Word = (ushort)(oEXE.InitialCS + usStartSegment);
@@ -444,7 +445,7 @@ namespace Civilization1
 			get { return this.oSegment_302a; }
 		}
 
-		public MainMenuOverlay Overlay_1
+		public Overlay_1 Overlay_1
 		{
 			get { return this.oOverlay_1; }
 		}
