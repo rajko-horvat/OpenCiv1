@@ -74,7 +74,6 @@
       <DependentUpon>VGAForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LogWrapper.cs" />
-    <Compile Include="MainRegistersCheck.cs" />
     <Compile Include="MZ\MZExecutable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -128,7 +127,6 @@
     <Compile Include="Segments\Segment_2f4d.cs" />
     <Compile Include="Segments\ImageLoading.cs" />
     <Compile Include="Segments\Segment_302a.cs" />
-    <Compile Include="Segments\Segment_3045.cs" />
     <EmbeddedResource Include="GPU\VGAForm.resx">
       <DependentUpon>VGAForm.cs</DependentUpon>
     </EmbeddedResource>

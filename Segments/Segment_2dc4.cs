@@ -43,10 +43,12 @@ namespace Civilization1
 			this.oCPU.Log.ExitBlock("'F0_2dc4_0042'");
 		}
 
-		public void F0_2dc4_007c_CheckValueRange(ushort value, ushort minValue, ushort maxValue)
+		public ushort F0_2dc4_007c_CheckValueRange(ushort value, ushort minValue, ushort maxValue)
 		{
 			// function body
 			this.oCPU.AX.Word = Math.Min(Math.Max(value, minValue), maxValue);
+
+			return this.oCPU.AX.Word;
 		}
 
 		public void F0_2dc4_00ba()
@@ -514,20 +516,14 @@ namespace Civilization1
 			goto L0479;
 
 		L045d:
-			this.oCPU.AX.Word = 0x7;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)));
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)));
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa));
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0476); // stack management - push return offset
 			// Instruction address 0x2dc4:0x0471, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0xc);
+			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(
+				this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa),
+				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
+				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)),
+				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)),
+				this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)),
+				7);
 
 		L0479:
 			this.oCPU.SP.Word = this.oCPU.BP.Word;

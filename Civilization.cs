@@ -12,7 +12,6 @@ namespace Civilization1
 		private CPU oCPU;
 
 		#region Segment definitions
-		private Segment_3045 oSegment_3045;
 		private Segment_11a8 oSegment_11a8;
 		private Segment_1000 oSegment_1000;
 		private Segment_1199 oSegment_1199;
@@ -97,6 +96,29 @@ namespace Civilization1
 		public ushort Var_db3e = 0;
 		#endregion
 
+		#region Global strings
+		/// <summary>
+		/// " Future Technology "
+		/// </summary>
+		public static string String_23c1 = " Future Technology ";
+		/// <summary>
+		/// "Which army?\n "
+		/// </summary>
+		public static string String_4166 = "Which army?\n ";
+		/// <summary>
+		/// "\n "
+		/// </summary>
+		public static string String_4174 = "\n ";
+		/// <summary>
+		/// "/"
+		/// </summary>
+		public static string String_4185 = "/";
+		/// <summary>
+		/// "S"
+		/// </summary>
+		public static string String_4187 = "S";
+		#endregion
+
 		private ushort usStartSegment = 0x1000;
 		private MZExecutable oEXE;
 
@@ -119,7 +141,6 @@ namespace Civilization1
 			this.oIntroLog.CPU = this.oCPU;
 
 			#region Initialize Segments
-			this.oSegment_3045 = new Segment_3045(this);
 			this.oSegment_11a8 = new Segment_11a8(this);
 			this.oSegment_1000 = new Segment_1000(this);
 			this.oSegment_1199 = new Segment_1199(this);
@@ -272,7 +293,84 @@ namespace Civilization1
 			this.OverlaySegment = 0x3374; // as set by F0_3045_2b44 as overlay base segment
 			this.SetOverlayBase();
 
-			this.oSegment_3045.Start();
+			this.Start();
+		}
+
+		public void Start()
+		{
+			this.oCPU.CS.Word = 0x3045; // set this function segment
+
+			ushort usDataSegment = 0x3b01;
+
+			// function body
+			this.oCPU.PushWord(this.oCPU.DS.Word);
+			this.oCPU.DS.Word = 0x3b01;
+
+			string sPath = this.oCPU.DefaultDirectory + "CIV.EXE";
+			this.oCPU.Memory.WriteByte(this.oCPU.DS.Word, 0x61ee, (byte)Path.GetPathRoot(this.oCPU.DefaultDirectory)[0]);
+			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, 0x6156), sPath, sPath.Length);
+
+			this.oCPU.DS.Word = this.oCPU.PopWord();
+			this.oCPU.ES.Word = this.oCPU.DS.Word;
+
+			this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, 0x5901, this.oCPU.ES.Word); // PSP segment
+			this.oCPU.SI.Word = (ushort)(this.oCPU.Memory.FreeMemory.End >> 4); // top of memory
+			this.oCPU.SI.Word = this.oCPU.SUBWord(this.oCPU.SI.Word, usDataSegment);
+
+			// init SS:SP
+			this.oCPU.CLI();
+			this.oCPU.SS.Word = usDataSegment;
+			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0xe8c0);
+			this.oCPU.STI();
+
+			// align SP
+			this.oCPU.SP.Word = this.oCPU.ANDWord(this.oCPU.SP.Word, 0xfffe);
+
+			this.oCPU.WriteWord(this.oCPU.SS.Word, 0x5890, this.oCPU.SP.Word);
+			this.oCPU.WriteWord(this.oCPU.SS.Word, 0x588c, this.oCPU.SP.Word);
+
+			this.oCPU.AX.Word = this.oCPU.SI.Word;
+			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 4);
+			this.oCPU.AX.Word = this.oCPU.DECWord(this.oCPU.AX.Word);
+			this.oCPU.WriteWord(this.oCPU.SS.Word, 0x588a, this.oCPU.AX.Word);
+
+			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, usDataSegment);
+			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x2, this.oCPU.SI.Word);
+			this.oCPU.BX.Word = this.oCPU.ES.Word;
+			this.oCPU.BX.Word = this.oCPU.SUBWord(this.oCPU.BX.Word, this.oCPU.SI.Word);
+			this.oCPU.BX.Word = this.oCPU.NEGWord(this.oCPU.BX.Word);
+			this.oCPU.AX.High = 0x4a;
+			this.oCPU.INT(0x21);
+
+			this.oCPU.WriteWord(this.oCPU.SS.Word, 0x5901, this.oCPU.DS.Word);
+
+			this.oCPU.ES.Word = this.oCPU.SS.Word;
+			this.oCPU.DS.Word = this.oCPU.SS.Word;
+
+			// clear the rest of data and stack segment 0x652e - 0xe8c0
+			for (int i = 0x652e; i < this.oCPU.SP.Word; i++)
+			{
+				this.oCPU.Memory.WriteByte(usDataSegment, (ushort)i, 0);
+			}
+
+			// DOS version
+			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x5903, 0x616);
+
+			// Environment block is not used
+			// Argument block in not used
+			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x5922, 0);
+			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x5920, 0);
+			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x591e, 0);
+
+			// Get special devices information
+			// Defaults are OK, no need to modify bytes at 0x590a - 0x590e
+
+			this.oCPU.BP.Word = 0x0;
+
+			// call our 'short Main()' function
+			this.Segment_11a8.F0_11a8_0008_Main();
+
+			this.MSCAPI.exit((short)this.oCPU.AX.Word);
 		}
 
 		private void SetOverlayBase()
@@ -335,11 +433,6 @@ namespace Civilization1
 		#endregion
 
 		#region Public Segment getters
-		public Segment_3045 Segment_3045
-		{
-			get { return this.oSegment_3045; }
-		}
-
 		public Segment_11a8 Segment_11a8
 		{
 			get { return this.oSegment_11a8; }

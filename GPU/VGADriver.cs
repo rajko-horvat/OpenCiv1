@@ -28,9 +28,6 @@ namespace Civilization1
 		private Queue<int> aKeys = new Queue<int>();
 		private CivFonts aFonts;
 
-		private ushort Var_6b3 = 0;
-		private ushort Var_6b5 = 0;
-
 		private ushort Var_89e = 0;
 		private ushort Var_8a0 = 0;
 		private ushort Var_8a2 = 0;
@@ -41,27 +38,10 @@ namespace Civilization1
 		private ushort Var_8ac = 0;
 		private ushort Var_8ae = 0;
 		private ushort Var_8b0 = 0;
-		private ushort Var_8b2 = 0;
-		private ushort Var_8b4 = 0;
-		private ushort Var_8ba = 0;
-		private ushort Var_8bc = 0;
-		private ushort Var_8c2 = 0;
-		private ushort Var_8c4 = 0;
-		private ushort Var_8c6 = 0;
-		private ushort Var_8c8 = 0;
-		private ushort Var_8ca = 0;
-		private ushort Var_8cc = 0;
-		private ushort Var_8ce = 0;
-		private ushort Var_8d0 = 0;
-
-		private ushort Var_10ac = 0x4d2;
-		private byte Var_10ae = 0;
 
 		private ushort Var_15c0 = 0;
 		private short Var_15c2_xPos = 0;
 		private short Var_15c4_yPos = 0;
-		private ushort Var_15c6 = 0;
-		private ushort Var_15c8 = 0;
 		private ushort Var_15ca_BufferX = 0;
 		private ushort Var_15cc_BufferY = 0;
 		private ushort Var_15ce_BufferWidth = 0;
@@ -70,21 +50,12 @@ namespace Civilization1
 		private ushort Var_15d4_ScreenID = 0;
 
 		private byte[] Var_15d6_Buffer = new byte[512];
-		private ushort[] Var_1970 = new ushort[] { 0xa000, 0xa000, 0xa000, 0xa000, 0xa000, 0xa000, 0xa000, 0xa000 };
 		private ushort Var_1980_ActiveScreenID = 0;
 		private ushort Var_1982_XOffset = 0;
 		private ushort Var_1984_YOffset = 0;
 		private ushort Var_1986_Width = 319;
 		private byte Var_198a_FrontColor = 0;
 		private PixelWriteModeEnum Var_198b_PixelMode = PixelWriteModeEnum.Normal;
-
-		private ushort Var_19c2_XPosition = 0;
-		private ushort Var_19c4_YPosition = 50;
-		private ushort Var_19c6 = 100;
-		private ushort Var_19c8 = 0;
-		private ushort Var_19ca = 0;
-		private byte Var_19ce = 0;
-		private byte Var_19cf = 0;
 
 		#region Fonts
 		private byte[] Var_19f0_FontTable = new byte[] {
@@ -2274,181 +2245,6 @@ namespace Civilization1
 			{
 				throw new Exception($"The screen {rect.ScreenID} is not allocated");
 			}
-
-			/*this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.PushWord(this.oCPU.DI.Word);
-			this.oCPU.PushWord(this.oCPU.DS.Word);
-
-			CivRectangle rect = new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
-
-			short Var_8ca = 0;
-			short Var_8cc = 0;
-			short Var_8ce = 0;
-			short Var_8d0 = 0;
-
-			if (bitmapPtr != 0 && this.oCPU.ReadWord(bitmapPtr, 0x0) != 0 && this.oCPU.ReadWord(bitmapPtr, 0x2) != 0)
-			{
-				this.oCPU.SI.Word = 0x0;
-				short sWidth = (short)this.oCPU.ReadWord(bitmapPtr, 0);
-				short sHeight = (short)this.oCPU.ReadWord(bitmapPtr, 2);
-
-				if (yPos >= 0) goto L0c8a;
-				this.oCPU.AX.Word = yPos;
-				this.oCPU.AX.Word = this.oCPU.NEGWord(this.oCPU.AX.Word);
-				this.oCPU.CMPWord(this.oCPU.AX.Word, sHeight);
-				if (this.oCPU.Flags.AE) goto L0cd6;
-				Var_8ca = this.oCPU.AX.Word;
-
-			L0c8a:
-				this.oCPU.AX.Word = yPos;
-				this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, sHeight);
-				this.oCPU.AX.Word = this.oCPU.DECWord(this.oCPU.AX.Word);
-
-				this.oCPU.BX.Word = rect.Height;
-				this.oCPU.BX.Word = this.oCPU.ORWord(this.oCPU.BX.Word, this.oCPU.BX.Word);
-				if (this.oCPU.Flags.S) goto L0cd6;
-				this.oCPU.CMPWord(yPos, this.oCPU.BX.Word);
-				if (this.oCPU.Flags.G) goto L0cd6;
-
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.BX.Word);
-				if (this.oCPU.Flags.LE) goto L0ca5;
-				Var_8ce = this.oCPU.AX.Word;
-
-			L0ca5:
-				if (xPos >= 0) goto L0cb8;
-				this.oCPU.AX.Word = xPos;
-				this.oCPU.AX.Word = this.oCPU.NEGWord(this.oCPU.AX.Word);
-				this.oCPU.CMPWord(this.oCPU.AX.Word, sWidth);
-				if (this.oCPU.Flags.AE) goto L0cd6;
-				Var_8cc = this.oCPU.AX.Word;
-
-			L0cb8:
-				this.oCPU.AX.Word = xPos;
-				this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, sWidth);
-				this.oCPU.AX.Word = this.oCPU.DECWord(this.oCPU.AX.Word);
-				this.oCPU.BX.Word = rect.Width;
-				this.oCPU.BX.Word = this.oCPU.ORWord(this.oCPU.BX.Word, this.oCPU.BX.Word);
-				if (this.oCPU.Flags.S) goto L0cd6;
-				this.oCPU.CMPWord(xPos, this.oCPU.BX.Word);
-				if (this.oCPU.Flags.G) goto L0cd6;
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.BX.Word);
-				if (this.oCPU.Flags.LE) goto L0cd8;
-				Var_8d0 = this.oCPU.AX.Word;
-				goto L0cd8;
-
-			L0cd6:
-				this.oCPU.Flags.C = true;
-				goto L0c77;
-
-			L0cd8:
-				this.oCPU.AX.Word = Var_8cc;
-				this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, xPos);
-				this.oCPU.AX.Word = Var_8ca;
-				this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, yPos);
-				this.oCPU.AX.Word = sWidth;
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, Var_8cc);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, Var_8d0);
-				this.oCPU.AX.Word = sHeight;
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, Var_8ca);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, Var_8ce);
-				this.oCPU.Flags.C = false;
-
-			L0c77:
-				if (this.oCPU.Flags.NC)
-				{
-					this.oCPU.PushWord(this.oCPU.BP.Word);
-					this.oCPU.PushWord(this.oCPU.ES.Word);
-					this.oCPU.BX.Word = rect.ScreenID;
-					this.oCPU.ES.Word = this.Var_1970[this.oCPU.BX.Word];
-
-					xPos += rect.X;
-					yPos += rect.Y;
-					yPos += Var_8ca;
-					this.oCPU.BP.Word = (ushort)(320 * yPos);
-					this.oCPU.BP.Word = this.oCPU.ADDWord(this.oCPU.BP.Word, xPos);
-					this.oCPU.AX.Word = this.oCPU.Memory.ReadWord(bitmapPtr, this.oCPU.SI.Word);
-					this.oCPU.SI.Word += 2;
-					this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, Var_8d0);
-					if (this.oCPU.Flags.LE) goto L0df5;
-					this.Var_8b4 = this.oCPU.AX.Word;
-					this.oCPU.AX.Word = this.oCPU.Memory.ReadWord(bitmapPtr, this.oCPU.SI.Word);
-					this.oCPU.SI.Word += 2;
-					this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, Var_8ca);
-					this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, Var_8ce);
-					if (this.oCPU.Flags.LE) goto L0df5;
-					this.Var_8b2 = this.oCPU.AX.Word;
-					this.oCPU.CX.Word = Var_8ca;
-					if (this.oCPU.CX.Word == 0) goto L0db3;
-
-				L0dac:
-					this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.ReadWord(bitmapPtr, this.oCPU.SI.Word));
-					this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, 0x4);
-					if (this.oCPU.Loop(this.oCPU.CX)) goto L0dac;
-
-				L0db3:
-					this.oCPU.AX.Word = this.oCPU.Memory.ReadWord(bitmapPtr, this.oCPU.SI.Word);
-					this.oCPU.SI.Word += 2;
-					this.oCPU.CX.Word = this.oCPU.AX.Word;
-					xPos = this.oCPU.AX.Word;
-					this.oCPU.AX.Word = this.oCPU.Memory.ReadWord(bitmapPtr, this.oCPU.SI.Word);
-					this.oCPU.SI.Word += 2;
-					if (this.oCPU.CX.Word == 0) goto L0de8;
-					this.oCPU.BX.Word = this.oCPU.AX.Word;
-					this.oCPU.CX.Word = this.oCPU.ADDWord(this.oCPU.CX.Word, this.oCPU.AX.Word);
-					this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, Var_8cc);
-					if (this.oCPU.Flags.A) goto L0dcc;
-					this.oCPU.SI.Word = this.oCPU.SUBWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
-					this.oCPU.BX.Word = this.oCPU.SUBWord(this.oCPU.BX.Word, this.oCPU.AX.Word);
-					xPos += this.oCPU.AX.Word;
-
-				L0dcc:
-					this.oCPU.AX.Word = this.Var_8b4;
-					this.oCPU.CMPWord(this.oCPU.AX.Word, this.oCPU.CX.Word);
-					if (this.oCPU.Flags.A) goto L0dd6;
-					this.oCPU.CX.Word = this.oCPU.AX.Word;
-
-				L0dd6:
-					this.oCPU.CX.Word = this.oCPU.SUBWord(this.oCPU.CX.Word, this.oCPU.BX.Word);
-					if (this.oCPU.Flags.BE) goto L0de8;
-					yPos = this.oCPU.BP.Word;
-					yPos += this.oCPU.BX.Word;
-					xPos -= this.oCPU.CX.Word;
-
-				L0de0:
-					this.oCPU.AX.Low = this.oCPU.Memory.ReadByte(bitmapPtr, this.oCPU.SI.Word);
-					this.oCPU.SI.Word++;
-					this.oCPU.AX.Low = this.oCPU.ORByte(this.oCPU.AX.Low, this.oCPU.AX.Low);
-					if (this.oCPU.Flags.E) goto L0df8;
-					this.oCPU.Memory.WriteByte(this.oCPU.ES.Word, yPos, this.oCPU.AX.Low);
-					yPos++;
-					if (this.oCPU.Loop(this.oCPU.CX)) goto L0de0;
-					goto L0de8;
-
-				L0df8:
-					yPos++;
-					if (this.oCPU.Loop(this.oCPU.CX)) goto L0de0;
-
-					L0de8:
-					this.oCPU.BP.Word = this.oCPU.ADDWord(this.oCPU.BP.Word, 0x140);
-					this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, xPos);
-					this.Var_8b2--;
-					if (this.Var_8b2 != 0) goto L0db3;
-
-					L0df5:
-					this.oCPU.ES.Word = this.oCPU.PopWord();
-					this.oCPU.BP.Word = this.oCPU.PopWord();
-				}
-			}
-
-		L0c6c:
-			this.oCPU.AX.Word = 0x8c2; // is it a reference to Var_8c2 ???
-			this.oCPU.DX.Word = this.oCPU.CS.Word;
-			this.oCPU.DS.Word = this.oCPU.PopWord();
-			this.oCPU.DI.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.PopWord();
-			this.oCPU.BP.Word = this.oCPU.PopWord();*/
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_VGA_0c3e");

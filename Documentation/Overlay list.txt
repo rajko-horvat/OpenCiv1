@@ -1,9 +1,27 @@
 Segment_11a8	Main entry segment
 Segment_2fa1	Image loading functions
+Segment_3045	MSC Init
 
 Overlay 1	Main menu (textual)
+Overlay 2	Main intro, credits
+Overlay 3	?
+Overlay 4	?
+Overlay 5	Game menu, difficulty, civilizations, name...
+Overlay 6	Meet with king (emissary)
 Overlay 7	Intro and map initialization
 Overlay 8	Civilopedia
-Overlay 19 	City graphical view
+Overlay 9	?
+Overlay 10	?
+Overlay 11	Load game dialog
+Overlay 12	World map
+Overlay 13	?
+Overlay 14	City, military, intelligence, attitude, science, score report
+Overlay 15	?
 Overlay 16	Civilization quiz
+Overlay 17	?
+Overlay 18	?
+Overlay 19 	City graphical view
+Overlay 20	Build city
 Overlay 21	Newspaper news
+Overlay 22	?
+Overlay 23	Build city intro

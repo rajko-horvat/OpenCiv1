@@ -874,56 +874,58 @@ namespace Civilization1
 			return usRetVal;
 		}
 
-		public void _bios_disk()
+		public void _bios_disk(ushort command, ushort diskInfoPtr)
 		{
 			this.oCPU.Log.EnterBlock("'_bios_disk'(Cdecl) at 0x3045:0x3062");
-			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.AX.High = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.DX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, this.oCPU.BX.Word);
-			this.oCPU.CMPByte(this.oCPU.AX.High, 0x2);
-			if (this.oCPU.Flags.B) goto L308a;
-			this.oCPU.DX.High = this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x2));
-			this.oCPU.CX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x4));
-			this.oCPU.Temp.Low = this.oCPU.CX.Low;
-			this.oCPU.CX.Low = this.oCPU.CX.High;
-			this.oCPU.CX.High = this.oCPU.Temp.Low;
-			this.oCPU.CX.Low = this.oCPU.RORByte(this.oCPU.CX.Low, 0x1);
-			this.oCPU.CX.Low = this.oCPU.RORByte(this.oCPU.CX.Low, 0x1);
-			this.oCPU.CX.Low = this.oCPU.ANDByte(this.oCPU.CX.Low, 0xc0);
-			this.oCPU.CX.Low = this.oCPU.ORByte(this.oCPU.CX.Low, this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x6)));
-			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x8));
-			// LES
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xa));
-			this.oCPU.ES.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)((ushort)(this.oCPU.BX.Word + 0xa) + 2));
+			DriveInfo[] driveInfo = DriveInfo.GetDrives();
+			uint uiAddress = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, diskInfoPtr);
+			int iDrive = this.oCPU.Memory.ReadWord(uiAddress);
+			char chDrive = (char)((iDrive >= 0x80) ? (iDrive - 0x80 + 'C') : ('A' + iDrive));
 
-			L308a:
-			this.oCPU.INT(0x13);
-			this.oCPU.BP.Word = this.oCPU.PopWord();
+			switch (command)
+			{
+				case 0:
+					// reset disk system
+					this.oCPU.AX.High = 0;
+					this.oCPU.Flags.C = false;
+					this.oCPU.Log.ExitBlock("'_bios_disk'");
+					return;
+
+				case 4:
+					// Verify disk sectors
+
+					for (int i = 0; i < driveInfo.Length; i++)
+					{
+						if (driveInfo[i].Name[0] == chDrive)
+						{
+							if (driveInfo[i].IsReady)
+							{
+								this.oCPU.AX.High = 0;
+								this.oCPU.Flags.C = false;
+								this.oCPU.Log.ExitBlock("'_bios_disk'");
+								return;
+							}
+							else
+							{
+								break;
+							}
+						}
+					}
+					break;
+			}
+
+			this.oCPU.AX.High = 0x80;
+			this.oCPU.Flags.C = true;
+
 			this.oCPU.Log.ExitBlock("'_bios_disk'");
 		}
 
-		public void _dos_getdrive()
+		public void _dos_getdrive(ushort valuePtr)
 		{
-			this.oCPU.Log.EnterBlock("'_dos_getdrive'(Cdecl) at 0x3045:0x312e");
-			this.oCPU.CS.Word = 0x3045; // set this function segment
-
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.AX.High = 0x19;
-			this.oCPU.INT(0x21);
-			this.oCPU.AX.Word = this.oCPU.INCWord(this.oCPU.AX.Word);
-			this.oCPU.AX.High = 0x0;
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.WriteWord(this.oCPU.DS.Word, this.oCPU.BX.Word, this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x0;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oCPU.Log.ExitBlock("'_dos_getdrive'");
+			this.oCPU.WriteWord(this.oCPU.DS.Word, valuePtr, (ushort)(Path.GetPathRoot(this.oCPU.DefaultDirectory)[0] - 'A' + 1));
 		}
 		#endregion
 
@@ -972,6 +974,16 @@ namespace Civilization1
 			return destinationPtr;
 		}
 
+		public ushort strcpy(ushort destinationPtr, string source)
+		{
+			this.oCPU.Log.WriteLine($"strcpy('{source}')");
+
+			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), source, source.Length);
+
+			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
+			return destinationPtr;
+		}
+
 		public ushort strlen(ushort stringPtr)
 		{
 			string sSource = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
@@ -980,23 +992,6 @@ namespace Civilization1
 
 			this.oCPU.AX.Word = (ushort)sSource.Length; // preserve compatibility
 			return (ushort)sSource.Length;
-		}
-
-		public short strncmp(ushort string1Ptr, ushort string2Ptr, ushort maxLength)
-		{
-			string sS1 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
-			string sS2 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
-
-			if (sS1.Length > maxLength)
-				sS1 = sS1.Substring(0, maxLength);
-
-			if (sS2.Length > maxLength)
-				sS2 = sS2.Substring(0, maxLength);
-
-			short sRetVal = (short)string.Compare(sS1, sS2, StringComparison.CurrentCulture);
-
-			this.oCPU.AX.Word = (ushort)sRetVal; // preserve compatibility
-			return sRetVal;
 		}
 
 		public short stricmp(ushort string1Ptr, ushort string2Ptr)
@@ -1182,46 +1177,6 @@ namespace Civilization1
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 
 			this.oCPU.Log.ExitBlock("'int86'");
-		}
-
-		public void _dos_getvect()
-		{
-			this.oCPU.Log.EnterBlock("'_dos_getvect'(Cdecl) at 0x3045:0x30bc");
-			this.oCPU.CS.Word = 0x3045; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.AX.High = 0x35;
-			this.oCPU.INT(0x21);
-			this.oCPU.DX.Word = this.oCPU.ES.Word;
-			this.oCPU.AX.Word = this.oCPU.BX.Word;
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oCPU.Log.ExitBlock("'_dos_getvect'");
-		}
-
-		public void _dos_setvect()
-		{
-			this.oCPU.Log.EnterBlock("'_dos_setvect'(Cdecl) at 0x3045:0x310a");
-			this.oCPU.CS.Word = 0x3045; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.PushWord(this.oCPU.DS.Word);
-			// LDS
-			this.oCPU.DX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.DS.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)((ushort)(this.oCPU.BP.Word + 0x8) + 2));
-			this.oCPU.AX.High = 0x25;
-			this.oCPU.INT(0x21);
-			this.oCPU.DS.Word = this.oCPU.PopWord();
-			this.oCPU.AX.Word = 0x0;
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			this.oCPU.Log.ExitBlock("'_dos_setvect'");
 		}
 		#endregion
 	}
