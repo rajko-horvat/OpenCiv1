@@ -1,15 +1,15 @@
 using Disassembler;
 using System;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public class Overlay_3
 	{
-		private Civilization oParent;
+		private OpenCiv1 oParent;
 		private CPU oCPU;
 		private ushort usSegment = 0;
 
-		public Overlay_3(Civilization parent)
+		public Overlay_3(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -258,7 +258,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.G) goto L0220;
 
 			// Instruction address 0x0000:0x01fb, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x33d8);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_33d8);
 
 			this.oCPU.AX.Word = 0;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
@@ -285,7 +285,7 @@ namespace Civilization1
 				this.oParent.MSCAPI.itoa((short)((short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)) + 1), 10));
 
 			// Instruction address 0x0000:0x024f, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x33dd);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_33dd);
 
 			this.oCPU.AX.Word = 0x2e;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
@@ -299,7 +299,7 @@ namespace Civilization1
 				16);
 
 			// Instruction address 0x0000:0x028c, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x33e0);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_33e0);
 
 			this.oCPU.ES.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x63fc);
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.ES.Word, (ushort)(this.oCPU.SI.Word + 0x37d4));
@@ -308,7 +308,7 @@ namespace Civilization1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x33a2)));
 
 			// Instruction address 0x0000:0x02b7, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x33e3);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_33e3);
 
 			this.oParent.MSCAPI.movedata(
 				0x3772,
@@ -323,7 +323,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x02fb, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x33ec);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_33ec);
 
 			this.oCPU.ES.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x63fc);
 			// Instruction address 0x0000:0x032a, size: 5
@@ -373,7 +373,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.ADDWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x8));
 
 			// Instruction address 0x0000:0x0390, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x33fb);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_33fb);
 
 			this.oCPU.AX.Word = 0x2e;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
@@ -389,7 +389,7 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 			// Instruction address 0x0000:0x03b9, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x3408);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3408);
 
 			this.oCPU.ES.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x63fc);
 			// Instruction address 0x0000:0x03df, size: 5
@@ -448,7 +448,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.ADDWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x8));
 
 			// Instruction address 0x0000:0x044c, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x3446);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3446);
 
 			this.oCPU.AX.Word = 0x2e;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
@@ -461,7 +461,7 @@ namespace Civilization1
 					(short)this.oCPU.ReadWord(this.oCPU.ES.Word, (ushort)(this.oCPU.DI.Word + 0x37d2))) / 0x32), 10));
 
 			// Instruction address 0x0000:0x0497, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x3464);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3464);
 
 			this.oCPU.AX.Word = 0xc;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
@@ -872,7 +872,7 @@ namespace Civilization1
 				this.oParent.MSCAPI.itoa((short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 10));
 
 			// Instruction address 0x0000:0x0884, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x3473);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3473);
 
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x08a1); // stack management - push return offset
@@ -1145,7 +1145,7 @@ namespace Civilization1
 				this.oParent.MSCAPI.itoa((short)((short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)) + 1), 10));
 
 			// Instruction address 0x0000:0x0b1e, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x34a7);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_34a7);
 
 			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
@@ -1157,7 +1157,7 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 			// Instruction address 0x0000:0x0b39, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x34aa);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_34aa);
 
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
@@ -1170,7 +1170,7 @@ namespace Civilization1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982)));
 
 			// Instruction address 0x0000:0x0b6a, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x34ad);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_34ad);
 
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0b93); // stack management - push return offset

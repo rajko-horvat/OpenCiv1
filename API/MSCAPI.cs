@@ -7,15 +7,15 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public class MSCAPI
 	{
-		private Civilization oParent;
+		private OpenCiv1 oParent;
 		private CPU oCPU;
 		private RandomMT19937 oRNG = new RandomMT19937();
 
-		public MSCAPI(Civilization parent)
+		public MSCAPI(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;

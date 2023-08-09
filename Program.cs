@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	static class Program
 	{
@@ -15,7 +15,7 @@ namespace Civilization1
 		[MTAThread]
 		static void Main()
 		{
-			Civilization oCivilization = new Civilization();
+			OpenCiv1 oGame = new OpenCiv1();
 
 			Console.WriteLine("Exiting, press any key...");
 

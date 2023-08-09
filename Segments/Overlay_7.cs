@@ -1,15 +1,15 @@
 using Disassembler;
 using System;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public class Overlay_7
 	{
-		private Civilization oParent;
+		private OpenCiv1 oParent;
 		private CPU oCPU;
 		private ushort usSegment = 0;
 
-		public Overlay_7(Civilization parent)
+		public Overlay_7(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -3298,7 +3298,7 @@ namespace Civilization1
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x6800, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x188a, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x3b4b);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3b4b);
 
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x7);
@@ -3721,7 +3721,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.SI.Word);
 
 			// Instruction address 0x0000:0x1bf2, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x3b6a);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3b6a);
 
 			this.oCPU.AX.Word = 0xffff;
 			this.oCPU.PushWord(this.oCPU.AX.Word);

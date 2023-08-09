@@ -1,4 +1,4 @@
-﻿using Civilization1;
+﻿using OpenCiv1;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

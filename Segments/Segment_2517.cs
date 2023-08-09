@@ -1,13 +1,13 @@
 using Disassembler;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public class Segment_2517
 	{
-		private Civilization oParent;
+		private OpenCiv1 oParent;
 		private CPU oCPU;
 
-		public Segment_2517(Civilization parent)
+		public Segment_2517(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -182,7 +182,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.E) goto L01c2;
 
 			// Instruction address 0x2517:0x0156, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x295c);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_295c);
 
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
@@ -190,7 +190,7 @@ namespace Civilization1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
 
 			// Instruction address 0x2517:0x017b, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x2971);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2971);
 
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
@@ -198,7 +198,7 @@ namespace Civilization1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
 
 			// Instruction address 0x2517:0x01a0, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x297b);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_297b);
 
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x2f9e, 0x1);
 			this.oCPU.AX.Word = 0x50;
@@ -584,7 +584,7 @@ namespace Civilization1
 
 		L04c6:
 			// Instruction address 0x2517:0x04ce, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x29af);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_29af);
 
 			this.oCPU.AX.Word = 0;
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14), this.oCPU.AX.Word);
@@ -680,7 +680,7 @@ namespace Civilization1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1966)));
 
 			// Instruction address 0x2517:0x0585, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x29ce);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_29ce);
 
 		L058d:
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.INCWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))));
@@ -779,7 +779,7 @@ namespace Civilization1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)));
 
 			// Instruction address 0x2517:0x064a, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x29d1);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_29d1);
 
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
@@ -787,14 +787,14 @@ namespace Civilization1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1966)));
 
 			// Instruction address 0x2517:0x066f, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x29e9);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_29e9);
 
 			this.oCPU.WriteByte(this.oCPU.DS.Word, this.oCPU.DI.Word, this.oCPU.ANDByte(this.oCPU.ReadByte(this.oCPU.DS.Word, this.oCPU.DI.Word), 0xfb));
 			goto L06bc;
 
 		L067c:
 			// Instruction address 0x2517:0x0684, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x29ec);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_29ec);
 
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
@@ -802,7 +802,7 @@ namespace Civilization1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982)));
 
 			// Instruction address 0x2517:0x06a9, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x29f1);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_29f1);
 
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
 			this.oCPU.CX.Low = 0x4;
@@ -1115,7 +1115,7 @@ namespace Civilization1
 			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
 
 			// Instruction address 0x2517:0x090e, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x2a13);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2a13);
 
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
@@ -1123,7 +1123,7 @@ namespace Civilization1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
 
 			// Instruction address 0x2517:0x0933, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x2a19);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2a19);
 
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x2f9e, 0x1);
 			this.oCPU.AX.Word = 0x50;
@@ -1185,7 +1185,7 @@ namespace Civilization1
 			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
 
 			// Instruction address 0x2517:0x09bf, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x2a30);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2a30);
 
 			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);

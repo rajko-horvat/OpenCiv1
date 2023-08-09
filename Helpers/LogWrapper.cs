@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public class LogWrapper
 	{

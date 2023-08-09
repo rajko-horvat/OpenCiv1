@@ -1,14 +1,14 @@
 using Disassembler;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public class Overlay_21
 	{
-		private Civilization oParent;
+		private OpenCiv1 oParent;
 		private CPU oCPU;
 		private ushort usSegment = 0;
 
-		public Overlay_21(Civilization parent)
+		public Overlay_21(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -234,7 +234,7 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 			// Instruction address 0x0000:0x0215, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x5141);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_5141);
 
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0226); // stack management - push return offset
@@ -293,7 +293,7 @@ namespace Civilization1
 
 		L029e:
 			// Instruction address 0x0000:0x02a6, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x5127);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_5127);
 
 			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
@@ -308,7 +308,7 @@ namespace Civilization1
 
 		L02bf:
 			// Instruction address 0x0000:0x02c7, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x5133);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_5133);
 
 			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
@@ -350,7 +350,7 @@ namespace Civilization1
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x033d, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x515c);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_515c);
 
 			this.oCPU.AX.Word = 0;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
@@ -369,7 +369,7 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x8);
 
 			// Instruction address 0x0000:0x0364, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x5165);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_5165);
 
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0371); // stack management - push return offset

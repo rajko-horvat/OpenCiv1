@@ -1,13 +1,13 @@
 using Disassembler;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public class Segment_11a8
 	{
-		private Civilization oParent;
+		private OpenCiv1 oParent;
 		private CPU oCPU;
 
-		public Segment_11a8(Civilization parent)
+		public Segment_11a8(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -594,7 +594,7 @@ namespace Civilization1
 
 		L0494:
 			// Instruction address 0x11a8:0x049c, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x1ae2);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1ae2);
 
 			this.oCPU.AX.Word = 0x8c;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
@@ -838,7 +838,7 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 			// Instruction address 0x11a8:0x063b, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x1b48);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1b48);
 
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
@@ -888,7 +888,7 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 			// Instruction address 0x11a8:0x0698, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x1b6f);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1b6f);
 
 			this.oCPU.AX.Word = 0x33;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
@@ -938,7 +938,7 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 			// Instruction address 0x11a8:0x06f5, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x1ba0);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1ba0);
 
 			this.oCPU.AX.Word = 0x65;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
@@ -990,7 +990,7 @@ namespace Civilization1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 			// Instruction address 0x11a8:0x0752, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x1bc5);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1bc5);
 
 			this.oCPU.AX.Word = 0x97;
 			this.oCPU.PushWord(this.oCPU.AX.Word);

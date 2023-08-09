@@ -1,4 +1,4 @@
-﻿using Civilization1.GPU;
+﻿using OpenCiv1.GPU;
 using Disassembler;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public enum PixelWriteModeEnum
 	{

@@ -1,4 +1,4 @@
-﻿using Civilization1;
+﻿using OpenCiv1;
 using Disassembler.MZ;
 using IRB.Collections.Generic;
 using System;
@@ -62,10 +62,10 @@ namespace Disassembler
 		private short sFileHandleCount = 0x20;
 		private BDictionary<short, FileStreamItem> aOpenFiles = new BDictionary<short, FileStreamItem>();
 
-		private Civilization oParent;
+		private OpenCiv1.OpenCiv1 oParent;
 		private LogWrapper oLog;
 
-		public CPU(Civilization parent, LogWrapper log)
+		public CPU(OpenCiv1.OpenCiv1 parent, LogWrapper log)
 		{
 			this.oParent = parent;
 			this.oLog = log;
@@ -74,7 +74,7 @@ namespace Disassembler
 			//this.oTimer.Dispose();
 		}
 
-		public Civilization Parent
+		public OpenCiv1.OpenCiv1 Parent
 		{
 			get { return this.oParent; }
 		}

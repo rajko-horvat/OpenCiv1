@@ -1,14 +1,14 @@
 using System;
 using Disassembler;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public class Segment_1866
 	{
-		private Civilization oParent;
+		private OpenCiv1 oParent;
 		private CPU oCPU;
 
-		public Segment_1866(Civilization parent)
+		public Segment_1866(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -3694,7 +3694,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.LE) goto L1a8e;
 
 			// Instruction address 0x1866:0x1a2d, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x212c);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_212c);
 
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xd7ee);
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), this.oCPU.AX.Word);
@@ -3746,7 +3746,7 @@ namespace Civilization1
 
 		L1a8e:
 			// Instruction address 0x1866:0x1a96, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x2184);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2184);
 
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xd7ee);
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), this.oCPU.AX.Word);
@@ -3773,7 +3773,7 @@ namespace Civilization1
 
 		L1ac7:
 			// Instruction address 0x1866:0x1acf, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x2154);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2154);
 
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xd7ee);
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), this.oCPU.AX.Word);
@@ -3884,7 +3884,7 @@ namespace Civilization1
 
 		L1b9a:
 			// Instruction address 0x1866:0x1ba2, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x21e6);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_21e6);
 
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xd7ee);
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), this.oCPU.AX.Word);
@@ -3931,7 +3931,7 @@ namespace Civilization1
 
 		L1bff:
 			// Instruction address 0x1866:0x1c07, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x21bb);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_21bb);
 
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0xd7ee);
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), this.oCPU.AX.Word);
@@ -4500,7 +4500,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.E) goto L206a;
 
 			// Instruction address 0x1866:0x2062, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x2224);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2224);
 
 		L206a:
 			this.oCPU.AX.Word = 0xf;

@@ -1,13 +1,17 @@
 ﻿using Disassembler;
 using Disassembler.MZ;
+using OpenCiv1;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Text.RegularExpressions;
+using System.Windows.Documents;
 
-namespace Civilization1
+namespace OpenCiv1
 {
-	public class Civilization
+	public partial class OpenCiv1
 	{
 		private CPU oCPU;
 
@@ -96,33 +100,10 @@ namespace Civilization1
 		public ushort Var_db3e = 0;
 		#endregion
 
-		#region Global strings
-		/// <summary>
-		/// " Future Technology "
-		/// </summary>
-		public static string String_23c1 = " Future Technology ";
-		/// <summary>
-		/// "Which army?\n "
-		/// </summary>
-		public static string String_4166 = "Which army?\n ";
-		/// <summary>
-		/// "\n "
-		/// </summary>
-		public static string String_4174 = "\n ";
-		/// <summary>
-		/// "/"
-		/// </summary>
-		public static string String_4185 = "/";
-		/// <summary>
-		/// "S"
-		/// </summary>
-		public static string String_4187 = "S";
-		#endregion
-
 		private ushort usStartSegment = 0x1000;
 		private MZExecutable oEXE;
 
-		public Civilization()
+		public OpenCiv1()
 		{
 			this.oLog = new LogWrapper("Log.txt");
 			this.oInterruptLog = new LogWrapper("InterruptLog.txt");
@@ -191,16 +172,6 @@ namespace Civilization1
 			this.oSoundDriver = new NSound(this);
 			#endregion
 
-			// test for reverse array copy
-			/*byte[] abBuffer = new byte[256];
-
-			for (int i = 0; i < 256; i++)
-			{
-				abBuffer[i] = (byte)i;
-			}
-
-			Array.Copy(abBuffer, 20, abBuffer, 25, 10);*/
-
 			// export all bitmaps to file
 			/*string[] aFiles = Directory.GetFiles(this.oCPU.DefaultDirectory, "*.pic");
 			if (!Directory.Exists("Images"))
@@ -227,29 +198,12 @@ namespace Civilization1
 				}
 			}//*/
 
-			/*FileStream fonts = new FileStream($"{oCPU.DefaultDirectory}fonts.cv", FileMode.Open);
-			for (int i = 0, j=0; i < fonts.Length; i++)
-			{
-				if (i > 0)
-					this.oStringLog.Write(", ");
-
-				if (j == 16)
-				{
-					j = 0;
-					this.oStringLog.Write("\r\n");
-				}
-
-				this.oStringLog.Write($"0x{fonts.ReadByte():x2}");
-				j++;
-			}
-			fonts.Close();*/
-
 			// load old exe image to memory
 			oEXE = new MZExecutable("c:\\DOS\\CIV\\civ.exe");
 			oEXE.ApplyRelocations(usStartSegment);
 
 			// copy EXE to memory and allocate resources
-			string sEnvironment = "COMSPEC=C:\\WINDOWS\\SYSTEM32\\COMMAND.COM\0FP_NO_HOST_CHECK=NO\0HOMEDRIVE=C:\0" +
+			string sEnvironment = "COMSPEC =C:\\WINDOWS\\SYSTEM32\\COMMAND.COM\0FP_NO_HOST_CHECK=NO\0HOMEDRIVE=C:\0" +
 				"NUMBER_OF_PROCESSORS=1\0OS=Windows_NT\0PATH=C:\\DOS\0"+
 				"PATHEXT=.COM;.EXE;.BAT;.CMD\0PROCESSOR_ARCHITECTURE=x86\0"+
 				"PROCESSOR_IDENTIFIER=x86\0PROCESSOR_LEVEL=6\0PROMPT=$P$G\0"+
@@ -292,6 +246,8 @@ namespace Civilization1
 			// allocate memory for overlays, allocate entire 64k
 			this.OverlaySegment = 0x3374; // as set by F0_3045_2b44 as overlay base segment
 			this.SetOverlayBase();
+
+			//ExtractStrings();
 
 			this.Start();
 		}
@@ -371,6 +327,135 @@ namespace Civilization1
 			this.Segment_11a8.F0_11a8_0008_Main();
 
 			this.MSCAPI.exit((short)this.oCPU.AX.Word);
+		}
+
+		private void ExtractStrings()
+		{
+			// change strcat, strcpy direct address references
+			Regex rxStrCat = new Regex(@"^(\s*this\.oParent\.MSCAPI\.strcat)\(0x([0-9a-f]+), 0x([0-9a-f]+)\);\s*$");
+			Regex rxStrCpy = new Regex(@"^(\s*this\.oParent\.MSCAPI\.strcpy)\(0x([0-9a-f]+), 0x([0-9a-f]+)\);\s*$");
+			string[] files = Directory.GetFiles(@"..\..\..\OpenCiv1-master\Segments", "*.cs");
+			List<CivStringMatch> aStrings = new List<CivStringMatch>();
+
+			for (int i = 0; i < files.Length; i++)
+			{
+				StreamReader reader = new StreamReader(files[i]);
+				StreamWriter writer = new StreamWriter(@".\Code\" +
+					Path.GetFileName(files[i]));
+
+				while (!reader.EndOfStream)
+				{
+					string sLine = reader.ReadLine();
+					Match match = rxStrCat.Match(sLine);
+
+					if (match.Success)
+					{
+						ushort usString1Ptr = Convert.ToUInt16(match.Groups[2].Value, 16);
+						ushort usString2Ptr = Convert.ToUInt16(match.Groups[3].Value, 16);
+						if (usString1Ptr != 0xba06)
+						{
+							Console.WriteLine($"First strcat parameter 0x{usString1Ptr:x4} is not buffer pointer");
+							writer.WriteLine($"{match.Groups[1].Value}(0x{usString1Ptr:x4}, 0x{usString2Ptr:x4});");
+						}
+						else
+						{
+							int iPos = -1;
+
+							for (int j = 0; j < aStrings.Count; j++)
+							{
+								CivStringMatch strMatch = aStrings[j];
+								if (strMatch.Start == usString2Ptr)
+								{
+									iPos = j;
+									break;
+								}
+								if (strMatch.Start > usString2Ptr && strMatch.End <= usString2Ptr)
+								{
+									throw new Exception("String is a part of another string");
+								}
+							}
+							if (iPos >= 0)
+							{
+								writer.WriteLine($"{match.Groups[1].Value}(0x{usString1Ptr:x4}, OpenCiv1.String_{aStrings[iPos].Start:x4});");
+							}
+							else
+							{
+								CivStringMatch strMatch = new CivStringMatch(this.oCPU, usString2Ptr);
+								aStrings.Add(strMatch);
+								writer.WriteLine($"{match.Groups[1].Value}(0x{usString1Ptr:x4}, OpenCiv1.String_{strMatch.Start:x4});");
+							}
+						}
+					}
+					else
+					{
+						match = rxStrCpy.Match(sLine);
+						if (match.Success)
+						{
+							ushort usString1Ptr = Convert.ToUInt16(match.Groups[2].Value, 16);
+							ushort usString2Ptr = Convert.ToUInt16(match.Groups[3].Value, 16);
+							if (usString1Ptr != 0xba06)
+							{
+								Console.WriteLine($"First strcpy parameter 0x{usString1Ptr:x4} is not buffer pointer");
+								writer.WriteLine($"{match.Groups[1].Value}(0x{usString1Ptr:x4}, 0x{usString2Ptr:x4});");
+							}
+							else
+							{
+								int iPos = -1;
+
+								for (int j = 0; j < aStrings.Count; j++)
+								{
+									CivStringMatch strMatch = aStrings[j];
+									if (strMatch.Start == usString2Ptr)
+									{
+										iPos = j;
+										break;
+									}
+									if (strMatch.Start > usString2Ptr && strMatch.End <= usString2Ptr)
+									{
+										throw new Exception("String is a part of another string");
+									}
+								}
+								if (iPos >= 0)
+								{
+									writer.WriteLine($"{match.Groups[1].Value}(0x{usString1Ptr:x4}, OpenCiv1.String_{aStrings[iPos].Start:x4});");
+								}
+								else
+								{
+									CivStringMatch strMatch = new CivStringMatch(this.oCPU, usString2Ptr);
+									aStrings.Add(strMatch);
+									writer.WriteLine($"{match.Groups[1].Value}(0x{usString1Ptr:x4}, OpenCiv1.String_{strMatch.Start:x4});");
+								}
+							}
+						}
+						else
+						{
+							writer.WriteLine(sLine);
+						}
+					}
+				}
+
+				writer.Close();
+				reader.Close();
+			}
+
+			aStrings.Sort();
+
+			StreamWriter stringWriter = new StreamWriter(@".\Code\Strings.cs");
+			StreamWriter tableWriter = new StreamWriter(@".\Code\Table.txt");
+
+			for (int i = 0; i < aStrings.Count; i++)
+			{
+				CivStringMatch strMatch = aStrings[i];
+
+				stringWriter.WriteLine("/// <summary>");
+				stringWriter.WriteLine($"/// \"{strMatch.FormatttedString}\"");
+				stringWriter.WriteLine("/// </summary>");
+				stringWriter.WriteLine($"public static string String_{strMatch.Start:x4} = \"{strMatch.FormatttedString}\";");
+
+				tableWriter.WriteLine($"0x3b01\t0x{strMatch.Start:x4}\t0x{strMatch.End:x4}\t\"{strMatch.FormatttedString}\"");
+			}
+			tableWriter.Close();
+			stringWriter.Close();
 		}
 
 		private void SetOverlayBase()

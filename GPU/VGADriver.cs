@@ -1,4 +1,4 @@
-using Civilization1.GPU;
+using OpenCiv1.GPU;
 using Disassembler;
 using IRB.Collections.Generic;
 using System;
@@ -11,11 +11,11 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public class VGADriver
 	{
-		private Civilization oParent;
+		private OpenCiv1 oParent;
 		private CPU oCPU;
 		private ushort usSegment = 0;
 
@@ -1258,7 +1258,7 @@ namespace Civilization1
 		};
 		#endregion
 
-		public VGADriver(Civilization parent)
+		public VGADriver(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -1401,46 +1401,25 @@ namespace Civilization1
 			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_04ae_AllocateScreen({screenID})");
 			this.oCPU.Log = this.oParent.VGADriverLog;
 			this.oCPU.Log.EnterBlock($"F0_VGA_04ae_AllocateScreen({screenID})");
-			//this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
 			if (!this.aScreens.ContainsKey(screenID))
 			{
 				lock (this.VGALock)
 				{
-					this.aScreens.Add(screenID, new VGABitmap());
+					VGABitmap bitmap = new VGABitmap();
+					bitmap.Visible = false; // additional screens are not shown by default
+					this.aScreens.Add(screenID, bitmap);
 				}
 				if (this.oVGAForm != null)
 					this.oVGAForm.OnScreenCountChange();
 			}
-
-			/*this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.CMPWord(screenID, 0x0);
-			if (this.oCPU.Flags.NE) goto L04bd;
-			//this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.CS.Word, 0x1970);
-			this.oCPU.AX.Word = this.Var_1970[0];
-			this.oCPU.BP.Word = this.oCPU.PopWord();*/
 
 			this.oCPU.AX.Word = 0xa000; // return something to make underlying code happy
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_VGA_04ae_AllocateScreen");
 			this.oCPU.Log = oTempLog;
-			return;
-
-			/*L04bd:
-				this.oCPU.AX.High = 0x48;
-				this.oCPU.BX.Word = 0xfa0;
-				this.oCPU.INT(0x21);
-				if (this.oCPU.Flags.AE) goto L04c8;
-				this.oCPU.AX.Word = 0x0;
-
-			L04c8:
-				this.oCPU.BP.Word = this.oCPU.PopWord();
-				// Far return
-				this.oCPU.Log.ExitBlock("'F0_VGA_04ae_AllocateScreen'");
-				this.oCPU.Log = oTempLog;*/
 		}
 		#endregion
 

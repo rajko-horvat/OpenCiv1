@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Civilization1.GPU
+namespace OpenCiv1.GPU
 {
 	public class LZWDecoder
 	{

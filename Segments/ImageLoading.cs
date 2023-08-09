@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 using System.ComponentModel.Design;
 using System.Collections;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	/// <summary>
 	/// Image loading functions
@@ -19,10 +19,10 @@ namespace Civilization1
 	/// </summary>
 	public class ImageLoading
 	{
-		private Civilization oParent;
+		private OpenCiv1 oParent;
 		private CPU oCPU;
 
-		public ImageLoading(Civilization parent)
+		public ImageLoading(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -731,7 +731,7 @@ namespace Civilization1
 			this.oCPU.CS.Word = 0x2fa1; // restore this function segment
 			short sHandle = (short)this.oCPU.AX.Word;
 
-			this.oParent.Var_b26e = Civilization.Constant_5528;
+			this.oParent.Var_b26e = OpenCiv1.Constant_5528;
 
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x01ca); // stack management - push return offset
@@ -793,7 +793,7 @@ namespace Civilization1
 
 			short sHandle = (short)this.oCPU.AX.Word;
 			//this.oCPU.WriteWord(this.oCPU.DS.Word, 0x68da, usHandle);
-			this.oParent.Var_b26e = Civilization.Constant_5528;
+			this.oParent.Var_b26e = OpenCiv1.Constant_5528;
 
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0473); // stack management - push return offset
@@ -870,7 +870,7 @@ namespace Civilization1
 
 		L109e:
 			this.oCPU.SI.Word = this.oParent.Var_b26e;
-			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
+			this.oCPU.CMPWord(this.oCPU.SI.Word, OpenCiv1.Constant_5528);
 			if (this.oCPU.Flags.B) goto L10b6;
 
 			this.oCPU.PushWord(this.oCPU.BX.Word);
@@ -911,7 +911,7 @@ namespace Civilization1
 			this.oCPU.PushWord(this.oCPU.DI.Word);
 			this.oCPU.STOSWord();
 			this.oCPU.SI.Word = this.oParent.Var_b26e;
-			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
+			this.oCPU.CMPWord(this.oCPU.SI.Word, OpenCiv1.Constant_5528);
 			if (this.oCPU.Flags.B) goto L10f7;
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -937,7 +937,7 @@ namespace Civilization1
 
 			L1103:
 			this.oCPU.SI.Word = this.oParent.Var_b26e;
-			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
+			this.oCPU.CMPWord(this.oCPU.SI.Word, OpenCiv1.Constant_5528);
 			if (this.oCPU.Flags.B) goto L111b;
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -976,7 +976,7 @@ namespace Civilization1
 			this.oCPU.AX.High = this.oCPU.ANDByte(this.oCPU.AX.High, 0x1);
 			this.oParent.Var_68f7 = this.oCPU.AX.High;
 			this.oCPU.SI.Word = this.oParent.Var_b26e;
-			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
+			this.oCPU.CMPWord(this.oCPU.SI.Word, OpenCiv1.Constant_5528);
 			if (this.oCPU.Flags.B) goto L1157;
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -997,7 +997,7 @@ namespace Civilization1
 			this.oParent.Var_b26e = this.oCPU.SI.Word;
 			this.oParent.Var_68e6 = this.oCPU.AX.Word;
 			this.oCPU.SI.Word = this.oParent.Var_b26e;
-			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
+			this.oCPU.CMPWord(this.oCPU.SI.Word, OpenCiv1.Constant_5528);
 			if (this.oCPU.Flags.B) goto L1177;
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -1018,7 +1018,7 @@ namespace Civilization1
 			this.oParent.Var_b26e = this.oCPU.SI.Word;
 			this.oParent.Var_68e2 = this.oCPU.AX.Word;
 			this.oCPU.SI.Word = this.oParent.Var_b26e;
-			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
+			this.oCPU.CMPWord(this.oCPU.SI.Word, OpenCiv1.Constant_5528);
 			if (this.oCPU.Flags.B) goto L1197;
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -1068,7 +1068,7 @@ namespace Civilization1
 			this.oParent.Var_68ed = 0x0;
 			this.oParent.Var_68e8 = 0x6afb;
 			this.oCPU.SI.Word = this.oParent.Var_b26e;
-			this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
+			this.oCPU.CMPWord(this.oCPU.SI.Word, OpenCiv1.Constant_5528);
 			if (this.oCPU.Flags.B) goto L125a;
 			this.oCPU.PushWord(this.oCPU.BX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);
@@ -1229,7 +1229,7 @@ namespace Civilization1
 				this.oCPU.CMPByte(this.oCPU.CX.Low, this.oParent.Var_68ee);
 				if (this.oCPU.Flags.GE) goto L1359;
 
-				this.oCPU.CMPWord(this.oCPU.SI.Word, Civilization.Constant_5528);
+				this.oCPU.CMPWord(this.oCPU.SI.Word, OpenCiv1.Constant_5528);
 				if (this.oCPU.Flags.B) goto L134c;
 
 				this.oCPU.PushWord(this.oCPU.BX.Word);

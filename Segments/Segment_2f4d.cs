@@ -1,13 +1,13 @@
 using Disassembler;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public class Segment_2f4d
 	{
-		private Civilization oParent;
+		private OpenCiv1 oParent;
 		private CPU oCPU;
 
-		public Segment_2f4d(Civilization parent)
+		public Segment_2f4d(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -64,7 +64,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.LE) goto L0084;
 
 			// Instruction address 0x2f4d:0x007c, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x2fee);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2fee);
 
 		L0084:
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
@@ -335,7 +335,7 @@ namespace Civilization1
 			this.oParent.MSCAPI.strcat(0xba06, (ushort)(this.oCPU.BP.Word - 0x100));
 
 			// Instruction address 0x2f4d:0x0362, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x300b);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_300b);
 
 			// Instruction address 0x2f4d:0x0377, size: 5
 			this.oParent.MSCAPI.fscanf((short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x110)),

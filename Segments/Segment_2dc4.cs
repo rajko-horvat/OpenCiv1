@@ -1,14 +1,14 @@
 using Disassembler;
 using System;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public class Segment_2dc4
 	{
-		private Civilization oParent;
+		private OpenCiv1 oParent;
 		private CPU oCPU;
 
-		public Segment_2dc4(Civilization parent)
+		public Segment_2dc4(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -435,7 +435,7 @@ namespace Civilization1
 				this.oParent.MSCAPI.itoa((short)((short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) / 100), 10));
 
 			// Instruction address 0x2dc4:0x036f, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x2fd2);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2fd2);
 
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
@@ -445,7 +445,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.GE) goto L0395;
 
 			// Instruction address 0x2dc4:0x038d, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x2fd4);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2fd4);
 
 		L0395:
 			// Instruction address 0x2dc4:0x03b4, size: 5
@@ -453,7 +453,7 @@ namespace Civilization1
 				this.oParent.MSCAPI.itoa((short)((short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) % 100), 10));
 
 			// Instruction address 0x2dc4:0x03c4, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x2fd6);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2fd6);
 
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 
@@ -594,13 +594,13 @@ namespace Civilization1
 			if (this.oCPU.Flags.E) goto L0578;
 
 			// Instruction address 0x2dc4:0x053d, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x2fdc);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2fdc);
 
 			// Instruction address 0x2dc4:0x054c, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
 
 			// Instruction address 0x2dc4:0x055c, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x2fe5);
+			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2fe5);
 
 			this.oCPU.AX.Word = 0x50;
 			this.oCPU.PushWord(this.oCPU.AX.Word);

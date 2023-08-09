@@ -1,6 +1,6 @@
 Segment_11a8	Main entry segment
 Segment_2fa1	Image loading functions
-Segment_3045	MSC Init
+MSCAPI	MS Compiler API functions
 
 Overlay 1	Main menu (textual)
 Overlay 2	Main intro, credits
@@ -17,7 +17,7 @@ Overlay 12	World map
 Overlay 13	?
 Overlay 14	City, military, intelligence, attitude, science, score report
 Overlay 15	?
-Overlay 16	Civilization quiz
+Overlay 16	Quiz
 Overlay 17	?
 Overlay 18	?
 Overlay 19 	City graphical view

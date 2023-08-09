@@ -1,18 +1,18 @@
-using Civilization1.GPU;
+using OpenCiv1.GPU;
 using Disassembler;
 using Microsoft.Win32;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public class Segment_1000
 	{
-		private Civilization oParent;
+		private OpenCiv1 oParent;
 		private CPU oCPU;
 
-		public Segment_1000(Civilization parent)
+		public Segment_1000(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -2027,7 +2027,7 @@ namespace Civilization1
 			this.oCPU.WriteByte(this.oCPU.DS.Word, this.oCPU.BX.Word, this.oCPU.DX.High);
 			this.oCPU.BX.Word = this.oCPU.INCWord(this.oCPU.BX.Word);
 			this.oCPU.DX.Word = 0x0;
-			this.oCPU.CMPWord(this.oCPU.BX.Word, Civilization.Constant_5528);
+			this.oCPU.CMPWord(this.oCPU.BX.Word, OpenCiv1.Constant_5528);
 			if (this.oCPU.Flags.B) goto L160b;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CX.Word);

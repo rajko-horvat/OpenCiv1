@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Civilization1.GPU
+namespace OpenCiv1.GPU
 {
 	[Serializable]
 	public class CivFont

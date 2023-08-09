@@ -1,14 +1,14 @@
 using Disassembler;
 using System;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public class Segment_2aea
 	{
-		private Civilization oParent;
+		private OpenCiv1 oParent;
 		private CPU oCPU;
 
-		public Segment_2aea(Civilization parent)
+		public Segment_2aea(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -2015,7 +2015,7 @@ namespace Civilization1
 
 		L1120:
 			// Instruction address 0x2aea:0x1128, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x2ba4);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2ba4);
 
 			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0xba06, this.oCPU.AX.Low);

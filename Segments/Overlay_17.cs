@@ -1,14 +1,14 @@
 using Disassembler;
 
-namespace Civilization1
+namespace OpenCiv1
 {
 	public class Overlay_17
 	{
-		private Civilization oParent;
+		private OpenCiv1 oParent;
 		private CPU oCPU;
 		private ushort usSegment = 0;
 
-		public Overlay_17(Civilization parent)
+		public Overlay_17(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -219,7 +219,7 @@ namespace Civilization1
 			if (this.oCPU.Flags.GE) goto L0217;
 
 			// Instruction address 0x0000:0x01e2, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, 0x4b11);
+			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_4b11);
 
 			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108));
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0xba06, this.oCPU.ADDByte(this.oCPU.ReadByte(this.oCPU.DS.Word, 0xba06), this.oCPU.AX.Low));
