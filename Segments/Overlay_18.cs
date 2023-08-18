@@ -677,7 +677,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0571, size: 5
 			this.oParent.VGADriver.F0_VGA_0599_DrawLine(
-				new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
+				new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
 				(short)0,
 				(short)8,
 				(short)0,
@@ -686,7 +686,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x058a, size: 5
 			this.oParent.VGADriver.F0_VGA_0599_DrawLine(
-				new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
+				new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
 				(short)0,
 				(short)0xc7,
 				(short)0xf0,
@@ -1439,7 +1439,7 @@ namespace OpenCiv1
 			this.oCPU.WriteByte(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x6866), 0x1);
 			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x6852));
-			this.oCPU.AX.High = this.oCPU.SUBByte(this.oCPU.AX.High, this.oCPU.AX.High);
+			this.oCPU.AX.High = 0;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x683e));
 			this.oCPU.PushWord(this.oCPU.AX.Word);
@@ -1485,7 +1485,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x6852));
-			this.oCPU.AX.High = this.oCPU.SUBByte(this.oCPU.AX.High, this.oCPU.AX.High);
+			this.oCPU.AX.High = 0;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x683e));
 			this.oCPU.PushWord(this.oCPU.AX.Word);

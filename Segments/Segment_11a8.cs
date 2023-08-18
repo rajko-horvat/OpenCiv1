@@ -1,4 +1,5 @@
 using Disassembler;
+using System;
 
 namespace OpenCiv1
 {
@@ -22,38 +23,18 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0xa);
-			this.oCPU.AX.Word = 0;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x267;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x001a); // stack management - push return offset
+
 			// Instruction address 0x11a8:0x0015, size: 5
-			this.oParent.Segment_1000.F0_1000_0a76();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x11a8; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0023); // stack management - push return offset
-			// Instruction address 0x11a8:0x001e, size: 5
-			this.oParent.Segment_1000.F0_1000_0b70();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x11a8; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
-			
-			// Main menu
-			// Call to overlay
-			/*this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x002b); // stack management - push return offset
-			this.oParent.Overlay_1.F1_0000_0000_MainMenu();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x11a8; // restore this function segment*/
-			
-			// main menu auto selection
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x1a22, 0x4d); // '1' - VGA
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x1a30, 0x4e); // '1' - No sound 0x4e, '4' - Sound blaster 0x41, '5' - Roland MIDI board 0x52
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x1a3c, 0x1); // '1' - mouse and Keyboard
+			// no need to load misc overlay anymore
+			//this.oParent.Segment_1000.F0_1000_0a76_LoadOverlay(OpenCiv1.String_0267, null);
+
+			// Main menu selection
+			// '1' - VGA; first letter of driver
+			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x1a22, 0x4d);
+			// '1' - No sound 0x4e, '4' - Sound blaster 0x41, '5' - Roland MIDI board 0x52; first letter of driver
+			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x1a30, 0x4e);
+			// '1' - Mouse and Keyboard 0x1, '2' - Keyboard only 0x0
+			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x1a3c, 0x1);
 
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
@@ -268,19 +249,6 @@ namespace OpenCiv1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0xd751, 0x0);
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0xd750, 0x3);
-			this.oCPU.AX.Word = 0xd750;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x10;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x01bd); // stack management - push return offset
-			// Instruction address 0x11a8:0x01b8, size: 5
-			this.oParent.MSCAPI.int86();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
@@ -304,8 +272,7 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5872));
 			this.oParent.Var_db3a = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x586e);
-			this.oParent.Var_db3c = this.oCPU.AX.Word;
+			this.oParent.Var_db3c = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x586e);
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5870);
 			this.oParent.Var_db3e = this.oCPU.AX.Word;
 			goto L024f;
@@ -1214,16 +1181,12 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x81d2), 0x0);
 			if (this.oCPU.Flags.NE) goto L08c5;
 
-			//this.oCPU.PushWord(0x1c16);
-			//this.oCPU.PushWord(1);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x08ad); // stack management - push return offset
 			// Instruction address 0x11a8:0x08a8, size: 5
-			//this.oParent.Segment_2fa1.F0_2fa1_0220(1, 0x1c16);
 			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x1c16, 1);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
-			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
@@ -1268,37 +1231,6 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_11a8_087c'");
-		}
-
-		public void F0_11a8_08db()
-		{
-			this.oCPU.Log.EnterBlock("'F0_11a8_08db'(Cdecl, Far) at 0x11a8:0x08db");
-			this.oCPU.CS.Word = 0x11a8; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0xd751, 0x2);
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0xd753, 0x0);
-			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0xd757, this.oCPU.AX.Low);
-			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.WriteByte(this.oCPU.DS.Word, 0xd756, this.oCPU.AX.Low);
-			this.oCPU.AX.Word = 0xd750;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x10;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0902); // stack management - push return offset
-			// Instruction address 0x11a8:0x08fd, size: 5
-			this.oParent.MSCAPI.int86();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x11a8; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_11a8_08db'");
 		}
 	}
 }

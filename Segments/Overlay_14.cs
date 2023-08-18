@@ -407,7 +407,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			this.oCPU.ES.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x643a);
 			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.ES.Word, (ushort)(this.oCPU.BX.Word + 0x4b0));
-			this.oCPU.AX.High = this.oCPU.SUBByte(this.oCPU.AX.High, this.oCPU.AX.High);
+			this.oCPU.AX.High = 0;
 			this.oCPU.AX.Word = this.oCPU.ANDWord(this.oCPU.AX.Word, 0x7);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
 			if (this.oCPU.Flags.E) goto L039e;
@@ -474,7 +474,7 @@ namespace OpenCiv1
 		L03f1:
 			// Instruction address 0x0000:0x0405, size: 5
 			this.oParent.VGADriver.F0_VGA_0599_DrawLine(
-				new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
+				new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
 				(short)0x24,
 				(short)((short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) - 2),
 				(short)0x13f,
@@ -707,7 +707,7 @@ namespace OpenCiv1
 		L0680:
 			// Instruction address 0x0000:0x0692, size: 5
 			this.oParent.VGADriver.F0_VGA_0599_DrawLine(
-				new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
+				new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
 				(short)0x24,
 				(short)((short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)) - 1),
 				(short)0x13f,
@@ -1673,7 +1673,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x1024, size: 5
 			this.oParent.VGADriver.F0_VGA_0599_DrawLine(
-				new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
+				new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
 				(short)0x4,
 				(short)this.oCPU.SI.Word,
 				(short)0x13c,

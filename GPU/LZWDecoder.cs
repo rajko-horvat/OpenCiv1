@@ -10,7 +10,6 @@ namespace OpenCiv1.GPU
 {
 	public class LZWDecoder
 	{
-		// non functional LZW decoder I used for Win CIV, but had to try on DOS CIV
 		public static void Decode(Stream reader)
 		{
 			int iUndefined = reader.ReadByte() | (reader.ReadByte() << 8);

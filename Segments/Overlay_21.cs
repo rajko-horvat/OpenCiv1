@@ -88,7 +88,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x00ad, size: 5
 			this.oParent.VGADriver.F0_VGA_0599_DrawLine(
-				new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
+				new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
 				(short)1,
 				(short)1,
 				(short)0x13e,
@@ -105,7 +105,7 @@ namespace OpenCiv1
 			
 			// Instruction address 0x0000:0x00f0, size: 5
 			this.oParent.VGADriver.F0_VGA_0599_DrawLine(
-				new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
+				new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
 				(short)0,
 				(short)0x23,
 				(short)0x13f,
@@ -114,7 +114,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0105, size: 5
 			this.oParent.VGADriver.F0_VGA_0599_DrawLine(
-				new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
+				new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
 				(short)1,
 				(short)1,
 				(short)1,
@@ -123,7 +123,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0120, size: 5
 			this.oParent.VGADriver.F0_VGA_0599_DrawLine(
-				new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
+				new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
 				(short)0x13e,
 				(short)0x1,
 				(short)0x13e,
@@ -132,7 +132,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x013a, size: 5
 			this.oParent.VGADriver.F0_VGA_0599_DrawLine(
-				new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
+				new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa))),
 				(short)0,
 				(short)0x61,
 				(short)0x13f,

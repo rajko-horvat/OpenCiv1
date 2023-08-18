@@ -154,8 +154,8 @@ namespace OpenCiv1
 
 			// function body
 			int iDirection = 1;
-			uint uiDestination = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destination);
-			uint uiSource = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, source);
+			uint uiDestination = CPU.ToLinearAddress(this.oCPU.DS.Word, destination);
+			uint uiSource = CPU.ToLinearAddress(this.oCPU.DS.Word, source);
 			int iCount = count;
 
 			if (uiDestination > uiSource && (uiSource + iCount) >= uiDestination)
@@ -167,7 +167,7 @@ namespace OpenCiv1
 
 			while (iCount > 0)
 			{
-				this.oCPU.Memory.WriteByte(uiDestination, this.oCPU.Memory.ReadByte(uiSource));
+				this.oCPU.Memory.WriteUInt8(uiDestination, this.oCPU.Memory.ReadUInt8(uiSource));
 				uiDestination = (uint)((long)uiDestination + iDirection);
 				uiSource = (uint)((long)uiSource + iDirection);
 				iCount--;
@@ -184,12 +184,12 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"memset(0x{destination:x4}, 0x{value:x2}, {count})");
 
 			// function body
-			uint uiDestination = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destination);
+			uint uiDestination = CPU.ToLinearAddress(this.oCPU.DS.Word, destination);
 			int iCount = count;
 
 			while (iCount > 0)
 			{
-				this.oCPU.Memory.WriteByte(uiDestination, value);
+				this.oCPU.Memory.WriteUInt8(uiDestination, value);
 				uiDestination++;
 				iCount--;
 			}
@@ -205,8 +205,8 @@ namespace OpenCiv1
 
 			// function body
 			int iDirection = 1;
-			uint uiDestination = CPUMemory.ToLinearAddress(destinationSegment, destinationOffset);
-			uint uiSource = CPUMemory.ToLinearAddress(sourceSegment, sourceOffset);
+			uint uiDestination = CPU.ToLinearAddress(destinationSegment, destinationOffset);
+			uint uiSource = CPU.ToLinearAddress(sourceSegment, sourceOffset);
 			int iCount = count;
 
 			if (uiDestination > uiSource && (uiSource + iCount) >= uiDestination)
@@ -218,7 +218,7 @@ namespace OpenCiv1
 
 			while (iCount > 0)
 			{
-				this.oCPU.Memory.WriteByte(uiDestination, this.oCPU.Memory.ReadByte(uiSource));
+				this.oCPU.Memory.WriteUInt8(uiDestination, this.oCPU.Memory.ReadUInt8(uiSource));
 				uiDestination = (uint)((long)uiDestination + iDirection);
 				uiSource = (uint)((long)uiSource + iDirection);
 				iCount--;
@@ -268,8 +268,8 @@ namespace OpenCiv1
 		#region File operations
 		public short fopen(ushort filenamePtr, ushort modePtr)
 		{
-			string sName = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr));
-			string sMode = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, modePtr));
+			string sName = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr));
+			string sMode = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, modePtr));
 			FileMode eMode = FileMode.Open;
 			FileAccess eAccess = FileAccess.Write;
 			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
@@ -327,7 +327,7 @@ namespace OpenCiv1
 		public ushort fread(ushort ptr, ushort itemSize, ushort itemCount, short handle)
 		{
 			ushort usItemCount = 0;
-			uint uiAddress = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, ptr);
+			uint uiAddress = CPU.ToLinearAddress(this.oCPU.DS.Word, ptr);
 
 			if (this.oCPU.Files.ContainsKey(handle))
 			{
@@ -393,8 +393,8 @@ namespace OpenCiv1
 		public short fscanf(short handle, ushort formatPtr, ushort varPtr)
 		{
 			short sCount = -1;
-			uint uiFormatAddress = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, formatPtr);
-			uint uiVarAddress = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, varPtr);
+			uint uiFormatAddress = CPU.ToLinearAddress(this.oCPU.DS.Word, formatPtr);
+			uint uiVarAddress = CPU.ToLinearAddress(this.oCPU.DS.Word, varPtr);
 
 			if (this.oCPU.Files.ContainsKey(handle))
 			{
@@ -444,7 +444,7 @@ namespace OpenCiv1
 		public ushort fwrite(ushort ptr, ushort itemSize, ushort itemCount, short handle)
 		{
 			ushort usItemCount = 0;
-			uint uiAddress = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, ptr);
+			uint uiAddress = CPU.ToLinearAddress(this.oCPU.DS.Word, ptr);
 
 			if (this.oCPU.Files.ContainsKey(handle))
 			{
@@ -457,7 +457,7 @@ namespace OpenCiv1
 					{
 						for (int j = 0; j < itemSize; j++)
 						{
-							aBuffer[j] = this.oCPU.Memory.ReadByte(uiAddress);
+							aBuffer[j] = this.oCPU.Memory.ReadUInt8(uiAddress);
 							uiAddress++;
 						}
 
@@ -473,7 +473,7 @@ namespace OpenCiv1
 					{
 						for (int j = 0; j < itemSize; j++)
 						{
-							aBuffer[j] = this.oCPU.Memory.ReadByte(uiAddress);
+							aBuffer[j] = this.oCPU.Memory.ReadUInt8(uiAddress);
 							if (aBuffer[j] == (byte)'\n')
 							{
 								if (!bLF)
@@ -612,7 +612,7 @@ namespace OpenCiv1
 
 		public short open(ushort filenamePtr, ushort access, ushort mode)
 		{
-			string sName = Path.GetFileName(this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)));
+			string sName = Path.GetFileName(this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)));
 			FileMode eMode = FileMode.Open;
 			FileAccess eAccess = FileAccess.Read;
 			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
@@ -700,7 +700,7 @@ namespace OpenCiv1
 
 		public short read(short handle, ushort buf, ushort length)
 		{
-			uint address = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, buf);
+			uint address = CPU.ToLinearAddress(this.oCPU.DS.Word, buf);
 			short sItemCount = -1;
 
 			if (this.oCPU.Files.ContainsKey(handle))
@@ -712,7 +712,7 @@ namespace OpenCiv1
 					short ch = fileItem.ReadChar();
 					if (ch >= 0)
 					{
-						this.oCPU.Memory.WriteByte(address, (byte)ch);
+						this.oCPU.Memory.WriteUInt8(address, (byte)ch);
 						address++;
 						sItemCount++;
 					}
@@ -733,7 +733,7 @@ namespace OpenCiv1
 
 		public short write(short handle, ushort buf, ushort length)
 		{
-			uint address = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, buf);
+			uint address = CPU.ToLinearAddress(this.oCPU.DS.Word, buf);
 			short sItemCount = -1;
 
 			if (this.oCPU.Files.ContainsKey(handle))
@@ -744,7 +744,7 @@ namespace OpenCiv1
 				{
 					for (int i = 0; i < length; i++)
 					{
-						fileItem.Stream.WriteByte(this.oCPU.Memory.ReadByte(address));
+						fileItem.Stream.WriteByte(this.oCPU.Memory.ReadUInt8(address));
 						address++;
 						sItemCount++;
 					}
@@ -753,7 +753,7 @@ namespace OpenCiv1
 				{
 					for (int i = 0; i < length; i++)
 					{
-						byte ch = this.oCPU.Memory.ReadByte(address);
+						byte ch = this.oCPU.Memory.ReadUInt8(address);
 						if (ch == (byte)'\n')
 						{
 							fileItem.Stream.WriteByte((byte)'\r');
@@ -775,10 +775,10 @@ namespace OpenCiv1
 
 		public short _dos_open(ushort filename, ushort flags, ushort handlePtr)
 		{
-			uint uiHandleAddress = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, handlePtr);
+			uint uiHandleAddress = CPU.ToLinearAddress(this.oCPU.DS.Word, handlePtr);
 			short sRetVal = -1;
 
-			string sName = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filename));
+			string sName = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filename));
 			FileMode eMode = FileMode.Open;
 			FileAccess eAccess = FileAccess.Read;
 			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
@@ -821,7 +821,7 @@ namespace OpenCiv1
 				this.oCPU.Files.Add(this.oCPU.FileHandleCount, new FileStreamItem(new FileStream(sPath, eMode, eAccess), eType));
 				short sHandle = this.oCPU.FileHandleCount;
 				this.oCPU.FileHandleCount++;
-				this.oCPU.Memory.WriteWord(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, handlePtr), (ushort)sHandle);
+				this.oCPU.Memory.WriteUInt16(CPU.ToLinearAddress(this.oCPU.DS.Word, handlePtr), (ushort)sHandle);
 				sRetVal = 0;
 			}
 
@@ -839,7 +839,7 @@ namespace OpenCiv1
 
 		public ushort _dos_read(short handle, ushort bufferPtr, ushort length, ushort nreadPtr)
 		{
-			uint uiBufferAddress = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, bufferPtr);
+			uint uiBufferAddress = CPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr);
 			ushort usRetVal = 1;
 			ushort usItemCount = 0;
 
@@ -852,7 +852,7 @@ namespace OpenCiv1
 					short ch = fileItem.ReadChar();
 					if (ch >= 0)
 					{
-						this.oCPU.Memory.WriteByte(uiBufferAddress, (byte)ch);
+						this.oCPU.Memory.WriteUInt8(uiBufferAddress, (byte)ch);
 						uiBufferAddress++;
 						usItemCount++;
 					}
@@ -862,7 +862,7 @@ namespace OpenCiv1
 					}
 				}
 
-				this.oCPU.Memory.WriteWord(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, nreadPtr), usItemCount);
+				this.oCPU.Memory.WriteUInt16(CPU.ToLinearAddress(this.oCPU.DS.Word, nreadPtr), usItemCount);
 				usRetVal = 0;
 			}
 			else
@@ -880,8 +880,8 @@ namespace OpenCiv1
 
 			// function body
 			DriveInfo[] driveInfo = DriveInfo.GetDrives();
-			uint uiAddress = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, diskInfoPtr);
-			int iDrive = this.oCPU.Memory.ReadWord(uiAddress);
+			uint uiAddress = CPU.ToLinearAddress(this.oCPU.DS.Word, diskInfoPtr);
+			int iDrive = this.oCPU.Memory.ReadUInt16(uiAddress);
 			char chDrive = (char)((iDrive >= 0x80) ? (iDrive - 0x80 + 'C') : ('A' + iDrive));
 
 			switch (command)
@@ -938,12 +938,12 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public ushort strcat(ushort destinationPtr, ushort sourcePtr)
 		{
-			string sDest = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destinationPtr));
-			string sSource = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
+			string sDest = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr));
+			string sSource = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
 
 			this.oCPU.Log.WriteLine($"strcat('{sDest}', '{sSource}')");
 
-			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sDest + sSource, sDest.Length + sSource.Length);
+			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sDest + sSource, sDest.Length + sSource.Length);
 
 			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
 			return destinationPtr;
@@ -951,11 +951,11 @@ namespace OpenCiv1
 
 		public ushort strcat(ushort destinationPtr, string sourceString)
 		{
-			string sDest = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destinationPtr));
+			string sDest = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr));
 
 			this.oCPU.Log.WriteLine($"strcat('{sDest}', '{sourceString}')");
 
-			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sDest + sourceString, 
+			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sDest + sourceString, 
 				sDest.Length + sourceString.Length);
 
 			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
@@ -964,11 +964,11 @@ namespace OpenCiv1
 
 		public ushort strcpy(ushort destinationPtr, ushort sourcePtr)
 		{
-			string sSource = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
+			string sSource = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
 
 			this.oCPU.Log.WriteLine($"strcpy('{sSource}')");
 
-			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sSource, sSource.Length);
+			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sSource, sSource.Length);
 
 			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
 			return destinationPtr;
@@ -978,7 +978,7 @@ namespace OpenCiv1
 		{
 			this.oCPU.Log.WriteLine($"strcpy('{source}')");
 
-			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), source, source.Length);
+			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), source, source.Length);
 
 			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
 			return destinationPtr;
@@ -986,7 +986,7 @@ namespace OpenCiv1
 
 		public ushort strlen(ushort stringPtr)
 		{
-			string sSource = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			string sSource = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
 			this.oCPU.Log.WriteLine($"strlen('{sSource}') = {sSource.Length}");
 
@@ -996,8 +996,8 @@ namespace OpenCiv1
 
 		public short stricmp(ushort string1Ptr, ushort string2Ptr)
 		{
-			string sS1 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
-			string sS2 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
+			string sS1 = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
+			string sS2 = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
 
 			short sRetVal = (short)string.Compare(sS1, sS2, StringComparison.CurrentCultureIgnoreCase);
 
@@ -1007,8 +1007,8 @@ namespace OpenCiv1
 
 		public short strnicmp(ushort string1Ptr, ushort string2Ptr, ushort maxLength)
 		{
-			string sS1 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
-			string sS2 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
+			string sS1 = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
+			string sS2 = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
 
 			if (sS1.Length > maxLength)
 				sS1 = sS1.Substring(0, maxLength);
@@ -1024,11 +1024,11 @@ namespace OpenCiv1
 
 		public ushort strupr(ushort stringPtr)
 		{
-			string sTemp = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr)).ToUpper();
+			string sTemp = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr)).ToUpper();
 
 			this.oCPU.Log.WriteLine($"strupr('{sTemp}')");
 
-			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr), sTemp, sTemp.Length);
+			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr), sTemp, sTemp.Length);
 
 			this.oCPU.AX.Word = stringPtr; // preserve compatibility
 			return stringPtr;
@@ -1036,8 +1036,8 @@ namespace OpenCiv1
 
 		public int strstr(ushort string1Ptr, ushort string2Ptr)
 		{
-			string sS1 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
-			string sS2 = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
+			string sS1 = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
+			string sS2 = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
 
 			short sRetVal = (short)sS1.IndexOf(sS2);
 
@@ -1061,7 +1061,7 @@ namespace OpenCiv1
 
 			this.oCPU.Log.WriteLine($"itoa({value}, {radix}) = '{sValue}'");
 
-			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr), sValue, sValue.Length);
+			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr), sValue, sValue.Length);
 
 			this.oCPU.AX.Word = stringPtr; // preserve compatibility
 			return stringPtr;
@@ -1081,7 +1081,7 @@ namespace OpenCiv1
 		public void time()
 		{
 			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, 
-				(uint)time(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)))));
+				(uint)time(CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)))));
 		}
 
 		public int time(uint timePtr)
@@ -1089,7 +1089,7 @@ namespace OpenCiv1
 			int iTotalSeconds = (int)Math.Floor((DateTime.Now - (new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds);
 
 			if (timePtr != 0)
-				this.oCPU.Memory.WriteDWord(timePtr, (uint)iTotalSeconds);
+				this.oCPU.Memory.WriteUInt32(timePtr, (uint)iTotalSeconds);
 
 			return iTotalSeconds;
 		}
@@ -1108,7 +1108,7 @@ namespace OpenCiv1
 		#region Random number generator operations
 		public void srand()
 		{
-			srand(this.oCPU.Memory.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)));
+			srand(this.oCPU.Memory.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)));
 		}
 
 		public void srand(ushort value)
@@ -1125,58 +1125,6 @@ namespace OpenCiv1
 		public RandomMT19937 RNG
 		{
 			get { return this.oRNG; }
-		}
-		#endregion
-
-		#region Interrupt and vector operations
-		public void int86()
-		{
-			this.oCPU.Log.EnterBlock("'int86'(Cdecl) at 0x3045:0x20c4");
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.PushWord(this.oCPU.DI.Word);
-
-			this.oCPU.DI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, this.oCPU.DI.Word);
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x2));
-			this.oCPU.CX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x4));
-			this.oCPU.DX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x6));
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x8));
-			this.oCPU.DI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0xa));
-
-			// Instruction uiAddress 0x3045:0x210e, size: 3
-			this.oCPU.INT((byte)(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) & 0xff));
-
-			this.oCPU.Flags.D = false;
-			this.oCPU.PushWord(this.oCPU.DI.Word);
-			this.oCPU.DI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa));
-			this.oCPU.WriteWord(this.oCPU.DS.Word, this.oCPU.DI.Word, this.oCPU.AX.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x2), this.oCPU.BX.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x4), this.oCPU.CX.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x6), this.oCPU.DX.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x8), this.oCPU.SI.Word);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0xa), this.oCPU.PopWord());
-			
-			if (this.oCPU.Flags.B) goto L212e;
-			this.oCPU.SI.Word = 0x0;
-			goto L2138;
-
-		L212e:
-			Console.WriteLine($"Error calling interrupt 0x{(byte)(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) & 0xff):x2}");
-			this.oCPU.SI.Word = 0x1;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, this.oCPU.DI.Word);
-
-		L2138:
-			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0xc), this.oCPU.SI.Word);
-			
-			this.oCPU.DI.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.PopWord();
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-
-			this.oCPU.Log.ExitBlock("'int86'");
 		}
 		#endregion
 	}

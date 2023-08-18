@@ -14,8 +14,7 @@ using System.Collections;
 namespace OpenCiv1
 {
 	/// <summary>
-	/// Image loading functions
-	/// It seems that LZW compression was used (like in a GIF)
+	/// Image loading functions - LZW compression was used
 	/// </summary>
 	public class ImageLoading
 	{
@@ -28,9 +27,10 @@ namespace OpenCiv1
 			this.oCPU = parent.CPU;
 		}
 
+		#region New image loading functions
 		private class ImageDecoderState
 		{
-			public bool WordMode = false;
+			public bool NibbleMode = false;
 			public int Width = 0;
 			public int Stride = 0;
 			public int Height = 0;
@@ -49,9 +49,9 @@ namespace OpenCiv1
 
 			public byte[] abDictionary = new byte[2048 * 3];
 
-			public ImageDecoderState(bool wordMode)
+			public ImageDecoderState(bool nibbleMode)
 			{
-				this.WordMode = wordMode;
+				this.NibbleMode = nibbleMode;
 
 				for (int i = 0; i < 2048; i++)
 				{
@@ -62,14 +62,13 @@ namespace OpenCiv1
 			}
 		}
 
-		#region New image loading functions
 		public Bitmap ReadBitmapFromFile(string path)
 		{
 			Bitmap bitmap;
 			FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
 			List<BKeyValuePair<int, Color>> aPalette = new List<BKeyValuePair<int, Color>>();
-			bool bWordMode = LoadPaletteFromStream(stream, aPalette);
-			ImageDecoderState state = new ImageDecoderState(bWordMode);
+			bool bNibbleMode = LoadPaletteFromStream(stream, aPalette);
+			ImageDecoderState state = new ImageDecoderState(bNibbleMode);
 
 			state.UnknownValue1 = ReadUInt16FromStream(stream);
 			state.Width = ReadUInt16FromStream(stream);
@@ -92,7 +91,8 @@ namespace OpenCiv1
 
 				bitmap = new Bitmap(state.Width, state.Height, PixelFormat.Format8bppIndexed);
 
-				BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
+				BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), 
+					ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 				Marshal.Copy(abBitmapData, 0, bitmapData.Scan0, abBitmapData.Length);
 				bitmap.UnlockBits(bitmapData);
 			}
@@ -140,6 +140,7 @@ namespace OpenCiv1
 					abBuffer.Add((byte)((usTemp & 0xff00) >> 8));
 				}
 
+				// VGA 256 color palette signature
 				if (abBuffer[0] == 0x4d && abBuffer[1] == 0x30)
 				{
 					int iIndex = abBuffer[4];
@@ -153,6 +154,10 @@ namespace OpenCiv1
 						palette.Add(new BKeyValuePair<int, Color>(iIndex + i, VGABitmap.Color18ToColor(abBuffer[(i * 3) + 6], abBuffer[(i * 3) + 7], abBuffer[(i * 3) + 8])));
 					}
 				}
+				else
+				{
+					abBuffer.Clear();
+				}
 			}
 
 			return (usTemp & 0x100) != 0;
@@ -163,7 +168,7 @@ namespace OpenCiv1
 			int iBufferPos = 0;
 			int iWidth = state.Width;
 
-			if (state.WordMode)
+			if (state.NibbleMode)
 			{
 				iWidth++;
 				iWidth >>= 1;
@@ -182,7 +187,6 @@ namespace OpenCiv1
 					}
 					else
 					{
-						// Instruction address 0x1000:0x12c3, size: 3
 						ubPixelData = GetNextByte(stream, state);
 
 						if (ubPixelData != 0x90)
@@ -209,7 +213,7 @@ namespace OpenCiv1
 
 					if (iBufferPos < dataBuffer.Length)
 					{
-						if (state.WordMode)
+						if (state.NibbleMode)
 						{
 							dataBuffer[iBufferPos] = (byte)(ubPixelData & 0xf);
 							dataBuffer[iBufferPos + 1] = (byte)((ushort)(ubPixelData & 0xf0) >> 4);
@@ -222,7 +226,7 @@ namespace OpenCiv1
 						}
 					}
 				}
-				if (state.WordMode)
+				if (state.NibbleMode)
 				{
 					for (int j = iWidth * 2; j < state.Stride; j++)
 					{
@@ -245,9 +249,6 @@ namespace OpenCiv1
 
 		private byte GetNextByte(FileStream stream, ImageDecoderState state)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_1318'(Undefined) at 0x1000:0x1318");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
-
 			// function body
 			if (state.DataStack.Count == 0)
 			{
@@ -272,16 +273,18 @@ namespace OpenCiv1
 					state.DataStack.Push(state.NextPosition);
 				}
 
-			L1377:
-				int iPosition = usCode * 3;
-				usCode = (ushort)((ushort)state.abDictionary[iPosition] | ((ushort)state.abDictionary[iPosition + 1] << 8));
-				usCode++;
-				if (usCode == 0) goto L138c;
-				usCode--;
-				state.DataStack.Push(state.abDictionary[iPosition + 2]);
-				goto L1377;
+				int iPosition;
 
-			L138c:
+				while (true)
+				{
+					iPosition = usCode * 3;
+					usCode = (ushort)((ushort)state.abDictionary[iPosition] | ((ushort)state.abDictionary[iPosition + 1] << 8));
+					if (usCode == 0xffff)
+						break;
+
+					state.DataStack.Push(state.abDictionary[iPosition + 2]);
+				}
+
 				state.NextPosition = state.abDictionary[iPosition + 2];
 				state.DataStack.Push(state.NextPosition);
 				iPosition = (ushort)(state.DictionaryLength * 3);
@@ -317,8 +320,6 @@ namespace OpenCiv1
 					state.PreviousPosition = usNextPosition;
 				}
 			}
-
-			this.oCPU.Log.ExitBlock("'F0_1000_1318'");
 
 			return state.DataStack.Pop();
 		}
@@ -431,19 +432,11 @@ namespace OpenCiv1
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.AX.Word = 0x3;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0679); // stack management - push return offset
-										// Instruction address 0x2fa1:0x0676, size: 3
-			F0_2fa1_0696();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2fa1; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+
 			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0684); // stack management - push return offset
-										// Instruction address 0x2fa1:0x067f, size: 5
+			// Instruction address 0x2fa1:0x067f, size: 5
 			this.oParent.MSCAPI.perror();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2fa1; // restore this function segment
@@ -455,44 +448,12 @@ namespace OpenCiv1
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_2fa1_066e'");
 		}
-
-		public void F0_2fa1_0696()
-		{
-			this.oCPU.Log.EnterBlock("'F0_2fa1_0696'(Cdecl, Far) at 0x2fa1:0x0696");
-			this.oCPU.CS.Word = 0x2fa1; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x10);
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x58fb);
-			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.AX.Word);
-			this.oCPU.WriteByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xd), 0x0);
-			this.oCPU.AX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.WriteByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), this.oCPU.AX.Low);
-			this.oCPU.PushWord((ushort)(this.oCPU.BP.Word - 0xe));
-			this.oCPU.PushWord((ushort)(this.oCPU.BP.Word - 0xe));
-			this.oCPU.AX.Word = 0x10;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x06bd); // stack management - push return offset
-										// Instruction address 0x2fa1:0x06b8, size: 5
-			this.oParent.MSCAPI.int86();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2fa1; // restore this function segment
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10));
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x58fb, this.oCPU.AX.Word);
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2fa1_0696'");
-		}
 		#endregion
 
 		#region Old Image loading functions
 		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, ushort xPos, ushort yPos, ushort filenamePtr, ushort palettePtr)
 		{
-			string filename = this.oCPU.DefaultDirectory + Path.GetFileName(this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)));
+			string filename = this.oCPU.DefaultDirectory + Path.GetFileName(this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)));
 			this.oCPU.Log.EnterBlock($"'F0_2fa1_01a2_LoadBitmapOrPalette'(0x{screenID:x4}, 0x{xPos:x4}, 0x{yPos:x4}, " +
 				$"'{filename}', 0x{palettePtr:x4})");
 			this.oCPU.CS.Word = 0x2fa1; // set this function segment
@@ -511,14 +472,14 @@ namespace OpenCiv1
 							startPtr = 0xba08;
 							for (int i = 0; i < paletteBuffer.Length; i++)
 							{
-								this.oCPU.Memory.WriteByte(this.oCPU.DS.Word, startPtr++, paletteBuffer[i]);
+								this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, paletteBuffer[i]);
 							}
 							break;
 						case 1:
 							startPtr = 0xba06;
 							for (int i = 0; i < paletteBuffer.Length; i++)
 							{
-								this.oCPU.Memory.WriteByte(this.oCPU.DS.Word, startPtr++, paletteBuffer[i]);
+								this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, paletteBuffer[i]);
 							}
 							break;
 
@@ -526,7 +487,7 @@ namespace OpenCiv1
 							startPtr = palettePtr;
 							for (int i = 0; i < paletteBuffer.Length; i++)
 							{
-								this.oCPU.Memory.WriteByte(this.oCPU.DS.Word, startPtr++, paletteBuffer[i]);
+								this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, paletteBuffer[i]);
 							}
 							break;
 					}
@@ -602,18 +563,18 @@ namespace OpenCiv1
 					}
 
 					ushort usTempPtr = usStartPtr;
-					this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, usTempPtr, usTemp);
+					this.oCPU.Memory.WriteUInt16(this.oCPU.DS.Word, usTempPtr, usTemp);
 					usTempPtr += 2;
 
 					usTemp = ReadUInt16FromStream(stream);
-					this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, usTempPtr, usTemp);
+					this.oCPU.Memory.WriteUInt16(this.oCPU.DS.Word, usTempPtr, usTemp);
 					usTempPtr += 2;
 					ushort usCount = (ushort)(usTemp >> 1);
 
 					for (int i = 0; i < usCount; i++)
 					{
 						usTemp = ReadUInt16FromStream(stream);
-						this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, usTempPtr, usTemp);
+						this.oCPU.Memory.WriteUInt16(this.oCPU.DS.Word, usTempPtr, usTemp);
 						usTempPtr += 2;
 					}
 
@@ -649,7 +610,7 @@ namespace OpenCiv1
 			int iBufferPos = 0;
 			int iWidth = state.Width;
 
-			if (state.WordMode)
+			if (state.NibbleMode)
 			{
 				iWidth++;
 				iWidth >>= 1;
@@ -691,7 +652,7 @@ namespace OpenCiv1
 					}
 				}
 
-				if (state.WordMode)
+				if (state.NibbleMode)
 				{
 					//this.oCPU.AX.High = this.oCPU.AX.Low;
 					//this.oCPU.AX.Low &= 0xf;
@@ -716,7 +677,7 @@ namespace OpenCiv1
 		public void F0_2fa1_01a2_LoadBitmapOrPalette1(short page, ushort xPos, ushort yPos, ushort filenamePtr, ushort palettePtr)
 		{
 			this.oCPU.Log.EnterBlock($"'F0_2fa1_01a2_LoadBitmapOrPalette'(0x{page:x4}, 0x{xPos:x4}, 0x{yPos:x4}, " +
-				$"'{this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr))}', 0x{palettePtr:x4})");
+				$"'{this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr))}', 0x{palettePtr:x4})");
 			this.oCPU.CS.Word = 0x2fa1; // set this function segment
 
 			// function body
@@ -774,7 +735,7 @@ namespace OpenCiv1
 
 		public void F0_2fa1_044c_LoadIcon(ushort filenamePtr)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2fa1_044c_LoadIcon('{this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, filenamePtr))}')");
+			this.oCPU.Log.EnterBlock($"F0_2fa1_044c_LoadIcon('{this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr))}')");
 			this.oCPU.CS.Word = 0x2fa1; // set this function segment
 
 			// function body

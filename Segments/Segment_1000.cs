@@ -21,7 +21,7 @@ namespace OpenCiv1
 		public void F0_1000_0000()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_0000'(Cdecl, Far) at 0x1000:0x0000");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.AX.Low = 0x1;
@@ -50,7 +50,7 @@ namespace OpenCiv1
 		public void F0_1000_0051()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_0051'(Cdecl, Far) at 0x1000:0x0051");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.AX.Low = 0x0;
@@ -68,7 +68,7 @@ namespace OpenCiv1
 		public void F0_1000_01a7_Timer()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_01a7_Timer'");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -115,23 +115,23 @@ namespace OpenCiv1
 					}
 				}
 
-				this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+				this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return overlaySegment
 				this.oCPU.PushWord(0x01e0); // stack management - push return offset
 				// Instruction address 0x1000:0x01db, size: 5
 				F0_1000_0345();
-				this.oCPU.PopDWord(); // stack management - pop return offset and segment
-				this.oCPU.CS.Word = 0x1000; // restore this function segment
+				this.oCPU.PopDWord(); // stack management - pop return offset and overlaySegment
+				this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 			}
 
 			if (this.oCPU.ReadWord(this.oCPU.DS.Word, 0x4c) != 0x1)
 			{
 				// sound driver call
-				this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+				this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return overlaySegment
 				this.oCPU.PushWord(0x01ec); // stack management - push return offset
 				// Instruction address 0x1000:0x01e7, size: 5
 				F0_1000_0a47();
-				this.oCPU.PopDWord(); // stack management - pop return offset and segment
-				this.oCPU.CS.Word = 0x1000; // restore this function segment
+				this.oCPU.PopDWord(); // stack management - pop return offset and overlaySegment
+				this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 			}
 
 			if (this.oCPU.ReadWord(this.oCPU.DS.Word, 0x44) != 0x0)
@@ -158,7 +158,7 @@ namespace OpenCiv1
 		public void F0_1000_0276()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_0276'(Cdecl, Near) at 0x1000:0x0276");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushF();
@@ -228,7 +228,7 @@ namespace OpenCiv1
 		public void F0_1000_033e()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_033e'(Cdecl, Far) at 0x1000:0x033e");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.AX.Word = 0x0;
@@ -242,24 +242,24 @@ namespace OpenCiv1
 		public void F0_1000_0345()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_0345'(Cdecl, Far) at 0x1000:0x0345");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x5c, this.oCPU.INCWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5c)));
 
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return overlaySegment
 			this.oCPU.PushWord(0x034e); // stack management - push return offset
 			// Instruction address 0x1000:0x0349, size: 5
 			F0_1000_0631();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x1000; // restore this function segment
+			this.oCPU.PopDWord(); // stack management - pop return offset and overlaySegment
+			this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return overlaySegment
 			this.oCPU.PushWord(0x0353); // stack management - push return offset
 			// Instruction address 0x1000:0x034e, size: 5
 			F0_1000_044a();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x1000; // restore this function segment
+			this.oCPU.PopDWord(); // stack management - pop return offset and overlaySegment
+			this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x4e), 0x4);
 			if (this.oCPU.Flags.NE) goto L036c;
@@ -272,12 +272,12 @@ namespace OpenCiv1
 
 		L036c:
 			// sound driver call
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return overlaySegment
 			this.oCPU.PushWord(0x0371); // stack management - push return offset
 			// Instruction address 0x1000:0x036c, size: 5
 			F0_1000_0a40();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x1000; // restore this function segment
+			this.oCPU.PopDWord(); // stack management - pop return offset and overlaySegment
+			this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.S) goto L0378;
@@ -313,7 +313,7 @@ namespace OpenCiv1
 		public void F0_1000_0382()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_0382'(Cdecl, Far) at 0x1000:0x0382");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -350,15 +350,15 @@ namespace OpenCiv1
 				lock (this.oParent.VGADriver.VGALock)
 				{
 					VGABitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
-					uint uiBufferPos = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x9));
+					uint uiBufferPos = CPU.ToLinearAddress(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x9));
 
 					for (int i = 0; i < this.oCPU.DX.Word; i++)
 					{
 						Color color = VGABitmap.ColorToColor18(screen.GetColor(i + this.oCPU.AX.Low));
 
-						this.oCPU.Memory.WriteByte(uiBufferPos++, color.R);
-						this.oCPU.Memory.WriteByte(uiBufferPos++, color.G);
-						this.oCPU.Memory.WriteByte(uiBufferPos++, color.B);
+						this.oCPU.Memory.WriteUInt8(uiBufferPos++, color.R);
+						this.oCPU.Memory.WriteUInt8(uiBufferPos++, color.G);
+						this.oCPU.Memory.WriteUInt8(uiBufferPos++, color.B);
 					}
 				}
 			}
@@ -393,7 +393,7 @@ namespace OpenCiv1
 		public void F0_1000_03fa()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_03fa'(Cdecl, Far) at 0x1000:0x03fa");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -427,7 +427,7 @@ namespace OpenCiv1
 		public void F0_1000_042b()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_042b'(Cdecl, Far) at 0x1000:0x042b");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -452,7 +452,7 @@ namespace OpenCiv1
 		public void F0_1000_044a()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_044a'(Cdecl, Far) at 0x1000:0x044a");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.SI.Word);
@@ -496,14 +496,14 @@ namespace OpenCiv1
 				lock (this.oParent.VGADriver.VGALock)
 				{
 					VGABitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
-					uint uiBufferPos = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.SI.Word);
+					uint uiBufferPos = CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.SI.Word);
 					int iCount = this.oCPU.CX.Word / 3;
 
 					for (int i = 0; i < iCount; i++)
 					{
-						byte red = this.oCPU.Memory.ReadByte(uiBufferPos++);
-						byte green = this.oCPU.Memory.ReadByte(uiBufferPos++);
-						byte blue = this.oCPU.Memory.ReadByte(uiBufferPos++);
+						byte red = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
+						byte green = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
+						byte blue = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
 
 						screen.SetColor(i + this.oCPU.AX.Low, VGABitmap.Color18ToColor(red, green, blue));
 					}
@@ -531,7 +531,7 @@ namespace OpenCiv1
 		public void F0_1000_04aa()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_04aa'(Cdecl, Far) at 0x1000:0x04aa");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -569,7 +569,7 @@ namespace OpenCiv1
 		public void F0_1000_04d4()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_04d4'(Cdecl, Far) at 0x1000:0x04d4");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -616,7 +616,7 @@ namespace OpenCiv1
 		public void F0_1000_050c()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_050c'(Cdecl, Near) at 0x1000:0x050c");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -678,15 +678,15 @@ namespace OpenCiv1
 				lock (this.oParent.VGADriver.VGALock)
 				{
 					VGABitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
-					uint uiBufferPos = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, 0xbd06);
+					uint uiBufferPos = CPU.ToLinearAddress(this.oCPU.DS.Word, 0xbd06);
 
 					for (int i = 0; i < 0x100; i++)
 					{
 						Color color = VGABitmap.ColorToColor18(screen.GetColor(i));
 
-						this.oCPU.Memory.WriteByte(uiBufferPos++, color.R);
-						this.oCPU.Memory.WriteByte(uiBufferPos++, color.G);
-						this.oCPU.Memory.WriteByte(uiBufferPos++, color.B);
+						this.oCPU.Memory.WriteUInt8(uiBufferPos++, color.R);
+						this.oCPU.Memory.WriteUInt8(uiBufferPos++, color.G);
+						this.oCPU.Memory.WriteUInt8(uiBufferPos++, color.B);
 					}
 				}
 			}
@@ -713,13 +713,13 @@ namespace OpenCiv1
 				lock (this.oParent.VGADriver.VGALock)
 				{
 					VGABitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
-					uint uiBufferPos = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, 0xbd06);
+					uint uiBufferPos = CPU.ToLinearAddress(this.oCPU.DS.Word, 0xbd06);
 
 					for (int i = 0; i < 10; i++)
 					{
-						byte red = this.oCPU.Memory.ReadByte(uiBufferPos++);
-						byte green = this.oCPU.Memory.ReadByte(uiBufferPos++);
-						byte blue = this.oCPU.Memory.ReadByte(uiBufferPos++);
+						byte red = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
+						byte green = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
+						byte blue = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
 
 						screen.SetColor(i, VGABitmap.Color18ToColor(red, green, blue));
 					}
@@ -740,7 +740,7 @@ namespace OpenCiv1
 		public void F0_1000_05b7()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_05b7'(Cdecl, Near) at 0x1000:0x05b7");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.CLI();
@@ -819,7 +819,7 @@ namespace OpenCiv1
 		public void F0_1000_05b7_Int()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_05b7'(Cdecl, Near) at 0x1000:0x05b7");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.CLI();
@@ -898,7 +898,7 @@ namespace OpenCiv1
 		public void F0_1000_0631()
 		{
 			this.oCPU.Log.EnterBlock("F0_1000_0631()");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			if (this.oCPU.ReadWord(this.oCPU.DS.Word, 0x68) != 0)
@@ -912,13 +912,13 @@ namespace OpenCiv1
 					lock (this.oParent.VGADriver.VGALock)
 					{
 						VGABitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
-						uint uiBufferPos = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, 0xc006);
+						uint uiBufferPos = CPU.ToLinearAddress(this.oCPU.DS.Word, 0xc006);
 
 						for (int i = 0; i < this.oCPU.BX.Word; i++)
 						{
-							byte red = this.oCPU.Memory.ReadByte(uiBufferPos++);
-							byte green = this.oCPU.Memory.ReadByte(uiBufferPos++);
-							byte blue = this.oCPU.Memory.ReadByte(uiBufferPos++);
+							byte red = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
+							byte green = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
+							byte blue = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
 
 							screen.SetColor(i + this.oCPU.AX.Low, VGABitmap.Color18ToColor(red, green, blue));
 						}
@@ -944,7 +944,7 @@ namespace OpenCiv1
 		public void F0_1000_066a()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_066a'(Cdecl, Far) at 0x1000:0x066a");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -1016,11 +1016,11 @@ namespace OpenCiv1
 		public void F0_1000_07d6()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_07d6'(Undefined) at 0x1000:0x07d6");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
-			this.oCPU.CS.Word = 0x1000; // restore this function segment
+			this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
 			if (this.oCPU.ReadByte(this.oCPU.DS.Word, 0x5403) != 0)
 			{
@@ -1045,7 +1045,7 @@ namespace OpenCiv1
 					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5878)),
 					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x587a)),
 					this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5876));
-				this.oCPU.CS.Word = 0x1000; // restore this function segment
+				this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
 				this.oCPU.ES.Word = this.oCPU.PopWord();
 				this.oCPU.DX.Word = this.oCPU.PopWord();
@@ -1062,11 +1062,11 @@ namespace OpenCiv1
 		public void F0_1000_083f(short param1, short param2, ushort param3)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_083f'(Undefined) at 0x1000:0x083f");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oParent.VGADriver.F0_VGA_0270(param1, param2, param3);
-			this.oCPU.CS.Word = 0x1000; // restore this function segment
+			this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
 			if (this.oCPU.ReadByte(this.oCPU.DS.Word, 0x5403) != 0)
 			{
@@ -1091,7 +1091,7 @@ namespace OpenCiv1
 					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5878)),
 					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x587a)),
 					this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5876));
-				this.oCPU.CS.Word = 0x1000; // restore this function segment
+				this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
 				this.oCPU.ES.Word = this.oCPU.PopWord();
 				this.oCPU.DX.Word = this.oCPU.PopWord();
@@ -1108,11 +1108,11 @@ namespace OpenCiv1
 		public void F0_1000_0846(ushort screenID)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_0846'(Undefined) at 0x1000:0x0846");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oParent.VGADriver.F0_VGA_063c(screenID);
-			this.oCPU.CS.Word = 0x1000; // restore this function segment
+			this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
 			if (this.oCPU.ReadByte(this.oCPU.DS.Word, 0x5403) != 0)
 			{
@@ -1137,7 +1137,7 @@ namespace OpenCiv1
 					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5878)),
 					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x587a)),
 					this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5876));
-				this.oCPU.CS.Word = 0x1000; // restore this function segment
+				this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
 				this.oCPU.ES.Word = this.oCPU.PopWord();
 				this.oCPU.DX.Word = this.oCPU.PopWord();
@@ -1154,7 +1154,7 @@ namespace OpenCiv1
 		public void F0_1000_0797_DrawBitmapToScreen(ushort rectPtr, short xPos, short yPos, ushort bitmapPtr)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1000_0797_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oParent.VGADriver.F0_VGA_0c3e_DrawBitmapToScreen(rectPtr, xPos, yPos, bitmapPtr);
@@ -1182,7 +1182,7 @@ namespace OpenCiv1
 					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5878)),
 					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x587a)),
 					this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5876));
-				this.oCPU.CS.Word = 0x1000; // restore this function segment
+				this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
 				this.oCPU.ES.Word = this.oCPU.PopWord();
 				this.oCPU.DX.Word = this.oCPU.PopWord();
@@ -1199,7 +1199,7 @@ namespace OpenCiv1
 		public void F0_1000_084d_DrawBitmapToScreen(ushort rectPtr, short xPos, short yPos, ushort bitmapPtr)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1000_084d_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oParent.VGADriver.F0_VGA_0d47_DrawBitmapToScreen(rectPtr, xPos, yPos, bitmapPtr);
@@ -1227,7 +1227,7 @@ namespace OpenCiv1
 					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5878)),
 					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x587a)),
 					this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5876));
-				this.oCPU.CS.Word = 0x1000; // restore this function segment
+				this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
 				this.oCPU.ES.Word = this.oCPU.PopWord();
 				this.oCPU.DX.Word = this.oCPU.PopWord();
@@ -1296,14 +1296,17 @@ namespace OpenCiv1
 			//this.oCPU.Log.ExitBlock("Sound overlay 'F0_1000_0a4e'");
 		}
 
-		public void F0_1000_0a76()
+		public void F0_1000_0a76_LoadOverlay(string overlayName, string resourceName)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_0a76'(Cdecl, Far) at 0x1000:0x0a76");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.Log.EnterBlock($"F0_1000_0a76_LoadOverlay('{overlayName}', '{resourceName}')");
+
+			// we no longer have the need to load any overlays or resources
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
+			/*this.oCPU.PushWord(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
+
+			// get free memory
 			this.oCPU.AX.High = 0x48;
 			this.oCPU.BX.Word = 0xffff;
 			this.oCPU.INT(0x21);
@@ -1313,6 +1316,7 @@ namespace OpenCiv1
 			goto L0bdb;
 
 		L0a89:
+			// allocate free memory - 0x100
 			this.oCPU.AX.High = 0x48;
 			this.oCPU.BX.Word = this.oCPU.SUBWord(this.oCPU.BX.Word, 0x100);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x540c, this.oCPU.BX.Word);
@@ -1323,40 +1327,53 @@ namespace OpenCiv1
 			goto L0bdb;
 
 		L0a9e:
-			this.oCPU.PushWord(this.oCPU.DS.Word);
-			this.oCPU.ES.Word = this.oCPU.PopWord();
-			// LEA
+			this.oCPU.ES.Word = this.oCPU.DS.Word;
 			this.oCPU.BX.Word = 0x5408;
 			this.oCPU.WriteWord(this.oCPU.DS.Word, this.oCPU.BX.Word, this.oCPU.AX.Word);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x2), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x4b03;
-			this.oCPU.DX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.PushWord(0x0ab2); // stack management - push return offset
-			// Instruction address 0x1000:0x0aaf, size: 3
-			F0_1000_0bba();
-			this.oCPU.PopWord(); // stack management - pop return offset
-			if (this.oCPU.Flags.AE) goto L0ad5;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2);
-			if (this.oCPU.Flags.NE) goto L0ac0;
-			// LEA
-			this.oCPU.SI.Word = 0x5463;
-			goto L0bdb;
+			ushort overlaySegment = this.oCPU.AX.Word;*/
 
-		L0ac0:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x8);
-			if (this.oCPU.Flags.NE) goto L0acc;
-			// LEA
-			this.oCPU.SI.Word = 0x5476;
-			goto L0bdb;
+			//this.oCPU.DX.Word = overlayName;
+			// DS:DX = pointer to an ASCIIZ filename
+			// ES:BX = pointer to a parameter block
+			/*this.oCPU.PushWord(this.oCPU.BP.Word);
+			this.oCPU.PushWord(this.oCPU.SI.Word);
+			this.oCPU.PushWord(this.oCPU.DI.Word);
+			this.oCPU.PushWord(this.oCPU.DS.Word);
+			this.oCPU.PushWord(this.oCPU.ES.Word);
+			this.oCPU.WriteWord(this.oCPU.CS.Word, 0xbb8, this.oCPU.SS.Word);
+			this.oCPU.WriteWord(this.oCPU.CS.Word, 0xbb6, this.oCPU.SP.Word);
 
-		L0acc:
-			if (this.oCPU.Flags.E) goto L0ad5;
-			// LEA
-			this.oCPU.SI.Word = 0x5495;
-			goto L0bdb;
+			this.oCPU.INT(0x21);
 
-		L0ad5:
-			this.oCPU.ES.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5408);
+			this.oCPU.SS.Word = this.oCPU.ReadWord(this.oCPU.CS.Word, 0xbb8);
+			this.oCPU.SP.Word = this.oCPU.ReadWord(this.oCPU.CS.Word, 0xbb6);
+			this.oCPU.ES.Word = this.oCPU.PopWord();
+			this.oCPU.DS.Word = this.oCPU.PopWord();
+			this.oCPU.DI.Word = this.oCPU.PopWord();
+			this.oCPU.SI.Word = this.oCPU.PopWord();
+			this.oCPU.BP.Word = this.oCPU.PopWord();*/
+
+			/*switch (overlayName.ToLower())
+			{
+				case "misc.exe":
+					this.oParent.MiscDriver.Segment = overlaySegment;
+					break;
+
+				case "mgraphic.exe":
+					this.oParent.VGADriver.Segment = overlaySegment;
+					break;
+
+				case "nsound.cvl":
+					this.oParent.SoundDriver.Segment = overlaySegment;
+					break;
+
+				default:
+					throw new Exception("Unknown overlay name");
+			}*/
+
+			// calculate overlay size
+			/*this.oCPU.ES.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5408);
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.ES.Word, 0x2a);
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.ES.Word, 0x2c);
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0xf);
@@ -1365,64 +1382,13 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.SHRWord(this.oCPU.AX.Word, 0x1);
 			this.oCPU.AX.Word = this.oCPU.SHRWord(this.oCPU.AX.Word, 0x1);
 			this.oCPU.BX.Word = this.oCPU.ADDWord(this.oCPU.BX.Word, this.oCPU.AX.Word);
-			this.oCPU.DX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
+
+			this.oCPU.DX.Word = resourceName;
 			this.oCPU.DX.Word = this.oCPU.ORWord(this.oCPU.DX.Word, this.oCPU.DX.Word);
 			if (this.oCPU.Flags.E) goto L0af9;
-			this.oCPU.PushWord(0x0af9); // stack management - push return offset
-			// Instruction address 0x1000:0x0af6, size: 3
-			F0_1000_0b1e();
-			this.oCPU.PopWord(); // stack management - pop return offset
 
-		L0af9:
-			this.oCPU.AX.Word = this.oCPU.ES.Word;
-			this.oCPU.BX.Word = this.oCPU.SUBWord(this.oCPU.BX.Word, this.oCPU.AX.Word);
-			this.oCPU.BX.Word = this.oCPU.ADDWord(this.oCPU.BX.Word, 0x8);
-			this.oCPU.CMPWord(this.oCPU.BX.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x540c));
-			if (this.oCPU.Flags.BE) goto L0b0d;
-			// LEA
-			this.oCPU.SI.Word = 0x54b9;
-			goto L0bdb;
-
-		L0b0d:
-			this.oCPU.AX.High = 0x4a;
-			this.oCPU.INT(0x21);
-			if (this.oCPU.Flags.AE) goto L0b1a;
-			// LEA
-			this.oCPU.SI.Word = 0x54de;
-			goto L0bdb;
-
-		L0b1a:
-			this.oCPU.AX.Word = this.oCPU.ES.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_0a76'");
-			return;
-
-		L0bdb:
-			this.oCPU.AX.High = 0x2;
-			this.oCPU.CMPByte(this.oCPU.AX.Low, 0xa);
-			this.oCPU.AX.Low = this.oCPU.SBBByte(this.oCPU.AX.Low, 0x69);
-			this.oCPU.DAS();
-			this.oCPU.DX.Low = this.oCPU.AX.Low;
-			this.oCPU.INT(0x21);
-			// LEA
-			this.oCPU.DX.Word = 0x540e;
-			this.oCPU.AX.High = 0x9;
-			this.oCPU.INT(0x21);
-			this.oCPU.AX.High = 0x9;
-			this.oCPU.DX.Word = this.oCPU.SI.Word;
-			this.oCPU.INT(0x21);
-			this.oCPU.AX.Word = 0x4c99;
-			this.oCPU.INT(0x21);
-		}
-
-		public void F0_1000_0b1e()
-		{
-			this.oCPU.Log.EnterBlock("'F0_1000_0b1e'(Cdecl, Near) at 0x1000:0x0b1e");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
-
-			// function body
 			this.oCPU.PushWord(this.oCPU.DS.Word);
+			// open resource file
 			this.oCPU.AX.Word = 0x3d00;
 			this.oCPU.INT(0x21);
 			if (this.oCPU.Flags.AE) goto L0b2d;
@@ -1435,6 +1401,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
 		L0b31:
+			// read resource file
 			this.oCPU.AX.High = 0x3f;
 			this.oCPU.DX.Word = 0x0;
 			this.oCPU.CX.Word = 0x8000;
@@ -1460,6 +1427,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.SHRWord(this.oCPU.AX.Word, 0x1);
 			this.oCPU.DX.Word = this.oCPU.DS.Word;
 			this.oCPU.DX.Word = this.oCPU.ADDWord(this.oCPU.DX.Word, this.oCPU.AX.Word);
+			// close resource file
 			this.oCPU.AX.High = 0x3e;
 			this.oCPU.INT(0x21);
 			if (this.oCPU.Flags.AE) goto L0b6c;
@@ -1470,11 +1438,27 @@ namespace OpenCiv1
 		L0b6c:
 			this.oCPU.BX.Word = this.oCPU.DX.Word;
 			this.oCPU.DS.Word = this.oCPU.PopWord();
-			// Near return
-			this.oCPU.Log.ExitBlock("'F0_1000_0b1e'");
-			return;
 
-		L0bdb:
+		L0af9:
+			this.oCPU.AX.Word = this.oCPU.ES.Word;
+			this.oCPU.BX.Word = this.oCPU.SUBWord(this.oCPU.BX.Word, this.oCPU.AX.Word);
+			this.oCPU.BX.Word = this.oCPU.ADDWord(this.oCPU.BX.Word, 0x8);
+			this.oCPU.CMPWord(this.oCPU.BX.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x540c));
+			if (this.oCPU.Flags.BE) goto L0b0d;
+			// LEA
+			this.oCPU.SI.Word = 0x54b9;
+			goto L0bdb;*/
+
+		/*L0b0d:
+			// modify allocated memory block
+			this.oCPU.AX.High = 0x4a;
+			this.oCPU.INT(0x21);
+			if (this.oCPU.Flags.AE) goto L0b1a;
+			// LEA
+			this.oCPU.SI.Word = 0x54de;
+			goto L0bdb;*/
+
+		/*L0bdb:
 			this.oCPU.AX.High = 0x2;
 			this.oCPU.CMPByte(this.oCPU.AX.Low, 0xa);
 			this.oCPU.AX.Low = this.oCPU.SBBByte(this.oCPU.AX.Low, 0x69);
@@ -1488,29 +1472,18 @@ namespace OpenCiv1
 			this.oCPU.AX.High = 0x9;
 			this.oCPU.DX.Word = this.oCPU.SI.Word;
 			this.oCPU.INT(0x21);
-			this.oCPU.AX.Word = 0x4c99;
-			this.oCPU.INT(0x21);
-		}
 
-		public void F0_1000_0b70()
-		{
-			this.oCPU.Log.EnterBlock("'F0_1000_0b70'(Cdecl, Far) at 0x1000:0x0b70");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oParent.MSCAPI.exit(0x99);*/
 
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
+		/*L0b1a:
 			this.oCPU.PushWord(this.oCPU.SI.Word);
 			this.oCPU.PushWord(this.oCPU.DI.Word);
 			this.oCPU.PushWord(this.oCPU.DS.Word);
-			this.oCPU.DS.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
+			
+			this.oCPU.DS.Word = overlaySegment;
 			this.oCPU.SI.Word = 0x32;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x2e);
-			this.oCPU.DX.Low = 0x7;
-			this.oCPU.MULByte(this.oCPU.AX, this.oCPU.DX.Low);
-			// LEA
-			this.oCPU.DI.Word = 0x76d;
-			this.oCPU.DI.Word = this.oCPU.ADDWord(this.oCPU.DI.Word, this.oCPU.AX.Word);
+			this.oCPU.DI.Word = (ushort)(0x76d + (this.oCPU.ReadWord(this.oCPU.DS.Word, 0x2e) * 7));
+			
 			this.oCPU.AX.Word = 0x1000;
 			this.oCPU.ES.Word = this.oCPU.AX.Word;
 			this.oCPU.CX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x30);
@@ -1524,60 +1497,12 @@ namespace OpenCiv1
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SI.Word = this.oCPU.PopWord();
-			this.oCPU.BP.Word = this.oCPU.PopWord();
+
+			this.oCPU.AX.Word = this.oCPU.ES.Word;
+			this.oCPU.BP.Word = this.oCPU.PopWord();*/
+
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_0b70'");
-		}
-
-		public void F0_1000_0bba()
-		{
-			this.oCPU.Log.EnterBlock("'F0_1000_0bba'(Cdecl, Near) at 0x1000:0x0bba");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
-
-			// function body
-			// DS:DX = pointer to an ASCIIZ filename
-			// ES:BX = pointer to a parameter block
-			string sFileName = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.DX.Word));
-			ushort usSegment = this.oCPU.Memory.ReadWord(CPUMemory.ToLinearAddress(this.oCPU.ES.Word, this.oCPU.BX.Word));
-
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.PushWord(this.oCPU.DI.Word);
-			this.oCPU.PushWord(this.oCPU.DS.Word);
-			this.oCPU.PushWord(this.oCPU.ES.Word);
-			this.oCPU.WriteWord(this.oCPU.CS.Word, 0xbb8, this.oCPU.SS.Word);
-			this.oCPU.WriteWord(this.oCPU.CS.Word, 0xbb6, this.oCPU.SP.Word);
-
-			this.oCPU.INT(0x21);
-
-			this.oCPU.SS.Word = this.oCPU.ReadWord(this.oCPU.CS.Word, 0xbb8);
-			this.oCPU.SP.Word = this.oCPU.ReadWord(this.oCPU.CS.Word, 0xbb6);
-			this.oCPU.ES.Word = this.oCPU.PopWord();
-			this.oCPU.DS.Word = this.oCPU.PopWord();
-			this.oCPU.DI.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.PopWord();
-			this.oCPU.BP.Word = this.oCPU.PopWord();
-
-			switch (sFileName.ToLower())
-			{
-				case "misc.exe":
-					this.oParent.MiscDriver.Segment = usSegment;
-					break;
-
-				case "mgraphic.exe":
-					this.oParent.VGADriver.Segment = usSegment;
-					break;
-
-				case "nsound.cvl":
-					this.oParent.SoundDriver.Segment = usSegment;
-					break;
-
-				default:
-					throw new Exception("Unknown overlay name");
-			}
-
-			// Near return
-			this.oCPU.Log.ExitBlock("'F0_1000_0bba'");
+			this.oCPU.Log.ExitBlock("F0_1000_0a76_LoadOverlay");
 		}
 
 		public void F0_1000_0bfa_FillRectangle(ushort rectPtr, ushort xPos, ushort yPos, ushort width, ushort height, ushort mode)
@@ -1585,7 +1510,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_1000_0bfa_FillRectangle(0x{rectPtr:4}, {xPos}, {yPos}, {width}, {height}, 0x{mode:4})");
 
 			// function body
-			CivRectangle rect = new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
+			CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
 
 			if (width > 0 && height > 0)
 			{
@@ -1602,7 +1527,7 @@ namespace OpenCiv1
 		public void F0_1000_0fc8()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_0fc8'(Cdecl, Near) at 0x1000:0x0fc8");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.AX.Low = 0xf;
@@ -1634,7 +1559,7 @@ namespace OpenCiv1
 		public void F0_1000_104f()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_104f'(Cdecl, Far) at 0x1000:0x104f");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -1674,7 +1599,7 @@ namespace OpenCiv1
 		public void F0_1000_13c8()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_13c8'(Cdecl, Far) at 0x1000:0x13c8");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -1719,7 +1644,7 @@ namespace OpenCiv1
 		public void F0_1000_1414()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_1414'(Cdecl, Far) at 0x1000:0x1414");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x6b02);
@@ -1792,7 +1717,7 @@ namespace OpenCiv1
 		public void F0_1000_148f()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_148f'(Cdecl, Far) at 0x1000:0x148f");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -1889,7 +1814,7 @@ namespace OpenCiv1
 		public void F0_1000_1524()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_1524'(Cdecl, Near) at 0x1000:0x1524");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.ES.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x6b04);
@@ -1924,7 +1849,7 @@ namespace OpenCiv1
 		public void F0_1000_1558()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_1558'(Cdecl, Near) at 0x1000:0x1558");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.STOSWord();
@@ -1941,7 +1866,7 @@ namespace OpenCiv1
 		public void F0_1000_1565()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_1565'(Cdecl, Near) at 0x1000:0x1565");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.BX.Word = 0x0;
@@ -2011,7 +1936,7 @@ namespace OpenCiv1
 		public void F0_1000_15cd()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_15cd'(Cdecl, Near) at 0x1000:0x15cd");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.CX.Low = this.oCPU.ReadByte(this.oCPU.DS.Word, 0x6b0a);
@@ -2064,7 +1989,7 @@ namespace OpenCiv1
 		public void F0_1000_1620()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_1620'(Cdecl, Near) at 0x1000:0x1620");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x6b0a, 0x8);
@@ -2087,7 +2012,7 @@ namespace OpenCiv1
 		public void F0_1000_163e_InitMouse()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_163e_InitMouse'");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			// assume our mouse is initialized
@@ -2124,7 +2049,7 @@ namespace OpenCiv1
 		public void F0_1000_1687()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_1687'(Cdecl, Far) at 0x1000:0x1687");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.AX.Low = 0x0;
@@ -2147,7 +2072,7 @@ namespace OpenCiv1
 		public void F0_1000_1697()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_1697'(Cdecl, Far) at 0x1000:0x1697");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -2166,7 +2091,7 @@ namespace OpenCiv1
 		public void F0_1000_16ae()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_16ae'(Cdecl, Far) at 0x1000:0x16ae");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -2193,13 +2118,14 @@ namespace OpenCiv1
 		public void F0_1000_16d4()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_16d4'(Cdecl, Far) at 0x1000:0x16d4");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.AX.Word = 0x0;
 			this.oCPU.Temp.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5874);
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x5874, this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.Temp.Word;
+
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_1000_16d4'");
 		}
@@ -2207,7 +2133,7 @@ namespace OpenCiv1
 		public void F0_1000_16db()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_16db'(Cdecl, Far) at 0x1000:0x16db");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5876), 0x0);
@@ -2219,7 +2145,7 @@ namespace OpenCiv1
 			F0_1000_083f((short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5878)),
 				(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x587a)),
 				this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5876));
-			this.oCPU.CS.Word = 0x1000; // restore this function segment
+			this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x5403, 0x1);
 
@@ -2231,7 +2157,7 @@ namespace OpenCiv1
 		public void F0_1000_170b()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_170b'(Cdecl, Far) at 0x1000:0x170b");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5876), 0x0);
@@ -2239,12 +2165,12 @@ namespace OpenCiv1
 			this.oCPU.CMPByte(this.oCPU.ReadByte(this.oCPU.DS.Word, 0x5403), 0x0);
 			if (this.oCPU.Flags.E) goto L1723;
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x5403, 0x0);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return overlaySegment
 			this.oCPU.PushWord(0x1723); // stack management - push return offset
 			// Instruction address 0x1000:0x171e, size: 5
 			F0_1000_07d6();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x1000; // restore this function segment
+			this.oCPU.PopDWord(); // stack management - pop return offset and overlaySegment
+			this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
 		L1723:
 			// Far return
@@ -2254,7 +2180,7 @@ namespace OpenCiv1
 		public void F0_1000_179a()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_179a'(Cdecl, Near) at 0x1000:0x179a");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.AX.Word);
@@ -2273,7 +2199,7 @@ namespace OpenCiv1
 					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5878)),
 					(short)((short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadWord(this.oCPU.DS.Word, 0x587a)),
 					this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5876));
-			this.oCPU.CS.Word = 0x1000; // restore this function segment
+			this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
 			this.oCPU.ES.Word = this.oCPU.PopWord();
 			this.oCPU.DX.Word = this.oCPU.PopWord();
@@ -2285,7 +2211,7 @@ namespace OpenCiv1
 		public void F0_1000_17db_MouseEvent()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_17db'(Cdecl, Far) at 0x1000:0x17db");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
+			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
 
 			// function body
 			this.oCPU.DS.Word = 0x3b01;
@@ -2301,12 +2227,12 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.ORWord(this.oCPU.BP.Word, this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5880));
 			this.oCPU.BP.Word = this.oCPU.AX.Word;
 			if (this.oCPU.Flags.E) goto L180a;
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return overlaySegment
 			this.oCPU.PushWord(0x180a); // stack management - push return offset
 										// Instruction address 0x1000:0x1806, size: 4
 			this.oCPU.CallF(this.oCPU.ReadDWord(this.oCPU.DS.Word, 0x587e));
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x1000; // restore this function segment
+			this.oCPU.PopDWord(); // stack management - pop return offset and overlaySegment
+			this.oCPU.CS.Word = 0x1000; // restore this function overlaySegment
 
 		L180a:
 			this.oCPU.TESTWord(this.oCPU.BP.Word, 0x1);

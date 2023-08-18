@@ -10,6 +10,18 @@ namespace OpenCiv1
 	{
 		#region Global strings
 		/// <summary>
+		/// "misc.exe"
+		/// </summary>
+		public static string String_0267 = "misc.exe";
+		/// <summary>
+		/// "mgraphic.exe"
+		/// </summary>
+		public static string String_1a22 = "mgraphic.exe";
+		/// <summary>
+		/// "nsound.cvl"
+		/// </summary>
+		public static string String_1a30 = "nsound.cvl";
+		/// <summary>
 		/// " Start a New Game\n Load a Saved Game\n EARTH\n Customize World\n View Hall of Fame\n"
 		/// </summary>
 		public static string String_1ae2 = " Start a New Game\n Load a Saved Game\n EARTH\n Customize World\n View Hall of Fame\n";
@@ -850,6 +862,14 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_300b = " ";
 		/// <summary>
+		/// "                                                                               \n"
+		/// </summary>
+		public static string String_3185 = "                                                                               \n";
+		/// <summary>
+		/// "\x00ff\x001e"
+		/// </summary>
+		public static string String_31d8 = "\x00ff\x001e";
+		/// <summary>
 		/// "\x00ff\x000e"
 		/// </summary>
 		public static string String_31ef = "\x00ff\x000e";
@@ -858,9 +878,29 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_31f9 = "\x00ff\x000e";
 		/// <summary>
+		/// "1. Mouse and Keyboard"
+		/// </summary>
+		public static string String_3203 = "1. Mouse and Keyboard";
+		/// <summary>
+		/// "2. Keyboard only"
+		/// </summary>
+		public static string String_3219 = "2. Keyboard only";
+		/// <summary>
+		/// "\x00ff\x000e"
+		/// </summary>
+		public static string String_3253 = "\x00ff\x000e";
+		/// <summary>
+		/// "One Moment Please..."
+		/// </summary>
+		public static string String_3256 = "One Moment Please...";
+		/// <summary>
 		/// "Please insert Disk 1."
 		/// </summary>
 		public static string String_326b = "Please insert Disk 1.";
+		/// <summary>
+		/// "fonts.cv"
+		/// </summary>
+		public static string String_3281 = "fonts.cv";
 		/// <summary>
 		/// " "
 		/// </summary>

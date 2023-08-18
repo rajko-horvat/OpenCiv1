@@ -1,4 +1,5 @@
 using Disassembler;
+using System;
 
 namespace OpenCiv1
 {
@@ -13,73 +14,55 @@ namespace OpenCiv1
 			this.oCPU = parent.CPU;
 		}
 
-		public void F0_1199_00a1()
+		public void F0_1199_00a1_WriteToConsole(int left, int top, string text)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1199_00a1'(Cdecl, Far) at 0x1199:0x00a1");
-			this.oCPU.CS.Word = 0x1199; // set this function segment
+			this.oCPU.Log.EnterBlock($"F0_1199_00a1_WriteToConsole({left}, {top}, '{text}')");
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.AX.High = 0x2;
-			this.oCPU.BX.High = 0x0;
-			this.oCPU.DX.High = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.DX.Low = this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.CMPWord(this.oCPU.DX.Word, 0xffff);
-			if (this.oCPU.Flags.E) goto L00b6;
-			this.oCPU.INT(0x10);
+			if (left < Console.WindowWidth && top < Console.WindowHeight)
+			{
+				Console.SetCursorPosition(left, top);
+			}
 
-		L00b6:
-			this.oCPU.BX.Low = this.oCPU.ReadByte(this.oCPU.CS.Word, 0xa0);
-			this.oCPU.BX.High = 0x0;
-			this.oCPU.CX.Word = 0x1;
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa));
+			text = text.Replace("\r\n", "\n").Replace("\n\r", "\n").Replace("\n", "\r\n");
 
-		L00c3:
-			this.oCPU.LODSByte();
-			this.oCPU.AX.Low = this.oCPU.ORByte(this.oCPU.AX.Low, this.oCPU.AX.Low);
-			if (this.oCPU.Flags.E) goto L00e9;
-			this.oCPU.CMPByte(this.oCPU.AX.Low, 0xff);
-			if (this.oCPU.Flags.E) goto L00dc;
-			this.oCPU.DX.Low = this.oCPU.AX.Low;
-			this.oCPU.AX.High = 0x9;
-			this.oCPU.AX.Low = 0x20;
-			this.oCPU.INT(0x10);
-			this.oCPU.AX.High = 0xe;
-			this.oCPU.AX.Low = this.oCPU.DX.Low;
-			this.oCPU.INT(0x10);
-			goto L00c3;
+			for (int i = 0; i < text.Length; i++)
+			{
+				char ch = text[i];
+				if (ch == '\x00ff')
+				{
+					Console.ForegroundColor = (ConsoleColor)((int)text[i + 1] & 0xf);
+					Console.BackgroundColor = (ConsoleColor)(((int)text[i + 1] & 0xf0) >> 4);
+					i++;
+				}
+				else
+				{
+					Console.Write(ch);
+				}
+			}
 
-		L00dc:
-			this.oCPU.LODSByte();
-			this.oCPU.AX.Low = this.oCPU.ORByte(this.oCPU.AX.Low, this.oCPU.AX.Low);
-			if (this.oCPU.Flags.E) goto L00e9;
-			this.oCPU.WriteByte(this.oCPU.CS.Word, 0xa0, this.oCPU.AX.Low);
-			this.oCPU.BX.Low = this.oCPU.AX.Low;
-			goto L00c3;
-
-		L00e9:
-			this.oCPU.SI.Word = this.oCPU.PopWord();
-			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1199_00a1'");
+			this.oCPU.Log.ExitBlock("F0_1199_00a1_WriteToConsole");
 		}
 
-		public void F0_1199_00ec()
+		public void F0_1199_00ec_WriteToConsole(string text)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1199_00ec'(Cdecl, Far) at 0x1199:0x00ec");
-			this.oCPU.CS.Word = 0x1199; // set this function segment
+			this.oCPU.Log.EnterBlock($"F0_1199_00ec_WriteToConsole('{text}')");
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.AX.High = 0x9;
-			this.oCPU.DX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.INT(0x21);
-			this.oCPU.BP.Word = this.oCPU.PopWord();
+			ConsoleColor foreColor = Console.ForegroundColor;
+			ConsoleColor backColor = Console.BackgroundColor;
+
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.BackgroundColor = ConsoleColor.Black;
+			text = text.Replace("\r\n", "\n").Replace("\n\r", "\n").Replace("\n", "\r\n");
+			Console.Write(text);
+
+			Console.ForegroundColor = foreColor;
+			Console.BackgroundColor = backColor;
+
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1199_00ec'");
+			this.oCPU.Log.ExitBlock("F0_1199_00ec_WriteToConsole");
 		}
 	}
 }

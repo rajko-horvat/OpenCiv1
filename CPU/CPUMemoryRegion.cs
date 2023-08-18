@@ -23,12 +23,12 @@ namespace Disassembler
 		private CPUMemoryFlagsEnum eAccessFlags;
 
 		public CPUMemoryRegion(ushort segment, ushort offset, uint size)
-			: this(CPUMemory.ToLinearAddress(segment, offset), size, CPUMemoryFlagsEnum.ReadWrite)
+			: this(CPU.ToLinearAddress(segment, offset), size, CPUMemoryFlagsEnum.ReadWrite)
 		{
 		}
 
 		public CPUMemoryRegion(ushort segment, ushort offset, uint size, CPUMemoryFlagsEnum access)
-			: this(CPUMemory.ToLinearAddress(segment, offset), size, access)
+			: this(CPU.ToLinearAddress(segment, offset), size, access)
 		{
 		}
 
@@ -88,12 +88,12 @@ namespace Disassembler
 
 		public bool CheckBounds(ushort segment, ushort offset)
 		{
-			return this.CheckBounds(CPUMemory.ToLinearAddress(segment, offset), 1);
+			return this.CheckBounds(CPU.ToLinearAddress(segment, offset), 1);
 		}
 
 		public bool CheckBounds(ushort segment, ushort offset, uint size)
 		{
-			return this.CheckBounds(CPUMemory.ToLinearAddress(segment, offset), size);
+			return this.CheckBounds(CPU.ToLinearAddress(segment, offset), size);
 		}
 
 		public bool CheckBounds(uint address)
@@ -113,7 +113,7 @@ namespace Disassembler
 
 		public bool CheckOverlap(ushort segment, ushort offset, uint size)
 		{
-			return this.CheckOverlap(CPUMemory.ToLinearAddress(segment, offset), size);
+			return this.CheckOverlap(CPU.ToLinearAddress(segment, offset), size);
 		}
 
 		public bool CheckOverlap(uint address, uint size)
@@ -128,7 +128,7 @@ namespace Disassembler
 
 		public uint MapAddress(ushort segment, ushort offset)
 		{
-			return this.MapAddress(CPUMemory.ToLinearAddress(segment, offset));
+			return this.MapAddress(CPU.ToLinearAddress(segment, offset));
 		}
 
 		public uint MapAddress(uint address)

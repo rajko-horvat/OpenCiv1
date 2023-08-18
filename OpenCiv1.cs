@@ -37,7 +37,6 @@ namespace OpenCiv1
 		private Segment_2517 oSegment_2517;
 		private Segment_2c84 oSegment_2c84;
 		private Segment_302a oSegment_302a;
-		private Overlay_1 oOverlay_1;
 		private Overlay_2 oOverlay_2;
 		private Overlay_6 oOverlay_6;
 		private Overlay_7 oOverlay_7;
@@ -61,7 +60,6 @@ namespace OpenCiv1
 		private Overlay_15 oOverlay_15;
 		private Overlay_16 oOverlay_16;
 		private MSCAPI oMSCAPI;
-		private Misc oMiscDriver;
 		private VGADriver oVGADriver;
 		private NSound oSoundDriver;
 		#endregion
@@ -143,7 +141,6 @@ namespace OpenCiv1
 			this.oSegment_2517 = new Segment_2517(this);
 			this.oSegment_2c84 = new Segment_2c84(this);
 			this.oSegment_302a = new Segment_302a(this);
-			this.oOverlay_1 = new Overlay_1(this);
 			this.oOverlay_2 = new Overlay_2(this);
 			this.oOverlay_6 = new Overlay_6(this);
 			this.oOverlay_7 = new Overlay_7(this);
@@ -167,7 +164,6 @@ namespace OpenCiv1
 			this.oOverlay_15 = new Overlay_15(this);
 			this.oOverlay_16 = new Overlay_16(this);
 			this.oMSCAPI = new MSCAPI(this);
-			this.oMiscDriver = new Misc(this);
 			this.oVGADriver = new VGADriver(this);
 			this.oSoundDriver = new NSound(this);
 			#endregion
@@ -212,16 +208,16 @@ namespace OpenCiv1
 			uint uiEnvironment = (uint)(0xff00 - uiEnvirenmentLength);
 
 			this.oCPU.Memory.AllocateMemoryBlock(uiEnvironment, uiEnvirenmentLength, CPUMemoryFlagsEnum.ReadWrite);
-			this.oCPU.Memory.WriteByte(uiEnvironment, (byte)sEnvironment.Length);
+			this.oCPU.Memory.WriteUInt8(uiEnvironment, (byte)sEnvironment.Length);
 			this.oCPU.WriteString(uiEnvironment + 1, sEnvironment, sEnvironment.Length);
 			this.oCPU.Memory.MemoryRegions[1].AccessFlags = CPUMemoryFlagsEnum.Read;
 
 			this.oCPU.Memory.AllocateMemoryBlock(0xff00, 0x100, CPUMemoryFlagsEnum.ReadWrite);
 
-			this.oCPU.Memory.WriteWord(0xff00, 0x20cd);
-			this.oCPU.Memory.WriteWord(0xff02, (ushort)(this.oCPU.Memory.FreeMemory.End >> 4));
-			this.oCPU.Memory.WriteWord(0xff2c, (ushort)(uiEnvironment >> 4));
-			this.oCPU.Memory.WriteByte(0xff81, (byte)'\r');
+			this.oCPU.Memory.WriteUInt16(0xff00, 0x20cd);
+			this.oCPU.Memory.WriteUInt16(0xff02, (ushort)(this.oCPU.Memory.FreeMemory.End >> 4));
+			this.oCPU.Memory.WriteUInt16(0xff2c, (ushort)(uiEnvironment >> 4));
+			this.oCPU.Memory.WriteUInt8(0xff81, (byte)'\r');
 
 			this.oCPU.Memory.MemoryRegions[2].AccessFlags = CPUMemoryFlagsEnum.ReadWrite | CPUMemoryFlagsEnum.WriteWarning | CPUMemoryFlagsEnum.ReadWarning;
 
@@ -263,13 +259,13 @@ namespace OpenCiv1
 			this.oCPU.DS.Word = 0x3b01;
 
 			string sPath = this.oCPU.DefaultDirectory + "CIV.EXE";
-			this.oCPU.Memory.WriteByte(this.oCPU.DS.Word, 0x61ee, (byte)Path.GetPathRoot(this.oCPU.DefaultDirectory)[0]);
-			this.oCPU.WriteString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, 0x6156), sPath, sPath.Length);
+			this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, 0x61ee, (byte)Path.GetPathRoot(this.oCPU.DefaultDirectory)[0]);
+			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, 0x6156), sPath, sPath.Length);
 
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.ES.Word = this.oCPU.DS.Word;
 
-			this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, 0x5901, this.oCPU.ES.Word); // PSP segment
+			this.oCPU.Memory.WriteUInt16(this.oCPU.DS.Word, 0x5901, this.oCPU.ES.Word); // PSP segment
 			this.oCPU.SI.Word = (ushort)(this.oCPU.Memory.FreeMemory.End >> 4); // top of memory
 			this.oCPU.SI.Word = this.oCPU.SUBWord(this.oCPU.SI.Word, usDataSegment);
 
@@ -306,7 +302,7 @@ namespace OpenCiv1
 			// clear the rest of data and stack segment 0x652e - 0xe8c0
 			for (int i = 0x652e; i < this.oCPU.SP.Word; i++)
 			{
-				this.oCPU.Memory.WriteByte(usDataSegment, (ushort)i, 0);
+				this.oCPU.Memory.WriteUInt8(usDataSegment, (ushort)i, 0);
 			}
 
 			// DOS version
@@ -460,7 +456,6 @@ namespace OpenCiv1
 
 		private void SetOverlayBase()
 		{
-			this.oOverlay_1.Segment = this.OverlaySegment;
 			this.oOverlay_2.Segment = this.OverlaySegment;
 			this.oOverlay_6.Segment = this.OverlaySegment;
 			this.oOverlay_7.Segment = this.OverlaySegment;
@@ -623,11 +618,6 @@ namespace OpenCiv1
 			get { return this.oSegment_302a; }
 		}
 
-		public Overlay_1 Overlay_1
-		{
-			get { return this.oOverlay_1; }
-		}
-
 		public Overlay_2 Overlay_2
 		{
 			get { return this.oOverlay_2; }
@@ -741,11 +731,6 @@ namespace OpenCiv1
 		public MSCAPI MSCAPI
 		{
 			get { return this.oMSCAPI; }
-		}
-
-		public Misc MiscDriver
-		{
-			get { return this.oMiscDriver; }
 		}
 
 		public VGADriver VGADriver

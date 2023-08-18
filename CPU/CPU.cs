@@ -293,6 +293,37 @@ namespace Disassembler
 		{
 			return ((uint)highValue << 16) | (uint)lowValue;
 		}
+
+		public static ushort ToUInt16(int value)
+		{
+			if (value < 0 || value > UInt16.MaxValue)
+				throw new Exception($"Value {value} out of range for UInt16");
+
+			return (ushort)value;
+		}
+
+		public static ushort ToUInt16(sbyte value)
+		{
+			return (ushort)((short)value);
+		}
+
+		public static ushort ForceUInt16(int value)
+		{
+			return (ushort)(value & 0xffff);
+		}
+
+		public static short ToInt16(int value)
+		{
+			if (value < Int16.MinValue || value > Int16.MaxValue)
+				throw new Exception($"Value {value} out of range for Int16");
+
+			return (short)value;
+		}
+
+		public static short ForceInt16(int value)
+		{
+			return (short)((ushort)(value & 0xffff));
+		}
 		#endregion
 
 		#region Memory
@@ -304,37 +335,52 @@ namespace Disassembler
 		public byte ReadByte(ushort segment, ushort offset)
 		{
 			this.DoEvents();
-			return this.oMemory.ReadByte(segment, offset);
+			return this.oMemory.ReadUInt8(segment, offset);
 		}
 
 		public ushort ReadWord(ushort segment, ushort offset)
 		{
 			this.DoEvents();
-			return this.oMemory.ReadWord(segment, offset);
+			return this.oMemory.ReadUInt16(segment, offset);
 		}
 
 		public uint ReadDWord(ushort segment, ushort offset)
 		{
 			this.DoEvents();
-			return this.oMemory.ReadDWord(segment, offset);
+			return this.oMemory.ReadUInt32(segment, offset);
 		}
 
 		public void WriteByte(ushort segment, ushort offset, byte value)
 		{
 			this.DoEvents();
-			this.oMemory.WriteByte(segment, offset, value);
+			this.oMemory.WriteUInt8(segment, offset, value);
 		}
 
 		public void WriteWord(ushort segment, ushort offset, ushort value)
 		{
 			this.DoEvents();
-			this.oMemory.WriteWord(segment, offset, value);
+			this.oMemory.WriteUInt16(segment, offset, value);
 		}
 
 		public void WriteDWord(ushort segment, ushort offset, uint value)
 		{
 			this.DoEvents();
-			this.oMemory.WriteDWord(segment, offset, value);
+			this.oMemory.WriteUInt32(segment, offset, value);
+		}
+
+		public static uint ToLinearAddress(ushort segment, ushort offset)
+		{
+			// 1MB limit!
+			return ((uint)((uint)segment << 4) + (uint)offset) & 0xfffff;
+		}
+
+		public static void AlignToSegment(ref uint address)
+		{
+			if ((address & 0xf) != 0)
+			{
+				address &= 0xffff0;
+				address += 0x10;
+			}
 		}
 		#endregion
 
@@ -347,7 +393,7 @@ namespace Disassembler
 			StringBuilder sb = new StringBuilder();
 			byte ch;
 
-			while ((ch = this.oMemory.ReadByte(address)) != 0)
+			while ((ch = this.oMemory.ReadUInt8(address)) != 0)
 			{
 				sb.Append((char)ch);
 				address++;
@@ -364,7 +410,7 @@ namespace Disassembler
 			StringBuilder sb = new StringBuilder();
 			byte ch;
 
-			while ((ch = this.oMemory.ReadByte(address)) != (byte)'$')
+			while ((ch = this.oMemory.ReadUInt8(address)) != (byte)'$')
 			{
 				sb.Append((char)ch);
 				address++;
@@ -380,11 +426,11 @@ namespace Disassembler
 
 			for (int i = 0; i < text.Length && i < maxLength; i++)
 			{
-				this.oMemory.WriteByte(address, (byte)text[i]);
+				this.oMemory.WriteUInt8(address, (byte)text[i]);
 				address++;
 			}
 
-			this.oMemory.WriteByte(address, 0);
+			this.oMemory.WriteUInt8(address, 0);
 		}
 		#endregion
 
@@ -434,9 +480,9 @@ namespace Disassembler
 				//return;
 			}
 			this.oSP.Word -= 1;
-			this.oMemory.WriteByte(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff00) >> 8));
+			this.oMemory.WriteUInt8(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff00) >> 8));
 			this.oSP.Word -= 1;
-			this.oMemory.WriteByte(this.oSS.Word, this.oSP.Word, (byte)(value & 0xff));
+			this.oMemory.WriteUInt8(this.oSS.Word, this.oSP.Word, (byte)(value & 0xff));
 		}
 
 		public void PushDWord(uint value)
@@ -447,13 +493,13 @@ namespace Disassembler
 				//return;
 			}
 			this.oSP.Word -= 1;
-			this.oMemory.WriteByte(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff000000) >> 24));
+			this.oMemory.WriteUInt8(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff000000) >> 24));
 			this.oSP.Word -= 1;
-			this.oMemory.WriteByte(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff0000) >> 16));
+			this.oMemory.WriteUInt8(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff0000) >> 16));
 			this.oSP.Word -= 1;
-			this.oMemory.WriteByte(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff00) >> 8));
+			this.oMemory.WriteUInt8(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff00) >> 8));
 			this.oSP.Word -= 1;
-			this.oMemory.WriteByte(this.oSS.Word, this.oSP.Word, (byte)(value & 0xff));
+			this.oMemory.WriteUInt8(this.oSS.Word, this.oSP.Word, (byte)(value & 0xff));
 		}
 
 		public void PopAWord(CPURegister regAX, CPURegister regCX, CPURegister regDX, CPURegister regBX,
@@ -482,8 +528,8 @@ namespace Disassembler
 				//return 0;
 			}
 
-			return (ushort)((ushort)this.oMemory.ReadByte(this.oSS.Word, this.oSP.Word++) |
-				((ushort)this.oMemory.ReadByte(this.oSS.Word, this.oSP.Word++) << 8));
+			return (ushort)((ushort)this.oMemory.ReadUInt8(this.oSS.Word, this.oSP.Word++) |
+				((ushort)this.oMemory.ReadUInt8(this.oSS.Word, this.oSP.Word++) << 8));
 		}
 
 		public uint PopDWord()
@@ -494,10 +540,10 @@ namespace Disassembler
 				//return 0;
 			}
 
-			return (uint)(((uint)this.oMemory.ReadByte(this.oSS.Word, this.oSP.Word++)) |
-				((uint)this.oMemory.ReadByte(this.oSS.Word, this.oSP.Word++) << 8) |
-				((uint)this.oMemory.ReadByte(this.oSS.Word, this.oSP.Word++) << 16) |
-				((uint)this.oMemory.ReadByte(this.oSS.Word, this.oSP.Word++) << 24));
+			return (uint)(((uint)this.oMemory.ReadUInt8(this.oSS.Word, this.oSP.Word++)) |
+				((uint)this.oMemory.ReadUInt8(this.oSS.Word, this.oSP.Word++) << 8) |
+				((uint)this.oMemory.ReadUInt8(this.oSS.Word, this.oSP.Word++) << 16) |
+				((uint)this.oMemory.ReadUInt8(this.oSS.Word, this.oSP.Word++) << 24));
 		}
 		#endregion
 
@@ -598,7 +644,7 @@ namespace Disassembler
 
 		public void CMPSByte(CPURegister regES, CPURegister regDI, CPURegister sReg, CPURegister regSI)
 		{
-			CMPByte(this.oMemory.ReadByte(regES.Word, regDI.Word), this.oMemory.ReadByte(sReg.Word, regSI.Word));
+			CMPByte(this.oMemory.ReadUInt8(regES.Word, regDI.Word), this.oMemory.ReadUInt8(sReg.Word, regSI.Word));
 
 			if (this.oFlags.D)
 			{
@@ -826,7 +872,7 @@ namespace Disassembler
 		/// </summary>
 		public void LODSByte()
 		{
-			this.oAX.Low = oMemory.ReadByte(this.oDS.Word, this.oSI.Word);
+			this.oAX.Low = oMemory.ReadUInt8(this.oDS.Word, this.oSI.Word);
 
 			// Modifies flags: None
 			if (this.oFlags.D)
@@ -844,7 +890,7 @@ namespace Disassembler
 		/// </summary>
 		public void LODSWord()
 		{
-			this.oAX.Word = oMemory.ReadWord(this.oDS.Word, this.oSI.Word);
+			this.oAX.Word = oMemory.ReadUInt16(this.oDS.Word, this.oSI.Word);
 
 			// Modifies flags: None
 			if (this.oFlags.D)
@@ -890,8 +936,8 @@ namespace Disassembler
 		/// </summary>
 		public void MOVSByte(CPURegister sReg, CPURegister regSI, CPURegister regES, CPURegister regDI)
 		{
-			byte res = oMemory.ReadByte(sReg.Word, regSI.Word);
-			oMemory.WriteByte(regES.Word, regDI.Word, res);
+			byte res = oMemory.ReadUInt8(sReg.Word, regSI.Word);
+			oMemory.WriteUInt8(regES.Word, regDI.Word, res);
 			// Modifies flags: None
 			if (this.oFlags.D)
 			{
@@ -923,7 +969,7 @@ namespace Disassembler
 		/// </summary>
 		public void MOVSWord(CPURegister sReg, CPURegister regSI, CPURegister regES, CPURegister regDI)
 		{
-			oMemory.WriteWord(regES.Word, regDI.Word, oMemory.ReadWord(sReg.Word, regSI.Word));
+			oMemory.WriteUInt16(regES.Word, regDI.Word, oMemory.ReadUInt16(sReg.Word, regSI.Word));
 			// Modifies flags: None
 			if (this.oFlags.D)
 			{
@@ -1260,7 +1306,7 @@ namespace Disassembler
 
 		public void SCASByte()
 		{
-			CMPByte(this.oAX.Low, oMemory.ReadByte(this.oES.Word, this.oDI.Word));
+			CMPByte(this.oAX.Low, oMemory.ReadUInt8(this.oES.Word, this.oDI.Word));
 			if (this.oFlags.D)
 			{
 				this.oDI.Word--;
@@ -1275,7 +1321,7 @@ namespace Disassembler
 		{
 			while (this.oCX.Word != 0)
 			{
-				CMPByte(this.oAX.Low, oMemory.ReadByte(this.oES.Word, this.oDI.Word));
+				CMPByte(this.oAX.Low, oMemory.ReadUInt8(this.oES.Word, this.oDI.Word));
 				if (this.oFlags.D)
 				{
 					this.oDI.Word--;
@@ -1371,7 +1417,7 @@ namespace Disassembler
 		/// </summary>
 		public void STOSByte()
 		{
-			oMemory.WriteByte(this.oES.Word, this.oDI.Word, this.oAX.Low);
+			oMemory.WriteUInt8(this.oES.Word, this.oDI.Word, this.oAX.Low);
 			// Modifies flags: None
 			if (this.oFlags.D)
 			{
@@ -1400,7 +1446,7 @@ namespace Disassembler
 		/// </summary>
 		public void STOSWord()
 		{
-			oMemory.WriteWord(this.oES.Word, this.oDI.Word, this.oAX.Word);
+			oMemory.WriteUInt16(this.oES.Word, this.oDI.Word, this.oAX.Word);
 			// Modifies flags: None
 			if (this.oFlags.D)
 			{
@@ -1470,7 +1516,7 @@ namespace Disassembler
 
 		public void XLAT(CPURegister regAX, CPURegister sReg, CPURegister regBX)
 		{
-			regAX.Low = this.oMemory.ReadByte(sReg.Word, (ushort)(regBX.Word + regAX.Low));
+			regAX.Low = this.oMemory.ReadUInt8(sReg.Word, (ushort)(regBX.Word + regAX.Low));
 		}
 
 		public byte XORByte(byte value1, byte value2)
@@ -1639,7 +1685,7 @@ namespace Disassembler
 		{
 			while (this.oCX.Word != 0)
 			{
-				OUTByte(this.oDX.Word, this.oMemory.ReadByte(regSeg.Word, regSI.Word));
+				OUTByte(this.oDX.Word, this.oMemory.ReadUInt8(regSeg.Word, regSI.Word));
 				this.oCX.Word--;
 			}
 		}
@@ -1957,7 +2003,7 @@ namespace Disassembler
 		{
 			if (this.oAX.Low == 3)
 			{
-				string sTemp = this.ReadString(CPUMemory.ToLinearAddress(this.DS.Word, this.DX.Word));
+				string sTemp = this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word));
 				ushort usSegment = ReadWord(this.oES.Word, this.oBX.Word);
 				ushort usRelocationSegment = ReadWord(this.oES.Word, (ushort)(this.oBX.Word + 2));
 				this.oLog.WriteLine($"Loading overlay '{sTemp}' at segment 0x{usSegment:x4}");
@@ -2099,7 +2145,7 @@ namespace Disassembler
 		/// </summary>
 		private void DOSPrintString()
 		{
-			string sTemp = this.ReadDosString(CPUMemory.ToLinearAddress(this.oDS.Word, this.oDX.Word));
+			string sTemp = this.ReadDosString(CPU.ToLinearAddress(this.oDS.Word, this.oDX.Word));
 			if (sTemp.Length > 0)
 			{
 				Console.Write(sTemp);
@@ -2110,7 +2156,7 @@ namespace Disassembler
 		private void DOSCreateFileUsingHandle()
 		{
 			// open file
-			string sTemp = Path.GetFileName(this.ReadString(CPUMemory.ToLinearAddress(this.DS.Word, this.DX.Word)));
+			string sTemp = Path.GetFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)));
 			FileAccess access = FileAccess.ReadWrite;
 			/*switch (this.oCX.Low & 0x7)
 			{
@@ -2157,11 +2203,11 @@ namespace Disassembler
 			{
 				FileStreamItem fileItem = this.aOpenFiles.GetValueByKey((short)this.oBX.Word);
 				ushort length = this.oCX.Word;
-				uint address = CPUMemory.ToLinearAddress(this.oDS.Word, this.oDX.Word);
+				uint address = CPU.ToLinearAddress(this.oDS.Word, this.oDX.Word);
 
 				for (int i = 0; i < length; i++)
 				{
-					fileItem.Stream.WriteByte(this.oMemory.ReadByte(address));
+					fileItem.Stream.WriteByte(this.oMemory.ReadUInt8(address));
 					address++;
 				}
 
@@ -2213,7 +2259,7 @@ namespace Disassembler
 		private void DOSOpenFileUsingHandle()
 		{
 			// open file
-			string sTemp = this.ReadString(CPUMemory.ToLinearAddress(this.DS.Word, this.DX.Word));
+			string sTemp = this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word));
 			FileAccess access = FileAccess.Read;
 			switch (this.oAX.Low & 0x7)
 			{
@@ -2334,7 +2380,7 @@ namespace Disassembler
 				this.oLog.WriteLine($"Wrong drive number {this.oDX.Low}");
 			}
 			string sTemp = sDefaultDirectory.Substring(3);
-			this.WriteString(CPUMemory.ToLinearAddress(this.oDS.Word, this.oSI.Word), sTemp, sTemp.Length);
+			this.WriteString(CPU.ToLinearAddress(this.oDS.Word, this.oSI.Word), sTemp, sTemp.Length);
 			this.oFlags.C = false;
 		}
 
@@ -2409,7 +2455,7 @@ namespace Disassembler
 		void DOSParseAFilenameForFCB()
 		{
 			DOS_FCB fcb = new DOS_FCB(this.oMemory, this.oES.Word, this.oDI.Word);
-			string sFilename = this.ReadString(CPUMemory.ToLinearAddress(this.oDS.Word, this.oSI.Word));
+			string sFilename = this.ReadString(CPU.ToLinearAddress(this.oDS.Word, this.oSI.Word));
 			string sName = Path.GetFileNameWithoutExtension(sFilename);
 			string sExtension = Path.GetExtension(sFilename).Substring(1);
 			if (File.Exists($"{this.sDefaultDirectory}{sFilename}"))
@@ -2488,7 +2534,7 @@ namespace Disassembler
 		/// </summary>
 		private void DOSSetFileTransferArea()
 		{
-			this.uiDOSDTA = CPUMemory.ToLinearAddress(this.oDS.Word, this.oDX.Word);
+			this.uiDOSDTA = CPU.ToLinearAddress(this.oDS.Word, this.oDX.Word);
 		}
 
 		/// <summary>
@@ -2582,7 +2628,7 @@ namespace Disassembler
 			}
 			for (int i = 0; i < dos_copybuf.Length; i++)
 			{
-				this.oMemory.WriteByte((uint)(this.uiDOSDTA + ((uint)recno * (uint)rec_size) + i), dos_copybuf[i]);
+				this.oMemory.WriteUInt8((uint)(this.uiDOSDTA + ((uint)recno * (uint)rec_size) + i), dos_copybuf[i]);
 			}
 			if (++cur_rec > 127)
 			{
@@ -2789,7 +2835,7 @@ namespace Disassembler
 			public DOS_FCB(CPUMemory mem, ushort seg, ushort off, bool allow_extended)
 			{
 				this.oMemory = mem;
-				this.pt = CPUMemory.ToLinearAddress(seg, off);
+				this.pt = CPU.ToLinearAddress(seg, off);
 				extended = false;
 
 				ReadFCBFromMemory();
@@ -2807,26 +2853,26 @@ namespace Disassembler
 
 			private void ReadFCBFromMemory()
 			{
-				this.drive = oMemory.ReadByte(pt);
+				this.drive = oMemory.ReadUInt8(pt);
 				this.filename = ReadString(pt + 1, 8);
 				this.ext = ReadString(pt + 9, 3);
-				this.cur_block = oMemory.ReadWord(pt + 0xc);
-				this.rec_size = oMemory.ReadWord(pt + 0xe);
-				this.filesize = (uint)oMemory.ReadWord(pt + 0x10) |
-					((uint)oMemory.ReadWord(pt + 0x12) << 16);
-				this.date = oMemory.ReadWord(pt + 0x14);
-				this.time = oMemory.ReadWord(pt + 0x16);
-				this.sft_entries = oMemory.ReadByte(pt + 0x18);
-				this.share_attributes = oMemory.ReadByte(pt + 0x19);
-				this.extra_info = oMemory.ReadByte(pt + 0x1a);
-				this.file_handle = oMemory.ReadByte(pt + 0x1b);
-				this.reserved[0] = oMemory.ReadByte(pt + 0x1c);
-				this.reserved[1] = oMemory.ReadByte(pt + 0x1d);
-				this.reserved[2] = oMemory.ReadByte(pt + 0x1e);
-				this.reserved[3] = oMemory.ReadByte(pt + 0x1f);
-				this.cur_rec = oMemory.ReadByte(pt + 0x20);
-				this.rndm = (uint)oMemory.ReadWord(pt + 0x21) |
-						((uint)oMemory.ReadWord(pt + 0x23) << 16);
+				this.cur_block = oMemory.ReadUInt16(pt + 0xc);
+				this.rec_size = oMemory.ReadUInt16(pt + 0xe);
+				this.filesize = (uint)oMemory.ReadUInt16(pt + 0x10) |
+					((uint)oMemory.ReadUInt16(pt + 0x12) << 16);
+				this.date = oMemory.ReadUInt16(pt + 0x14);
+				this.time = oMemory.ReadUInt16(pt + 0x16);
+				this.sft_entries = oMemory.ReadUInt8(pt + 0x18);
+				this.share_attributes = oMemory.ReadUInt8(pt + 0x19);
+				this.extra_info = oMemory.ReadUInt8(pt + 0x1a);
+				this.file_handle = oMemory.ReadUInt8(pt + 0x1b);
+				this.reserved[0] = oMemory.ReadUInt8(pt + 0x1c);
+				this.reserved[1] = oMemory.ReadUInt8(pt + 0x1d);
+				this.reserved[2] = oMemory.ReadUInt8(pt + 0x1e);
+				this.reserved[3] = oMemory.ReadUInt8(pt + 0x1f);
+				this.cur_rec = oMemory.ReadUInt8(pt + 0x20);
+				this.rndm = (uint)oMemory.ReadUInt16(pt + 0x21) |
+						((uint)oMemory.ReadUInt16(pt + 0x23) << 16);
 			}
 
 			private string ReadString(uint address, int size)
@@ -2835,7 +2881,7 @@ namespace Disassembler
 
 				for (int i = 0; i < size; i++)
 				{
-					byte ch = oMemory.ReadByte((uint)(address + i));
+					byte ch = oMemory.ReadUInt8((uint)(address + i));
 					if (ch == 0x20 || ch == 0)
 						break;
 					text.Append((char)ch);
@@ -2853,7 +2899,7 @@ namespace Disassembler
 						ch = 0x20;
 					else
 						ch = (byte)text[i];
-					oMemory.WriteByte((uint)(address + i), ch);
+					oMemory.WriteUInt8((uint)(address + i), ch);
 				}
 			}
 
@@ -2863,7 +2909,7 @@ namespace Disassembler
 			public void SetName(byte _drive, ref string _fname, ref string _ext)
 			{
 				this.drive = _drive;
-				oMemory.WriteByte(pt, this.drive);
+				oMemory.WriteUInt8(pt, this.drive);
 				this.filename = _fname;
 				WriteString(pt + 1, 8, this.filename);
 				this.ext = _ext;
@@ -2885,22 +2931,22 @@ namespace Disassembler
 			public void FileOpen(byte _fhandle)
 			{
 				this.drive = (byte)(GetDrive() + 1);
-				oMemory.WriteByte(pt, this.drive);
+				oMemory.WriteUInt8(pt, this.drive);
 				this.file_handle = _fhandle;
-				oMemory.WriteByte(pt + 0x1b, this.file_handle);
+				oMemory.WriteUInt8(pt + 0x1b, this.file_handle);
 				this.cur_block = 0;
-				oMemory.WriteWord(pt + 0xc, this.cur_block);
+				oMemory.WriteUInt16(pt + 0xc, this.cur_block);
 				this.rec_size = 128;
-				oMemory.WriteWord(pt + 0xe, this.rec_size);
+				oMemory.WriteUInt16(pt + 0xe, this.rec_size);
 				//	this.rndm = 0; // breaks Jewels of darkness. 
 				FileInfo info = new FileInfo(this.GetName());
 				this.filesize = (uint)(info.Length & 0xffffffffu);
-				oMemory.WriteWord(pt + 0x10, (ushort)(this.filesize & 0xffff));
-				oMemory.WriteWord(pt + 0x12, (ushort)((this.filesize & 0xffff0000) >> 16));
+				oMemory.WriteUInt16(pt + 0x10, (ushort)(this.filesize & 0xffff));
+				oMemory.WriteUInt16(pt + 0x12, (ushort)((this.filesize & 0xffff0000) >> 16));
 				this.date = ToDosDate(info.LastWriteTime);
-				oMemory.WriteWord(pt + 0x14, this.date);
+				oMemory.WriteUInt16(pt + 0x14, this.date);
 				this.time = ToDosTime(info.LastWriteTime);
-				oMemory.WriteWord(pt + 0x16, this.time);
+				oMemory.WriteUInt16(pt + 0x16, this.time);
 			}
 
 			// 16   word	time of last write
@@ -2936,7 +2982,7 @@ namespace Disassembler
 			{
 				_fhandle = this.file_handle;
 				this.file_handle = 0xff;
-				oMemory.WriteByte(pt + 0x1b, this.file_handle);
+				oMemory.WriteUInt8(pt + 0x1b, this.file_handle);
 
 			}
 
@@ -2949,9 +2995,9 @@ namespace Disassembler
 			public void SetRecord(ushort _cur_block, byte _cur_rec)
 			{
 				this.cur_block = _cur_block;
-				oMemory.WriteWord(pt + 0xc, this.cur_block);
+				oMemory.WriteUInt16(pt + 0xc, this.cur_block);
 				this.cur_rec = _cur_rec;
-				oMemory.WriteByte(pt + 0x20, this.cur_rec);
+				oMemory.WriteUInt8(pt + 0x20, this.cur_rec);
 			}
 
 			public void GetSeqData(out byte _fhandle, out ushort _rec_size)
@@ -2968,8 +3014,8 @@ namespace Disassembler
 			public void SetRandom(uint _random)
 			{
 				this.rndm = _random;
-				oMemory.WriteWord(pt + 0x21, (ushort)(this.rndm & 0xffff));
-				oMemory.WriteWord(pt + 0x23, (ushort)((this.rndm & 0xffff0000) >> 16));
+				oMemory.WriteUInt16(pt + 0x21, (ushort)(this.rndm & 0xffff));
+				oMemory.WriteUInt16(pt + 0x23, (ushort)((this.rndm & 0xffff0000) >> 16));
 			}
 
 			public byte GetDrive()
@@ -2997,7 +3043,7 @@ namespace Disassembler
 			{
 				if (this.extended)
 				{
-					attr = oMemory.ReadByte(pt - 1);
+					attr = oMemory.ReadUInt8(pt - 1);
 				}
 			}
 
@@ -3005,7 +3051,7 @@ namespace Disassembler
 			{
 				if (this.extended)
 				{
-					oMemory.WriteByte(pt - 1, attr);
+					oMemory.WriteUInt8(pt - 1, attr);
 				}
 			}
 

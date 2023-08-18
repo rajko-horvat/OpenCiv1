@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\FileStreamItem.cs" />
+    <Compile Include="GPU\LZWCompression.cs" />
     <Compile Include="OpenCiv1.cs" />
     <Compile Include="Collections\Generic\BDictionary.cs" />
     <Compile Include="Collections\Generic\BHashSet.cs" />
@@ -78,13 +79,11 @@
     <Compile Include="OpenCiv1Strings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomMT19937.cs" />
+    <Compile Include="API\RandomMT19937.cs" />
     <Compile Include="GPU\VGABitmap.cs" />
     <Compile Include="GPU\VGADriver.cs" />
-    <Compile Include="Segments\Misc.cs" />
     <Compile Include="API\MSCAPI.cs" />
     <Compile Include="Segments\NSound.cs" />
-    <Compile Include="Segments\Overlay_1.cs" />
     <Compile Include="Segments\Overlay_10.cs" />
     <Compile Include="Segments\Overlay_11.cs" />
     <Compile Include="Segments\Overlay_12.cs" />
@@ -179,6 +178,19 @@
     <Content Include="Screenshots\Screenshot7.png" />
     <Content Include="Screenshots\Screenshot8.png" />
     <Content Include="Screenshots\Screenshot9.png" />
+    <Content Include="Screenshots\Small\Screenshot1.jpg" />
+    <Content Include="Screenshots\Small\Screenshot10.jpg" />
+    <Content Include="Screenshots\Small\Screenshot11.jpg" />
+    <Content Include="Screenshots\Small\Screenshot12.jpg" />
+    <Content Include="Screenshots\Small\Screenshot13.jpg" />
+    <Content Include="Screenshots\Small\Screenshot2.jpg" />
+    <Content Include="Screenshots\Small\Screenshot3.jpg" />
+    <Content Include="Screenshots\Small\Screenshot4.jpg" />
+    <Content Include="Screenshots\Small\Screenshot5.jpg" />
+    <Content Include="Screenshots\Small\Screenshot6.jpg" />
+    <Content Include="Screenshots\Small\Screenshot7.jpg" />
+    <Content Include="Screenshots\Small\Screenshot8.jpg" />
+    <Content Include="Screenshots\Small\Screenshot9.jpg" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

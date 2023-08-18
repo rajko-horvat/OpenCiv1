@@ -151,7 +151,7 @@ namespace Disassembler.MZ
 			WriteUInt16(writer, this.usSignature);
 			uint uiLength = (uint)this.aData.Length;
 			uint uiHeaderSize = (uint)(0x1e + this.aRelocations.Count * 4);
-			CPUMemory.AlignToSegment(ref uiHeaderSize);
+			CPU.AlignToSegment(ref uiHeaderSize);
 			uiLength += uiHeaderSize;
 			uint uiPages = uiLength / 512;
 			uint uiExtraBytes = uiLength - (uiPages * 512);
@@ -233,7 +233,7 @@ namespace Disassembler.MZ
 			for (int i = 0; i < this.aRelocations.Count; i++)
 			{
 				MZRelocationItem relocation = this.aRelocations[i];
-				uint uiAddress = CPUMemory.ToLinearAddress((ushort)relocation.Segment, (ushort)relocation.Offset);
+				uint uiAddress = CPU.ToLinearAddress((ushort)relocation.Segment, (ushort)relocation.Offset);
 				ushort usWord1 = (ushort)((ushort)this.aData[uiAddress] | (ushort)((ushort)this.aData[uiAddress + 1] << 8));
 				usWord1 += segment;
 				this.aData[uiAddress] = (byte)(usWord1 & 0xff);

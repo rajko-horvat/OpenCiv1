@@ -102,7 +102,7 @@ namespace OpenCiv1
 
 		public void F0_1182_00b3_DrawCenteredText(ushort stringPtr, ushort xPos, ushort value2, ushort value3)
 		{
-			this.oCPU.Log.EnterBlock($"'F0_1182_00b3_DrawText'('{this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr))}', "+
+			this.oCPU.Log.EnterBlock($"'F0_1182_00b3_DrawText'('{this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr))}', "+
 				$"{xPos}, {value2}, {value3})");
 			this.oCPU.CS.Word = 0x1182; // set this function segment
 
@@ -134,11 +134,11 @@ namespace OpenCiv1
 
 		public void F0_1182_00ef_GetStringWidth(ushort stringPtr)
 		{
-			this.oCPU.Log.EnterBlock($"'F0_1182_00ef_GetStringWidth'('{this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr))}')");
+			this.oCPU.Log.EnterBlock($"'F0_1182_00ef_GetStringWidth'('{this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr))}')");
 
 			// function body
 			ushort usFontID = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xaa) + 0x10));
-			string text = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			string text = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
 			this.oCPU.AX.Word = (ushort)this.oParent.VGADriver.GetDrawStringSize(usFontID, text).Width;
 

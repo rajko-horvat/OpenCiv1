@@ -17,7 +17,6 @@ namespace OpenCiv1
 	{
 		private OpenCiv1 oParent;
 		private CPU oCPU;
-		private ushort usSegment = 0;
 
 		private Thread oVGAThread;
 		private VGAForm oVGAForm = null;
@@ -1283,18 +1282,6 @@ namespace OpenCiv1
 			Application.Run(this.oVGAForm);
 		}
 
-		public ushort Segment
-		{
-			get { return this.usSegment; }
-			set
-			{
-				this.usSegment = value;
-				this.oCPU.WriteWord(this.usSegment, 0x28, this.usSegment);
-				this.oCPU.WriteWord(this.usSegment, 0x2a, (ushort)(this.usSegment + 0x13c));
-				this.oCPU.WriteWord(this.usSegment, 0x1988, (ushort)(this.usSegment + 0x13c));
-			}
-		}
-
 		public CPU CPU
 		{
 			get { return this.oCPU; }
@@ -1382,7 +1369,6 @@ namespace OpenCiv1
 			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0492_GetFreeMemory()");
 			this.oCPU.Log = this.oParent.VGADriverLog;
 			this.oCPU.Log.EnterBlock("F0_VGA_0492_GetFreeMemory()");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
 			this.oCPU.AX.High = 0x48;
@@ -1461,7 +1447,6 @@ namespace OpenCiv1
 			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0270({xPos}, {yPos}, 0x{bufferPtr:x4})");
 			this.oCPU.Log = this.oParent.VGADriverLog;
 			this.oCPU.Log.EnterBlock($"F0_VGA_0270({xPos}, {yPos}, 0x{bufferPtr:x4})");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
 			/*this.Var_15c0 = bitmapPtr;
@@ -1585,7 +1570,6 @@ namespace OpenCiv1
 
 					// Instruction address 0x0000:0x0380, size: 3
 					F0_VGA_0c3e_DrawBitmapToScreen(rectPtr, this.Var_15c2_xPos, this.Var_15c4_yPos, this.Var_15c0);
-					this.oCPU.CS.Word = this.usSegment; // restore this function segment
 
 					// free Rect structure
 					this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0xa);
@@ -1611,7 +1595,6 @@ namespace OpenCiv1
 			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_063c(0x{screenID:x4})");
 			this.oCPU.Log = this.oParent.VGADriverLog;
 			this.oCPU.Log.EnterBlock($"F0_VGA_063c(0x{screenID:x4})");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -1627,7 +1610,6 @@ namespace OpenCiv1
 				// Instruction address 0x0000:0x064d, size: 3
 				F0_VGA_030e_FillBuffer(screenID);
 				this.oCPU.PopDWord(); // stack management - pop return offset and segment
-				this.oCPU.CS.Word = this.usSegment; // restore this function segment
 
 				if (this.aScreens.ContainsKey(0))
 				{
@@ -1676,11 +1658,11 @@ namespace OpenCiv1
 				{
 					VGABitmap screen = this.aScreens.GetValueByKey(screenID);
 
-					uint iBufferPos = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, bufferPtr);
+					uint iBufferPos = CPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr);
 
 					for (int i = 0; i < width; i++)
 					{
-						this.oCPU.Memory.WriteByte(iBufferPos, screen.GetPixel(xPos + i, yPos));
+						this.oCPU.Memory.WriteUInt8(iBufferPos, screen.GetPixel(xPos + i, yPos));
 						iBufferPos++;
 					}
 				}
@@ -1709,11 +1691,11 @@ namespace OpenCiv1
 				{
 					VGABitmap screen = this.aScreens.GetValueByKey(screenID);
 
-					uint iBufferPos = CPUMemory.ToLinearAddress(this.oCPU.DS.Word, bufferPtr);
+					uint iBufferPos = CPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr);
 
 					for (int i = 0; i < width; i++)
 					{
-						screen.SetPixel(xPos + i, yPos, this.oCPU.Memory.ReadByte(iBufferPos));
+						screen.SetPixel(xPos + i, yPos, this.oCPU.Memory.ReadUInt8(iBufferPos));
 						iBufferPos++;
 					}
 				}
@@ -1789,11 +1771,11 @@ namespace OpenCiv1
 				this.Var_8a6 = this.oCPU.SHLWord(this.Var_8a6, 4);
 
 				this.Var_8b0 = param1;
-				this.oCPU.Memory.WriteWord(this.Var_8a0, this.Var_89e, param1);
+				this.oCPU.Memory.WriteUInt16(this.Var_8a0, this.Var_89e, param1);
 				this.Var_89e += 2;
 
 				this.Var_8ae = param2;
-				this.oCPU.Memory.WriteWord(this.Var_8a0, this.Var_89e, param2);
+				this.oCPU.Memory.WriteUInt16(this.Var_8a0, this.Var_89e, param2);
 				this.Var_89e += 2;
 
 				this.oCPU.AX.Word = 1;
@@ -1810,7 +1792,6 @@ namespace OpenCiv1
 			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0ac6'");
 			this.oCPU.Log = this.oParent.VGADriverLog;
 			this.oCPU.Log.EnterBlock("'F0_VGA_0ac6'");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
 			this.oCPU.AX.Word = 0x0;
@@ -1837,7 +1818,6 @@ namespace OpenCiv1
 			this.oCPU.Log.WriteLine($"// Calling 'F0_VGA_0ae3'");
 			this.oCPU.Log = this.oParent.VGADriverLog;
 			this.oCPU.Log.EnterBlock("'F0_VGA_0ae3'");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -1988,9 +1968,9 @@ namespace OpenCiv1
 
 					for (int i = 0; i < iCount; i++)
 					{
-						aColors[i] = VGABitmap.Color18ToColor(this.oCPU.Memory.ReadByte(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3))),
-							this.oCPU.Memory.ReadByte(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3) + 1)),
-						this.oCPU.Memory.ReadByte(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3) + 2)));
+						aColors[i] = VGABitmap.Color18ToColor(this.oCPU.Memory.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3))),
+							this.oCPU.Memory.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3) + 1)),
+						this.oCPU.Memory.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3) + 2)));
 
 						this.oCPU.Log.WriteLine($"Setting palette index {iFrom + i}, #{aColors[i].A:x2}{aColors[i].R:x2}{aColors[i].G:x2}{aColors[i].B:x2}");
 					}
@@ -2110,11 +2090,11 @@ namespace OpenCiv1
 
 		public void F0_VGA_07d8_DrawImage(ushort srcRectPtr, ushort xFrom, ushort yFrom, ushort width, ushort height, ushort destRectPtr, ushort xTo, ushort yTo)
 		{
-			CivRectangle rectFrom = new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, srcRectPtr));
+			CivRectangle rectFrom = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, srcRectPtr));
 			int iXOffsetFrom = rectFrom.X + xFrom;
 			int iYOffsetFrom = rectFrom.Y + yFrom;
 
-			CivRectangle rectTo = new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, destRectPtr));
+			CivRectangle rectTo = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, destRectPtr));
 			int iXOffsetTo = rectTo.X + xTo;
 			int iYOffsetTo = rectTo.Y + yTo;
 
@@ -2198,10 +2178,9 @@ namespace OpenCiv1
 			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0c3e(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 			this.oCPU.Log = this.oParent.VGADriverLog;
 			this.oCPU.Log.EnterBlock($"F0_VGA_0c3e(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
-			CivRectangle rect = new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
+			CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
 
 			if (this.aScreens.ContainsKey(rect.ScreenID))
 			{
@@ -2232,13 +2211,12 @@ namespace OpenCiv1
 
 		public void F0_VGA_0d47_DrawBitmapToScreen(ushort rectPtr, short xPos, short yPos, ushort bitmapPtr)
 		{
-			CivRectangle rect = new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
+			CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
 
 			LogWrapper oTempLog = this.oCPU.Log;
 			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0d47_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 			this.oCPU.Log = this.oParent.VGADriverLog;
 			this.oCPU.Log.EnterBlock($"F0_VGA_0d47_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
 			if (bitmapPtr == 0xb103)
@@ -2487,8 +2465,8 @@ namespace OpenCiv1
 
 		public void F0_VGA_11d7_DrawString(ushort rectPtr, int xPos, int yPos, ushort stringPtr)
 		{
-			CivRectangle rect = new CivRectangle(this.oCPU, CPUMemory.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
-			string text = this.oCPU.ReadString(CPUMemory.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
+			string text = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
 			LogWrapper oTempLog = this.oCPU.Log;
 			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_11d7_DrawText({xPos}, {yPos}, '{text}')");

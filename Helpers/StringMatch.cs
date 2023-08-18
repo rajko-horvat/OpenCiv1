@@ -16,7 +16,7 @@ namespace OpenCiv1
 
 		public CivStringMatch(CPU cpu, ushort stringPtr)
 		{
-			uint uiAddress = CPUMemory.ToLinearAddress(0x3b01, stringPtr);
+			uint uiAddress = CPU.ToLinearAddress(0x3b01, stringPtr);
 
 			this.Start = stringPtr;
 			this.String = cpu.ReadString(uiAddress);
