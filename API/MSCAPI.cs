@@ -38,11 +38,11 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x2);
 			this.oCPU.PushWord(this.oCPU.DI.Word);
 			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
+			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
 			this.oCPU.DI.Word = 0x2;
 			this.oCPU.SI.Word = this.oCPU.ORWord(this.oCPU.SI.Word, this.oCPU.SI.Word);
 			if (this.oCPU.Flags.E) goto L204c;
-			this.oCPU.CMPByte(this.oCPU.ReadByte(this.oCPU.DS.Word, this.oCPU.SI.Word), 0x0);
+			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, this.oCPU.SI.Word), 0x0);
 			if (this.oCPU.Flags.E) goto L204c;
 
 			// Instruction uiAddress 0x3045:0x2026, size: 5
@@ -74,22 +74,22 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
 
 		L204c:
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x58fb), 0x0);
+			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x58fb), 0x0);
 			if (this.oCPU.Flags.L) goto L205c;
-			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5dbc);
-			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0x58fb), this.oCPU.AX.Word);
+			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5dbc);
+			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x58fb), this.oCPU.AX.Word);
 			if (this.oCPU.Flags.L) goto L2062;
 
 		L205c:
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x5dbc);
+			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5dbc);
 			goto L2066;
 
 		L2062:
-			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, 0x58fb);
+			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x58fb);
 
 		L2066:
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x5d70));
+			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x5d70));
 			// Instruction uiAddress 0x3045:0x206d, size: 5
 			strlen(this.oCPU.SI.Word);
 
@@ -948,7 +948,7 @@ namespace OpenCiv1
 		public void _dos_getdrive(ushort valuePtr)
 		{
 			// function body
-			this.oCPU.WriteWord(this.oCPU.DS.Word, valuePtr, (ushort)(Path.GetPathRoot(this.oCPU.DefaultDirectory)[0] - 'A' + 1));
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, valuePtr, (ushort)(Path.GetPathRoot(this.oCPU.DefaultDirectory)[0] - 'A' + 1));
 		}
 		#endregion
 

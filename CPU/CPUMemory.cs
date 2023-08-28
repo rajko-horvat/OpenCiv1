@@ -450,7 +450,7 @@ namespace Disassembler
 			Array.Copy(srcData, pos, this.aMemory, address, length);
 			/*for (int i = 0; i < length; i++)
 			{
-				WriteByte((uint)(address + i), srcData[pos + i]);
+				WriteUInt8((uint)(address + i), srcData[pos + i]);
 			}*/
 		}
 		#endregion

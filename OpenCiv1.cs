@@ -69,33 +69,7 @@ namespace OpenCiv1
 		private LogWrapper oStringLog;
 		private LogWrapper oIntroLog;
 
-		#region Global Data
-		public ushort OverlaySegment = 0;
-
-		public static ushort Constant_5528 = 0xdb36;
-		public ushort Var_68e2 = 0;
-		public ushort Var_68e4 = 0;
-		public ushort Var_68e6 = 0;
-		public ushort Var_68e8 = 0;
-		public ushort Var_68ea = 0;
-		public byte Var_68ec = 0;
-		public byte Var_68ed = 0;
-		public byte Var_68ef = 0;
-		public byte Var_68ee = 0;
-		public ushort Var_68f0 = 0;
-		public ushort Var_68f2 = 0;
-		public ushort Var_68f4 = 0;
-		public byte Var_68f6 = 0;
-		public byte Var_68f7 = 0;
-		public ushort Var_68f8 = 0;
-		public byte Var_68fa = 0;
-		public ushort Var_b26e = 0;
-		public ushort Var_d768 = 0;
-		public ushort Var_db3a = 0;
-		public ushort Var_db3c = 0;
-		public ushort Var_db3e = 0;
-		#endregion
-
+		private ushort OverlaySegment = 0;
 		private ushort usStartSegment = 0x1000;
 		private MZExecutable oEXE;
 
@@ -274,23 +248,23 @@ namespace OpenCiv1
 			// align SP
 			this.oCPU.SP.Word = this.oCPU.ANDWord(this.oCPU.SP.Word, 0xfffe);
 
-			this.oCPU.WriteWord(this.oCPU.SS.Word, 0x5890, this.oCPU.SP.Word);
-			this.oCPU.WriteWord(this.oCPU.SS.Word, 0x588c, this.oCPU.SP.Word);
+			this.oCPU.WriteUInt16(this.oCPU.SS.Word, 0x5890, this.oCPU.SP.Word);
+			this.oCPU.WriteUInt16(this.oCPU.SS.Word, 0x588c, this.oCPU.SP.Word);
 
 			this.oCPU.AX.Word = this.oCPU.SI.Word;
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 4);
 			this.oCPU.AX.Word = this.oCPU.DECWord(this.oCPU.AX.Word);
-			this.oCPU.WriteWord(this.oCPU.SS.Word, 0x588a, this.oCPU.AX.Word);
+			this.oCPU.WriteUInt16(this.oCPU.SS.Word, 0x588a, this.oCPU.AX.Word);
 
 			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, usDataSegment);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x2, this.oCPU.SI.Word);
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2, this.oCPU.SI.Word);
 			this.oCPU.BX.Word = this.oCPU.ES.Word;
 			this.oCPU.BX.Word = this.oCPU.SUBWord(this.oCPU.BX.Word, this.oCPU.SI.Word);
 			this.oCPU.BX.Word = this.oCPU.NEGWord(this.oCPU.BX.Word);
 			this.oCPU.AX.High = 0x4a;
 			this.oCPU.INT(0x21);
 
-			this.oCPU.WriteWord(this.oCPU.SS.Word, 0x5901, this.oCPU.DS.Word);
+			this.oCPU.WriteUInt16(this.oCPU.SS.Word, 0x5901, this.oCPU.DS.Word);
 
 			this.oCPU.ES.Word = this.oCPU.SS.Word;
 			this.oCPU.DS.Word = this.oCPU.SS.Word;
@@ -302,13 +276,13 @@ namespace OpenCiv1
 			}
 
 			// DOS version
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x5903, 0x616);
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5903, 0x616);
 
 			// Environment block is not used
 			// Argument block in not used
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x5922, 0);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x5920, 0);
-			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x591e, 0);
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5922, 0);
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5920, 0);
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x591e, 0);
 
 			// Get special devices information
 			// Defaults are OK, no need to modify bytes at 0x590a - 0x590e

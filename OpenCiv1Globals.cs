@@ -8,6 +8,31 @@ namespace OpenCiv1
 {
 	partial class OpenCiv1
 	{
+		#region Global variables
+		public static ushort Constant_5528 = 0xdb36;
+		public ushort Var_68e2 = 0;
+		public ushort Var_68e4 = 0;
+		public ushort Var_68e6 = 0;
+		public ushort Var_68e8 = 0;
+		public ushort Var_68ea = 0;
+		public byte Var_68ec = 0;
+		public byte Var_68ed = 0;
+		public byte Var_68ef = 0;
+		public byte Var_68ee = 0;
+		public ushort Var_68f0 = 0;
+		public ushort Var_68f2 = 0;
+		public ushort Var_68f4 = 0;
+		public byte Var_68f6 = 0;
+		public byte Var_68f7 = 0;
+		public ushort Var_68f8 = 0;
+		public byte Var_68fa = 0;
+		public ushort Var_b26e = 0;
+		public ushort Var_d768 = 0;
+		public ushort Var_db3a = 0;
+		public ushort Var_db3c = 0;
+		public ushort Var_db3e = 0;
+		#endregion
+
 		#region Global strings
 		/// <summary>
 		/// "misc.exe"

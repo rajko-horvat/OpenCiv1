@@ -332,37 +332,37 @@ namespace Disassembler
 			get { return this.oMemory; }
 		}
 
-		public byte ReadByte(ushort segment, ushort offset)
+		public byte ReadUInt8(ushort segment, ushort offset)
 		{
 			this.DoEvents();
 			return this.oMemory.ReadUInt8(segment, offset);
 		}
 
-		public ushort ReadWord(ushort segment, ushort offset)
+		public ushort ReadUInt16(ushort segment, ushort offset)
 		{
 			this.DoEvents();
 			return this.oMemory.ReadUInt16(segment, offset);
 		}
 
-		public uint ReadDWord(ushort segment, ushort offset)
+		public uint ReadUInt32(ushort segment, ushort offset)
 		{
 			this.DoEvents();
 			return this.oMemory.ReadUInt32(segment, offset);
 		}
 
-		public void WriteByte(ushort segment, ushort offset, byte value)
+		public void WriteUInt8(ushort segment, ushort offset, byte value)
 		{
 			this.DoEvents();
 			this.oMemory.WriteUInt8(segment, offset, value);
 		}
 
-		public void WriteWord(ushort segment, ushort offset, ushort value)
+		public void WriteUInt16(ushort segment, ushort offset, ushort value)
 		{
 			this.DoEvents();
 			this.oMemory.WriteUInt16(segment, offset, value);
 		}
 
-		public void WriteDWord(ushort segment, ushort offset, uint value)
+		public void WriteUInt32(ushort segment, ushort offset, uint value)
 		{
 			this.DoEvents();
 			this.oMemory.WriteUInt32(segment, offset, value);
@@ -2004,8 +2004,8 @@ namespace Disassembler
 			if (this.oAX.Low == 3)
 			{
 				string sTemp = this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word));
-				ushort usSegment = ReadWord(this.oES.Word, this.oBX.Word);
-				ushort usRelocationSegment = ReadWord(this.oES.Word, (ushort)(this.oBX.Word + 2));
+				ushort usSegment = ReadUInt16(this.oES.Word, this.oBX.Word);
+				ushort usRelocationSegment = ReadUInt16(this.oES.Word, (ushort)(this.oBX.Word + 2));
 				this.oLog.WriteLine($"Loading overlay '{sTemp}' at segment 0x{usSegment:x4}");
 				MZExecutable oOverlay = new MZExecutable($"{sDefaultDirectory}{sTemp}");
 				oOverlay.ApplyRelocations(usRelocationSegment);

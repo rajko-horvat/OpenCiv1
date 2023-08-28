@@ -78,7 +78,7 @@
     </Compile>
     <Compile Include="Helpers\LogWrapper.cs" />
     <Compile Include="MZ\MZExecutable.cs" />
-    <Compile Include="OpenCiv1Strings.cs" />
+    <Compile Include="OpenCiv1Globals.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="API\RandomMT19937.cs" />

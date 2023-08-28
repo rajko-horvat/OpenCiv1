@@ -879,7 +879,14 @@ namespace OpenCiv1
 
 					case 0x304d:
 						// 18bit color palette
-						palette = aBlock;
+						List<byte> aTemp = new List<byte>();
+						aTemp.Add(0x4d);
+						aTemp.Add(0x30);
+						aTemp.Add((byte)(iBlockLength & 0xff));
+						aTemp.Add((byte)((iBlockLength & 0xff00) >> 8));
+						aTemp.AddRange(aBlock);
+						palette = aTemp.ToArray();
+
 						blockReader = new MemoryStream(aBlock);
 						int iIndex = blockReader.ReadByte();
 						int iColorCount = blockReader.ReadByte();

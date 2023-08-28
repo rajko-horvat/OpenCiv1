@@ -1452,7 +1452,7 @@ namespace OpenCiv1
 			/*this.Var_15c0 = bitmapPtr;
 			this.oCPU.AX.Word = xPos;
 			this.Var_15c2_xPos = xPos;
-			this.oCPU.BX.Word = this.oCPU.ReadWord(bitmapPtr, 0x0);
+			this.oCPU.BX.Word = this.oCPU.ReadUInt16(bitmapPtr, 0x0);
 			this.Var_15c6 = this.oCPU.BX.Word;
 			if (this.oCPU.BX.Word == 0) goto L0306;
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
@@ -1479,7 +1479,7 @@ namespace OpenCiv1
 			this.oCPU.DX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = yPos;
 			this.Var_15c4_yPos = this.oCPU.AX.Word;
-			this.oCPU.BX.Word = this.oCPU.ReadWord(bitmapPtr, 0x2);
+			this.oCPU.BX.Word = this.oCPU.ReadUInt16(bitmapPtr, 0x2);
 			this.Var_15c8 = this.oCPU.BX.Word;
 			this.oCPU.BX.Word = this.oCPU.ORWord(this.oCPU.BX.Word, this.oCPU.BX.Word);
 			if (this.oCPU.Flags.E) goto L0306;
@@ -1821,7 +1821,7 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.PushWord(this.oCPU.SI.Word);
 			this.oCPU.PushWord(this.oCPU.DI.Word);
-			this.oCPU.SI.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
+			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
 			// LES
 			this.oCPU.DI.Word = this.Var_89e;
 			this.oCPU.ES.Word = this.Var_8a0;
@@ -1836,7 +1836,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, this.oCPU.DI.Word);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, this.Var_8a6);
 			if (this.oCPU.Flags.BE) goto L0b17;
-			this.oCPU.WriteWord(this.oCPU.ES.Word, 0x2, this.oCPU.DECWord(this.oCPU.ReadWord(this.oCPU.ES.Word, 0x2)));
+			this.oCPU.WriteUInt16(this.oCPU.ES.Word, 0x2, this.oCPU.DECWord(this.oCPU.ReadUInt16(this.oCPU.ES.Word, 0x2)));
 			this.oCPU.AX.Word = 0x0;
 			this.Var_8a4 = this.oCPU.AX.Word;
 			goto L0b81;
@@ -1883,8 +1883,8 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.SUBWord(this.oCPU.DI.Word, this.oCPU.CX.Word);
 
 		L0b72:
-			this.oCPU.WriteWord(this.oCPU.ES.Word, (ushort)(this.oCPU.BP.Word + 0x0), this.oCPU.AX.Word);
-			this.oCPU.WriteWord(this.oCPU.ES.Word, (ushort)(this.oCPU.BP.Word + 0x2), this.oCPU.BX.Word);
+			this.oCPU.WriteUInt16(this.oCPU.ES.Word, (ushort)(this.oCPU.BP.Word + 0x0), this.oCPU.AX.Word);
+			this.oCPU.WriteUInt16(this.oCPU.ES.Word, (ushort)(this.oCPU.BP.Word + 0x2), this.oCPU.BX.Word);
 			this.Var_89e = this.oCPU.DI.Word;
 			this.oCPU.AX.Word = this.oCPU.ES.Word;
 
@@ -1913,7 +1913,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < 16; i++)
 				{
-					aColors[i] = VGABitmap.Palette1[this.oCPU.ReadByte(this.oCPU.DS.Word, indexArrayPtr)];
+					aColors[i] = VGABitmap.Palette1[this.oCPU.ReadUInt8(this.oCPU.DS.Word, indexArrayPtr)];
 
 					indexArrayPtr++;
 				}
@@ -1952,10 +1952,10 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_VGA_0162_SetColorsFromStruct(0x{colorStructPtr:x4})");
 
 			// function body
-			if (this.oCPU.ReadWord(this.oCPU.DS.Word, colorStructPtr) == 0x304d)
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, colorStructPtr) == 0x304d)
 			{
-				int iFrom = this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(colorStructPtr + 0x4));
-				int iTo = this.oCPU.ReadByte(this.oCPU.DS.Word, (ushort)(colorStructPtr + 0x5));
+				int iFrom = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + 0x4));
+				int iTo = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + 0x5));
 				int iCount = (iTo - iFrom) + 1;
 				colorStructPtr += 6;
 
@@ -2044,10 +2044,10 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_VGA_046d_SetPositionWidthScreenID()");
 
 			// function body
-			this.Var_1980_ActiveScreenID = this.oCPU.ReadWord(this.oCPU.DS.Word, structAAPtr);
-			this.Var_1982_XOffset = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(structAAPtr + 0x2));
-			this.Var_1984_YOffset = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(structAAPtr + 0x4));
-			this.Var_1986_Width = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(structAAPtr + 0x6));
+			this.Var_1980_ActiveScreenID = this.oCPU.ReadUInt16(this.oCPU.DS.Word, structAAPtr);
+			this.Var_1982_XOffset = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(structAAPtr + 0x2));
+			this.Var_1984_YOffset = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(structAAPtr + 0x4));
+			this.Var_1986_Width = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(structAAPtr + 0x6));
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_VGA_046d_SetPositionWidthScreenID");
@@ -2370,9 +2370,9 @@ namespace OpenCiv1
 			// function body
 			lock (this.VGALock)
 			{
-				ushort usScreenID = this.oCPU.ReadWord(this.oCPU.DS.Word, struct1);
-				int iTop = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(struct1 + 0x2)) + xPos;
-				int iLeft = this.oCPU.ReadWord(this.oCPU.DS.Word, (ushort)(struct1 + 0x4)) + yPos;
+				ushort usScreenID = this.oCPU.ReadUInt16(this.oCPU.DS.Word, struct1);
+				int iTop = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(struct1 + 0x2)) + xPos;
+				int iLeft = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(struct1 + 0x4)) + yPos;
 
 				if (this.aScreens.ContainsKey(usScreenID))
 				{
