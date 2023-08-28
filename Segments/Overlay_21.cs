@@ -396,7 +396,7 @@ namespace OpenCiv1
 			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x2);
 
 			// Instruction address 0x0000:0x0399, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0xc), 0x5171);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0xc), OpenCiv1.String_5171);
 
 			// Instruction address 0x0000:0x03a5, size: 5
 			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(14));

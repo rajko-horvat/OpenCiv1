@@ -357,7 +357,7 @@ namespace OpenCiv1
 			this.oCPU.WriteByte(this.oCPU.DS.Word, 0x19c0, this.oCPU.ORByte(this.oCPU.ReadByte(this.oCPU.DS.Word, 0x19c0), 0x10));
 
 			// Instruction address 0x0000:0x0329, size: 5
-			this.oParent.MSCAPI.fopen(0x32b5, 0x32b2);
+			this.oParent.MSCAPI.fopen(OpenCiv1.String_32b5, OpenCiv1.String_32b2);
 
 			this.oParent.Var_d768 = this.oCPU.AX.Word;
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
@@ -582,7 +582,7 @@ namespace OpenCiv1
 			this.oCPU.WriteWord(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x5);
 			
 			// Call to overlay
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L053c:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x32);
@@ -594,13 +594,13 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0558;
 
 			// Call to overlay
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L0558:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x78);
 			if (this.oCPU.Flags.NE) goto L0569;
 
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L0569:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xa0);
@@ -611,49 +611,49 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xaa);
 			if (this.oCPU.Flags.NE) goto L0587;
 
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L0587:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xbe);
 			if (this.oCPU.Flags.NE) goto L0599;
 
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L0599:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xd2);
 			if (this.oCPU.Flags.NE) goto L05ab;
 
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L05ab:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xe6);
 			if (this.oCPU.Flags.NE) goto L05bd;
 			
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L05bd:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xfa);
 			if (this.oCPU.Flags.NE) goto L05cf;
 			
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L05cf:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x10e);
 			if (this.oCPU.Flags.NE) goto L05e1;
 
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L05e1:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x122);
 			if (this.oCPU.Flags.NE) goto L05f3;
 			
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L05f3:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x136);
 			if (this.oCPU.Flags.NE) goto L0605;
 
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L0605:
 			// Instruction address 0x0000:0x0609, size: 5
@@ -927,13 +927,13 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xa);
 			if (this.oCPU.Flags.NE) goto L08b0;
 			
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L08b0:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x1e);
 			if (this.oCPU.Flags.NE) goto L08c1;
 
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L08c1:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x32);
@@ -944,13 +944,13 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x40);
 			if (this.oCPU.Flags.NE) goto L08dd;
 			
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L08dd:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x54);
 			if (this.oCPU.Flags.NE) goto L08ee;
 
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L08ee:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x74);
@@ -961,55 +961,55 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x82);
 			if (this.oCPU.Flags.NE) goto L090b;
 			
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L090b:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x96);
 			if (this.oCPU.Flags.NE) goto L091d;
 
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L091d:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xaa);
 			if (this.oCPU.Flags.NE) goto L092f;
 			
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L092f:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xbe);
 			if (this.oCPU.Flags.NE) goto L0941;
 			
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L0941:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xd2);
 			if (this.oCPU.Flags.NE) goto L0953;
 			
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L0953:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xe6);
 			if (this.oCPU.Flags.NE) goto L0965;
 			
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L0965:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xfa);
 			if (this.oCPU.Flags.NE) goto L0977;
 			
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L0977:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x10e);
 			if (this.oCPU.Flags.NE) goto L0989;
 			
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L0989:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x122);
 			if (this.oCPU.Flags.NE) goto L099b;
 			
-			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, 0x337b, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oParent.Var_d768, OpenCiv1.String_337b, 0xba06);
 
 		L099b:
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0x136);

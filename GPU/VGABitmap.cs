@@ -8,6 +8,8 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
+using IRB.Collections.Generic;
+using OpenCiv1.Compression;
 
 namespace OpenCiv1
 {
@@ -21,14 +23,14 @@ namespace OpenCiv1
 
 	public class VGABitmap : IDisposable
 	{
-		private int iStride;
-		private byte[] aBitmapMemory;
+		protected int iStride;
+		protected byte[] aBitmapMemory;
 		private GCHandle oBitmapMemoryHandle;
 		private IntPtr oBitmapMemoryAddress;
-		private Bitmap oBitmap;
-		private Rectangle oRectangle;
-		private bool bModified = true;
-		private bool bVisible = true;
+		protected Bitmap oBitmap;
+		protected Rectangle oRectangle;
+		protected bool bModified = true;
+		protected bool bVisible = true;
 
 		#region Default palette
 		public static Color[] DefaultPalette = new Color[] {
@@ -631,292 +633,312 @@ namespace OpenCiv1
 			}
 		}
 
-		public void LoadBitmap(ushort xPos, ushort yPos, string filename, out byte[] paletteBuffer)
+		public void LoadBitmap(string filename, ushort xPos, ushort yPos, out byte[] palette)
 		{
 			// function body
-			FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+			VGABitmap bitmap = VGABitmap.FromPIC(filename, out palette);
 
-			bool bWordMode = LoadPalette(stream, out paletteBuffer);
-
-			//SetColorsFromColorStruct(paletteBuffer);
-
-			LZWDecoderState state = new LZWDecoderState(bWordMode);
-
-			state.UnknownValue1 = ReadUInt16FromStream(stream);
-			state.Width = ReadUInt16FromStream(stream);
-			state.Height = ReadUInt16FromStream(stream);
-
-			// init state
-			if (state.Width > 0 && state.Height > 0)
+			if (bitmap != null)
 			{
-				ushort usTemp = ReadUInt16FromStream(stream);
-				state.ClearCode = (byte)Math.Min((usTemp & 0xff), 0xb);
-				state.InputData = (ushort)((usTemp & 0xff00) | state.ClearCode);
-
-				byte[] abPixelBuffer = new byte[state.Width];
-
-				for (int i = 0; i < state.Height; i++)
+				for (int i = 0; i < bitmap.Bitmap.Height; i++)
 				{
-					DecodeBitmapRow(stream, state, abPixelBuffer);
-
-					for (int j = 0; j < state.Width; j++)
+					for (int j = 0; j < bitmap.Bitmap.Width; j++)
 					{
-						this.SetPixel(xPos + j, yPos + i, abPixelBuffer[j]);
+						this.SetPixel(xPos + j, yPos + i, bitmap.GetPixel(j, i));
 					}
+				}
+			}
+		}
+
+		public static VGABitmap FromPIC(string path, out byte[] palette)
+		{
+			VGABitmap bitmap = null;
+			FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+			List<BKeyValuePair<int, Color>> aPalette = new List<BKeyValuePair<int, Color>>();
+			palette = null;
+
+			// PIC file is written in blocks
+			while (true)
+			{
+				int iSignature = ReadUInt16(stream);
+				int iBlockLength = ReadUInt16(stream);
+
+				if (iSignature < 0 || iBlockLength < 0)
+					break;
+
+				byte[] aBlock = new byte[iBlockLength];
+				int iBlockSize = stream.Read(aBlock, 0, iBlockLength);
+
+				if (iBlockLength != iBlockSize)
+				{
+					throw new Exception(
+						$"Block type 0x{iSignature:x4} data missing, expected {iBlockLength} bytes, " +
+						$"but read only {iBlockSize} bytes");
+				}
+
+				MemoryStream blockReader;
+				int iWidth;
+				int iHeight;
+				int iMaxBits;
+
+				switch (iSignature)
+				{
+					case 0x3045:
+						// 8bit color palette
+						break;
+
+					case 0x304d:
+						// 18bit color palette
+						List<byte> aTemp = new List<byte>();
+						aTemp.Add(0x4d);
+						aTemp.Add(0x30);
+						aTemp.Add((byte)(iBlockLength & 0xff));
+						aTemp.Add((byte)((iBlockLength & 0xff00) >> 8));
+						aTemp.AddRange(aBlock);
+						palette = aTemp.ToArray();
+
+						blockReader = new MemoryStream(aBlock);
+						int iIndex = blockReader.ReadByte();
+						int iColorCount = blockReader.ReadByte();
+
+						if (iIndex >= 0 && iColorCount >= 0)
+						{
+							iColorCount -= iIndex;
+							iColorCount++;
+
+							for (int i = 0; i < iColorCount; i++)
+							{
+								int iRed = blockReader.ReadByte();
+								int iGreen = blockReader.ReadByte();
+								int iBlue = blockReader.ReadByte();
+
+								if (iRed < 0 || iGreen < 0 || iBlue < 0)
+								{
+									throw new Exception($"Palette block type 0x{iSignature:x4} malformed");
+								}
+								aPalette.Add(new BKeyValuePair<int, Color>(iIndex + i,
+									VGABitmap.Color18ToColor(iRed, iGreen, iBlue)));
+							}
+						}
+						else
+						{
+							throw new Exception($"Palette block type 0x{iSignature:x4} malformed");
+						}
+						break;
+
+					case 0x3058:
+						// Image data encoded by RLE and LZW
+						blockReader = new MemoryStream(aBlock);
+						iWidth = ReadUInt16(blockReader);
+						iHeight = ReadUInt16(blockReader);
+						iMaxBits = blockReader.ReadByte();
+
+						if (iWidth >= 0 && iHeight >= 0 && iMaxBits > 7)
+						{
+							// decode LZW
+							MemoryStream lzwOutput = new MemoryStream();
+							LZW.Decompress(lzwOutput, blockReader, 9, iMaxBits);
+							lzwOutput.Position = 0;
+
+							// decode RLE
+							MemoryStream rleOutput = new MemoryStream();
+							RLE.Decompress(rleOutput, lzwOutput);
+							rleOutput.Position = 0;
+
+							// construct bitmap with our raw data
+							int iStrideLength = (int)(Math.Ceiling((double)iWidth / 4.0) * 4.0);
+							int iScanPosition = 0;
+
+							bitmap = new VGABitmap(iWidth, iHeight);
+
+							for (int i = 0; i < iHeight; i++)
+							{
+								for (int j = 0; j < iWidth; j++)
+								{
+									int c = rleOutput.ReadByte();
+									if (c < 0)
+										break;
+
+									bitmap.aBitmapMemory[iScanPosition] = (byte)c;
+									iScanPosition++;
+								}
+								iScanPosition += iStrideLength - iWidth;
+							}
+
+							// set bitmap palette
+							ColorPalette bitmapPalette = bitmap.oBitmap.Palette;
+							for (int i = 0; i < aPalette.Count; i++)
+							{
+								bitmapPalette.Entries[aPalette[i].Key] = aPalette[i].Value;
+							}
+							bitmap.oBitmap.Palette = bitmapPalette;
+						}
+						else
+						{
+							throw new Exception($"Image block type 0x{iSignature:x4} malformed");
+						}
+						break;
+
+					case 0x3158:
+						// Image data encoded by two pixels packed into one, RLE and LZW
+						blockReader = new MemoryStream(aBlock);
+						iWidth = ReadUInt16(blockReader);
+						iHeight = ReadUInt16(blockReader);
+						iMaxBits = blockReader.ReadByte();
+
+						if (iWidth >= 0 && iHeight >= 0 && iMaxBits > 7)
+						{
+							// decode LZW
+							MemoryStream lzwOutput = new MemoryStream();
+							LZW.Decompress(lzwOutput, blockReader, 9, iMaxBits);
+							lzwOutput.Position = 0;
+
+							// decode RLE
+							MemoryStream rleOutput = new MemoryStream();
+							RLE.Decompress(rleOutput, lzwOutput);
+							rleOutput.Position = 0;
+
+							// construct bitmap with our raw data
+							int iStrideLength = (int)(Math.Ceiling((double)iWidth / 2.0) * 4.0);
+							int iScanPosition = 0;
+
+							bitmap = new VGABitmap(iWidth * 2, iHeight);
+
+							for (int i = 0; i < iHeight; i++)
+							{
+								for (int j = 0; j < iWidth; j += 2)
+								{
+									int c = rleOutput.ReadByte();
+									if (c < 0)
+										break;
+
+									bitmap.aBitmapMemory[iScanPosition] = (byte)(c & 0xf);
+									iScanPosition++;
+									bitmap.aBitmapMemory[iScanPosition] = (byte)((c & 0xf0) >> 4);
+									iScanPosition++;
+								}
+								iScanPosition += iStrideLength - iWidth;
+							}
+
+							// set bitmap palette
+							ColorPalette bitmapPalette = bitmap.oBitmap.Palette;
+							for (int i = 0; i < aPalette.Count; i++)
+							{
+								bitmapPalette.Entries[aPalette[i].Key] = aPalette[i].Value;
+							}
+							bitmap.oBitmap.Palette = bitmapPalette;
+						}
+						else
+						{
+							throw new Exception($"Image block type 0x{iSignature:x4} malformed");
+						}
+						break;
+
+					default:
+						throw new Exception($"Undefined block type 0x{iSignature:x4}");
 				}
 			}
 
 			stream.Close();
+
+			return bitmap;
 		}
 
-		private void DecodeBitmapRow(FileStream stream, LZWDecoderState state, byte[] dataBuffer)
+		public static List<BKeyValuePair<int, Color>> PaletteFromPICOrPAL(string path, out byte[] palette)
 		{
-			int iBufferPos = 0;
-			int iWidth = state.Width;
+			FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+			List<BKeyValuePair<int, Color>> aPalette = new List<BKeyValuePair<int, Color>>();
+			palette = null;
 
-			if (state.WordMode)
+			// PIC file is written in blocks
+			while (true)
 			{
-				iWidth++;
-				iWidth >>= 1;
-			}
+				int iSignature = ReadUInt16(stream);
+				int iBlockLength = ReadUInt16(stream);
 
-				for (int j = 0; j < iWidth; j++)
+				if (iSignature < 0 || iBlockLength < 0)
+					break;
+
+				byte[] aBlock = new byte[iBlockLength];
+				int iBlockSize = stream.Read(aBlock, 0, iBlockLength);
+
+				if (iBlockLength != iBlockSize)
 				{
-					byte ubPixelData;
+					throw new Exception(
+						$"Block type 0x{iSignature:x4} data missing, expected {iBlockLength} bytes, " +
+						$"but read only {iBlockSize} bytes");
+				}
 
-					if (state.ChunkLength != 0)
-					{
-						ubPixelData = state.ChunkData;
-						state.ChunkLength--;
-					}
-					else
-					{
-						// Instruction address 0x1000:0x12c3, size: 3
-						ubPixelData = GetNextByte(stream, state);
+				MemoryStream blockReader;
 
-						if (ubPixelData != 0x90)
+				switch (iSignature)
+				{
+					case 0x3045:
+						// 8bit color palette
+						break;
+
+					case 0x304d:
+						// 18bit color palette
+						palette = aBlock;
+						blockReader = new MemoryStream(aBlock);
+						int iIndex = blockReader.ReadByte();
+						int iColorCount = blockReader.ReadByte();
+
+						if (iIndex >= 0 && iColorCount >= 0)
 						{
-							state.ChunkData = ubPixelData;
-						}
-						else
-						{
-							ubPixelData = GetNextByte(stream, state);
+							iColorCount -= iIndex;
+							iColorCount++;
 
-							if (ubPixelData == 0)
+							for (int i = 0; i < iColorCount; i++)
 							{
-								ubPixelData = 0x90;
-								state.ChunkData = ubPixelData;
-							}
-							else
-							{
-								state.ChunkLength = ubPixelData;
-								state.ChunkLength -= 2;
-								ubPixelData = state.ChunkData;
-							}
-						}
-					}
+								int iRed = blockReader.ReadByte();
+								int iGreen = blockReader.ReadByte();
+								int iBlue = blockReader.ReadByte();
 
-					if (iBufferPos < dataBuffer.Length)
-					{
-						if (state.WordMode)
-						{
-							dataBuffer[iBufferPos] = (byte)(ubPixelData & 0xf);
-							dataBuffer[iBufferPos + 1] = (byte)((ushort)(ubPixelData & 0xf0) >> 4);
-							iBufferPos += 2;
+								if (iRed < 0 || iGreen < 0 || iBlue < 0)
+								{
+									throw new Exception($"Palette block type 0x{iSignature:x4} malformed");
+								}
+								aPalette.Add(new BKeyValuePair<int, Color>(iIndex + i,
+									VGABitmap.Color18ToColor(iRed, iGreen, iBlue)));
+							}
 						}
 						else
 						{
-							dataBuffer[iBufferPos] = ubPixelData;
-							iBufferPos++;
+							throw new Exception($"Palette block type 0x{iSignature:x4} malformed");
 						}
-					}
-				}
-				if (state.WordMode)
-				{
-					for (int j = iWidth * 2; j < state.Stride; j++)
-					{
-						// overscan, just set to 0
-						dataBuffer[iBufferPos] = 0;
-						iBufferPos++;
-					}
-				}
-				else
-				{
-					for (int j = iWidth; j < state.Stride; j++)
-					{
-						// overscan, just set to 0
-						dataBuffer[iBufferPos] = 0;
-						iBufferPos++;
-					}
-				}
-		}
+						break;
 
-		private byte GetNextByte(FileStream stream, LZWDecoderState state)
-		{
-			// function body
-			if (state.DataStack.Count == 0)
-			{
-				// buffer is empty, fill it
-				ushort usCode = state.InputData;
-				usCode >>= (16 - state.InputLength);
+					case 0x3058:
+						// Image data encoded by RLE and LZW
+						break;
 
-				while (state.InputLength < state.BitCount)
-				{
-					state.InputData = ReadUInt16FromStream(stream);
-					usCode |= (ushort)(state.InputData << state.InputLength);
-					state.InputLength += 0x10;
-				}
+					case 0x3158:
+						// Image data encoded by two pixels packed into one, RLE and LZW
+						break;
 
-				state.InputLength -= state.BitCount;
-				usCode &= state.Mask;
-				ushort usNextPosition = usCode;
-				if (usCode >= state.DictionaryLength)
-				{
-					usNextPosition = state.DictionaryLength;
-					usCode = state.PreviousPosition;
-					state.DataStack.Push(state.NextPosition);
-				}
-
-			L1377:
-				int iPosition = usCode * 3;
-				usCode = (ushort)((ushort)state.abDictionary[iPosition] | ((ushort)state.abDictionary[iPosition + 1] << 8));
-				usCode++;
-				if (usCode == 0) goto L138c;
-				usCode--;
-				state.DataStack.Push(state.abDictionary[iPosition + 2]);
-				goto L1377;
-
-			L138c:
-				state.NextPosition = state.abDictionary[iPosition + 2];
-				state.DataStack.Push(state.NextPosition);
-				iPosition = (ushort)(state.DictionaryLength * 3);
-				state.abDictionary[iPosition + 2] = state.NextPosition;
-				state.abDictionary[iPosition] = (byte)(state.PreviousPosition & 0xff);
-				state.abDictionary[iPosition + 1] = (byte)((state.PreviousPosition & 0xff00) >> 8);
-				state.DictionaryLength++;
-
-				if (state.DictionaryLength > state.Mask)
-				{
-					state.BitCount++;
-					state.Mask <<= 1;
-					state.Mask |= 1;
-				}
-
-				if (state.BitCount > state.ClearCode)
-				{
-					state.BitCount = 9;
-					state.Mask = 511;
-					state.DictionaryLength = 256;
-
-					for (int i = 0; i < 2048; i++)
-					{
-						state.abDictionary[i * 3] = 0xff;
-						state.abDictionary[i * 3 + 1] = 0xff;
-						state.abDictionary[i * 3 + 2] = (byte)((i < 256) ? i : 0);
-					}
-
-					state.PreviousPosition = 0;
-				}
-				else
-				{
-					state.PreviousPosition = usNextPosition;
+					default:
+						throw new Exception($"Undefined block type 0x{iSignature:x4}");
 				}
 			}
 
-			return state.DataStack.Pop();
+			stream.Close();
+
+			return aPalette;
 		}
 
-		private bool LoadPalette(FileStream stream, out byte[] paletteBuffer)
-		{
-			ushort usTemp;
-			paletteBuffer = new byte[0];
-
-			while (((usTemp = ReadUInt16FromStream(stream)) & 0xff) != 0x58)
-			{
-				if (usTemp == 0x304d)
-				{
-					int iPalettePos = 0;
-					int iByteCount = ReadUInt16FromStream(stream);
-					paletteBuffer = new byte[iByteCount + 4];
-
-					paletteBuffer[iPalettePos++] = 0x4d;
-					paletteBuffer[iPalettePos++] = 0x30;
-					paletteBuffer[iPalettePos++] = (byte)(iByteCount & 0xff);
-					paletteBuffer[iPalettePos++] = (byte)((iByteCount & 0xff00) >> 8);
-
-					for (int i = 0; i < iByteCount; i++)
-					{
-						int iTemp = stream.ReadByte();
-						if (iTemp >= 0)
-						{
-							paletteBuffer[iPalettePos++] = (byte)(iTemp);
-						}
-						else
-						{
-							paletteBuffer[iPalettePos++] = 0;
-						}
-					}
-				}
-				else
-				{
-					usTemp = ReadUInt16FromStream(stream);
-
-					for (int i = 0; i < usTemp; i++)
-					{
-						stream.ReadByte();
-					}
-				}
-			}
-
-			return (usTemp & 0x100) != 0;
-		}
-
-		private ushort ReadUInt16FromStream(FileStream stream)
+		private static int ReadUInt16(Stream stream)
 		{
 			int iByte0 = stream.ReadByte();
 			int iByte1 = stream.ReadByte();
 
 			if (iByte0 < 0 || iByte1 < 0)
 			{
-				// end of stream, return 0
-				return 0;
+				// end of stream, return -1
+				return -1;
 			}
 
-			return (ushort)(iByte0 | (iByte1 << 8));
-		}
-
-		private class LZWDecoderState
-		{
-			public bool WordMode = false;
-			public int Width = 0;
-			public int Stride = 0;
-			public int Height = 0;
-			public ushort UnknownValue1 = 0;
-			public byte ChunkLength = 0;
-			public byte ChunkData = 0;
-			public Stack<byte> DataStack = new Stack<byte>();
-			public byte ClearCode = 11;
-			public ushort InputData = 0;
-			public byte InputLength = 8;
-			public byte BitCount = 9;
-			public ushort Mask = 0x1ff;
-			public ushort DictionaryLength = 256;
-			public ushort PreviousPosition = 0;
-			public byte NextPosition = 0;
-
-			public byte[] abDictionary = new byte[2048 * 3];
-
-			public LZWDecoderState(bool wordMode)
-			{
-				this.WordMode = wordMode;
-
-				for (int i = 0; i < 2048; i++)
-				{
-					this.abDictionary[i * 3] = 0xff;
-					this.abDictionary[i * 3 + 1] = 0xff;
-					this.abDictionary[i * 3 + 2] = (byte)((i < 256) ? i : 0);
-				}
-			}
+			return iByte0 | (iByte1 << 8);
 		}
 	}
 }

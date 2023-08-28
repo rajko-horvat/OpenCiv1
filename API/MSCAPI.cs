@@ -268,16 +268,31 @@ namespace OpenCiv1
 		#region File operations
 		public short fopen(ushort filenamePtr, ushort modePtr)
 		{
-			string sName = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr));
-			string sMode = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, modePtr));
+			return fopen(this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)),
+				this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, modePtr)));
+		}
+
+		public short fopen(string filename, ushort modePtr)
+		{
+			return fopen(filename,
+				this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, modePtr)));
+		}
+
+		public short fopen(ushort filenamePtr, string mode)
+		{
+			return fopen(this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)), mode);
+		}
+
+		public short fopen(string filename, string mode)
+		{
 			FileMode eMode = FileMode.Open;
 			FileAccess eAccess = FileAccess.Write;
 			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
 
-			sMode = sMode.Trim().ToLower();
-			for (int i = 0; i < sMode.Length; i++)
+			mode = mode.Trim().ToLower();
+			for (int i = 0; i < mode.Length; i++)
 			{
-				switch (sMode[i])
+				switch (mode[i])
 				{
 					case 'r':
 						eMode = FileMode.Open;
@@ -301,12 +316,12 @@ namespace OpenCiv1
 						eType = FileStreamTypeEnum.Binary;
 						break;
 					default:
-						throw new Exception($"Unknown file mode '{sMode}'");
+						throw new Exception($"Unknown file mode '{mode}'");
 				}
 			}
 
 			short sHandle = -1;
-			string sPath = $"{this.oCPU.DefaultDirectory}{sName}";
+			string sPath = $"{this.oCPU.DefaultDirectory}{filename}";
 			if (File.Exists(sPath))
 			{
 				this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
@@ -392,18 +407,21 @@ namespace OpenCiv1
 
 		public short fscanf(short handle, ushort formatPtr, ushort varPtr)
 		{
+			return fscanf(handle, this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, formatPtr)), varPtr);
+		}
+
+		public short fscanf(short handle, string format, ushort varPtr)
+		{
 			short sCount = -1;
-			uint uiFormatAddress = CPU.ToLinearAddress(this.oCPU.DS.Word, formatPtr);
 			uint uiVarAddress = CPU.ToLinearAddress(this.oCPU.DS.Word, varPtr);
 
 			if (this.oCPU.Files.ContainsKey(handle))
 			{
 				sCount = 0;
 				FileStreamItem fileItem = this.oCPU.Files.GetValueByKey(handle);
-				string sFormat = this.oCPU.ReadString(uiFormatAddress);
 				StringBuilder sbResult = new StringBuilder();
 
-				switch (sFormat)
+				switch (format)
 				{
 					case "%[^\n]\n":
 						short ch;
@@ -427,7 +445,7 @@ namespace OpenCiv1
 						break;
 
 					default:
-						throw new Exception($"fscanf has undefined format '{sFormat}'");
+						throw new Exception($"fscanf has undefined format '{format}'");
 				}
 
 				this.oCPU.Log.WriteLine($"fscanf('%[^\\n]\\n') = '{sbResult.ToString()}'");
@@ -612,7 +630,12 @@ namespace OpenCiv1
 
 		public short open(ushort filenamePtr, ushort access, ushort mode)
 		{
-			string sName = Path.GetFileName(this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)));
+			return open(this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)), access, mode);
+		}
+
+		public short open(string filename, ushort access, ushort mode)
+		{
+			string sName = Path.GetFileName(filename);
 			FileMode eMode = FileMode.Open;
 			FileAccess eAccess = FileAccess.Read;
 			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
@@ -773,12 +796,12 @@ namespace OpenCiv1
 			return sItemCount;
 		}
 
-		public short _dos_open(ushort filename, ushort flags, ushort handlePtr)
+		public short _dos_open(ushort filenamePtr, ushort flags, ushort handlePtr)
 		{
 			uint uiHandleAddress = CPU.ToLinearAddress(this.oCPU.DS.Word, handlePtr);
 			short sRetVal = -1;
 
-			string sName = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filename));
+			string sName = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr));
 			FileMode eMode = FileMode.Open;
 			FileAccess eAccess = FileAccess.Read;
 			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;

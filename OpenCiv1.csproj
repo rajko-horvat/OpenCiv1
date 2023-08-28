@@ -51,7 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\FileStreamItem.cs" />
-    <Compile Include="GPU\LZWCompression.cs" />
+    <Compile Include="Compression\CRC32.cs" />
+    <Compile Include="Compression\LZW.cs" />
+    <Compile Include="Compression\LZWWord.cs" />
+    <Compile Include="Compression\RLE.cs" />
     <Compile Include="OpenCiv1.cs" />
     <Compile Include="Collections\Generic\BDictionary.cs" />
     <Compile Include="Collections\Generic\BHashSet.cs" />
@@ -63,11 +66,10 @@
     <Compile Include="CPU\CPURegister.cs" />
     <Compile Include="CPU\CPUMemory.cs" />
     <Compile Include="CPU\CPUMemoryRegion.cs" />
-    <Compile Include="GPU\CivFontCharacter.cs" />
-    <Compile Include="GPU\CivFont.cs" />
-    <Compile Include="GPU\CivFonts.cs" />
+    <Compile Include="GPU\Fonts\CivFontCharacter.cs" />
+    <Compile Include="GPU\Fonts\CivFont.cs" />
+    <Compile Include="GPU\Fonts\CivFonts.cs" />
     <Compile Include="GPU\CivRectangle.cs" />
-    <Compile Include="GPU\LZWDecoder.cs" />
     <Compile Include="GPU\VGAForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1,13 +1,11 @@
 ﻿using Disassembler;
 using Disassembler.MZ;
-using OpenCiv1;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Windows.Documents;
 
 namespace OpenCiv1
 {
@@ -169,29 +167,27 @@ namespace OpenCiv1
 			#endregion
 
 			// export all bitmaps to file
-			/*string[] aFiles = Directory.GetFiles(this.oCPU.DefaultDirectory, "*.pic");
+			string[] aFiles = Directory.GetFiles(this.oCPU.DefaultDirectory, "*.pic");
 			if (!Directory.Exists("Images"))
 				Directory.CreateDirectory("Images");
 
 			for (int i = 0; i < aFiles.Length; i++)
 			{
-				if (!Path.GetFileNameWithoutExtension(aFiles[i]).Equals("torch", StringComparison.InvariantCultureIgnoreCase))
-				{*/
-					/*VGABitmap bitmap1 = new VGABitmap(320, 200);
-					byte[] palette;
-					bitmap1.LoadBitmap(0, 0, aFiles[i], out palette);
-					bitmap1.SetColorsFromColorStruct(palette);
-					if (palette.Length == 0)
-					{
-						Console.WriteLine($"Image '{aFiles[i]}' has no palette");
-					}
+				byte[] palette;
+				VGABitmap bitmap1 = VGABitmap.FromPIC(aFiles[i], out palette);
 
-					//Bitmap bitmap = this.Segment_2fa1.ReadBitmapFromFile(aFiles[i]);
-					bitmap1.Bitmap.Save($"Images{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(aFiles[i])}.png", ImageFormat.Png);*/
-					
-					/*Bitmap bitmap = this.Segment_2fa1.ReadBitmapFromFile(aFiles[i]);
-					bitmap.Save($"Images{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(aFiles[i])}.png", ImageFormat.Png);
+				if (bitmap1 != null)
+				{
+					bitmap1.Bitmap.Save(
+						$"Images{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(aFiles[i])}.png",
+						ImageFormat.Png);
 				}
+
+				/*Bitmap bitmap = this.Segment_2fa1.ReadBitmapFromFile(aFiles[i]);
+				bitmap.Save($"Images{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(aFiles[i])}.png", 
+					ImageFormat.Png);*/
+
+				//break;
 			}//*/
 
 			// load old exe image to memory

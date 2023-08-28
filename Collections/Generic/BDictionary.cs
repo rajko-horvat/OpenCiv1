@@ -498,7 +498,7 @@ namespace IRB.Collections.Generic
 					}
 					else
 					{
-						// Set current box to next item in collection.
+						// Set current box to next aItems in collection.
 						this.oCurrentItem = this.oParent.aItems[this.iCurrentIndex];
 					}
 					return true;
@@ -658,7 +658,7 @@ namespace IRB.Collections.Generic
 					}
 					else
 					{
-						// Set current box to next item in collection.
+						// Set current box to next aItems in collection.
 						this.oCurrentItem = this.oParent.aItems[this.iCurrentIndex];
 					}
 					return true;

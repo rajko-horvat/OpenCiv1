@@ -240,7 +240,8 @@ namespace OpenCiv1
 
 		L01ef:
 			// Instruction address 0x2f4d:0x01f6, size: 5
-			this.oParent.MSCAPI.fopen(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0x2ff0);
+			this.oParent.MSCAPI.fopen(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 
+				OpenCiv1.String_2ff0);
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x110), this.oCPU.AX.Word);
 
@@ -258,7 +259,8 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.fclose((short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x110)));
 			
 			// Instruction address 0x2f4d:0x025a, size: 5
-			this.oParent.MSCAPI.fopen(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0x2ff3);
+			this.oParent.MSCAPI.fopen(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 
+				OpenCiv1.String_2ff3);
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x110), this.oCPU.AX.Word);
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x104)), 0x1ff);
@@ -272,7 +274,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x2f4d:0x0297, size: 5
 			this.oParent.MSCAPI.fscanf((short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x110)),
-				0x2ff6, (ushort)(this.oCPU.BP.Word - 0x100));
+				OpenCiv1.String_2ff6, (ushort)(this.oCPU.BP.Word - 0x100));
 
 			// Instruction address 0x2f4d:0x02a7, size: 5
 			this.oParent.MSCAPI.stricmp((ushort)(this.oCPU.BP.Word - 0x100), 
@@ -304,7 +306,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x2f4d:0x02fc, size: 5
 			this.oParent.MSCAPI.fscanf((short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x110)),
-				0x2ffd, (ushort)(this.oCPU.BP.Word - 0x100));
+				OpenCiv1.String_2ffd, (ushort)(this.oCPU.BP.Word - 0x100));
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10a), this.oCPU.AX.Word);
 
@@ -325,7 +327,7 @@ namespace OpenCiv1
 		L032d:
 			// Instruction address 0x2f4d:0x033a, size: 5
 			this.oParent.MSCAPI.fscanf((short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x110)),
-				0x3004, (ushort)(this.oCPU.BP.Word - 0x100));
+				OpenCiv1.String_3004, (ushort)(this.oCPU.BP.Word - 0x100));
 
 			this.oCPU.CMPByte(this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x100)), 0x2a);
 			if (this.oCPU.Flags.E) goto L032d;
@@ -339,7 +341,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x2f4d:0x0377, size: 5
 			this.oParent.MSCAPI.fscanf((short)this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x110)),
-				0x300d, (ushort)(this.oCPU.BP.Word - 0x100));
+				OpenCiv1.String_300d, (ushort)(this.oCPU.BP.Word - 0x100));
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10c), this.oCPU.INCWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10c))));
 			this.oCPU.CMPByte(this.oCPU.ReadByte(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x100)), 0x2a);
@@ -372,7 +374,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L043a;
 
 			// Instruction address 0x2f4d:0x03dd, size: 5
-			this.oParent.MSCAPI.fopen(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0x3014);
+			this.oParent.MSCAPI.fopen(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 
+				OpenCiv1.String_3014);
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x110), this.oCPU.AX.Word);
 

@@ -14,7 +14,7 @@ using System.Collections;
 namespace OpenCiv1
 {
 	/// <summary>
-	/// Image loading functions - LZW compression was used
+	/// Image loading functions - RLE and LZW compression was used
 	/// </summary>
 	public class ImageLoading
 	{
@@ -26,318 +26,6 @@ namespace OpenCiv1
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
 		}
-
-		#region New image loading functions
-		private class ImageDecoderState
-		{
-			public bool NibbleMode = false;
-			public int Width = 0;
-			public int Stride = 0;
-			public int Height = 0;
-			public ushort UnknownValue1 = 0;
-			public byte ChunkLength = 0;
-			public byte ChunkData = 0;
-			public Stack<byte> DataStack = new Stack<byte>();
-			public byte ClearCode = 11;
-			public ushort InputData = 0;
-			public byte InputLength = 8;
-			public byte BitCount = 9;
-			public ushort Mask = 0x1ff;
-			public ushort DictionaryLength = 256;
-			public ushort PreviousPosition = 0;
-			public byte NextPosition = 0;
-
-			public byte[] abDictionary = new byte[2048 * 3];
-
-			public ImageDecoderState(bool nibbleMode)
-			{
-				this.NibbleMode = nibbleMode;
-
-				for (int i = 0; i < 2048; i++)
-				{
-					this.abDictionary[i * 3] = 0xff;
-					this.abDictionary[i * 3 + 1] = 0xff;
-					this.abDictionary[i * 3 + 2] = (byte)((i < 256) ? i : 0);
-				}
-			}
-		}
-
-		public Bitmap ReadBitmapFromFile(string path)
-		{
-			Bitmap bitmap;
-			FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
-			List<BKeyValuePair<int, Color>> aPalette = new List<BKeyValuePair<int, Color>>();
-			bool bNibbleMode = LoadPaletteFromStream(stream, aPalette);
-			ImageDecoderState state = new ImageDecoderState(bNibbleMode);
-
-			state.UnknownValue1 = ReadUInt16FromStream(stream);
-			state.Width = ReadUInt16FromStream(stream);
-			state.Height = ReadUInt16FromStream(stream);
-
-			Console.WriteLine($"Bitmap: '{Path.GetFileName(path)}', unknown value: 0x{state.UnknownValue1:x4}");
-
-			// init state
-			if (state.Width > 0 && state.Height > 0)
-			{
-				ushort usTemp = ReadUInt16FromStream(stream);
-				state.ClearCode = (byte)Math.Min((usTemp & 0xff), 0xb);
-				state.InputData = (ushort)((usTemp & 0xff00) | state.ClearCode);
-
-				state.Stride = (int)(Math.Ceiling((double)state.Width / 4.0) * 4.0);
-
-				byte[] abBitmapData = new byte[state.Stride * state.Height];
-
-				DecodeBitmapRow(stream, state, abBitmapData);
-
-				bitmap = new Bitmap(state.Width, state.Height, PixelFormat.Format8bppIndexed);
-
-				BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), 
-					ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
-				Marshal.Copy(abBitmapData, 0, bitmapData.Scan0, abBitmapData.Length);
-				bitmap.UnlockBits(bitmapData);
-			}
-			else
-			{
-				state.Stride = (int)(Math.Ceiling((double)state.Width / 4.0) * 4.0);
-				bitmap = new Bitmap(state.Width, state.Height, PixelFormat.Format8bppIndexed);
-			}
-
-			// set bitmap palette
-			ColorPalette palette = bitmap.Palette;
-			for (int i = 0; i < aPalette.Count; i++)
-			{
-				palette.Entries[aPalette[i].Key] = aPalette[i].Value;
-			}
-			bitmap.Palette = palette;
-
-			stream.Close();
-
-			return bitmap;
-		}
-
-		private bool LoadPaletteFromStream(FileStream stream, List<BKeyValuePair<int, Color>> palette)
-		{
-			ushort usTemp;
-			List<byte> abBuffer = new List<byte>();
-
-			while (((usTemp = ReadUInt16FromStream(stream)) & 0xff) != 0x58)
-			{
-				abBuffer.Clear();
-
-				abBuffer.Add((byte)(usTemp & 0xff));
-				abBuffer.Add((byte)((usTemp & 0xff00) >> 8));
-
-				usTemp = ReadUInt16FromStream(stream);
-				abBuffer.Add((byte)(usTemp & 0xff));
-				abBuffer.Add((byte)((usTemp & 0xff00) >> 8));
-
-				int iCount = usTemp >> 1;
-
-				for (int i = 0; i < iCount; i++)
-				{
-					usTemp = ReadUInt16FromStream(stream);
-					abBuffer.Add((byte)(usTemp & 0xff));
-					abBuffer.Add((byte)((usTemp & 0xff00) >> 8));
-				}
-
-				// VGA 256 color palette signature
-				if (abBuffer[0] == 0x4d && abBuffer[1] == 0x30)
-				{
-					int iIndex = abBuffer[4];
-					int iColorCount = abBuffer[5];
-
-					iColorCount -= iIndex;
-					iColorCount++;
-
-					for (int i = 0; i < iColorCount; i++)
-					{
-						palette.Add(new BKeyValuePair<int, Color>(iIndex + i, VGABitmap.Color18ToColor(abBuffer[(i * 3) + 6], abBuffer[(i * 3) + 7], abBuffer[(i * 3) + 8])));
-					}
-				}
-				else
-				{
-					abBuffer.Clear();
-				}
-			}
-
-			return (usTemp & 0x100) != 0;
-		}
-
-		private void DecodeBitmapRow(FileStream stream, ImageDecoderState state, byte[] dataBuffer)
-		{
-			int iBufferPos = 0;
-			int iWidth = state.Width;
-
-			if (state.NibbleMode)
-			{
-				iWidth++;
-				iWidth >>= 1;
-			}
-
-			for (int i = 0; i < state.Height; i++)
-			{
-				for (int j = 0; j < iWidth; j++)
-				{
-					byte ubPixelData;
-
-					if (state.ChunkLength != 0)
-					{
-						ubPixelData = state.ChunkData;
-						state.ChunkLength--;
-					}
-					else
-					{
-						ubPixelData = GetNextByte(stream, state);
-
-						if (ubPixelData != 0x90)
-						{
-							state.ChunkData = ubPixelData;
-						}
-						else
-						{
-							ubPixelData = GetNextByte(stream, state);
-
-							if (ubPixelData == 0)
-							{
-								ubPixelData = 0x90;
-								state.ChunkData = ubPixelData;
-							}
-							else
-							{
-								state.ChunkLength = ubPixelData;
-								state.ChunkLength -= 2;
-								ubPixelData = state.ChunkData;
-							}
-						}
-					}
-
-					if (iBufferPos < dataBuffer.Length)
-					{
-						if (state.NibbleMode)
-						{
-							dataBuffer[iBufferPos] = (byte)(ubPixelData & 0xf);
-							dataBuffer[iBufferPos + 1] = (byte)((ushort)(ubPixelData & 0xf0) >> 4);
-							iBufferPos += 2;
-						}
-						else
-						{
-							dataBuffer[iBufferPos] = ubPixelData;
-							iBufferPos++;
-						}
-					}
-				}
-				if (state.NibbleMode)
-				{
-					for (int j = iWidth * 2; j < state.Stride; j++)
-					{
-						// overscan, just set to 0
-						dataBuffer[iBufferPos] = 0;
-						iBufferPos++;
-					}
-				}
-				else
-				{
-					for (int j = iWidth; j < state.Stride; j++)
-					{
-						// overscan, just set to 0
-						dataBuffer[iBufferPos] = 0;
-						iBufferPos++;
-					}
-				}
-			}
-		}
-
-		private byte GetNextByte(FileStream stream, ImageDecoderState state)
-		{
-			// function body
-			if (state.DataStack.Count == 0)
-			{
-				// buffer is empty, fill it
-				ushort usCode = state.InputData;
-				usCode >>= (16 - state.InputLength);
-
-				while (state.InputLength < state.BitCount)
-				{
-					state.InputData = ReadUInt16FromStream(stream);
-					usCode |= (ushort)(state.InputData << state.InputLength);
-					state.InputLength += 0x10;
-				}
-
-				state.InputLength -= state.BitCount;
-				usCode &= state.Mask;
-				ushort usNextPosition = usCode;
-				if (usCode >= state.DictionaryLength)
-				{
-					usNextPosition = state.DictionaryLength;
-					usCode = state.PreviousPosition;
-					state.DataStack.Push(state.NextPosition);
-				}
-
-				int iPosition;
-
-				while (true)
-				{
-					iPosition = usCode * 3;
-					usCode = (ushort)((ushort)state.abDictionary[iPosition] | ((ushort)state.abDictionary[iPosition + 1] << 8));
-					if (usCode == 0xffff)
-						break;
-
-					state.DataStack.Push(state.abDictionary[iPosition + 2]);
-				}
-
-				state.NextPosition = state.abDictionary[iPosition + 2];
-				state.DataStack.Push(state.NextPosition);
-				iPosition = (ushort)(state.DictionaryLength * 3);
-				state.abDictionary[iPosition + 2] = state.NextPosition;
-				state.abDictionary[iPosition] = (byte)(state.PreviousPosition & 0xff);
-				state.abDictionary[iPosition + 1] = (byte)((state.PreviousPosition & 0xff00) >> 8);
-				state.DictionaryLength++;
-
-				if (state.DictionaryLength > state.Mask)
-				{
-					state.BitCount++;
-					state.Mask <<= 1;
-					state.Mask |= 1;
-				}
-
-				if (state.BitCount > state.ClearCode)
-				{
-					state.BitCount = 9;
-					state.Mask = 511;
-					state.DictionaryLength = 256;
-
-					for (int i = 0; i < 2048; i++)
-					{
-						state.abDictionary[i * 3] = 0xff;
-						state.abDictionary[i * 3 + 1] = 0xff;
-						state.abDictionary[i * 3 + 2] = (byte)((i < 256) ? i : 0);
-					}
-
-					state.PreviousPosition = 0;
-				}
-				else
-				{
-					state.PreviousPosition = usNextPosition;
-				}
-			}
-
-			return state.DataStack.Pop();
-		}
-
-		private ushort ReadUInt16FromStream(FileStream stream)
-		{
-			int iByte0 = stream.ReadByte();
-			int iByte1 = stream.ReadByte();
-
-			if (iByte0 < 0 || iByte1 < 0)
-			{
-				// end of stream, return 0
-				return 0;
-			}
-
-			return (ushort)(iByte0 | (iByte1 << 8));
-		}
-		#endregion
 
 		#region Old File management functions
 		public void F0_2fa1_000a_OpenFile(ushort filenamePtr, ushort flags)
@@ -453,46 +141,46 @@ namespace OpenCiv1
 		#region Old Image loading functions
 		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, ushort xPos, ushort yPos, ushort filenamePtr, ushort palettePtr)
 		{
-			string filename = this.oCPU.DefaultDirectory + Path.GetFileName(this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)));
+			string filename = this.oCPU.DefaultDirectory + 
+				Path.GetFileName(this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)));
 			this.oCPU.Log.EnterBlock($"'F0_2fa1_01a2_LoadBitmapOrPalette'(0x{screenID:x4}, 0x{xPos:x4}, 0x{yPos:x4}, " +
 				$"'{filename}', 0x{palettePtr:x4})");
-			this.oCPU.CS.Word = 0x2fa1; // set this function segment
 
 			if (screenID >= 0 && Path.GetExtension(filename).Equals(".pic", StringComparison.InvariantCultureIgnoreCase))
 			{
 				if (this.oParent.VGADriver.Screens.ContainsKey(screenID))
 				{
-					byte[] paletteBuffer;
+					byte[] palette;
 					ushort startPtr;
-					this.oParent.VGADriver.Screens.GetValueByKey(screenID).LoadBitmap(xPos, yPos, filename, out paletteBuffer);
+					this.oParent.VGADriver.Screens.GetValueByKey(screenID).LoadBitmap(filename, xPos, yPos, out palette);
 
 					switch (palettePtr)
 					{
 						case 0:
 							startPtr = 0xba08;
-							for (int i = 0; i < paletteBuffer.Length; i++)
+							for (int i = 0; i < palette.Length; i++)
 							{
-								this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, paletteBuffer[i]);
+								this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
 							}
 							break;
 						case 1:
 							startPtr = 0xba06;
-							for (int i = 0; i < paletteBuffer.Length; i++)
+							for (int i = 0; i < palette.Length; i++)
 							{
-								this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, paletteBuffer[i]);
+								this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
 							}
 							break;
 
 						default:
 							startPtr = palettePtr;
-							for (int i = 0; i < paletteBuffer.Length; i++)
+							for (int i = 0; i < palette.Length; i++)
 							{
-								this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, paletteBuffer[i]);
+								this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
 							}
 							break;
 					}
 					if (palettePtr == 1 || palettePtr == 0xba06)
-						this.oParent.VGADriver.SetColorsFromColorStruct(paletteBuffer);
+						this.oParent.VGADriver.SetColorsFromColorStruct(palette);
 				}
 				else
 				{
@@ -502,233 +190,40 @@ namespace OpenCiv1
 			else
 			{
 				// function body
-				FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+				byte[] palette;
+				ushort startPtr;
 
-				bool bWordMode = F0_1000_108e_LoadPalette(stream, palettePtr);
+				VGABitmap.PaletteFromPICOrPAL(filename, out palette);
 
-				ImageDecoderState state = new ImageDecoderState(bWordMode);
-
-				state.UnknownValue1 = ReadUInt16FromStream(stream);
-				state.Width = ReadUInt16FromStream(stream);
-				state.Height = ReadUInt16FromStream(stream);
-
-				// init state
-				if (state.Width > 0 && state.Height > 0)
+				switch (palettePtr)
 				{
-					ushort usTemp = Math.Min(ReadUInt16FromStream(stream), (ushort)0xb);
-					state.ClearCode = (byte)usTemp;
-					state.InputData = usTemp;
-
-					if (screenID >= 0)
-					{
-						byte[] abPixelBuffer = new byte[state.Width];
-
-						for (int i = 0; i < state.Height; i++)
+					case 0:
+						startPtr = 0xba08;
+						for (int i = 0; i < palette.Length; i++)
 						{
-							F0_1000_1208_DecodeBitmapStream(stream, state, abPixelBuffer);
-							this.oParent.VGADriver.F0_VGA_03df_BufferToLine((ushort)screenID, abPixelBuffer, xPos, (ushort)(yPos + i), (ushort)state.Width);
+							this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
 						}
-					}
-				}
-
-				stream.Close();
-			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2fa1_01a2_LoadBitmapOrPalette'");
-		}
-
-		private bool F0_1000_108e_LoadPalette(FileStream stream, ushort palettePtr)
-		{
-			this.oCPU.Log.EnterBlock($"'F0_1000_108e_LoadPalette'(Cdecl, Far)(0x{palettePtr:x4})");
-
-			// function body
-			ushort usTemp;
-
-			while (((usTemp = ReadUInt16FromStream(stream)) & 0xff) != 0x58)
-			{
-				if (usTemp == 0x304d)
-				{
-					ushort usStartPtr = 0xba06;
-					switch (palettePtr)
-					{
-						case 0:
-							usStartPtr += 2;
-							break;
-						case 1:
-							break;
-						default:
-							usStartPtr = palettePtr;
-							break;
-					}
-
-					ushort usTempPtr = usStartPtr;
-					this.oCPU.Memory.WriteUInt16(this.oCPU.DS.Word, usTempPtr, usTemp);
-					usTempPtr += 2;
-
-					usTemp = ReadUInt16FromStream(stream);
-					this.oCPU.Memory.WriteUInt16(this.oCPU.DS.Word, usTempPtr, usTemp);
-					usTempPtr += 2;
-					ushort usCount = (ushort)(usTemp >> 1);
-
-					for (int i = 0; i < usCount; i++)
-					{
-						usTemp = ReadUInt16FromStream(stream);
-						this.oCPU.Memory.WriteUInt16(this.oCPU.DS.Word, usTempPtr, usTemp);
-						usTempPtr += 2;
-					}
-
-					if (usStartPtr == 0xba06)
-					{
-						this.oParent.VGADriver.F0_VGA_0162_SetColorsFromColorStruct(0xba06);
-					}
-				}
-				else
-				{
-					usTemp = ReadUInt16FromStream(stream);
-					ushort usCount = (ushort)(usTemp >> 1);
-
-					for (int i = 0; i < usCount; i++)
-					{
-						usTemp = ReadUInt16FromStream(stream);
-					}
-				}
-			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_108e_LoadPalette'");
-
-			return (usTemp & 0x100) != 0;
-		}
-
-		private void F0_1000_1208_DecodeBitmapStream(FileStream stream, ImageDecoderState state, byte[] buffer)
-		{
-			this.oCPU.Log.EnterBlock("'F0_1000_1208'(Cdecl, Far) at 0x1000:0x1208");
-			this.oCPU.CS.Word = 0x1000; // set this function segment
-
-			// function body
-			int iBufferPos = 0;
-			int iWidth = state.Width;
-
-			if (state.NibbleMode)
-			{
-				iWidth++;
-				iWidth >>= 1;
-			}
-
-			for (int i = 0; i < iWidth; i++)
-			{
-				byte ubPixelData = 0;
-
-				if (state.ChunkLength != 0)
-				{
-					ubPixelData = state.ChunkData;
-					state.ChunkLength--;
-				}
-				else
-				{
-					// Instruction address 0x1000:0x12c3, size: 3
-					ubPixelData = GetNextByte(stream, state);
-
-					if (ubPixelData != 0x90)
-					{
-						state.ChunkData = ubPixelData;
-					}
-					else
-					{
-						ubPixelData = GetNextByte(stream, state);
-
-						if (ubPixelData == 0)
+						break;
+					case 1:
+						startPtr = 0xba06;
+						for (int i = 0; i < palette.Length; i++)
 						{
-							ubPixelData = 0x90;
-							state.ChunkData = ubPixelData;
+							this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
 						}
-						else
+						break;
+
+					default:
+						startPtr = palettePtr;
+						for (int i = 0; i < palette.Length; i++)
 						{
-							state.ChunkLength = ubPixelData;
-							state.ChunkLength -= 2;
-							ubPixelData = state.ChunkData;
+							this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
 						}
-					}
+						break;
 				}
-
-				if (state.NibbleMode)
-				{
-					//this.oCPU.AX.High = this.oCPU.AX.Low;
-					//this.oCPU.AX.Low &= 0xf;
-					//this.oCPU.AX.High >>= 4;
-					//this.oCPU.Memory.WriteWord(this.oCPU.DS.Word, bufferPtr, (ushort)(((ushort)(this.oCPU.AX.Low & 0xf0) << 4) | (this.oCPU.AX.Low & 0xf)));
-					//bufferPtr += 2;
-					buffer[iBufferPos] = (byte)(ubPixelData & 0xf);
-					buffer[iBufferPos + 1] = (byte)((ushort)(ubPixelData & 0xf0) >> 4);
-					iBufferPos += 2;
-				}
-				else
-				{
-					buffer[iBufferPos] = ubPixelData;
-					iBufferPos++;
-				}
+				if (palettePtr == 1 || palettePtr == 0xba06)
+					this.oParent.VGADriver.SetColorsFromColorStruct(palette);
 			}
 
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_1208'");
-		}
-
-		public void F0_2fa1_01a2_LoadBitmapOrPalette1(short page, ushort xPos, ushort yPos, ushort filenamePtr, ushort palettePtr)
-		{
-			this.oCPU.Log.EnterBlock($"'F0_2fa1_01a2_LoadBitmapOrPalette'(0x{page:x4}, 0x{xPos:x4}, 0x{yPos:x4}, " +
-				$"'{this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr))}', 0x{palettePtr:x4})");
-			this.oCPU.CS.Word = 0x2fa1; // set this function segment
-
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x01b4); // stack management - push return offset
-										// Instruction address 0x2fa1:0x01b1, size: 3
-			F0_2fa1_000a_OpenFile(filenamePtr, 0);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2fa1; // restore this function segment
-			short sHandle = (short)this.oCPU.AX.Word;
-
-			this.oParent.Var_b26e = OpenCiv1.Constant_5528;
-
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x01ca); // stack management - push return offset
-										// Instruction address 0x2fa1:0x01c5, size: 5
-			F0_1000_108e_LoadPalette1(palettePtr, sHandle);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2fa1; // restore this function segment
-
-			if (page < 0)
-			{
-				this.oParent.Var_68e4 = 0x0;
-			}
-			else
-			{
-				for (int i = 0; i < this.oParent.Var_68e4; i++)
-				{
-					this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-					this.oCPU.PushWord(0x01e9); // stack management - push return offset
-												// Instruction address 0x2fa1:0x01e4, size: 5
-					F0_1000_1208_1(0xe17e, sHandle);
-					this.oCPU.PopDWord(); // stack management - pop return offset and segment
-					this.oCPU.CS.Word = 0x2fa1; // restore this function segment
-
-					this.oParent.VGADriver.F0_VGA_03df_BufferToLine(0xe17e, (ushort)page, xPos, (ushort)(yPos + i), this.oParent.Var_68e2);
-				}
-			}
-
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0217); // stack management - push return offset
-										// Instruction address 0x2fa1:0x0214, size: 3
-			F0_2fa1_009e_CloseFile(sHandle);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2fa1; // restore this function segment
-
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_2fa1_01a2_LoadBitmapOrPalette'");
 		}

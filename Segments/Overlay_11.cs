@@ -199,7 +199,8 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x10);
 
 			// Instruction address 0x0000:0x0114, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9), 0x41d3);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9), 
+				OpenCiv1.String_41d3);
 
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)), 0x0);
 			if (this.oCPU.Flags.NE) goto L0125;
@@ -951,7 +952,8 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 
 			// Instruction address 0x0000:0x0849, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9), 0x4386);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9), 
+				OpenCiv1.String_4386);
 
 			// Instruction address 0x0000:0x0858, size: 5
 			this.oParent.MSCAPI.open(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0x8000);
@@ -1005,7 +1007,8 @@ namespace OpenCiv1
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 
 			// Instruction address 0x0000:0x08d5, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9), 0x4399);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9),
+				OpenCiv1.String_4399);
 
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x08e9); // stack management - push return offset
@@ -1039,7 +1042,8 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 
 			// Instruction address 0x0000:0x0904, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9), 0x439d);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9),
+				OpenCiv1.String_439d);
 
 			this.oCPU.PushWord(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
 			this.oCPU.AX.Word = 0x2;
@@ -1078,7 +1082,8 @@ namespace OpenCiv1
 
 		L094e:
 			// Instruction address 0x0000:0x0959, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9), 0x43ba);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9),
+				OpenCiv1.String_43ba);
 
 			// Instruction address 0x0000:0x096c, size: 5
 			this.oParent.MSCAPI.open(this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0x8301, 0x80);

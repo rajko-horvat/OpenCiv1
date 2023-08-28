@@ -22,6 +22,18 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_1a30 = "nsound.cvl";
 		/// <summary>
+		/// "Please insert Disk "
+		/// </summary>
+		public static string String_1a93 = "Please insert Disk ";
+		/// <summary>
+		/// ".\n \n    Press Return\n    to continue.\n"
+		/// </summary>
+		public static string String_1aa7 = ".\n \n    Press Return\n    to continue.\n";
+		/// <summary>
+		/// "A"
+		/// </summary>
+		public static string String_1ade = "A";
+		/// <summary>
 		/// " Start a New Game\n Load a Saved Game\n EARTH\n Customize World\n View Hall of Fame\n"
 		/// </summary>
 		public static string String_1ae2 = " Start a New Game\n Load a Saved Game\n EARTH\n Customize World\n View Hall of Fame\n";
@@ -125,6 +137,10 @@ namespace OpenCiv1
 		/// ".\n"
 		/// </summary>
 		public static string String_1e48 = ".\n";
+		/// <summary>
+		/// "back0a.pal"
+		/// </summary>
+		public static string String_1e4b = "back0a.pal";
 		/// <summary>
 		/// "Will you?\n Keep moving\n Establish trade route\n"
 		/// </summary>
@@ -268,6 +284,10 @@ namespace OpenCiv1
 		/// <summary>
 		/// "more...\n"
 		/// </summary>
+		public static string String_225f = "more...\n";
+		/// <summary>
+		/// "more...\n"
+		/// </summary>
 		public static string String_2268 = "more...\n";
 		/// <summary>
 		/// "Military Advisor:\n"
@@ -281,6 +301,10 @@ namespace OpenCiv1
 		/// " ("
 		/// </summary>
 		public static string String_22af = " (";
+		/// <summary>
+		/// "discovr1.pic"
+		/// </summary>
+		public static string String_22bf = "discovr1.pic";
 		/// <summary>
 		/// "\ndiscover the secret\nof "
 		/// </summary>
@@ -297,6 +321,10 @@ namespace OpenCiv1
 		/// "iconpg1.pic"
 		/// </summary>
 		public static string String_2300 = "iconpg1.pic";
+		/// <summary>
+		/// ".pal"
+		/// </summary>
+		public static string String_230c = ".pal";
 		/// <summary>
 		/// "Science Advisor:\nI recommend we\ndevelop "
 		/// </summary>
@@ -834,6 +862,10 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_2f25 = " Miscellaneous\n";
 		/// <summary>
+		/// " report:"
+		/// </summary>
+		public static string String_2fb4 = " report:";
+		/// <summary>
 		/// ","
 		/// </summary>
 		public static string String_2fd2 = ",";
@@ -858,9 +890,37 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_2fee = "\n";
 		/// <summary>
+		/// "rb"
+		/// </summary>
+		public static string String_2ff0 = "rb";
+		/// <summary>
+		/// "rb"
+		/// </summary>
+		public static string String_2ff3 = "rt";
+		/// <summary>
+		/// "%[^\n]\n"
+		/// </summary>
+		public static string String_2ff6 = "%[^\n]\n";
+		/// <summary>
+		/// "%[^\n]\n"
+		/// </summary>
+		public static string String_2ffd = "%[^\n]\n";
+		/// <summary>
+		/// "%[^\n]\n"
+		/// </summary>
+		public static string String_3004 = "%[^\n]\n";
+		/// <summary>
+		/// "%[^\n]\n"
+		/// </summary>
+		public static string String_300d = "%[^\n]\n";
+		/// <summary>
 		/// " "
 		/// </summary>
 		public static string String_300b = " ";
+		/// <summary>
+		/// "r+b"
+		/// </summary>
+		public static string String_3014 = "r+b";
 		/// <summary>
 		/// "                                                                               \n"
 		/// </summary>
@@ -902,6 +962,14 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_3281 = "fonts.cv";
 		/// <summary>
+		/// "rt"
+		/// </summary>
+		public static string String_32b2 = "rt";
+		/// <summary>
+		/// "credits.txt"
+		/// </summary>
+		public static string String_32b5 = "credits.txt";
+		/// <summary>
 		/// " "
 		/// </summary>
 		public static string String_32f0 = " ";
@@ -929,6 +997,18 @@ namespace OpenCiv1
 		/// "\n"
 		/// </summary>
 		public static string String_3379 = "\n";
+		/// <summary>
+		/// "%[^\n]\n"
+		/// </summary>
+		public static string String_337b = "%[^\n]\n";
+		/// <summary>
+		/// "fame.dta"
+		/// </summary>
+		public static string String_33ac = "fame.dta";
+		/// <summary>
+		/// "fame.dta"
+		/// </summary>
+		public static string String_33b5 = "fame.dta";
 		/// <summary>
 		/// " ---"
 		/// </summary>
@@ -981,6 +1061,10 @@ namespace OpenCiv1
 		/// ")"
 		/// </summary>
 		public static string String_34ad = ")";
+		/// <summary>
+		/// "*"
+		/// </summary>
+		public static string String_34b0 = "*";
 		/// <summary>
 		/// "Difficulty Level...\n Chieftain (easiest)\n Warlord\n Prince\n King\n Emperor (toughest)\n"
 		/// </summary>
@@ -1086,6 +1170,10 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_36fa = "NONE";
 		/// <summary>
+		/// "govt0a.pic"
+		/// </summary>
+		public static string String_3734 = "govt0a.pic";
+		/// <summary>
 		/// " government\nchanged to "
 		/// </summary>
 		public static string String_373f = " government\nchanged to ";
@@ -1093,6 +1181,14 @@ namespace OpenCiv1
 		/// "!\n"
 		/// </summary>
 		public static string String_3757 = "!\n";
+		/// <summary>
+		/// "Empress"
+		/// </summary>
+		public static string String_3768 = "Empress";
+		/// <summary>
+		/// "Empress"
+		/// </summary>
+		public static string String_3770 = "Empress";
 		/// <summary>
 		/// "You are overruled by the Senate.\nTreaty signed.\n"
 		/// </summary>
@@ -1198,13 +1294,65 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_3ad6 = ".";
 		/// <summary>
+		/// "govt0a.pic"
+		/// </summary>
+		public static string String_3ad8 = "govt0a.pic";
+		/// <summary>
+		/// "king00.pic"
+		/// </summary>
+		public static string String_3ae3 = "king00.pic";
+		/// <summary>
+		/// "govt0a.pic"
+		/// </summary>
+		public static string String_3af3 = "govt0a.pic";
+		/// <summary>
+		/// "back0a.pic"
+		/// </summary>
+		public static string String_3b06 = "back0a.pic";
+		/// <summary>
+		/// "pal"
+		/// </summary>
+		public static string String_3b11 = "pal";
+		/// <summary>
+		/// "king00.pal"
+		/// </summary>
+		public static string String_3b15 = "king00.pal";
+		/// <summary>
+		/// "rt"
+		/// </summary>
+		public static string String_3b3e = "rt";
+		/// <summary>
+		/// "story.txt"
+		/// </summary>
+		public static string String_3b41 = "story.txt";
+		/// <summary>
 		/// ""
 		/// </summary>
 		public static string String_3b4b = "";
 		/// <summary>
+		/// "%[^\n]\n"
+		/// </summary>
+		public static string String_3b4c = "%[^\n]\n";
+		/// <summary>
+		/// "birth0.pic"
+		/// </summary>
+		public static string String_3b53 = "birth0.pic";
+		/// <summary>
+		/// "pal"
+		/// </summary>
+		public static string String_3b5e = "pal";
+		/// <summary>
 		/// "Global temperature\nrises! Icecaps melt.\nSevere Drought.\n"
 		/// </summary>
 		public static string String_3b6a = "Global temperature\nrises! Icecaps melt.\nSevere Drought.\n";
+		/// <summary>
+		/// "a"
+		/// </summary>
+		public static string String_3c8e = "a";
+		/// <summary>
+		/// "zzz"
+		/// </summary>
+		public static string String_3cd6 = "zzz";
 		/// <summary>
 		/// "iconpg1.pic"
 		/// </summary>
@@ -1217,6 +1365,14 @@ namespace OpenCiv1
 		/// "iconpgt1.pic"
 		/// </summary>
 		public static string String_3d68 = "iconpgt1.pic";
+		/// <summary>
+		/// "*"
+		/// </summary>
+		public static string String_3d99 = "*";
+		/// <summary>
+		/// "2"
+		/// </summary>
+		public static string String_3d9b = "2";
 		/// <summary>
 		/// "Requires "
 		/// </summary>
@@ -1382,6 +1538,10 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_3fa2 = "%";
 		/// <summary>
+		/// "replay.txt"
+		/// </summary>
+		public static string String_3ffd = "replay.txt";
+		/// <summary>
 		/// "File Error\n"
 		/// </summary>
 		public static string String_4008 = "File Error\n";
@@ -1454,6 +1614,10 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_40c0 = " civilization destroyed by ";
 		/// <summary>
+		/// "s"
+		/// </summary>
+		public static string String_40de = "s";
+		/// <summary>
 		/// "The entire world hails"
 		/// </summary>
 		public static string String_40e0 = "The entire world hails";
@@ -1461,6 +1625,18 @@ namespace OpenCiv1
 		/// " the CONQUEROR!"
 		/// </summary>
 		public static string String_40f7 = " the CONQUEROR!";
+		/// <summary>
+		/// "king00.pic"
+		/// </summary>
+		public static string String_4107 = "king00.pic";
+		/// <summary>
+		/// "slam2.pic"
+		/// </summary>
+		public static string String_411c = "slam2.pic";
+		/// <summary>
+		/// "pal"
+		/// </summary>
+		public static string String_4126 = "pal";
 		/// <summary>
 		/// ": "
 		/// </summary>
@@ -1578,6 +1754,10 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_41b0 = "\x008cSelect Load File...\n";
 		/// <summary>
+		/// "SVE"
+		/// </summary>
+		public static string String_41d3 = "SVE";
+		/// <summary>
 		/// " "
 		/// </summary>
 		public static string String_41d7 = " ";
@@ -1654,6 +1834,10 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_436e = "No Disk in Drive A.\n";
 		/// <summary>
+		/// "SVE"
+		/// </summary>
+		public static string String_4386 = "SVE";
+		/// <summary>
 		/// "File Error: "
 		/// </summary>
 		public static string String_438a = "File Error: ";
@@ -1662,9 +1846,21 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_4397 = "\n";
 		/// <summary>
+		/// "map"
+		/// </summary>
+		public static string String_4399 = "map";
+		/// <summary>
+		/// "map"
+		/// </summary>
+		public static string String_439d = "map";
+		/// <summary>
 		/// "Error writing map file.\n"
 		/// </summary>
 		public static string String_43a1 = "Error writing map file.\n";
+		/// <summary>
+		/// "SVE"
+		/// </summary>
+		public static string String_43ba = "SVE";
 		/// <summary>
 		/// "File Error: "
 		/// </summary>
@@ -2110,9 +2306,17 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_4ab6 = "-";
 		/// <summary>
+		/// "a"
+		/// </summary>
+		public static string String_4ab8 = "a";
+		/// <summary>
 		/// " "
 		/// </summary>
 		public static string String_4aba = " ";
+		/// <summary>
+		/// "zzz"
+		/// </summary>
+		public static string String_4abc = "zzz";
 		/// <summary>
 		/// " and "
 		/// </summary>
@@ -2125,6 +2329,22 @@ namespace OpenCiv1
 		/// "A"
 		/// </summary>
 		public static string String_4b11 = "A";
+		/// <summary>
+		/// "cbacks0.pic"
+		/// </summary>
+		public static string String_4b93 = "cbacks0.pic";
+		/// <summary>
+		/// "cbrush0.pic"
+		/// </summary>
+		public static string String_4ba4 = "cbrush0.pic";
+		/// <summary>
+		/// "castle0.pic"
+		/// </summary>
+		public static string String_4bb8 = "castle0.pic";
+		/// <summary>
+		/// "back0a.pal"
+		/// </summary>
+		public static string String_4cdf = "back0a.pal";
 		/// <summary>
 		/// " SpaceShip: X.S.S. "
 		/// </summary>
@@ -2325,6 +2545,10 @@ namespace OpenCiv1
 		/// "January 1, "
 		/// </summary>
 		public static string String_5165 = "January 1, ";
+		/// <summary>
+		/// "*NEWSA"
+		/// </summary>
+		public static string String_5171 = "*NEWSA";
 		/// <summary>
 		/// " diplomat arrives\nin "
 		/// </summary>

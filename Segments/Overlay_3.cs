@@ -65,7 +65,7 @@ namespace OpenCiv1
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 
 			// Instruction address 0x0000:0x0041, size: 5
-			this.oParent.MSCAPI.open(0x33ac, 0x8102, 0x80);
+			this.oParent.MSCAPI.open(OpenCiv1.String_33ac, 0x8102, 0x80);
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 
@@ -99,7 +99,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x2);
 
 			// Instruction address 0x0000:0x0095, size: 5
-			this.oParent.MSCAPI.open(0x33b5, 0x8302, 0x80);
+			this.oParent.MSCAPI.open(OpenCiv1.String_33b5, 0x8302, 0x80);
 
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 

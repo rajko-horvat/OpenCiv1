@@ -64,7 +64,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0085;
 
 			// Instruction address 0x0000:0x004a, size: 5
-			this.oParent.MSCAPI.open(0x3ffd, 0x8301, 0x80);
+			this.oParent.MSCAPI.open(OpenCiv1.String_3ffd, 0x8301, 0x80);
 
 			this.oCPU.WriteWord(this.oCPU.DS.Word, 0x680c, this.oCPU.AX.Word);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xffff);
@@ -1532,7 +1532,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x0dbc, size: 5
-			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x10), 0x40de);
+			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x10), OpenCiv1.String_40de);
 
 		L0dc4:
 			this.oCPU.BX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
@@ -1769,7 +1769,7 @@ namespace OpenCiv1
 			this.oCPU.WriteWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x0f9e, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), 0x4107);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), OpenCiv1.String_4107);
 
 			this.oCPU.AX.Word = this.oCPU.ReadWord(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32));
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
@@ -1868,7 +1868,7 @@ namespace OpenCiv1
 				0, 0);
 
 			// Instruction address 0x0000:0x10a9, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x24), 0x411c);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x24), OpenCiv1.String_411c);
 
 			this.oCPU.CMPWord(this.oCPU.ReadWord(this.oCPU.DS.Word, 0xd762), 0x0);
 			if (this.oCPU.Flags.NE) goto L10bc;
@@ -1967,7 +1967,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L1254;
 
 			// Instruction address 0x0000:0x1200, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x9), 0x4126);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x9), OpenCiv1.String_4126);
 
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x1215); // stack management - push return offset

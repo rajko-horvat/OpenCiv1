@@ -1798,11 +1798,8 @@ namespace OpenCiv1
 			this.oCPU.Temp.Word = this.Var_89e;
 			this.Var_89e = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = this.oCPU.Temp.Word;
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0xf);
-			this.oCPU.AX.Word = this.oCPU.SHRWord(this.oCPU.AX.Word, 0x1);
-			this.oCPU.AX.Word = this.oCPU.SHRWord(this.oCPU.AX.Word, 0x1);
-			this.oCPU.AX.Word = this.oCPU.SHRWord(this.oCPU.AX.Word, 0x1);
-			this.oCPU.AX.Word = this.oCPU.SHRWord(this.oCPU.AX.Word, 0x1);
+			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 15);
+			this.oCPU.AX.Word = this.oCPU.SHRWord(this.oCPU.AX.Word, 4);
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, this.Var_8a0);
 			this.oCPU.Temp.Word = this.Var_8a0;
 			this.Var_8a0 = this.oCPU.AX.Word;
