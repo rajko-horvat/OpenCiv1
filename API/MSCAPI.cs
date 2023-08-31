@@ -321,13 +321,18 @@ namespace OpenCiv1
 			}
 
 			short sHandle = -1;
-			string sPath = $"{this.oCPU.DefaultDirectory}{filename}";
-			if (File.Exists(sPath))
+			string sPath = $"{this.oCPU.DefaultDirectory}{Path.GetFileName(filename)}";
+			this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
+
+			try
 			{
-				this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 				this.oCPU.Files.Add(this.oCPU.FileHandleCount, new FileStreamItem(new FileStream($"{sPath}", eMode, eAccess), eType));
 				sHandle = this.oCPU.FileHandleCount;
 				this.oCPU.FileHandleCount++;
+			}
+			catch
+			{
+				sHandle = -1;
 			}
 
 			this.oCPU.AX.Word = (ushort)sHandle; // preserve compatibility
@@ -635,7 +640,6 @@ namespace OpenCiv1
 
 		public short open(string filename, ushort access, ushort mode)
 		{
-			string sName = Path.GetFileName(filename);
 			FileMode eMode = FileMode.Open;
 			FileAccess eAccess = FileAccess.Read;
 			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
@@ -684,7 +688,8 @@ namespace OpenCiv1
 			}
 
 			short sHandle = -1;
-			string sPath = $"{this.oCPU.DefaultDirectory}{sName}";
+			string sPath = $"{this.oCPU.DefaultDirectory}{Path.GetFileName(filename)}";
+
 			this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 			try
 			{
@@ -721,9 +726,9 @@ namespace OpenCiv1
 			return sTemp;
 		}
 
-		public short read(short handle, ushort buf, ushort length)
+		public short read(short handle, ushort bufferPtr, ushort length)
 		{
-			uint address = CPU.ToLinearAddress(this.oCPU.DS.Word, buf);
+			uint address = CPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr);
 			short sItemCount = -1;
 
 			if (this.oCPU.Files.ContainsKey(handle))
@@ -754,9 +759,9 @@ namespace OpenCiv1
 			return sItemCount;
 		}
 
-		public short write(short handle, ushort buf, ushort length)
+		public short write(short handle, ushort bufferPtr, ushort length)
 		{
-			uint address = CPU.ToLinearAddress(this.oCPU.DS.Word, buf);
+			uint address = CPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr);
 			short sItemCount = -1;
 
 			if (this.oCPU.Files.ContainsKey(handle))

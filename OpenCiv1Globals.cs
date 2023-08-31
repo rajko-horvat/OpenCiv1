@@ -1847,6 +1847,14 @@ namespace OpenCiv1
 		/// </summary>
 		public static string String_427c = "\n ... save in progress.\n";
 		/// <summary>
+		/// "  Which drive contains your\n    saved game files?\n\n            "
+		/// </summary>
+		public static string String_4295 = "  Which drive contains your\n    saved game files?\n\n            ";
+		/// <summary>
+		/// "  Which drive contains your\n     Save Game disk?\n\n            "
+		/// </summary>
+		public static string String_42d5 = "  Which drive contains your\n     Save Game disk?\n\n            ";
+		/// <summary>
 		/// ":\n\n    Press drive letter and\nReturn when disk is inserted.\n"
 		/// </summary>
 		public static string String_4314 = ":\n\n    Press drive letter and\nReturn when disk is inserted.\n";

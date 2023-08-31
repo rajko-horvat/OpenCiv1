@@ -12,7 +12,7 @@ Overlay 7	Intro and map initialization
 Overlay 8	Civilopedia
 Overlay 9	?
 Overlay 10	?
-Overlay 11	Load game dialog
+Overlay 11	Load and save game dialog and code
 Overlay 12	World map
 Overlay 13	?
 Overlay 14	City, military, intelligence, attitude, science, score report
@@ -23,5 +23,5 @@ Overlay 18	?
 Overlay 19 	City graphical view
 Overlay 20	Build city
 Overlay 21	Newspaper news
-Overlay 22	?
+Overlay 22	Diplomat dialogs
 Overlay 23	Build city intro

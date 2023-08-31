@@ -23,12 +23,16 @@ For this stage of code rewrite, the programmings skills needed are:
 <li>For details see: https://github.com/rajko-horvat/OpenCiv1/wiki/Introduction-to-code-translating</li>
 </ul>
 
-## Final Goal for this project
-<p>Is a complete rewrite of the code, fixing the bugs and porting it to a modern platform.</p>
-<b>The planned milestones to reach:</b>
+## Project milestones
+<p>The goal is to completely rewrite of the code (first stage), fix the bugs and port the code to a modern platform (second stage).</p>
+<b>Milestones for a first stage are:</b>
 <ul>
 <li>Reaching the initial playability of the game (passed),</li>
 <li>Rewrite of the original code, functionalities and features (in progress...),</li>
+<li>Archive the original code.</li>
+</ul><br>
+<b>Planned milestones for a second stage are:</b>
+<ul>
 <li>Fixing the bugs and introduction of new features (multiplayer capabilities...),</li>
 <li>Porting to HTML5 platform,</li>
 <li>Redesigning graphics and music.</li>

@@ -146,7 +146,8 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"'F0_2fa1_01a2_LoadBitmapOrPalette'(0x{screenID:x4}, 0x{xPos:x4}, 0x{yPos:x4}, " +
 				$"'{filename}', 0x{palettePtr:x4})");
 
-			if (screenID >= 0 && Path.GetExtension(filename).Equals(".pic", StringComparison.InvariantCultureIgnoreCase))
+			if (screenID >= 0 && (Path.GetExtension(filename).Equals(".pic", StringComparison.InvariantCultureIgnoreCase) ||
+				Path.GetExtension(filename).Equals(".map", StringComparison.InvariantCultureIgnoreCase)))
 			{
 				if (this.oParent.VGADriver.Screens.ContainsKey(screenID))
 				{
@@ -154,6 +155,51 @@ namespace OpenCiv1
 					ushort startPtr;
 					this.oParent.VGADriver.Screens.GetValueByKey(screenID).LoadBitmap(filename, xPos, yPos, out palette);
 
+					if (palette != null)
+					{
+						switch (palettePtr)
+						{
+							case 0:
+								startPtr = 0xba08;
+								for (int i = 0; i < palette.Length; i++)
+								{
+									this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+								}
+								break;
+							case 1:
+								startPtr = 0xba06;
+								for (int i = 0; i < palette.Length; i++)
+								{
+									this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+								}
+								break;
+
+							default:
+								startPtr = palettePtr;
+								for (int i = 0; i < palette.Length; i++)
+								{
+									this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+								}
+								break;
+						}
+						if (palettePtr == 1 || palettePtr == 0xba06)
+							this.oParent.VGADriver.SetColorsFromColorStruct(palette);
+					}
+				}
+				else
+				{
+					throw new Exception($"The page {screenID} is not allocated");
+				}
+			}
+			else
+			{
+				// function body
+				byte[] palette;
+				ushort startPtr;
+
+				VGABitmap.PaletteFromPICOrPAL(filename, out palette);
+				if (palette != null)
+				{
 					switch (palettePtr)
 					{
 						case 0:
@@ -182,46 +228,6 @@ namespace OpenCiv1
 					if (palettePtr == 1 || palettePtr == 0xba06)
 						this.oParent.VGADriver.SetColorsFromColorStruct(palette);
 				}
-				else
-				{
-					throw new Exception($"The page {screenID} is not allocated");
-				}
-			}
-			else
-			{
-				// function body
-				byte[] palette;
-				ushort startPtr;
-
-				VGABitmap.PaletteFromPICOrPAL(filename, out palette);
-
-				switch (palettePtr)
-				{
-					case 0:
-						startPtr = 0xba08;
-						for (int i = 0; i < palette.Length; i++)
-						{
-							this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
-						}
-						break;
-					case 1:
-						startPtr = 0xba06;
-						for (int i = 0; i < palette.Length; i++)
-						{
-							this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
-						}
-						break;
-
-					default:
-						startPtr = palettePtr;
-						for (int i = 0; i < palette.Length; i++)
-						{
-							this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
-						}
-						break;
-				}
-				if (palettePtr == 1 || palettePtr == 0xba06)
-					this.oParent.VGADriver.SetColorsFromColorStruct(palette);
 			}
 
 			// Far return
