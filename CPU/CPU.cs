@@ -2680,7 +2680,7 @@ namespace Disassembler
 		}
 
 		/// <summary>
-		/// <para>INT 21,48 - Allocate Memory</para>
+		/// <para>INT 21,48 - Allocate MemoryContent</para>
 		/// <para>Parameters: BX = number of memory paragraphs requested</para>
 		/// <para>Returns: AX = segment address of allocated memory block (MCB + 1para), 
 		/// or error code if CF set;
@@ -2713,7 +2713,7 @@ namespace Disassembler
 		}
 
 		/// <summary>
-		/// <para>INT 21,49 - Free Allocated Memory</para>
+		/// <para>INT 21,49 - Free Allocated MemoryContent</para>
 		/// <para>Parameters: ES = segment of the block to be returned (MCB + 1para)</para>
 		/// <para>Returns: AX = error code if CF set</para>
 		/// <para>Remarks: releases memory and MCB allocated by INT 21,48. 
@@ -2740,7 +2740,7 @@ namespace Disassembler
 		}
 
 		/// <summary>
-		/// <para>INT 21,4A - Modify Allocated Memory Block (SETBLOCK)</para>
+		/// <para>INT 21,4A - Modify Allocated MemoryContent Block (SETBLOCK)</para>
 		/// <para>Parameters: BX = new requested block size in paragraphs,
 		/// ES = segment of the block (MCB + 1 para)</para>
 		/// <para>Returns: AX = error code if CF set; 

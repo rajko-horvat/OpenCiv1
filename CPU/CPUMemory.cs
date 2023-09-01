@@ -33,6 +33,11 @@ namespace Disassembler
 			get { return this.oCPU; }
 		}
 
+		public byte[] MemoryContent
+		{
+			get { return this.aMemory; }
+		}
+
 		public CPUMemoryRegion FreeMemory
 		{
 			get { return this.aMemoryRegions[0]; }

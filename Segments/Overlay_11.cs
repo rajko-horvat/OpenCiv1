@@ -1,5 +1,7 @@
 using Disassembler;
 using System;
+using System.CodeDom.Compiler;
+using System.IO;
 
 namespace OpenCiv1
 {
@@ -74,7 +76,7 @@ namespace OpenCiv1
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x005a); // stack management - push return offset
-			F11_0000_0103();
+			F11_0000_0103_LoadGame();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
@@ -141,7 +143,7 @@ namespace OpenCiv1
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x00cf); // stack management - push return offset
-			F11_0000_0103();
+			F11_0000_0103_LoadGame();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
@@ -188,7 +190,7 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F11_0000_0000'");
 		}
 
-		public void F11_0000_0103()
+		public void F11_0000_0103_LoadGame()
 		{
 			this.oCPU.Log.EnterBlock("'F11_0000_0103'(Cdecl, Far) at 0x0000:0x0103");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
@@ -306,14 +308,12 @@ namespace OpenCiv1
 			goto L0366;
 
 		L02fd:
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0304); // stack management - push return offset
-			F11_0000_083b_LoadGame();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			string path = this.oCPU.ReadString(
+				CPU.ToLinearAddress(this.oCPU.DS.Word,
+					this.oCPU.Memory.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))));
+
+			F11_0000_083b_LoadGameData(path);
+
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.PushWord(this.oCPU.DX.Word);
@@ -426,7 +426,7 @@ namespace OpenCiv1
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x03bc); // stack management - push return offset
-			F11_0000_0103();
+			F11_0000_0103_LoadGame();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
@@ -484,7 +484,7 @@ namespace OpenCiv1
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0424); // stack management - push return offset
-			F11_0000_04ef();
+			F11_0000_04ef_SaveGame();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
@@ -578,7 +578,7 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F11_0000_036a'");
 		}
 
-		public void F11_0000_04ef()
+		public void F11_0000_04ef_SaveGame()
 		{
 			this.oCPU.Log.EnterBlock("'F11_0000_04ef'(Cdecl, Far) at 0x0000:0x04ef");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
@@ -646,13 +646,13 @@ namespace OpenCiv1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x05d2); // stack management - push return offset
-			F11_0000_08f6_SaveGame();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
+
+			string path = this.oCPU.ReadString(
+				CPU.ToLinearAddress(this.oCPU.DS.Word, 
+					this.oCPU.Memory.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))));
+
+			F11_0000_08f6_SaveGameData(path);
+
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
@@ -918,18 +918,139 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F11_0000_07d6'");
 		}
 
-		public void F11_0000_083b_LoadGame()
+		public bool F11_0000_083b_LoadGameData(string path)
 		{
-			this.oCPU.Log.EnterBlock("F11_0000_083b_LoadGame()");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
+			this.oCPU.Log.EnterBlock($"F11_0000_083b_LoadGame({path})");
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
+			bool bSuccess = false;
+			string filename = Path.GetFileNameWithoutExtension(path);
+			path = this.oCPU.DefaultDirectory;
+
+			try
+			{
+				// read map file
+				byte[] temp;
+				VGABitmap map = VGABitmap.FromFile($"{path}{filename}.map", out temp);
+				this.oParent.VGADriver.Screens.SetValueByKey(2, map);
+
+				// read sve file
+				FileStream reader = new FileStream($"{path}{filename}.sve", FileMode.Open);
+				ReadFileData(reader, 0x81d2, 2);
+				ReadFileData(reader, 0xd7ee, 2);
+				ReadFileData(reader, 0x7f36, 2);
+				ReadFileData(reader, 0x6e80, 2);
+				ReadFileData(reader, 0xb220, 2);
+				ReadFileData(reader, 0x6b86, 2);
+				ReadFileData(reader, 0x6b8a, 2);
+				ReadFileData(reader, 0x19be, 2);
+				ReadFileData(reader, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19a2), 0x70);
+				ReadFileData(reader, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1992), 0x60);
+				ReadFileData(reader, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1982), 0x58);
+				ReadFileData(reader, 0xb1d6, 0x10);
+				ReadFileData(reader, 0x6dec, 0x10);
+				ReadFileData(reader, 0xb3be, 0x1c0);
+				ReadFileData(reader, 0xd308, 0x1c0);
+				ReadFileData(reader, 0xe898, 0x10);
+				ReadFileData(reader, 0xe3c8, 0x50);
+				ReadFileData(reader, 0xdefc, 0x10);
+				ReadFileData(reader, 0xe698, 0x100);
+				ReadFileData(reader, 0xe498, 0x80);
+				ReadFileData(reader, 0x6b66, 0x10);
+				ReadFileData(reader, 0x6b76, 0x10);
+				ReadFileData(reader, 0xe16a, 0x10);
+				ReadFileData(reader, 0x8068, 0x10);
+				ReadFileData(reader, 0xd2f8, 0x10);
+				ReadFileData(reader, 0x6e82, 0x10);
+				ReadFileData(reader, 0x803c, 0x10);
+				ReadFileData(reader, 0xdf0e, 0x10);
+				ReadFileData(reader, 0xddfe, 0x10);
+				ReadFileData(reader, 0xd2e4, 0x10);
+				ReadFileData(reader, 0xdcec, 0x10);
+				ReadFileData(reader, 0xd7f4, 0x10);
+				ReadFileData(reader, 0x6cac, 0x100);
+				ReadFileData(reader, 0x807a, 0x100);
+				ReadFileData(reader, 0x6b96, 0x100);
+				ReadFileData(reader, 0xdcfe, 0x100);
+				ReadFileData(reader, 0xb1ee, 0x20);
+				ReadFileData(reader, 0x3772, 0, 0x4b0);
+				ReadFileData(reader, 0x3772, 0x1f88, 0x4b0);
+				ReadFileData(reader, 0x70ec, 0xe00);
+				ReadFileData(reader, 0x112a, 0x3b8);
+				ReadFileData(reader, 0x81d4, 0x3000);
+				ReadFileData(reader, 0x3772, 0x740, 0xfa0);
+				ReadFileData(reader, 0xd76e, 0x80);
+				ReadFileData(reader, 0xe518, 0x80);
+				ReadFileData(reader, 0xdc6c, 0x80);
+				ReadFileData(reader, 0xde22, 0x80);
+				ReadFileData(reader, 0x3772, 0x4b0, 0x90);
+				ReadFileData(reader, 0xe418, 0x80);
+				ReadFileData(reader, 0x3604, 0, 0xd00);
+				ReadFileData(reader, 0x40dc, 2);
+				ReadFileData(reader, 0x3772, 0x26fc, 0x1000);
+				ReadFileData(reader, 0x6ea8, 0x2c);
+				ReadFileData(reader, 0x3772, 0x253c, 0x1c0);
+				ReadFileData(reader, 0x3772, 0x1d48, 0x240);
+				ReadFileData(reader, 0x6e94, 2);
+				ReadFileData(reader, 0xb1ea, 2);
+				ReadFileData(reader, 0xdb36, 2);
+				ReadFileData(reader, 0x19c0, 2);
+				ReadFileData(reader, 0xdb44, 0x104);
+				ReadFileData(reader, 0x804c, 2);
+				ReadFileData(reader, 0xb23a, 2);
+				ReadFileData(reader, 0xe3c4, 2);
+				ReadFileData(reader, 0xb210, 0x10);
+				ReadFileData(reader, 0x1c26, 2);
+				ReadFileData(reader, 0x6c9c, 0x10);
+				ReadFileData(reader, 0x3772, 0x16e0, 0x5a0);
+				ReadFileData(reader, 0x4cd8, 2);
+				ReadFileData(reader, 0x4cd4, 2);
+				ReadFileData(reader, 0x4cd6, 2);
+				ReadFileData(reader, 0xde10, 0x10);
+				ReadFileData(reader, 0xd91e, 0x18);
+				ReadFileData(reader, 0xb222, 0x18);
+				ReadFileData(reader, 0x3772, 0x540, 0x100);
+				ReadFileData(reader, 0x3772, 0x640, 0x100);
+				ReadFileData(reader, 0x1c20, 2);
+				ReadFileData(reader, 0xd808, 2);
+				ReadFileData(reader, 0xd2f4, 2);
+				ReadFileData(reader, 0xdeec, 0x10);
+				ReadFileData(reader, 0xe8a8, 0x10);
+				ReadFileData(reader, 0xdf1e, 2);
+
+				reader.Close();
+
+				bSuccess = true;
+			}
+			catch (Exception ex)
+			{
+				this.oParent.MSCAPI.strcpy(0xba06, ex.Message);
+
+				this.oCPU.AX.Word = 0x50;
+				this.oCPU.PushWord(this.oCPU.AX.Word);
+				this.oCPU.AX.Word = 0x64;
+				this.oCPU.PushWord(this.oCPU.AX.Word);
+				this.oCPU.AX.Word = 0xba06;
+				this.oCPU.PushWord(this.oCPU.AX.Word);
+				this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+				this.oCPU.PushWord(0x08a8); // stack management - push return offset
+				// Instruction address 0x0000:0x08a3, size: 5
+				this.oParent.Segment_1238.F0_1238_001e();
+				this.oCPU.PopDWord(); // stack management - pop return offset and segment
+				this.oCPU.CS.Word = this.usSegment; // restore this function segment
+				this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+
+				bSuccess = false;
+			}
+
+			/*this.oCPU.PushWord(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 
 			// Instruction address 0x0000:0x0849, size: 5
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9), 
 				OpenCiv1.String_4386);
+
+			// load sve file
 
 			// Instruction address 0x0000:0x0858, size: 5
 			this.oParent.MSCAPI.open(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0x8000);
@@ -982,6 +1103,8 @@ namespace OpenCiv1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 
+			// read sve file
+
 			// Instruction address 0x0000:0x08d5, size: 5
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9),
 				OpenCiv1.String_4399);
@@ -1003,21 +1126,149 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1;
 
 		L08f4:
-			this.oCPU.BP.Word = this.oCPU.PopWord();
+			this.oCPU.BP.Word = this.oCPU.PopWord();*/
+
 			// Far return
 			this.oCPU.Log.ExitBlock("F11_0000_083b_LoadGame");
+
+			return bSuccess;
 		}
 
-		public void F11_0000_08f6_SaveGame()
+		public void ReadFileData(Stream reader, ushort bufferPtr, ushort length)
 		{
-			this.oCPU.Log.EnterBlock("F11_0000_08f6_SaveGame()");
-			this.oCPU.CS.Word = this.usSegment; // set this function segment
+			reader.Read(this.oCPU.Memory.MemoryContent,
+				(int)CPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr), length);
+		}
+
+		public void ReadFileData(Stream reader, ushort bufferSeg, ushort bufferPtr, ushort length)
+		{
+			reader.Read(this.oCPU.Memory.MemoryContent,
+				(int)CPU.ToLinearAddress(bufferSeg, bufferPtr), length);
+		}
+
+		public bool F11_0000_08f6_SaveGameData(string path)
+		{
+			this.oCPU.Log.EnterBlock($"F11_0000_08f6_SaveGame({path})");
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
+			bool bSuccess = false;
+			string filename = Path.GetFileNameWithoutExtension(path);
+			path = this.oCPU.DefaultDirectory;
 
-			// Instruction address 0x0000:0x0904, size: 5
+			try
+			{
+				// write map file
+				this.oParent.VGADriver.Screens.GetValueByKey(2).Save($"{path}{filename}.map", false);
+
+				// write sve file
+				FileStream writer = new FileStream($"{path}{filename}.sve", FileMode.Create);
+				WriteFileData(writer, 0x81d2, 2);
+				WriteFileData(writer, 0xd7ee, 2);
+				WriteFileData(writer, 0x7f36, 2);
+				WriteFileData(writer, 0x6e80, 2);
+				WriteFileData(writer, 0xb220, 2);
+				WriteFileData(writer, 0x6b86, 2);
+				WriteFileData(writer, 0x6b8a, 2);
+				WriteFileData(writer, 0x19be, 2);
+				WriteFileData(writer, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19a2), 0x70);
+				WriteFileData(writer, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1992), 0x60);
+				WriteFileData(writer, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1982), 0x58);
+				WriteFileData(writer, 0xb1d6, 0x10);
+				WriteFileData(writer, 0x6dec, 0x10);
+				WriteFileData(writer, 0xb3be, 0x1c0);
+				WriteFileData(writer, 0xd308, 0x1c0);
+				WriteFileData(writer, 0xe898, 0x10);
+				WriteFileData(writer, 0xe3c8, 0x50);
+				WriteFileData(writer, 0xdefc, 0x10);
+				WriteFileData(writer, 0xe698, 0x100);
+				WriteFileData(writer, 0xe498, 0x80);
+				WriteFileData(writer, 0x6b66, 0x10);
+				WriteFileData(writer, 0x6b76, 0x10);
+				WriteFileData(writer, 0xe16a, 0x10);
+				WriteFileData(writer, 0x8068, 0x10);
+				WriteFileData(writer, 0xd2f8, 0x10);
+				WriteFileData(writer, 0x6e82, 0x10);
+				WriteFileData(writer, 0x803c, 0x10);
+				WriteFileData(writer, 0xdf0e, 0x10);
+				WriteFileData(writer, 0xddfe, 0x10);
+				WriteFileData(writer, 0xd2e4, 0x10);
+				WriteFileData(writer, 0xdcec, 0x10);
+				WriteFileData(writer, 0xd7f4, 0x10);
+				WriteFileData(writer, 0x6cac, 0x100);
+				WriteFileData(writer, 0x807a, 0x100);
+				WriteFileData(writer, 0x6b96, 0x100);
+				WriteFileData(writer, 0xdcfe, 0x100);
+				WriteFileData(writer, 0xb1ee, 0x20);
+				WriteFileData(writer, 0x3772, 0, 0x4b0);
+				WriteFileData(writer, 0x3772, 0x1f88, 0x4b0);
+				WriteFileData(writer, 0x70ec, 0xe00);
+				WriteFileData(writer, 0x112a, 0x3b8);
+				WriteFileData(writer, 0x81d4, 0x3000);
+				WriteFileData(writer, 0x3772, 0x740, 0xfa0);
+				WriteFileData(writer, 0xd76e, 0x80);
+				WriteFileData(writer, 0xe518, 0x80);
+				WriteFileData(writer, 0xdc6c, 0x80);
+				WriteFileData(writer, 0xde22, 0x80);
+				WriteFileData(writer, 0x3772, 0x4b0, 0x90);
+				WriteFileData(writer, 0xe418, 0x80);
+				WriteFileData(writer, 0x3604, 0, 0xd00);
+				WriteFileData(writer, 0x40dc, 2);
+				WriteFileData(writer, 0x3772, 0x26fc, 0x1000);
+				WriteFileData(writer, 0x6ea8, 0x2c);
+				WriteFileData(writer, 0x3772, 0x253c, 0x1c0);
+				WriteFileData(writer, 0x3772, 0x1d48, 0x240);
+				WriteFileData(writer, 0x6e94, 2);
+				WriteFileData(writer, 0xb1ea, 2);
+				WriteFileData(writer, 0xdb36, 2);
+				WriteFileData(writer, 0x19c0, 2);
+				WriteFileData(writer, 0xdb44, 0x104);
+				WriteFileData(writer, 0x804c, 2);
+				WriteFileData(writer, 0xb23a, 2);
+				WriteFileData(writer, 0xe3c4, 2);
+				WriteFileData(writer, 0xb210, 0x10);
+				WriteFileData(writer, 0x1c26, 2);
+				WriteFileData(writer, 0x6c9c, 0x10);
+				WriteFileData(writer, 0x3772, 0x16e0, 0x5a0);
+				WriteFileData(writer, 0x4cd8, 2);
+				WriteFileData(writer, 0x4cd4, 2);
+				WriteFileData(writer, 0x4cd6, 2);
+				WriteFileData(writer, 0xde10, 0x10);
+				WriteFileData(writer, 0xd91e, 0x18);
+				WriteFileData(writer, 0xb222, 0x18);
+				WriteFileData(writer, 0x3772, 0x540, 0x100);
+				WriteFileData(writer, 0x3772, 0x640, 0x100);
+				WriteFileData(writer, 0x1c20, 2);
+				WriteFileData(writer, 0xd808, 2);
+				WriteFileData(writer, 0xd2f4, 2);
+				WriteFileData(writer, 0xdeec, 0x10);
+				WriteFileData(writer, 0xe8a8, 0x10);
+				WriteFileData(writer, 0xdf1e, 2);
+
+				writer.Close();
+
+				bSuccess = true;
+			}
+			catch (Exception ex)
+			{
+				this.oParent.MSCAPI.strcpy(0xba06, ex.Message);
+
+				this.oCPU.AX.Word = 0x40;
+				this.oCPU.PushWord(this.oCPU.AX.Word);
+				this.oCPU.AX.Word = 0x4;
+				this.oCPU.PushWord(this.oCPU.AX.Word);
+				this.oCPU.AX.Word = 0xba06;
+				this.oCPU.PushWord(this.oCPU.AX.Word);
+				this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+				this.oCPU.PushWord(0x0940); // stack management - push return offset
+				this.oParent.Segment_1238.F0_1238_0008();
+				this.oCPU.PopDWord(); // stack management - pop return offset and segment
+				this.oCPU.CS.Word = this.usSegment; // restore this function segment
+				this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+
+				bSuccess = false;
+			}
+
+			/*// Instruction address 0x0000:0x0904, size: 5
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9),
 				OpenCiv1.String_439d);
 
@@ -1026,8 +1277,8 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0918); // stack management - push return offset
-			// Instruction address 0x0000:0x0913, size: 5
-			this.oParent.Segment_302a.F0_302a_000c();
+										// Instruction address 0x0000:0x0913, size: 5
+			this.oParent.LZWCompressor.F0_302a_000c_LZWCompress();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
@@ -1045,7 +1296,7 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0940); // stack management - push return offset
-			// Instruction address 0x0000:0x093b, size: 5
+										// Instruction address 0x0000:0x093b, size: 5
 			this.oParent.Segment_1238.F0_1238_0008();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
@@ -1057,6 +1308,8 @@ namespace OpenCiv1
 			goto L09e4;
 
 		L094e:
+			// write sve file
+
 			// Instruction address 0x0000:0x0959, size: 5
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9),
 				OpenCiv1.String_43ba);
@@ -1085,7 +1338,7 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x09bc); // stack management - push return offset
-			// Instruction address 0x0000:0x09b7, size: 5
+										// Instruction address 0x0000:0x09b7, size: 5
 			this.oParent.Segment_1238.F0_1238_001e();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
@@ -1100,7 +1353,7 @@ namespace OpenCiv1
 			F11_0000_09e6_LoadOrSaveFile();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			
+
 			// Instruction address 0x0000:0x09cf, size: 5
 			this.oParent.MSCAPI.close((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e));
 
@@ -1111,165 +1364,24 @@ namespace OpenCiv1
 		L09e1:
 			this.oCPU.AX.Word = 0x1;
 
-		L09e4:
-			this.oCPU.BP.Word = this.oCPU.PopWord();
+		L09e4:*/
+
 			// Far return
 			this.oCPU.Log.ExitBlock("F11_0000_08f6_SaveGame");
+
+			return bSuccess;
 		}
 
-		public void F11_0000_09e6_LoadOrSaveFile()
+		public void WriteFileData(Stream writer, ushort bufferPtr, ushort length)
 		{
-			this.oCPU.Log.EnterBlock("'F11_0000_09e6'(Cdecl, Far) at 0x0000:0x09e6");
-
-			// function body
-			F11_0000_0f6b_AccessFile(0x81d2, 2);
-			F11_0000_0f6b_AccessFile(0xd7ee, 2);
-			F11_0000_0f6b_AccessFile(0x7f36, 2);
-			F11_0000_0f6b_AccessFile(0x6e80, 2);
-			F11_0000_0f6b_AccessFile(0xb220, 2);
-			F11_0000_0f6b_AccessFile(0x6b86, 2);
-			F11_0000_0f6b_AccessFile(0x6b8a, 2);
-			F11_0000_0f6b_AccessFile(0x19be, 2);
-			F11_0000_0f6b_AccessFile(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19a2), 0x70);
-			F11_0000_0f6b_AccessFile(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1992), 0x60);
-			F11_0000_0f6b_AccessFile(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1982), 0x58);
-			F11_0000_0f6b_AccessFile(0xb1d6, 0x10);
-			F11_0000_0f6b_AccessFile(0x6dec, 0x10);
-			F11_0000_0f6b_AccessFile(0xb3be, 0x1c0);
-			F11_0000_0f6b_AccessFile(0xd308, 0x1c0);
-			F11_0000_0f6b_AccessFile(0xe898, 0x10);
-			F11_0000_0f6b_AccessFile(0xe3c8, 0x50);
-			F11_0000_0f6b_AccessFile(0xdefc, 0x10);
-			F11_0000_0f6b_AccessFile(0xe698, 0x100);
-			F11_0000_0f6b_AccessFile(0xe498, 0x80);
-			F11_0000_0f6b_AccessFile(0x6b66, 0x10);
-			F11_0000_0f6b_AccessFile(0x6b76, 0x10);
-			F11_0000_0f6b_AccessFile(0xe16a, 0x10);
-			F11_0000_0f6b_AccessFile(0x8068, 0x10);
-			F11_0000_0f6b_AccessFile(0xd2f8, 0x10);
-			F11_0000_0f6b_AccessFile(0x6e82, 0x10);
-			F11_0000_0f6b_AccessFile(0x803c, 0x10);
-			F11_0000_0f6b_AccessFile(0xdf0e, 0x10);
-			F11_0000_0f6b_AccessFile(0xddfe, 0x10);
-			F11_0000_0f6b_AccessFile(0xd2e4, 0x10);
-			F11_0000_0f6b_AccessFile(0xdcec, 0x10);
-			F11_0000_0f6b_AccessFile(0xd7f4, 0x10);
-			F11_0000_0f6b_AccessFile(0x6cac, 0x100);
-			F11_0000_0f6b_AccessFile(0x807a, 0x100);
-			F11_0000_0f6b_AccessFile(0x6b96, 0x100);
-			F11_0000_0f6b_AccessFile(0xdcfe, 0x100);
-			F11_0000_0f6b_AccessFile(0xb1ee, 0x20);
-			F11_0000_0ed8_AccessFileBlock(0x3772, 0, 0x4b0);
-			F11_0000_0ed8_AccessFileBlock(0x3772, 0x1f88, 0x4b0);			
-			F11_0000_0f6b_AccessFile(0x70ec, 0xe00);
-			F11_0000_0f6b_AccessFile(0x112a, 0x3b8);
-			F11_0000_0f6b_AccessFile(0x81d4, 0x3000);
-			F11_0000_0ed8_AccessFileBlock(0x3772, 0x740, 0xfa0);
-			F11_0000_0f6b_AccessFile(0xd76e, 0x80);
-			F11_0000_0f6b_AccessFile(0xe518, 0x80);
-			F11_0000_0f6b_AccessFile(0xdc6c, 0x80);
-			F11_0000_0f6b_AccessFile(0xde22, 0x80);
-			F11_0000_0ed8_AccessFileBlock(0x3772, 0x4b0, 0x90);			
-			F11_0000_0f6b_AccessFile(0xe418, 0x80);
-			F11_0000_0ed8_AccessFileBlock(0x3604, 0, 0xd00);			
-			F11_0000_0f6b_AccessFile(0x40dc, 2);
-			F11_0000_0ed8_AccessFileBlock(0x3772, 0x26fc, 0x1000);
-			F11_0000_0f6b_AccessFile(0x6ea8, 0x2c);
-			F11_0000_0ed8_AccessFileBlock(0x3772, 0x253c, 0x1c0);
-			F11_0000_0ed8_AccessFileBlock(0x3772, 0x1d48, 0x240);			
-			F11_0000_0f6b_AccessFile(0x6e94, 2);
-			F11_0000_0f6b_AccessFile(0xb1ea, 2);
-			F11_0000_0f6b_AccessFile(0xdb36, 2);
-			F11_0000_0f6b_AccessFile(0x19c0, 2);
-			F11_0000_0f6b_AccessFile(0xdb44, 0x104);
-			F11_0000_0f6b_AccessFile(0x804c, 2);
-			F11_0000_0f6b_AccessFile(0xb23a, 2);
-			F11_0000_0f6b_AccessFile(0xe3c4, 2);
-			F11_0000_0f6b_AccessFile(0xb210, 0x10);
-			F11_0000_0f6b_AccessFile(0x1c26, 2);
-			F11_0000_0f6b_AccessFile(0x6c9c, 0x10);
-			F11_0000_0ed8_AccessFileBlock(0x3772, 0x16e0, 0x5a0);
-			F11_0000_0f6b_AccessFile(0x4cd8, 2);
-			F11_0000_0f6b_AccessFile(0x4cd4, 2);
-			F11_0000_0f6b_AccessFile(0x4cd6, 2);
-			F11_0000_0f6b_AccessFile(0xde10, 0x10);
-			F11_0000_0f6b_AccessFile(0xd91e, 0x18);
-			F11_0000_0f6b_AccessFile(0xb222, 0x18);
-			F11_0000_0ed8_AccessFileBlock(0x3772, 0x540, 0x100);
-			F11_0000_0ed8_AccessFileBlock(0x3772, 0x640, 0x100);
-			F11_0000_0f6b_AccessFile(0x1c20, 2);
-			F11_0000_0f6b_AccessFile(0xd808, 2);
-			F11_0000_0f6b_AccessFile(0xd2f4, 2);
-			F11_0000_0f6b_AccessFile(0xdeec, 0x10);
-			F11_0000_0f6b_AccessFile(0xe8a8, 0x10);
-			F11_0000_0f6b_AccessFile(0xdf1e, 2);
-
-			// Far return
-			this.oCPU.Log.ExitBlock("'F11_0000_09e6'");
+			writer.Write(this.oCPU.Memory.MemoryContent,
+				(int)CPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr), length);
 		}
 
-		public void F11_0000_0ed8_AccessFileBlock(ushort sourceSegment, ushort sourceOffset, int length)
+		public void WriteFileData(Stream writer, ushort bufferSeg, ushort bufferPtr, ushort length)
 		{
-			this.oCPU.Log.EnterBlock("F11_0000_0ed8_AccessFileBlock()");
-
-			// function body
-			while (length > 0)
-			{
-				// Instruction address 0x0000:0x0ef3, size: 5
-				ushort usBlockSize = (ushort)Math.Min(length, 0x200);
-
-				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681a) != 0)
-				{
-					// Instruction address 0x0000:0x0f0e, size: 5
-					this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e),
-						0xba06, usBlockSize);
-
-					// Instruction address 0x0000:0x0f25, size: 5
-					this.oParent.MSCAPI.movedata(this.oParent.CPU.DS.Word, 0xba06,
-						sourceSegment, sourceOffset, usBlockSize);
-				}
-				else
-				{
-					// Instruction address 0x0000:0x0f3e, size: 5
-					this.oParent.MSCAPI.movedata(sourceSegment, sourceOffset,
-						this.oParent.CPU.DS.Word, 0xba06, usBlockSize);
-
-					if (this.oParent.MSCAPI.write(this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word, 0x681e),
-						0xba06, usBlockSize) != -1)
-					{
-						this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681c, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x58fb));
-					}
-				}
-
-				length -= usBlockSize;
-				sourceOffset += usBlockSize;
-			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F11_0000_0ed8_AccessFileBlock");
-		}
-
-		public void F11_0000_0f6b_AccessFile(ushort bufferPtr, ushort length)
-		{
-			this.oCPU.Log.EnterBlock("F11_0000_0f6b_AccessFile()");
-
-			// function body
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681a) != 0)
-			{
-				// Instruction address 0x0000:0x0f7f, size: 5
-				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e),
-					bufferPtr, length);
-			}
-			else
-			{
-				if (this.oParent.MSCAPI.write(this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word, 0x681e), bufferPtr, length) != -1)
-				{
-					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681c, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x58fb));
-				}
-			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F11_0000_0f6b_AccessFile");
+			writer.Write(this.oCPU.Memory.MemoryContent,
+				(int)CPU.ToLinearAddress(bufferSeg, bufferPtr), length);
 		}
 	}
 }

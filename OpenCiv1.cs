@@ -1,5 +1,6 @@
 ﻿using Disassembler;
 using Disassembler.MZ;
+using OpenCiv1.Compression;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -34,7 +35,6 @@ namespace OpenCiv1
 		private Segment_29f3 oSegment_29f3;
 		private Segment_2517 oSegment_2517;
 		private Segment_2c84 oSegment_2c84;
-		private Segment_302a oSegment_302a;
 		private Overlay_2 oOverlay_2;
 		private Overlay_6 oOverlay_6;
 		private Overlay_7 oOverlay_7;
@@ -112,7 +112,6 @@ namespace OpenCiv1
 			this.oSegment_29f3 = new Segment_29f3(this);
 			this.oSegment_2517 = new Segment_2517(this);
 			this.oSegment_2c84 = new Segment_2c84(this);
-			this.oSegment_302a = new Segment_302a(this);
 			this.oOverlay_2 = new Overlay_2(this);
 			this.oOverlay_6 = new Overlay_6(this);
 			this.oOverlay_7 = new Overlay_7(this);
@@ -141,14 +140,14 @@ namespace OpenCiv1
 			#endregion
 
 			// export all bitmaps to file
-			string[] aFiles = Directory.GetFiles(this.oCPU.DefaultDirectory, "*.pic");
+			/*string[] aFiles = Directory.GetFiles(this.oCPU.DefaultDirectory, "*.pic");
 			if (!Directory.Exists("Images"))
 				Directory.CreateDirectory("Images");
 
 			for (int i = 0; i < aFiles.Length; i++)
 			{
 				byte[] palette;
-				VGABitmap bitmap1 = VGABitmap.FromPIC(aFiles[i], out palette);
+				VGABitmap bitmap1 = VGABitmap.FromFile(aFiles[i], out palette);
 
 				if (bitmap1 != null)
 				{
@@ -157,11 +156,44 @@ namespace OpenCiv1
 						ImageFormat.Png);
 				}
 
-				/*Bitmap bitmap = this.Segment_2fa1.ReadBitmapFromFile(aFiles[i]);
-				bitmap.Save($"Images{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(aFiles[i])}.png", 
-					ImageFormat.Png);*/
-
 				//break;
+			}//*/
+
+			// test compressor and decompressor
+			/*RandomMT19937 oRND = new RandomMT19937();
+			for (int i = 0; i < 1000; i++)
+			{
+				byte[] buffer = new byte[0x10000];
+
+				// fill buffer with random data
+				for (int j = 0; j < buffer.Length; j++)
+				{
+					buffer[j] = (byte)(oRND.Next() & 0xff);
+				}
+
+				MemoryStream rleInput = new MemoryStream(buffer);
+				MemoryStream rleOutput = new MemoryStream();
+
+				LZW.Compress(rleOutput, rleInput, 9, 11);
+
+				MemoryStream rleOutput1 = new MemoryStream();
+				rleOutput.Position = 0;
+
+				LZW.Decompress(rleOutput1, rleOutput, 9, rleOutput.ReadByte());
+
+				// compare buffers
+				byte[] buffer1 = rleOutput1.ToArray();
+
+				if (buffer.Length != buffer1.Length)
+					Console.WriteLine("Data not equal");
+
+				for (int j = 0; j < buffer1.Length; j++)
+				{
+					if (buffer[j] != buffer1[j])
+					{
+						Console.WriteLine("Data not equal");
+					}
+				}
 			}//*/
 
 			// load old exe image to memory
@@ -194,9 +226,9 @@ namespace OpenCiv1
 			this.oCPU.Memory.AllocateMemoryBlock(0x10000, (uint)((uint)oEXE.Data.Length + ((uint)oEXE.MinimumAllocation << 4)), CPUMemoryFlagsEnum.ReadWrite);
 			this.oCPU.Memory.WriteBlock(0x10000, oEXE.Data, 0, oEXE.Data.Length);
 			this.oCPU.Memory.MemoryRegions[3].AccessFlags |= CPUMemoryFlagsEnum.WriteWarning;
-			//uint uiTemp = this.oCPU.Memory.MemoryRegions[3].End;
-			//this.oCPU.Memory.MemoryRegions[3].End = 0x3ffff;
-			//this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x40000, uiTemp - 0x40000));
+			//uint uiTemp = this.oCPU.MemoryContent.MemoryRegions[3].End;
+			//this.oCPU.MemoryContent.MemoryRegions[3].End = 0x3ffff;
+			//this.oCPU.MemoryContent.MemoryRegions.Add(new CPUMemoryRegion(0x40000, uiTemp - 0x40000));
 
 			// define data and stack region(s)
 			this.oCPU.Memory.MemoryRegions[3].End = 0x3b00f;
@@ -581,11 +613,6 @@ namespace OpenCiv1
 		public Segment_2c84 Segment_2c84
 		{
 			get { return this.oSegment_2c84; }
-		}
-
-		public Segment_302a Segment_302a
-		{
-			get { return this.oSegment_302a; }
 		}
 
 		public Overlay_2 Overlay_2

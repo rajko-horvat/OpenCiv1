@@ -24,7 +24,7 @@ For this stage of code rewrite, the programmings skills needed are:
 </ul>
 
 ## Project milestones
-<p>The goal is to completely rewrite of the code (first stage), fix the bugs and port the code to a modern platform (second stage).</p>
+<p>The goal is to completely rewrite the code (first stage), fix the bugs and port the code to a modern platform (second stage).</p>
 <b>Milestones for a first stage are:</b>
 <ul>
 <li>Reaching the initial playability of the game (passed),</li>

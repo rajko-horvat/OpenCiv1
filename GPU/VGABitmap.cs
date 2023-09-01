@@ -633,10 +633,91 @@ namespace OpenCiv1
 			}
 		}
 
+		public void Save(string path)
+		{
+			Save(path, true);
+		}
+
+		public void Save(string path, bool savePalette)
+		{
+			FileStream writer = new FileStream(path, FileMode.Create);
+			int iLength;
+
+			if (savePalette)
+			{
+				iLength = 2 + 255 * 3; // we can't write full 256 colors!
+
+				// write signature
+				writer.WriteByte(0x4d);
+				writer.WriteByte(0x30);
+
+				// write block length
+				writer.WriteByte((byte)(iLength & 0xff));
+				writer.WriteByte((byte)((iLength & 0xff00) >> 8));
+
+				// write block contents
+				writer.WriteByte(0); // from index
+				writer.WriteByte(255); // to index
+
+				ColorPalette palette = this.oBitmap.Palette;
+				for (int i = 0; i < 256; i++)
+				{
+					Color color = ColorToColor18(palette.Entries[i]);
+					writer.WriteByte(color.R);
+					writer.WriteByte(color.G);
+					writer.WriteByte(color.B);
+				}
+			}
+
+			MemoryStream rleInput = new MemoryStream();
+			int iBitmapAddress = 0;
+
+			for (int i = 0; i < this.oBitmap.Height; i++)
+			{
+				for (int j = 0; j < this.oBitmap.Width; j++)
+				{
+					rleInput.WriteByte(aBitmapMemory[iBitmapAddress + j]);
+				}
+				iBitmapAddress += this.iStride;
+			}
+
+			// compress the bitmap
+			MemoryStream lzwInput = new MemoryStream();
+			rleInput.Position = 0;
+			RLE.Compress(lzwInput, rleInput, 4);
+
+			MemoryStream lzwOutput = new MemoryStream();
+			lzwInput.Position = 0;
+			LZW.Compress(lzwOutput, lzwInput, 9, 11);
+
+			// write block signature
+			writer.WriteByte(0x58);
+			writer.WriteByte(0x30);
+
+			// write block contents
+			byte[] buffer = lzwOutput.ToArray();
+			iLength = buffer.Length + 4;
+
+			// write block length
+			writer.WriteByte((byte)(iLength & 0xff));
+			writer.WriteByte((byte)((iLength & 0xff00) >> 8));
+
+			// write bitmap width and height
+			writer.WriteByte((byte)(this.oBitmap.Width & 0xff));
+			writer.WriteByte((byte)((this.oBitmap.Width & 0xff00) >> 8));
+			writer.WriteByte((byte)(this.oBitmap.Height & 0xff));
+			writer.WriteByte((byte)((this.oBitmap.Height & 0xff00) >> 8));
+
+			// write compressed content
+			writer.Write(buffer, 0, buffer.Length);
+
+			writer.Close();
+		}
+
 		public void LoadBitmap(string filename, ushort xPos, ushort yPos, out byte[] palette)
 		{
 			// function body
-			VGABitmap bitmap = VGABitmap.FromPIC(filename, out palette);
+			VGABitmap bitmap = VGABitmap.FromFile(filename, out palette);
 
 			if (bitmap != null)
 			{
@@ -650,13 +731,13 @@ namespace OpenCiv1
 			}
 		}
 
-		public static VGABitmap FromPIC(string path, out byte[] palette)
+		public static VGABitmap FromFile(string path, out byte[] palette)
 		{
 			VGABitmap bitmap = null;
 			FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
 			List<BKeyValuePair<int, Color>> aPalette = new List<BKeyValuePair<int, Color>>();
 			palette = null;
-
+			
 			// PIC file is written in blocks
 			while (true)
 			{
@@ -844,7 +925,7 @@ namespace OpenCiv1
 			return bitmap;
 		}
 
-		public static List<BKeyValuePair<int, Color>> PaletteFromPICOrPAL(string path, out byte[] palette)
+		public static List<BKeyValuePair<int, Color>> PaletteFromFile(string path, out byte[] palette)
 		{
 			FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
 			List<BKeyValuePair<int, Color>> aPalette = new List<BKeyValuePair<int, Color>>();

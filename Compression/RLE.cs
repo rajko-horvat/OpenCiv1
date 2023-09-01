@@ -37,6 +37,9 @@ namespace OpenCiv1.Compression
 							output.WriteByte(0);
 						output.WriteByte(0x90);
 						output.WriteByte((byte)iCount);
+
+						iOldValue = c;
+						iCount = 1;
 					}
 					else
 					{
@@ -49,6 +52,23 @@ namespace OpenCiv1.Compression
 						iOldValue = c;
 						iCount = 1;
 					}
+				}
+			}
+			if (iCount > minCount)
+			{
+				output.WriteByte((byte)iOldValue);
+				if (iOldValue == 0x90)
+					output.WriteByte(0);
+				output.WriteByte(0x90);
+				output.WriteByte((byte)iCount);
+			}
+			else
+			{
+				for (int i = 0; i < iCount; i++)
+				{
+					output.WriteByte((byte)iOldValue);
+					if (iOldValue == 0x90)
+						output.WriteByte(0);
 				}
 			}
 		}

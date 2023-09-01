@@ -197,7 +197,7 @@ namespace OpenCiv1
 				byte[] palette;
 				ushort startPtr;
 
-				VGABitmap.PaletteFromPICOrPAL(filename, out palette);
+				VGABitmap.PaletteFromFile(filename, out palette);
 				if (palette != null)
 				{
 					switch (palettePtr)

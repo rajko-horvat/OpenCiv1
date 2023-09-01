@@ -128,7 +128,6 @@
     <Compile Include="Segments\Segment_2e31.cs" />
     <Compile Include="Segments\Segment_2f4d.cs" />
     <Compile Include="Segments\ImageLoading.cs" />
-    <Compile Include="Segments\Segment_302a.cs" />
     <Compile Include="Helpers\StringMatch.cs" />
     <EmbeddedResource Include="GPU\VGAForm.resx">
       <DependentUpon>VGAForm.cs</DependentUpon>
