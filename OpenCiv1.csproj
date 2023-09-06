@@ -50,11 +50,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\FileStreamItem.cs" />
+    <Compile Include="CPU\FileStreamItem.cs" />
     <Compile Include="Compression\CRC32.cs" />
     <Compile Include="Compression\LZW.cs" />
     <Compile Include="Compression\LZWWord.cs" />
     <Compile Include="Compression\RLE.cs" />
+    <Compile Include="Data\City.cs" />
+    <Compile Include="Data\Civilization.cs" />
+    <Compile Include="Data\GameData.cs" />
+    <Compile Include="Data\StrategicLocation.cs" />
+    <Compile Include="Data\Unit.cs" />
+    <Compile Include="Data\UnitDefinition.cs" />
     <Compile Include="OpenCiv1.cs" />
     <Compile Include="Collections\Generic\BDictionary.cs" />
     <Compile Include="Collections\Generic\BHashSet.cs" />

@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace OpenCiv1
 {
@@ -246,6 +247,19 @@ namespace OpenCiv1
 			this.SetOverlayBase();
 
 			//ExtractStrings();
+
+			MessageBox.Show("This Alpha prerelease version is a preview version of Open Civilization 1 (OpenCiv1) project.\n" +
+				"It most certainly has bugs, but most functions should work normally, and has no sound at this point. " +
+				"It is compatible with old civ.exe and can save/load original game files.\n\n" +
+				"Technicalities:\n\n THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR " +
+				"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, " +
+				"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE " +
+				"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER " +
+				"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, " +
+				"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+				"Warning", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
+
+			this.oCPU.DefaultDirectory = Path.GetDirectoryName(Application.ResourceAssembly.Location) + Path.DirectorySeparatorChar;
 
 			this.Start();
 		}
