@@ -171,6 +171,9 @@
     <Content Include="Icons\playback-32x32.png" />
     <Content Include="Icons\windows-32x32.png" />
     <Content Include="Icons\windows_24x24.png" />
+    <Content Include="Readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Screenshots\Screenshot1.png" />
     <Content Include="Screenshots\Screenshot10.png" />
     <Content Include="Screenshots\Screenshot11.png" />
