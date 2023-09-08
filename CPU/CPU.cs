@@ -4,13 +4,10 @@ using IRB.Collections.Generic;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Net;
 using System.Reflection;
-using System.Security.Policy;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows.Forms;
+using System.Windows;
 
 namespace Disassembler
 {
@@ -74,7 +71,7 @@ namespace Disassembler
 #if DEBUG
 			this.sDefaultDirectory = "C:\\DOS\\CIV\\";
 #else
-			this.oCPU.DefaultDirectory = Path.GetDirectoryName(Application.ResourceAssembly.Location) + Path.DirectorySeparatorChar;
+			this.DefaultDirectory = Path.GetDirectoryName(Application.ResourceAssembly.Location) + Path.DirectorySeparatorChar;
 #endif
 		}
 
