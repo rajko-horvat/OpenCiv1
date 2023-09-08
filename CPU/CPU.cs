@@ -58,7 +58,7 @@ namespace Disassembler
 		private int iFileCount = 0;
 		private FileStream[] aFileHandles = new FileStream[256];
 
-		private string sDefaultDirectory = "C:\\DOS\\CIV\\";
+		private string sDefaultDirectory;
 		private short sFileHandleCount = 0x20;
 		private BDictionary<short, FileStreamItem> aOpenFiles = new BDictionary<short, FileStreamItem>();
 
@@ -70,8 +70,12 @@ namespace Disassembler
 			this.oParent = parent;
 			this.oLog = log;
 			this.oMemory = new CPUMemory(this);
-			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 100, 100);
-			//this.oTimer.Dispose();
+			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 50, 50);
+#if DEBUG
+			this.sDefaultDirectory = "C:\\DOS\\CIV\\";
+#else
+			this.oCPU.DefaultDirectory = Path.GetDirectoryName(Application.ResourceAssembly.Location) + Path.DirectorySeparatorChar;
+#endif
 		}
 
 		public OpenCiv1.OpenCiv1 Parent

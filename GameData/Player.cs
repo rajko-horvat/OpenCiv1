@@ -8,24 +8,25 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Windows.Documents;
 using System.Windows;
 
-namespace OpenCiv1.Data
+namespace OpenCiv1.GameData
 {
-	public class Civilization
+	public class Player
 	{
 		public string Name;
 		public string Nationality;
 		public string LeaderName;
-		public short LeaderIdentity;
-		public short Coins;
-		public short GovernmentType;
+		public short LeaderGraphics;
+		public short Coins = 0;
+		public short GovernmentType = 0;
 		public short TaxRate;
-		public short[] PerCivilizationDiplomacyFlags = new short[8];
 		public short MilitaryPower;
 		public short ContactPlayerCountdown;
 		public short XStart;
 		public short CityCount;
 		public short TotalCitySize;
 		public short LandCount;
+
+		public short[] PerCivilizationDiplomacyFlags = new short[8];
 		public short[] PerContinentCityCount = new short[16];
 		public short[] PerContinentStrategy = new short[16];
 		public short[] PerContinentAttack = new short[16];
@@ -36,9 +37,8 @@ namespace OpenCiv1.Data
 
 		// Technology
 		public short ScienceRate;
-		public ushort CurrentResearchID = 0;
-		public short ResearchProgress;
-		public ushort DiscoveredTechnologyCount;
+		public short ResearchProgress = 0;
+		public ushort DiscoveredTechnologyCount = 0;
 		public short[] DiscoveredTechnologyFlags = new short[5];
 		public sbyte[] TechnologyAcquiredFrom = new sbyte[72];
 
@@ -60,5 +60,33 @@ namespace OpenCiv1.Data
 		public short SpaceshipETAYear;
 		public short SpaceshipLaunchYear;
 
+
+		public Player()
+		{
+			for (int i = 0; i < Units.Length; i++)
+			{
+				this.Units[i] = new Unit();
+			}
+
+			for (int i = 0; i < StrategicLocations.Length; i++)
+			{
+				this.StrategicLocations[i] = new StrategicLocation();
+			}
+
+			for (int i = 0; i < DiscoveredTechnologyFlags.Length; i++)
+			{
+				this.DiscoveredTechnologyFlags[i] = 0;
+			}
+
+			for (int i = 0; i < ActiveUnits.Length; i++)
+			{
+				this.ActiveUnits[i] = 0;
+			}
+
+			for (int i = 0; i < UnitsInProduction.Length; i++)
+			{
+				this.UnitsInProduction[i] = 0;
+			}
+		}
 	}
 }

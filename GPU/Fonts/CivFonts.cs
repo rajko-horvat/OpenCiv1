@@ -123,14 +123,14 @@ namespace OpenCiv1.GPU
 		/// <returns>A deserialized CivFonts object</returns>
 		public static CivFonts Deserialize(string path)
 		{
-			StreamReader reader;
+			Stream reader;
 			if (path.EndsWith(".gz"))
 			{
-				reader = new StreamReader(new GZipStream(new BufferedStream(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read), 65536), CompressionMode.Decompress));
+				reader = new GZipStream(new BufferedStream(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read), 65536), CompressionMode.Decompress);
 			}
 			else
 			{
-				reader = new StreamReader(new BufferedStream(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read), 65536));
+				reader = new BufferedStream(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read), 65536);
 			}
 
 			CivFonts oObject = Deserialize(reader);
@@ -145,7 +145,7 @@ namespace OpenCiv1.GPU
 		/// </summary>
 		/// <param name="reader">A stream to read the object from.</param>
 		/// <returns>A deserialized CivFonts object.</returns>
-		public static CivFonts Deserialize(StreamReader reader)
+		public static CivFonts Deserialize(Stream reader)
 		{
 			XmlSerializer ser = new XmlSerializer(typeof(CivFonts));
 			object obj = ser.Deserialize(reader);

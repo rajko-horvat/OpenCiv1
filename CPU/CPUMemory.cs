@@ -83,6 +83,7 @@ namespace Disassembler
 		#endregion
 
 		#region Read instructions
+		#region 8 Bit
 		public sbyte ReadInt8(ushort segment, ushort offset)
 		{
 			return (sbyte)this.ReadUInt8(CPU.ToLinearAddress(segment, offset));
@@ -126,7 +127,9 @@ namespace Disassembler
 			this.oCPU.Log.WriteLine($"// Error: Attempt to read byte at undefined address 0x{address:x8}");
 			return 0;
 		}
+		#endregion
 
+		#region 16 bit
 		public short ReadInt16(ushort segment, ushort offset)
 		{
 			return (short)this.ReadUInt16(CPU.ToLinearAddress(segment, offset));
@@ -173,7 +176,9 @@ namespace Disassembler
 			this.oCPU.Log.WriteLine($"// Error: Attempt to read word at undefined address 0x{address:x8}");
 			return 0;
 		}
+		#endregion
 
+		#region 32 bit
 		public int ReadInt32(ushort segment, ushort offset)
 		{
 			return (int)this.ReadUInt32(CPU.ToLinearAddress(segment, offset));
@@ -222,6 +227,7 @@ namespace Disassembler
 			this.oCPU.Log.WriteLine($"Error: Attempt to read dword at undefined address 0x{address:x8}");
 			return 0;
 		}
+		#endregion
 		#endregion
 
 		#region Write instructions

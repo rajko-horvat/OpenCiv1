@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Resources;
 using System.Text.RegularExpressions;
 using System.Windows;
 
@@ -72,7 +73,7 @@ namespace OpenCiv1
 
 		private ushort OverlaySegment = 0;
 		private ushort usStartSegment = 0x1000;
-		private MZExecutable oEXE;
+		//private MZExecutable oEXE;
 
 		public OpenCiv1()
 		{
@@ -140,7 +141,7 @@ namespace OpenCiv1
 			this.oSoundDriver = new NSound(this);
 			#endregion
 
-			// export all bitmaps to file
+			// Export all bitmaps to file
 			/*string[] aFiles = Directory.GetFiles(this.oCPU.DefaultDirectory, "*.pic");
 			if (!Directory.Exists("Images"))
 				Directory.CreateDirectory("Images");
@@ -160,7 +161,7 @@ namespace OpenCiv1
 				//break;
 			}//*/
 
-			// test compressor and decompressor
+			// Test compressor and decompressor
 			/*RandomMT19937 oRND = new RandomMT19937();
 			for (int i = 0; i < 1000; i++)
 			{
@@ -197,12 +198,17 @@ namespace OpenCiv1
 				}
 			}//*/
 
-			// load old exe image to memory
-			oEXE = new MZExecutable("c:\\DOS\\CIV\\civ.exe");
-			oEXE.ApplyRelocations(usStartSegment);
+			// Load old exe image to memory, not needed anymore
+			//oEXE = new MZExecutable($"{this.oCPU.DefaultDirectory}CIV.EXE");
+			//oEXE.ApplyRelocations(usStartSegment);
 
-			// copy EXE to memory and allocate resources
-			string sEnvironment = "COMSPEC =C:\\WINDOWS\\SYSTEM32\\COMMAND.COM\0FP_NO_HOST_CHECK=NO\0HOMEDRIVE=C:\0" +
+			ushort usInitialCS = 0x2045; // oEXE.InitialCS;
+			ushort usInitialSS = 0x398d; // oEXE.InitialSS;
+			ushort usInitialSP = 0x0800; // oEXE.InitialSP;
+
+			// We don't need environment variables as they are not used
+			// Copy EXE to memory and allocate resources
+			/*string sEnvironment = "COMSPEC =C:\\WINDOWS\\SYSTEM32\\COMMAND.COM\0FP_NO_HOST_CHECK=NO\0HOMEDRIVE=C:\0" +
 				"NUMBER_OF_PROCESSORS=1\0OS=Windows_NT\0PATH=C:\\DOS\0"+
 				"PATHEXT=.COM;.EXE;.BAT;.CMD\0PROCESSOR_ARCHITECTURE=x86\0"+
 				"PROCESSOR_IDENTIFIER=x86\0PROCESSOR_LEVEL=6\0PROMPT=$P$G\0"+
@@ -213,41 +219,56 @@ namespace OpenCiv1
 			this.oCPU.Memory.AllocateMemoryBlock(uiEnvironment, uiEnvirenmentLength, CPUMemoryFlagsEnum.ReadWrite);
 			this.oCPU.Memory.WriteUInt8(uiEnvironment, (byte)sEnvironment.Length);
 			this.oCPU.WriteString(uiEnvironment + 1, sEnvironment, sEnvironment.Length);
-			this.oCPU.Memory.MemoryRegions[1].AccessFlags = CPUMemoryFlagsEnum.Read;
+			this.oCPU.Memory.MemoryRegions[1].AccessFlags = CPUMemoryFlagsEnum.Read;*/
 
 			this.oCPU.Memory.AllocateMemoryBlock(0xff00, 0x100, CPUMemoryFlagsEnum.ReadWrite);
-
 			this.oCPU.Memory.WriteUInt16(0xff00, 0x20cd);
 			this.oCPU.Memory.WriteUInt16(0xff02, (ushort)(this.oCPU.Memory.FreeMemory.End >> 4));
-			this.oCPU.Memory.WriteUInt16(0xff2c, (ushort)(uiEnvironment >> 4));
+			//this.oCPU.Memory.WriteUInt16(0xff2c, (ushort)(uiEnvironment >> 4));
 			this.oCPU.Memory.WriteUInt8(0xff81, (byte)'\r');
+			this.oCPU.Memory.MemoryRegions[1].AccessFlags = CPUMemoryFlagsEnum.ReadWrite | CPUMemoryFlagsEnum.WriteWarning | CPUMemoryFlagsEnum.ReadWarning;
 
-			this.oCPU.Memory.MemoryRegions[2].AccessFlags = CPUMemoryFlagsEnum.ReadWrite | CPUMemoryFlagsEnum.WriteWarning | CPUMemoryFlagsEnum.ReadWarning;
+			uint uiEXEStart = CPU.ToLinearAddress(usStartSegment, 0);
+			uint uiEXELength = 0x3a0e0;
+			//this.oCPU.Memory.AllocateMemoryBlock(0x10000,
+			//	(uint)((uint)oEXE.Data.Length + ((uint)oEXE.MinimumAllocation << 4)), CPUMemoryFlagsEnum.ReadWrite);
+			//this.oCPU.Memory.WriteBlock(0x10000, oEXE.Data, 0, oEXE.Data.Length);
 
-			this.oCPU.Memory.AllocateMemoryBlock(0x10000, (uint)((uint)oEXE.Data.Length + ((uint)oEXE.MinimumAllocation << 4)), CPUMemoryFlagsEnum.ReadWrite);
-			this.oCPU.Memory.WriteBlock(0x10000, oEXE.Data, 0, oEXE.Data.Length);
-			this.oCPU.Memory.MemoryRegions[3].AccessFlags |= CPUMemoryFlagsEnum.WriteWarning;
-			//uint uiTemp = this.oCPU.MemoryContent.MemoryRegions[3].End;
-			//this.oCPU.MemoryContent.MemoryRegions[3].End = 0x3ffff;
-			//this.oCPU.MemoryContent.MemoryRegions.Add(new CPUMemoryRegion(0x40000, uiTemp - 0x40000));
+			byte[] resources = (byte[])Properties.Resources.ResourceManager.GetObject("BinaryResources");
 
-			// define data and stack region(s)
-			this.oCPU.Memory.MemoryRegions[3].End = 0x3b00f;
-			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0, 0xf0c0, CPUMemoryFlagsEnum.ReadWrite));
+			this.oCPU.Memory.AllocateMemoryBlock(uiEXEStart, uiEXELength, CPUMemoryFlagsEnum.ReadWrite);
+			this.oCPU.Memory.WriteBlock(CPU.ToLinearAddress(0x35cf, 0), resources, 0, resources.Length);
+			this.oCPU.Memory.MemoryRegions[2].AccessFlags |= CPUMemoryFlagsEnum.WriteWarning;
 
-			// initialize CPU
-			this.oCPU.CS.Word = (ushort)(oEXE.InitialCS + usStartSegment);
-			this.oCPU.SS.Word = (ushort)(oEXE.InitialSS + usStartSegment);
+			// Define data and stack region
+			uint uiDataStart = uiEXEStart + CPU.ToLinearAddress(0x25cf, 0);
+			uint uiDataEnd = uiEXEStart + CPU.ToLinearAddress(0x2b01, 0xf0c0);
+
+			this.oCPU.Memory.MemoryRegions[2].End = uiDataStart - 1;
+			this.oCPU.Memory.MemoryRegions.Add(
+				new CPUMemoryRegion(uiDataStart, (uiDataEnd - uiDataStart) + 1, CPUMemoryFlagsEnum.ReadWrite));
+
+			// Create BinaryResources.bin file for code that is not yet translated and needs this data in memory
+			/*FileStream writer = new FileStream("BinaryResources.bin", FileMode.Create);
+			uint uiStart = CPU.ToLinearAddress(0x35cf, 0);
+			uint uiEnd = CPU.ToLinearAddress(0x3b01, 0x652d);
+			writer.Write(this.oCPU.Memory.MemoryContent, (int)uiStart, (int)((uiEnd - uiStart) + 1));
+			writer.Close();*/
+
+			// Initialize CPU
+			this.oCPU.CS.Word = (ushort)(usInitialCS + usStartSegment);
+			this.oCPU.SS.Word = (ushort)(usInitialSS + usStartSegment);
 			this.oCPU.DS.Word = (ushort)(usStartSegment - 0x10);
 			this.oCPU.ES.Word = (ushort)(usStartSegment - 0x10);
-			this.oCPU.SP.Word = oEXE.InitialSP;
+			this.oCPU.SP.Word = usInitialSP;
 
-			// allocate memory for overlays, allocate entire 64k
-			this.OverlaySegment = 0x3374; // as set by F0_3045_2b44 as overlay base segment
+			// Overlay segment, set by F0_3045_2b44
+			this.OverlaySegment = 0x3374;
 			this.SetOverlayBase();
 
 			//ExtractStrings();
 
+			#if !DEBUG
 			MessageBox.Show("This Alpha prerelease version is a preview version of Open Civilization 1 (OpenCiv1) project.\n" +
 				"It most certainly has bugs, but most functions should work normally, and has no sound at this point. " +
 				"It is compatible with old civ.exe and can save/load original game files.\n\n" +
@@ -258,8 +279,7 @@ namespace OpenCiv1
 				"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, " +
 				"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
 				"Warning", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
-
-			this.oCPU.DefaultDirectory = Path.GetDirectoryName(Application.ResourceAssembly.Location) + Path.DirectorySeparatorChar;
+			#endif
 
 			this.Start();
 		}
@@ -272,26 +292,28 @@ namespace OpenCiv1
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.DS.Word);
+
 			this.oCPU.DS.Word = 0x3b01;
 
-			string sPath = this.oCPU.DefaultDirectory + "CIV.EXE";
+			string sPath = $"{this.oCPU.DefaultDirectory}CIV.EXE";
 			this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, 0x61ee, (byte)Path.GetPathRoot(this.oCPU.DefaultDirectory)[0]);
 			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, 0x6156), sPath, sPath.Length);
 
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.ES.Word = this.oCPU.DS.Word;
 
-			this.oCPU.Memory.WriteUInt16(this.oCPU.DS.Word, 0x5901, this.oCPU.ES.Word); // PSP segment
+			// PSP segment, not needed anymore
+			//this.oCPU.Memory.WriteUInt16(this.oCPU.DS.Word, 0x5901, this.oCPU.ES.Word); // PSP segment
 			this.oCPU.SI.Word = (ushort)(this.oCPU.Memory.FreeMemory.End >> 4); // top of memory
 			this.oCPU.SI.Word = this.oCPU.SUBWord(this.oCPU.SI.Word, usDataSegment);
 
-			// init SS:SP
+			// Init SS:SP
 			this.oCPU.CLI();
 			this.oCPU.SS.Word = usDataSegment;
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0xe8c0);
 			this.oCPU.STI();
 
-			// align SP
+			// Align SP
 			this.oCPU.SP.Word = this.oCPU.ANDWord(this.oCPU.SP.Word, 0xfffe);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, 0x5890, this.oCPU.SP.Word);
@@ -303,7 +325,8 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, 0x588a, this.oCPU.AX.Word);
 
 			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, usDataSegment);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2, this.oCPU.SI.Word);
+			// PSP segment, not needed anymore
+			//this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2, this.oCPU.SI.Word);
 			this.oCPU.BX.Word = this.oCPU.ES.Word;
 			this.oCPU.BX.Word = this.oCPU.SUBWord(this.oCPU.BX.Word, this.oCPU.SI.Word);
 			this.oCPU.BX.Word = this.oCPU.NEGWord(this.oCPU.BX.Word);
@@ -315,7 +338,7 @@ namespace OpenCiv1
 			this.oCPU.ES.Word = this.oCPU.SS.Word;
 			this.oCPU.DS.Word = this.oCPU.SS.Word;
 
-			// clear the rest of data and stack segment 0x652e - 0xe8c0
+			// Clear the rest of data and stack segment 0x652e - 0xe8c0
 			for (int i = 0x652e; i < this.oCPU.SP.Word; i++)
 			{
 				this.oCPU.Memory.WriteUInt8(usDataSegment, (ushort)i, 0);
@@ -335,7 +358,7 @@ namespace OpenCiv1
 
 			this.oCPU.BP.Word = 0x0;
 
-			// call our 'short Main()' function
+			// Call our 'short Main()' function
 			this.Segment_11a8.F0_11a8_0008_Main();
 
 			this.MSCAPI.exit((short)this.oCPU.AX.Word);

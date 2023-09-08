@@ -9,24 +9,24 @@ using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows;
 
-namespace OpenCiv1.Data
+namespace OpenCiv1.GameData
 {
 	public class GameData
 	{
+		public ushort GameTurnCount = 0;
 		public short Year = 0;
 		public ushort RandomSeed = 0;
 		public ushort DifficultyLevel = 0;
-		public ushort Players = 0;
+		public ushort HumanPlayerID = 0;
 		public short PlayerFlags = 0;
 		public short CivilizationIdentityFlags;
 		public short ActiveCivilizationFlags = 0;
 
-		public ushort GameTurnCount = 0;
 		public short PeaceTurnCount;
 		public short AIOpponentCount;
 		public short NextAnthologyTurn;
 
-		public Civilization[] Civilizations = new Civilization[8];
+		public Player[] Players = new Player[8];
 		public short PalaceLevel;
 		public short[] PalaceData1 = new short[24];
 		public short[] PalaceData2 = new short[24];
@@ -44,6 +44,7 @@ namespace OpenCiv1.Data
 		public short WonderCount;
 		public short[] WonderCityID = new short[21];
 
+		public ushort CurrentResearchID = 0;
 		public ushort[] TechnologyFirstDiscoveredBy = new ushort[72];
 		public short MaximumTechnologyCount;
 		public short PlayerFutureTechnology;

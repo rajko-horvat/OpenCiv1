@@ -59,5 +59,25 @@ namespace OpenCiv1.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] BinaryResources {
+            get {
+                object obj = ResourceManager.GetObject("BinaryResources", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Fonts_xml {
+            get {
+                object obj = ResourceManager.GetObject("Fonts_xml", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

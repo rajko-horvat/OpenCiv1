@@ -953,13 +953,11 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.DI.Word);
 			this.oCPU.PushWord(this.oCPU.ES.Word);
 
-			this.oCPU.AX.Word = 0x3b01;
-			this.oCPU.ES.Word = this.oCPU.AX.Word;
+			this.oCPU.ES.Word = 0x3b01;
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
 			this.oCPU.DI.Word = 0x73;
 			this.oCPU.AX.Word = 0x2900;
 			this.oCPU.INT(0x21);
-			this.oCPU.WriteUInt16(this.oCPU.CS.Word, 0x668, 0x0);
 			this.oCPU.AX.High = 0x11;
 			this.oCPU.DX.Word = 0x73;
 			this.oCPU.INT(0x21);
@@ -968,14 +966,12 @@ namespace OpenCiv1
 			this.oCPU.AX.High = 0xe;
 			this.oCPU.DX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
 			this.oCPU.INT(0x21);
-			this.oCPU.WriteUInt16(this.oCPU.CS.Word, 0x668, 0x0);
 			this.oCPU.AX.High = 0x11;
 			this.oCPU.DX.Word = 0x73;
 			this.oCPU.INT(0x21);
 			this.oCPU.AX.Low = this.oCPU.ORByte(this.oCPU.AX.Low, this.oCPU.AX.Low);
 			if (this.oCPU.Flags.NE) goto L06ce;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.CS.Word, 0x668), 0x0);
-			if (this.oCPU.Flags.E) goto L0700;
+			goto L0700;
 
 		L06ce:
 			this.oCPU.INT(0x11);
@@ -984,12 +980,10 @@ namespace OpenCiv1
 			this.oCPU.AX.Low = this.oCPU.ANDByte(this.oCPU.AX.Low, 0x3);
 			if (this.oCPU.Flags.NE) goto L06de;
 
-		L06d8:
 			this.oCPU.AX.Word = 0xffff;
 			goto L0700;
 
 		L06de:
-			this.oCPU.WriteUInt16(this.oCPU.CS.Word, 0x668, 0x0);
 			this.oCPU.AX.High = 0x19;
 			this.oCPU.INT(0x21);
 			this.oCPU.AX.Low = this.oCPU.XORByte(this.oCPU.AX.Low, 0x1);
@@ -999,8 +993,6 @@ namespace OpenCiv1
 			this.oCPU.AX.High = 0x11;
 			this.oCPU.DX.Word = 0x73;
 			this.oCPU.INT(0x21);
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.CS.Word, 0x668), 0x0);
-			if (this.oCPU.Flags.NE) goto L06d8;
 
 		L0700:
 			this.oCPU.CBW(this.oCPU.AX);
@@ -1033,13 +1025,12 @@ namespace OpenCiv1
 				this.oCPU.PushWord(this.oCPU.AX.Word);
 				this.oCPU.PushWord(this.oCPU.DX.Word);
 				this.oCPU.PushWord(this.oCPU.ES.Word);
-				this.oCPU.AX.Word = 0x1000;
-				this.oCPU.ES.Word = this.oCPU.AX.Word;
+
+				this.oCPU.ES.Word = 0x1000;
 				// Instruction address 0x1000:0x17a2, size: 5
 				this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
 
-				this.oCPU.AX.Word = 0x1000;
-				this.oCPU.ES.Word = this.oCPU.AX.Word;
+				this.oCPU.ES.Word = 0x1000;
 				// Instruction address 0x1000:0x17c0, size: 5
 				this.oParent.VGADriver.F0_VGA_0270(
 					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
@@ -1079,13 +1070,12 @@ namespace OpenCiv1
 				this.oCPU.PushWord(this.oCPU.AX.Word);
 				this.oCPU.PushWord(this.oCPU.DX.Word);
 				this.oCPU.PushWord(this.oCPU.ES.Word);
-				this.oCPU.AX.Word = 0x1000;
-				this.oCPU.ES.Word = this.oCPU.AX.Word;
+
+				this.oCPU.ES.Word = 0x1000;
 				// Instruction address 0x1000:0x17a2, size: 5
 				this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
 
-				this.oCPU.AX.Word = 0x1000;
-				this.oCPU.ES.Word = this.oCPU.AX.Word;
+				this.oCPU.ES.Word = 0x1000;
 				// Instruction address 0x1000:0x17c0, size: 5
 				this.oParent.VGADriver.F0_VGA_0270(
 					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
@@ -1125,13 +1115,12 @@ namespace OpenCiv1
 				this.oCPU.PushWord(this.oCPU.AX.Word);
 				this.oCPU.PushWord(this.oCPU.DX.Word);
 				this.oCPU.PushWord(this.oCPU.ES.Word);
-				this.oCPU.AX.Word = 0x1000;
-				this.oCPU.ES.Word = this.oCPU.AX.Word;
+				
+				this.oCPU.ES.Word = 0x1000;
 				// Instruction address 0x1000:0x17a2, size: 5
 				this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
 
-				this.oCPU.AX.Word = 0x1000;
-				this.oCPU.ES.Word = this.oCPU.AX.Word;
+				this.oCPU.ES.Word = 0x1000;
 				// Instruction address 0x1000:0x17c0, size: 5
 				this.oParent.VGADriver.F0_VGA_0270(
 					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
@@ -1170,13 +1159,12 @@ namespace OpenCiv1
 				this.oCPU.PushWord(this.oCPU.AX.Word);
 				this.oCPU.PushWord(this.oCPU.DX.Word);
 				this.oCPU.PushWord(this.oCPU.ES.Word);
-				this.oCPU.AX.Word = 0x1000;
-				this.oCPU.ES.Word = this.oCPU.AX.Word;
+				
+				this.oCPU.ES.Word = 0x1000;
 				// Instruction address 0x1000:0x17a2, size: 5
 				this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
 
-				this.oCPU.AX.Word = 0x1000;
-				this.oCPU.ES.Word = this.oCPU.AX.Word;
+				this.oCPU.ES.Word = 0x1000;
 				// Instruction address 0x1000:0x17c0, size: 5
 				this.oParent.VGADriver.F0_VGA_0270(
 					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
@@ -1215,13 +1203,12 @@ namespace OpenCiv1
 				this.oCPU.PushWord(this.oCPU.AX.Word);
 				this.oCPU.PushWord(this.oCPU.DX.Word);
 				this.oCPU.PushWord(this.oCPU.ES.Word);
-				this.oCPU.AX.Word = 0x1000;
-				this.oCPU.ES.Word = this.oCPU.AX.Word;
+				
+				this.oCPU.ES.Word = 0x1000;
 				// Instruction address 0x1000:0x17a2, size: 5
 				this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
 
-				this.oCPU.AX.Word = 0x1000;
-				this.oCPU.ES.Word = this.oCPU.AX.Word;
+				this.oCPU.ES.Word = 0x1000;
 				// Instruction address 0x1000:0x17c0, size: 5
 				this.oParent.VGADriver.F0_VGA_0270(
 					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
@@ -2186,14 +2173,12 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.DX.Word);
 			this.oCPU.PushWord(this.oCPU.ES.Word);
-			this.oCPU.AX.Word = 0x1000;
-			this.oCPU.ES.Word = this.oCPU.AX.Word;
 
+			this.oCPU.ES.Word = 0x1000;
 			// Instruction address 0x1000:0x17a2, size: 5
 			this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
 
-			this.oCPU.AX.Word = 0x1000;
-			this.oCPU.ES.Word = this.oCPU.AX.Word;
+			this.oCPU.ES.Word = 0x1000;
 			// Instruction address 0x1000:0x17c0, size: 5
 			this.oParent.VGADriver.F0_VGA_0270(
 					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),

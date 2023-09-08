@@ -144,10 +144,6 @@ public class RandomMT19937
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public virtual int Next(int maxValue)
 	{
-		if (maxValue <= 0)
-		{
-			throw new ArgumentOutOfRangeException("maxValue", "'maxValue' must be greater than zero.");
-		}
 		return (int)(this.Sample() * maxValue);
 	}
 

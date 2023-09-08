@@ -170,12 +170,14 @@ namespace OpenCiv1
 			// Load Sound module
 			// Instruction address 0x0000:0x013e, size: 5
 			//this.oParent.Segment_1000.F0_1000_0a76_LoadOverlay(OpenCiv1.String_1a30, null);
-			
-			this.oCPU.BX.Word = 0;
+
+			// Change Num-Lock state			
+			/*this.oCPU.BX.Word = 0;
 			this.oCPU.ES.Word = this.oCPU.BX.Word;
 			this.oCPU.BX.Word = 0x417;
 			this.oCPU.WriteUInt8(this.oCPU.ES.Word, this.oCPU.BX.Word, 
-				this.oCPU.ANDByte(this.oCPU.ReadUInt8(this.oCPU.ES.Word, this.oCPU.BX.Word), 0xdf));
+				this.oCPU.ANDByte(this.oCPU.ReadUInt8(this.oCPU.ES.Word, this.oCPU.BX.Word), 0xdf));*/
+
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x1);
 			

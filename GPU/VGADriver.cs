@@ -10,6 +10,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using System.IO.Compression;
 
 namespace OpenCiv1
 {
@@ -1270,8 +1271,9 @@ namespace OpenCiv1
 
 			//CivFonts fonts = CivFonts.ImportFromOldStructure(this.Var_19f0_FontTable);
 			//fonts.Serialize("Fonts.xml.gz");
-
-			this.aFonts = CivFonts.Deserialize("Fonts.xml.gz");
+			Stream fonts = new GZipStream(new MemoryStream((byte[])Properties.Resources.ResourceManager.GetObject("Fonts_xml")), CompressionMode.Decompress);
+			this.aFonts = CivFonts.Deserialize(fonts);
+			fonts.Close();
 		}
 
 		private void VGAFormThread()

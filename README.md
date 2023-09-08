@@ -33,7 +33,7 @@ For this stage of code rewrite, the programmings skills needed are:
 </ul><br>
 <b>Planned milestones for a second stage are:</b>
 <ul>
-<li>Fixing the bugs and introduction of new features (multiplayer capabilities...),</li>
+<li>Fixing the bugs and introduction of new features (Multiple languages besides basic English, Multiplayer capabilities, and a lot more...),</li>
 <li>Porting to HTML5 platform,</li>
 <li>Redesigning graphics and music.</li>
 </ul>

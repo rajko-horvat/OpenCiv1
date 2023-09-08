@@ -55,12 +55,12 @@
     <Compile Include="Compression\LZW.cs" />
     <Compile Include="Compression\LZWWord.cs" />
     <Compile Include="Compression\RLE.cs" />
-    <Compile Include="Data\City.cs" />
-    <Compile Include="Data\Civilization.cs" />
-    <Compile Include="Data\GameData.cs" />
-    <Compile Include="Data\StrategicLocation.cs" />
-    <Compile Include="Data\Unit.cs" />
-    <Compile Include="Data\UnitDefinition.cs" />
+    <Compile Include="GameData\City.cs" />
+    <Compile Include="GameData\Player.cs" />
+    <Compile Include="GameData\GameData.cs" />
+    <Compile Include="GameData\StrategicLocation.cs" />
+    <Compile Include="GameData\Unit.cs" />
+    <Compile Include="GameData\UnitDefinition.cs" />
     <Compile Include="OpenCiv1.cs" />
     <Compile Include="Collections\Generic\BDictionary.cs" />
     <Compile Include="Collections\Generic\BHashSet.cs" />
@@ -149,9 +149,8 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="Fonts.xml.gz">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="BinaryResources.bin" />
+    <None Include="Fonts.xml.gz" />
     <None Include="LICENSE" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

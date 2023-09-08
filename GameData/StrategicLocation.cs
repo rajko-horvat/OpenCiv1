@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenCiv1.Data
+namespace OpenCiv1.GameData
 {
 	public class StrategicLocation
 	{
-		public sbyte Active;
-		public byte Policy;
-		public byte XPosition;
-		public byte YPosition;
+		public sbyte Active = 0;
+		public byte Policy = 0;
+		public byte XPosition = 0;
+		public byte YPosition = 0;
 	}
 }
