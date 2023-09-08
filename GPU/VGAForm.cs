@@ -382,44 +382,48 @@ namespace Disassembler
 				{
 					switch (e.KeyCode)
 					{
-						case Keys.H:
-							this.oDriver.Keys.Enqueue(0x2300);
-							break;
-
-						case Keys.Q:
-							this.oDriver.Keys.Enqueue(0x1000);
-							break;
-
-						case Keys.W:
-							this.oDriver.Keys.Enqueue(0x1100);
-							break;
-
-						case Keys.R:
-							this.oDriver.Keys.Enqueue(0x1300);
-							break;
-
-						case Keys.O:
-							this.oDriver.Keys.Enqueue(0x1800);
-							break;
-
 						case Keys.A:
 							this.oDriver.Keys.Enqueue(0x1e00);
-							break;
-
-						case Keys.G:
-							this.oDriver.Keys.Enqueue(0x2200);
 							break;
 
 						case Keys.C:
 							this.oDriver.Keys.Enqueue(0x2e00);
 							break;
 
-						case Keys.V:
-							this.oDriver.Keys.Enqueue(0x2f00);
+						case Keys.D:
+							this.oDriver.Keys.Enqueue(0x2000);
+							break;
+
+						case Keys.G:
+							this.oDriver.Keys.Enqueue(0x2200);
+							break;
+
+						case Keys.H:
+							this.oDriver.Keys.Enqueue(0x2300);
 							break;
 
 						case Keys.M:
 							this.oDriver.Keys.Enqueue(0x3200);
+							break;
+
+						case Keys.O:
+							this.oDriver.Keys.Enqueue(0x1800);
+							break;
+
+						case Keys.Q:
+							this.oDriver.Keys.Enqueue(0x1000);
+							break;
+
+						case Keys.R:
+							this.oDriver.Keys.Enqueue(0x1300);
+							break;
+
+						case Keys.V:
+							this.oDriver.Keys.Enqueue(0x2f00);
+							break;
+
+						case Keys.W:
+							this.oDriver.Keys.Enqueue(0x1100);
 							break;
 					}
 				}

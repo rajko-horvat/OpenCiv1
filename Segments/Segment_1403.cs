@@ -7788,6 +7788,11 @@ namespace OpenCiv1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1403; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+			goto L3aa4;
+
+		ToggleDebugMode:
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd806, 
+				(ushort)(~this.oCPU.Memory.ReadUInt16(this.oCPU.DS.Word, 0xd806)));
 
 		L3aa4:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd4ca), 0xffff);
@@ -7903,6 +7908,9 @@ namespace OpenCiv1
 			goto L3c40;
 
 		L3b52:
+			if (this.oCPU.AX.Word == 0x2000) // Alt + D
+				goto ToggleDebugMode;
+
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1100); // Alt + W
 			if (this.oCPU.Flags.NE) goto L3b5a;
 			goto L3a7a;
