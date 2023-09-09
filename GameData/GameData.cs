@@ -1,13 +1,8 @@
 ﻿using OpenCiv1.Properties;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Security.Principal;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
-using System.Windows;
 
 namespace OpenCiv1.GameData
 {

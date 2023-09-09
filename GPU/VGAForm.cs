@@ -17,7 +17,9 @@ namespace Disassembler
 	{
 		private VGADriver oDriver = null;
 		private delegate void ScreenCountChange();
+		private delegate void CloseFormDelegate();
 		private ScreenCountChange oScreenCountChange;
+		private CloseFormDelegate oCloseFormDelegate;
 		private Size oScreenSize;
 		private Rectangle oMouseRect = Rectangle.Empty;
 		private Point oMouseLocation = Point.Empty;
@@ -41,6 +43,7 @@ namespace Disassembler
 			this.SetStyle(ControlStyles.UserPaint, true);
 			//this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 			this.oScreenCountChange = new ScreenCountChange(ScreenCountChangeMethod);
+			this.oCloseFormDelegate = new CloseFormDelegate(CloseFormMethod);
 			ScreenCountChangeMethod();
 			this.oFont = new Font("Verdana", 10.0f, FontStyle.Regular, GraphicsUnit.Pixel);
 			this.oLargeFont = new Font("Verdana", 40.0f, FontStyle.Bold, GraphicsUnit.Pixel);
@@ -65,6 +68,23 @@ namespace Disassembler
 		public MouseButtons ScreenMouseButtons
 		{
 			get { return this.oMouseButtons; }
+		}
+
+		public void CloseForm()
+		{
+			if (this.InvokeRequired)
+			{
+				this.Invoke(oCloseFormDelegate);
+			}
+			else
+			{
+				CloseFormMethod();
+			}
+		}
+
+		private void CloseFormMethod()
+		{
+			this.Close();
 		}
 
 		public void OnScreenCountChange()

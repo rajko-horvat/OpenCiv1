@@ -197,7 +197,12 @@ namespace OpenCiv1
 					}
 				}
 			}//*/
+			
+			//ExtractStrings();
+		}
 
+		public void Start()
+		{
 			// Load old exe image to memory, not needed anymore
 			//oEXE = new MZExecutable($"{this.oCPU.DefaultDirectory}CIV.EXE");
 			//oEXE.ApplyRelocations(usStartSegment);
@@ -266,27 +271,6 @@ namespace OpenCiv1
 			this.OverlaySegment = 0x3374;
 			this.SetOverlayBase();
 
-			//ExtractStrings();
-
-			#if !DEBUG
-			MessageBox.Show("This Alpha prerelease version is a preview version of Open Civilization 1 (OpenCiv1) project.\n" +
-				"It most certainly has bugs, but most functions should work normally, and has no sound at this point. " +
-				"It is compatible with old civ.exe and can save/load original game files.\n"+
-				"The Debug mode can be toggled by pressing Alt + D Key.\n\n" +
-				"Technicalities:\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR " +
-				"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, " +
-				"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE " +
-				"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER " +
-				"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, " +
-				"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
-				"Warning", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
-			#endif
-
-			this.Start();
-		}
-
-		public void Start()
-		{
 			this.oCPU.CS.Word = 0x3045; // set this function segment
 
 			ushort usDataSegment = 0x3b01;

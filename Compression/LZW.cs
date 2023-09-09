@@ -1,17 +1,8 @@
 ﻿using IRB.Collections.Generic;
 using System;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.CodeDom;
-using static System.Windows.Forms.AxHost;
-using System.Reflection.Emit;
-using System.Collections;
 
 namespace OpenCiv1.Compression
 {

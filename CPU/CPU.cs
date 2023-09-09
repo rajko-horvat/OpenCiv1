@@ -1698,19 +1698,7 @@ namespace Disassembler
 		{
 			this.EnableTimer = false;
 
-			Console.WriteLine();
-			Console.WriteLine($"Exiting program with code {code}, press any key...");
-
-			while (Console.KeyAvailable)
-			{
-				Console.ReadKey();
-			}
-
-			while (!Console.KeyAvailable)
-			{
-				Thread.Sleep(200);
-				System.Windows.Forms.Application.DoEvents();
-			}
+			this.oParent.Log.WriteLine($"Exiting program with code {code}");
 
 			Environment.Exit(code);
 			System.Windows.Forms.Application.Exit();

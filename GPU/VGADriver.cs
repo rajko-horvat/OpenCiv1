@@ -1289,6 +1289,11 @@ namespace OpenCiv1
 			get { return this.oCPU; }
 		}
 
+		public VGAForm Form
+		{
+			get { return this.oVGAForm; }
+		}
+
 		public BDictionary<int, VGABitmap> Screens
 		{
 			get { return this.aScreens; }

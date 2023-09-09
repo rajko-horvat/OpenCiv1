@@ -1,16 +1,17 @@
 ## Repository description
-<p>This is a re-write of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991.</p>
+<p>This is a direct re-write of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991.</p>
 <p>The code logic is <b>Based on original DOS CIV I version 475.05</b> disassembly.</p>
-<p>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform and the bugs that have never been fixed
-are hindering the popularity of the game.<p>
+<p>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform 
+and the bugs that have never been fixed are hindering the popularity of the game.<p>
 
 ## Current status
-<p><b>The game is playable in current state</b>, but requires Original game files (.txt, .pic and .pal) to be present.</p>
+<p><b>The game is in working state</b>, but requires Original game files (.txt, .pic and .pal) to be present.</p>
 
 ## Running the code
-If you want to run the code, it is assumed that:
+If you want to compile the code, it is assumed that:
 <ul>
 <li>You are using VS2022 community version (don't know if this is important).</li>
+<li>You have .NET Framework 3.5 installed.</li>
 <li>You have installed DOS CIV I game at 'c:\dos\civ\'.
 It's where it's home directory resides (Images, palettes, text and save games are loaded/saved there, for now).</li>
 </ul>
@@ -34,7 +35,8 @@ For this stage of code rewrite, the programmings skills needed are:
 </ul><br>
 <b>Planned milestones for a second stage are:</b>
 <ul>
-<li>Fixing the bugs and introduction of new features (Multiple languages besides basic English, Multiplayer capabilities, and a lot more...),</li>
+<li>Fixing the bugs and introduction of new features 
+(Multiple languages besides basic English, Multiplayer capabilities, and a lot more...),</li>
 <li>Porting to HTML5 platform,</li>
 <li>Redesigning graphics and music.</li>
 </ul>
