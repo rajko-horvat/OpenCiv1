@@ -1,12 +1,11 @@
 ﻿using OpenCiv1.Properties;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace OpenCiv1.GameData
+namespace OpenCiv1.GameState
 {
-	public class GameData
+	public class GameState
 	{
 		public ushort GameTurnCount = 0;
 		public short Year = 0;
@@ -64,6 +63,5 @@ namespace OpenCiv1.GameData
 		public short PlayerSpaceshipSuccessRate;
 		public short AISpaceshipSuccessRate;
 		
-		public GameData() { }
 	}
 }

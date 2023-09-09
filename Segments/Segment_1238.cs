@@ -570,12 +570,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0416;
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb220), 0x0);
 			if (this.oCPU.Flags.GE) goto L0416;
+
+			Console.Write("Civilization Quiz");
 			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			/*this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0416); // stack management - push return offset
 			this.oParent.Overlay_16.F16_0000_0000();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x1238; // restore this function segment
+			this.oCPU.CS.Word = 0x1238; // restore this function segment*/
 
 		L0416:
 			this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x19c0), 0x2);

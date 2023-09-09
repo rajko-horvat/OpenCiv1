@@ -58,7 +58,7 @@ namespace OpenCiv1
 		private Overlay_17 oOverlay_17;
 		private Overlay_10 oOverlay_10;
 		private Overlay_15 oOverlay_15;
-		private Overlay_16 oOverlay_16;
+		private CivQuiz oOverlay_16;
 		private MSCAPI oMSCAPI;
 		private VGADriver oVGADriver;
 		private NSound oSoundDriver;
@@ -135,7 +135,7 @@ namespace OpenCiv1
 			this.oOverlay_17 = new Overlay_17(this);
 			this.oOverlay_10 = new Overlay_10(this);
 			this.oOverlay_15 = new Overlay_15(this);
-			this.oOverlay_16 = new Overlay_16(this);
+			this.oOverlay_16 = new CivQuiz(this);
 			this.oMSCAPI = new MSCAPI(this);
 			this.oVGADriver = new VGADriver(this);
 			this.oSoundDriver = new NSound(this);
@@ -742,7 +742,7 @@ namespace OpenCiv1
 			get { return this.oOverlay_15; }
 		}
 
-		public Overlay_16 Overlay_16
+		public CivQuiz Overlay_16
 		{
 			get { return this.oOverlay_16; }
 		}

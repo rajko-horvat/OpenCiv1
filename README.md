@@ -1,5 +1,5 @@
 ## Repository description
-<p>This is a direct re-write of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991.</p>
+<p>This is a direct Source Code re-write of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991.</p>
 <p>The code logic is <b>Based on original DOS CIV I version 475.05</b> disassembly.</p>
 <p>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform 
 and the bugs that have never been fixed are hindering the popularity of the game.<p>
@@ -11,7 +11,7 @@ and the bugs that have never been fixed are hindering the popularity of the game
 If you want to compile the code, it is assumed that:
 <ul>
 <li>You are using VS2022 community version (don't know if this is important).</li>
-<li>You have .NET Framework 3.5 installed.</li>
+<li>You have .NET Framework 4.8 installed.</li>
 <li>You have installed DOS CIV I game at 'c:\dos\civ\'.
 It's where it's home directory resides (Images, palettes, text and save games are loaded/saved there, for now).</li>
 </ul>

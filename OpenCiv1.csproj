@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OpenCiv1</RootNamespace>
     <AssemblyName>OpenCiv1</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -55,12 +55,12 @@
     <Compile Include="Compression\LZW.cs" />
     <Compile Include="Compression\LZWWord.cs" />
     <Compile Include="Compression\RLE.cs" />
-    <Compile Include="GameData\City.cs" />
-    <Compile Include="GameData\Player.cs" />
-    <Compile Include="GameData\GameData.cs" />
-    <Compile Include="GameData\StrategicLocation.cs" />
-    <Compile Include="GameData\Unit.cs" />
-    <Compile Include="GameData\UnitDefinition.cs" />
+    <Compile Include="GameState\City.cs" />
+    <Compile Include="GameState\Player.cs" />
+    <Compile Include="GameState\GameState.cs" />
+    <Compile Include="GameState\StrategicLocation.cs" />
+    <Compile Include="GameState\Unit.cs" />
+    <Compile Include="GameState\UnitDefinition.cs" />
     <Compile Include="OpenCiv1.cs" />
     <Compile Include="Collections\Generic\BDictionary.cs" />
     <Compile Include="Collections\Generic\BHashSet.cs" />
@@ -98,7 +98,7 @@
     <Compile Include="Segments\Overlay_13.cs" />
     <Compile Include="Segments\Overlay_14.cs" />
     <Compile Include="Segments\Overlay_15.cs" />
-    <Compile Include="Segments\Overlay_16.cs" />
+    <Compile Include="Segments\CivQuiz.cs" />
     <Compile Include="Segments\Overlay_17.cs" />
     <Compile Include="Segments\Overlay_18.cs" />
     <Compile Include="Segments\Overlay_19.cs" />

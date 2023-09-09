@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace OpenCiv1.GameData
+namespace OpenCiv1.GameState
 {
 	public class UnitDefinition
 	{

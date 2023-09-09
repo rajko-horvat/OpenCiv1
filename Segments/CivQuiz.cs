@@ -2,13 +2,13 @@ using Disassembler;
 
 namespace OpenCiv1
 {
-	public class Overlay_16
+	public class CivQuiz
 	{
 		private OpenCiv1 oParent;
 		private CPU oCPU;
 		private ushort usSegment = 0;
 
-		public Overlay_16(OpenCiv1 parent)
+		public CivQuiz(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;

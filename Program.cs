@@ -1,7 +1,6 @@
 ﻿using Disassembler;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
@@ -13,7 +12,7 @@ namespace OpenCiv1
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
-		[MTAThread]
+		[STAThread]
 		static void Main()
 		{
 			OpenCiv1 oGame = null;
