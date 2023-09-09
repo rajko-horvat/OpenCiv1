@@ -18,7 +18,7 @@ namespace OpenCiv1
 			OpenCiv1 oGame = null;
 
 #if !DEBUG
-            System.Windows.MessageBox.Show("This Alpha prerelease version is a preview version of Open Civilization 1 (OpenCiv1) project.\n" +
+            System.Windows.MessageBox.Show("This Alpha pre-release version is a preview version of OpenCiv1 (Open Civilization 1) project.\n" +
 				"It most certainly has bugs, but most functions should work normally, and has no sound at this point. " +
 				"It is compatible with old civ.exe and can save/load original game files.\n" +
 				"The Debug mode can be toggled by pressing Alt + D Key.\n\n" +

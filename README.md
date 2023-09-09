@@ -1,5 +1,5 @@
 ## Repository description
-<p>This is a direct Source Code re-write of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991.</p>
+<p>This is a rewrite of Civilization 1 Game Source Code designed by Sid Meier and Bruce Shelley in year 1991.</p>
 <p>The code logic is <b>Based on original DOS CIV I version 475.05</b> disassembly.</p>
 <p>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform 
 and the bugs that have never been fixed are hindering the popularity of the game.<p>

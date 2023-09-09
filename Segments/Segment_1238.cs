@@ -571,7 +571,7 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb220), 0x0);
 			if (this.oCPU.Flags.GE) goto L0416;
 
-			Console.Write("Civilization Quiz");
+			//Console.Write("Civ Quiz");
 			// Call to overlay
 			/*this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0416); // stack management - push return offset
