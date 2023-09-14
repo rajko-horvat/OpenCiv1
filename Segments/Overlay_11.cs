@@ -361,7 +361,7 @@ namespace OpenCiv1
 		L0356:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdf60, this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3484, 0xfffd);
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x4cd8, this.oCPU.ANDByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x4cd8), 0xfe));
+			this.oParent.GameState.SpaceshipFlags &= 0x7ffe;
 			goto L02f4;
 
 		L0366:
@@ -598,7 +598,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0522, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_4272);
 
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6b86);
+			this.oCPU.BX.Word = (ushort)this.oParent.GameState.DifficultyLevel;
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x0538, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x33a2)));
@@ -606,7 +606,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0548, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_4275);
 
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd7ee);
+			this.oCPU.BX.Word = this.oParent.GameState.HumanPlayerID;
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x055e, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x19a2)));
@@ -614,7 +614,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x056e, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_4277);
 
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd7ee);
+			this.oCPU.BX.Word = this.oParent.GameState.HumanPlayerID;
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x0584, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
@@ -711,7 +711,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x4384);
 			this.oCPU.AX.Low = this.oCPU.ADDByte(this.oCPU.AX.Low, 0x41);
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word - 0x45fb), this.oCPU.AX.Low);
+			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba05), this.oCPU.AX.Low);
 
 			// Instruction address 0x0000:0x0678, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_4314);
@@ -839,7 +839,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x4384);
 			this.oCPU.AX.Low = this.oCPU.ADDByte(this.oCPU.AX.Low, 0x41);
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word - 0x45fd), this.oCPU.AX.Low);
+			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba03), this.oCPU.AX.Low);
 			this.oCPU.AX.Word = 0x50;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.AX.Word = 0x64;
@@ -936,87 +936,87 @@ namespace OpenCiv1
 
 				// read sve file
 				FileStream reader = new FileStream($"{path}{filename}.sve", FileMode.Open);
-				ReadFileData(reader, 0x81d2, 2);
-				ReadFileData(reader, 0xd7ee, 2);
-				ReadFileData(reader, 0x7f36, 2);
-				ReadFileData(reader, 0x6e80, 2);
-				ReadFileData(reader, 0xb220, 2);
-				ReadFileData(reader, 0x6b86, 2);
-				ReadFileData(reader, 0x6b8a, 2);
-				ReadFileData(reader, 0x19be, 2);
-				ReadFileData(reader, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19a2), 0x70);
-				ReadFileData(reader, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1992), 0x60);
-				ReadFileData(reader, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1982), 0x58);
-				ReadFileData(reader, 0xb1d6, 0x10);
-				ReadFileData(reader, 0x6dec, 0x10);
-				ReadFileData(reader, 0xb3be, 0x1c0);
-				ReadFileData(reader, 0xd308, 0x1c0);
-				ReadFileData(reader, 0xe898, 0x10);
-				ReadFileData(reader, 0xe3c8, 0x50);
-				ReadFileData(reader, 0xdefc, 0x10);
-				ReadFileData(reader, 0xe698, 0x100);
-				ReadFileData(reader, 0xe498, 0x80);
-				ReadFileData(reader, 0x6b66, 0x10);
-				ReadFileData(reader, 0x6b76, 0x10);
-				ReadFileData(reader, 0xe16a, 0x10);
-				ReadFileData(reader, 0x8068, 0x10);
-				ReadFileData(reader, 0xd2f8, 0x10);
-				ReadFileData(reader, 0x6e82, 0x10);
-				ReadFileData(reader, 0x803c, 0x10);
-				ReadFileData(reader, 0xdf0e, 0x10);
-				ReadFileData(reader, 0xddfe, 0x10);
-				ReadFileData(reader, 0xd2e4, 0x10);
-				ReadFileData(reader, 0xdcec, 0x10);
-				ReadFileData(reader, 0xd7f4, 0x10);
-				ReadFileData(reader, 0x6cac, 0x100);
-				ReadFileData(reader, 0x807a, 0x100);
-				ReadFileData(reader, 0x6b96, 0x100);
-				ReadFileData(reader, 0xdcfe, 0x100);
-				ReadFileData(reader, 0xb1ee, 0x20);
-				ReadFileData(reader, 0x3772, 0, 0x4b0);
-				ReadFileData(reader, 0x3772, 0x1f88, 0x4b0);
-				ReadFileData(reader, 0x70ec, 0xe00);
-				ReadFileData(reader, 0x112a, 0x3b8);
-				ReadFileData(reader, 0x81d4, 0x3000);
-				ReadFileData(reader, 0x3772, 0x740, 0xfa0);
-				ReadFileData(reader, 0xd76e, 0x80);
-				ReadFileData(reader, 0xe518, 0x80);
-				ReadFileData(reader, 0xdc6c, 0x80);
-				ReadFileData(reader, 0xde22, 0x80);
-				ReadFileData(reader, 0x3772, 0x4b0, 0x90);
-				ReadFileData(reader, 0xe418, 0x80);
-				ReadFileData(reader, 0x3604, 0, 0xd00);
-				ReadFileData(reader, 0x40dc, 2);
-				ReadFileData(reader, 0x3772, 0x26fc, 0x1000);
-				ReadFileData(reader, 0x6ea8, 0x2c);
-				ReadFileData(reader, 0x3772, 0x253c, 0x1c0);
-				ReadFileData(reader, 0x3772, 0x1d48, 0x240);
-				ReadFileData(reader, 0x6e94, 2);
-				ReadFileData(reader, 0xb1ea, 2);
-				ReadFileData(reader, 0xdb36, 2);
-				ReadFileData(reader, 0x19c0, 2);
-				ReadFileData(reader, 0xdb44, 0x104);
-				ReadFileData(reader, 0x804c, 2);
-				ReadFileData(reader, 0xb23a, 2);
-				ReadFileData(reader, 0xe3c4, 2);
-				ReadFileData(reader, 0xb210, 0x10);
-				ReadFileData(reader, 0x1c26, 2);
-				ReadFileData(reader, 0x6c9c, 0x10);
-				ReadFileData(reader, 0x3772, 0x16e0, 0x5a0);
-				ReadFileData(reader, 0x4cd8, 2);
-				ReadFileData(reader, 0x4cd4, 2);
-				ReadFileData(reader, 0x4cd6, 2);
-				ReadFileData(reader, 0xde10, 0x10);
-				ReadFileData(reader, 0xd91e, 0x18);
-				ReadFileData(reader, 0xb222, 0x18);
-				ReadFileData(reader, 0x3772, 0x540, 0x100);
-				ReadFileData(reader, 0x3772, 0x640, 0x100);
-				ReadFileData(reader, 0x1c20, 2);
-				ReadFileData(reader, 0xd808, 2);
-				ReadFileData(reader, 0xd2f4, 2);
-				ReadFileData(reader, 0xdeec, 0x10);
-				ReadFileData(reader, 0xe8a8, 0x10);
-				ReadFileData(reader, 0xdf1e, 2);
+				this.oParent.GameState.TurnCount = ReadUInt16(reader);
+				this.oParent.GameState.HumanPlayerID = ReadUInt16(reader);
+				this.oParent.GameState.PlayerFlags = ReadInt16(reader);
+				this.oParent.GameState.RandomSeed = ReadUInt16(reader);
+				this.oParent.GameState.Year = ReadInt16(reader);
+				this.oParent.GameState.DifficultyLevel = ReadInt16(reader);
+				this.oParent.GameState.ActiveCivilizations = ReadInt16(reader);
+				this.oParent.GameState.CurrentResearchID = ReadInt16(reader);
+				ReadData(reader, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19a2), 0x70);
+				ReadData(reader, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1992), 0x60);
+				ReadData(reader, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1982), 0x58);
+				ReadData(reader, 0xb1d6, 0x10);
+				ReadData(reader, 0x6dec, 0x10);
+				ReadData(reader, 0xb3be, 0x1c0);
+				ReadData(reader, 0xd308, 0x1c0);
+				ReadData(reader, 0xe898, 0x10);
+				ReadData(reader, 0xe3c8, 0x50);
+				ReadData(reader, 0xdefc, 0x10);
+				ReadData(reader, 0xe698, 0x100);
+				ReadData(reader, 0xe498, 0x80);
+				ReadData(reader, 0x6b66, 0x10);
+				ReadData(reader, 0x6b76, 0x10);
+				ReadData(reader, 0xe16a, 0x10);
+				ReadData(reader, 0x8068, 0x10);
+				ReadData(reader, 0xd2f8, 0x10);
+				ReadData(reader, 0x6e82, 0x10);
+				ReadData(reader, 0x803c, 0x10);
+				ReadData(reader, 0xdf0e, 0x10);
+				ReadData(reader, 0xddfe, 0x10);
+				ReadData(reader, 0xd2e4, 0x10);
+				ReadData(reader, 0xdcec, 0x10);
+				ReadData(reader, 0xd7f4, 0x10);
+				ReadData(reader, 0x6cac, 0x100);
+				ReadData(reader, 0x807a, 0x100);
+				ReadData(reader, 0x6b96, 0x100);
+				ReadData(reader, 0xdcfe, 0x100);
+				ReadData(reader, 0xb1ee, 0x20);
+				ReadData(reader, 0x3772, 0, 0x4b0);
+				ReadData(reader, 0x3772, 0x1f88, 0x4b0);
+				ReadData(reader, 0x70ec, 0xe00);
+				ReadData(reader, 0x112a, 0x3b8);
+				ReadData(reader, 0x81d4, 0x3000);
+				ReadData(reader, 0x3772, 0x740, 0xfa0);
+				ReadData(reader, 0xd76e, 0x80);
+				ReadData(reader, 0xe518, 0x80);
+				ReadData(reader, 0xdc6c, 0x80);
+				ReadData(reader, 0xde22, 0x80);
+				ReadData(reader, 0x3772, 0x4b0, 0x90);
+				ReadData(reader, 0xe418, 0x80);
+				ReadData(reader, 0x3604, 0, 0xd00);
+				this.oParent.GameState.ReplayDataLength = ReadInt16(reader);
+				ReadData(reader, 0x3772, 0x26fc, 0x1000);
+				ReadData(reader, 0x6ea8, 0x2c);
+				ReadData(reader, 0x3772, 0x253c, 0x1c0);
+				ReadData(reader, 0x3772, 0x1d48, 0x240);
+				this.oParent.GameState.PollutedSquareCount = ReadInt16(reader);
+				this.oParent.GameState.PollutionEffectLevel = ReadInt16(reader);
+				this.oParent.GameState.GlobalWarmingCount = ReadInt16(reader);
+				this.oParent.GameState.GameSettingFlags = ReadInt16(reader);
+				ReadData(reader, 0xdb44, 0x104);
+				this.oParent.GameState.MaximumTechnologyCount = ReadInt16(reader);
+				this.oParent.GameState.PlayerFutureTechnology = ReadInt16(reader);
+				this.oParent.GameState.DebugFlags = ReadInt16(reader);
+				ReadData(reader, 0xb210, 0x10);
+				this.oParent.GameState.NextAnthologyTurn = ReadInt16(reader);
+				ReadData(reader, 0x6c9c, 0x10);
+				ReadData(reader, 0x3772, 0x16e0, 0x5a0);
+				this.oParent.GameState.SpaceshipFlags = ReadInt16(reader);
+				this.oParent.GameState.PlayerSpaceshipSuccessRate = ReadInt16(reader);
+				this.oParent.GameState.AISpaceshipSuccessRate = ReadInt16(reader);
+				ReadData(reader, 0xde10, 0x10);
+				ReadData(reader, 0xd91e, 0x18);
+				ReadData(reader, 0xb222, 0x18);
+				ReadData(reader, 0x3772, 0x540, 0x100);
+				ReadData(reader, 0x3772, 0x640, 0x100);
+				this.oParent.GameState.PalaceLevel = ReadInt16(reader);
+				this.oParent.GameState.PeaceTurnCount = ReadInt16(reader);
+				this.oParent.GameState.AIOpponentCount = ReadInt16(reader);
+				ReadData(reader, 0xdeec, 0x10);
+				ReadData(reader, 0xe8a8, 0x10);
+				this.oParent.GameState.CivilizationIdentityFlags = ReadInt16(reader);
 
 				reader.Close();
 
@@ -1043,107 +1043,48 @@ namespace OpenCiv1
 				bSuccess = false;
 			}
 
-			/*this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-
-			// Instruction address 0x0000:0x0849, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9), 
-				OpenCiv1.String_4386);
-
-			// load sve file
-
-			// Instruction address 0x0000:0x0858, size: 5
-			this.oParent.MSCAPI.open(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0x8000);
-
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681e, this.oCPU.AX.Word);
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xffff);
-			if (this.oCPU.Flags.NE) goto L08af;
-
-			// Instruction address 0x0000:0x0870, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_438a);
-
-			// Instruction address 0x0000:0x087f, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-
-			// Instruction address 0x0000:0x088f, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_4397);
-
-			this.oCPU.AX.Word = 0x50;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x64;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x08a8); // stack management - push return offset
-			// Instruction address 0x0000:0x08a3, size: 5
-			this.oParent.Segment_1238.F0_1238_001e();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
-			this.oCPU.AX.Word = 0;
-			goto L08f4;
-
-		L08af:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681a, 0x1);
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x08b9); // stack management - push return offset
-			F11_0000_09e6_LoadOrSaveFile();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			
-			// Instruction address 0x0000:0x08bd, size: 5
-			this.oParent.MSCAPI.close((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e));
-
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x08ca); // stack management - push return offset
-			// Instruction address 0x0000:0x08c5, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-
-			// read sve file
-
-			// Instruction address 0x0000:0x08d5, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9),
-				OpenCiv1.String_4399);
-
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x08e9); // stack management - push return offset
-			// Instruction address 0x0000:0x08e4, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadBitmapOrPalette(2, 0, 0, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
-
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x08f1); // stack management - push return offset
-			// Instruction address 0x0000:0x08ec, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.AX.Word = 0x1;
-
-		L08f4:
-			this.oCPU.BP.Word = this.oCPU.PopWord();*/
-
 			// Far return
 			this.oCPU.Log.ExitBlock("F11_0000_083b_LoadGame");
 
 			return bSuccess;
 		}
 
-		public void ReadFileData(Stream reader, ushort bufferPtr, ushort length)
+		private void ReadData(Stream reader, ushort bufferPtr, ushort length)
 		{
 			reader.Read(this.oCPU.Memory.MemoryContent,
 				(int)CPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr), length);
 		}
 
-		public void ReadFileData(Stream reader, ushort bufferSeg, ushort bufferPtr, ushort length)
+		private void ReadData(Stream reader, ushort bufferSeg, ushort bufferPtr, ushort length)
 		{
 			reader.Read(this.oCPU.Memory.MemoryContent,
 				(int)CPU.ToLinearAddress(bufferSeg, bufferPtr), length);
+		}
+
+		private ushort ReadUInt16(Stream reader)
+		{
+			int byte0 = reader.ReadByte();
+			int byte1 = reader.ReadByte();
+
+			if (byte0 >= 0 && byte1 >= 0)
+			{
+				return (ushort)(byte0 | (byte1 << 8));
+			}
+
+			return 0;
+		}
+
+		private short ReadInt16(Stream reader)
+		{
+			int byte0 = reader.ReadByte();
+			int byte1 = reader.ReadByte();
+
+			if (byte0 >= 0 && byte1 >= 0)
+			{
+				return (short)(byte0 | (byte1 << 8));
+			}
+
+			return 0;
 		}
 
 		public bool F11_0000_08f6_SaveGameData(string path)
@@ -1162,87 +1103,87 @@ namespace OpenCiv1
 
 				// write sve file
 				FileStream writer = new FileStream($"{path}{filename}.sve", FileMode.Create);
-				WriteFileData(writer, 0x81d2, 2);
-				WriteFileData(writer, 0xd7ee, 2);
-				WriteFileData(writer, 0x7f36, 2);
-				WriteFileData(writer, 0x6e80, 2);
-				WriteFileData(writer, 0xb220, 2);
-				WriteFileData(writer, 0x6b86, 2);
-				WriteFileData(writer, 0x6b8a, 2);
-				WriteFileData(writer, 0x19be, 2);
-				WriteFileData(writer, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19a2), 0x70);
-				WriteFileData(writer, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1992), 0x60);
-				WriteFileData(writer, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1982), 0x58);
-				WriteFileData(writer, 0xb1d6, 0x10);
-				WriteFileData(writer, 0x6dec, 0x10);
-				WriteFileData(writer, 0xb3be, 0x1c0);
-				WriteFileData(writer, 0xd308, 0x1c0);
-				WriteFileData(writer, 0xe898, 0x10);
-				WriteFileData(writer, 0xe3c8, 0x50);
-				WriteFileData(writer, 0xdefc, 0x10);
-				WriteFileData(writer, 0xe698, 0x100);
-				WriteFileData(writer, 0xe498, 0x80);
-				WriteFileData(writer, 0x6b66, 0x10);
-				WriteFileData(writer, 0x6b76, 0x10);
-				WriteFileData(writer, 0xe16a, 0x10);
-				WriteFileData(writer, 0x8068, 0x10);
-				WriteFileData(writer, 0xd2f8, 0x10);
-				WriteFileData(writer, 0x6e82, 0x10);
-				WriteFileData(writer, 0x803c, 0x10);
-				WriteFileData(writer, 0xdf0e, 0x10);
-				WriteFileData(writer, 0xddfe, 0x10);
-				WriteFileData(writer, 0xd2e4, 0x10);
-				WriteFileData(writer, 0xdcec, 0x10);
-				WriteFileData(writer, 0xd7f4, 0x10);
-				WriteFileData(writer, 0x6cac, 0x100);
-				WriteFileData(writer, 0x807a, 0x100);
-				WriteFileData(writer, 0x6b96, 0x100);
-				WriteFileData(writer, 0xdcfe, 0x100);
-				WriteFileData(writer, 0xb1ee, 0x20);
-				WriteFileData(writer, 0x3772, 0, 0x4b0);
-				WriteFileData(writer, 0x3772, 0x1f88, 0x4b0);
-				WriteFileData(writer, 0x70ec, 0xe00);
-				WriteFileData(writer, 0x112a, 0x3b8);
-				WriteFileData(writer, 0x81d4, 0x3000);
-				WriteFileData(writer, 0x3772, 0x740, 0xfa0);
-				WriteFileData(writer, 0xd76e, 0x80);
-				WriteFileData(writer, 0xe518, 0x80);
-				WriteFileData(writer, 0xdc6c, 0x80);
-				WriteFileData(writer, 0xde22, 0x80);
-				WriteFileData(writer, 0x3772, 0x4b0, 0x90);
-				WriteFileData(writer, 0xe418, 0x80);
-				WriteFileData(writer, 0x3604, 0, 0xd00);
-				WriteFileData(writer, 0x40dc, 2);
-				WriteFileData(writer, 0x3772, 0x26fc, 0x1000);
-				WriteFileData(writer, 0x6ea8, 0x2c);
-				WriteFileData(writer, 0x3772, 0x253c, 0x1c0);
-				WriteFileData(writer, 0x3772, 0x1d48, 0x240);
-				WriteFileData(writer, 0x6e94, 2);
-				WriteFileData(writer, 0xb1ea, 2);
-				WriteFileData(writer, 0xdb36, 2);
-				WriteFileData(writer, 0x19c0, 2);
-				WriteFileData(writer, 0xdb44, 0x104);
-				WriteFileData(writer, 0x804c, 2);
-				WriteFileData(writer, 0xb23a, 2);
-				WriteFileData(writer, 0xe3c4, 2);
-				WriteFileData(writer, 0xb210, 0x10);
-				WriteFileData(writer, 0x1c26, 2);
-				WriteFileData(writer, 0x6c9c, 0x10);
-				WriteFileData(writer, 0x3772, 0x16e0, 0x5a0);
-				WriteFileData(writer, 0x4cd8, 2);
-				WriteFileData(writer, 0x4cd4, 2);
-				WriteFileData(writer, 0x4cd6, 2);
-				WriteFileData(writer, 0xde10, 0x10);
-				WriteFileData(writer, 0xd91e, 0x18);
-				WriteFileData(writer, 0xb222, 0x18);
-				WriteFileData(writer, 0x3772, 0x540, 0x100);
-				WriteFileData(writer, 0x3772, 0x640, 0x100);
-				WriteFileData(writer, 0x1c20, 2);
-				WriteFileData(writer, 0xd808, 2);
-				WriteFileData(writer, 0xd2f4, 2);
-				WriteFileData(writer, 0xdeec, 0x10);
-				WriteFileData(writer, 0xe8a8, 0x10);
-				WriteFileData(writer, 0xdf1e, 2);
+				WriteUInt16(writer, this.oParent.GameState.TurnCount);
+				WriteUInt16(writer, this.oParent.GameState.HumanPlayerID);
+				WriteInt16(writer, this.oParent.GameState.PlayerFlags);
+				WriteUInt16(writer, this.oParent.GameState.RandomSeed);
+				WriteInt16(writer, this.oParent.GameState.Year);
+				WriteInt16(writer, this.oParent.GameState.DifficultyLevel);
+				WriteInt16(writer, this.oParent.GameState.ActiveCivilizations);
+				WriteInt16(writer, this.oParent.GameState.CurrentResearchID);
+				WriteData(writer, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19a2), 0x70);
+				WriteData(writer, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1992), 0x60);
+				WriteData(writer, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1982), 0x58);
+				WriteData(writer, 0xb1d6, 0x10);
+				WriteData(writer, 0x6dec, 0x10);
+				WriteData(writer, 0xb3be, 0x1c0);
+				WriteData(writer, 0xd308, 0x1c0);
+				WriteData(writer, 0xe898, 0x10);
+				WriteData(writer, 0xe3c8, 0x50);
+				WriteData(writer, 0xdefc, 0x10);
+				WriteData(writer, 0xe698, 0x100);
+				WriteData(writer, 0xe498, 0x80);
+				WriteData(writer, 0x6b66, 0x10);
+				WriteData(writer, 0x6b76, 0x10);
+				WriteData(writer, 0xe16a, 0x10);
+				WriteData(writer, 0x8068, 0x10);
+				WriteData(writer, 0xd2f8, 0x10);
+				WriteData(writer, 0x6e82, 0x10);
+				WriteData(writer, 0x803c, 0x10);
+				WriteData(writer, 0xdf0e, 0x10);
+				WriteData(writer, 0xddfe, 0x10);
+				WriteData(writer, 0xd2e4, 0x10);
+				WriteData(writer, 0xdcec, 0x10);
+				WriteData(writer, 0xd7f4, 0x10);
+				WriteData(writer, 0x6cac, 0x100);
+				WriteData(writer, 0x807a, 0x100);
+				WriteData(writer, 0x6b96, 0x100);
+				WriteData(writer, 0xdcfe, 0x100);
+				WriteData(writer, 0xb1ee, 0x20);
+				WriteData(writer, 0x3772, 0, 0x4b0);
+				WriteData(writer, 0x3772, 0x1f88, 0x4b0);
+				WriteData(writer, 0x70ec, 0xe00);
+				WriteData(writer, 0x112a, 0x3b8);
+				WriteData(writer, 0x81d4, 0x3000);
+				WriteData(writer, 0x3772, 0x740, 0xfa0);
+				WriteData(writer, 0xd76e, 0x80);
+				WriteData(writer, 0xe518, 0x80);
+				WriteData(writer, 0xdc6c, 0x80);
+				WriteData(writer, 0xde22, 0x80);
+				WriteData(writer, 0x3772, 0x4b0, 0x90);
+				WriteData(writer, 0xe418, 0x80);
+				WriteData(writer, 0x3604, 0, 0xd00);
+				WriteInt16(writer, this.oParent.GameState.ReplayDataLength);
+				WriteData(writer, 0x3772, 0x26fc, 0x1000);
+				WriteData(writer, 0x6ea8, 0x2c);
+				WriteData(writer, 0x3772, 0x253c, 0x1c0);
+				WriteData(writer, 0x3772, 0x1d48, 0x240);
+				WriteInt16(writer, this.oParent.GameState.PollutedSquareCount);
+				WriteInt16(writer, this.oParent.GameState.PollutionEffectLevel);
+				WriteInt16(writer, this.oParent.GameState.GlobalWarmingCount);
+				WriteInt16(writer, this.oParent.GameState.GameSettingFlags);
+				WriteData(writer, 0xdb44, 0x104);
+				WriteInt16(writer, this.oParent.GameState.MaximumTechnologyCount);
+				WriteInt16(writer, this.oParent.GameState.PlayerFutureTechnology);
+				WriteInt16(writer, this.oParent.GameState.DebugFlags);
+				WriteData(writer, 0xb210, 0x10);
+				WriteInt16(writer, this.oParent.GameState.NextAnthologyTurn);
+				WriteData(writer, 0x6c9c, 0x10);
+				WriteData(writer, 0x3772, 0x16e0, 0x5a0);
+				WriteInt16(writer, this.oParent.GameState.SpaceshipFlags);
+				WriteInt16(writer, this.oParent.GameState.PlayerSpaceshipSuccessRate);
+				WriteInt16(writer, this.oParent.GameState.AISpaceshipSuccessRate);
+				WriteData(writer, 0xde10, 0x10);
+				WriteData(writer, 0xd91e, 0x18);
+				WriteData(writer, 0xb222, 0x18);
+				WriteData(writer, 0x3772, 0x540, 0x100);
+				WriteData(writer, 0x3772, 0x640, 0x100);
+				WriteInt16(writer, this.oParent.GameState.PalaceLevel);
+				WriteInt16(writer, this.oParent.GameState.PeaceTurnCount);
+				WriteInt16(writer, this.oParent.GameState.AIOpponentCount);
+				WriteData(writer, 0xdeec, 0x10);
+				WriteData(writer, 0xe8a8, 0x10);
+				WriteInt16(writer, this.oParent.GameState.CivilizationIdentityFlags);
 
 				writer.Close();
 
@@ -1268,120 +1209,34 @@ namespace OpenCiv1
 				bSuccess = false;
 			}
 
-			/*// Instruction address 0x0000:0x0904, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9),
-				OpenCiv1.String_439d);
-
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-			this.oCPU.AX.Word = 0x2;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0918); // stack management - push return offset
-										// Instruction address 0x0000:0x0913, size: 5
-			this.oParent.LZWCompressor.F0_302a_000c_LZWCompress();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
-			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L094e;
-
-			// Instruction address 0x0000:0x0927, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_43a1);
-
-			this.oCPU.AX.Word = 0x40;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x4;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0940); // stack management - push return offset
-										// Instruction address 0x0000:0x093b, size: 5
-			this.oParent.Segment_1238.F0_1238_0008();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681c, 0x1);
-
-		L0949:
-			this.oCPU.AX.Word = 0;
-			goto L09e4;
-
-		L094e:
-			// write sve file
-
-			// Instruction address 0x0000:0x0959, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 9),
-				OpenCiv1.String_43ba);
-
-			// Instruction address 0x0000:0x096c, size: 5
-			this.oParent.MSCAPI.open(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0x8301, 0x80);
-
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681e, this.oCPU.AX.Word);
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xffff);
-			if (this.oCPU.Flags.NE) goto L09c1;
-
-			// Instruction address 0x0000:0x0984, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_43be);
-
-			// Instruction address 0x0000:0x0993, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-
-			// Instruction address 0x0000:0x09a3, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_43cb);
-
-			this.oCPU.AX.Word = 0x50;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x64;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x09bc); // stack management - push return offset
-										// Instruction address 0x0000:0x09b7, size: 5
-			this.oParent.Segment_1238.F0_1238_001e();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
-			goto L0949;
-
-		L09c1:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681a, 0x0);
-			// Call to overlay
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x09cb); // stack management - push return offset
-			F11_0000_09e6_LoadOrSaveFile();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-
-			// Instruction address 0x0000:0x09cf, size: 5
-			this.oParent.MSCAPI.close((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e));
-
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681c), 0x0);
-			if (this.oCPU.Flags.E) goto L09e1;
-			goto L0949;
-
-		L09e1:
-			this.oCPU.AX.Word = 0x1;
-
-		L09e4:*/
-
 			// Far return
 			this.oCPU.Log.ExitBlock("F11_0000_08f6_SaveGame");
 
 			return bSuccess;
 		}
 
-		public void WriteFileData(Stream writer, ushort bufferPtr, ushort length)
+		private void WriteData(Stream writer, ushort bufferPtr, ushort length)
 		{
 			writer.Write(this.oCPU.Memory.MemoryContent,
 				(int)CPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr), length);
 		}
 
-		public void WriteFileData(Stream writer, ushort bufferSeg, ushort bufferPtr, ushort length)
+		private void WriteData(Stream writer, ushort bufferSeg, ushort bufferPtr, ushort length)
 		{
 			writer.Write(this.oCPU.Memory.MemoryContent,
 				(int)CPU.ToLinearAddress(bufferSeg, bufferPtr), length);
+		}
+
+		private void WriteUInt16(Stream writer, ushort value)
+		{
+			writer.WriteByte((byte)(value & 0xff));
+			writer.WriteByte((byte)((value & 0xff00) >> 8));
+		}
+
+		private void WriteInt16(Stream writer, short value)
+		{
+			writer.WriteByte((byte)((ushort)value & 0xff));
+			writer.WriteByte((byte)(((ushort)value & 0xff00) >> 8));
 		}
 	}
 }

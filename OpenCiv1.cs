@@ -75,6 +75,8 @@ namespace OpenCiv1
 		private ushort usStartSegment = 0x1000;
 		//private MZExecutable oEXE;
 
+		private GameState oGameState;
+
 		public OpenCiv1()
 		{
 			this.oLog = new LogWrapper("Log.txt");
@@ -92,6 +94,8 @@ namespace OpenCiv1
 			this.oVGADriverLog.CPU = this.oCPU;
 			this.oStringLog.CPU = this.oCPU;
 			this.oIntroLog.CPU = this.oCPU;
+
+			this.oGameState = new GameState();
 
 			#region Initialize Segments
 			this.oSegment_11a8 = new Segment_11a8(this);
@@ -258,7 +262,31 @@ namespace OpenCiv1
 			uint uiStart = CPU.ToLinearAddress(0x35cf, 0);
 			uint uiEnd = CPU.ToLinearAddress(0x3b01, 0x652d);
 			writer.Write(this.oCPU.Memory.MemoryContent, (int)uiStart, (int)((uiEnd - uiStart) + 1));
-			writer.Close();*/
+			writer.Close();//*/
+
+			// Create UnitDefinition array
+			/*StreamWriter writer = new StreamWriter("UnitDefinitions.cs");
+			uint uiArrayAddress = CPU.ToLinearAddress(0x3b01, 0x112a);
+			writer.WriteLine("{");
+			for (int i = 0; i < 28; i++)
+			{
+				writer.WriteLine($"new UnitDefinition(\"{this.oCPU.ReadString(uiArrayAddress)}\", " +
+					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 12)}, " +
+					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 14)}, " +
+					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 16)}, " +
+					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 18)}, " +
+					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 20)}, " +
+					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 22)}, " +
+					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 24)}, " +
+					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 26)}, " +
+					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 28)}, " +
+					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 30)}, " +
+					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 32)}), ");
+
+				uiArrayAddress += 34;
+			}
+			writer.WriteLine("};");
+			writer.Close();//*/
 
 			// Initialize CPU
 			this.oCPU.CS.Word = (ushort)(usInitialCS + usStartSegment);
@@ -502,6 +530,16 @@ namespace OpenCiv1
 			this.oOverlay_10.Segment = this.OverlaySegment;
 			this.oOverlay_15.Segment = this.OverlaySegment;
 			this.oOverlay_16.Segment = this.OverlaySegment;
+		}
+
+		public CPU CPU
+		{
+			get { return this.oCPU; }
+		}
+
+		public GameState GameState
+		{
+			get { return this.oGameState; }
 		}
 
 		#region Logs
@@ -762,10 +800,5 @@ namespace OpenCiv1
 			get { return this.oSoundDriver; }
 		}
 		#endregion
-
-		public CPU CPU
-		{
-			get { return this.oCPU; }
-		}
 	}
 }

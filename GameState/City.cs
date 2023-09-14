@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenCiv1.GameState
+namespace OpenCiv1
 {
 	public class City
 	{

@@ -5,7 +5,8 @@
 and the bugs that have never been fixed are hindering the popularity of the game.<p>
 
 ## Current status
-<p><b>The game is in working state</b>, but requires Original game files (.txt, .pic and .pal) to be present.</p>
+<p><b>The game is in working state</b>, but requires Original game files (.txt, .pic and .pal) to be present.
+The <b>Debug mode</b> can be toggled by pressing Alt + D Key.</p>
 
 ## Running the code
 If you want to compile the code, it is assumed that:

@@ -770,7 +770,7 @@ namespace OpenCiv1
 		L05db:
 			this.oCPU.BX.Word = 0x0;
 			this.oCPU.BP.Word = 0x0;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word - 0x42fa));
+			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xbd06));
 			this.oCPU.AX.High = 0x0;
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L05f7;
@@ -781,7 +781,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.DX.Word;
 
 		L05f7:
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word - 0x45fa));
+			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xba06));
 			this.oCPU.AX.High = 0x0;
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0609;
@@ -849,7 +849,7 @@ namespace OpenCiv1
 		L05db:
 			this.oCPU.BX.Word = 0x0;
 			this.oCPU.BP.Word = 0x0;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word - 0x42fa));
+			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xbd06));
 			this.oCPU.AX.High = 0x0;
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L05f7;
@@ -860,7 +860,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.DX.Word;
 
 		L05f7:
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word - 0x45fa));
+			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xba06));
 			this.oCPU.AX.High = 0x0;
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0609;
