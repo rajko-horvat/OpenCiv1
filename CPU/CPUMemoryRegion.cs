@@ -12,7 +12,8 @@ namespace Disassembler
 		Read = 2,
 		ReadWrite = 3,
 		ReadWarning = 4,
-		WriteWarning = 8
+		WriteWarning = 8,
+		AccessNotAllowed = 16
 	}
 
 	public class CPUMemoryRegion

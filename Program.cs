@@ -30,11 +30,13 @@ namespace OpenCiv1
 				"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
 				"Warning", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
 #endif
-
+#if !DEBUG
 			try
 			{
+#endif
 				oGame = new OpenCiv1();
 				oGame.Start();
+#if !DEBUG
 			}
 			catch (Exception e)
 			{
@@ -66,6 +68,7 @@ namespace OpenCiv1
 					Thread.Sleep(200);
 				}
 			}
+#endif
 		}
 	}
 }

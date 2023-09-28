@@ -10,11 +10,11 @@ Overlay 5	Game menu, difficulty, civilizations, name...
 Overlay 6	Meet with king (emissary)
 Overlay 7	Intro and map initialization
 Overlay 8	Civilopedia
-Overlay 9	?
-Overlay 10	?
+Overlay 9	Replay
+Overlay 10	Which Army (City Status)?
 Overlay 11	Load and save game dialog and code
 Overlay 12	World map
-Overlay 13	?
+Overlay 13	Wonders of the world?
 Overlay 14	City, military, intelligence, attitude, science, score report
 Overlay 15	?
 Overlay 16	Quiz

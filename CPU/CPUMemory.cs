@@ -50,8 +50,8 @@ namespace Disassembler
 			}
 		}
 
-		#region Check Access
-		public bool HasAccess(uint address, uint size, CPUMemoryFlagsEnum access)
+		#region Check Flag
+		public bool CheckFlag(uint address, uint size, CPUMemoryFlagsEnum flag)
 		{
 			uint uiCount = 0;
 
@@ -63,7 +63,7 @@ namespace Disassembler
 					if (this.aMemoryRegions[j].CheckBounds(address, 1))
 					{
 						bFound = true;
-						if ((this.aMemoryRegions[j].AccessFlags & access) == access)
+						if ((this.aMemoryRegions[j].AccessFlags & flag) == flag)
 						{
 							uiCount++;
 							break;
@@ -100,7 +100,7 @@ namespace Disassembler
 
 		public byte ReadUInt8(uint address)
 		{
-			if (!this.HasAccess(address, 1, CPUMemoryFlagsEnum.Read))
+			if (!this.CheckFlag(address, 1, CPUMemoryFlagsEnum.Read) || this.CheckFlag(address, 1, CPUMemoryFlagsEnum.AccessNotAllowed))
 			{
 				this.oCPU.Log.WriteLine($"// Attempt to read byte from protected area at 0x{address:x8}");
 				return 0;
@@ -146,7 +146,7 @@ namespace Disassembler
 
 		public ushort ReadUInt16(uint address)
 		{
-			if (!this.HasAccess(address, 2, CPUMemoryFlagsEnum.Read))
+			if (!this.CheckFlag(address, 2, CPUMemoryFlagsEnum.Read) || this.CheckFlag(address, 2, CPUMemoryFlagsEnum.AccessNotAllowed))
 			{
 				this.oCPU.Log.WriteLine($"// Attempt to read word from protected area at 0x{address:x8}");
 				return 0;
@@ -195,7 +195,7 @@ namespace Disassembler
 
 		public uint ReadUInt32(uint address)
 		{
-			if (!this.HasAccess(address, 4, CPUMemoryFlagsEnum.Read))
+			if (!this.CheckFlag(address, 4, CPUMemoryFlagsEnum.Read) || this.CheckFlag(address, 4, CPUMemoryFlagsEnum.AccessNotAllowed))
 			{
 				this.oCPU.Log.WriteLine($"// Attempt to read dword from protected area at 0x{address:x8}");
 				return 0;
@@ -280,7 +280,7 @@ namespace Disassembler
 
 		public void WriteUInt8(uint address, byte value)
 		{
-			if (!this.HasAccess(address, 1, CPUMemoryFlagsEnum.Write))
+			if (!this.CheckFlag(address, 1, CPUMemoryFlagsEnum.Write) || this.CheckFlag(address, 1, CPUMemoryFlagsEnum.AccessNotAllowed))
 			{
 				this.oCPU.Log.WriteLine($"// Attempt to write to protected area at 0x{address:x8}");
 				return;
@@ -361,7 +361,7 @@ namespace Disassembler
 
 		public void WriteUInt16(uint address, ushort value)
 		{
-			if (!this.HasAccess(address, 2, CPUMemoryFlagsEnum.Write))
+			if (!this.CheckFlag(address, 2, CPUMemoryFlagsEnum.Write) || this.CheckFlag(address, 2, CPUMemoryFlagsEnum.AccessNotAllowed))
 			{
 				this.oCPU.Log.WriteLine($"// Attempt to write to protected area at 0x{address:x8}");
 				return;
@@ -413,7 +413,7 @@ namespace Disassembler
 
 		public void WriteUInt32(uint address, uint value)
 		{
-			if (!this.HasAccess(address, 4, CPUMemoryFlagsEnum.Write))
+			if (!this.CheckFlag(address, 4, CPUMemoryFlagsEnum.Write) || this.CheckFlag(address, 4, CPUMemoryFlagsEnum.AccessNotAllowed))
 			{
 				this.oCPU.Log.WriteLine($"// Attempt to write to protected area at 0x{address:x8}");
 				return;
@@ -449,7 +449,7 @@ namespace Disassembler
 		#endregion
 		#endregion
 
-		#region Block instructions
+		#region Memory block instructions
 		public void WriteBlock(ushort segment, ushort offset, byte[] srcData, int pos, int length)
 		{
 			WriteBlock(CPU.ToLinearAddress(segment, offset), srcData, pos, length);

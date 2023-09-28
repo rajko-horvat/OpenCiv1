@@ -33,6 +33,8 @@ namespace OpenCiv1
 		public short ScienceRate = 0;
 		public short ResearchProgress = 0;
 		public short DiscoveredTechnologyCount = 0;
+		public short CurrentResearchID = 0;
+		public short FutureTechnologyCount = 0;
 		public short[] DiscoveredTechnologyFlags = new short[5];
 		public sbyte[] TechnologyAcquiredFrom = new sbyte[72];
 
@@ -53,6 +55,7 @@ namespace OpenCiv1
 		public short SpaceshipPopulation = 0;
 		public short SpaceshipETAYear = 0;
 		public short SpaceshipLaunchYear = 0;
+		public short SpaceshipSuccessRate = 0;
 
 		public Player()
 		{

@@ -128,7 +128,7 @@ namespace OpenCiv1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment*/
 
-		L00e5:
+		//L00e5:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4c)), 0x0);
 			if (this.oCPU.Flags.NE) goto L00ee;
 			goto L003a;
@@ -1082,7 +1082,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0a4e();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xd87);
+			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xd00); // !!! was 0xd87
 			if (this.oCPU.Flags.GE) goto L0a53;
 			goto L0a19;
 
@@ -1443,7 +1443,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0dd7, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xdeec)), 10));
+				this.oParent.MSCAPI.itoa(this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))].SpaceshipPopulation, 10));
 
 			// Instruction address 0x0000:0x0de7, size: 5
 			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30bc), 0xba06);
