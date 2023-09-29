@@ -4679,8 +4679,8 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6548) << 1);
 			// Instruction address 0x1d12:0x2960, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				((-((this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word, CPU.ToUInt16(this.oCPU.SI.Word + 0xb210)) +
-					this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word, CPU.ToUInt16(this.oCPU.SI.Word + 0xdf0e)) - 0xa)) *
+				((-(this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word, CPU.ToUInt16(this.oCPU.SI.Word + 0xb210)) +
+					this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6548)].TaxRate - 10) *
 					(this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word, 0x70de) - 
 					this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word, 0xd2e0))) + 5) / 10,
 				0,
@@ -4690,8 +4690,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x1d12:0x2999, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				((this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word, 
-					CPU.ToUInt16((this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6548) << 1) + 0xdf0e)) *
+				((this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6548)].TaxRate *
 					(this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word, 0x70de) - 
 					this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word, 0xd2e0))) + 5) / 10,
 				0,

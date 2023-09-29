@@ -604,7 +604,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oParent.GameState.HumanPlayerID;
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 			this.oCPU.AX.Word = 0x5;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xdf0e), this.oCPU.AX.Word);
+			this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].TaxRate = (short)this.oCPU.AX.Word;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xb210), this.oCPU.AX.Word);
 			
 			if (this.oParent.GameState.DifficultyLevel != 0) goto L05fe;
@@ -831,7 +831,7 @@ namespace OpenCiv1
 				this.oParent.GameState.Players[playerID].ResearchProgress = 0;
 				this.oParent.GameState.Players[playerID].Coins = 0;
 				this.oParent.GameState.Players[playerID].GovernmentType = 1;
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xdf0e), 0x4);
+				this.oParent.GameState.Players[playerID].TaxRate = 4;
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xb210), 0x4);
 
 				for (int i = 0; i < 16; i++)
@@ -1343,7 +1343,7 @@ namespace OpenCiv1
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xb210), this.oCPU.AX.Word);
 				this.oCPU.AX.Word = 0x9;
 				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xb210)));
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xdf0e), this.oCPU.AX.Word);
+				this.oParent.GameState.Players[playerID].TaxRate = (short)this.oCPU.AX.Word;
 
 			L0cba:
 				this.oCPU.AX.Word = 0x32;

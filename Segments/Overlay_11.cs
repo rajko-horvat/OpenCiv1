@@ -982,7 +982,12 @@ namespace OpenCiv1
 				ReadData(reader, 0xd2f8, 0x10);
 				ReadData(reader, 0x6e82, 0x10);
 				ReadData(reader, 0x803c, 0x10);
-				ReadData(reader, 0xdf0e, 0x10);
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					this.oParent.GameState.Players[i].TaxRate = ReadInt16(reader);
+				}
+				
 				ReadData(reader, 0xddfe, 0x10);
 				ReadData(reader, 0xd2e4, 0x10);
 
@@ -1240,7 +1245,12 @@ namespace OpenCiv1
 				WriteData(writer, 0xd2f8, 0x10);
 				WriteData(writer, 0x6e82, 0x10);
 				WriteData(writer, 0x803c, 0x10);
-				WriteData(writer, 0xdf0e, 0x10);
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					WriteInt16(writer, this.oParent.GameState.Players[i].TaxRate);
+				}
+				
 				WriteData(writer, 0xddfe, 0x10);
 				WriteData(writer, 0xd2e4, 0x10);
 

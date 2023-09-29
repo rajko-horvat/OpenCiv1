@@ -2329,7 +2329,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x1238:0x12fd, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa((short)(-((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xdf0e)) + 
+				this.oParent.MSCAPI.itoa((short)(-(this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].TaxRate + 
 					(short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xb210)) - 10)), 10));
 
 			// Instruction address 0x1238:0x130d, size: 5
@@ -2337,8 +2337,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x1238:0x1334, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 
-					(ushort)(((this.oParent.GameState.HumanPlayerID << 1) + 0xdf0e) & 0xffff)), 10));
+				this.oParent.MSCAPI.itoa(this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].TaxRate, 10));
 
 			// Instruction address 0x1238:0x1344, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_1da3);
