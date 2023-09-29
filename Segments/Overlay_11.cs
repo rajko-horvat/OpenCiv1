@@ -746,7 +746,7 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x61);
 			if (this.oCPU.Flags.NE) goto L06bf;
 
-			L06b9:
+		L06b9:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x4384, 0x0);
 
 		L06bf:
@@ -764,7 +764,7 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x63);
 			if (this.oCPU.Flags.NE) goto L06e3;
 
-			L06dd:
+		L06dd:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x4384, 0x2);
 
 		L06e3:
@@ -773,7 +773,7 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x64);
 			if (this.oCPU.Flags.NE) goto L06f5;
 
-			L06ef:
+		L06ef:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x4384, 0x3);
 
 		L06f5:
@@ -782,7 +782,7 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x65);
 			if (this.oCPU.Flags.NE) goto L0707;
 
-			L0701:
+		L0701:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x4384, 0x4);
 
 		L0707:
@@ -791,7 +791,7 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x66);
 			if (this.oCPU.Flags.NE) goto L0719;
 
-			L0713:
+		L0713:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x4384, 0x5);
 
 		L0719:
@@ -881,7 +881,7 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0x1);
 			if (this.oCPU.Flags.LE) goto L07e7;
 
-			L07e2:
+		L07e2:
 			this.oCPU.AX.Word = 0x1;
 			goto L0837;
 
@@ -957,7 +957,7 @@ namespace OpenCiv1
 				{
 					this.oParent.GameState.Players[i].ResearchProgress = ReadInt16(reader);
 				}
-				
+
 				ReadData(reader, 0xb3be, 0x1c0);
 				ReadData(reader, 0xd308, 0x1c0);
 
@@ -965,9 +965,14 @@ namespace OpenCiv1
 				{
 					this.oParent.GameState.Players[i].DiscoveredTechnologyCount = ReadInt16(reader);
 				}
-				
+
 				ReadData(reader, 0xe3c8, 0x50);
-				ReadData(reader, 0xdefc, 0x10);
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					this.oParent.GameState.Players[i].GovernmentType = ReadInt16(reader);
+				}
+				
 				ReadData(reader, 0xe698, 0x100);
 				ReadData(reader, 0xe498, 0x80);
 				ReadData(reader, 0x6b66, 0x10);
@@ -985,7 +990,7 @@ namespace OpenCiv1
 				{
 					this.oParent.GameState.Players[i].XStart = ReadInt16(reader);
 				}
-				
+
 				ReadData(reader, 0xd7f4, 0x10);
 				ReadData(reader, 0x6cac, 0x100);
 				ReadData(reader, 0x807a, 0x100);
@@ -1024,7 +1029,7 @@ namespace OpenCiv1
 				{
 					this.oParent.GameState.TechnologyFirstDiscoveredBy[i] = ReadUInt16(reader);
 				}
-				
+
 				ReadData(reader, 0xe418, 0x80);
 
 				for (int i = 0; i < 256; i++)
@@ -1043,7 +1048,7 @@ namespace OpenCiv1
 				{
 					this.oParent.GameState.ReplayData[i] = ReadUInt8(reader);
 				}
-				
+
 				ReadData(reader, 0x6ea8, 0x2c);
 				ReadData(reader, 0x3772, 0x253c, 0x1c0);
 				ReadData(reader, 0x3772, 0x1d48, 0x240);
@@ -1088,7 +1093,7 @@ namespace OpenCiv1
 				{
 					this.oParent.GameState.Players[i].SpaceshipPopulation = ReadInt16(reader);
 				}
-				
+
 				ReadData(reader, 0xe8a8, 0x10);
 				this.oParent.GameState.CivilizationIdentityFlags = ReadInt16(reader);
 
@@ -1210,7 +1215,7 @@ namespace OpenCiv1
 				{
 					WriteInt16(writer, this.oParent.GameState.Players[i].ResearchProgress);
 				}
-				
+
 				WriteData(writer, 0xb3be, 0x1c0);
 				WriteData(writer, 0xd308, 0x1c0);
 
@@ -1218,9 +1223,14 @@ namespace OpenCiv1
 				{
 					WriteInt16(writer, this.oParent.GameState.Players[i].DiscoveredTechnologyCount);
 				}
-				
+
 				WriteData(writer, 0xe3c8, 0x50);
-				WriteData(writer, 0xdefc, 0x10);
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					WriteInt16(writer, this.oParent.GameState.Players[i].GovernmentType);
+				}
+				
 				WriteData(writer, 0xe698, 0x100);
 				WriteData(writer, 0xe498, 0x80);
 				WriteData(writer, 0x6b66, 0x10);
@@ -1238,7 +1248,7 @@ namespace OpenCiv1
 				{
 					WriteInt16(writer, this.oParent.GameState.Players[i].XStart);
 				}
-				
+
 				WriteData(writer, 0xd7f4, 0x10);
 				WriteData(writer, 0x6cac, 0x100);
 				WriteData(writer, 0x807a, 0x100);
@@ -1277,9 +1287,9 @@ namespace OpenCiv1
 				{
 					WriteUInt16(writer, this.oParent.GameState.TechnologyFirstDiscoveredBy[i]);
 				}
-				
+
 				WriteData(writer, 0xe418, 0x80);
-				
+
 				for (int i = 0; i < 256; i++)
 				{
 					for (int j = 0; j < 13; j++)
@@ -1320,7 +1330,7 @@ namespace OpenCiv1
 				WriteData(writer, 0xde10, 0x10);
 				WriteData(writer, 0xd91e, 0x18);
 				WriteData(writer, 0xb222, 0x18);
-				
+
 				for (int i = 0; i < 256; i++)
 				{
 					writer.WriteByte((byte)this.oParent.GameState.CityPositions[i].X);
@@ -1338,7 +1348,7 @@ namespace OpenCiv1
 				{
 					WriteInt16(writer, this.oParent.GameState.Players[i].SpaceshipPopulation);
 				}
-				
+
 				WriteData(writer, 0xe8a8, 0x10);
 				WriteInt16(writer, this.oParent.GameState.CivilizationIdentityFlags);
 
