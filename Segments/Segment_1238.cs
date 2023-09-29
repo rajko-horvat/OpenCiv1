@@ -2256,9 +2256,6 @@ namespace OpenCiv1
 			this.oCPU.CS.Word = 0x1238; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x8);
 
-			this.oCPU.SI.Word = this.oParent.GameState.HumanPlayerID;
-			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
-
 			if (this.oParent.GameState.Year < 0)
 			{
 				this.oCPU.CX.Word = 0x1;
@@ -2324,13 +2321,10 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x12cc, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_1d9f);
 
-			this.oCPU.SI.Word = this.oParent.GameState.HumanPlayerID;
-			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
-
 			// Instruction address 0x1238:0x12fd, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa((short)(-(this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].TaxRate + 
-					(short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xb210)) - 10)), 10));
+				this.oParent.MSCAPI.itoa((short)(-(this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].TaxRate +
+					this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].ScienceTaxRate - 10)), 10));
 
 			// Instruction address 0x1238:0x130d, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_1da1);
@@ -2344,8 +2338,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x1238:0x136b, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 
-					(ushort)(((this.oParent.GameState.HumanPlayerID << 1) + 0xb210) & 0xffff)), 10));
+				this.oParent.MSCAPI.itoa(this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].ScienceTaxRate, 10));
 
 			this.oCPU.AX.Word = 0;
 			this.oCPU.PushWord(this.oCPU.AX.Word);

@@ -1065,7 +1065,12 @@ namespace OpenCiv1
 				this.oParent.GameState.MaximumTechnologyCount = ReadInt16(reader);
 				this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].FutureTechnologyCount = ReadInt16(reader);
 				this.oParent.GameState.DebugFlags = ReadInt16(reader);
-				ReadData(reader, 0xb210, 0x10);
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					this.oParent.GameState.Players[i].ScienceTaxRate = ReadInt16(reader);
+				}
+				
 				this.oParent.GameState.NextAnthologyTurn = ReadInt16(reader);
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
@@ -1325,7 +1330,12 @@ namespace OpenCiv1
 				WriteInt16(writer, this.oParent.GameState.MaximumTechnologyCount);
 				WriteInt16(writer, this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].FutureTechnologyCount);
 				WriteInt16(writer, this.oParent.GameState.DebugFlags);
-				WriteData(writer, 0xb210, 0x10);
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					WriteInt16(writer, this.oParent.GameState.Players[i].ScienceTaxRate);
+				}
+				
 				WriteInt16(writer, this.oParent.GameState.NextAnthologyTurn);
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)

@@ -30,7 +30,7 @@ namespace OpenCiv1
 		public short Score = 0;
 
 		// Technology
-		public short ScienceRate = 0;
+		public short ScienceTaxRate = 0;
 		public short ResearchProgress = 0;
 		public short DiscoveredTechnologyCount = 0;
 		public short CurrentResearchID = 0;
