@@ -980,8 +980,12 @@ namespace OpenCiv1
 				{
 					this.oParent.GameState.Players[i].CityCount = ReadInt16(reader);
 				}
-				
-				ReadData(reader, 0x6b76, 0x10);
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					this.oParent.GameState.Players[i].UnitCount = ReadInt16(reader);
+				}
+
 				ReadData(reader, 0xe16a, 0x10);
 				ReadData(reader, 0x8068, 0x10);
 				ReadData(reader, 0xd2f8, 0x10);
@@ -1254,7 +1258,11 @@ namespace OpenCiv1
 					WriteInt16(writer, this.oParent.GameState.Players[i].CityCount);
 				}
 
-				WriteData(writer, 0x6b76, 0x10);
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					WriteInt16(writer, this.oParent.GameState.Players[i].UnitCount);
+				}
+
 				WriteData(writer, 0xe16a, 0x10);
 				WriteData(writer, 0x8068, 0x10);
 				WriteData(writer, 0xd2f8, 0x10);

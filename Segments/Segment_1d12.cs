@@ -8145,14 +8145,10 @@ namespace OpenCiv1
 			goto L4994;
 
 		L497e:
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6548);
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x6b76)), 0x7f);
-			if (this.oCPU.Flags.GE) goto L498e;
-			goto L4994;
-
-		L498e:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc0), 0x1);
+			if (this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6548)].UnitCount >= 127)
+			{
+				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc0), 0x1);
+			}
 
 		L4994:
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment

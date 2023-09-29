@@ -1904,10 +1904,9 @@ namespace OpenCiv1
 			if (this.oParent.GameState.TurnCount == 0) goto L0ec3;
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4), 0x0);
 			if (this.oCPU.Flags.NE) goto L0ec3;
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x6b76)), 0x0);
-			if (this.oCPU.Flags.NE) goto L0eab;
+
+			if (this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))].UnitCount != 0) goto L0eab;
+
 			this.oCPU.AX.Word = 0x210e;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			// Call to overlay
@@ -1919,10 +1918,8 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 		L0eab:
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x6b76)), 0x1);
-			if (this.oCPU.Flags.NE) goto L0ec3;
+			if (this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))].UnitCount != 1) goto L0ec3;
+
 			this.oCPU.AX.Word = 0x211a;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			// Call to overlay
