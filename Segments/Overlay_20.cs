@@ -1314,10 +1314,7 @@ namespace OpenCiv1
 		L0a48:
 			this.oCPU.AX.Low = (byte)this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))].PlayerID;
 			this.oCPU.CBW(this.oCPU.AX);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x6b66)), 0x3);
-			if (this.oCPU.Flags.G) goto L0a5b;
+			if (this.oParent.GameState.Players[this.oCPU.AX.Word].CityCount > 3) goto L0a5b;
 			goto L0bc6;
 
 		L0a5b:

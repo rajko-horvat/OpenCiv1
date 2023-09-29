@@ -859,7 +859,7 @@ namespace OpenCiv1
 
 				this.oCPU.SI.Word = (ushort)playerID;
 				this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x6b66), 0x0);
+				this.oParent.GameState.Players[playerID].CityCount = 0;
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x6b76), 0x0);
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xe16a), 0x1);
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x8068), 0x1);
