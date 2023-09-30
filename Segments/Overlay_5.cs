@@ -823,8 +823,6 @@ namespace OpenCiv1
 
 			if (playerID != this.oParent.GameState.HumanPlayerID || this.oParent.GameState.TurnCount == 0)
 			{
-				this.oCPU.SI.Word = (ushort)playerID;
-				this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 				this.oParent.GameState.Players[playerID].SpaceshipPopulation = 0;
 				this.oParent.GameState.Players[playerID].CumulativeEpicRanking = 0;
 				this.oParent.GameState.Players[playerID].DiscoveredTechnologyCount = 0;
@@ -857,13 +855,11 @@ namespace OpenCiv1
 					}
 				}
 
-				this.oCPU.SI.Word = (ushort)playerID;
-				this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 				this.oParent.GameState.Players[playerID].CityCount = 0;
 				this.oParent.GameState.Players[playerID].UnitCount = 0;
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xe16a), 0x1);
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x8068), 0x1);
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xd2e4), 0xffff);
+				this.oParent.GameState.Players[playerID].LandCount = 1;
+				this.oParent.GameState.Players[playerID].SettlerCount = 1;
+				this.oParent.GameState.Players[playerID].ContactPlayerCountdown = -1;
 
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 0x0);
 
