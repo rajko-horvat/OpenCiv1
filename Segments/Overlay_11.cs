@@ -972,8 +972,15 @@ namespace OpenCiv1
 				{
 					this.oParent.GameState.Players[i].GovernmentType = ReadInt16(reader);
 				}
-				
-				ReadData(reader, 0xe698, 0x100);
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					for (int j = 0; j < this.oParent.GameState.Players[i].PerContinentStrategy.Length; j++)
+					{
+						this.oParent.GameState.Players[i].PerContinentStrategy[j] = ReadInt16(reader);
+					}
+				}
+
 				ReadData(reader, 0xe498, 0x80);
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
@@ -1261,8 +1268,15 @@ namespace OpenCiv1
 				{
 					WriteInt16(writer, this.oParent.GameState.Players[i].GovernmentType);
 				}
-				
-				WriteData(writer, 0xe698, 0x100);
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					for (int j = 0; j < this.oParent.GameState.Players[i].PerContinentStrategy.Length; j++)
+					{
+						WriteInt16(writer, this.oParent.GameState.Players[i].PerContinentStrategy[j]);
+					}
+				}
+
 				WriteData(writer, 0xe498, 0x80);
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
