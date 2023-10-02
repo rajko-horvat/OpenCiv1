@@ -2934,7 +2934,8 @@ namespace OpenCiv1
 			goto L1854;
 
 		L189d:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))));
+			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 
+				this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))));
 
 		L18a0:
 			this.oCPU.AX.Word = (ushort)this.oParent.GameState.DifficultyLevel;
@@ -3082,13 +3083,11 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L19ec;
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc));
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
-			this.oCPU.SI.Word = this.oParent.GameState.HumanPlayerID;
-			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x6e82));
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x6e82)), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.LE) goto L19ec;
+
+			if (this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].MilitaryPower <=
+				this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].MilitaryPower)
+				goto L19ec;
+
 			goto L189d;
 
 		L19ec:
