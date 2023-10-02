@@ -1027,7 +1027,15 @@ namespace OpenCiv1
 				ReadData(reader, 0xd7f4, 0x10);
 				ReadData(reader, 0x6cac, 0x100);
 				ReadData(reader, 0x807a, 0x100);
-				ReadData(reader, 0x6b96, 0x100);
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					for (int j = 0; j < this.oParent.GameState.Players[i].PerContinentCityCount.Length; i++)
+					{
+						this.oParent.GameState.Players[i].PerContinentCityCount[j] = ReadInt16(reader);
+					}
+				}
+
 				ReadData(reader, 0xdcfe, 0x100);
 				ReadData(reader, 0xb1ee, 0x20);
 				ReadData(reader, 0x3772, 0, 0x4b0);
@@ -1082,7 +1090,11 @@ namespace OpenCiv1
 					this.oParent.GameState.ReplayData[i] = ReadUInt8(reader);
 				}
 
-				ReadData(reader, 0x6ea8, 0x2c);
+				for (int i = 0; i < this.oParent.GameState.WonderCityID.Length; i++)
+				{
+					this.oParent.GameState.WonderCityID[i] = ReadInt16(reader);
+				}
+
 				ReadData(reader, 0x3772, 0x253c, 0x1c0);
 				ReadData(reader, 0x3772, 0x1d48, 0x240);
 				this.oParent.GameState.PollutedSquareCount = ReadInt16(reader);
@@ -1323,7 +1335,15 @@ namespace OpenCiv1
 				WriteData(writer, 0xd7f4, 0x10);
 				WriteData(writer, 0x6cac, 0x100);
 				WriteData(writer, 0x807a, 0x100);
-				WriteData(writer, 0x6b96, 0x100);
+				
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					for (int j = 0; j < this.oParent.GameState.Players[i].PerContinentCityCount.Length; i++)
+					{
+						WriteInt16(writer, this.oParent.GameState.Players[i].PerContinentCityCount[j]);
+					}
+				}
+
 				WriteData(writer, 0xdcfe, 0x100);
 				WriteData(writer, 0xb1ee, 0x20);
 				WriteData(writer, 0x3772, 0, 0x4b0);
@@ -1375,7 +1395,11 @@ namespace OpenCiv1
 					writer.WriteByte(this.oParent.GameState.ReplayData[i]);
 				}
 
-				WriteData(writer, 0x6ea8, 0x2c);
+				for (int i = 0; i < this.oParent.GameState.WonderCityID.Length; i++)
+				{
+					WriteInt16(writer, this.oParent.GameState.WonderCityID[i]);
+				}
+
 				WriteData(writer, 0x3772, 0x253c, 0x1c0);
 				WriteData(writer, 0x3772, 0x1d48, 0x240);
 				WriteInt16(writer, this.oParent.GameState.PollutedSquareCount);
