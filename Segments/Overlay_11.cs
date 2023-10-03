@@ -1045,7 +1045,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameState.Players[i].PerContinentCityCount.Length; i++)
+					for (int j = 0; j < this.oParent.GameState.Players[i].PerContinentCityCount.Length; j++)
 					{
 						this.oParent.GameState.Players[i].PerContinentCityCount[j] = ReadInt16(reader);
 					}
@@ -1146,6 +1146,7 @@ namespace OpenCiv1
 				{
 					this.oParent.GameState.CityPositions[i].X = ReadUInt8(reader);
 				}
+
 				for (int i = 0; i < 256; i++)
 				{
 					this.oParent.GameState.CityPositions[i].Y = ReadUInt8(reader);
@@ -1369,7 +1370,7 @@ namespace OpenCiv1
 				
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameState.Players[i].PerContinentCityCount.Length; i++)
+					for (int j = 0; j < this.oParent.GameState.Players[i].PerContinentCityCount.Length; j++)
 					{
 						WriteInt16(writer, this.oParent.GameState.Players[i].PerContinentCityCount[j]);
 					}

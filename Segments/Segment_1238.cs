@@ -1292,8 +1292,7 @@ namespace OpenCiv1
 			goto L0aa6;
 
 		L09a9:
-			this.oCPU.ES.Word = 0x3772; // segment
-			this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.ES.Word, 0x524), 0x7);
+			this.oCPU.TESTWord(this.oParent.GameState.TechnologyFirstDiscoveredBy[58], 0x7);
 			if (this.oCPU.Flags.E) goto L09b8;
 			goto L0aa6;
 
@@ -1407,8 +1406,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16));
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)), this.oCPU.AX.Word);
 			if (this.oCPU.Flags.G) goto L0aa6;
-			this.oCPU.ES.Word = 0x3772; // segment
-			this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.ES.Word, 0x520), 0x7);
+			this.oCPU.TESTWord(this.oParent.GameState.TechnologyFirstDiscoveredBy[56], 0x7);
 			if (this.oCPU.Flags.NE) goto L0a52;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0x3);
 			goto L0a57;
@@ -1627,8 +1625,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x0c5b, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1d12);
 
-			this.oCPU.ES.Word = 0x3772; // segment
-			this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.ES.Word, 0x4f6), 0x7);
+			this.oCPU.TESTWord(this.oParent.GameState.TechnologyFirstDiscoveredBy[35], 0x7);
 			if (this.oCPU.Flags.E) goto L0c74;
 			this.oCPU.AX.Word = 0x1d26;
 			goto L0c84;
@@ -1750,8 +1747,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16));
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)), this.oCPU.AX.Word);
 			if (this.oCPU.Flags.G) goto L0d9b;
-			this.oCPU.ES.Word = 0x3772; // segment
-			this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.ES.Word, 0x4f6), 0x7);
+			this.oCPU.TESTWord(this.oParent.GameState.TechnologyFirstDiscoveredBy[35], 0x7);
 			if (this.oCPU.Flags.NE) goto L0d8c;
 			goto L0d00;
 
@@ -3056,7 +3052,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L19ba;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6eca), 0xffff);
+			this.oCPU.CMPWord((ushort)this.oParent.GameState.WonderCityID[17], 0xffff);
 			if (this.oCPU.Flags.NE) goto L19ba;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), 0x11);
 

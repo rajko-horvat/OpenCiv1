@@ -43,7 +43,7 @@ namespace OpenCiv1
 		public byte[] PeaceGraphData = new byte[1200];
 
 		// Cities
-		public City[] Cities = new City[256];
+		public City[] Cities = new City[128];
 		public string[] CityNames = new string[] {
 			"Rome        \0", "Caesarea    \0", "Carthage    \0", "Nicopolis   \0", "Byzantium   \0",
 			"Brundisium  \0", "Syracuse    \0", "Antioch     \0", "Palmyra     \0", "Cyrene      \0",
