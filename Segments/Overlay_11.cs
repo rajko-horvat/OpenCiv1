@@ -1003,14 +1003,20 @@ namespace OpenCiv1
 					this.oParent.GameState.Players[i].SettlerCount = ReadInt16(reader);
 				}
 
-				ReadData(reader, 0xd2f8, 0x10);
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					this.oParent.GameState.Players[i].TotalCitySize = ReadInt16(reader);
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
 					this.oParent.GameState.Players[i].MilitaryPower = ReadInt16(reader);
 				}
 
-				ReadData(reader, 0x803c, 0x10);
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					this.oParent.GameState.Players[i].Ranking = ReadInt16(reader);
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
@@ -1029,7 +1035,11 @@ namespace OpenCiv1
 					this.oParent.GameState.Players[i].XStart = ReadInt16(reader);
 				}
 
-				ReadData(reader, 0xd7f4, 0x10);
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					this.oParent.GameState.Players[i].LeaderGraphics = ReadInt16(reader);
+				}
+
 				ReadData(reader, 0x6cac, 0x100);
 				ReadData(reader, 0x807a, 0x100);
 
@@ -1090,6 +1100,7 @@ namespace OpenCiv1
 				}
 
 				this.oParent.GameState.ReplayDataLength = ReadInt16(reader);
+
 				for (int i = 0; i < this.oParent.GameState.ReplayData.Length; i++)
 				{
 					this.oParent.GameState.ReplayData[i] = ReadUInt8(reader);
@@ -1316,14 +1327,20 @@ namespace OpenCiv1
 					WriteInt16(writer, this.oParent.GameState.Players[i].SettlerCount);
 				}
 
-				WriteData(writer, 0xd2f8, 0x10);
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					WriteInt16(writer, this.oParent.GameState.Players[i].TotalCitySize);
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
 					WriteInt16(writer, this.oParent.GameState.Players[i].MilitaryPower);
 				}
 
-				WriteData(writer, 0x803c, 0x10);
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					WriteInt16(writer, this.oParent.GameState.Players[i].Ranking);
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
@@ -1342,7 +1359,11 @@ namespace OpenCiv1
 					WriteInt16(writer, this.oParent.GameState.Players[i].XStart);
 				}
 
-				WriteData(writer, 0xd7f4, 0x10);
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					WriteInt16(writer, this.oParent.GameState.Players[i].LeaderGraphics);
+				}
+
 				WriteData(writer, 0x6cac, 0x100);
 				WriteData(writer, 0x807a, 0x100);
 				
