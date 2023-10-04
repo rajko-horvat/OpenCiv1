@@ -837,7 +837,7 @@ namespace OpenCiv1
 				{
 					this.oCPU.SI.Word = (ushort)i;
 					this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
-					this.oParent.GameState.Players[playerID].PerContinentStrategy[i] = 0;
+					this.oParent.GameState.Players[playerID].Continents[i].Strategy = 0;
 					this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0x32), 0x0);
 
 					for (int j = 1; j < 8; j++)
@@ -848,7 +848,7 @@ namespace OpenCiv1
 						this.oCPU.CX.Low = 0x5;
 						this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, this.oCPU.CX.Low);
 
-						this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[j].PerContinentCityCount[i];
+						this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[j].Continents[i].CityCount;
 
 						this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0x32),
 							this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0x32)), this.oCPU.AX.Word));

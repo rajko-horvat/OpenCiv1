@@ -238,19 +238,19 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x02bd, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_46e2);
 
-			if (this.oParent.GameState.Players[playerID].PerContinentStrategy[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))] == 2)
+			if (this.oParent.GameState.Players[playerID].Continents[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Strategy == 2)
 			{
 				// Instruction address 0x0000:0x02e0, size: 5
 				this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_46e9);
 			}
 
-			if (this.oParent.GameState.Players[playerID].PerContinentStrategy[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))] == 1)
+			if (this.oParent.GameState.Players[playerID].Continents[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Strategy == 1)
 			{
 				// Instruction address 0x0000:0x0303, size: 5
 				this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_46f0);
 			}
 
-			if (this.oParent.GameState.Players[playerID].PerContinentStrategy[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))] == 5)
+			if (this.oParent.GameState.Players[playerID].Continents[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Strategy == 5)
 			{
 				// Instruction address 0x0000:0x0326, size: 5
 				this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_46f7);

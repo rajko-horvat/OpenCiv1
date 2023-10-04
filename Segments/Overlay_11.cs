@@ -975,9 +975,9 @@ namespace OpenCiv1
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameState.Players[i].PerContinentStrategy.Length; j++)
+					for (int j = 0; j < this.oParent.GameState.Players[i].Continents.Length; j++)
 					{
-						this.oParent.GameState.Players[i].PerContinentStrategy[j] = ReadInt16(reader);
+						this.oParent.GameState.Players[i].Continents[j].Strategy = ReadInt16(reader);
 					}
 				}
 
@@ -1045,9 +1045,9 @@ namespace OpenCiv1
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameState.Players[i].PerContinentCityCount.Length; j++)
+					for (int j = 0; j < this.oParent.GameState.Players[i].Continents.Length; j++)
 					{
-						this.oParent.GameState.Players[i].PerContinentCityCount[j] = ReadInt16(reader);
+						this.oParent.GameState.Players[i].Continents[j].CityCount = ReadInt16(reader);
 					}
 				}
 
@@ -1060,7 +1060,7 @@ namespace OpenCiv1
 					this.oParent.GameState.PeaceGraphData[i] = ReadUInt8(reader);
 				}
 
-				for (int i = 0; i < 128; i++)
+				for (int i = 0; i < this.oParent.GameState.Cities.Length; i++)
 				{
 					this.oParent.GameState.Cities[i] = City.FromStream(reader);
 				}
@@ -1088,7 +1088,7 @@ namespace OpenCiv1
 
 				ReadData(reader, 0xe418, 0x80);
 
-				for (int i = 0; i < 256; i++)
+				for (int i = 0; i < this.oParent.GameState.CityNames.Length; i++)
 				{
 					char[] acCityName = new char[13];
 
@@ -1142,12 +1142,12 @@ namespace OpenCiv1
 				ReadData(reader, 0xd91e, 0x18);
 				ReadData(reader, 0xb222, 0x18);
 
-				for (int i = 0; i < 256; i++)
+				for (int i = 0; i < this.oParent.GameState.CityPositions.Length; i++)
 				{
 					this.oParent.GameState.CityPositions[i].X = ReadUInt8(reader);
 				}
 
-				for (int i = 0; i < 256; i++)
+				for (int i = 0; i < this.oParent.GameState.CityPositions.Length; i++)
 				{
 					this.oParent.GameState.CityPositions[i].Y = ReadUInt8(reader);
 				}
@@ -1300,9 +1300,9 @@ namespace OpenCiv1
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameState.Players[i].PerContinentStrategy.Length; j++)
+					for (int j = 0; j < this.oParent.GameState.Players[i].Continents.Length; j++)
 					{
-						WriteInt16(writer, this.oParent.GameState.Players[i].PerContinentStrategy[j]);
+						WriteInt16(writer, this.oParent.GameState.Players[i].Continents[j].Strategy);
 					}
 				}
 
@@ -1370,9 +1370,9 @@ namespace OpenCiv1
 				
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameState.Players[i].PerContinentCityCount.Length; j++)
+					for (int j = 0; j < this.oParent.GameState.Players[i].Continents.Length; j++)
 					{
-						WriteInt16(writer, this.oParent.GameState.Players[i].PerContinentCityCount[j]);
+						WriteInt16(writer, this.oParent.GameState.Players[i].Continents[j].CityCount);
 					}
 				}
 
@@ -1385,7 +1385,7 @@ namespace OpenCiv1
 					writer.WriteByte(this.oParent.GameState.PeaceGraphData[i]);
 				}
 
-				for (int i = 0; i < 128; i++)
+				for (int i = 0; i < this.oParent.GameState.Cities.Length; i++)
 				{
 					this.oParent.GameState.Cities[i].ToStream(writer);
 				}
@@ -1413,7 +1413,7 @@ namespace OpenCiv1
 
 				WriteData(writer, 0xe418, 0x80);
 
-				for (int i = 0; i < 256; i++)
+				for (int i = 0; i < this.oParent.GameState.CityNames.Length; i++)
 				{
 					for (int j = 0; j < 13; j++)
 					{

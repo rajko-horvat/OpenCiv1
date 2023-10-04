@@ -21,10 +21,7 @@ namespace OpenCiv1
 		public short LandCount = 0;
 
 		public short[] PerCivilizationDiplomacyFlags = new short[8];
-		public short[] PerContinentCityCount = new short[16];
-		public short[] PerContinentStrategy = new short[16];
-		public short[] PerContinentAttack = new short[16];
-		public short[] PerContinentDefense = new short[16];
+		public PlayerContinent[] Continents = new PlayerContinent[16];
 		public short Ranking = 0;
 		public short CumulativeEpicRanking = 0;
 		public short Score = 0;
@@ -64,24 +61,9 @@ namespace OpenCiv1
 				this.PerCivilizationDiplomacyFlags[i] = 0;
 			}
 
-			for (int i = 0; i < this.PerContinentCityCount.Length; i++)
+			for (int i = 0; i < this.Continents.Length; i++)
 			{
-				this.PerContinentCityCount[i] = 0;
-			}
-
-			for (int i = 0; i < this.PerContinentStrategy.Length; i++)
-			{
-				this.PerContinentStrategy[i] = 0;
-			}
-
-			for (int i = 0; i < this.PerContinentAttack.Length; i++)
-			{
-				this.PerContinentAttack[i] = 0;
-			}
-
-			for (int i = 0; i < this.PerContinentDefense.Length; i++)
-			{
-				this.PerContinentDefense[i] = 0;
+				this.Continents[i] = new PlayerContinent();
 			}
 
 			for (int i = 0; i < this.DiscoveredTechnologyFlags.Length; i++)

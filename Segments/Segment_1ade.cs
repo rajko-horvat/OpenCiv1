@@ -1133,7 +1133,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x13e), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[playerID].PerContinentStrategy[this.oCPU.AX.Word];
+			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[playerID].Continents[this.oCPU.AX.Word].Strategy;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x142), this.oCPU.AX.Word);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1);
 			if (this.oCPU.Flags.E) goto L098c;
