@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Text;
 
@@ -9,14 +10,13 @@ namespace OpenCiv1
 	{
 		public ushort BuildingFlags0 = 0;
 		public ushort BuildingFlags1 = 0;
-		public byte XPosition = 0;
-		public byte YPosition = 0;
+		public Point Position = new Point(0, 0);
 		public byte StatusFlag = 0;
 		public sbyte ActualSize = 0;
 		public sbyte VisibleSize = 0;
 		public sbyte CurrentProductionID = 0;
 		public sbyte BaseTrade = 0;
-		public sbyte PlayerID = 0;
+		public short PlayerID = 0;
 		public short FoodCount = 0;
 		public short ShieldsCount = 0;
 		public ushort WorkerFlags0 = 0;
@@ -41,8 +41,8 @@ namespace OpenCiv1
 
 			city.BuildingFlags0 = Overlay_11.ReadUInt16(stream);
 			city.BuildingFlags1 = Overlay_11.ReadUInt16(stream);
-			city.XPosition = Overlay_11.ReadUInt8(stream);
-			city.YPosition = Overlay_11.ReadUInt8(stream);
+			city.Position.X = Overlay_11.ReadUInt8(stream);
+			city.Position.Y = Overlay_11.ReadUInt8(stream);
 			city.StatusFlag = Overlay_11.ReadUInt8(stream);
 			city.ActualSize = (sbyte)Overlay_11.ReadUInt8(stream);
 			city.VisibleSize = (sbyte)Overlay_11.ReadUInt8(stream);
@@ -69,14 +69,14 @@ namespace OpenCiv1
 		{
 			Overlay_11.WriteUInt16(stream, this.BuildingFlags0);
 			Overlay_11.WriteUInt16(stream, this.BuildingFlags1);
-			stream.WriteByte(this.XPosition);
-			stream.WriteByte(this.YPosition);
+			stream.WriteByte((byte)this.Position.X);
+			stream.WriteByte((byte)this.Position.Y);
 			stream.WriteByte(this.StatusFlag);
 			stream.WriteByte((byte)this.ActualSize);
 			stream.WriteByte((byte)this.VisibleSize);
 			stream.WriteByte((byte)this.CurrentProductionID);
 			stream.WriteByte((byte)this.BaseTrade);
-			stream.WriteByte((byte)this.PlayerID);
+			stream.WriteByte((byte)((short)this.PlayerID));
 			Overlay_11.WriteInt16(stream, this.FoodCount);
 			Overlay_11.WriteInt16(stream, this.ShieldsCount);
 			Overlay_11.WriteUInt16(stream, this.WorkerFlags0);

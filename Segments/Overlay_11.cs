@@ -606,7 +606,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0548, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_4275);
 
-			this.oCPU.BX.Word = this.oParent.GameState.HumanPlayerID;
+			this.oCPU.BX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x055e, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x19a2)));
@@ -614,7 +614,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x056e, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_4277);
 
-			this.oCPU.BX.Word = this.oParent.GameState.HumanPlayerID;
+			this.oCPU.BX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x0584, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
@@ -936,8 +936,8 @@ namespace OpenCiv1
 
 				// read sve file
 				FileStream reader = new FileStream($"{path}{filename}.sve", FileMode.Open);
-				this.oParent.GameState.TurnCount = ReadUInt16(reader);
-				this.oParent.GameState.HumanPlayerID = ReadUInt16(reader);
+				this.oParent.GameState.TurnCount = ReadInt16(reader);
+				this.oParent.GameState.HumanPlayerID = ReadInt16(reader);
 				this.oParent.GameState.PlayerFlags = ReadInt16(reader);
 				this.oParent.GameState.RandomSeed = ReadUInt16(reader);
 				this.oParent.GameState.Year = ReadInt16(reader);
@@ -1022,8 +1022,11 @@ namespace OpenCiv1
 				{
 					this.oParent.GameState.Players[i].TaxRate = ReadInt16(reader);
 				}
-				
-				ReadData(reader, 0xddfe, 0x10);
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					this.oParent.GameState.Players[i].Score = ReadInt16(reader);
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
@@ -1083,7 +1086,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < this.oParent.GameState.TechnologyFirstDiscoveredBy.Length; i++)
 				{
-					this.oParent.GameState.TechnologyFirstDiscoveredBy[i] = ReadUInt16(reader);
+					this.oParent.GameState.TechnologyFirstDiscoveredBy[i] = ReadInt16(reader);
 				}
 
 				ReadData(reader, 0xe418, 0x80);
@@ -1138,7 +1141,12 @@ namespace OpenCiv1
 				this.oParent.GameState.SpaceshipFlags = ReadInt16(reader);
 				this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].SpaceshipSuccessRate = ReadInt16(reader);
 				this.oParent.GameState.AISpaceshipSuccessRate = ReadInt16(reader);
-				ReadData(reader, 0xde10, 0x10);
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					this.oParent.GameState.Players[i].SpaceshipETAYear = ReadInt16(reader);
+				}
+
 				ReadData(reader, 0xd91e, 0x18);
 				ReadData(reader, 0xb222, 0x18);
 
@@ -1161,7 +1169,11 @@ namespace OpenCiv1
 					this.oParent.GameState.Players[i].SpaceshipPopulation = ReadInt16(reader);
 				}
 
-				ReadData(reader, 0xe8a8, 0x10);
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					this.oParent.GameState.Players[i].SpaceshipLaunchYear = ReadInt16(reader);
+				}
+
 				this.oParent.GameState.CivilizationIdentityFlags = ReadInt16(reader);
 
 				reader.Close();
@@ -1261,8 +1273,8 @@ namespace OpenCiv1
 
 				// write sve file
 				FileStream writer = new FileStream($"{path}{filename}.sve", FileMode.Create);
-				WriteUInt16(writer, this.oParent.GameState.TurnCount);
-				WriteUInt16(writer, this.oParent.GameState.HumanPlayerID);
+				WriteInt16(writer, this.oParent.GameState.TurnCount);
+				WriteInt16(writer, this.oParent.GameState.HumanPlayerID);
 				WriteInt16(writer, this.oParent.GameState.PlayerFlags);
 				WriteUInt16(writer, this.oParent.GameState.RandomSeed);
 				WriteInt16(writer, this.oParent.GameState.Year);
@@ -1347,8 +1359,11 @@ namespace OpenCiv1
 				{
 					WriteInt16(writer, this.oParent.GameState.Players[i].TaxRate);
 				}
-				
-				WriteData(writer, 0xddfe, 0x10);
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					WriteInt16(writer, this.oParent.GameState.Players[i].Score);
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
@@ -1408,7 +1423,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < this.oParent.GameState.TechnologyFirstDiscoveredBy.Length; i++)
 				{
-					WriteUInt16(writer, this.oParent.GameState.TechnologyFirstDiscoveredBy[i]);
+					WriteInt16(writer, this.oParent.GameState.TechnologyFirstDiscoveredBy[i]);
 				}
 
 				WriteData(writer, 0xe418, 0x80);
@@ -1459,7 +1474,12 @@ namespace OpenCiv1
 				WriteInt16(writer, this.oParent.GameState.SpaceshipFlags);
 				WriteInt16(writer, this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].SpaceshipSuccessRate);
 				WriteInt16(writer, this.oParent.GameState.AISpaceshipSuccessRate);
-				WriteData(writer, 0xde10, 0x10);
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					WriteInt16(writer, this.oParent.GameState.Players[i].SpaceshipETAYear);
+				}
+
 				WriteData(writer, 0xd91e, 0x18);
 				WriteData(writer, 0xb222, 0x18);
 
@@ -1481,7 +1501,11 @@ namespace OpenCiv1
 					WriteInt16(writer, this.oParent.GameState.Players[i].SpaceshipPopulation);
 				}
 
-				WriteData(writer, 0xe8a8, 0x10);
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					WriteInt16(writer, this.oParent.GameState.Players[i].SpaceshipLaunchYear);
+				}
+
 				WriteInt16(writer, this.oParent.GameState.CivilizationIdentityFlags);
 
 				writer.Close();

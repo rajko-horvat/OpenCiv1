@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace OpenCiv1
@@ -8,7 +9,6 @@ namespace OpenCiv1
 	{
 		public sbyte Active = 0;
 		public byte Policy = 0;
-		public byte XPosition = 0;
-		public byte YPosition = 0;
+		public Point Position = new Point(0, 0);
 	}
 }

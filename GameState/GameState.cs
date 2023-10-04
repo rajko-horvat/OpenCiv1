@@ -9,11 +9,11 @@ namespace OpenCiv1
 	public class GameState
 	{
 		// Game common data
-		public ushort TurnCount = 0;
+		public short TurnCount = 0;
 		public short Year = 0;
 		public ushort RandomSeed = 0;
 		public short DifficultyLevel = 0;
-		public ushort HumanPlayerID = 0;
+		public short HumanPlayerID = 0;
 		public short PlayerFlags = 0;
 		public short CivilizationIdentityFlags = 0;
 		public short ActiveCivilizations = 0;
@@ -103,7 +103,7 @@ namespace OpenCiv1
 		public short[] WonderCityID = new short[22];
 
 		// Technology
-		public ushort[] TechnologyFirstDiscoveredBy = new ushort[72];
+		public short[] TechnologyFirstDiscoveredBy = new short[72];
 		public short MaximumTechnologyCount = 0;
 
 		// Units
