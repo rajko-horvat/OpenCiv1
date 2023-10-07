@@ -1150,14 +1150,12 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0b1e, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_34a7);
 
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0b2e); // stack management - push return offset
 			// Instruction address 0x0000:0x0b29, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6();
+			this.oParent.Segment_2459.F0_2459_08c6(this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 			// Instruction address 0x0000:0x0b39, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_34aa);

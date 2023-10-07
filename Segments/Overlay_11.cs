@@ -958,8 +958,21 @@ namespace OpenCiv1
 					this.oParent.GameState.Players[i].ResearchProgress = ReadInt16(reader);
 				}
 
-				ReadData(reader, 0xb3be, 0x1c0);
-				ReadData(reader, 0xd308, 0x1c0);
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					for (int j = 0; j < this.oParent.GameState.Players[i].ActiveUnits.Length; j++)
+					{
+						this.oParent.GameState.Players[i].ActiveUnits[j] = ReadInt16(reader);
+					}
+				}
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					for (int j = 0; j < this.oParent.GameState.Players[i].UnitsInProduction.Length; j++)
+					{
+						this.oParent.GameState.Players[i].UnitsInProduction[j] = ReadInt16(reader);
+					}
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
@@ -1114,8 +1127,23 @@ namespace OpenCiv1
 					this.oParent.GameState.WonderCityID[i] = ReadInt16(reader);
 				}
 
-				ReadData(reader, 0x3772, 0x253c, 0x1c0);
-				ReadData(reader, 0x3772, 0x1d48, 0x240);
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					for (int j = 0; j < this.oParent.GameState.Players[i].LostUnits.Length; j++)
+					{
+						this.oParent.GameState.Players[i].LostUnits[j] = ReadInt16(reader);
+
+					}
+				}
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					for (int j = 0; j < this.oParent.GameState.Players[i].TechnologyAcquiredFrom.Length; j++)
+					{
+						this.oParent.GameState.Players[i].TechnologyAcquiredFrom[j] = (sbyte)ReadUInt8(reader);
+					}
+				}
+
 				this.oParent.GameState.PollutedSquareCount = ReadInt16(reader);
 				this.oParent.GameState.PollutionEffectLevel = ReadInt16(reader);
 				this.oParent.GameState.GlobalWarmingCount = ReadInt16(reader);
@@ -1295,8 +1323,21 @@ namespace OpenCiv1
 					WriteInt16(writer, this.oParent.GameState.Players[i].ResearchProgress);
 				}
 
-				WriteData(writer, 0xb3be, 0x1c0);
-				WriteData(writer, 0xd308, 0x1c0);
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					for (int j = 0; j < this.oParent.GameState.Players[i].ActiveUnits.Length; j++)
+					{
+						WriteInt16(writer, this.oParent.GameState.Players[i].ActiveUnits[j]);
+					}
+				}
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					for (int j = 0; j < this.oParent.GameState.Players[i].UnitsInProduction.Length; j++)
+					{
+						WriteInt16(writer, this.oParent.GameState.Players[i].UnitsInProduction[j]);
+					}
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
@@ -1447,8 +1488,22 @@ namespace OpenCiv1
 					WriteInt16(writer, this.oParent.GameState.WonderCityID[i]);
 				}
 
-				WriteData(writer, 0x3772, 0x253c, 0x1c0);
-				WriteData(writer, 0x3772, 0x1d48, 0x240);
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					for (int j = 0; j < this.oParent.GameState.Players[j].LostUnits.Length; j++)
+					{
+						WriteInt16(writer, this.oParent.GameState.Players[i].LostUnits[j]);
+					}
+				}
+
+				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
+				{
+					for (int j = 0; j < this.oParent.GameState.Players[i].TechnologyAcquiredFrom.Length; j++)
+					{
+						writer.WriteByte((byte)((sbyte)this.oParent.GameState.Players[i].TechnologyAcquiredFrom[j]));
+					}
+				}
+
 				WriteInt16(writer, this.oParent.GameState.PollutedSquareCount);
 				WriteInt16(writer, this.oParent.GameState.PollutionEffectLevel);
 				WriteInt16(writer, this.oParent.GameState.GlobalWarmingCount);

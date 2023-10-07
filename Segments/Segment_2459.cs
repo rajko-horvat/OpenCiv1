@@ -102,14 +102,13 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			this.oCPU.TESTWord(this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8))].BuildingFlags0, 0x1);
 			if (this.oCPU.Flags.E) goto L00de;
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
+
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x00db); // stack management - push return offset
 			// Instruction address 0x2459:0x00d8, size: 3
-			F0_2459_05ee();
+			F0_2459_05ee(this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2459; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 		L00de:
 			this.oCPU.AX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
@@ -364,14 +363,12 @@ namespace OpenCiv1
 			// Instruction address 0x2459:0x02fe, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_285e);
 
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x030d); // stack management - push return offset
 			// Instruction address 0x2459:0x030a, size: 3
-			F0_2459_08c6();
+			F0_2459_08c6(this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2459; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 			// Instruction address 0x2459:0x0318, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2868);
@@ -548,14 +545,12 @@ namespace OpenCiv1
 			// Instruction address 0x2459:0x0486, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_28af);
 
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0495); // stack management - push return offset
 			// Instruction address 0x2459:0x0492, size: 3
-			F0_2459_08c6();
+			F0_2459_08c6(this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2459; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 			// Instruction address 0x2459:0x04a0, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_28b9);
@@ -622,15 +617,13 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0531;
 
 		L0523:
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)));
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x052e); // stack management - push return offset
 			// Instruction address 0x2459:0x0529, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10();
+			this.oParent.Segment_1866.F0_1866_0f10(this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)),
+				this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2459; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 		L0531:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))));
@@ -650,15 +643,17 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L05da;
 			this.oCPU.CMPByte((byte)this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8))].CurrentProductionID, 0x0);
 			if (this.oCPU.Flags.L) goto L0586;
+
 			this.oCPU.AX.Word = 0x38;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
+
 			this.oCPU.AX.Low = (byte)this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8))].CurrentProductionID;
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 			this.oCPU.DI.Word = this.oCPU.SHLWord(this.oCPU.DI.Word, 0x1);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.DI.Word + 0xd308),
-				this.oCPU.DECWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.DI.Word + 0xd308))));
+
+			this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].UnitsInProduction[this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8))].CurrentProductionID]--;
 
 		L0586:
 			this.oCPU.AX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
@@ -702,25 +697,26 @@ namespace OpenCiv1
 			
 			this.oCPU.AX.Low = this.oCPU.ORByte(this.oCPU.AX.Low, this.oCPU.AX.Low);
 			if (this.oCPU.Flags.L) goto L05da;
+			
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
+
 			this.oCPU.AX.Word = 0x38;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.DI.Word + 0xd308),
-				this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.DI.Word + 0xd308))));
+
+			this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))].UnitsInProduction[this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8))].CurrentProductionID]++;
 
 		L05da:
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x05e5); // stack management - push return offset
-			this.oParent.Overlay_5.F5_0000_0e6c();
+			this.oParent.Overlay_5.F5_0000_0e6c(this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)),
+				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2459; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
+
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
@@ -729,7 +725,7 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_2459_0000'");
 		}
 
-		public void F0_2459_05ee()
+		public void F0_2459_05ee(short playerID)
 		{
 			this.oCPU.Log.EnterBlock("'F0_2459_05ee'(Cdecl, Far) at 0x2459:0x05ee");
 			this.oCPU.CS.Word = 0x2459; // set this function segment
@@ -738,7 +734,7 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
+			this.oCPU.BX.Word = (ushort)playerID;
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x2459:0x05fe, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982)));
@@ -747,13 +743,14 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_28be);
 
 			this.oCPU.AX.Word = 0x1;
-			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
+			this.oCPU.CX.Low = (byte)playerID;
 			this.oCPU.CX.Low = this.oCPU.ADDByte(this.oCPU.CX.Low, 0x8);
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.TESTWord(this.oCPU.AX.Word, (ushort)this.oParent.GameState.SpaceshipFlags);
 			if (this.oCPU.Flags.E) goto L065e;
+
 			this.oCPU.AX.Word = 0x1;
-			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
+			this.oCPU.CX.Low = (byte)playerID;
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.TESTWord(this.oCPU.AX.Word, (ushort)this.oParent.GameState.SpaceshipFlags);
 			if (this.oCPU.Flags.E) goto L063a;
@@ -783,7 +780,7 @@ namespace OpenCiv1
 
 		L065e:
 			this.oCPU.AX.Word = 0x1;
-			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
+			this.oCPU.CX.Low = (byte)playerID;
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.AX.Word = this.oCPU.NOTWord(this.oCPU.AX.Word);
 			this.oParent.GameState.SpaceshipFlags &= (short)this.oCPU.AX.Word;
@@ -794,14 +791,13 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.NOTWord(this.oCPU.AX.Word);
 			this.oParent.GameState.SpaceshipFlags &= (short)this.oCPU.AX.Word;
 
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0682); // stack management - push return offset
-			this.oParent.Overlay_5.F5_0000_1d1a();
+			this.oParent.Overlay_5.F5_0000_1d1a(playerID);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2459; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_2459_05ee'");
@@ -1004,18 +1000,19 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x9a), this.oCPU.AX.Word);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xffff);
 			if (this.oCPU.Flags.E) goto L07d3;
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
+
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0x94)));
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
+
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x081d); // stack management - push return offset
 			// Instruction address 0x2459:0x0818, size: 5
-			this.oParent.Segment_1ade.F0_1ade_1d2e();
+			this.oParent.Segment_1ade.F0_1ade_1d2e(this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
+				this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0x94)),
+				this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2459; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+			
 			goto L08c1;
 
 		L0823:
@@ -1073,16 +1070,15 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
 
 		L08a1:
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x08af); // stack management - push return offset
 			// Instruction address 0x2459:0x08aa, size: 5
-			this.oParent.Segment_1ade.F0_1ade_1d2e();
+			this.oParent.Segment_1ade.F0_1ade_1d2e(this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
+				this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
+				this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2459; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+			
 			this.oCPU.AX.Word = 0xffff;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
@@ -1102,7 +1098,7 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_2459_06f2'");
 		}
 
-		public void F0_2459_08c6()
+		public void F0_2459_08c6(short cityID)
 		{
 			this.oCPU.Log.EnterBlock("'F0_2459_08c6'(Cdecl, Far) at 0x2459:0x08c6");
 			this.oCPU.CS.Word = 0x2459; // set this function segment
@@ -1110,24 +1106,25 @@ namespace OpenCiv1
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0xffff);
-			if (this.oCPU.Flags.NE) goto L08e1;
 
-			// Instruction address 0x2459:0x08d7, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2913);
-			goto L0916;
-
-		L08e1:
-			byte ubCityNameID = this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))].NameID;
-			ushort usStringOffset = (ushort)(0xba06 + this.oParent.MSCAPI.strlen(0xba06));
-
-			for (int i = 0; i < 0xd; i++)
+			if (cityID != -1)
 			{
-				this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, (ushort)(usStringOffset + i), this.oParent.GameState.CityNames[ubCityNameID][i]);
+				byte ubCityNameID = this.oParent.GameState.Cities[cityID].NameID;
+				ushort usStringOffset = (ushort)(0xba06 + this.oParent.MSCAPI.strlen(0xba06));
+
+				for (int i = 0; i < 0xd; i++)
+				{
+					this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, (ushort)(usStringOffset + i), this.oParent.GameState.CityNames[ubCityNameID][i]);
+				}
+			}
+			else
+			{
+				// Instruction address 0x2459:0x08d7, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2913);
 			}
 
-		L0916:
 			this.oCPU.BP.Word = this.oCPU.PopWord();
+
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_2459_08c6'");
 		}
@@ -1338,26 +1335,22 @@ namespace OpenCiv1
 			// Instruction address 0x2459:0x0aa1, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2918);
 
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0ab0); // stack management - push return offset
 			// Instruction address 0x2459:0x0aad, size: 3
-			F0_2459_08c6();
+			F0_2459_08c6(this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2459; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 			// Instruction address 0x2459:0x0abb, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2927);
 
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)));
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0aca); // stack management - push return offset
 			// Instruction address 0x2459:0x0ac7, size: 3
-			F0_2459_08c6();
+			F0_2459_08c6(this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2459; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 			// Instruction address 0x2459:0x0ad5, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2934);
@@ -1389,15 +1382,14 @@ namespace OpenCiv1
 			this.oCPU.CS.Word = 0x2459; // restore this function segment
 
 		L0b23:
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0b2e); // stack management - push return offset
 			// Instruction address 0x2459:0x0b29, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10();
+			this.oParent.Segment_1866.F0_1866_0f10(this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
+				this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2459; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
+			
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
