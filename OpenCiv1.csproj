@@ -165,7 +165,7 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Documentation\CVL and EXE overlays.txt" />
+    <Content Include="Documentation\CVL and EXE driver overlays.txt" />
     <Content Include="Documentation\Font.cv specification.txt" />
     <Content Include="Documentation\Overlay list.txt" />
     <Content Include="Documentation\Structure 0xaa.txt" />
