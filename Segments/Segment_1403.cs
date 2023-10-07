@@ -4858,7 +4858,7 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x258a); // stack management - push return offset
 			this.oParent.Overlay_5.F5_0000_0e6c(this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word, 0xd20a),
-				(ushort)playerID);
+				playerID);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1403; // restore this function segment
 
@@ -6960,7 +6960,7 @@ namespace OpenCiv1
 		L3572:
 			this.oCPU.SI.Word = (ushort)playerID;
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
-			this.oParent.GameState.Players[(ushort)playerID].GovernmentType = 0;
+			this.oParent.GameState.Players[playerID].GovernmentType = 0;
 
 			// Instruction address 0x1403:0x3585, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1f6f);
@@ -7015,8 +7015,8 @@ namespace OpenCiv1
 				this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a))));
 
 		L35e9:
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[(ushort)playerID].TaxRate;
-			this.oCPU.AX.Word += (ushort)this.oParent.GameState.Players[(ushort)playerID].ScienceTaxRate;
+			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[playerID].TaxRate;
+			this.oCPU.AX.Word += (ushort)this.oParent.GameState.Players[playerID].ScienceTaxRate;
 			this.oCPU.CMPWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a)));
 			if (this.oCPU.Flags.GE) goto L35fe;
 			goto L3673;
@@ -7031,8 +7031,8 @@ namespace OpenCiv1
 
 			// Instruction address 0x1403:0x3658, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa((short)((this.oParent.GameState.Players[(ushort)playerID].TaxRate +
-					this.oParent.GameState.Players[(ushort)playerID].ScienceTaxRate -
+				this.oParent.MSCAPI.itoa((short)((this.oParent.GameState.Players[playerID].TaxRate +
+					this.oParent.GameState.Players[playerID].ScienceTaxRate -
 					(short)this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a))) * 10), 10));
 
 			// Instruction address 0x1403:0x3668, size: 5
@@ -7040,7 +7040,7 @@ namespace OpenCiv1
 			goto L35e6;
 
 		L3673:
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[(ushort)playerID].TaxRate;
+			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[playerID].TaxRate;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, this.oCPU.AX.Word);
 			this.oCPU.AX.Word = 0x50;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
@@ -7061,12 +7061,12 @@ namespace OpenCiv1
 			goto L36b6;
 
 		L369f:
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[(ushort)playerID].TaxRate;
+			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[playerID].TaxRate;
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a)));
-			this.oParent.GameState.Players[(ushort)playerID].ScienceTaxRate += 
+			this.oParent.GameState.Players[playerID].ScienceTaxRate += 
 				(short)this.oCPU.AX.Word;
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a));
-			this.oParent.GameState.Players[(ushort)playerID].TaxRate = 
+			this.oParent.GameState.Players[playerID].TaxRate = 
 				(short)this.oCPU.AX.Word;
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x36b6); // stack management - push return offset
@@ -7090,7 +7090,7 @@ namespace OpenCiv1
 
 		L36d4:
 			this.oCPU.AX.Word = 10;
-			this.oCPU.AX.Word -= (ushort)this.oParent.GameState.Players[(ushort)playerID].TaxRate;
+			this.oCPU.AX.Word -= (ushort)this.oParent.GameState.Players[playerID].TaxRate;
 			this.oCPU.CMPWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a)));
 			if (this.oCPU.Flags.GE) goto L36ea;
 			goto L375e;
@@ -7106,15 +7106,15 @@ namespace OpenCiv1
 			// Instruction address 0x1403:0x3743, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
 				this.oParent.MSCAPI.itoa((short)(-((short)this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a)) +
-				this.oParent.GameState.Players[(ushort)playerID].TaxRate - 10) * 10), 10));
+				this.oParent.GameState.Players[playerID].TaxRate - 10) * 10), 10));
 
 			// Instruction address 0x1403:0x3753, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_1ff6);
 			goto L36d1;
 
 		L375e:
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[(ushort)playerID].TaxRate;
-			this.oCPU.AX.Word += (ushort)this.oParent.GameState.Players[(ushort)playerID].ScienceTaxRate;
+			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[playerID].TaxRate;
+			this.oCPU.AX.Word += (ushort)this.oParent.GameState.Players[playerID].ScienceTaxRate;
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, 0xa);
 			this.oCPU.AX.Word = this.oCPU.NEGWord(this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, this.oCPU.AX.Word);
@@ -7137,11 +7137,11 @@ namespace OpenCiv1
 			goto L37a8;
 
 		L3793:
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[(ushort)playerID].TaxRate;
+			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[playerID].TaxRate;
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a)));
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, 10);
 			this.oCPU.AX.Word = this.oCPU.NEGWord(this.oCPU.AX.Word);
-			this.oParent.GameState.Players[(ushort)playerID].ScienceTaxRate = (short)this.oCPU.AX.Word;
+			this.oParent.GameState.Players[playerID].ScienceTaxRate = (short)this.oCPU.AX.Word;
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x37a8); // stack management - push return offset
 			// Instruction address 0x1403:0x37a3, size: 5

@@ -1813,6 +1813,10 @@ namespace Disassembler
 							DOSPrintString();
 							break;
 
+						case 0xe:
+							this.oAX.Low = 3;
+							break;
+
 						case 0xf:
 							DOSOpenFile();
 							break;
