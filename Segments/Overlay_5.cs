@@ -1466,7 +1466,7 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F5_0000_07c7'");
 		}
 
-		public void F5_0000_0e6c(short playerID, ushort playerID1)
+		public void F5_0000_0e6c(short playerID, short playerID1)
 		{
 			this.oCPU.Log.EnterBlock("'F5_0000_0e6c'(Cdecl, Far) at 0x0000:0x0e6c");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment
