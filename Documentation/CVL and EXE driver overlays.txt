@@ -9,10 +9,8 @@ This is the specification for the overlay (driver) files:
 * RSOUND.CVL,
 * TSOUND.CVL
 
-The files are in classic MZ EXE format, except they are not executed, 
-but loaded by DOS INT 21,4B - EXEC/Load and Execute Program, 
-subfunction AL = 0x03 at segment allocated by main EXE (overlay EXE segment reallocations are also applied).
-After that, the overlay function table located at offset 0x30 is used to map functions in main exe to overlay.
+The files are in classic MZ EXE format, except they are not executed, but loaded by DOS INT 21,4B - EXEC/Load and Execute Program, subfunction AL = 0x03 at segment allocated by main EXE (overlay EXE segment reallocations are also applied).
+After that, the overlay function table located at offset 0x30 is used to map functions in main exe to loaded overlay (driver) file.
 
 The format of the overlay function table (located in overlay files):
 0x0 - 0x2f	Copyright text
@@ -21,7 +19,7 @@ The format of the overlay function table (located in overlay files):
 0x34		Word, offset to function 2
 ...			Word, offset to function n
 
-For example, the file MISC.EXE is mapped in main EXE (jmp instruction segment is the main EXE loading segment):
+The file MISC.EXE is mapped in main EXE (jmp instruction segment is the main EXE loading segment):
 * jmp instruction at offset 0x9e6 is mapped to function 1
 * jmp instruction at offset 0x9ed is mapped to function 2
 * jmp instruction at offset 0x9f4 is mapped to function 3
