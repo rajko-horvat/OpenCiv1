@@ -15,7 +15,7 @@ namespace OpenCiv1
 		public short DifficultyLevel = 0;
 		public short HumanPlayerID = 0;
 		public short PlayerFlags = 0;
-		public short CivilizationIdentityFlags = 0;
+		public short PlayerIdentityFlags = 0;
 		public short ActiveCivilizations = 0;
 
 		public short PeaceTurnCount = 0;
