@@ -53,6 +53,11 @@ namespace OpenCiv1
 			return (int)(this.Status & flag) != 0;
 		}
 
+		public bool TestSettlerStatus(UnitStatusEnum flag)
+		{
+			return (this.Status & UnitStatusEnum.SettlerBuildMask) == flag;
+		}
+
 		public static Unit FromStream(Stream stream)
 		{
 			Unit unit = new Unit();
