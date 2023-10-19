@@ -27,13 +27,13 @@ namespace OpenCiv1
 	{
 		public UnitStatusEnum Status = UnitStatusEnum.None;
 		public Point Position = new Point(0, 0);
-		public short Type = 0;
+		public short TypeID = 0;
 		public short RemainingMoves = 0;
 		public short SpecialMoves = 0;
 		public Point GotoPosition = new Point(0, 0);
 		public short GotoNextDirection = 0;
 		public short VisibleByFlag = 0;
-		public short NextUnitInStack = 0;
+		public short NextUnitID = 0;
 		public short HomeCityID = 0;
 
 
@@ -65,14 +65,14 @@ namespace OpenCiv1
 			unit.Status = (UnitStatusEnum)Overlay_11.ReadUInt8(stream);
 			unit.Position.X = (sbyte)Overlay_11.ReadUInt8(stream);
 			unit.Position.Y = (sbyte)Overlay_11.ReadUInt8(stream);
-			unit.Type = (sbyte)Overlay_11.ReadUInt8(stream);
+			unit.TypeID = (sbyte)Overlay_11.ReadUInt8(stream);
 			unit.RemainingMoves = (sbyte)Overlay_11.ReadUInt8(stream);
 			unit.SpecialMoves = (sbyte)Overlay_11.ReadUInt8(stream);
 			unit.GotoPosition.X = (sbyte)Overlay_11.ReadUInt8(stream);
 			unit.GotoPosition.Y = (sbyte)Overlay_11.ReadUInt8(stream);
 			unit.GotoNextDirection = (sbyte)Overlay_11.ReadUInt8(stream);
 			unit.VisibleByFlag = (sbyte)Overlay_11.ReadUInt8(stream);
-			unit.NextUnitInStack = (sbyte)Overlay_11.ReadUInt8(stream);
+			unit.NextUnitID = (sbyte)Overlay_11.ReadUInt8(stream);
 			unit.HomeCityID = (sbyte)Overlay_11.ReadUInt8(stream);
 
 			return unit;
@@ -83,14 +83,14 @@ namespace OpenCiv1
 			stream.WriteByte((byte)((int)this.Status & 0xff));
 			stream.WriteByte((byte)this.Position.X);
 			stream.WriteByte((byte)this.Position.Y);
-			stream.WriteByte((byte)this.Type);
+			stream.WriteByte((byte)this.TypeID);
 			stream.WriteByte((byte)this.RemainingMoves);
 			stream.WriteByte((byte)this.SpecialMoves);
 			stream.WriteByte((byte)this.GotoPosition.X);
 			stream.WriteByte((byte)this.GotoPosition.Y);
 			stream.WriteByte((byte)this.GotoNextDirection);
 			stream.WriteByte((byte)this.VisibleByFlag);
-			stream.WriteByte((byte)this.NextUnitInStack);
+			stream.WriteByte((byte)this.NextUnitID);
 			stream.WriteByte((byte)this.HomeCityID);
 		}
 	}
