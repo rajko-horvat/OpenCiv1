@@ -318,7 +318,13 @@ namespace OpenCiv1
 
 			this.oCPU.DS.Word = 0x3b01;
 
-			string sPath = $"{this.oCPU.DefaultDirectory}CIV.EXE";
+			var sPath = Path.Combine(oCPU.DefaultDirectory, "CIV.EXE");
+
+			if (!File.Exists(sPath))
+			{
+				throw new Exception($"CIV.EXE not found at {sPath}");
+			}
+			
 			this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, 0x61ee, (byte)Path.GetPathRoot(this.oCPU.DefaultDirectory)[0]);
 			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, 0x6156), sPath, sPath.Length);
 
