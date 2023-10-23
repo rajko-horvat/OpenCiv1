@@ -287,8 +287,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L02a2;
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)), 0x0);
 			if (this.oCPU.Flags.NE) goto L02a2;
-			
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81dc), 0xff);
+
+			this.oParent.GameState.Players[playerID].Units[unitID].GoToNextDirection = -1;
 			this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition = new Point(-1, -1);
 			this.oParent.GameState.Players[playerID].Units[unitID].RemainingMoves = 0;
 
@@ -616,17 +616,22 @@ namespace OpenCiv1
 			this.oCPU.CX.Word = this.oCPU.ADDWord(this.oCPU.CX.Word, this.oCPU.AX.Word);
 			this.oCPU.CX.Word = this.oCPU.ADDWord(this.oCPU.CX.Word, this.oCPU.SI.Word);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), this.oCPU.CX.Word));
+			
 			this.oCPU.AX.Word = 0xc;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
+
 			this.oCPU.AX.Word = 0x600;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0x81dc));
-			this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2a), this.oCPU.AX.Low);
-			this.oCPU.CMPByte(this.oCPU.AX.Low, 0xff);
-			if (this.oCPU.Flags.E) goto L0557;
-			this.oCPU.CBW(this.oCPU.AX);
+
+			this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2a), 
+				(byte)this.oParent.GameState.Players[playerID].Units[unitID].GoToNextDirection);
+
+			if (this.oParent.GameState.Players[playerID].Units[unitID].GoToNextDirection==-1)
+				goto L0557;
+
+			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[playerID].Units[unitID].GoToNextDirection;
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)));
 			
 			// Instruction address 0x2e31:0x0536, size: 5
@@ -665,10 +670,10 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
 			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
-			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81dc)), 0xff);
-			if (this.oCPU.Flags.E) goto L059e;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81dc));
-			this.oCPU.CBW(this.oCPU.AX);
+			if (this.oParent.GameState.Players[playerID].Units[unitID].GoToNextDirection == -1)
+				goto L059e;
+
+			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[playerID].Units[unitID].GoToNextDirection;
 			this.oCPU.AX.Low = this.oCPU.XORByte(this.oCPU.AX.Low, 0x4);
 
 			this.oCPU.CMPWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)));
@@ -687,7 +692,7 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
 			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81dc), 0xff);
+			this.oParent.GameState.Players[playerID].Units[unitID].GoToNextDirection = -1;
 			this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition = new Point(-1, -1);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14), 0xffff);
 			goto L01cd;
@@ -696,11 +701,14 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0xc;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
+
 			this.oCPU.AX.Word = 0x600;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14));
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0x81dc), this.oCPU.AX.Low);
+
+			this.oParent.GameState.Players[playerID].Units[unitID].GoToNextDirection = 
+				this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14));
+			
 			goto L01cd;
 
 		L05e0:
