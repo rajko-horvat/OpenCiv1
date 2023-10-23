@@ -2,12 +2,14 @@
 using Disassembler.MZ;
 using IRB.Collections.Generic;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using Point = System.Drawing.Point;
+#if !__MonoCS__
 using System.Windows;
+#endif
 
 namespace Disassembler
 {
@@ -68,7 +70,10 @@ namespace Disassembler
 			this.oLog = log;
 			this.oMemory = new CPUMemory(this);
 			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 50, 50);
-#if DEBUG
+#if __MonoCS__
+			var defaultDirectory = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "games", "civ"));
+			this.sDefaultDirectory = defaultDirectory.FullName;
+#elif DEBUG
 			this.sDefaultDirectory = "C:\\DOS\\CIV1\\";
 #else
 			this.DefaultDirectory = Path.GetDirectoryName(Application.ResourceAssembly.Location) + Path.DirectorySeparatorChar;

@@ -1,14 +1,16 @@
 ﻿using Disassembler;
-using Disassembler.MZ;
-using OpenCiv1.Compression;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Resources;
 using System.Text.RegularExpressions;
 using System.Windows;
+#if !__MonoCS__
+using Disassembler.MZ;
+using OpenCiv1.Compression;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Resources;
+#endif
 
 namespace OpenCiv1
 {

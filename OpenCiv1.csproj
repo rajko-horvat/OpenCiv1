@@ -37,8 +37,12 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants Condition="'$(MSBuildRuntimeType)' == 'Mono'">$(DefineConstants);__MonoCS__</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework" Condition="'$(MSBuildRuntimeType)' != 'Mono'"/>
+    <Reference Include="System.Windows" Condition="'$(MSBuildRuntimeType)' == 'Mono'"/>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -62,6 +66,7 @@
     <Compile Include="GameState\StrategicLocation.cs" />
     <Compile Include="GameState\Unit.cs" />
     <Compile Include="GameState\UnitDefinition.cs" />
+    <Compile Include="Mono\MessageBox.cs" />
     <Compile Include="OpenCiv1.cs" />
     <Compile Include="Collections\Generic\BDictionary.cs" />
     <Compile Include="Collections\Generic\BHashSet.cs" />
