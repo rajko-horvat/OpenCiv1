@@ -318,6 +318,7 @@ namespace OpenCiv1
 
 			this.oCPU.DS.Word = 0x3b01;
 
+			// To do: Check for individual resource files
 			if (!Directory.Exists(this.oCPU.DefaultDirectory))
 			{
 				MessageBox.Show($"OpenCiv1 resource files path not found at '{this.oCPU.DefaultDirectory}'.\n"+
