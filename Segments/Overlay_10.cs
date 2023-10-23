@@ -598,27 +598,26 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0587, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_41a0);
 
-			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81da)), 0xff);
-			if (this.oCPU.Flags.E) goto L060e;
+			if (this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))].Units[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8))].GoToPosition.X != -1)
+			{
+				// Instruction address 0x0000:0x059e, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_41a2);
 
-			// Instruction address 0x0000:0x059e, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_41a2);
+				// Instruction address 0x0000:0x05c2, size: 5
+				this.oParent.MSCAPI.strcat(0xba06,
+					this.oParent.MSCAPI.itoa(this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))].Units[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8))].GoToPosition.X, 10));
 
-			// Instruction address 0x0000:0x05c2, size: 5
-			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81da)), 10));
+				// Instruction address 0x0000:0x05d2, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_41a6);
 
-			// Instruction address 0x0000:0x05d2, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_41a6);
+				// Instruction address 0x0000:0x05f6, size: 5
+				this.oParent.MSCAPI.strcat(0xba06,
+					this.oParent.MSCAPI.itoa(this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))].Units[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8))].GoToPosition.Y, 10));
 
-			// Instruction address 0x0000:0x05f6, size: 5
-			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81db)), 10));
-
-			// Instruction address 0x0000:0x0606, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_41a8);
-
-		L060e:
+				// Instruction address 0x0000:0x0606, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_41a8);
+			}
+		
 			// Instruction address 0x0000:0x0616, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_41aa);
 

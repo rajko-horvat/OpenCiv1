@@ -47,7 +47,7 @@ namespace Disassembler
 		private System.Threading.Timer oTimer;
 
 		// Mouse
-		private Point oMouseLocation = Point.Empty;
+		private Point oMouseLocation = new Point(-1, -1);
 		private ushort oMouseButtons = 0;
 
 		// DOS file stuff
