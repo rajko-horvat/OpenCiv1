@@ -69,7 +69,7 @@ namespace Disassembler
 			this.oMemory = new CPUMemory(this);
 			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 50, 50);
 #if DEBUG
-			this.sDefaultDirectory = "C:\\DOS\\CIV\\";
+			this.sDefaultDirectory = "C:\\DOS\\CIV1\\";
 #else
 			this.DefaultDirectory = Path.GetDirectoryName(Application.ResourceAssembly.Location) + Path.DirectorySeparatorChar;
 #endif

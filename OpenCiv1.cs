@@ -318,13 +318,16 @@ namespace OpenCiv1
 
 			this.oCPU.DS.Word = 0x3b01;
 
-			var sPath = Path.Combine(oCPU.DefaultDirectory, "CIV.EXE");
-
-			if (!File.Exists(sPath))
+			if (!Directory.Exists(this.oCPU.DefaultDirectory))
 			{
-				throw new Exception($"CIV.EXE not found at {sPath}");
+				MessageBox.Show($"OpenCiv1 resource files path not found at '{this.oCPU.DefaultDirectory}'.\n"+
+					"The OpenCiv1 depends on Civilization resource files (*.pic, *.pal and *.txt).\nPlease adjust path to these resources.",
+					"Resource path error", MessageBoxButton.OK, MessageBoxImage.Stop);
+				this.oCPU.Exit(-1);
 			}
-			
+
+			string sPath = Path.Combine(this.oCPU.DefaultDirectory, "CIV.EXE");
+
 			this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, 0x61ee, (byte)Path.GetPathRoot(this.oCPU.DefaultDirectory)[0]);
 			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, 0x6156), sPath, sPath.Length);
 
