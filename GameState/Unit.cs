@@ -32,7 +32,7 @@ namespace OpenCiv1
 		public short SpecialMoves = 0;
 		public Point GoToPosition = new Point(-1, -1);
 		public short GoToNextDirection = 0;
-		public short VisibleByFlag = 0;
+		public ushort VisibleByFlags = 0;
 		public short NextUnitID = 0;
 		public short HomeCityID = 0;
 
@@ -71,7 +71,7 @@ namespace OpenCiv1
 			unit.GoToPosition.X = (sbyte)Overlay_11.ReadUInt8(stream);
 			unit.GoToPosition.Y = (sbyte)Overlay_11.ReadUInt8(stream);
 			unit.GoToNextDirection = (sbyte)Overlay_11.ReadUInt8(stream);
-			unit.VisibleByFlag = (sbyte)Overlay_11.ReadUInt8(stream);
+			unit.VisibleByFlags = Overlay_11.ReadUInt8(stream);
 			unit.NextUnitID = (sbyte)Overlay_11.ReadUInt8(stream);
 			unit.HomeCityID = (sbyte)Overlay_11.ReadUInt8(stream);
 
@@ -89,7 +89,7 @@ namespace OpenCiv1
 			stream.WriteByte((byte)this.GoToPosition.X);
 			stream.WriteByte((byte)this.GoToPosition.Y);
 			stream.WriteByte((byte)this.GoToNextDirection);
-			stream.WriteByte((byte)this.VisibleByFlag);
+			stream.WriteByte((byte)this.VisibleByFlags);
 			stream.WriteByte((byte)this.NextUnitID);
 			stream.WriteByte((byte)this.HomeCityID);
 		}
