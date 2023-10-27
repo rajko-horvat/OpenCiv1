@@ -20,7 +20,7 @@ namespace OpenCiv1
 		public short TotalCitySize = 0;
 		public short LandCount = 0;
 
-		public short[] PerCivilizationDiplomacyFlags = new short[8];
+		public short[] PlayerDiplomacyFlags = new short[8];
 		public PlayerContinent[] Continents = new PlayerContinent[16];
 		public short Ranking = 0;
 		public short CumulativeEpicRanking = 0;
@@ -56,9 +56,9 @@ namespace OpenCiv1
 
 		public Player()
 		{
-			for (int i = 0; i < this.PerCivilizationDiplomacyFlags.Length; i++)
+			for (int i = 0; i < this.PlayerDiplomacyFlags.Length; i++)
 			{
-				this.PerCivilizationDiplomacyFlags[i] = 0;
+				this.PlayerDiplomacyFlags[i] = 0;
 			}
 
 			for (int i = 0; i < this.Continents.Length; i++)

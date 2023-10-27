@@ -2315,13 +2315,12 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.LE) goto L14ac;
 			this.oCPU.CMPWord((ushort)playerID, this.oCPU.SI.Word);
 			if (this.oCPU.Flags.E) goto L14ac;
-			this.oCPU.BX.Word = (ushort)playerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
+			
 			this.oCPU.DI.Word = (ushort)this.oParent.GameState.HumanPlayerID;
 			this.oCPU.DI.Word = this.oCPU.SHLWord(this.oCPU.DI.Word, 0x1);
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0xe898));
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xe898)), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.GE) goto L14ac;
+
+			if (this.oParent.GameState.Players[playerID].DiscoveredTechnologyCount >= this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].DiscoveredTechnologyCount)
+				goto L14ac;
 
 			// Instruction address 0x25fb:0x148e, size: 5
 			this.oParent.VGADriver.F0_VGA_038c_GetPixel(2,
