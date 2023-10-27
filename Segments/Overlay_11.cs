@@ -924,18 +924,17 @@ namespace OpenCiv1
 
 			// function body
 			bool bSuccess = false;
-			string filename = Path.GetFileNameWithoutExtension(path);
-			path = this.oCPU.DefaultDirectory;
+			string filename = Path.GetFileNameWithoutExtension(path).ToLower();
 
 			try
 			{
 				// read map file
 				byte[] temp;
-				VGABitmap map = VGABitmap.FromFile($"{path}{filename}.map", out temp);
+				VGABitmap map = VGABitmap.FromFile(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.map"), out temp);
 				this.oParent.VGADriver.Screens.SetValueByKey(2, map);
 
 				// read sve file
-				FileStream reader = new FileStream($"{path}{filename}.sve", FileMode.Open);
+				FileStream reader = new FileStream(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.sve"), FileMode.Open);
 				this.oParent.GameState.TurnCount = ReadInt16(reader);
 				this.oParent.GameState.HumanPlayerID = ReadInt16(reader);
 				this.oParent.GameState.PlayerFlags = ReadInt16(reader);
@@ -1309,15 +1308,14 @@ namespace OpenCiv1
 			// function body
 			bool bSuccess = false;
 			string filename = Path.GetFileNameWithoutExtension(path);
-			path = this.oCPU.DefaultDirectory;
 
 			try
 			{
 				// write map file
-				this.oParent.VGADriver.Screens.GetValueByKey(2).Save($"{path}{filename}.map", false);
+				this.oParent.VGADriver.Screens.GetValueByKey(2).Save(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.map"), false);
 
 				// write sve file
-				FileStream writer = new FileStream($"{path}{filename}.sve", FileMode.Create);
+				FileStream writer = new FileStream(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.sve"), FileMode.Create);
 				WriteInt16(writer, this.oParent.GameState.TurnCount);
 				WriteInt16(writer, this.oParent.GameState.HumanPlayerID);
 				WriteInt16(writer, this.oParent.GameState.PlayerFlags);

@@ -207,9 +207,50 @@ namespace OpenCiv1
 				this.oCPU.Exit(-1);
 			}
 
+			string[] aResourceFiles = new string[] {
+				"adscreen.pic", "arch.pic", "back0a.pic", "back0m.pic", "back1a.pic", "back1m.pic", "back2a.pic", "back2m.pic", 
+				"back3a.pic", "birth0.pic", "birth1.pic", "birth2.pic", "birth3.pic", "birth4.pic", "birth5.pic", "birth6.pic", 
+				"birth7.pic", "birth8.pic", "castle0.pic", "castle1.pic", "castle2.pic", "castle3.pic", "castle4.pic", "cback.pic", 
+				"cbacks1.pic", "cbacks2.pic", "cbacks3.pic", "cbrush0.pic", "cbrush1.pic", "cbrush2.pic", "cbrush3.pic", 
+				"cbrush4.pic", "cbrush5.pic", "citypix1.pic", "citypix2.pic", "citypix3.pic", "custom.pic", "diffs.pic", 
+				"discovr1.pic", "discovr2.pic", "docker.pic", "govt0a.pic", "govt0m.pic", "govt1a.pic", "govt1m.pic", "govt2a.pic", 
+				"govt2m.pic", "govt3a.pic", "hill.pic", "iconpg1.pic", "iconpg2.pic", "iconpg3.pic", "iconpg4.pic", "iconpg5.pic", 
+				"iconpg6.pic", "iconpg7.pic", "iconpg8.pic", "iconpga.pic", "iconpgb.pic", "iconpgc.pic", "iconpgd.pic", 
+				"iconpge.pic", "iconpgt1.pic", "iconpgt2.pic", "invader2.pic", "invader3.pic", "invaders.pic", "king00.pic", 
+				"king01.pic", "king02.pic", "king03.pic", "king04.pic", "king05.pic", "king06.pic", "king07.pic", "king08.pic", 
+				"king09.pic", "king10.pic", "king11.pic", "king12.pic", "king13.pic", "kink00.pic", "kink03.pic", "logo.pic", 
+				"love1.pic", "love2.pic", "map.pic", "nuke1.pic", "planet1.pic", "planet2.pic", "pop.pic", "riot.pic", "riot2.pic", 
+				"sad.pic", "settlers.pic", "slag2.pic", "slam1.pic", "slam2.pic", "sp257.pic", "sp299.pic", "spacest.pic", 
+				"sprites.pic", "ter257.pic", "torch.pic", "wonders.pic", "wonders2.pic", "back0a.pal", "back0m.pal", "back1a.pal", 
+				"back1m.pal", "back2a.pal", "back2m.pal", "back3a.pal", "birth0.pal", "birth1.pal", "birth2.pal", "birth3.pal", 
+				"birth4.pal", "birth5.pal", "birth6.pal", "birth7.pal", "birth8.pal", "discovr1.pal", "discovr2.pal", "hill.pal", 
+				"iconpg1.pal", "iconpga.pal", "king00.pal", "king01.pal", "king02.pal", "king03.pal", "king04.pal", "king05.pal", 
+				"king06.pal", "king07.pal", "king08.pal", "king09.pal", "king10.pal", "king11.pal", "king12.pal", "king13.pal", 
+				"slam1.pal", "sp256.pal", "sp257.pal", "blurb0.txt", "blurb1.txt", "blurb2.txt", "blurb3.txt", "blurb4.txt", 
+				"credits.txt", "error.txt", "help.txt", "intro.txt", "intro3.txt", "king.txt", "produce.txt", "story.txt"
+			};
+
+			for (int i = 0; i < aResourceFiles.Length; i++)
+			{
+				string sFilePath = Path.Combine(this.oCPU.DefaultDirectory, aResourceFiles[i]);
+
+				while (!File.Exists(sFilePath))
+				{
+					DialogResult result = MessageBox.Show($"Missing resource file {sFilePath}. Plsease ensure that the file exists at specified path.\n" +
+					   "Some Operating systems are case sensitive, ensure that the file is lowercase.",
+					   "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+
+					if (result == DialogResult.Cancel)
+					{
+						this.oCPU.Exit(-1);
+						break;
+					}
+				}
+			}
+
 			string sPath = Path.Combine(this.oCPU.DefaultDirectory, "CIV.EXE");
 
-			this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, 0x61ee, (byte)Path.GetPathRoot(this.oCPU.DefaultDirectory)[0]);
+			this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, 0x61ee, (byte)'C');
 			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, 0x6156), sPath, sPath.Length);
 
 			this.oCPU.DS.Word = this.oCPU.PopWord();

@@ -321,7 +321,7 @@ namespace OpenCiv1
 			}
 
 			short sHandle = -1;
-			string sPath = $"{this.oCPU.DefaultDirectory}{Path.GetFileName(filename)}";
+			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(filename).ToLower());
 			this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 
 			try
@@ -688,7 +688,7 @@ namespace OpenCiv1
 			}
 
 			short sHandle = -1;
-			string sPath = $"{this.oCPU.DefaultDirectory}{Path.GetFileName(filename)}";
+			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(filename).ToLower());
 
 			this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 			try
@@ -842,7 +842,7 @@ namespace OpenCiv1
 				eMode = FileMode.Open;
 			}
 
-			string sPath = $"{this.oCPU.DefaultDirectory}{sName}";
+			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(sName).ToLower());
 			if (File.Exists(sPath))
 			{
 				this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
@@ -953,7 +953,7 @@ namespace OpenCiv1
 		public void _dos_getdrive(ushort valuePtr)
 		{
 			// function body
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, valuePtr, (ushort)(Path.GetPathRoot(this.oCPU.DefaultDirectory)[0] - 'A' + 1));
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, valuePtr, 3);
 		}
 		#endregion
 

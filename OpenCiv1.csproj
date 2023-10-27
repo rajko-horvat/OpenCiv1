@@ -35,9 +35,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <DefineConstants Condition="'$(MSBuildRuntimeType)' == 'Mono'">$(DefineConstants);__MonoCS__</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>

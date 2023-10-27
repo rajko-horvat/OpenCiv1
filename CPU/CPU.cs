@@ -68,11 +68,12 @@ namespace Disassembler
 			this.oMemory = new CPUMemory(this);
 			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 50, 50);
 
-#if __MonoCS__
-			var defaultDirectory = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Dos", "Civ1"));
-			this.sDefaultDirectory = defaultDirectory.FullName;
-#elif DEBUG
-			this.sDefaultDirectory = "C:\\Dos\\Civ1\\";
+#if DEBUG
+	#if __MonoCS__
+			this.sDefaultDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Dos", "Civ1") + Path.DirectorySeparatorChar;
+	#else
+			this.sDefaultDirectory = Path.Combine("C:" + Path.DirectorySeparatorChar, "Dos", "Civ1") + Path.DirectorySeparatorChar;
+	#endif
 #else
 			this.DefaultDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar;
 #endif
@@ -2014,11 +2015,13 @@ namespace Disassembler
 		{
 			if (this.oAX.Low == 3)
 			{
-				string sTemp = this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word));
+				string sName = Path.GetFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word))).ToLower();
+				string sPath = Path.Combine(this.sDefaultDirectory, sName);
 				ushort usSegment = ReadUInt16(this.oES.Word, this.oBX.Word);
 				ushort usRelocationSegment = ReadUInt16(this.oES.Word, (ushort)(this.oBX.Word + 2));
-				this.oLog.WriteLine($"Loading overlay '{sTemp}' at segment 0x{usSegment:x4}");
-				MZExecutable oOverlay = new MZExecutable($"{sDefaultDirectory}{sTemp}");
+
+				this.oLog.WriteLine($"Loading overlay '{sPath}' at segment 0x{usSegment:x4}");
+				MZExecutable oOverlay = new MZExecutable(sPath);
 				oOverlay.ApplyRelocations(usRelocationSegment);
 				this.oMemory.WriteBlock(usSegment, 0, oOverlay.Data, 0, oOverlay.Data.Length);
 				this.oFlags.C = false;
@@ -2167,8 +2170,10 @@ namespace Disassembler
 		private void DOSCreateFileUsingHandle()
 		{
 			// open file
-			string sTemp = Path.GetFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)));
+			string sName = Path.GetFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word))).ToLower();
+			string sPath = Path.Combine(this.sDefaultDirectory, sName);
 			FileAccess access = FileAccess.ReadWrite;
+
 			/*switch (this.oCX.Low & 0x7)
 			{
 				case 0:
@@ -2195,8 +2200,8 @@ namespace Disassembler
 			{
 				try
 				{
-					this.oLog.WriteLine($"Creating file '{sDefaultDirectory}{sTemp}'");
-					this.aOpenFiles.Add(this.sFileHandleCount, new FileStreamItem(new FileStream($"{sDefaultDirectory}{sTemp}", FileMode.Create, access), FileStreamTypeEnum.Binary));
+					this.oLog.WriteLine($"Creating file '{sPath}'");
+					this.aOpenFiles.Add(this.sFileHandleCount, new FileStreamItem(new FileStream(sPath, FileMode.Create, access), FileStreamTypeEnum.Binary));
 					this.oAX.Word = (ushort)this.sFileHandleCount;
 					this.sFileHandleCount++;
 					this.oFlags.C = false;
@@ -2270,8 +2275,10 @@ namespace Disassembler
 		private void DOSOpenFileUsingHandle()
 		{
 			// open file
-			string sTemp = this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word));
+			string sName = this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToLower();
+			string sPath = Path.Combine(this.sDefaultDirectory, sName);
 			FileAccess access = FileAccess.Read;
+
 			switch (this.oAX.Low & 0x7)
 			{
 				case 0:
@@ -2298,8 +2305,8 @@ namespace Disassembler
 			{
 				try
 				{
-					this.oLog.WriteLine($"Opening file '{sDefaultDirectory}{sTemp}'");
-					this.aOpenFiles.Add(this.sFileHandleCount, new FileStreamItem(new FileStream($"{sDefaultDirectory}{sTemp}", FileMode.Open, access), FileStreamTypeEnum.Binary));
+					this.oLog.WriteLine($"Opening file '{sPath}'");
+					this.aOpenFiles.Add(this.sFileHandleCount, new FileStreamItem(new FileStream(sPath, FileMode.Open, access), FileStreamTypeEnum.Binary));
 					this.oAX.Word = (ushort)this.sFileHandleCount;
 					this.sFileHandleCount++;
 					this.oFlags.C = false;
@@ -2379,8 +2386,9 @@ namespace Disassembler
 
 		private void DOSGetCurrentDefaultDrive()
 		{
-			string sTemp = Path.GetPathRoot(sDefaultDirectory);
-			this.oAX.Low = (byte)(sTemp[0] - 'A');
+			// Force C drive
+			//string sTemp = Path.GetPathRoot(sDefaultDirectory).ToUpper();
+			this.oAX.Low = 2; // (byte)(sTemp[0] - 'A');
 			this.oFlags.C = false;
 		}
 
@@ -2390,7 +2398,7 @@ namespace Disassembler
 			{
 				this.oLog.WriteLine($"Wrong drive number {this.oDX.Low}");
 			}
-			string sTemp = sDefaultDirectory.Substring(3);
+			string sTemp = this.sDefaultDirectory.Substring(3).ToUpper();
 			this.WriteString(CPU.ToLinearAddress(this.oDS.Word, this.oSI.Word), sTemp, sTemp.Length);
 			this.oFlags.C = false;
 		}
@@ -2469,7 +2477,9 @@ namespace Disassembler
 			string sFilename = this.ReadString(CPU.ToLinearAddress(this.oDS.Word, this.oSI.Word));
 			string sName = Path.GetFileNameWithoutExtension(sFilename);
 			string sExtension = Path.GetExtension(sFilename).Substring(1);
-			if (File.Exists($"{this.sDefaultDirectory}{sFilename}"))
+			string sPath = Path.Combine(this.sDefaultDirectory, sFilename.ToLower());
+
+			if (File.Exists(sPath))
 			{
 				fcb.SetName(2, ref sName, ref sExtension);
 
@@ -2489,8 +2499,9 @@ namespace Disassembler
 		{
 			DOS_FCB fcb = new DOS_FCB(this.oMemory, this.oDS.Word, this.oDX.Word);
 			string sFileName = fcb.GetName();
+			string sPath = Path.Combine(this.sDefaultDirectory, sFileName.ToLower());
 
-			if (File.Exists($"{this.sDefaultDirectory}{sFileName}"))
+			if (File.Exists(sPath))
 			{
 				this.oAX.Low = 0;
 			}
