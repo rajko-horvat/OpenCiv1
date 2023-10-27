@@ -1082,7 +1082,24 @@ namespace OpenCiv1
 				}
 
 				ReadData(reader, 0x112a, 0x3b8);
-				ReadData(reader, 0x81d4, 0x3000);
+
+				byte[] aUnits = new byte[0x3000];
+				reader.Read(aUnits, 0, 0x3000);
+				MemoryStream unitReader = new MemoryStream(aUnits);
+
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 128; j++)
+					{
+						this.oParent.GameState.Players[i].Units[j] = Unit.FromStream(unitReader);
+					}
+				}
+
+				unitReader.Position = 0;
+				ReadData(unitReader, 0x81d4, 0x3000);
+
+				unitReader.Close();
+				aUnits = null;
 
 				for (int i = 0; i < this.oParent.GameState.MapVisibility.GetLength(0); i++)
 				{
@@ -1202,7 +1219,7 @@ namespace OpenCiv1
 					this.oParent.GameState.Players[i].SpaceshipLaunchYear = ReadInt16(reader);
 				}
 
-				this.oParent.GameState.CivilizationIdentityFlags = ReadInt16(reader);
+				this.oParent.GameState.PlayerIdentityFlags = ReadInt16(reader);
 
 				reader.Close();
 
@@ -1447,7 +1464,14 @@ namespace OpenCiv1
 				}
 
 				WriteData(writer, 0x112a, 0x3b8);
-				WriteData(writer, 0x81d4, 0x3000);
+
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 128; j++)
+					{
+						this.oParent.GameState.Players[i].Units[j].ToStream(writer);
+					}
+				}
 
 				for (int i = 0; i < this.oParent.GameState.MapVisibility.GetLength(0); i++)
 				{
@@ -1561,7 +1585,7 @@ namespace OpenCiv1
 					WriteInt16(writer, this.oParent.GameState.Players[i].SpaceshipLaunchYear);
 				}
 
-				WriteInt16(writer, this.oParent.GameState.CivilizationIdentityFlags);
+				WriteInt16(writer, this.oParent.GameState.PlayerIdentityFlags);
 
 				writer.Close();
 

@@ -201,7 +201,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16));
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oParent.GameState.CivilizationIdentityFlags |= (short)this.oCPU.AX.Word;
+			this.oParent.GameState.PlayerIdentityFlags |= (short)this.oCPU.AX.Word;
 			goto L01a9;
 
 		L019f:

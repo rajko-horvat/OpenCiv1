@@ -7,7 +7,6 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Windows;
 
 namespace Disassembler
 {
@@ -47,7 +46,7 @@ namespace Disassembler
 		private System.Threading.Timer oTimer;
 
 		// Mouse
-		private Point oMouseLocation = Point.Empty;
+		private Point oMouseLocation = new Point(-1, -1);
 		private ushort oMouseButtons = 0;
 
 		// DOS file stuff
@@ -68,10 +67,14 @@ namespace Disassembler
 			this.oLog = log;
 			this.oMemory = new CPUMemory(this);
 			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 50, 50);
-#if DEBUG
-			this.sDefaultDirectory = "C:\\DOS\\CIV\\";
+
+#if __MonoCS__
+			var defaultDirectory = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Dos", "Civ1"));
+			this.sDefaultDirectory = defaultDirectory.FullName;
+#elif DEBUG
+			this.sDefaultDirectory = "C:\\Dos\\Civ1\\";
 #else
-			this.DefaultDirectory = Path.GetDirectoryName(Application.ResourceAssembly.Location) + Path.DirectorySeparatorChar;
+			this.DefaultDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar;
 #endif
 		}
 
@@ -308,17 +311,27 @@ namespace Disassembler
 			return (ushort)((short)value);
 		}
 
-		public static ushort ForceUInt16(int value)
-		{
-			return (ushort)(value & 0xffff);
-		}
-
 		public static short ToInt16(int value)
 		{
 			if (value < Int16.MinValue || value > Int16.MaxValue)
 				throw new Exception($"Value {value} out of range for Int16");
 
 			return (short)value;
+		}
+
+		public static byte ForceUInt8(int value)
+		{
+			return (byte)(value & 0xff);
+		}
+
+		public static sbyte ForceInt8(int value)
+		{
+			return (sbyte)((byte)(value & 0xff));
+		}
+
+		public static ushort ForceUInt16(int value)
+		{
+			return (ushort)(value & 0xffff);
 		}
 
 		public static short ForceInt16(int value)
@@ -1786,6 +1799,44 @@ namespace Disassembler
 					}
 					break;
 
+				case 0x11:
+					this.oAX.Word = 0x22;
+					break;
+
+				case 0x16:
+					switch (this.oAX.High)
+					{
+						case 0:
+							this.oParent.MSCAPI.getch();
+							if (this.oAX.Word == 0)
+							{
+								this.oParent.MSCAPI.getch();
+								switch (this.oAX.Word)
+								{
+									case 0x4b:
+										this.oAX.Word = 0x4b00; // Left
+										break;
+
+									case 0x48:
+										this.oAX.Word = 0x4800; // Up
+										break;
+
+									case 0x4d:
+										this.oAX.Word = 0x4d00; // Right
+										break;
+
+									case 0x50:
+										this.oAX.Word = 0x5000; // Down
+										break;
+								}
+							}
+							break;
+
+						default:
+							throw new Exception($"Unknown 0x16 interrupt 0x{this.oAX.High:x2}");
+					}
+					break;
+
 				case 0x21:
 					switch (this.oAX.High)
 					{
@@ -1811,6 +1862,10 @@ namespace Disassembler
 
 						case 9:
 							DOSPrintString();
+							break;
+
+						case 0xe:
+							this.oAX.Low = 3;
 							break;
 
 						case 0xf:
@@ -1921,40 +1976,6 @@ namespace Disassembler
 
 						default:
 							throw new Exception($"Unknown 0x21 interrupt 0x{this.oAX.High:x2}");
-					}
-					break;
-
-				case 0x16:
-					switch (this.oAX.High)
-					{
-						case 0:
-							this.oParent.MSCAPI.getch();
-							if (this.oAX.Word == 0)
-							{
-								this.oParent.MSCAPI.getch();
-								switch (this.oAX.Word)
-								{
-									case 0x4b:
-										this.oAX.Word = 0x4b00; // Left
-										break;
-
-									case 0x48:
-										this.oAX.Word = 0x4800; // Up
-										break;
-
-									case 0x4d:
-										this.oAX.Word = 0x4d00; // Right
-										break;
-
-									case 0x50:
-										this.oAX.Word = 0x5000; // Down
-										break;
-								}
-							}
-							break;
-
-						default:
-							throw new Exception($"Unknown 0x16 interrupt 0x{this.oAX.High:x2}");
 					}
 					break;
 

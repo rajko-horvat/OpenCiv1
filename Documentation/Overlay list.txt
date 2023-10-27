@@ -4,22 +4,22 @@ MSCAPI	MS Compiler API functions
 
 Overlay 1	Main menu (textual)
 Overlay 2	Main intro, credits
-Overlay 3	?
-Overlay 4	?
+Overlay 3	Hall of fame (FAME.DTA)
+Overlay 4	In-game help
 Overlay 5	Game menu, difficulty, civilizations, name...
 Overlay 6	Meet with king (emissary)
 Overlay 7	Intro and map initialization
 Overlay 8	Civilopedia
 Overlay 9	Replay
-Overlay 10	Which Army (City Status)?
+Overlay 10	Which Army (City Status)
 Overlay 11	Load and save game dialog and code
 Overlay 12	World map
 Overlay 13	Wonders of the world?
 Overlay 14	City, military, intelligence, attitude, science, score report
-Overlay 15	?
+Overlay 15	Schism (when a large Civ splits into 2 civs when their capital is captured)
 Overlay 16	Quiz
-Overlay 17	?
-Overlay 18	?
+Overlay 17	Palace
+Overlay 18	Spaceship
 Overlay 19 	City graphical view
 Overlay 20	Build city
 Overlay 21	Newspaper news

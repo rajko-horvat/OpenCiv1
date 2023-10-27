@@ -613,7 +613,7 @@ namespace OpenCiv1
 			this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].Coins = 50;
 
 		L05fe:
-			oParent.GameState.CivilizationIdentityFlags = 0;
+			oParent.GameState.PlayerIdentityFlags = 0;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 0x0);
 
 		L0609:
@@ -622,7 +622,7 @@ namespace OpenCiv1
 				this.oCPU.AX.Word = 0x1;
 				this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa));
 				this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				oParent.GameState.CivilizationIdentityFlags |= (short)this.oCPU.AX.Word;
+				oParent.GameState.PlayerIdentityFlags |= (short)this.oCPU.AX.Word;
 			}
 		
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 
@@ -1267,7 +1267,7 @@ namespace OpenCiv1
 				this.oCPU.AX.Word = 0x1;
 				this.oCPU.CX.Low = (byte)(playerID & 0xff);
 				this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.TESTWord(this.oCPU.AX.Word, (ushort)this.oParent.GameState.CivilizationIdentityFlags);
+				this.oCPU.TESTWord(this.oCPU.AX.Word, (ushort)this.oParent.GameState.PlayerIdentityFlags);
 				if (this.oCPU.Flags.E) goto L0c6f;
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34), 0x7d0);
 
@@ -1277,7 +1277,7 @@ namespace OpenCiv1
 				this.oCPU.AX.Word = 0x1;
 				this.oCPU.CX.Low = (byte)(playerID & 0xff);
 				this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.TESTWord(this.oCPU.AX.Word, (ushort)this.oParent.GameState.CivilizationIdentityFlags);
+				this.oCPU.TESTWord(this.oCPU.AX.Word, (ushort)this.oParent.GameState.PlayerIdentityFlags);
 				if (this.oCPU.Flags.NE) goto L0c8e;
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34), 0x7d0);
 
@@ -1466,7 +1466,7 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F5_0000_07c7'");
 		}
 
-		public void F5_0000_0e6c(short playerID, ushort playerID1)
+		public void F5_0000_0e6c(short playerID, short playerID1)
 		{
 			this.oCPU.Log.EnterBlock("'F5_0000_0e6c'(Cdecl, Far) at 0x0000:0x0e6c");
 			this.oCPU.CS.Word = this.usSegment; // set this function segment

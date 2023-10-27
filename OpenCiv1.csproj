@@ -35,16 +35,15 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
+    <DefineConstants Condition="'$(MSBuildRuntimeType)' == 'Mono'">$(DefineConstants);__MonoCS__</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -165,7 +164,7 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Documentation\CVL and EXE overlays.txt" />
+    <Content Include="Documentation\CVL and EXE driver overlays.txt" />
     <Content Include="Documentation\Font.cv specification.txt" />
     <Content Include="Documentation\Overlay list.txt" />
     <Content Include="Documentation\Structure 0xaa.txt" />

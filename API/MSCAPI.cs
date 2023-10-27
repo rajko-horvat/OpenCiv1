@@ -1083,7 +1083,7 @@ namespace OpenCiv1
 			return sRetVal;
 		}
 
-		public ushort itoa(short value, ushort stringPtr, short radix)
+		public ushort itoa(int value, ushort stringPtr, short radix)
 		{
 			string sValue = Convert.ToString(value, radix);
 
@@ -1095,7 +1095,7 @@ namespace OpenCiv1
 			return stringPtr;
 		}
 
-		public string itoa(short value, short radix)
+		public string itoa(int value, short radix)
 		{
 			string sValue = Convert.ToString(value, radix);
 

@@ -2418,35 +2418,33 @@ namespace OpenCiv1
 			int iWidth = 0;
 			int iHeight = 0;
 
-			if (this.aFonts.ContainsKey(fontID))
+			if (!this.aFonts.ContainsKey(fontID))
 			{
-				CivFont font = this.aFonts.GetValueByKey(fontID);
-
-				for (int i = 0; i < text.Length; i++)
-				{
-					char ch = text[i];
-					CivFontCharacter fontCh;
-
-					//if (i > 0)
-						iWidth += font.CharacterWidthSpacing;
-
-					if (font.Characters.ContainsKey(ch))
-					{
-						fontCh = font.Characters.GetValueByKey(ch);
-					}
-					else
-					{
-						// unknown char, use '?'
-						fontCh = font.Characters.GetValueByKey('?');
-					}
-					iWidth += fontCh.Width;
-					iHeight = Math.Max(iHeight, fontCh.Height);
-					iHeight += font.LineSpacing;
-				}
+				fontID = 1; // default font
 			}
-			else
+
+			CivFont font = this.aFonts.GetValueByKey(fontID);
+
+			for (int i = 0; i < text.Length; i++)
 			{
-				throw new Exception($"Unknown Font {fontID}");
+				char ch = text[i];
+				CivFontCharacter fontCh;
+
+				//if (i > 0)
+				iWidth += font.CharacterWidthSpacing;
+
+				if (font.Characters.ContainsKey(ch))
+				{
+					fontCh = font.Characters.GetValueByKey(ch);
+				}
+				else
+				{
+					// unknown char, use '?'
+					fontCh = font.Characters.GetValueByKey('?');
+				}
+				iWidth += fontCh.Width;
+				iHeight = Math.Max(iHeight, fontCh.Height);
+				iHeight += font.LineSpacing;
 			}
 
 			return new Size(iWidth, iHeight);
@@ -2492,29 +2490,27 @@ namespace OpenCiv1
 				$"{xPos}, {yPos}, '{text}'" +
 				")");
 
-			// function body
-			if (this.aFonts.ContainsKey(rect.FontID))
+			if (!this.aFonts.ContainsKey(rect.FontID))
 			{
-				CivFont font = this.aFonts.GetValueByKey(rect.FontID);
+				rect.FontID = 1; // default font
+			}
 
-				if (this.aScreens.ContainsKey(rect.ScreenID))
-				{
-					lock (this.VGALock)
-					{
-						VGABitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
-						Rectangle rect1 = new Rectangle(rect.X + xPos, rect.Y + yPos, rect.Width, rect.Height);
+			// function body
+			CivFont font = this.aFonts.GetValueByKey(rect.FontID);
 
-						screen.DrawString(text, font, rect1, rect.FrontColor, rect.BackColor, (PixelWriteModeEnum)rect.PixelMode);
-					}
-				}
-				else
+			if (this.aScreens.ContainsKey(rect.ScreenID))
+			{
+				lock (this.VGALock)
 				{
-					throw new Exception($"The screen {rect.ScreenID} is not allocated");
+					VGABitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
+					Rectangle rect1 = new Rectangle(rect.X + xPos, rect.Y + yPos, rect.Width, rect.Height);
+
+					screen.DrawString(text, font, rect1, rect.FrontColor, rect.BackColor, (PixelWriteModeEnum)rect.PixelMode);
 				}
 			}
 			else
 			{
-				throw new Exception($"Unknown Font {rect.FontID}");
+				throw new Exception($"The screen {rect.ScreenID} is not allocated");
 			}
 
 			// Far return

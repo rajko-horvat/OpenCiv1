@@ -1,14 +1,7 @@
 ﻿using Disassembler;
-using Disassembler.MZ;
-using OpenCiv1.Compression;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Resources;
-using System.Text.RegularExpressions;
-using System.Windows;
+using System.Windows.Forms;
 
 namespace OpenCiv1
 {
@@ -144,104 +137,22 @@ namespace OpenCiv1
 			this.oVGADriver = new VGADriver(this);
 			this.oSoundDriver = new NSound(this);
 			#endregion
-
-			// Export all bitmaps to file
-			/*string[] aFiles = Directory.GetFiles(this.oCPU.DefaultDirectory, "*.pic");
-			if (!Directory.Exists("Images"))
-				Directory.CreateDirectory("Images");
-
-			for (int i = 0; i < aFiles.Length; i++)
-			{
-				byte[] palette;
-				VGABitmap bitmap1 = VGABitmap.FromFile(aFiles[i], out palette);
-
-				if (bitmap1 != null)
-				{
-					bitmap1.Bitmap.Save(
-						$"Images{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(aFiles[i])}.png",
-						ImageFormat.Png);
-				}
-
-				//break;
-			}//*/
-
-			// Test compressor and decompressor
-			/*RandomMT19937 oRND = new RandomMT19937();
-			for (int i = 0; i < 1000; i++)
-			{
-				byte[] buffer = new byte[0x10000];
-
-				// fill buffer with random data
-				for (int j = 0; j < buffer.Length; j++)
-				{
-					buffer[j] = (byte)(oRND.Next() & 0xff);
-				}
-
-				MemoryStream rleInput = new MemoryStream(buffer);
-				MemoryStream rleOutput = new MemoryStream();
-
-				LZW.Compress(rleOutput, rleInput, 9, 11);
-
-				MemoryStream rleOutput1 = new MemoryStream();
-				rleOutput.Position = 0;
-
-				LZW.Decompress(rleOutput1, rleOutput, 9, rleOutput.ReadByte());
-
-				// compare buffers
-				byte[] buffer1 = rleOutput1.ToArray();
-
-				if (buffer.Length != buffer1.Length)
-					Console.WriteLine("Data not equal");
-
-				for (int j = 0; j < buffer1.Length; j++)
-				{
-					if (buffer[j] != buffer1[j])
-					{
-						Console.WriteLine("Data not equal");
-					}
-				}
-			}//*/
-			
-			//ExtractStrings();
 		}
 
 		public void Start()
 		{
-			// Load old exe image to memory, not needed anymore
-			//oEXE = new MZExecutable($"{this.oCPU.DefaultDirectory}CIV.EXE");
-			//oEXE.ApplyRelocations(usStartSegment);
-
 			ushort usInitialCS = 0x2045; // oEXE.InitialCS;
 			ushort usInitialSS = 0x398d; // oEXE.InitialSS;
 			ushort usInitialSP = 0x0800; // oEXE.InitialSP;
 
-			// We don't need environment variables as they are not used
-			// Copy EXE to memory and allocate resources
-			/*string sEnvironment = "COMSPEC =C:\\WINDOWS\\SYSTEM32\\COMMAND.COM\0FP_NO_HOST_CHECK=NO\0HOMEDRIVE=C:\0" +
-				"NUMBER_OF_PROCESSORS=1\0OS=Windows_NT\0PATH=C:\\DOS\0"+
-				"PATHEXT=.COM;.EXE;.BAT;.CMD\0PROCESSOR_ARCHITECTURE=x86\0"+
-				"PROCESSOR_IDENTIFIER=x86\0PROCESSOR_LEVEL=6\0PROMPT=$P$G\0"+
-				"SYSTEMDRIVE=C:\0SYSTEMROOT=C:\0TEMP=C:\\TEMP\0TMP=C:\\TEMP\0BLASTER=A220 I5 D1 P330 T3\0";
-			uint uiEnvirenmentLength = (uint)(((sEnvironment.Length + 2) + 0xf) & 0xfff0);
-			uint uiEnvironment = (uint)(0xff00 - uiEnvirenmentLength);
-
-			this.oCPU.Memory.AllocateMemoryBlock(uiEnvironment, uiEnvirenmentLength, CPUMemoryFlagsEnum.ReadWrite);
-			this.oCPU.Memory.WriteUInt8(uiEnvironment, (byte)sEnvironment.Length);
-			this.oCPU.WriteString(uiEnvironment + 1, sEnvironment, sEnvironment.Length);
-			this.oCPU.Memory.MemoryRegions[1].AccessFlags = CPUMemoryFlagsEnum.Read;*/
-
 			this.oCPU.Memory.AllocateMemoryBlock(0xff00, 0x100, CPUMemoryFlagsEnum.ReadWrite);
 			this.oCPU.Memory.WriteUInt16(0xff00, 0x20cd);
 			this.oCPU.Memory.WriteUInt16(0xff02, (ushort)(this.oCPU.Memory.FreeMemory.End >> 4));
-			//this.oCPU.Memory.WriteUInt16(0xff2c, (ushort)(uiEnvironment >> 4));
 			this.oCPU.Memory.WriteUInt8(0xff81, (byte)'\r');
 			this.oCPU.Memory.MemoryRegions[1].AccessFlags = CPUMemoryFlagsEnum.ReadWrite | CPUMemoryFlagsEnum.WriteWarning | CPUMemoryFlagsEnum.ReadWarning;
 
 			uint uiEXEStart = CPU.ToLinearAddress(usStartSegment, 0);
 			uint uiEXELength = 0x3a0e0;
-			//this.oCPU.Memory.AllocateMemoryBlock(0x10000,
-			//	(uint)((uint)oEXE.Data.Length + ((uint)oEXE.MinimumAllocation << 4)), CPUMemoryFlagsEnum.ReadWrite);
-			//this.oCPU.Memory.WriteBlock(0x10000, oEXE.Data, 0, oEXE.Data.Length);
 
 			byte[] resources = (byte[])Properties.Resources.ResourceManager.GetObject("BinaryResources");
 
@@ -257,7 +168,7 @@ namespace OpenCiv1
 			this.oCPU.Memory.MemoryRegions.Add(
 				new CPUMemoryRegion(uiDataStart, (uiDataEnd - uiDataStart) + 1, CPUMemoryFlagsEnum.ReadWrite));
 
-			// protect already mapped data
+			// protect already mapped data objects
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3604, 0, 0xd00, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3772, 0x4b0, 0x90, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3772, 0x540, 0x100, CPUMemoryFlagsEnum.AccessNotAllowed));
@@ -266,37 +177,6 @@ namespace OpenCiv1
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3772, 0x1f88, 0x4b0, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3772, 0x253c, 0x1c0, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3772, 0x26fc, 0x1000, CPUMemoryFlagsEnum.AccessNotAllowed));
-
-			// Create BinaryResources.bin file for code that is not yet translated and needs this data in memory
-			/*FileStream writer = new FileStream("BinaryResources.bin", FileMode.Create);
-			uint uiStart = CPU.ToLinearAddress(0x35cf, 0);
-			uint uiEnd = CPU.ToLinearAddress(0x3b01, 0x652d);
-			writer.Write(this.oCPU.Memory.MemoryContent, (int)uiStart, (int)((uiEnd - uiStart) + 1));
-			writer.Close();//*/
-
-			// Create UnitDefinition array
-			/*StreamWriter writer = new StreamWriter("UnitDefinitions.cs");
-			uint uiArrayAddress = CPU.ToLinearAddress(0x3b01, 0x112a);
-			writer.WriteLine("{");
-			for (int i = 0; i < 28; i++)
-			{
-				writer.WriteLine($"new UnitDefinition(\"{this.oCPU.ReadString(uiArrayAddress)}\", " +
-					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 12)}, " +
-					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 14)}, " +
-					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 16)}, " +
-					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 18)}, " +
-					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 20)}, " +
-					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 22)}, " +
-					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 24)}, " +
-					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 26)}, " +
-					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 28)}, " +
-					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 30)}, " +
-					$"{this.oCPU.Memory.ReadInt16(uiArrayAddress + 32)}), ");
-
-				uiArrayAddress += 34;
-			}
-			writer.WriteLine("};");
-			writer.Close();//*/
 
 			// Initialize CPU
 			this.oCPU.CS.Word = (ushort)(usInitialCS + usStartSegment);
@@ -318,15 +198,23 @@ namespace OpenCiv1
 
 			this.oCPU.DS.Word = 0x3b01;
 
-			string sPath = $"{this.oCPU.DefaultDirectory}CIV.EXE";
+			// To do: Check for individual resource files
+			if (!Directory.Exists(this.oCPU.DefaultDirectory))
+			{
+				MessageBox.Show($"OpenCiv1 resource files path not found at '{this.oCPU.DefaultDirectory}'.\n"+
+					"The OpenCiv1 depends on Civilization resource files (*.pic, *.pal and *.txt).\nPlease adjust path to these resources.",
+					"Resource path error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+				this.oCPU.Exit(-1);
+			}
+
+			string sPath = Path.Combine(this.oCPU.DefaultDirectory, "CIV.EXE");
+
 			this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, 0x61ee, (byte)Path.GetPathRoot(this.oCPU.DefaultDirectory)[0]);
 			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, 0x6156), sPath, sPath.Length);
 
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.ES.Word = this.oCPU.DS.Word;
 
-			// PSP segment, not needed anymore
-			//this.oCPU.Memory.WriteUInt16(this.oCPU.DS.Word, 0x5901, this.oCPU.ES.Word); // PSP segment
 			this.oCPU.SI.Word = (ushort)(this.oCPU.Memory.FreeMemory.End >> 4); // top of memory
 			this.oCPU.SI.Word = this.oCPU.SUBWord(this.oCPU.SI.Word, usDataSegment);
 
@@ -348,8 +236,6 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, 0x588a, this.oCPU.AX.Word);
 
 			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, usDataSegment);
-			// PSP segment, not needed anymore
-			//this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2, this.oCPU.SI.Word);
 			this.oCPU.BX.Word = this.oCPU.ES.Word;
 			this.oCPU.BX.Word = this.oCPU.SUBWord(this.oCPU.BX.Word, this.oCPU.SI.Word);
 			this.oCPU.BX.Word = this.oCPU.NEGWord(this.oCPU.BX.Word);
@@ -368,7 +254,7 @@ namespace OpenCiv1
 					this.oCPU.Memory.WriteUInt8(usDataSegment, (ushort)i, 0);
 			}
 
-			// protect already mapped data
+			// protect already mapped data objects
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x19be, 2, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x19c0, 2, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x1c20, 2, CPUMemoryFlagsEnum.AccessNotAllowed));
@@ -394,6 +280,7 @@ namespace OpenCiv1
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x804c, 2, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x8068, 0x10, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x81d2, 2, CPUMemoryFlagsEnum.AccessNotAllowed));
+			//this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x81d4, 0x3000, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb1d6, 0x10, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb1ea, 2, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb210, 0x10, CPUMemoryFlagsEnum.AccessNotAllowed));
@@ -439,135 +326,6 @@ namespace OpenCiv1
 			this.Segment_11a8.F0_11a8_0008_Main();
 
 			this.MSCAPI.exit((short)this.oCPU.AX.Word);
-		}
-
-		private void ExtractStrings()
-		{
-			// change strcat, strcpy direct address references
-			Regex rxStrCat = new Regex(@"^(\s*this\.oParent\.MSCAPI\.strcat)\(0x([0-9a-f]+), 0x([0-9a-f]+)\);\s*$");
-			Regex rxStrCpy = new Regex(@"^(\s*this\.oParent\.MSCAPI\.strcpy)\(0x([0-9a-f]+), 0x([0-9a-f]+)\);\s*$");
-			string[] files = Directory.GetFiles(@"..\..\..\OpenCiv1-master\Segments", "*.cs");
-			List<CivStringMatch> aStrings = new List<CivStringMatch>();
-
-			for (int i = 0; i < files.Length; i++)
-			{
-				StreamReader reader = new StreamReader(files[i]);
-				StreamWriter writer = new StreamWriter(@".\Code\" +
-					Path.GetFileName(files[i]));
-
-				while (!reader.EndOfStream)
-				{
-					string sLine = reader.ReadLine();
-					Match match = rxStrCat.Match(sLine);
-
-					if (match.Success)
-					{
-						ushort usString1Ptr = Convert.ToUInt16(match.Groups[2].Value, 16);
-						ushort usString2Ptr = Convert.ToUInt16(match.Groups[3].Value, 16);
-						if (usString1Ptr != 0xba06)
-						{
-							Console.WriteLine($"First strcat parameter 0x{usString1Ptr:x4} is not buffer pointer");
-							writer.WriteLine($"{match.Groups[1].Value}(0x{usString1Ptr:x4}, 0x{usString2Ptr:x4});");
-						}
-						else
-						{
-							int iPos = -1;
-
-							for (int j = 0; j < aStrings.Count; j++)
-							{
-								CivStringMatch strMatch = aStrings[j];
-								if (strMatch.Start == usString2Ptr)
-								{
-									iPos = j;
-									break;
-								}
-								if (strMatch.Start > usString2Ptr && strMatch.End <= usString2Ptr)
-								{
-									throw new Exception("String is a part of another string");
-								}
-							}
-							if (iPos >= 0)
-							{
-								writer.WriteLine($"{match.Groups[1].Value}(0x{usString1Ptr:x4}, OpenCiv1.String_{aStrings[iPos].Start:x4});");
-							}
-							else
-							{
-								CivStringMatch strMatch = new CivStringMatch(this.oCPU, usString2Ptr);
-								aStrings.Add(strMatch);
-								writer.WriteLine($"{match.Groups[1].Value}(0x{usString1Ptr:x4}, OpenCiv1.String_{strMatch.Start:x4});");
-							}
-						}
-					}
-					else
-					{
-						match = rxStrCpy.Match(sLine);
-						if (match.Success)
-						{
-							ushort usString1Ptr = Convert.ToUInt16(match.Groups[2].Value, 16);
-							ushort usString2Ptr = Convert.ToUInt16(match.Groups[3].Value, 16);
-							if (usString1Ptr != 0xba06)
-							{
-								Console.WriteLine($"First strcpy parameter 0x{usString1Ptr:x4} is not buffer pointer");
-								writer.WriteLine($"{match.Groups[1].Value}(0x{usString1Ptr:x4}, 0x{usString2Ptr:x4});");
-							}
-							else
-							{
-								int iPos = -1;
-
-								for (int j = 0; j < aStrings.Count; j++)
-								{
-									CivStringMatch strMatch = aStrings[j];
-									if (strMatch.Start == usString2Ptr)
-									{
-										iPos = j;
-										break;
-									}
-									if (strMatch.Start > usString2Ptr && strMatch.End <= usString2Ptr)
-									{
-										throw new Exception("String is a part of another string");
-									}
-								}
-								if (iPos >= 0)
-								{
-									writer.WriteLine($"{match.Groups[1].Value}(0x{usString1Ptr:x4}, OpenCiv1.String_{aStrings[iPos].Start:x4});");
-								}
-								else
-								{
-									CivStringMatch strMatch = new CivStringMatch(this.oCPU, usString2Ptr);
-									aStrings.Add(strMatch);
-									writer.WriteLine($"{match.Groups[1].Value}(0x{usString1Ptr:x4}, OpenCiv1.String_{strMatch.Start:x4});");
-								}
-							}
-						}
-						else
-						{
-							writer.WriteLine(sLine);
-						}
-					}
-				}
-
-				writer.Close();
-				reader.Close();
-			}
-
-			aStrings.Sort();
-
-			StreamWriter stringWriter = new StreamWriter(@".\Code\Strings.cs");
-			StreamWriter tableWriter = new StreamWriter(@".\Code\Table.txt");
-
-			for (int i = 0; i < aStrings.Count; i++)
-			{
-				CivStringMatch strMatch = aStrings[i];
-
-				stringWriter.WriteLine("/// <summary>");
-				stringWriter.WriteLine($"/// \"{strMatch.FormatttedString}\"");
-				stringWriter.WriteLine("/// </summary>");
-				stringWriter.WriteLine($"public static string String_{strMatch.Start:x4} = \"{strMatch.FormatttedString}\";");
-
-				tableWriter.WriteLine($"0x3b01\t0x{strMatch.Start:x4}\t0x{strMatch.End:x4}\t\"{strMatch.FormatttedString}\"");
-			}
-			tableWriter.Close();
-			stringWriter.Close();
 		}
 
 		private void SetOverlayBase()

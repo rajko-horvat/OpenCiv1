@@ -40,7 +40,7 @@ namespace OpenCiv1
 		public short SettlerCount = 0;
 		public short[] ActiveUnits = new short[28];
 		public short[] UnitsDestroyed = new short[8];
-		public Unit[] Units = new Unit[128];
+		public Unit[] Units = new Unit[129];
 		public short[] UnitsInProduction = new short[28];
 		public short[] LostUnits = new short[28];
 

@@ -3502,28 +3502,24 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.DI.Word + 0xe3c8),
 				this.oCPU.ORWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.DI.Word + 0xe3c8)), this.oCPU.SI.Word));
 
-			this.oCPU.AX.Low = (byte)playerID1;
-			this.oCPU.CBW(this.oCPU.AX);
-			this.oParent.GameState.Players[playerID].TechnologyAcquiredFrom[technologyID] = 
-				(short)this.oCPU.AX.Word;
+			this.oParent.GameState.Players[playerID].TechnologyAcquiredFrom[technologyID] = playerID1;
 
 		L1d9e:
-			if (this.oParent.GameState.TurnCount != 0) goto L1da8;
-			goto L22af;
+			if (this.oParent.GameState.TurnCount == 0)
+				goto L22af;
 
-		L1da8:
 			this.oParent.GameState.Players[playerID].DiscoveredTechnologyCount++;
 
 			if (playerID == this.oParent.GameState.HumanPlayerID) goto L1dce;
 
 			this.oCPU.SI.Word = (ushort)playerID;
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
+			this.oCPU.BX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
 			this.oCPU.CX.Low = 0x4;
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, this.oCPU.CX.Low);
 			this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0xe498)), 0x40);
-			if (this.oCPU.Flags.NE) goto L1dce;
-			goto L1f47;
+			if (this.oCPU.Flags.E)
+				goto L1f47;
 
 		L1dce:
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
