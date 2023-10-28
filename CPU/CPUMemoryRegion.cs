@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Disassembler
+namespace IRB.VirtualCPU
 {
 	[Flags]
 	public enum CPUMemoryFlagsEnum

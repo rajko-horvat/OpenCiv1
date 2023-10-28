@@ -1,5 +1,5 @@
-using Disassembler;
 using System;
+using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {

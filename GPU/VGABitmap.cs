@@ -1,15 +1,12 @@
-﻿using OpenCiv1.GPU;
-using Disassembler;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 using IRB.Collections.Generic;
 using OpenCiv1.Compression;
+using OpenCiv1.GPU;
 
 namespace OpenCiv1
 {

@@ -1,11 +1,10 @@
-﻿using Disassembler;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Text;
+using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {
-	public class CivStringMatch:IComparable<CivStringMatch>
+	public class CivStringMatch : IComparable<CivStringMatch>
 	{
 		public ushort Start;
 		public ushort End;
@@ -27,7 +26,7 @@ namespace OpenCiv1
 				StringBuilder builder = new StringBuilder();
 				for (int i = 0; i < this.String.Length; i++)
 				{
-					char ch=this.String[i];
+					char ch = this.String[i];
 					if (ch == '\n')
 					{
 						builder.Append("\\n");

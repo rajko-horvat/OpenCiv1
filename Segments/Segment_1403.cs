@@ -1,4 +1,4 @@
-using Disassembler;
+using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {
@@ -7552,6 +7552,8 @@ namespace OpenCiv1
 		ToggleDebugMode:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd806, 
 				(ushort)(~this.oCPU.Memory.ReadUInt16(this.oCPU.DS.Word, 0xd806)));
+			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 0x0);
+			goto L34dd;
 
 		L3aa4:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd4ca), 0xffff);

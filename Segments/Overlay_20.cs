@@ -1,5 +1,5 @@
-using Disassembler;
 using System.Drawing;
+using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {

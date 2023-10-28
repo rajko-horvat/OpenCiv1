@@ -1,15 +1,6 @@
-using Disassembler;
-using IRB.Collections.Generic;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
-using System.Reflection;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
-using System.ComponentModel.Design;
-using System.Collections;
+using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {

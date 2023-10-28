@@ -1,9 +1,7 @@
-﻿using Disassembler;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
 using System.IO;
-using System.Text;
+using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {

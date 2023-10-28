@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{55F5F1A4-2E16-46FC-90E1-8E8E52869226}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OpenCiv1</RootNamespace>
     <AssemblyName>OpenCiv1</AssemblyName>
@@ -73,11 +73,11 @@
     <Compile Include="GPU\Fonts\CivFont.cs" />
     <Compile Include="GPU\Fonts\CivFonts.cs" />
     <Compile Include="GPU\CivRectangle.cs" />
-    <Compile Include="GPU\VGAForm.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GPU\VGAForm.Designer.cs">
-      <DependentUpon>VGAForm.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\LogWrapper.cs" />
     <Compile Include="MZ\MZExecutable.cs" />
@@ -132,8 +132,8 @@
     <Compile Include="Segments\Segment_2f4d.cs" />
     <Compile Include="Segments\ImageLoading.cs" />
     <Compile Include="Helpers\StringMatch.cs" />
-    <EmbeddedResource Include="GPU\VGAForm.resx">
-      <DependentUpon>VGAForm.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

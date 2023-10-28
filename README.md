@@ -11,9 +11,9 @@ The <b>Debug mode</b> can be toggled by pressing Alt + D Key.</p>
 ## Running the code
 If you want to compile the code, it is assumed that:
 <ul>
-<li>You are using VS2022 community version (don't know if this is important).</li>
+<li>You are using Visual Studio 2022.</li>
 <li>You have .NET Framework 4.8 installed.</li>
-<li>You have installed DOS CIV I game at 'c:\Dos\Civ1\', or at '~/Doc/Civ1/' if you are using Mono.
+<li>You have installed DOS CIV I game at 'c:\Dos\Civ1\', or at '~/Doc/Civ1/' if you are using Mono on Linux.
 It's where it's home directory resides (Images, palettes, text and save games are loaded/saved there, for now).</li>
 </ul>
 
@@ -42,8 +42,8 @@ For this stage of code rewrite, the programmings skills needed are:
 <li>Redesigning graphics and music.</li>
 </ul>
 
-## Screenshots of the game
-<p align="center">Please note: <b>The problems with palette colors should be fixed now.</b></br></br>
+## Screenshots of the Open Civilization 1 game
+<p align="center">
 <img src="Screenshots/Screenshot1.png" alt="Screenshot 1" /><br/>
 <img src="Screenshots/Screenshot2.png" alt="Screenshot 2" /><br/>
 <img src="Screenshots/Screenshot3.png" alt="Screenshot 3" /><br/>

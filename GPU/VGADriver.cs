@@ -1,16 +1,13 @@
-using OpenCiv1.GPU;
-using Disassembler;
-using IRB.Collections.Generic;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using System.IO.Compression;
+using IRB.VirtualCPU;
+using OpenCiv1.GPU;
+using IRB.Collections.Generic;
 
 namespace OpenCiv1
 {
@@ -19,8 +16,7 @@ namespace OpenCiv1
 		private OpenCiv1 oParent;
 		private CPU oCPU;
 
-		private Thread oVGAThread;
-		private VGAForm oVGAForm = null;
+		private MainForm oMainForm = null;
 		public object VGALock = new object();
 		private BDictionary<int, VGABitmap> aScreens = new BDictionary<int, VGABitmap>();
 		private int iBitmapNextID = 0xb000;
@@ -1258,16 +1254,13 @@ namespace OpenCiv1
 		};
 		#endregion
 
-		public VGADriver(OpenCiv1 parent)
+		public VGADriver(OpenCiv1 parent, MainForm form)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
+			this.oMainForm = form;
 
 			this.aScreens.Add(0, new VGABitmap()); // our Main screen
-
-			// start our VGAForm thread
-			this.oVGAThread = new Thread(VGAFormThread);
-			this.oVGAThread.Start();
 
 			//CivFonts fonts = CivFonts.ImportFromOldStructure(this.Var_19f0_FontTable);
 			//fonts.Serialize("Fonts.xml.gz");
@@ -1276,22 +1269,9 @@ namespace OpenCiv1
 			fonts.Close();
 		}
 
-		private void VGAFormThread()
-		{
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-			this.oVGAForm = new VGAForm(this);
-			Application.Run(this.oVGAForm);
-		}
-
 		public CPU CPU
 		{
 			get { return this.oCPU; }
-		}
-
-		public VGAForm Form
-		{
-			get { return this.oVGAForm; }
 		}
 
 		public BDictionary<int, VGABitmap> Screens
@@ -1313,8 +1293,8 @@ namespace OpenCiv1
 		{
 			get
 			{
-				if (this.oVGAForm != null)
-					return this.oVGAForm.ScreenMouseLocation;
+				if (this.oMainForm != null)
+					return this.oMainForm.ScreenMouseLocation;
 				else
 					return Point.Empty;
 			}
@@ -1324,11 +1304,11 @@ namespace OpenCiv1
 		{
 			get
 			{
-				if (this.oVGAForm != null)
+				if (this.oMainForm != null)
 				{
 					ushort usTemp = 0;
-					usTemp |= (ushort)(((this.oVGAForm.ScreenMouseButtons & MouseButtons.Left) == MouseButtons.Left) ? 1 : 0);
-					usTemp |= (ushort)(((this.oVGAForm.ScreenMouseButtons & MouseButtons.Right) == MouseButtons.Right) ? 2 : 0);
+					usTemp |= (ushort)(((this.oMainForm.ScreenMouseButtons & MouseButtons.Left) == MouseButtons.Left) ? 1 : 0);
+					usTemp |= (ushort)(((this.oMainForm.ScreenMouseButtons & MouseButtons.Right) == MouseButtons.Right) ? 2 : 0);
 					return usTemp;
 				}
 				else
@@ -1404,8 +1384,8 @@ namespace OpenCiv1
 					bitmap.Visible = false; // additional screens are not shown by default
 					this.aScreens.Add(screenID, bitmap);
 				}
-				if (this.oVGAForm != null)
-					this.oVGAForm.OnScreenCountChange();
+				if (this.oMainForm != null)
+					this.oMainForm.OnScreenCountChange();
 			}
 
 			this.oCPU.AX.Word = 0xa000; // return something to make underlying code happy
@@ -2200,7 +2180,7 @@ namespace OpenCiv1
 				}
 				else
 				{
-					Console.WriteLine($"The bitmap 0x{bitmapPtr:x4} is not allocated");
+					this.oCPU.Log.WriteLine($"The bitmap 0x{bitmapPtr:x4} is not allocated");
 				}
 			}
 			else
@@ -2223,11 +2203,6 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_VGA_0d47_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 
 			// function body
-			if (bitmapPtr == 0xb103)
-			{
-				Console.Write("");
-			}
-
 			if (this.aScreens.ContainsKey(rect.ScreenID))
 			{
 				if (this.aBitmaps.ContainsKey(bitmapPtr))
@@ -2242,7 +2217,7 @@ namespace OpenCiv1
 				}
 				else
 				{
-					Console.WriteLine($"The bitmap 0x{bitmapPtr:x4} is not allocated");
+					this.oCPU.Log.WriteLine($"The bitmap 0x{bitmapPtr:x4} is not allocated");
 				}
 			}
 			else

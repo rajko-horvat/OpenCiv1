@@ -1,11 +1,8 @@
-using Disassembler;
 using System;
 using System.IO;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using System.Windows;
-using System.Windows.Forms;
+using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {

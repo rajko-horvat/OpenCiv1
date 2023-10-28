@@ -1,8 +1,5 @@
-﻿using OpenCiv1.Properties;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
-using System.Text;
 
 namespace OpenCiv1
 {

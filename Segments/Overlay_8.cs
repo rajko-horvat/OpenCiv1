@@ -1,4 +1,4 @@
-using Disassembler;
+using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {

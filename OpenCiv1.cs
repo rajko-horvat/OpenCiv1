@@ -1,10 +1,19 @@
-﻿using Disassembler;
-using System;
+﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {
+	public class ApplicationExitException : Exception
+	{
+		public ApplicationExitException() : base() { }
+
+		public ApplicationExitException(string message) : base(message) { }
+
+		public ApplicationExitException(string message, Exception innerException) : base(message, innerException) { }
+	}
+
 	public partial class OpenCiv1
 	{
 		private CPU oCPU;
@@ -70,7 +79,7 @@ namespace OpenCiv1
 
 		private GameState oGameState;
 
-		public OpenCiv1()
+		public OpenCiv1(MainForm form)
 		{
 			this.oLog = new LogWrapper("Log.txt");
 			this.oInterruptLog = new LogWrapper("InterruptLog.txt");
@@ -91,6 +100,10 @@ namespace OpenCiv1
 			this.oGameState = new GameState();
 
 			#region Initialize Segments
+			this.oMSCAPI = new MSCAPI(this);
+			this.oVGADriver = new VGADriver(this, form);
+			this.oSoundDriver = new NSound(this);
+
 			this.oSegment_11a8 = new Segment_11a8(this);
 			this.oSegment_1000 = new Segment_1000(this);
 			this.oSegment_1199 = new Segment_1199(this);
@@ -133,9 +146,6 @@ namespace OpenCiv1
 			this.oOverlay_10 = new Overlay_10(this);
 			this.oOverlay_15 = new Overlay_15(this);
 			this.oOverlay_16 = new CivQuiz(this);
-			this.oMSCAPI = new MSCAPI(this);
-			this.oVGADriver = new VGADriver(this);
-			this.oSoundDriver = new NSound(this);
 			#endregion
 		}
 
@@ -198,7 +208,7 @@ namespace OpenCiv1
 
 			this.oCPU.DS.Word = 0x3b01;
 
-			// To do: Check for individual resource files
+			// Check for Default directory and individual Resource files
 			if (!Directory.Exists(this.oCPU.DefaultDirectory))
 			{
 				MessageBox.Show($"OpenCiv1 resource files path not found at '{this.oCPU.DefaultDirectory}'.\n"+
@@ -237,7 +247,7 @@ namespace OpenCiv1
 				while (!File.Exists(sFilePath))
 				{
 					DialogResult result = MessageBox.Show($"Missing resource file {sFilePath}. Plsease ensure that the file exists at specified path.\n" +
-					   "Some Operating systems are case sensitive, ensure that the file is lowercase.",
+					   "Some Operating systems are case sensitive, ensure that the file name is in lowercase.",
 					   "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
 
 					if (result == DialogResult.Cancel)
@@ -248,6 +258,7 @@ namespace OpenCiv1
 				}
 			}
 
+			// Not important, but just for case it's still needed, to be removed later
 			string sPath = Path.Combine(this.oCPU.DefaultDirectory, "CIV.EXE");
 
 			this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, 0x61ee, (byte)'C');

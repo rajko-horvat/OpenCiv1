@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace Disassembler.MZ
+namespace IRB.VirtualCPU.MZ
 {
 	public struct MZRelocationItem
 	{

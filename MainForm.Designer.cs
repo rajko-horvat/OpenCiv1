@@ -1,6 +1,6 @@
-﻿namespace Disassembler
+﻿namespace OpenCiv1
 {
-	partial class VGAForm
+	partial class MainForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VGAForm));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.tmrRefresh = new System.Windows.Forms.Timer(this.components);
 			this.tsMain = new System.Windows.Forms.ToolStrip();
 			this.cmdPause = new System.Windows.Forms.ToolStripButton();
@@ -59,70 +59,74 @@
 			this.tsMain.Location = new System.Drawing.Point(0, 0);
 			this.tsMain.Name = "tsMain";
 			this.tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-			this.tsMain.Size = new System.Drawing.Size(584, 31);
+			this.tsMain.Size = new System.Drawing.Size(580, 27);
 			this.tsMain.TabIndex = 0;
 			this.tsMain.Text = "toolStrip1";
 			// 
 			// cmdPause
 			// 
 			this.cmdPause.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.cmdPause.Enabled = false;
 			this.cmdPause.Image = ((System.Drawing.Image)(resources.GetObject("cmdPause.Image")));
 			this.cmdPause.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.cmdPause.Name = "cmdPause";
-			this.cmdPause.Size = new System.Drawing.Size(29, 28);
+			this.cmdPause.Size = new System.Drawing.Size(29, 24);
 			this.cmdPause.Text = "Pause";
 			this.cmdPause.Click += new System.EventHandler(this.cmdPause_Click);
 			// 
 			// cmdRun
 			// 
 			this.cmdRun.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.cmdRun.Enabled = false;
 			this.cmdRun.Image = ((System.Drawing.Image)(resources.GetObject("cmdRun.Image")));
 			this.cmdRun.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.cmdRun.Name = "cmdRun";
-			this.cmdRun.Size = new System.Drawing.Size(29, 28);
+			this.cmdRun.Size = new System.Drawing.Size(29, 24);
 			this.cmdRun.Text = "Run";
 			this.cmdRun.Click += new System.EventHandler(this.cmdRun_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 31);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
 			// 
 			// lblScreens
 			// 
 			this.lblScreens.BackColor = System.Drawing.SystemColors.Control;
 			this.lblScreens.Name = "lblScreens";
-			this.lblScreens.Size = new System.Drawing.Size(59, 28);
+			this.lblScreens.Size = new System.Drawing.Size(59, 24);
 			this.lblScreens.Text = "Screens";
 			// 
 			// tsScreens
 			// 
 			this.tsScreens.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.tsScreens.Enabled = false;
 			this.tsScreens.Image = ((System.Drawing.Image)(resources.GetObject("tsScreens.Image")));
 			this.tsScreens.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsScreens.Name = "tsScreens";
-			this.tsScreens.Size = new System.Drawing.Size(39, 28);
+			this.tsScreens.Size = new System.Drawing.Size(39, 24);
 			this.tsScreens.Text = "Plane list";
 			// 
-			// VGAForm
+			// MainForm
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.BackColor = System.Drawing.Color.Black;
-			this.ClientSize = new System.Drawing.Size(584, 344);
-			this.ControlBox = false;
+			this.ClientSize = new System.Drawing.Size(580, 340);
 			this.Controls.Add(this.tsMain);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.KeyPreview = true;
 			this.MaximizeBox = false;
-			this.Name = "VGAForm";
+			this.Name = "MainForm";
 			this.ShowIcon = false;
 			this.Text = "VGA display";
-			this.Paint += new System.Windows.Forms.PaintEventHandler(this.VGACardForm_Paint);
-			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.VGACardForm_KeyDown);
-			this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.VGACardForm_KeyPress);
-			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.VGAForm_MouseDown);
-			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.VGAForm_MouseMove);
-			this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.VGAForm_MouseUp);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+			this.Shown += new System.EventHandler(this.MainForm_Shown);
+			this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form_Paint);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form_KeyDown);
+			this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form_KeyPress);
+			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form_MouseDown);
+			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form_MouseMove);
+			this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Form_MouseUp);
 			this.tsMain.ResumeLayout(false);
 			this.tsMain.PerformLayout();
 			this.ResumeLayout(false);

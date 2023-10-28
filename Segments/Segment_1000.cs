@@ -1,9 +1,6 @@
-using OpenCiv1.GPU;
-using Disassembler;
-using Microsoft.Win32;
 using System;
 using System.Drawing;
-using System.Windows.Forms;
+using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {

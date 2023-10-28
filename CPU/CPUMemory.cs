@@ -1,12 +1,7 @@
-﻿using OpenCiv1;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Net;
-using System.Text;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
-namespace Disassembler
+namespace IRB.VirtualCPU
 {
 	public class CPUMemory
 	{

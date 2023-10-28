@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 
-namespace OpenCiv1
+namespace IRB.VirtualCPU
 {
 	public enum FileStreamTypeEnum
 	{

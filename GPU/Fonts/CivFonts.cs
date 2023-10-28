@@ -1,10 +1,8 @@
-﻿using IRB.Collections.Generic;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
-using System.Text;
 using System.Xml.Serialization;
+using IRB.Collections.Generic;
 
 namespace OpenCiv1.GPU
 {

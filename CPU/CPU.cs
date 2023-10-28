@@ -1,14 +1,14 @@
-﻿using OpenCiv1;
-using Disassembler.MZ;
-using IRB.Collections.Generic;
-using System;
+﻿using System;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using OpenCiv1;
+using IRB.Collections.Generic;
+using IRB.VirtualCPU.MZ;
 
-namespace Disassembler
+namespace IRB.VirtualCPU
 {
 	public class CPU
 	{
@@ -43,6 +43,7 @@ namespace Disassembler
 		private bool bEnableTimer = false;
 		private bool bTimerFlag = false;
 		private bool bInTimer = false;
+		private bool bApplicationExit = false;
 		private System.Threading.Timer oTimer;
 
 		// Mouse
@@ -123,18 +124,25 @@ namespace Disassembler
 
 		public void DoEvents()
 		{
-			System.Windows.Forms.Application.DoEvents();
+			if (this.bApplicationExit)
+			{
+				throw new ApplicationExitException();
+			}
 
 			while (this.bPause)
 			{
+				if (this.bApplicationExit)
+				{
+					throw new ApplicationExitException();
+				}
+
 				Thread.Sleep(200);
-				System.Windows.Forms.Application.DoEvents();
 			}
 
 			if (this.bEnableInterrupt && this.bEnableTimer && this.bTimerFlag && !this.bInTimer)
 			{
 				this.bInTimer = true;
-				
+
 				LogWrapper oLogTemp = this.oLog;
 				this.oLog = this.oParent.InterruptLog;
 
@@ -1708,14 +1716,21 @@ namespace Disassembler
 		#endregion
 
 		#region Flow control instructions
+
+		public void OnApplicationExit()
+		{
+			this.bApplicationExit = true;
+		}
+
 		public void Exit(int code)
 		{
 			this.EnableTimer = false;
 
 			this.oParent.Log.WriteLine($"Exiting program with code {code}");
 
-			Environment.Exit(code);
-			System.Windows.Forms.Application.Exit();
+			throw new ApplicationExitException();
+			//Environment.Exit(code);
+			//System.Windows.Forms.Application.Exit();
 		}
 
 		public void Call(ushort offset)
