@@ -1062,7 +1062,13 @@ namespace OpenCiv1
 					}
 				}
 
-				ReadData(reader, 0x807a, 0x100);
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 16; j++)
+					{
+						this.oParent.GameState.Players[i].Continents[j].Defense = ReadInt16(reader);
+					}
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
@@ -1449,8 +1455,14 @@ namespace OpenCiv1
 						WriteInt16(writer, this.oParent.GameState.Players[i].Continents[j].Attack);
 					}
 				}
-				
-				WriteData(writer, 0x807a, 0x100);
+
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 16; j++)
+					{
+						WriteInt16(writer, this.oParent.GameState.Players[i].Continents[j].Defense);
+					}
+				}
 				
 				for (int i = 0; i < 8; i++)
 				{
