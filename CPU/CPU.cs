@@ -67,7 +67,7 @@ namespace IRB.VirtualCPU
 			this.oParent = parent;
 			this.oLog = log;
 			this.oMemory = new CPUMemory(this);
-			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 50, 50);
+			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 25, 25);
 
 #if DEBUG
 	#if __MonoCS__
