@@ -309,7 +309,7 @@ namespace OpenCiv1
 		L02fd:
 			string path = this.oCPU.ReadString(
 				CPU.ToLinearAddress(this.oCPU.DS.Word,
-					this.oCPU.Memory.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))));
+					this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))));
 
 			F11_0000_083b_LoadGameData(path);
 
@@ -435,7 +435,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x03d3, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word, 0xe168), 0, 3);
+				this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xe168), 0, 3);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, this.oCPU.AX.Word);
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0xffff);
@@ -648,7 +648,7 @@ namespace OpenCiv1
 
 			string path = this.oCPU.ReadString(
 				CPU.ToLinearAddress(this.oCPU.DS.Word,
-					this.oCPU.Memory.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))));
+					this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6))));
 
 			F11_0000_08f6_SaveGameData(path);
 

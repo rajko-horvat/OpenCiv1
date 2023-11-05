@@ -1498,10 +1498,8 @@ namespace OpenCiv1
 
 			if (width > 0 && height > 0)
 			{
-				this.oParent.VGADriver.F0_VGA_020c_SetFrontColorAndPixelMode((byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
-
 				Rectangle rect1 = new Rectangle(rect.X + xPos, rect.Y + yPos, width, height);
-				this.oParent.VGADriver.F0_VGA_040a_FillRectangle(rect.ScreenID, rect1);
+				this.oParent.VGADriver.F0_VGA_040a_FillRectangle(rect.ScreenID, rect1, (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
 			}
 
 			// Far return
@@ -1540,44 +1538,38 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_0fc8'");
 		}
 
-		public void F0_1000_104f()
+		public void F0_1000_104f_SetPixel(int xPos, int yPos, ushort mode)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_104f'(Cdecl, Far) at 0x1000:0x104f");
-			this.oCPU.CS.Word = 0x1000; // set this function overlaySegment
+			CivRectangle rect = new CivRectangle(this.oParent.CPU, CPU.ToLinearAddress(this.oParent.CPU.DS.Word, this.oParent.CPU.ReadUInt16(this.oParent.CPU.DS.Word, 0xaa)));
+
+			this.oCPU.Log.EnterBlock($"F0_1000_104f_SetPixel({rect.ScreenID}, {xPos}, {yPos}, 0x{mode:x4})");
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.PushWord(this.oCPU.DI.Word);
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
-			this.oCPU.CX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));
-			this.oCPU.CX.Word = this.oCPU.ORWord(this.oCPU.CX.Word, this.oCPU.CX.Word);
-			if (this.oCPU.Flags.S) goto L108a;
-			this.oCPU.CMPWord(this.oCPU.CX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x6)));
-			if (this.oCPU.Flags.G) goto L108a;
-			this.oCPU.DX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa));
-			this.oCPU.DX.Word = this.oCPU.ORWord(this.oCPU.DX.Word, this.oCPU.DX.Word);
-			if (this.oCPU.Flags.S) goto L108a;
-			this.oCPU.CMPWord(this.oCPU.DX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x8)));
-			if (this.oCPU.Flags.G) goto L108a;
+			if (xPos >= 0 && xPos <= rect.Width && yPos >= 0 && yPos <= rect.Height)
+			{
+				// Instruction address 0x1000:0x1080, size: 5
+				this.oParent.VGADriver.F0_VGA_0550_SetPixel(rect.ScreenID, rect.X + xPos, rect.Y + yPos, (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
+			}
 
-			// Instruction address 0x1000:0x106f, size: 5
-			this.oParent.VGADriver.F0_VGA_046d_SetPositionWidthScreenID(this.oCPU.BX.Word);
-
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc));
-			// Instruction address 0x1000:0x1077, size: 5
-			this.oParent.VGADriver.F0_VGA_020c_SetFrontColorAndPixelMode(this.oCPU.AX.Low, this.oCPU.AX.High);
-
-			// Instruction address 0x1000:0x1080, size: 5
-			this.oParent.VGADriver.F0_VGA_0550_SetPixel((short)this.oCPU.CX.Word, (short)this.oCPU.DX.Word);
-
-		L108a:
-			this.oCPU.DI.Word = this.oCPU.PopWord();
-			this.oCPU.SI.Word = this.oCPU.PopWord();
-			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_104f'");
+			this.oCPU.Log.ExitBlock("F0_1000_104f_SetPixel");
+		}
+
+		public void F0_1000_104f_SetPixel(ushort screenID, int xPos, int yPos, ushort mode)
+		{
+			CivRectangle rect = new CivRectangle(this.oParent.CPU, CPU.ToLinearAddress(this.oParent.CPU.DS.Word, this.oParent.CPU.ReadUInt16(this.oParent.CPU.DS.Word, 0xaa)));
+
+			this.oCPU.Log.EnterBlock($"F0_1000_104f_SetPixel({screenID}, {xPos}, {yPos}, 0x{mode:x4})");
+
+			// function body
+			if (xPos >= 0 && xPos <= rect.Width && yPos >= 0 && yPos <= rect.Height)
+			{
+				// Instruction address 0x1000:0x1080, size: 5
+				this.oParent.VGADriver.F0_VGA_0550_SetPixel(screenID, rect.X + xPos, rect.Y + yPos, (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
+			}
+
+			// Far return
+			this.oCPU.Log.ExitBlock("F0_1000_104f_SetPixel");
 		}
 
 		public void F0_1000_13c8()

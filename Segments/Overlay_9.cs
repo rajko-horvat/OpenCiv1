@@ -397,7 +397,7 @@ namespace OpenCiv1
 
 			for (int i = 0; i < 0xd; i++)
 			{
-				this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, (ushort)(usStringOffset + i), this.oParent.GameState.CityNames[uiCityNameID][i]);
+				this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(usStringOffset + i), (byte)this.oParent.GameState.CityNames[uiCityNameID][i]);
 			}
 
 			// Call to overlay
@@ -414,7 +414,7 @@ namespace OpenCiv1
 
 			for (int i = 0; i < 0xd; i++)
 			{
-				this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, (ushort)(usStringOffset + i), this.oParent.GameState.CityNames[uiCityNameID][i]);
+				this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(usStringOffset + i), (byte)this.oParent.GameState.CityNames[uiCityNameID][i]);
 			}
 
 			// Instruction address 0x0000:0x036b, size: 5
@@ -1188,28 +1188,28 @@ namespace OpenCiv1
 		L0ada:
 			// Instruction address 0x0000:0x0ae8, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) - 5,
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) - 5,
 				0, 0x50);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x0b01, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 5,
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) + 5,
 				0, 0x50);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x0b1b, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)) - 5,
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)) - 5,
 				2, 0x31);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x0b35, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)) + 5,
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)) + 5,
 				2, 0x31);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Word);

@@ -391,8 +391,8 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0347, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word,
-				CPU.ToUInt16((this.oCPU.Memory.ReadUInt16(this.oCPU.SS.Word, 
+				this.oCPU.ReadInt16(this.oCPU.DS.Word,
+				CPU.ToUInt16((this.oCPU.ReadUInt16(this.oCPU.SS.Word, 
 				CPU.ToUInt16(this.oCPU.BP.Word - 0x10e)) << 1) + 0xd91e)) + 1,
 				1, 4);
 

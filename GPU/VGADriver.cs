@@ -46,12 +46,6 @@ namespace OpenCiv1
 		private ushort Var_15d4_ScreenID = 0;
 
 		private byte[] Var_15d6_Buffer = new byte[512];
-		private ushort Var_1980_ActiveScreenID = 0;
-		private ushort Var_1982_XOffset = 0;
-		private ushort Var_1984_YOffset = 0;
-		private ushort Var_1986_Width = 319;
-		private byte Var_198a_FrontColor = 0;
-		private PixelWriteModeEnum Var_198b_PixelMode = PixelWriteModeEnum.Normal;
 
 		#region Fonts
 		private byte[] Var_19f0_FontTable = new byte[] {
@@ -1758,11 +1752,11 @@ namespace OpenCiv1
 				this.Var_8a6 = this.oCPU.SHLWord(this.Var_8a6, 4);
 
 				this.Var_8b0 = param1;
-				this.oCPU.Memory.WriteUInt16(this.Var_8a0, this.Var_89e, param1);
+				this.oCPU.WriteUInt16(this.Var_8a0, this.Var_89e, param1);
 				this.Var_89e += 2;
 
 				this.Var_8ae = param2;
-				this.oCPU.Memory.WriteUInt16(this.Var_8a0, this.Var_89e, param2);
+				this.oCPU.WriteUInt16(this.Var_8a0, this.Var_89e, param2);
 				this.Var_89e += 2;
 
 				this.oCPU.AX.Word = 1;
@@ -1952,9 +1946,9 @@ namespace OpenCiv1
 
 					for (int i = 0; i < iCount; i++)
 					{
-						aColors[i] = VGABitmap.Color18ToColor(this.oCPU.Memory.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3))),
-							this.oCPU.Memory.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3) + 1)),
-						this.oCPU.Memory.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3) + 2)));
+						aColors[i] = VGABitmap.Color18ToColor(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3))),
+							this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3) + 1)),
+						this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3) + 2)));
 
 						this.oCPU.Log.WriteLine($"Setting palette index {iFrom + i}, #{aColors[i].A:x2}{aColors[i].R:x2}{aColors[i].G:x2}{aColors[i].B:x2}");
 					}
@@ -2007,40 +2001,6 @@ namespace OpenCiv1
 		#endregion
 
 		#region Drawing functions
-		public void F0_VGA_020c_SetFrontColorAndPixelMode(byte frontColor, byte pixelMode)
-		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_020c_SetFrontColorAndPixelMode({frontColor}, {(PixelWriteModeEnum)pixelMode})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_020c_SetFrontColorAndPixelMode({frontColor}, {(PixelWriteModeEnum)pixelMode})");
-
-			// function body
-			this.Var_198a_FrontColor = frontColor;
-			this.Var_198b_PixelMode = (PixelWriteModeEnum)(pixelMode & 3);
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_020c_SetFrontColorAndPixelMode");
-			this.oCPU.Log = oTempLog;
-		}
-
-		public void F0_VGA_046d_SetPositionWidthScreenID(ushort structAAPtr)
-		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_046d_SetPositionWidthScreenID()");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock("F0_VGA_046d_SetPositionWidthScreenID()");
-
-			// function body
-			this.Var_1980_ActiveScreenID = this.oCPU.ReadUInt16(this.oCPU.DS.Word, structAAPtr);
-			this.Var_1982_XOffset = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(structAAPtr + 0x2));
-			this.Var_1984_YOffset = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(structAAPtr + 0x4));
-			this.Var_1986_Width = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(structAAPtr + 0x6));
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_046d_SetPositionWidthScreenID");
-			this.oCPU.Log = oTempLog;
-		}
-
 		public void F0_VGA_06b7_DrawScreenToMainScreen(ushort screenID, ushort param1)
 		{
 			LogWrapper oTempLog = this.oCPU.Log;
@@ -2230,7 +2190,7 @@ namespace OpenCiv1
 			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_VGA_038c_GetPixel(ushort screenID, ushort xPos, ushort yPos)
+		public void F0_VGA_038c_GetPixel(ushort screenID, int xPos, int yPos)
 		{
 			LogWrapper oTempLog = this.oCPU.Log;
 			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_038c_GetPixel({screenID}, {xPos}, {yPos})");
@@ -2255,33 +2215,30 @@ namespace OpenCiv1
 			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_VGA_0550_SetPixel(short xPos, short yPos)
+		public void F0_VGA_0550_SetPixel(ushort screenID, int xPos, int yPos, byte frontColor, byte pixelMode)
 		{
 			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0550_SetPixel({xPos}, {yPos})");
+			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0550_SetPixel({screenID}, {xPos}, {yPos}, {frontColor}, {(PixelWriteModeEnum)pixelMode})");
 			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_0550_SetPixel({xPos}, {yPos})");
+			this.oCPU.Log.EnterBlock($"F0_VGA_0550_SetPixel({screenID}, {xPos}, {yPos}, {frontColor}, {(PixelWriteModeEnum)pixelMode})");
 
 			// function body
-			if (this.aScreens.ContainsKey(this.Var_1980_ActiveScreenID))
+			if (this.aScreens.ContainsKey(screenID))
 			{
 				lock (this.VGALock)
 				{
-					VGABitmap screen = this.aScreens.GetValueByKey(this.Var_1980_ActiveScreenID);
+					VGABitmap screen = this.aScreens.GetValueByKey(screenID);
 
-					xPos += (short)this.Var_1982_XOffset;
-					yPos += (short)this.Var_1984_YOffset;
-
-					screen.SetPixel(xPos, yPos, this.Var_198a_FrontColor, this.Var_198b_PixelMode);
+					screen.SetPixel(xPos, yPos, frontColor, (PixelWriteModeEnum)pixelMode);
 				}
 			}
 			else
 			{
-				throw new Exception($"The screen {this.Var_1980_ActiveScreenID} is not allocated");
+				throw new Exception($"The screen {screenID} is not allocated");
 			}
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_0550");
+			this.oCPU.Log.ExitBlock("F0_VGA_0550_SetPixel");
 			this.oCPU.Log = oTempLog;
 		}
 
@@ -2317,7 +2274,7 @@ namespace OpenCiv1
 			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_VGA_040a_FillRectangle(int screenID, Rectangle rect)
+		public void F0_VGA_040a_FillRectangle(int screenID, Rectangle rect, byte frontColor, byte pixelMode)
 		{
 			LogWrapper oTempLog = this.oCPU.Log;
 			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_040a_FillRectangle({screenID}, {rect.X}, {rect.Y}, {rect.Width}, {rect.Height})");
@@ -2329,7 +2286,7 @@ namespace OpenCiv1
 			{
 				lock (this.VGALock)
 				{
-					this.aScreens.GetValueByKey(screenID).FillRectangle(rect, this.Var_198a_FrontColor, Var_198b_PixelMode);
+					this.aScreens.GetValueByKey(screenID).FillRectangle(rect, frontColor, (PixelWriteModeEnum)pixelMode);
 				}
 			}
 			else

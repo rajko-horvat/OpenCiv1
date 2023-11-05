@@ -138,8 +138,8 @@ namespace OpenCiv1
 
 			// Instruction address 0x2d05:0x00e1, size: 5
 			this.oParent.VGADriver.F0_VGA_038c_GetPixel(0,
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)),
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)),
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), 0xffff);
@@ -687,10 +687,10 @@ namespace OpenCiv1
 		L057d:
 			// Instruction address 0x2d05:0x0592, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word, 0x658e),
+				this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x658e),
 				0,
-				(0xc0 - this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, CPU.ToUInt16(this.oCPU.BP.Word + 0xa))) /
-					this.oCPU.Memory.ReadInt16(this.oCPU.DS.Word, 0x2fa4));
+				(0xc0 - this.oCPU.ReadInt16(this.oCPU.SS.Word, CPU.ToUInt16(this.oCPU.BP.Word + 0xa))) /
+					this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x2fa4));
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x658e, this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8));

@@ -1106,7 +1106,7 @@ namespace OpenCiv1
 		public void time()
 		{
 			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, 
-				(uint)time(CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.Memory.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)))));
+				(uint)time(CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)))));
 		}
 
 		public int time(uint timePtr)
@@ -1133,7 +1133,7 @@ namespace OpenCiv1
 		#region Random number generator operations
 		public void srand()
 		{
-			srand(this.oCPU.Memory.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)));
+			srand(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)));
 		}
 
 		public void srand(ushort value)

@@ -84,7 +84,7 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x006a); // stack management - push return offset
 			// Instruction address 0x0000:0x0065, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6(this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
+			this.oParent.Segment_2459.F0_2459_08c6(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			
@@ -120,7 +120,7 @@ namespace OpenCiv1
 
 			for (int i = 0; i < 0xd; i++)
 			{
-				acCityName[i] = (char)this.oCPU.Memory.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i));
+				acCityName[i] = (char)this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i));
 			}
 			this.oParent.GameState.CityNames[uiCityNameID] = new string(acCityName);
 

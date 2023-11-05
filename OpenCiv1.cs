@@ -251,7 +251,7 @@ namespace OpenCiv1
 			// Not important, but just for case it's still needed, to be removed later
 			string sPath = Path.Combine(this.oCPU.DefaultDirectory, "CIV.EXE");
 
-			this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, 0x61ee, (byte)'C');
+			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x61ee, (byte)'C');
 			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, 0x6156), sPath, sPath.Length);
 
 			this.oCPU.DS.Word = this.oCPU.PopWord();
@@ -293,7 +293,7 @@ namespace OpenCiv1
 			for (int i = 0x652e; i < this.oCPU.SP.Word; i++)
 			{
 				if (i < 0x70ec && i > 0x70ec + 0xdff)
-					this.oCPU.Memory.WriteUInt8(usDataSegment, (ushort)i, 0);
+					this.oCPU.WriteUInt8(usDataSegment, (ushort)i, 0);
 			}
 
 			// protect already mapped data objects
@@ -332,7 +332,7 @@ namespace OpenCiv1
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x8068, 0x10, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x807a, 0x100, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x81d2, 2, CPUMemoryFlagsEnum.AccessNotAllowed));
-			//this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x81d4, 0x3000, CPUMemoryFlagsEnum.AccessNotAllowed));
+			//this.oCPU.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x81d4, 0x3000, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb1d6, 0x10, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb1ea, 2, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb210, 0x10, CPUMemoryFlagsEnum.AccessNotAllowed));

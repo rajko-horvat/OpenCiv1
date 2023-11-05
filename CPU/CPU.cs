@@ -361,10 +361,22 @@ namespace IRB.VirtualCPU
 			return this.oMemory.ReadUInt8(segment, offset);
 		}
 
+		public sbyte ReadInt8(ushort segment, ushort offset)
+		{
+			this.DoEvents();
+			return this.oMemory.ReadInt8(segment, offset);
+		}
+
 		public ushort ReadUInt16(ushort segment, ushort offset)
 		{
 			this.DoEvents();
 			return this.oMemory.ReadUInt16(segment, offset);
+		}
+
+		public short ReadInt16(ushort segment, ushort offset)
+		{
+			this.DoEvents();
+			return this.oMemory.ReadInt16(segment, offset);
 		}
 
 		public uint ReadUInt32(ushort segment, ushort offset)
@@ -373,10 +385,22 @@ namespace IRB.VirtualCPU
 			return this.oMemory.ReadUInt32(segment, offset);
 		}
 
+		public int ReadInt32(ushort segment, ushort offset)
+		{
+			this.DoEvents();
+			return this.oMemory.ReadInt32(segment, offset);
+		}
+
 		public void WriteUInt8(ushort segment, ushort offset, byte value)
 		{
 			this.DoEvents();
 			this.oMemory.WriteUInt8(segment, offset, value);
+		}
+
+		public void WriteInt8(ushort segment, ushort offset, sbyte value)
+		{
+			this.DoEvents();
+			this.oMemory.WriteInt8(segment, offset, value);
 		}
 
 		public void WriteUInt16(ushort segment, ushort offset, ushort value)
@@ -385,10 +409,22 @@ namespace IRB.VirtualCPU
 			this.oMemory.WriteUInt16(segment, offset, value);
 		}
 
+		public void WriteInt16(ushort segment, ushort offset, short value)
+		{
+			this.DoEvents();
+			this.oMemory.WriteInt16(segment, offset, value);
+		}
+
 		public void WriteUInt32(ushort segment, ushort offset, uint value)
 		{
 			this.DoEvents();
 			this.oMemory.WriteUInt32(segment, offset, value);
+		}
+
+		public void WriteInt32(ushort segment, ushort offset, int value)
+		{
+			this.DoEvents();
+			this.oMemory.WriteInt32(segment, offset, value);
 		}
 
 		public static uint ToLinearAddress(ushort segment, ushort offset)

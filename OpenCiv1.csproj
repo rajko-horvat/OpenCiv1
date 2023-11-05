@@ -52,6 +52,7 @@
     <Compile Include="Compression\LZWWord.cs" />
     <Compile Include="Compression\RLE.cs" />
     <Compile Include="GameState\City.cs" />
+    <Compile Include="GameState\Continents.cs" />
     <Compile Include="GameState\Player.cs" />
     <Compile Include="GameState\GameState.cs" />
     <Compile Include="GameState\PlayerContinent.cs" />

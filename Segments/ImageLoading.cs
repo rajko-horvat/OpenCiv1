@@ -154,14 +154,14 @@ namespace OpenCiv1
 								startPtr = 0xba08;
 								for (int i = 0; i < palette.Length; i++)
 								{
-									this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+									this.oCPU.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
 								}
 								break;
 							case 1:
 								startPtr = 0xba06;
 								for (int i = 0; i < palette.Length; i++)
 								{
-									this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+									this.oCPU.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
 								}
 								break;
 
@@ -169,7 +169,7 @@ namespace OpenCiv1
 								startPtr = palettePtr;
 								for (int i = 0; i < palette.Length; i++)
 								{
-									this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+									this.oCPU.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
 								}
 								break;
 						}
@@ -197,14 +197,14 @@ namespace OpenCiv1
 							startPtr = 0xba08;
 							for (int i = 0; i < palette.Length; i++)
 							{
-								this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+								this.oCPU.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
 							}
 							break;
 						case 1:
 							startPtr = 0xba06;
 							for (int i = 0; i < palette.Length; i++)
 							{
-								this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+								this.oCPU.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
 							}
 							break;
 
@@ -212,7 +212,7 @@ namespace OpenCiv1
 							startPtr = palettePtr;
 							for (int i = 0; i < palette.Length; i++)
 							{
-								this.oCPU.Memory.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+								this.oCPU.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
 							}
 							break;
 					}

@@ -633,7 +633,7 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x052e); // stack management - push return offset
 			// Instruction address 0x0000:0x0529, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10(this.oParent.GameState.HumanPlayerID, this.oCPU.Memory.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4a)));
+			this.oParent.Segment_1866.F0_1866_0f10(this.oParent.GameState.HumanPlayerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4a)));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 
