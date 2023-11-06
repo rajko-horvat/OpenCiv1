@@ -3,13 +3,13 @@ using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {
-	public class Overlay_3
+	public class HallOfFame
 	{
 		private OpenCiv1 oParent;
 		private CPU oCPU;
 		private ushort usSegment = 0;
 
-		public Overlay_3(OpenCiv1 parent)
+		public HallOfFame(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;

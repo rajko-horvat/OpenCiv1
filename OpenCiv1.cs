@@ -21,13 +21,12 @@ namespace OpenCiv1
 		#region Segment definitions
 		private Segment_11a8 oSegment_11a8;
 		private Segment_1000 oSegment_1000;
-		private Segment_1199 oSegment_1199;
 		private Segment_1238 oSegment_1238;
 		private Segment_2d05 oSegment_2d05;
 		private Segment_1403 oSegment_1403;
 		private Segment_2dc4 oSegment_2dc4;
 		private Segment_1182 oSegment_1182;
-		private ImageLoading oSegment_2fa1;
+		private ImageTools oImageTools;
 		private Segment_2f4d oSegment_2f4d;
 		private Segment_2aea oSegment_2aea;
 		private Segment_1866 oSegment_1866;
@@ -39,28 +38,27 @@ namespace OpenCiv1
 		private Segment_29f3 oSegment_29f3;
 		private Segment_2517 oSegment_2517;
 		private Segment_2c84 oSegment_2c84;
-		private Overlay_2 oOverlay_2;
-		private Overlay_6 oOverlay_6;
-		private Overlay_7 oOverlay_7;
-		private Overlay_4 oOverlay_4;
-		private Overlay_11 oOverlay_11;
-		private Overlay_3 oOverlay_3;
-		private Overlay_5 oOverlay_5;
+		private MainIntro oMainIntro;
+		private MeetWithKing oMeetWithKing;
+		private GameInitAndIntro oGameInitAndIntro;
+		private Help oHelp;
+		private GameLoadAndSave oGameLoadAndSave;
+		private HallOfFame oHallOfFame;
+		private StartGameMenu oStartGameMenu;
 		private Overlay_23 oOverlay_23;
 		private Overlay_14 oOverlay_14;
-		private Overlay_8 oOverlay_8;
+		private Civilopedia oCivilopedia;
 		private Overlay_21 oOverlay_21;
-		private Overlay_19 oOverlay_19;
+		private CityView oCityView;
 		private Overlay_18 oOverlay_18;
 		private Overlay_22 oOverlay_22;
-		private Overlay_9 oOverlay_9;
+		private GameReplay oGameReplay;
 		private Overlay_13 oOverlay_13;
-		private Overlay_12 oOverlay_12;
+		private WorldMap oWorldMap;
 		private Overlay_20 oOverlay_20;
 		private Overlay_17 oOverlay_17;
 		private Overlay_10 oOverlay_10;
 		private Overlay_15 oOverlay_15;
-		private CivQuiz oOverlay_16;
 		private MSCAPI oMSCAPI;
 		private VGADriver oVGADriver;
 		private NSound oSoundDriver;
@@ -75,7 +73,6 @@ namespace OpenCiv1
 
 		private ushort OverlaySegment = 0;
 		private ushort usStartSegment = 0x1000;
-		//private MZExecutable oEXE;
 
 		private GameState oGameState;
 
@@ -106,13 +103,12 @@ namespace OpenCiv1
 
 			this.oSegment_11a8 = new Segment_11a8(this);
 			this.oSegment_1000 = new Segment_1000(this);
-			this.oSegment_1199 = new Segment_1199(this);
 			this.oSegment_1238 = new Segment_1238(this);
 			this.oSegment_2d05 = new Segment_2d05(this);
 			this.oSegment_1403 = new Segment_1403(this);
 			this.oSegment_2dc4 = new Segment_2dc4(this);
 			this.oSegment_1182 = new Segment_1182(this);
-			this.oSegment_2fa1 = new ImageLoading(this);
+			this.oImageTools = new ImageTools(this);
 			this.oSegment_2f4d = new Segment_2f4d(this);
 			this.oSegment_2aea = new Segment_2aea(this);
 			this.oSegment_1866 = new Segment_1866(this);
@@ -124,28 +120,27 @@ namespace OpenCiv1
 			this.oSegment_29f3 = new Segment_29f3(this);
 			this.oSegment_2517 = new Segment_2517(this);
 			this.oSegment_2c84 = new Segment_2c84(this);
-			this.oOverlay_2 = new Overlay_2(this);
-			this.oOverlay_6 = new Overlay_6(this);
-			this.oOverlay_7 = new Overlay_7(this);
-			this.oOverlay_4 = new Overlay_4(this);
-			this.oOverlay_11 = new Overlay_11(this);
-			this.oOverlay_3 = new Overlay_3(this);
-			this.oOverlay_5 = new Overlay_5(this);
+			this.oMainIntro = new MainIntro(this);
+			this.oMeetWithKing = new MeetWithKing(this);
+			this.oGameInitAndIntro = new GameInitAndIntro(this);
+			this.oHelp = new Help(this);
+			this.oGameLoadAndSave = new GameLoadAndSave(this);
+			this.oHallOfFame = new HallOfFame(this);
+			this.oStartGameMenu = new StartGameMenu(this);
 			this.oOverlay_23 = new Overlay_23(this);
 			this.oOverlay_14 = new Overlay_14(this);
-			this.oOverlay_8 = new Overlay_8(this);
+			this.oCivilopedia = new Civilopedia(this);
 			this.oOverlay_21 = new Overlay_21(this);
-			this.oOverlay_19 = new Overlay_19(this);
+			this.oCityView = new CityView(this);
 			this.oOverlay_18 = new Overlay_18(this);
 			this.oOverlay_22 = new Overlay_22(this);
-			this.oOverlay_9 = new Overlay_9(this);
+			this.oGameReplay = new GameReplay(this);
 			this.oOverlay_13 = new Overlay_13(this);
-			this.oOverlay_12 = new Overlay_12(this);
+			this.oWorldMap = new WorldMap(this);
 			this.oOverlay_20 = new Overlay_20(this);
 			this.oOverlay_17 = new Overlay_17(this);
 			this.oOverlay_10 = new Overlay_10(this);
 			this.oOverlay_15 = new Overlay_15(this);
-			this.oOverlay_16 = new CivQuiz(this);
 			#endregion
 		}
 
@@ -382,28 +377,27 @@ namespace OpenCiv1
 
 		private void SetOverlayBase()
 		{
-			this.oOverlay_2.Segment = this.OverlaySegment;
-			this.oOverlay_6.Segment = this.OverlaySegment;
-			this.oOverlay_7.Segment = this.OverlaySegment;
-			this.oOverlay_4.Segment = this.OverlaySegment;
-			this.oOverlay_11.Segment = this.OverlaySegment;
-			this.oOverlay_3.Segment = this.OverlaySegment;
-			this.oOverlay_5.Segment = this.OverlaySegment;
+			this.oMainIntro.Segment = this.OverlaySegment;
+			this.oMeetWithKing.Segment = this.OverlaySegment;
+			this.oGameInitAndIntro.Segment = this.OverlaySegment;
+			this.oHelp.Segment = this.OverlaySegment;
+			this.oGameLoadAndSave.Segment = this.OverlaySegment;
+			this.oHallOfFame.Segment = this.OverlaySegment;
+			this.oStartGameMenu.Segment = this.OverlaySegment;
 			this.oOverlay_23.Segment = this.OverlaySegment;
 			this.oOverlay_14.Segment = this.OverlaySegment;
-			this.oOverlay_8.Segment = this.OverlaySegment;
+			this.oCivilopedia.Segment = this.OverlaySegment;
 			this.oOverlay_21.Segment = this.OverlaySegment;
-			this.oOverlay_19.Segment = this.OverlaySegment;
+			this.oCityView.Segment = this.OverlaySegment;
 			this.oOverlay_18.Segment = this.OverlaySegment;
 			this.oOverlay_22.Segment = this.OverlaySegment;
-			this.oOverlay_9.Segment = this.OverlaySegment;
+			this.oGameReplay.Segment = this.OverlaySegment;
 			this.oOverlay_13.Segment = this.OverlaySegment;
-			this.oOverlay_12.Segment = this.OverlaySegment;
+			this.oWorldMap.Segment = this.OverlaySegment;
 			this.oOverlay_20.Segment = this.OverlaySegment;
 			this.oOverlay_17.Segment = this.OverlaySegment;
 			this.oOverlay_10.Segment = this.OverlaySegment;
 			this.oOverlay_15.Segment = this.OverlaySegment;
-			this.oOverlay_16.Segment = this.OverlaySegment;
 		}
 
 		public CPU CPU
@@ -459,11 +453,6 @@ namespace OpenCiv1
 			get { return this.oSegment_1000; }
 		}
 
-		public Segment_1199 Segment_1199
-		{
-			get { return this.oSegment_1199; }
-		}
-
 		public Segment_1238 Segment_1238
 		{
 			get { return this.oSegment_1238; }
@@ -489,9 +478,9 @@ namespace OpenCiv1
 			get { return this.oSegment_1182; }
 		}
 
-		public ImageLoading Segment_2fa1
+		public ImageTools ImageTools
 		{
-			get { return this.oSegment_2fa1; }
+			get { return this.oImageTools; }
 		}
 
 		public Segment_2f4d Segment_2f4d
@@ -549,39 +538,39 @@ namespace OpenCiv1
 			get { return this.oSegment_2c84; }
 		}
 
-		public Overlay_2 Overlay_2
+		public MainIntro MainIntro
 		{
-			get { return this.oOverlay_2; }
+			get { return this.oMainIntro; }
 		}
 
-		public Overlay_6 Overlay_6
+		public MeetWithKing MeetWithKing
 		{
-			get { return this.oOverlay_6; }
+			get { return this.oMeetWithKing; }
 		}
 
-		public Overlay_7 Overlay_7
+		public GameInitAndIntro GameInitAndIntro
 		{
-			get { return this.oOverlay_7; }
+			get { return this.oGameInitAndIntro; }
 		}
 
-		public Overlay_4 Overlay_4
+		public Help Help
 		{
-			get { return this.oOverlay_4; }
+			get { return this.oHelp; }
 		}
 
-		public Overlay_11 Overlay_11
+		public GameLoadAndSave GameLoadAndSave
 		{
-			get { return this.oOverlay_11; }
+			get { return this.oGameLoadAndSave; }
 		}
 
-		public Overlay_3 Overlay_3
+		public HallOfFame HallOfFame
 		{
-			get { return this.oOverlay_3; }
+			get { return this.oHallOfFame; }
 		}
 
-		public Overlay_5 Overlay_5
+		public StartGameMenu StartGameMenu
 		{
-			get { return this.oOverlay_5; }
+			get { return this.oStartGameMenu; }
 		}
 
 		public Overlay_23 Overlay_23
@@ -594,9 +583,9 @@ namespace OpenCiv1
 			get { return this.oOverlay_14; }
 		}
 
-		public Overlay_8 Overlay_8
+		public Civilopedia Civilopedia
 		{
-			get { return this.oOverlay_8; }
+			get { return this.oCivilopedia; }
 		}
 
 		public Overlay_21 Overlay_21
@@ -604,9 +593,9 @@ namespace OpenCiv1
 			get { return this.oOverlay_21; }
 		}
 
-		public Overlay_19 Overlay_19
+		public CityView CityView
 		{
-			get { return this.oOverlay_19; }
+			get { return this.oCityView; }
 		}
 
 		public Overlay_18 Overlay_18
@@ -619,9 +608,9 @@ namespace OpenCiv1
 			get { return this.oOverlay_22; }
 		}
 
-		public Overlay_9 Overlay_9
+		public GameReplay GameReplay
 		{
-			get { return this.oOverlay_9; }
+			get { return this.oGameReplay; }
 		}
 
 		public Overlay_13 Overlay_13
@@ -629,9 +618,9 @@ namespace OpenCiv1
 			get { return this.oOverlay_13; }
 		}
 
-		public Overlay_12 Overlay_12
+		public WorldMap WorldMap
 		{
-			get { return this.oOverlay_12; }
+			get { return this.oWorldMap; }
 		}
 
 		public Overlay_20 Overlay_20
@@ -652,11 +641,6 @@ namespace OpenCiv1
 		public Overlay_15 Overlay_15
 		{
 			get { return this.oOverlay_15; }
-		}
-
-		public CivQuiz Overlay_16
-		{
-			get { return this.oOverlay_16; }
 		}
 
 		public MSCAPI MSCAPI

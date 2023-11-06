@@ -6,11 +6,11 @@ Overlay 1	Main menu (textual)
 Overlay 2	Main intro, credits
 Overlay 3	Hall of fame (FAME.DTA)
 Overlay 4	In-game help
-Overlay 5	Game menu, difficulty, civilizations, name...
+Overlay 5	Start game menu, difficulty, civilizations, name...
 Overlay 6	Meet with king (emissary)
-Overlay 7	Intro and map initialization
+Overlay 7	Game and map initialization, intro
 Overlay 8	Civilopedia
-Overlay 9	Replay
+Overlay 9	Game replay
 Overlay 10	Which Army (City Status)
 Overlay 11	Load and save game dialog and code
 Overlay 12	World map
@@ -20,7 +20,7 @@ Overlay 15	Schism (when a large Civ splits into 2 civs when their capital is cap
 Overlay 16	Quiz
 Overlay 17	Palace
 Overlay 18	Spaceship
-Overlay 19 	City graphical view
+Overlay 19 	City view
 Overlay 20	Build city
 Overlay 21	Newspaper news
 Overlay 22	Diplomat dialogs

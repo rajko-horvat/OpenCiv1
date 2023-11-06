@@ -50,18 +50,18 @@ namespace OpenCiv1
 		{
 			Unit unit = new Unit();
 
-			unit.Status = Overlay_11.ReadUInt8(stream);
-			unit.Position.X = (sbyte)Overlay_11.ReadUInt8(stream);
-			unit.Position.Y = (sbyte)Overlay_11.ReadUInt8(stream);
-			unit.TypeID = (sbyte)Overlay_11.ReadUInt8(stream);
-			unit.RemainingMoves = (sbyte)Overlay_11.ReadUInt8(stream);
-			unit.SpecialMoves = (sbyte)Overlay_11.ReadUInt8(stream);
-			unit.GoToPosition.X = (sbyte)Overlay_11.ReadUInt8(stream);
-			unit.GoToPosition.Y = (sbyte)Overlay_11.ReadUInt8(stream);
-			unit.GoToNextDirection = (sbyte)Overlay_11.ReadUInt8(stream);
-			unit.VisibleByPlayer = Overlay_11.ReadUInt8(stream);
-			unit.NextUnitID = (sbyte)Overlay_11.ReadUInt8(stream);
-			unit.HomeCityID = (sbyte)Overlay_11.ReadUInt8(stream);
+			unit.Status = GameLoadAndSave.ReadUInt8(stream);
+			unit.Position.X = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+			unit.Position.Y = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+			unit.TypeID = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+			unit.RemainingMoves = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+			unit.SpecialMoves = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+			unit.GoToPosition.X = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+			unit.GoToPosition.Y = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+			unit.GoToNextDirection = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+			unit.VisibleByPlayer = GameLoadAndSave.ReadUInt8(stream);
+			unit.NextUnitID = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+			unit.HomeCityID = (sbyte)GameLoadAndSave.ReadUInt8(stream);
 
 			return unit;
 		}

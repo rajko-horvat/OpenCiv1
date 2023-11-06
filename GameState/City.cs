@@ -37,36 +37,36 @@ namespace OpenCiv1
 		{
 			City city = new City();
 
-			city.BuildingFlags0 = Overlay_11.ReadUInt16(stream);
-			city.BuildingFlags1 = Overlay_11.ReadUInt16(stream);
-			city.Position.X = Overlay_11.ReadUInt8(stream);
-			city.Position.Y = Overlay_11.ReadUInt8(stream);
-			city.StatusFlag = Overlay_11.ReadUInt8(stream);
-			city.ActualSize = (sbyte)Overlay_11.ReadUInt8(stream);
-			city.VisibleSize = (sbyte)Overlay_11.ReadUInt8(stream);
-			city.CurrentProductionID = (sbyte)Overlay_11.ReadUInt8(stream);
-			city.BaseTrade = (sbyte)Overlay_11.ReadUInt8(stream);
-			city.PlayerID = (sbyte)Overlay_11.ReadUInt8(stream);
-			city.FoodCount = Overlay_11.ReadInt16(stream);
-			city.ShieldsCount = Overlay_11.ReadInt16(stream);
-			city.WorkerFlags0 = Overlay_11.ReadUInt16(stream);
-			city.WorkerFlags1 = Overlay_11.ReadUInt16(stream);
-			city.WorkerFlags2 = Overlay_11.ReadUInt16(stream);
-			city.NameID = Overlay_11.ReadUInt8(stream);
+			city.BuildingFlags0 = GameLoadAndSave.ReadUInt16(stream);
+			city.BuildingFlags1 = GameLoadAndSave.ReadUInt16(stream);
+			city.Position.X = GameLoadAndSave.ReadUInt8(stream);
+			city.Position.Y = GameLoadAndSave.ReadUInt8(stream);
+			city.StatusFlag = GameLoadAndSave.ReadUInt8(stream);
+			city.ActualSize = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+			city.VisibleSize = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+			city.CurrentProductionID = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+			city.BaseTrade = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+			city.PlayerID = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+			city.FoodCount = GameLoadAndSave.ReadInt16(stream);
+			city.ShieldsCount = GameLoadAndSave.ReadInt16(stream);
+			city.WorkerFlags0 = GameLoadAndSave.ReadUInt16(stream);
+			city.WorkerFlags1 = GameLoadAndSave.ReadUInt16(stream);
+			city.WorkerFlags2 = GameLoadAndSave.ReadUInt16(stream);
+			city.NameID = GameLoadAndSave.ReadUInt8(stream);
 
 			for (int i = 0; i < city.TradeCityIDs.Length; i++)
-				city.TradeCityIDs[i] = (sbyte)Overlay_11.ReadUInt8(stream);
+				city.TradeCityIDs[i] = (sbyte)GameLoadAndSave.ReadUInt8(stream);
 
 			for (int i = 0; i < city.Unknown.Length; i++)
-				city.Unknown[i] = (sbyte)Overlay_11.ReadUInt8(stream);
+				city.Unknown[i] = (sbyte)GameLoadAndSave.ReadUInt8(stream);
 
 			return city;
 		}
 
 		public void ToStream(Stream stream)
 		{
-			Overlay_11.WriteUInt16(stream, this.BuildingFlags0);
-			Overlay_11.WriteUInt16(stream, this.BuildingFlags1);
+			GameLoadAndSave.WriteUInt16(stream, this.BuildingFlags0);
+			GameLoadAndSave.WriteUInt16(stream, this.BuildingFlags1);
 			stream.WriteByte((byte)this.Position.X);
 			stream.WriteByte((byte)this.Position.Y);
 			stream.WriteByte(this.StatusFlag);
@@ -75,11 +75,11 @@ namespace OpenCiv1
 			stream.WriteByte((byte)this.CurrentProductionID);
 			stream.WriteByte((byte)this.BaseTrade);
 			stream.WriteByte((byte)((short)this.PlayerID));
-			Overlay_11.WriteInt16(stream, this.FoodCount);
-			Overlay_11.WriteInt16(stream, this.ShieldsCount);
-			Overlay_11.WriteUInt16(stream, this.WorkerFlags0);
-			Overlay_11.WriteUInt16(stream, this.WorkerFlags1);
-			Overlay_11.WriteUInt16(stream, this.WorkerFlags2);
+			GameLoadAndSave.WriteInt16(stream, this.FoodCount);
+			GameLoadAndSave.WriteInt16(stream, this.ShieldsCount);
+			GameLoadAndSave.WriteUInt16(stream, this.WorkerFlags0);
+			GameLoadAndSave.WriteUInt16(stream, this.WorkerFlags1);
+			GameLoadAndSave.WriteUInt16(stream, this.WorkerFlags2);
 			stream.WriteByte(this.NameID);
 
 			for (int i = 0; i < this.TradeCityIDs.Length; i++)

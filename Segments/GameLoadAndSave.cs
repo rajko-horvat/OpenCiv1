@@ -4,13 +4,13 @@ using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {
-	public class Overlay_11
+	public class GameLoadAndSave
 	{
 		private OpenCiv1 oParent;
 		private CPU oCPU;
 		private ushort usSegment = 0;
 
-		public Overlay_11(OpenCiv1 parent)
+		public GameLoadAndSave(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -334,7 +334,7 @@ namespace OpenCiv1
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0329); // stack management - push return offset
-			this.oParent.Overlay_7.F7_0000_1440();
+			this.oParent.GameInitAndIntro.F7_0000_1440();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
@@ -1138,7 +1138,7 @@ namespace OpenCiv1
 
 					for (int j = 0; j < 13; j++)
 					{
-						acCityName[j] = (char)Overlay_11.ReadUInt8(reader);
+						acCityName[j] = (char)GameLoadAndSave.ReadUInt8(reader);
 					}
 					this.oParent.GameState.CityNames[i] = new string(acCityName);
 				}

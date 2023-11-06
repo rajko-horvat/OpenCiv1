@@ -3,13 +3,13 @@ using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {
-	public class Overlay_12
+	public class WorldMap
 	{
 		private OpenCiv1 oParent;
 		private CPU oCPU;
 		private ushort usSegment = 0;
 
-		public Overlay_12(OpenCiv1 parent)
+		public WorldMap(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -708,7 +708,7 @@ namespace OpenCiv1
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x060b); // stack management - push return offset
-			this.oParent.Overlay_9.F9_0000_097c();
+			this.oParent.GameReplay.F9_0000_097c();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);

@@ -920,7 +920,7 @@ namespace OpenCiv1
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0842); // stack management - push return offset
-			this.oParent.Overlay_5.F5_0000_0e6c(playerID, 0);
+			this.oParent.StartGameMenu.F5_0000_0e6c(playerID, 0);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x25fb; // restore this function segment
 

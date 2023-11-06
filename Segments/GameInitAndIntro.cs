@@ -3,13 +3,13 @@ using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {
-	public class Overlay_7
+	public class GameInitAndIntro
 	{
 		private OpenCiv1 oParent;
 		private CPU oCPU;
 		private ushort usSegment = 0;
 
-		public Overlay_7(OpenCiv1 parent)
+		public GameInitAndIntro(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -51,16 +51,9 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd76a), 0x0);
 			if (this.oCPU.Flags.E) goto L0054;
 			
-			//this.oCPU.PushWord(0x3b20);
-			//this.oCPU.PushWord(1);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x004e); // stack management - push return offset
 			// Instruction address 0x0000:0x0049, size: 5
-			//this.oParent.Segment_2fa1.F0_2fa1_0220(1, 0x3b20);
-			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x3b20, 1);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x3b20, 1);
+
 			goto L0578;
 
 		L0054:
@@ -3309,12 +3302,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.LE) goto L1a03;
 
 		L1a19:
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x1a26); // stack management - push return offset
-										// Instruction address 0x0000:0x1a21, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadBitmapOrPalette(2, 0, 0, (ushort)(this.oCPU.BP.Word - 0x10), 0);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
+			// Instruction address 0x0000:0x1a21, size: 5
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(2, 0, 0, (ushort)(this.oCPU.BP.Word - 0x10), 0);
 
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
 			if (this.oCPU.Flags.E) goto L1a41;
@@ -3349,12 +3338,8 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1a73, size: 5
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x9), OpenCiv1.String_3b5e);
 
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x1a88); // stack management - push return offset
-										// Instruction address 0x0000:0x1a83, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, (ushort)(this.oCPU.BP.Word - 0x10), 0xc5be);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
+			// Instruction address 0x0000:0x1a83, size: 5
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, (ushort)(this.oCPU.BP.Word - 0x10), 0xc5be);
 
 			this.oCPU.AX.Word = 0xc5be;
 			this.oCPU.PushWord(this.oCPU.AX.Word);

@@ -107,13 +107,8 @@ namespace OpenCiv1
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x00a2); // stack management - push return offset
 			// Instruction address 0x0000:0x009d, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4ae6, 1);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4ae6, 1);
 
 			// Instruction address 0x0000:0x00bd, size: 5
 			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
@@ -441,9 +436,6 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.LE) goto L0393;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6828, 0xffff);
 
-			// Instruction address 0x0000:0x03c0, size: 5
-			//this.oParent.VGADriver.F0_VGA_0a1e_AllocateMemory();
-
 			this.oCPU.AX.Word = 0;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.AX.Word);
@@ -459,9 +451,6 @@ namespace OpenCiv1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
-
-			// Instruction address 0x0000:0x03da, size: 5
-			//this.oParent.VGADriver.F0_VGA_0a4a_FreeMemory();
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x106), 0x5c);
 
@@ -983,9 +972,6 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)), 0x8);
 			if (this.oCPU.Flags.L) goto L0843;
 
-			// Instruction address 0x0000:0x0872, size: 5
-			//this.oParent.VGADriver.F0_VGA_0a1e_AllocateMemory();
-
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.PushWord(this.oCPU.DX.Word);
@@ -1000,29 +986,17 @@ namespace OpenCiv1
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
 
-			// Instruction address 0x0000:0x0887, size: 5
-			//this.oParent.VGADriver.F0_VGA_0a4a_FreeMemory();
-
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0x0);
 			if (this.oCPU.Flags.E) goto L0897;
 			
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x08a4); // stack management - push return offset
 			// Instruction address 0x0000:0x089f, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x4b81, 0);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x4b81, 0);
+
 			goto L089a;
 
 		L0897:
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x08a4); // stack management - push return offset
 			// Instruction address 0x0000:0x089f, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x4b89, 0);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x4b89, 0);
 
 		L089a:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd932), 0x0);
@@ -1035,18 +1009,8 @@ namespace OpenCiv1
 			this.oCPU.AX.Low = this.oCPU.ADDByte(this.oCPU.AX.Low, 0x30);
 			this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Low);
 
-			//this.oCPU.PushWord(0);
-			//this.oCPU.PushWord((ushort)(this.oCPU.BP.Word - 0x10));
-			//this.oCPU.PushWord(0x87);
-			//this.oCPU.PushWord(0);
-			//this.oCPU.PushWord(1);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x08dd); // stack management - push return offset
 			// Instruction address 0x0000:0x08d8, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0x87, (ushort)(this.oCPU.BP.Word - 0x10), 0);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0xa);
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0x87, (ushort)(this.oCPU.BP.Word - 0x10), 0);
 
 		L08e0:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), 0x10);
@@ -1454,9 +1418,6 @@ namespace OpenCiv1
 			goto L0c94;
 
 		L0be1:
-			// Instruction address 0x0000:0x0be1, size: 5
-			//this.oParent.VGADriver.F0_VGA_0a1e_AllocateMemory();
-
 			// Instruction address 0x0000:0x0bee, size: 5
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), OpenCiv1.String_4ba4);
 
@@ -1470,7 +1431,7 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0c10); // stack management - push return offset
 			// Instruction address 0x0000:0x0c0b, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_044c_LoadIcon((ushort)(this.oCPU.BP.Word - 0x10));
+			this.oParent.ImageTools.F0_2fa1_044c_LoadIcon((ushort)(this.oCPU.BP.Word - 0x10));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
@@ -1504,7 +1465,7 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0c50); // stack management - push return offset
 			// Instruction address 0x0000:0x0c4b, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_044c_LoadIcon((ushort)(this.oCPU.BP.Word - 0x10));
+			this.oParent.ImageTools.F0_2fa1_044c_LoadIcon((ushort)(this.oCPU.BP.Word - 0x10));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
@@ -1528,9 +1489,6 @@ namespace OpenCiv1
 				this.oCPU.PopWord());
 
 		L0c77:
-			// Instruction address 0x0000:0x0c77, size: 5
-			//this.oParent.VGADriver.F0_VGA_0a4a_FreeMemory();
-
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd930), 0x0);
 			if (this.oCPU.Flags.E) goto L0c88;
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2a));
@@ -1578,13 +1536,8 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
 				0,0, 0x140, 0xc8, 0);
 
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0ce5); // stack management - push return offset
 			// Instruction address 0x0000:0x0ce0, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4bb0, 1);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4bb0, 1);
 
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
@@ -2014,13 +1967,8 @@ namespace OpenCiv1
 			this.oCPU.AX.Low = this.oCPU.ADDByte(this.oCPU.AX.Low, 0x30);
 			this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Low);
 
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x1086); // stack management - push return offset
 			// Instruction address 0x0000:0x1081, size: 5
-			this.oParent.Segment_2fa1.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, (ushort)(this.oCPU.BP.Word - 0x10), 0);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, (ushort)(this.oCPU.BP.Word - 0x10), 0);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), 0x1);
 			goto L0fe2;
