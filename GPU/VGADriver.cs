@@ -1319,10 +1319,8 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_VGA_0492_GetFreeMemory()");
 
 			// function body
-			this.oCPU.AX.High = 0x48;
-			this.oCPU.BX.Word = 0xffff;
-			this.oCPU.INT(0x21);
-			this.oCPU.AX.Word = this.oCPU.BX.Word;
+			this.oCPU.AX.Word = (ushort)((this.oCPU.Memory.FreeMemory.Size >> 4) & 0xffff);
+			this.oCPU.Flags.C = true;
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_VGA_0492_GetFreeMemory");

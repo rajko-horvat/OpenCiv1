@@ -7,6 +7,7 @@ using System.Threading;
 using OpenCiv1;
 using IRB.Collections.Generic;
 using IRB.VirtualCPU.MZ;
+using System.Runtime.InteropServices;
 
 namespace IRB.VirtualCPU
 {
@@ -70,11 +71,14 @@ namespace IRB.VirtualCPU
 			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 25, 25);
 
 #if DEBUG
-	#if __MonoCS__
-			this.sDefaultDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Dos", "Civ1") + Path.DirectorySeparatorChar;
-	#else
-			this.sDefaultDirectory = Path.Combine("C:" + Path.DirectorySeparatorChar, "Dos", "Civ1") + Path.DirectorySeparatorChar;
-	#endif
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+				this.sDefaultDirectory = Path.Combine("C:" + Path.DirectorySeparatorChar, "Dos", "Civ1") + Path.DirectorySeparatorChar;
+			}
+			else
+			{
+				this.sDefaultDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Dos", "Civ1") + Path.DirectorySeparatorChar;
+			}
 #else
 			this.DefaultDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar;
 #endif
@@ -2828,7 +2832,7 @@ namespace IRB.VirtualCPU
 			if (this.oMemory.ResizeMemoryBlock(this.oES.Word, this.oBX.Word))
 			{
 				oFlags.C = false;
-				this.oAX.Word = 00;
+				this.oAX.Word = 0;
 			}
 			else
 			{

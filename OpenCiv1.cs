@@ -49,7 +49,7 @@ namespace OpenCiv1
 		private Overlay_14 oOverlay_14;
 		private Civilopedia oCivilopedia;
 		private Overlay_21 oOverlay_21;
-		private CityView oCityView;
+		private CityObject oCityObject;
 		private Overlay_18 oOverlay_18;
 		private Overlay_22 oOverlay_22;
 		private GameReplay oGameReplay;
@@ -66,9 +66,7 @@ namespace OpenCiv1
 
 		private LogWrapper oLog;
 		private LogWrapper oInterruptLog;
-		private LogWrapper oVGALog;
 		private LogWrapper oVGADriverLog;
-		private LogWrapper oStringLog;
 		private LogWrapper oIntroLog;
 
 		private ushort OverlaySegment = 0;
@@ -80,18 +78,14 @@ namespace OpenCiv1
 		{
 			this.oLog = new LogWrapper("Log.txt");
 			this.oInterruptLog = new LogWrapper("InterruptLog.txt");
-			this.oVGALog = new LogWrapper("VGALog.txt");
 			this.oVGADriverLog = new LogWrapper("VGADriverLog.txt");
-			this.oStringLog = new LogWrapper("StringLog.txt");
 			this.oIntroLog = new LogWrapper("IntroLog.txt");
 
 			this.oCPU = new CPU(this, this.oLog);
 
 			this.oLog.CPU = this.oCPU;
 			this.oInterruptLog.CPU = this.oCPU;
-			this.oVGALog.CPU = this.oCPU;
 			this.oVGADriverLog.CPU = this.oCPU;
-			this.oStringLog.CPU = this.oCPU;
 			this.oIntroLog.CPU = this.oCPU;
 
 			this.oGameState = new GameState();
@@ -131,7 +125,7 @@ namespace OpenCiv1
 			this.oOverlay_14 = new Overlay_14(this);
 			this.oCivilopedia = new Civilopedia(this);
 			this.oOverlay_21 = new Overlay_21(this);
-			this.oCityView = new CityView(this);
+			this.oCityObject = new CityObject(this);
 			this.oOverlay_18 = new Overlay_18(this);
 			this.oOverlay_22 = new Overlay_22(this);
 			this.oGameReplay = new GameReplay(this);
@@ -276,8 +270,17 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ES.Word;
 			this.oCPU.BX.Word = this.oCPU.SUBWord(this.oCPU.BX.Word, this.oCPU.SI.Word);
 			this.oCPU.BX.Word = this.oCPU.NEGWord(this.oCPU.BX.Word);
-			this.oCPU.AX.High = 0x4a;
-			this.oCPU.INT(0x21);
+			if (this.oCPU.Memory.ResizeMemoryBlock(this.oCPU.ES.Word, this.oCPU.BX.Word))
+			{
+				this.oCPU.Flags.C = false;
+				this.oCPU.AX.Word = 0;
+			}
+			else
+			{
+				this.oCPU.Flags.C = true;
+				this.oCPU.AX.Word = 8;
+				this.oCPU.BX.Word = 0;
+			}
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, 0x5901, this.oCPU.DS.Word);
 
@@ -330,6 +333,7 @@ namespace OpenCiv1
 			//this.oCPU.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x81d4, 0x3000, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb1d6, 0x10, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb1ea, 2, CPUMemoryFlagsEnum.AccessNotAllowed));
+			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb1ee, 0x20, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb210, 0x10, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb220, 2, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb23a, 2, CPUMemoryFlagsEnum.AccessNotAllowed));
@@ -388,7 +392,7 @@ namespace OpenCiv1
 			this.oOverlay_14.Segment = this.OverlaySegment;
 			this.oCivilopedia.Segment = this.OverlaySegment;
 			this.oOverlay_21.Segment = this.OverlaySegment;
-			this.oCityView.Segment = this.OverlaySegment;
+			this.oCityObject.Segment = this.OverlaySegment;
 			this.oOverlay_18.Segment = this.OverlaySegment;
 			this.oOverlay_22.Segment = this.OverlaySegment;
 			this.oGameReplay.Segment = this.OverlaySegment;
@@ -421,19 +425,9 @@ namespace OpenCiv1
 			get { return this.oInterruptLog; }
 		}
 
-		public LogWrapper VGALog
-		{
-			get { return this.oVGALog; }
-		}
-
 		public LogWrapper VGADriverLog
 		{
 			get { return this.oVGADriverLog; }
-		}
-
-		public LogWrapper StringLog
-		{
-			get { return this.oStringLog; }
 		}
 
 		public LogWrapper IntroLog
@@ -593,9 +587,9 @@ namespace OpenCiv1
 			get { return this.oOverlay_21; }
 		}
 
-		public CityView CityView
+		public CityObject CityObject
 		{
-			get { return this.oCityView; }
+			get { return this.oCityObject; }
 		}
 
 		public Overlay_18 Overlay_18

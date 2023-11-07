@@ -1079,7 +1079,12 @@ namespace OpenCiv1
 				}
 
 				ReadData(reader, 0xdcfe, 0x100);
-				ReadData(reader, 0xb1ee, 0x20);
+
+				for (int i = 0; i < 16; i++)
+				{
+					this.oParent.GameState.Continents[i].BuildSiteCount = ReadInt16(reader);
+				}
+				
 				ReadData(reader, 0x3772, 0, 0x4b0);
 
 				for (int i = 0; i < this.oParent.GameState.PeaceGraphData.Length; i++)
@@ -1473,7 +1478,12 @@ namespace OpenCiv1
 				}
 
 				WriteData(writer, 0xdcfe, 0x100);
-				WriteData(writer, 0xb1ee, 0x20);
+
+				for (int i = 0; i < 16; i++)
+				{
+					WriteInt16(writer, this.oParent.GameState.Continents[i].BuildSiteCount);
+				}
+
 				WriteData(writer, 0x3772, 0, 0x4b0);
 
 				for (int i = 0; i < this.oParent.GameState.PeaceGraphData.Length; i++)
