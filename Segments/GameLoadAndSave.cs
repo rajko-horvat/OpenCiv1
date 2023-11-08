@@ -1125,10 +1125,37 @@ namespace OpenCiv1
 					}
 				}
 
-				ReadData(reader, 0xd76e, 0x80);
-				ReadData(reader, 0xe518, 0x80);
-				ReadData(reader, 0xdc6c, 0x80);
-				ReadData(reader, 0xde22, 0x80);
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 16; j++)
+					{
+						this.oParent.GameState.Players[i].StrategicLocations[j].Active = (sbyte)ReadUInt8(reader);
+					}
+				}
+
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 16; j++)
+					{
+						this.oParent.GameState.Players[i].StrategicLocations[j].Policy = ReadUInt8(reader);
+					}
+				}
+
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 16; j++)
+					{
+						this.oParent.GameState.Players[i].StrategicLocations[j].Position.X = (sbyte)ReadUInt8(reader);
+					}
+				}
+
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 16; j++)
+					{
+						this.oParent.GameState.Players[i].StrategicLocations[j].Position.Y = (sbyte)ReadUInt8(reader);
+					}
+				}
 
 				for (int i = 0; i < this.oParent.GameState.TechnologyFirstDiscoveredBy.Length; i++)
 				{
@@ -1498,13 +1525,14 @@ namespace OpenCiv1
 
 				WriteData(writer, 0x112a, 0x3b8);
 
-				for (int i = 0; i < 8; i++)
+				/*for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 128; j++)
 					{
 						this.oParent.GameState.Players[i].Units[j].ToStream(writer);
 					}
-				}
+				}*/
+				WriteData(writer, 0x81d4, 0x3000);
 
 				for (int i = 0; i < this.oParent.GameState.MapVisibility.GetLength(0); i++)
 				{
@@ -1514,10 +1542,37 @@ namespace OpenCiv1
 					}
 				}
 
-				WriteData(writer, 0xd76e, 0x80);
-				WriteData(writer, 0xe518, 0x80);
-				WriteData(writer, 0xdc6c, 0x80);
-				WriteData(writer, 0xde22, 0x80);
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 16; j++)
+					{
+						writer.WriteByte((byte)this.oParent.GameState.Players[i].StrategicLocations[j].Active);
+					}
+				}
+
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 16; j++)
+					{
+						writer.WriteByte(this.oParent.GameState.Players[i].StrategicLocations[j].Policy);
+					}
+				}
+
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 16; j++)
+					{
+						writer.WriteByte((byte)this.oParent.GameState.Players[i].StrategicLocations[j].Position.X);
+					}
+				}
+
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 16; j++)
+					{
+						writer.WriteByte((byte)this.oParent.GameState.Players[i].StrategicLocations[j].Position.Y);
+					}
+				}
 
 				for (int i = 0; i < this.oParent.GameState.TechnologyFirstDiscoveredBy.Length; i++)
 				{

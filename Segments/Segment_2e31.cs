@@ -35,16 +35,32 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0xc;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, param2);
 			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81da));
-			this.oCPU.AX.High = 0;
-			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d5));
-			this.oCPU.CX.High = 0;
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.CX.Word);
+
+			if (param2 < 128)
+			{
+				this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81da));
+				this.oCPU.AX.High = 0;
+				this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d5));
+				this.oCPU.CX.High = 0;
+				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.CX.Word);
+			}
+			else
+			{
+				this.oCPU.AX.Word = 0;
+			}
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1e), this.oCPU.AX.Word);
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81db));
-			this.oCPU.AX.High = 0;
-			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d6));
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.CX.Word);
+
+			if (param2 < 128)
+			{
+				this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81db));
+				this.oCPU.AX.High = 0;
+				this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d6));
+				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.CX.Word);
+			}
+			else
+			{
+				this.oCPU.AX.Word = 0;
+			}
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20), this.oCPU.AX.Word);
 			
 			// Instruction address 0x2e31:0x0054, size: 5
@@ -79,13 +95,20 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1e), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = (ushort)Math.Sign((short)this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)));
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, param2);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0x81da), 0xff);
+
+			if (param2 < 128)
+			{
+				this.oCPU.AX.Word = 0xc;
+				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, param2);
+				this.oCPU.BX.Word = this.oCPU.AX.Word;
+
+				this.oCPU.AX.Word = 0x600;
+				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+				this.oCPU.SI.Word = this.oCPU.AX.Word;
+
+				this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0x81da), 0xff);
+			}
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18), 0x1);
 			goto L00d1;
 

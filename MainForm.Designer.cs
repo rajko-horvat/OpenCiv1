@@ -70,7 +70,7 @@
 			this.cmdPause.Image = ((System.Drawing.Image)(resources.GetObject("cmdPause.Image")));
 			this.cmdPause.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.cmdPause.Name = "cmdPause";
-			this.cmdPause.Size = new System.Drawing.Size(29, 24);
+			this.cmdPause.Size = new System.Drawing.Size(24, 24);
 			this.cmdPause.Text = "Pause";
 			this.cmdPause.Click += new System.EventHandler(this.cmdPause_Click);
 			// 
@@ -81,7 +81,7 @@
 			this.cmdRun.Image = ((System.Drawing.Image)(resources.GetObject("cmdRun.Image")));
 			this.cmdRun.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.cmdRun.Name = "cmdRun";
-			this.cmdRun.Size = new System.Drawing.Size(29, 24);
+			this.cmdRun.Size = new System.Drawing.Size(24, 24);
 			this.cmdRun.Text = "Run";
 			this.cmdRun.Click += new System.EventHandler(this.cmdRun_Click);
 			// 
@@ -94,7 +94,7 @@
 			// 
 			this.lblScreens.BackColor = System.Drawing.SystemColors.Control;
 			this.lblScreens.Name = "lblScreens";
-			this.lblScreens.Size = new System.Drawing.Size(59, 24);
+			this.lblScreens.Size = new System.Drawing.Size(47, 24);
 			this.lblScreens.Text = "Screens";
 			// 
 			// tsScreens
@@ -104,7 +104,7 @@
 			this.tsScreens.Image = ((System.Drawing.Image)(resources.GetObject("tsScreens.Image")));
 			this.tsScreens.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsScreens.Name = "tsScreens";
-			this.tsScreens.Size = new System.Drawing.Size(39, 24);
+			this.tsScreens.Size = new System.Drawing.Size(36, 24);
 			this.tsScreens.Text = "Plane list";
 			// 
 			// MainForm
@@ -118,7 +118,7 @@
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
 			this.ShowIcon = false;
-			this.Text = "VGA display";
+			this.Text = "Open Civilization 1";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Shown += new System.EventHandler(this.MainForm_Shown);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form_Paint);
