@@ -221,7 +221,7 @@ namespace OpenCiv1
 
 			for (int i = 0; i < aResourceFiles.Length; i++)
 			{
-				string sFilePath = Path.Combine(this.oCPU.DefaultDirectory, aResourceFiles[i]);
+				string sFilePath = Path.Combine(this.oCPU.DefaultDirectory, aResourceFiles[i].ToUpper());
 
 				while (!File.Exists(sFilePath))
 				{

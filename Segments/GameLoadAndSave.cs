@@ -919,11 +919,13 @@ namespace OpenCiv1
 
 		public bool F11_0000_083b_LoadGameData(string path)
 		{
+			path = path.ToUpper();
+
 			this.oCPU.Log.EnterBlock($"F11_0000_083b_LoadGame({path})");
 
 			// function body
 			bool bSuccess = false;
-			string filename = Path.GetFileNameWithoutExtension(path).ToLower();
+			string filename = Path.GetFileNameWithoutExtension(path);
 
 			try
 			{
@@ -1347,6 +1349,8 @@ namespace OpenCiv1
 
 		public bool F11_0000_08f6_SaveGameData(string path)
 		{
+			path = path.ToUpper();
+
 			this.oCPU.Log.EnterBlock($"F11_0000_08f6_SaveGame({path})");
 
 			// function body

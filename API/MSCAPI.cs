@@ -318,7 +318,7 @@ namespace OpenCiv1
 			}
 
 			short sHandle = -1;
-			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(filename).ToLower());
+			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(filename.ToUpper()));
 			this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 
 			try
@@ -423,7 +423,7 @@ namespace OpenCiv1
 				FileStreamItem fileItem = this.oCPU.Files.GetValueByKey(handle);
 				StringBuilder sbResult = new StringBuilder();
 
-				switch (format)
+				switch (format.ToLower())
 				{
 					case "%[^\n]\n":
 						short ch;
@@ -685,7 +685,7 @@ namespace OpenCiv1
 			}
 
 			short sHandle = -1;
-			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(filename).ToLower());
+			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(filename).ToUpper());
 
 			this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 			try
@@ -839,7 +839,7 @@ namespace OpenCiv1
 				eMode = FileMode.Open;
 			}
 
-			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(sName).ToLower());
+			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(sName.ToUpper()));
 			if (File.Exists(sPath))
 			{
 				this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
@@ -966,8 +966,6 @@ namespace OpenCiv1
 			string sDest = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr));
 			string sSource = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
 
-			this.oCPU.Log.WriteLine($"strcat('{sDest}', '{sSource}')");
-
 			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sDest + sSource, sDest.Length + sSource.Length);
 
 			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
@@ -977,8 +975,6 @@ namespace OpenCiv1
 		public ushort strcat(ushort destinationPtr, string sourceString)
 		{
 			string sDest = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr));
-
-			this.oCPU.Log.WriteLine($"strcat('{sDest}', '{sourceString}')");
 
 			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sDest + sourceString, 
 				sDest.Length + sourceString.Length);
@@ -991,8 +987,6 @@ namespace OpenCiv1
 		{
 			string sSource = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
 
-			this.oCPU.Log.WriteLine($"strcpy('{sSource}')");
-
 			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sSource, sSource.Length);
 
 			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
@@ -1001,8 +995,6 @@ namespace OpenCiv1
 
 		public ushort strcpy(ushort destinationPtr, string source)
 		{
-			this.oCPU.Log.WriteLine($"strcpy('{source}')");
-
 			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), source, source.Length);
 
 			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
@@ -1012,8 +1004,6 @@ namespace OpenCiv1
 		public ushort strlen(ushort stringPtr)
 		{
 			string sSource = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
-
-			this.oCPU.Log.WriteLine($"strlen('{sSource}') = {sSource.Length}");
 
 			this.oCPU.AX.Word = (ushort)sSource.Length; // preserve compatibility
 			return (ushort)sSource.Length;
@@ -1051,8 +1041,6 @@ namespace OpenCiv1
 		{
 			string sTemp = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr)).ToUpper();
 
-			this.oCPU.Log.WriteLine($"strupr('{sTemp}')");
-
 			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr), sTemp, sTemp.Length);
 
 			this.oCPU.AX.Word = stringPtr; // preserve compatibility
@@ -1065,8 +1053,6 @@ namespace OpenCiv1
 			string sS2 = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
 
 			short sRetVal = (short)sS1.IndexOf(sS2);
-
-			this.oCPU.Log.WriteLine($"strstr('{sS1}', '{sS2}') = {sRetVal}");
 
 			if (sRetVal >= 0) // preserve compatibility
 			{
@@ -1084,8 +1070,6 @@ namespace OpenCiv1
 		{
 			string sValue = Convert.ToString(value, radix);
 
-			this.oCPU.Log.WriteLine($"itoa({value}, {radix}) = '{sValue}'");
-
 			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr), sValue, sValue.Length);
 
 			this.oCPU.AX.Word = stringPtr; // preserve compatibility
@@ -1095,8 +1079,6 @@ namespace OpenCiv1
 		public string itoa(int value, short radix)
 		{
 			string sValue = Convert.ToString(value, radix);
-
-			this.oCPU.Log.WriteLine($"itoa({value}, {radix}) = '{sValue}'");
 
 			return sValue;
 		}
