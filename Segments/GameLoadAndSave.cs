@@ -925,7 +925,7 @@ namespace OpenCiv1
 
 			// function body
 			bool bSuccess = false;
-			string filename = Path.GetFileNameWithoutExtension(path);
+			string filename = Path.GetFileNameWithoutExtension(MSCAPI.GetDOSFileName(path));
 
 			try
 			{
@@ -1355,7 +1355,7 @@ namespace OpenCiv1
 
 			// function body
 			bool bSuccess = false;
-			string filename = Path.GetFileNameWithoutExtension(path);
+			string filename = Path.GetFileNameWithoutExtension(MSCAPI.GetDOSFileName(path));
 
 			try
 			{

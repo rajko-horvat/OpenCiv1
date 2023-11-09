@@ -941,7 +941,7 @@ namespace OpenCiv1
 
 		public void F0_1000_066a_FileExists(ushort fileNamePtr)
 		{
-			string fileName = Path.GetFileName(this.oParent.CPU.ReadString(CPU.ToLinearAddress(this.oParent.CPU.DS.Word, fileNamePtr)).ToUpper());
+			string fileName = MSCAPI.GetDOSFileName(this.oParent.CPU.ReadString(CPU.ToLinearAddress(this.oParent.CPU.DS.Word, fileNamePtr)).ToUpper());
 
 			this.oCPU.Log.EnterBlock($"F0_1000_066a_IsFileExists('{fileName}')");
 

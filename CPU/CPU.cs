@@ -2070,7 +2070,7 @@ namespace IRB.VirtualCPU
 		{
 			if (this.oAX.Low == 3)
 			{
-				string sName = Path.GetFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper());
+				string sName = MSCAPI.GetDOSFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper());
 				string sPath = Path.Combine(this.sDefaultDirectory, sName);
 				ushort usSegment = ReadUInt16(this.oES.Word, this.oBX.Word);
 				ushort usRelocationSegment = ReadUInt16(this.oES.Word, (ushort)(this.oBX.Word + 2));
@@ -2225,7 +2225,7 @@ namespace IRB.VirtualCPU
 		private void DOSCreateFileUsingHandle()
 		{
 			// open file
-			string sName = Path.GetFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper());
+			string sName = MSCAPI.GetDOSFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper());
 			string sPath = Path.Combine(this.sDefaultDirectory, sName);
 			FileAccess access = FileAccess.ReadWrite;
 
@@ -2529,7 +2529,7 @@ namespace IRB.VirtualCPU
 		void DOSParseAFilenameForFCB()
 		{
 			DOS_FCB fcb = new DOS_FCB(this.oMemory, this.oES.Word, this.oDI.Word);
-			string sFilename = this.ReadString(CPU.ToLinearAddress(this.oDS.Word, this.oSI.Word)).ToUpper();
+			string sFilename = MSCAPI.GetDOSFileName(this.ReadString(CPU.ToLinearAddress(this.oDS.Word, this.oSI.Word)).ToUpper());
 			string sName = Path.GetFileNameWithoutExtension(sFilename);
 			string sExtension = Path.GetExtension(sFilename).Substring(1);
 			string sPath = Path.Combine(this.sDefaultDirectory, sFilename);
