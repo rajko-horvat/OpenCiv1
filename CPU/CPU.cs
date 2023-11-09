@@ -70,7 +70,6 @@ namespace IRB.VirtualCPU
 			this.oMemory = new CPUMemory(this);
 			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 25, 25);
 
-#if DEBUG
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{
 				this.sDefaultDirectory = Path.Combine("C:" + Path.DirectorySeparatorChar, "Dos", "Civ1") + Path.DirectorySeparatorChar;
@@ -79,9 +78,6 @@ namespace IRB.VirtualCPU
 			{
 				this.sDefaultDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Dos", "Civ1") + Path.DirectorySeparatorChar;
 			}
-#else
-			this.DefaultDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar;
-#endif
 		}
 
 		public OpenCiv1.OpenCiv1 Parent
@@ -2070,7 +2066,7 @@ namespace IRB.VirtualCPU
 		{
 			if (this.oAX.Low == 3)
 			{
-				string sName = Path.GetFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word))).ToLower();
+				string sName = Path.GetFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word))).ToUpper();
 				string sPath = Path.Combine(this.sDefaultDirectory, sName);
 				ushort usSegment = ReadUInt16(this.oES.Word, this.oBX.Word);
 				ushort usRelocationSegment = ReadUInt16(this.oES.Word, (ushort)(this.oBX.Word + 2));
@@ -2225,7 +2221,7 @@ namespace IRB.VirtualCPU
 		private void DOSCreateFileUsingHandle()
 		{
 			// open file
-			string sName = Path.GetFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word))).ToLower();
+			string sName = Path.GetFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word))).ToUpper();
 			string sPath = Path.Combine(this.sDefaultDirectory, sName);
 			FileAccess access = FileAccess.ReadWrite;
 
@@ -2330,7 +2326,7 @@ namespace IRB.VirtualCPU
 		private void DOSOpenFileUsingHandle()
 		{
 			// open file
-			string sName = this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToLower();
+			string sName = this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper();
 			string sPath = Path.Combine(this.sDefaultDirectory, sName);
 			FileAccess access = FileAccess.Read;
 
@@ -2532,7 +2528,7 @@ namespace IRB.VirtualCPU
 			string sFilename = this.ReadString(CPU.ToLinearAddress(this.oDS.Word, this.oSI.Word));
 			string sName = Path.GetFileNameWithoutExtension(sFilename);
 			string sExtension = Path.GetExtension(sFilename).Substring(1);
-			string sPath = Path.Combine(this.sDefaultDirectory, sFilename.ToLower());
+			string sPath = Path.Combine(this.sDefaultDirectory, sFilename.ToUpper());
 
 			if (File.Exists(sPath))
 			{
@@ -2554,7 +2550,7 @@ namespace IRB.VirtualCPU
 		{
 			DOS_FCB fcb = new DOS_FCB(this.oMemory, this.oDS.Word, this.oDX.Word);
 			string sFileName = fcb.GetName();
-			string sPath = Path.Combine(this.sDefaultDirectory, sFileName.ToLower());
+			string sPath = Path.Combine(this.sDefaultDirectory, sFileName.ToUpper());
 
 			if (File.Exists(sPath))
 			{

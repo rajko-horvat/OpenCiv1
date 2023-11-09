@@ -923,7 +923,7 @@ namespace OpenCiv1
 
 			// function body
 			bool bSuccess = false;
-			string filename = Path.GetFileNameWithoutExtension(path).ToLower();
+			string filename = Path.GetFileNameWithoutExtension(path).ToUpper();
 
 			try
 			{

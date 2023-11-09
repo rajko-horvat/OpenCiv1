@@ -318,7 +318,7 @@ namespace OpenCiv1
 			}
 
 			short sHandle = -1;
-			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(filename).ToLower());
+			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(filename).ToUpper());
 			this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 
 			try
@@ -685,7 +685,7 @@ namespace OpenCiv1
 			}
 
 			short sHandle = -1;
-			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(filename).ToLower());
+			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(filename).ToUpper());
 
 			this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 			try
@@ -839,7 +839,7 @@ namespace OpenCiv1
 				eMode = FileMode.Open;
 			}
 
-			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(sName).ToLower());
+			string sPath = Path.Combine(this.oCPU.DefaultDirectory, Path.GetFileName(sName).ToUpper());
 			if (File.Exists(sPath))
 			{
 				this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
