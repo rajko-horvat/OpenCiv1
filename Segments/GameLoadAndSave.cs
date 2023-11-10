@@ -979,7 +979,13 @@ namespace OpenCiv1
 					this.oParent.GameState.Players[i].DiscoveredTechnologyCount = ReadInt16(reader);
 				}
 
-				ReadData(reader, 0xe3c8, 0x50);
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 5; j++)
+					{
+						this.oParent.GameState.Players[i].DiscoveredTechnologyFlags[j] = ReadUInt16(reader);
+					}
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
@@ -1407,7 +1413,13 @@ namespace OpenCiv1
 					WriteInt16(writer, this.oParent.GameState.Players[i].DiscoveredTechnologyCount);
 				}
 
-				WriteData(writer, 0xe3c8, 0x50);
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 5; j++)
+					{
+						WriteUInt16(writer, this.oParent.GameState.Players[i].DiscoveredTechnologyFlags[j]);
+					}
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{

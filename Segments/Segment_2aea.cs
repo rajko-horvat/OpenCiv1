@@ -24,6 +24,7 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x1c);
 			this.oCPU.PushWord(this.oCPU.SI.Word);
+
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0014); // stack management - push return offset
 			// Instruction address 0x2aea:0x000f, size: 5
@@ -59,12 +60,14 @@ namespace OpenCiv1
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, CPU.ToUInt16(this.oCPU.BP.Word + 0xa)),
 				0, 0x26);
-
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd75e, this.oCPU.AX.Word);
+
+			// Another error, the code modified first parameter (playerID) to a
+			// Visibility Mask and that conflicts with other code which expects playerID.
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6));
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6), this.oCPU.AX.Word);
+			ushort usMapVisibilityMask = this.oCPU.AX.Word;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6c96, 0x0);
 
 			// Instruction address 0x2aea:0x0062, size: 5
@@ -121,7 +124,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ADDWord(this.oCPU.BX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd75e));
 			this.oCPU.AX.Low = (byte)this.oParent.GameState.MapVisibility[this.oCPU.AX.Word, this.oCPU.BX.Word];
 			this.oCPU.CBW(this.oCPU.AX);
-			this.oCPU.TESTWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
+			this.oCPU.TESTWord(this.oCPU.AX.Word, usMapVisibilityMask);
 			if (this.oCPU.Flags.NE) goto L0108;
 			goto L0074;
 
@@ -428,6 +431,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x2aea; // restore this function segment
+
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();

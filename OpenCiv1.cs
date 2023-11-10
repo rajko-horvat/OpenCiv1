@@ -190,7 +190,7 @@ namespace OpenCiv1
 			// Check for Default directory and individual Resource files
 			if (!Directory.Exists(this.oCPU.DefaultDirectory))
 			{
-				MessageBox.Show($"OpenCiv1 resource files path not found at '{this.oCPU.DefaultDirectory}'.\n"+
+				MessageBox.Show($"OpenCiv1 resource files not found at '{this.oCPU.DefaultDirectory}'.\n"+
 					"The OpenCiv1 depends on Civilization resource files (*.pic, *.pal and *.txt).\nPlease adjust path to these resources.",
 					"Resource path error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 				this.oCPU.Exit(-1);
@@ -226,7 +226,7 @@ namespace OpenCiv1
 				while (!File.Exists(sFilePath))
 				{
 					DialogResult result = MessageBox.Show($"Missing resource file {sFilePath}. Plsease ensure that the file exists at specified path.\n" +
-					   "Some Operating systems are case sensitive, ensure that the file name is in lowercase.",
+					   "Some File systems are case sensitive, ensure that the file name is in uppercase.",
 					   "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
 
 					if (result == DialogResult.Cancel)
@@ -358,6 +358,7 @@ namespace OpenCiv1
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xdf1e, 2, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xe16a, 0x10, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xe3c4, 2, CPUMemoryFlagsEnum.AccessNotAllowed));
+			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xe3c8, 0x50, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xe698, 0x10, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xe898, 0x10, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xe8a8, 0x10, CPUMemoryFlagsEnum.AccessNotAllowed));

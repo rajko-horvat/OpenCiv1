@@ -378,6 +378,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
+
 			this.oCPU.AX.Word = 0x23;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.AX.Word = 0xa0;
@@ -393,24 +394,28 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
 
 			oParent.GameState.HumanPlayerID = (short)this.oCPU.AX.Word;
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.AIOpponentCount;
-			this.oCPU.CMPWord((ushort)this.oParent.GameState.HumanPlayerID, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.G) goto L03ed;
-			oParent.GameState.HumanPlayerID++;
-			goto L03fa;
 
-		L03ed:
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, (ushort)this.oParent.GameState.AIOpponentCount);
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x8);
-			oParent.GameState.HumanPlayerID = (short)this.oCPU.AX.Word;
+			if (this.oParent.GameState.HumanPlayerID <= this.oParent.GameState.AIOpponentCount)
+			{
+				oParent.GameState.HumanPlayerID++;
+			}
+			else
+			{
+				this.oCPU.AX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
+				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, (ushort)this.oParent.GameState.AIOpponentCount);
+				this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x8);
+				oParent.GameState.HumanPlayerID = (short)this.oCPU.AX.Word;
+			}
 
-		L03fa:
-			if (this.oParent.GameState.DifficultyLevel != 0) goto L0406;
-			this.oParent.GameState.GameSettingFlags |= 1;
+			if (this.oParent.GameState.DifficultyLevel == 0)
+			{
+				this.oParent.GameState.GameSettingFlags |= 1;
+			}
 
-		L0406:
-			this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].CurrentResearchID = -1;
+			// Another indexing error. Value this.oParent.GameState.HumanPlayerID is equal
+			// to nationality selected and not actual ID, but later in code it is forced to 0-7 by value & 7,
+			// so we will use this value instead
+			this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID & 7].CurrentResearchID = -1;
 
 			// Instruction address 0x0000:0x0410, size: 5
 			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(50));
@@ -437,10 +442,13 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))));
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)), 0x5);
 			if (this.oCPU.Flags.LE) goto L0440;
-			this.oCPU.CMPWord((ushort)this.oParent.GameState.HumanPlayerID, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L0476;
-			this.oCPU.CMPWord((ushort)this.oParent.GameState.HumanPlayerID, 0x7);
-			if (this.oCPU.Flags.LE) goto L046a;
+
+			if (this.oParent.GameState.HumanPlayerID == 0)
+				goto L0476;
+
+			if (this.oParent.GameState.HumanPlayerID <= 7)
+				goto L046a;
+
 			this.oCPU.AX.Word = 0x1;
 			goto L046c;
 
@@ -449,7 +457,7 @@ namespace OpenCiv1
 
 		L046c:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Word);
-			oParent.GameState.HumanPlayerID &= 7;
+			this.oParent.GameState.HumanPlayerID &= 7;
 			goto L048b;
 
 		L0476:
@@ -458,7 +466,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x047f, size: 5
 			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(this.oParent.GameState.AIOpponentCount));
 			this.oCPU.AX.Word++;
-			oParent.GameState.HumanPlayerID = (short)this.oCPU.AX.Word;
+			this.oParent.GameState.HumanPlayerID = (short)this.oCPU.AX.Word;
 
 		L048b:
 			this.oCPU.BX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
@@ -928,13 +936,17 @@ namespace OpenCiv1
 				this.oCPU.AX.Word = 0xa;
 				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 				this.oCPU.SI.Word = this.oCPU.AX.Word;
+
 				this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc));
 				this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0xe3c8), 0x0);
+
+				this.oParent.GameState.Players[playerID].DiscoveredTechnologyFlags[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))] = 0;
+
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 					this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))));
 				this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x5);
 				if (this.oCPU.Flags.L) goto L0938;
+
 				if (this.oParent.GameState.TurnCount == 0) goto L09c3;
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 0x0);
 

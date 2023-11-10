@@ -30,7 +30,7 @@ namespace OpenCiv1
 		public short DiscoveredTechnologyCount = 0;
 		public short CurrentResearchID = 0;
 		public short FutureTechnologyCount = 0;
-		public short[] DiscoveredTechnologyFlags = new short[5];
+		public ushort[] DiscoveredTechnologyFlags = new ushort[5];
 		public short[] TechnologyAcquiredFrom = new short[72];
 
 		// Units
