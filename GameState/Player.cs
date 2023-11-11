@@ -54,9 +54,9 @@ namespace OpenCiv1
 
 		public Player()
 		{
-			for (int i = 0; i < this.PlayerDiplomacyFlags.Length; i++)
+			for (int i = 0; i < this.PlayerDiplomacy.Length; i++)
 			{
-				this.PlayerDiplomacyFlags[i] = 0;
+				this.PlayerDiplomacy[i] = 0;
 			}
 
 			for (int i = 0; i < this.Continents.Length; i++)
