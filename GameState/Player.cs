@@ -18,7 +18,7 @@ namespace OpenCiv1
 		public short TotalCitySize = 0;
 		public short LandCount = 0;
 
-		public short[] PlayerDiplomacyFlags = new short[8];
+		public short[] PlayerDiplomacy = new short[8];
 		public PlayerContinent[] Continents = new PlayerContinent[16];
 		public short Ranking = 0;
 		public short CumulativeEpicRanking = 0;
