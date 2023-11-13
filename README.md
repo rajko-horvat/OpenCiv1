@@ -1,12 +1,20 @@
-## Repository description
-<p>This is a rewrite of Civilization 1 Game Source Code designed by Sid Meier and Bruce Shelley in year 1991.</p>
-<p>The code logic is <b>Based on original DOS CIV I version 475.05</b> disassembly.</p>
+## About his repository
+<p>This is a rewrite of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991.</p>
+<p>The game logic is <b>Based on original DOS CIV I version 475.05</b> disassembly.</p>
 <p>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform 
 and the bugs that have never been fixed are hindering the popularity of the game.<p>
 <p>The news and discussions about this project and releases are published regularly on <a href="https://forums.civfanatics.com/threads/rewrite-of-civilization-1-source-code-openciv1-project.682623/" target="_blank">Civilization Fanatics Forum page</a></p>
 
+## Copyright considerations
+<p><b>The available code is not a full working copy of the game.</b> <b>To run Open Civilization 1 you are required to legally own your own copy of the Civilization game.</b> 
+That is the reason that I didn't include game resources (sounds, images and text) as they are copyrighted.</p>
+
+<p>The part of the game assembly code is emulated with Virtual CPU, and the rest of the code has been rewritten from scratch 
+until all of the code is replaced with new copyright free code. The other resources (like graphics, music and text) 
+will also be completely replaced with copyright free resources before publishing the complete game.</p>
+
 ## Current status
-<p><b>The game is in working state</b>, but requires Original game files (.txt, .pic and .pal) to be present.
+<p><b>The game is in working state</b>, but you have to legally own the Original game (the .txt, .pic and .pal files have to be present).
 The <b>Debug mode</b> can be toggled by pressing Alt + D Key.</p>
 
 ## Running the code
@@ -32,13 +40,13 @@ For this stage of code rewrite, the programmings skills needed are:
 <b>Milestones for a first stage are:</b>
 <ul>
 <li>Reaching the initial playability of the game (passed),</li>
-<li>Rewrite of the original code, functionalities and features (in progress...),</li>
-<li>Archive the original code.</li>
+<li>Rewrite of the game functionalities and features (in progress...),</li>
+<li>Archive the game code.</li>
 </ul><br>
 <b>Planned milestones for a second stage are:</b>
 <ul>
 <li>Fixing the bugs and introduction of new features 
-(Multiple languages besides basic English, Multiplayer capabilities, and a lot more...),</li>
+(Multiple languages besides basic English, Multiplayer capabilities...),</li>
 <li>Porting to HTML5 platform,</li>
 <li>Redesigning graphics and music.</li>
 </ul>
