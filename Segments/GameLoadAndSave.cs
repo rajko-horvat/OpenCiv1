@@ -1000,7 +1000,13 @@ namespace OpenCiv1
 					}
 				}
 
-				ReadData(reader, 0xe498, 0x80);
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 8; j++)
+					{
+						this.oParent.GameState.Players[i].Diplomacy[j] = ReadUInt16(reader);
+					}
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
@@ -1440,7 +1446,13 @@ namespace OpenCiv1
 					}
 				}
 
-				WriteData(writer, 0xe498, 0x80);
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 8; j++)
+					{
+						WriteUInt16(writer, this.oParent.GameState.Players[i].Diplomacy[j]);
+					}
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{

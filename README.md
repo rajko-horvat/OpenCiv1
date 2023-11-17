@@ -1,13 +1,13 @@
-## About his repository
+## About this repository
 <p>This is a rewrite of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991.</p>
 <p>The game logic is <b>Based on original DOS CIV I version 475.05</b> disassembly.</p>
 <p>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform 
 and the bugs that have never been fixed are hindering the popularity of the game.<p>
-<p>The news and discussions about this project and releases are published regularly on <a href="https://forums.civfanatics.com/threads/rewrite-of-civilization-1-source-code-openciv1-project.682623/" target="_blank">Civilization Fanatics Forum page</a></p>
+<p>The news, discussions about this project and releases are published regularly on <a href="https://forums.civfanatics.com/threads/rewrite-of-civilization-1-source-code-openciv1-project.682623/" target="_blank">Civilization Fanatics Forum page</a></p>
 
 ## Copyright considerations
-<p><b>The available code is not a full working copy of the game.</b> <b>To run Open Civilization 1 you are required to legally own your own copy of the Civilization game.</b> 
-That is the reason that I didn't include game resources (sounds, images and text) as they are copyrighted.</p>
+<p><b>The available code is not a full working copy of the game.</b> <b>To run Open Civilization 1 you are legally required to own your own copy of the Civilization game.</b> 
+This is the reason that game files are not included (sounds, images and text) as they are copyrighted.</p>
 
 <p>The part of the game assembly code is emulated with Virtual CPU, and the rest of the code has been rewritten from scratch 
 until all of the code is replaced with new copyright free code. The other resources (like graphics, music and text) 
@@ -40,7 +40,7 @@ For this stage of code rewrite, the programmings skills needed are:
 <b>Milestones for a first stage are:</b>
 <ul>
 <li>Reaching the initial playability of the game (passed),</li>
-<li>Rewrite of the game functionalities and features (in progress...),</li>
+<li>Rewrite of the game code, functionalities and features (in progress...),</li>
 <li>Archive the game code.</li>
 </ul><br>
 <b>Planned milestones for a second stage are:</b>
