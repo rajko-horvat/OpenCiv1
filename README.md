@@ -22,7 +22,7 @@ If you want to compile the code, it is assumed that:
 <ul>
 <li>You are using Visual Studio 2022.</li>
 <li>You have .NET Framework 4.8 installed.</li>
-<li>You have installed DOS CIV I game at 'c:\Dos\Civ1\', or at '~/Doc/Civ1/' if you are using Mono on Linux.
+<li>You have installed DOS CIV I game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Mono on Linux.
 It's where it's home directory resides (Images, palettes, text and save games are loaded/saved there, for now).</li>
 </ul>
 

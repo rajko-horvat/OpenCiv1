@@ -1642,7 +1642,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameState.Players[j].LostUnits.Length; j++)
+					for (int j = 0; j < this.oParent.GameState.Players[i].LostUnits.Length; j++)
 					{
 						WriteInt16(writer, this.oParent.GameState.Players[i].LostUnits[j]);
 					}
