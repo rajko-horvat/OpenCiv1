@@ -364,15 +364,12 @@ namespace OpenCiv1
 
 			if (playerID != this.oParent.GameState.HumanPlayerID) goto L0385;
 
-			this.oCPU.AX.Word = 0x4f66;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0382); // stack management - push return offset
-			this.oParent.Help.F4_0000_02d3();
+			this.oParent.Help.F4_0000_02d3(0x4f66);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 		L0385:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 0x0);

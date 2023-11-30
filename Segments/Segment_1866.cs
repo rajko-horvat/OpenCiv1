@@ -1869,28 +1869,22 @@ namespace OpenCiv1
 
 			if (this.oParent.GameState.Players[playerID].UnitCount != 0) goto L0eab;
 
-			this.oCPU.AX.Word = 0x210e;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0ea8); // stack management - push return offset
-			this.oParent.Help.F4_0000_02d3();
+			this.oParent.Help.F4_0000_02d3(0x210e);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1866; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 		L0eab:
 			if (this.oParent.GameState.Players[playerID].UnitCount != 1) goto L0ec3;
 
-			this.oCPU.AX.Word = 0x211a;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0ec0); // stack management - push return offset
-			this.oParent.Help.F4_0000_02d3();
+			this.oParent.Help.F4_0000_02d3(0x211a);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x1866; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 		L0ec3:
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
