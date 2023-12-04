@@ -1896,7 +1896,7 @@ namespace OpenCiv1
 			return;
 		}
 
-		public void F0_VGA_07d8_DrawImage(ushort srcRectPtr, ushort xFrom, ushort yFrom, ushort width, ushort height, ushort destRectPtr, ushort xTo, ushort yTo)
+		public void F0_VGA_07d8_DrawImage(ushort srcRectPtr, int xFrom, int yFrom, int width, int height, ushort destRectPtr, int xTo, int yTo)
 		{
 			CivRectangle rectFrom = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, srcRectPtr));
 			int iXOffsetFrom = rectFrom.X + xFrom;

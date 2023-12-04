@@ -37,6 +37,7 @@ namespace OpenCiv1
 			this.oParent.MainIntro.F2_0000_0000();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
+
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.PushWord(this.oCPU.DX.Word);
@@ -143,17 +144,10 @@ namespace OpenCiv1
 		L012a:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1a3c), 0x0);
 			if (this.oCPU.Flags.E) goto L0145;
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6e92));
-			this.oCPU.AX.Word = 0;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x013e); // stack management - push return offset
+
 			// Instruction address 0x11a8:0x0139, size: 5
-			this.oParent.Segment_1000.F0_1000_1697();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x11a8; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+			this.oParent.Segment_1000.F0_1000_1697(0, 0, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6e92));
+			
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0145); // stack management - push return offset
 			// Instruction address 0x11a8:0x0142, size: 3
@@ -224,12 +218,14 @@ namespace OpenCiv1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x019c); // stack management - push return offset
 			// Instruction address 0x11a8:0x0197, size: 5
 			this.oParent.Segment_1000.F0_1000_0a39();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
+
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x01a1); // stack management - push return offset
 			// Instruction address 0x11a8:0x019c, size: 5
@@ -251,12 +247,9 @@ namespace OpenCiv1
 			// function body
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1a3c), 0x0);
 			if (this.oCPU.Flags.E) goto L0244;
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x022f); // stack management - push return offset
+
 			// Instruction address 0x11a8:0x022a, size: 5
 			this.oParent.Segment_1000.F0_1000_16d4();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5872));
 			this.oParent.Var_db3a = this.oCPU.AX.Word;
@@ -287,6 +280,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0267;
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea), 0x1);
 			if (this.oCPU.Flags.NE) goto L0267;
+
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0267); // stack management - push return offset
 			// Instruction address 0x11a8:0x0262, size: 5
@@ -307,8 +301,10 @@ namespace OpenCiv1
 			// function body
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1a3c), 0x0);
 			if (this.oCPU.Flags.E) goto L027b;
+
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea), 0x1);
 			if (this.oCPU.Flags.NE) goto L027b;
+
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x027b); // stack management - push return offset
 			// Instruction address 0x11a8:0x0276, size: 5
@@ -506,15 +502,15 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.TESTByte((byte)(this.oParent.GameState.GameSettingFlags & 0xff), 0x10);
 			if (this.oCPU.Flags.E) goto L0484;
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
+
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0481); // stack management - push return offset
 			// Instruction address 0x11a8:0x047c, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32();
+			this.oParent.Segment_1000.F0_1000_0a32(
+				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
+				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 		L0484:
 			this.oCPU.BP.Word = this.oCPU.PopWord();
@@ -564,6 +560,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0a4e();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1495);
 			if (this.oCPU.Flags.LE) goto L04dc;
@@ -701,19 +698,13 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
 			if (this.oCPU.Flags.E) goto L05be;
-			this.oCPU.AX.Word = 0;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x5;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
+
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x05bb); // stack management - push return offset
 			// Instruction address 0x11a8:0x05b6, size: 5
-			this.oParent.Segment_1000.F0_1000_04d4();
+			this.oParent.Segment_1000.F0_1000_04d4(5, 0, 0, 0);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x8);
 
 		L05be:
 			// Instruction address 0x11a8:0x05d1, size: 5
@@ -754,17 +745,12 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, 0x1);
 
 		L0623:
-			this.oCPU.AX.Word = 0xb;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0xd2;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0630); // stack management - push return offset
 			// Instruction address 0x11a8:0x062b, size: 5
-			this.oParent.Segment_1000.F0_1000_16ae();
+			this.oParent.Segment_1000.F0_1000_16ae(210, 11);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 			// Instruction address 0x11a8:0x063b, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1b48);
@@ -803,17 +789,12 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, 0x1);
 
 		L0680:
-			this.oCPU.AX.Word = 0x3d;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0xd2;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x068d); // stack management - push return offset
 			// Instruction address 0x11a8:0x0688, size: 5
-			this.oParent.Segment_1000.F0_1000_16ae();
+			this.oParent.Segment_1000.F0_1000_16ae(210, 61);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 			// Instruction address 0x11a8:0x0698, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1b6f);
@@ -852,17 +833,12 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, 0x1);
 
 		L06dd:
-			this.oCPU.AX.Word = 0x6f;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0xd2;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x06ea); // stack management - push return offset
 			// Instruction address 0x11a8:0x06e5, size: 5
-			this.oParent.Segment_1000.F0_1000_16ae();
+			this.oParent.Segment_1000.F0_1000_16ae(210, 111);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 			// Instruction address 0x11a8:0x06f5, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1ba0);
@@ -906,17 +882,12 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, 0x1);
 
 		L073a:
-			this.oCPU.AX.Word = 0xa1;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0xd2;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0747); // stack management - push return offset
 			// Instruction address 0x11a8:0x0742, size: 5
-			this.oParent.Segment_1000.F0_1000_16ae();
+			this.oParent.Segment_1000.F0_1000_16ae(210, 161);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 			// Instruction address 0x11a8:0x0752, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1bc5);
@@ -1053,6 +1024,7 @@ namespace OpenCiv1
 			this.oParent.StartGameMenu.F5_0000_1455();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
+
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f98, 0x1);
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
 			if (this.oCPU.Flags.E) goto L0848;
@@ -1064,19 +1036,12 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0848;
 
 		L0837:
-			this.oCPU.AX.Word = 0;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x5;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0845); // stack management - push return offset
 			// Instruction address 0x11a8:0x0840, size: 5
-			this.oParent.Segment_1000.F0_1000_04d4();
+			this.oParent.Segment_1000.F0_1000_04d4(5, 0, 0, 0);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x8);
 
 		L0848:
 			// Instruction address 0x11a8:0x085b, size: 5
@@ -1116,17 +1081,9 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x6);
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1a3c), 0x0);
 			if (this.oCPU.Flags.E) goto L0899;
-			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd4dc));
-			this.oCPU.AX.Word = 0;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0896); // stack management - push return offset
+
 			// Instruction address 0x11a8:0x0891, size: 5
-			this.oParent.Segment_1000.F0_1000_1697();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x11a8; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+			this.oParent.Segment_1000.F0_1000_1697(0, 0, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd4dc));
 
 		L0899:
 			if (this.oParent.GameState.TurnCount != 0) goto L08c5;
@@ -1147,6 +1104,7 @@ namespace OpenCiv1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x08c5); // stack management - push return offset
@@ -1161,6 +1119,7 @@ namespace OpenCiv1
 			this.oParent.StartGameMenu.F5_0000_1af6();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = 0x11a8; // restore this function segment
+
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.PushWord(this.oCPU.DX.Word);

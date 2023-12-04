@@ -136,6 +136,16 @@ namespace OpenCiv1
 			this.oOverlay_10 = new Overlay_10(this);
 			this.oOverlay_15 = new Overlay_15(this);
 			#endregion
+
+			/*string[] aFiles = Directory.GetFiles(this.oCPU.DefaultDirectory, "*.pic");
+
+			for (int i = 0; i < aFiles.Length; i++)
+			{
+				byte[] palette;
+				VGABitmap bitmap = VGABitmap.FromFile(aFiles[i], out palette);
+
+				bitmap.Bitmap.Save(Path.GetFileNameWithoutExtension(aFiles[i]) + ".bmp", ImageFormat.Bmp);
+			}*/
 		}
 
 		public void Start()

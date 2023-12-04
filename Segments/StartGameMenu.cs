@@ -475,6 +475,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, this.oCPU.BX.Word, 0x0);
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0xffff);
 			if (this.oCPU.Flags.NE) goto L04c2;
+
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x04a3); // stack management - push return offset
@@ -609,6 +610,7 @@ namespace OpenCiv1
 			F5_0000_0fe6();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = (byte)(this.oParent.GameState.HumanPlayerID & 0xff);
@@ -658,6 +660,7 @@ namespace OpenCiv1
 			this.oParent.Overlay_23.F23_0000_00d6();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
+
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x0657); // stack management - push return offset
 			// Instruction address 0x0000:0x0652, size: 5
@@ -2722,15 +2725,13 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1c08, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3757);
 
-			this.oCPU.AX.Word = 0xfffe;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
 			// Call to overlay
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x1c19); // stack management - push return offset
-			this.oParent.Overlay_21.F21_0000_0000();
+			this.oParent.Overlay_21.F21_0000_0000(-2);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.CS.Word = this.usSegment; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			
 			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
 			this.oCPU.PushWord(0x1c21); // stack management - push return offset
 			// Instruction address 0x0000:0x1c1c, size: 5

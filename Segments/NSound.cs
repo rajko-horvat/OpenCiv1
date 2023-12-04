@@ -56,7 +56,7 @@ namespace OpenCiv1
 			//this.oCPU.Log.ExitBlock("'F0_0000_005d'");
 		}
 
-		public void F0_0000_0062()
+		public void F0_0000_0062(ushort param1, ushort param2)
 		{
 			//this.oCPU.Log.EnterBlock("'F0_0000_0062'(Cdecl, Far) at 0x0000:0x0062");
 
