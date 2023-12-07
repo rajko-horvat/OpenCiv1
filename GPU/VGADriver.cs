@@ -1454,12 +1454,11 @@ namespace OpenCiv1
 			this.Var_15cc_BufferY = this.oCPU.AX.Word;
 			this.Var_15d2_BufferFlag = 1;
 			
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x0303); // stack management - push return offset
 			// Instruction address 0x0000:0x0300, size: 3
 			F0_VGA_030e_FillBuffer(0);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = this.usSegment; // restore this function segment
 
 		L0303:*/
 			// Far return
@@ -1551,7 +1550,7 @@ namespace OpenCiv1
 
 			if (screenID != 0)
 			{
-				this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+				this.oCPU.PushWord(0); // stack management - push return segment, ignored
 				this.oCPU.PushWord(0x0650); // stack management - push return offset
 				// Instruction address 0x0000:0x064d, size: 3
 				F0_VGA_030e_FillBuffer(screenID);
@@ -1910,7 +1909,6 @@ namespace OpenCiv1
 			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_07d8_DrawImage({rectTo.ScreenID}, {iXOffsetTo}, {iYOffsetTo}, {rectFrom.ScreenID}, {iXOffsetFrom}, {iYOffsetFrom}, {width}, {height})");
 			this.oCPU.Log = this.oParent.VGADriverLog;
 			this.oCPU.Log.EnterBlock($"F0_VGA_07d8_DrawImage({rectTo.ScreenID}, {iXOffsetTo}, {iYOffsetTo}, {rectFrom.ScreenID}, {iXOffsetFrom}, {iYOffsetFrom}, {width}, {height})");
-			//this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			// function body
 			if (this.aScreens.ContainsKey(rectFrom.ScreenID))
@@ -2112,7 +2110,6 @@ namespace OpenCiv1
 			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0599_DrawLine({x1}, {y1}, {x2}, {y2})");
 			this.oCPU.Log = this.oParent.VGADriverLog;
 			this.oCPU.Log.EnterBlock($"F0_VGA_0599_DrawLine({x1}, {y1}, {x2}, {y2})");
-			//this.oCPU.CS.Word = this.usSegment; // set this function segment
 
 			if (this.aScreens.ContainsKey(rect.ScreenID))
 			{

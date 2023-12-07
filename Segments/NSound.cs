@@ -14,7 +14,7 @@ namespace OpenCiv1
 			this.oCPU = parent.CPU;
 		}
 
-		public void F0_0000_0048()
+		public ushort F0_0000_0048()
 		{
 			//this.oCPU.Log.EnterBlock("'F0_0000_0048'(Cdecl, Far) at 0x0000:0x0048");
 
@@ -24,9 +24,11 @@ namespace OpenCiv1
 
 			// Far return
 			//this.oCPU.Log.ExitBlock("'F0_0000_0048'");
+
+			return this.oCPU.AX.Word;
 		}
 
-		public void F0_0000_0055()
+		public ushort F0_0000_0055()
 		{
 			//this.oCPU.Log.EnterBlock("'F0_0000_0055'(Cdecl, Far) at 0x0000:0x0055");
 
@@ -35,6 +37,8 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x0;
 			// Far return
 			//this.oCPU.Log.ExitBlock("'F0_0000_0055'");
+
+			return this.oCPU.AX.Word;
 		}
 
 		public void F0_0000_005c()
@@ -46,7 +50,7 @@ namespace OpenCiv1
 			//this.oCPU.Log.ExitBlock("'F0_0000_005c'");
 		}
 
-		public void F0_0000_005d()
+		public ushort F0_0000_005d()
 		{
 			//this.oCPU.Log.EnterBlock("'F0_0000_005d'(Cdecl, Far) at 0x0000:0x005d");
 
@@ -54,6 +58,8 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = usBufferPosition;
 			// Far return
 			//this.oCPU.Log.ExitBlock("'F0_0000_005d'");
+
+			return this.oCPU.AX.Word;
 		}
 
 		public void F0_0000_0062(ushort param1, ushort param2)
@@ -66,7 +72,7 @@ namespace OpenCiv1
 			//this.oCPU.Log.ExitBlock("'F0_0000_0062'");
 		}
 
-		public void F0_0000_006a()
+		public ushort F0_0000_006a()
 		{
 			//this.oCPU.Log.EnterBlock("'F0_0000_006a'(Cdecl, Far) at 0x0000:0x006a");
 
@@ -74,6 +80,8 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x0;
 			// Far return
 			//this.oCPU.Log.ExitBlock("'F0_0000_006a'");
+
+			return this.oCPU.AX.Word;
 		}
 	}
 }

@@ -69,7 +69,6 @@ namespace OpenCiv1
 		private LogWrapper oVGADriverLog;
 		private LogWrapper oIntroLog;
 
-		private ushort OverlaySegment = 0;
 		private ushort usStartSegment = 0x1000;
 
 		private GameState oGameState;
@@ -150,7 +149,7 @@ namespace OpenCiv1
 
 		public void Start()
 		{
-			ushort usInitialCS = 0x2045; // oEXE.InitialCS;
+			//ushort usInitialCS = 0x2045; // oEXE.InitialCS;
 			ushort usInitialSS = 0x398d; // oEXE.InitialSS;
 			ushort usInitialSP = 0x0800; // oEXE.InitialSP;
 
@@ -178,17 +177,15 @@ namespace OpenCiv1
 				new CPUMemoryRegion(uiDataStart, (uiDataEnd - uiDataStart) + 1, CPUMemoryFlagsEnum.ReadWrite));
 
 			// Initialize CPU
-			this.oCPU.CS.Word = (ushort)(usInitialCS + usStartSegment);
+			//this.oCPU.CS.Word = (ushort)(usInitialCS + usStartSegment);
 			this.oCPU.SS.Word = (ushort)(usInitialSS + usStartSegment);
 			this.oCPU.DS.Word = (ushort)(usStartSegment - 0x10);
 			this.oCPU.ES.Word = (ushort)(usStartSegment - 0x10);
 			this.oCPU.SP.Word = usInitialSP;
 
 			// Overlay segment, set by F0_3045_2b44
-			this.OverlaySegment = 0x3374;
-			this.SetOverlayBase();
-
-			this.oCPU.CS.Word = 0x3045; // set this function segment
+			//this.OverlaySegment = 0x3374;
+			//this.SetOverlayBase();
 
 			ushort usDataSegment = 0x3b01;
 
@@ -393,31 +390,6 @@ namespace OpenCiv1
 			this.Segment_11a8.F0_11a8_0008_Main();
 
 			this.MSCAPI.exit((short)this.oCPU.AX.Word);
-		}
-
-		private void SetOverlayBase()
-		{
-			this.oMainIntro.Segment = this.OverlaySegment;
-			this.oMeetWithKing.Segment = this.OverlaySegment;
-			this.oGameInitAndIntro.Segment = this.OverlaySegment;
-			this.oHelp.Segment = this.OverlaySegment;
-			this.oGameLoadAndSave.Segment = this.OverlaySegment;
-			this.oHallOfFame.Segment = this.OverlaySegment;
-			this.oStartGameMenu.Segment = this.OverlaySegment;
-			this.oOverlay_23.Segment = this.OverlaySegment;
-			this.oOverlay_14.Segment = this.OverlaySegment;
-			this.oCivilopedia.Segment = this.OverlaySegment;
-			this.oOverlay_21.Segment = this.OverlaySegment;
-			this.oCityObject.Segment = this.OverlaySegment;
-			this.oOverlay_18.Segment = this.OverlaySegment;
-			this.oOverlay_22.Segment = this.OverlaySegment;
-			this.oGameReplay.Segment = this.OverlaySegment;
-			this.oOverlay_13.Segment = this.OverlaySegment;
-			this.oWorldMap.Segment = this.OverlaySegment;
-			this.oOverlay_20.Segment = this.OverlaySegment;
-			this.oOverlay_17.Segment = this.OverlaySegment;
-			this.oOverlay_10.Segment = this.OverlaySegment;
-			this.oOverlay_15.Segment = this.OverlaySegment;
 		}
 
 		public CPU CPU

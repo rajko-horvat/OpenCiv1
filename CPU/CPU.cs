@@ -68,7 +68,7 @@ namespace IRB.VirtualCPU
 			this.oParent = parent;
 			this.oLog = log;
 			this.oMemory = new CPUMemory(this);
-			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 25, 25);
+			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 20, 20);
 
 #if DEBUG
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))

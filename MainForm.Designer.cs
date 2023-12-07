@@ -43,6 +43,7 @@
 			// tmrRefresh
 			// 
 			this.tmrRefresh.Enabled = true;
+			this.tmrRefresh.Interval = 50;
 			this.tmrRefresh.Tick += new System.EventHandler(this.tmrRefresh_Tick);
 			// 
 			// tsMain

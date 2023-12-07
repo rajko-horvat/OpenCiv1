@@ -17,47 +17,36 @@ namespace OpenCiv1
 		public void F0_2dc4_0042()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_0042'(Cdecl, Far) at 0x2dc4:0x0042");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
-			this.oCPU.AX.Word = 0;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x004a); // stack management - push return offset
 			// Instruction address 0x2dc4:0x0045, size: 5
-			this.oParent.MSCAPI.time();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oCPU.DWordToWords(this.oCPU.AX, this.oCPU.DX, (uint)this.oParent.MSCAPI.time(0));
+
 			this.oCPU.AX.High = this.oCPU.ANDByte(this.oCPU.AX.High, 0x7f);
 			this.oParent.GameState.RandomSeed = this.oCPU.AX.Word;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
-			this.oCPU.PushWord(0x0059); // stack management - push return offset
+
 			// Instruction address 0x2dc4:0x0054, size: 5
-			this.oParent.MSCAPI.srand();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.MSCAPI.srand(this.oCPU.AX.Word);
+
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_2dc4_0042'");
 		}
 
-		public ushort F0_2dc4_007c_CheckValueRange(int value, int minValue, int maxValue)
+		public int F0_2dc4_007c_CheckValueRange(int value, int minValue, int maxValue)
 		{
 			// function body
 			if (minValue > maxValue)
 				throw new Exception("Minimum value is greater than maximum value");
 
-			this.oCPU.AX.Word = (ushort)CPU.ToInt16(Math.Min(Math.Max(value, minValue), maxValue));
+			int iRetVal = Math.Min(Math.Max(value, minValue), maxValue);
+			this.oCPU.AX.Word = (ushort)CPU.ToInt16(iRetVal);
 
-			return this.oCPU.AX.Word;
+			return iRetVal;
 		}
 
 		public void F0_2dc4_00ba()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_00ba'(Cdecl, Far) at 0x2dc4:0x00ba");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -101,7 +90,6 @@ namespace OpenCiv1
 		public void F0_2dc4_0102()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_0102'(Cdecl, Far) at 0x2dc4:0x0102");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -126,12 +114,11 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)));
 			this.oCPU.PushWord((ushort)this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.X);
 			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)));
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x0145); // stack management - push return offset
 			// Instruction address 0x2dc4:0x0142, size: 3
 			F0_2dc4_0289();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x8);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
@@ -159,7 +146,6 @@ namespace OpenCiv1
 		public void F0_2dc4_0177()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_0177'(Cdecl, Far) at 0x2dc4:0x0177");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -185,12 +171,11 @@ namespace OpenCiv1
 			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d5));
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)));
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x01b5); // stack management - push return offset
 			// Instruction address 0x2dc4:0x01b2, size: 3
 			F0_2dc4_0289();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x8);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
@@ -234,7 +219,6 @@ namespace OpenCiv1
 		public void F0_2dc4_0208()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_0208'(Cdecl, Far) at 0x2dc4:0x0208");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -273,7 +257,6 @@ namespace OpenCiv1
 		public void F0_2dc4_0243()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_0243'(Cdecl, Far) at 0x2dc4:0x0243");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -315,7 +298,6 @@ namespace OpenCiv1
 		public void F0_2dc4_0289()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_0289'(Cdecl, Far) at 0x2dc4:0x0289");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -344,12 +326,11 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x02c9); // stack management - push return offset
 			// Instruction address 0x2dc4:0x02c6, size: 3
 			F0_2dc4_0208();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
@@ -359,7 +340,6 @@ namespace OpenCiv1
 		public void F0_2dc4_02cd()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_02cd'(Cdecl, Far) at 0x2dc4:0x02cd");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -403,12 +383,11 @@ namespace OpenCiv1
 
 		L0325:
 			this.oCPU.PushWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x032c); // stack management - push return offset
 			// Instruction address 0x2dc4:0x0329, size: 3
 			F0_2dc4_0337();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
 			this.oCPU.SI.Word = this.oCPU.PopWord();
@@ -421,7 +400,6 @@ namespace OpenCiv1
 		public void F0_2dc4_0337()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_0337'(Cdecl, Far) at 0x2dc4:0x0337");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -463,7 +441,6 @@ namespace OpenCiv1
 		public void F0_2dc4_03ce()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_03ce'(Cdecl, Far) at 0x2dc4:0x03ce");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -536,7 +513,6 @@ namespace OpenCiv1
 		public void F0_2dc4_047d()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_047d'(Cdecl, Far) at 0x2dc4:0x047d");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -577,7 +553,6 @@ namespace OpenCiv1
 		public void F0_2dc4_0523()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_0523'(Cdecl, Far) at 0x2dc4:0x0523");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -604,12 +579,11 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.AX.Word);
 			this.oCPU.AX.Word = 0xba06;
 			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x0575); // stack management - push return offset
 			// Instruction address 0x2dc4:0x0570, size: 5
 			this.oParent.Segment_1238.F0_1238_001e();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
 
 		L0578:
@@ -623,26 +597,23 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("'F0_2dc4_05dd'(Cdecl, Far) at 0x2dc4:0x05dd");
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x05f2); // stack management - push return offset
 			// Instruction address 0x2dc4:0x05ed, size: 5
 			this.oParent.Segment_1000.F0_1000_0382(1, 15, 96, 103);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x060a); // stack management - push return offset
 			// Instruction address 0x2dc4:0x0605, size: 5
 			this.oParent.Segment_1000.F0_1000_0382(2, 15, 104, 111);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x0622); // stack management - push return offset
 			// Instruction address 0x2dc4:0x061d, size: 5
 			this.oParent.Segment_1000.F0_1000_0382(3, 15, 112, 127);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_2dc4_05dd'");
@@ -651,7 +622,6 @@ namespace OpenCiv1
 		public void F0_2dc4_0626()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_0626'(Cdecl, Far) at 0x2dc4:0x0626");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2fec), 0x0);
@@ -659,26 +629,23 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
 			if (this.oCPU.Flags.E) goto L0658;
 
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x063d); // stack management - push return offset
 			// Instruction address 0x2dc4:0x0638, size: 5
 			this.oParent.Segment_1000.F0_1000_03fa(1);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 			
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x0649); // stack management - push return offset
 			// Instruction address 0x2dc4:0x0644, size: 5
 			this.oParent.Segment_1000.F0_1000_03fa(2);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 			
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x0655); // stack management - push return offset
 			// Instruction address 0x2dc4:0x0650, size: 5
 			this.oParent.Segment_1000.F0_1000_03fa(3);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 
 		L0658:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2fec, 0x1);
@@ -689,7 +656,6 @@ namespace OpenCiv1
 		public void F0_2dc4_065f()
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_065f'(Cdecl, Far) at 0x2dc4:0x065f");
-			this.oCPU.CS.Word = 0x2dc4; // set this function segment
 
 			// function body
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2fec), 0x0);
@@ -697,26 +663,23 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
 			if (this.oCPU.Flags.E) goto L0691;
 
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x0676); // stack management - push return offset
 			// Instruction address 0x2dc4:0x0671, size: 5
 			this.oParent.Segment_1000.F0_1000_042b(1);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 			
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x0682); // stack management - push return offset
 			// Instruction address 0x2dc4:0x067d, size: 5
 			this.oParent.Segment_1000.F0_1000_042b(2);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 
-			this.oCPU.PushWord(this.oCPU.CS.Word); // stack management - push return segment
+			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x068e); // stack management - push return offset
 			// Instruction address 0x2dc4:0x0689, size: 5
 			this.oParent.Segment_1000.F0_1000_042b(3);
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.CS.Word = 0x2dc4; // restore this function segment
 
 		L0691:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2fec, 0x0);
