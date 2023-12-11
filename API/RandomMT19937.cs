@@ -64,8 +64,8 @@ public class RandomMT19937
 	private const uint UPPER_MASK = 0x80000000U; // most significant w-r bits
 	private const uint LOWER_MASK = 0x7fffffffU; // least significant r bits
 
-	private uint[] mt = new uint[N]; // the array for the state vector
-	private int mti = N + 1; // mti==N+1 means mt[N] is not initialized
+	private uint[] aMatrix = new uint[N]; // the array for the state vector
+	private int iMatrixIndex = N + 1; // iMatrixIndex == N+1 means aMatrix[N] is not initialized
 	private uint[] mag01 = new uint[] { 0x0U, MATRIX_A }; // mag01[x] = x * MATRIX_A  for x=0,1
 
 	// Methods
@@ -74,56 +74,62 @@ public class RandomMT19937
 	{
 	}
 
-	// initializes mt[N] with a seed
-	public RandomMT19937(uint Seed)
+	// initializes aMatrix[N] with a seed
+	public RandomMT19937(uint seed)
 	{
-		mt[0] = Seed & 0xffffffffU; // for >32 bit machines
-		for (mti = 1; mti < N; mti++)
+		aMatrix[0] = seed & 0xffffffffU; // for >32 bit machines
+
+		// generate N words at one time
+		for (iMatrixIndex = 1; iMatrixIndex < N; iMatrixIndex++)
 		{
-			mt[mti] = (1812433253U * (mt[mti - 1] ^ (mt[mti - 1] >> 30)) + (uint)mti);
-			// See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier.
-			// In the previous versions, MSBs of the seed affect
-			// only MSBs of the array mt[].
+			aMatrix[iMatrixIndex] = (1812433253U * (aMatrix[iMatrixIndex - 1] ^ (aMatrix[iMatrixIndex - 1] >> 30)) + (uint)iMatrixIndex);
+			// See Knuth TAOCP Vol 2. 3rd Ed. P.106 for multiplier.
+			// In the previous versions, MSBs of the seed affect only MSBs of the array aMatrix[].
 			// 2002/01/09 modified by Makoto Matsumoto
-			mt[mti] &= 0xffffffffU; // for >32 bit machines
+			aMatrix[iMatrixIndex] &= 0xffffffffU; // for >32 bit machines
 		}
 	}
 
-	/* generates a random number on [0,0xffffffff]-interval */
+	/// <summary>
+	/// Generates a random number on [0,0xffffffff] interval
+	/// </summary>
+	/// <returns></returns>
 	private uint InternalSample()
 	{
-		uint y;
+		uint value;
 
-		if (mti >= N)
+		if (iMatrixIndex >= N)
 		{
-			/* generate N words at one time */
-			int kk;
+			// generate N words at one time
+			int i;
 
-			for (kk = 0; kk < N - M; kk++)
+			for (i = 0; i < N - M; i++)
 			{
-				y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
-				mt[kk] = mt[kk + M] ^ (y >> 1) ^ mag01[y & 0x1U];
+				value = (aMatrix[i] & UPPER_MASK) | (aMatrix[i + 1] & LOWER_MASK);
+				aMatrix[i] = aMatrix[i + M] ^ (value >> 1) ^ mag01[value & 1];
 			}
-			for (; kk < N - 1; kk++)
-			{
-				y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
-				mt[kk] = mt[kk + (M - N)] ^ (y >> 1) ^ mag01[y & 0x1U];
-			}
-			y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-			mt[N - 1] = mt[M - 1] ^ (y >> 1) ^ mag01[y & 0x1U];
 
-			mti = 0;
+			for (; i < N - 1; i++)
+			{
+				value = (aMatrix[i] & UPPER_MASK) | (aMatrix[i + 1] & LOWER_MASK);
+				aMatrix[i] = aMatrix[i + (M - N)] ^ (value >> 1) ^ mag01[value & 1];
+			}
+
+			value = (aMatrix[N - 1] & UPPER_MASK) | (aMatrix[0] & LOWER_MASK);
+			aMatrix[N - 1] = aMatrix[M - 1] ^ (value >> 1) ^ mag01[value & 1];
+
+			iMatrixIndex = 0;
 		}
 
-		y = mt[mti++];
+		value = aMatrix[iMatrixIndex++];
 
-		/* Tempering */
-		y ^= (y >> 11);
-		y ^= (y << 7) & 0x9d2c5680U;
-		y ^= (y << 15) & 0xefc60000U;
-		y ^= (y >> 18);
+		// Tempering
+		value ^= (value >> 11);
+		value ^= (value << 7) & 0x9d2c5680U;
+		value ^= (value << 15) & 0xefc60000U;
+		value ^= (value >> 18);
 
-		return y;
+		return value;
 	}
 
 	public virtual uint UNext()
@@ -186,7 +192,7 @@ public class RandomMT19937
 	/// <returns></returns>
 	protected virtual double Sample()
 	{
-		return (this.InternalSample() * 2.3283064365386962890625e-10);
 		// (1.0 / 4294967296.0) = 2.3283064365386962890625e-10
+		return (this.InternalSample() * 2.3283064365386962890625e-10);
 	}
 }

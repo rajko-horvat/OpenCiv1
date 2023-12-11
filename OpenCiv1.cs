@@ -49,7 +49,7 @@ namespace OpenCiv1
 		private Overlay_14 oOverlay_14;
 		private Civilopedia oCivilopedia;
 		private Overlay_21 oOverlay_21;
-		private CityObject oCityObject;
+		private CityView oCityView;
 		private Overlay_18 oOverlay_18;
 		private Overlay_22 oOverlay_22;
 		private GameReplay oGameReplay;
@@ -124,7 +124,7 @@ namespace OpenCiv1
 			this.oOverlay_14 = new Overlay_14(this);
 			this.oCivilopedia = new Civilopedia(this);
 			this.oOverlay_21 = new Overlay_21(this);
-			this.oCityObject = new CityObject(this);
+			this.oCityView = new CityView(this);
 			this.oOverlay_18 = new Overlay_18(this);
 			this.oOverlay_22 = new Overlay_22(this);
 			this.oGameReplay = new GameReplay(this);
@@ -575,9 +575,9 @@ namespace OpenCiv1
 			get { return this.oOverlay_21; }
 		}
 
-		public CityObject CityObject
+		public CityView CityView
 		{
-			get { return this.oCityObject; }
+			get { return this.oCityView; }
 		}
 
 		public Overlay_18 Overlay_18

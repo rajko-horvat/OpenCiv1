@@ -1040,7 +1040,7 @@ namespace OpenCiv1
 			srand(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)));
 		}
 
-		public void srand(ushort value)
+		public void srand(uint value)
 		{
 			this.oRNG = new RandomMT19937(value);
 		}

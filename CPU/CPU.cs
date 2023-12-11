@@ -80,7 +80,7 @@ namespace IRB.VirtualCPU
 				this.sDefaultDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Dos", "Civ1") + Path.DirectorySeparatorChar;
 			}
 #else
-			this.DefaultDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar;
+			this.DefaultDirectory = "";
 #endif
 		}
 
@@ -210,14 +210,9 @@ namespace IRB.VirtualCPU
 					this.oAX.Word = this.PopWord();
 				}
 
-				ushort usCS = this.oCS.Word;
 				this.PushF();
-				this.PushWord(0x0);
-				this.PushWord(usCS);
 				this.oParent.Segment_1000.F0_1000_01a7_Timer();
-				this.PopDWord();
 				this.PopF();
-				this.oCS.Word = usCS;
 
 				this.oLog = oLogTemp;
 

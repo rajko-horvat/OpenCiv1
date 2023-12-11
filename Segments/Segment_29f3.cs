@@ -553,13 +553,9 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x29;
 
 		L04ad:
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x04b3); // stack management - push return offset
 			// Instruction address 0x29f3:0x04ae, size: 5
-			this.oParent.Segment_11a8.F0_11a8_046c();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.Segment_1000.F0_1000_0a32(this.oCPU.AX.Word, 0);
+
 			this.oCPU.PushWord((ushort)unitID2);
 			this.oCPU.PushWord((ushort)playerID2);
 			this.oCPU.PushWord(0); // stack management - push return segment, ignored
@@ -696,7 +692,7 @@ namespace OpenCiv1
 						(playerID1 << 5) + 0x40) << 1) + 0xd4ce)));
 
 			// Instruction address 0x29f3:0x062a, size: 5
-			this.oParent.Segment_1182.F0_1182_0134(2);
+			this.oParent.Segment_1182.F0_1182_0134_WaitTime(2);
 
 			// Instruction address 0x29f3:0x0643, size: 5
 			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
@@ -772,7 +768,7 @@ namespace OpenCiv1
 					(ushort)(((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)) + 0x20) << 1) + 0xd4ce)));
 
 			// Instruction address 0x29f3:0x06f2, size: 5
-			this.oParent.Segment_1182.F0_1182_0134(4);
+			this.oParent.Segment_1182.F0_1182_0134_WaitTime(4);
 
 			// Instruction address 0x29f3:0x070b, size: 5
 			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
@@ -1615,11 +1611,8 @@ namespace OpenCiv1
 			// Instruction address 0x29f3:0x0e11, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2b8e);
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0e21); // stack management - push return offset
 			// Instruction address 0x29f3:0x0e1c, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
+			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
 
 			// Instruction address 0x29f3:0x0e2c, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2b9c);

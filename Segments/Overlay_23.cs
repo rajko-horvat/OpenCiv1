@@ -60,11 +60,8 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 			
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x006a); // stack management - push return offset
 			// Instruction address 0x0000:0x0065, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6(cityID);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
+			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 			
 			F23_0000_0414(0x58, 0x60, 0xc);
 			
@@ -308,11 +305,8 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x02fc, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x53f3, 82, 80, 0);
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0309); // stack management - push return offset
 			// Instruction address 0x0000:0x0304, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
@@ -504,7 +498,7 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x68ce), 10, 15, 11);
 
 			// Instruction address 0x0000:0x04e2, size: 5
-			this.oParent.Segment_1182.F0_1182_0134(10);
+			this.oParent.Segment_1182.F0_1182_0134_WaitTime(10);
 
 			// Instruction address 0x0000:0x0503, size: 5
 			this.oParent.VGADriver.F0_VGA_009a_ReplaceColor(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x68d0),
@@ -518,7 +512,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0520;
 
 			// Instruction address 0x0000:0x0518, size: 5
-			this.oParent.Segment_1182.F0_1182_0134(10);
+			this.oParent.Segment_1182.F0_1182_0134_WaitTime(10);
 
 		L0520:
 			this.oCPU.PushWord(0); // stack management - push return segment, ignored
@@ -687,11 +681,8 @@ namespace OpenCiv1
 			goto L069a;
 
 		L06b4:
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x06b9); // stack management - push return offset
 			// Instruction address 0x0000:0x06b4, size: 5
 			this.oParent.Segment_1403.F0_1403_4545();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46));
 			this.oCPU.SI.Word = this.oCPU.PopWord();
@@ -732,11 +723,8 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba07), 0x0);
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0727); // stack management - push return offset
 			// Instruction address 0x0000:0x0722, size: 5
 			this.oParent.Segment_1182.F0_1182_002a_DrawString((ushort)(0xba06 + this.oCPU.BX.Word), xPos, yPos, 0);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
 			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));

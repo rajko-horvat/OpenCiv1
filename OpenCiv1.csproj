@@ -113,7 +113,7 @@
     <Compile Include="Segments\Overlay_15.cs" />
     <Compile Include="Segments\Overlay_17.cs" />
     <Compile Include="Segments\Overlay_18.cs" />
-    <Compile Include="Segments\CityObject.cs" />
+    <Compile Include="Segments\CityView.cs" />
     <Compile Include="Segments\MainIntro.cs" />
     <Compile Include="Segments\Overlay_20.cs" />
     <Compile Include="Segments\Overlay_21.cs" />

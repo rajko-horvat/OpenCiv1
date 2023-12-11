@@ -155,11 +155,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L0195;
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 			
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x014d); // stack management - push return offset
 			// Instruction address 0x2aea:0x0148, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6(this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xdf20)));
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
+			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xdf20)));
 			
 			this.oCPU.AX.Word = 0x147;
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x6dac)));
@@ -174,7 +171,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
 			// Instruction address 0x2aea:0x018d, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawTextWithShadow(
+			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(
 				0xba06,
 				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oCPU.ReadInt16(this.oCPU.DS.Word, CPU.ToUInt16(this.oCPU.SI.Word + 0x6dac)) - 8, 80, 999),
 				this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x6e3e)) + 16,
@@ -1775,7 +1772,7 @@ namespace OpenCiv1
 
 		L102a:
 			// Instruction address 0x2aea:0x103d, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawTextWithShadow(
+			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(
 				0x2ba0,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)) + 4,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)) + 7,
@@ -1803,7 +1800,7 @@ namespace OpenCiv1
 
 		L1072:
 			// Instruction address 0x2aea:0x1085, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawTextWithShadow(
+			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(
 				0x2ba2,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)) + 4,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)) + 7,
@@ -1886,7 +1883,7 @@ namespace OpenCiv1
 
 		L1144:
 			// Instruction address 0x2aea:0x1157, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawTextWithShadow(
+			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(
 				0xba06,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)) + 4,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xc)) + 7,
