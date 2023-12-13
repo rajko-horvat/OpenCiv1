@@ -367,7 +367,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0268();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
-			this.oParent.CityView.F19_0000_0000(cityID, 0xfffe);
+			this.oParent.CityView.F19_0000_0000(cityID, -2);
 			
 			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x0385); // stack management - push return offset

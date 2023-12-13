@@ -1331,7 +1331,7 @@ namespace OpenCiv1
 			this.oCPU.DI.Word <<= 2;
 
 			// Instruction address 0x2e31:0x0b43, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0208(
+			this.oParent.Segment_2dc4.F0_2dc4_0208_CombinePosition(
 				(short)(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)) -
 					(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)) << 2) - 1),
 				(short)(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)) -

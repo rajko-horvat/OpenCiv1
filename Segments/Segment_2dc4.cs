@@ -216,26 +216,26 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_2dc4_0177'");
 		}
 
-		public short F0_2dc4_0208(short param1, short param2)
+		public short F0_2dc4_0208_CombinePosition(short xPos, short yPos)
 		{
 			// function body			
-			param1 = Math.Abs(param1);
-			param2 = Math.Abs(param2);
+			xPos = Math.Abs(xPos);
+			yPos = Math.Abs(yPos);
 
-			if (param1 > param2)
+			if (xPos > yPos)
 			{
 
-				param2 = (short)((param2 >> 1) + param1);
-				this.oCPU.AX.Word = (ushort)param2;
+				yPos = (short)((yPos >> 1) + xPos);
+				this.oCPU.AX.Word = (ushort)yPos;
 
-				return param2;
+				return yPos;
 			}
 			else
 			{
-				param1 = (short)((param1 >> 1) + param2);
-				this.oCPU.AX.Word = (ushort)param1;
+				xPos = (short)((xPos >> 1) + yPos);
+				this.oCPU.AX.Word = (ushort)xPos;
 
-				return param1;
+				return xPos;
 			}
 		}
 
@@ -311,7 +311,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 
 			// Instruction address 0x2dc4:0x02c6, size: 3
-			F0_2dc4_0208(
+			F0_2dc4_0208_CombinePosition(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				(short)this.oCPU.AX.Word);
 

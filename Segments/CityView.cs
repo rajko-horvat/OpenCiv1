@@ -14,7 +14,7 @@ namespace OpenCiv1
 			this.oCPU = parent.CPU;
 		}
 
-		public void F19_0000_0000(short cityID, ushort param2)
+		public void F19_0000_0000(short cityID, short param2)
 		{
 			this.oCPU.Log.EnterBlock("'F19_0000_0000'(Cdecl, Far) at 0x0000:0x0000");
 
@@ -24,11 +24,11 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x186);
 
 			City oCity = this.oParent.GameState.Cities[cityID];
-			
+
 			int iTechnologyCount = this.oParent.GameState.Players[oCity.PlayerID].DiscoveredTechnologyCount >> 1;
 			int[,] aCityLayout = new int[19, 12];
-			int i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11;
-			int iDirection, iValue;
+			int iXPos1, iYPos1, iXPos2, iYPos2, i8;
+			int iValue;
 
 			for (int i = 0; i < 19; i++)
 			{
@@ -52,79 +52,74 @@ namespace OpenCiv1
 			string sCityName = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06));
 			RandomMT19937 oRNG = new RandomMT19937((uint)sCityName.GetHashCode());
 
-			i1 = 9;
-			i2 = 11;
-			i3 = 0;
-			i4 = 0;
-			i5 = 0;
+			iXPos1 = 9;
+			iYPos1 = 11;
 
-			while ((oCity.ActualSize << 3) > i5)
+			for (int i = 0, j = 0; (oCity.ActualSize << 3) > i; i++)
 			{
-				if (aCityLayout[i1, i2] != -1)
+				if (aCityLayout[iXPos1, iYPos1] != -1)
 				{
-					i4++;
+					j++;
 
-					if (i4 < 999)
+					if (j < 999)
 					{
-						i5--;
+						i--;
 					}
 				}
 				else
 				{
 					// Instruction address 0x0000:0x0195, size: 5
-					i7 = this.oParent.Segment_2dc4.F0_2dc4_0208((short)(i1 - 9), (short)(i2 - 10));
+					int iCombinedPosition = this.oParent.Segment_2dc4.F0_2dc4_0208_CombinePosition((short)(iXPos1 - 9), (short)(iYPos1 - 10));
 
-					aCityLayout[i1, i2] = Math.Min(Math.Max(((iTechnologyCount - i7) / 3) - oRNG.Next(2), iTechnologyCount / 6), Math.Min((oCity.ActualSize / 4) + 6, 9));
+					aCityLayout[iXPos1, iYPos1] = Math.Min(Math.Max(((iTechnologyCount - iCombinedPosition) / 3) - oRNG.Next(2), iTechnologyCount / 6),
+						Math.Min((oCity.ActualSize / 4) + 6, 9));
 
-					if ((i7 * i7) > ((int)oCity.ActualSize << 3))
+					if ((iCombinedPosition * iCombinedPosition) > ((int)oCity.ActualSize << 3))
 					{
-						i1 = 9;
-						i2 = 11;
+						iXPos1 = 9;
+						iYPos1 = 11;
 					}
 				}
 
-				i6 = oRNG.Next(8) + 1;
+				iYPos2 = oRNG.Next(8) + 1;
 
-				i1 = Math.Min(Math.Max(this.oCPU.ReadInt16(this.oCPU.DS.Word, CPU.ToUInt16((i6 << 1) + 0x1882)) + i1, 0), 18);
-				i2 = Math.Min(Math.Max(this.oCPU.ReadInt16(this.oCPU.DS.Word, CPU.ToUInt16((i6 << 1) + 0x18e4)) + (ushort)i2, 0), 11);
-
-				i5++;
+				iXPos1 = Math.Min(Math.Max(this.oCPU.ReadInt16(this.oCPU.DS.Word, CPU.ToUInt16((iYPos2 << 1) + 0x1882)) + iXPos1, 0), 18);
+				iYPos1 = Math.Min(Math.Max(this.oCPU.ReadInt16(this.oCPU.DS.Word, CPU.ToUInt16((iYPos2 << 1) + 0x18e4)) + (ushort)iYPos1, 0), 11);
 			}
 
-			i6 = 4 + oRNG.Next(2);
+			iYPos2 = 4 + oRNG.Next(2);
 
-			for (i5 = 2; i5 < 17; i5++)
+			for (int i = 2; i < 17; i++)
 			{
-				aCityLayout[i5, i6] = -2;
+				aCityLayout[i, iYPos2] = -2;
 			}
 
-			aCityLayout[18, i6] = -1;
-			aCityLayout[0, i6] = -1;
+			aCityLayout[18, iYPos2] = -1;
+			aCityLayout[0, iYPos2] = -1;
 
-			i6 = 8 + oRNG.Next(2);
+			iYPos2 = 8 + oRNG.Next(2);
+			i8 = iYPos2;
 
-			for (i5 = 2; i5 < 17; i5++)
+			for (int i = 2; i < 17; i++)
 			{
-				aCityLayout[i5, i6] = -2;
+				aCityLayout[i, iYPos2] = -2;
 			}
 
-			aCityLayout[18, i6] = -1;
-			aCityLayout[0, i6] = -1;
+			aCityLayout[18, iYPos2] = -1;
+			aCityLayout[0, iYPos2] = -1;
 
-			i8 = i6;
+			iXPos2 = 9 + oRNG.Next(4);
 
-			i6 = 9 + oRNG.Next(4);
-
-			for (i5 = 1; i5 < 12; i5++)
+			for (int i = 1; i < 12; i++)
 			{
-				aCityLayout[i6 - ((i5 + 1) >> 1), i5] = -2;
+				aCityLayout[iXPos2 - ((i + 1) >> 1), i] = -2;
 			}
 
-			i6 = 14 + oRNG.Next(4);
+			iXPos2 = 14 + oRNG.Next(4);
 
-			for (i5 = 1; i5 < 12; i5++)
+			for (int i = 1; i < 12; i++)
 			{
-				aCityLayout[i6 - ((i5 + 1) >> 1), i5] = -2;
+				aCityLayout[iXPos2 - ((i + 1) >> 1), i] = -2;
 			}
 
 			if (cityID == this.oParent.GameState.WonderCityID[7])
@@ -137,286 +132,118 @@ namespace OpenCiv1
 				aCityLayout[2, 0] = 15;
 			}
 
-			for (i5 = 1; i5 <= 21; i5++)
+			for (int i = 1; i <= 21; i++)
 			{
-				if (this.oParent.GameState.WonderCityID[i5] == cityID && ((1 << i5) & 0x808a) == 0)
+				if (this.oParent.GameState.WonderCityID[i] == cityID && ((1 << i) & 0x808a) == 0)
 				{
-					for (i4 = 0; i4 < 500; i4++)
+					int j = 0;
+
+					for (; j < 500; j++)
 					{
-						i1 = oRNG.Next(15) + 1;
-						i2 = oRNG.Next(10) + 1;
+						iXPos1 = oRNG.Next(15) + 1;
+						iYPos1 = oRNG.Next(10) + 1;
 
-						iDirection = 0;
+						int iFlags = 0;
 
-						// ??? this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x17d)), 0x0);
-						if (aCityLayout[i1 - 1, i2 + 1] >= 0)
+						if (aCityLayout[iXPos1 - 1, iYPos1 + 1] >= 0 || aCityLayout[iXPos1, iYPos1] >= 0 ||
+							aCityLayout[iXPos1, iYPos1 + 1] >= 0 || aCityLayout[iXPos1 + 1, iYPos1] >= 0 ||
+							aCityLayout[iXPos1 + 1, iYPos1 + 1] >= 0 || aCityLayout[iXPos1 + 2, iYPos1] >= 0 ||
+							j > 400)
 						{
-							iDirection |= 1;
+							iFlags |= 1;
 						}
 
-						// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x172)), 0x0);
-						if (aCityLayout[i1, i2] >= 0)
+						if (aCityLayout[iXPos1 - 1, iYPos1 + 1] >= 15 || aCityLayout[iXPos1, iYPos1] >= 15 ||
+							aCityLayout[iXPos1, iYPos1 + 1] >= 15 || aCityLayout[iXPos1 + 1, iYPos1] >= 15 ||
+							aCityLayout[iXPos1 + 1, iYPos1 + 1] >= 15 || aCityLayout[iXPos1 + 2, iYPos1] >= 15 ||
+							aCityLayout[iXPos1 + 2, iYPos1 + 1] >= 15 ||
+							aCityLayout[iXPos1 - 1, iYPos1 + 1] == -2 || aCityLayout[iXPos1, iYPos1] == -2 ||
+							aCityLayout[iXPos1, iYPos1 + 1] == -2 || aCityLayout[iXPos1 + 1, iYPos1] == -2 ||
+							aCityLayout[iXPos1 + 1, iYPos1 + 1] == -2)
 						{
-							iDirection |= 1;
+							iFlags |= 2;
 						}
 
-						// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x171)), 0x0);
-						if (aCityLayout[i1, i2 + 1] >= 0)
-						{
-							iDirection |= 1;
-						}
-
-						// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x166)), 0x0);
-						if (aCityLayout[i1 + 1, i2] >= 0)
-						{
-							iDirection |= 1;
-						}
-
-						// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x165)), 0x0);
-						if (aCityLayout[i1 + 1, i2 + 1] >= 0)
-						{
-							iDirection |= 1;
-						}
-
-						// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x15a)), 0x0);
-						if (aCityLayout[i1 + 2, i2] >= 0)
-						{
-							iDirection |= 1;
-						}
-
-						if (i4 > 400)
-						{
-							iDirection |= 1;
-						}
-
-						// ??? this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x17d)), 0xf);
-						if (aCityLayout[i1 - 1, i2 + 1] >= 15)
-						{
-							iDirection |= 2;
-						}
-
-						// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x172)), 0xf);
-						if (aCityLayout[i1, i2] >= 15)
-						{
-							iDirection |= 2;
-						}
-
-						// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x171)), 0xf);
-						if (aCityLayout[i1, i2 + 1] >= 15)
-						{
-							iDirection |= 2;
-						}
-
-						// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x166)), 0xf);
-						if (aCityLayout[i1 + 1, i2] >= 15)
-						{
-							iDirection |= 2;
-						}
-
-						//this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x165)), 0xf);
-						if (aCityLayout[i1 + 1, i2 + 1] >= 15)
-						{
-							iDirection |= 2;
-						}
-
-						// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x15a)), 0xf);
-						if (aCityLayout[i1 + 2, i2] >= 15)
-						{
-							iDirection |= 2;
-						}
-
-						// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x159)), 0xf);
-						if (aCityLayout[i1 + 2, i2 + 1] >= 15)
-						{
-							iDirection |= 2;
-						}
-
-						// ??? this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x17d)), 0xfe);
-						if (aCityLayout[i1 - 1, i2 + 1] == -2)
-						{
-							iDirection |= 2;
-						}
-
-						// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x172)), 0xfe);
-						if (aCityLayout[i1, i2] == -2)
-						{
-							iDirection |= 2;
-						}
-
-						// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x171)), 0xfe);
-						if (aCityLayout[i1, i2 + 1] == -2)
-						{
-							iDirection |= 2;
-						}
-
-						// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x166)), 0xfe);
-						if (aCityLayout[i1 + 1, i2] == -2)
-						{
-							iDirection |= 2;
-						}
-
-						// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x165)), 0xfe);
-						if (aCityLayout[i1 + 1, i2 + 1] == -2)
-						{
-							iDirection |= 2;
-						}
-
-						if (iDirection == 1)
+						if (iFlags == 1)
 							break;
 					}
 
-					if (i4 < 500)
+					if (j < 500)
 					{
-						aCityLayout[i1 - 1, i2 + 1] = 15;
-						aCityLayout[i1, i2] = i5 + 64;
-						aCityLayout[i1, i2 + 1] = 15;
-						aCityLayout[i1 + 1, i2] = 15;
-						aCityLayout[i1 + 1, i2 + 1] = 15;
-						aCityLayout[i1 + 1, i2 - 1] = 15;
-						aCityLayout[i1 + 2, i2] = 15;
-						aCityLayout[i1 + 2, i2 - 1] = 15;
-						aCityLayout[i1 + 2, i2 + 1] = 15;
-						aCityLayout[i1 + 3, i2 - 1] = 15;
+						aCityLayout[iXPos1 - 1, iYPos1 + 1] = 15;
+						aCityLayout[iXPos1, iYPos1] = i + 64;
+						aCityLayout[iXPos1, iYPos1 + 1] = 15;
+						aCityLayout[iXPos1 + 1, iYPos1] = 15;
+						aCityLayout[iXPos1 + 1, iYPos1 + 1] = 15;
+						aCityLayout[iXPos1 + 1, iYPos1 - 1] = 15;
+						aCityLayout[iXPos1 + 2, iYPos1] = 15;
+						aCityLayout[iXPos1 + 2, iYPos1 - 1] = 15;
+						aCityLayout[iXPos1 + 2, iYPos1 + 1] = 15;
+						aCityLayout[iXPos1 + 3, iYPos1 - 1] = 15;
 
-						if (i2 < 7 && (aCityLayout[i1 + 1, i2 + 2] & 7) == 0)
+						if (iYPos1 < 7 && (aCityLayout[iXPos1 + 1, iYPos1 + 2] & 7) == 0)
 						{
-							aCityLayout[i1 + 1, i2 + 2] = -1;
+							aCityLayout[iXPos1 + 1, iYPos1 + 2] = -1;
 						}
 					}
 				}
 			}
 
-			for (i5 = 23; i5 > 0; i5--)
+			for (int i = 23; i > 0; i--)
 			{
-				while (i5 > 0 && (((1 << i5) & this.oCPU.WordsToDWord(oCity.BuildingFlags0, oCity.BuildingFlags1)) == 0 ||
-					i5 == 7 || i5 == 8 || i5 == 12 || i5 == 18 || i5 == 19))
+				while (i > 0 && (((1 << i) & this.oCPU.WordsToDWord(oCity.BuildingFlags0, oCity.BuildingFlags1)) == 0 ||
+					i == 7 || i == 8 || i == 12 || i == 18 || i == 19))
 				{
-					i5--;
+					i--;
 				}
 
-				if (i5 < 1)
+				if (i < 1)
 					break;
 
-				for (i4 = 0; i4 < 500; i4++)
+				int j = 0;
+
+				for (; j < 500; j++)
 				{
-					i1 = oRNG.Next(16) + 1;
-					i2 = oRNG.Next(10) + 1;
+					iXPos1 = oRNG.Next(16) + 1;
+					iYPos1 = oRNG.Next(10) + 1;
 
-					iDirection = 0;
+					int iFlags = 0;
 
-					// ??? this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x17d)), 0x0);
-					if (aCityLayout[i1 - 1, i2 + 1] >= 0)
+					if (aCityLayout[iXPos1 - 1, iYPos1 + 1] >= 0 || aCityLayout[iXPos1, iYPos1] >= 0 ||
+						aCityLayout[iXPos1, iYPos1 + 1] >= 0 || aCityLayout[iXPos1 + 1, iYPos1] >= 0 ||
+						aCityLayout[iXPos1 + 1, iYPos1 + 1] >= 0 ||
+						j > 350)
 					{
-						iDirection |= 1;
+						iFlags |= 1;
 					}
 
-					// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x172)), 0x0);
-					if (aCityLayout[i1, i2] >= 0)
+					if (aCityLayout[iXPos1 - 1, iYPos1 + 1] >= 15 || aCityLayout[iXPos1, iYPos1] >= 15 ||
+						aCityLayout[iXPos1, iYPos1 + 1] >= 15 || aCityLayout[iXPos1 + 1, iYPos1] >= 15 ||
+						aCityLayout[iXPos1 + 1, iYPos1 + 1] >= 15 ||
+						aCityLayout[iXPos1 - 1, iYPos1 + 1] == -2 || aCityLayout[iXPos1, iYPos1] == -2 ||
+						aCityLayout[iXPos1, iYPos1 + 1] == -2 || aCityLayout[iXPos1 + 1, iYPos1] == -2 ||
+						aCityLayout[iXPos1 + 1, iYPos1 + 1] == -2)
 					{
-						iDirection |= 1;
+						iFlags |= 2;
 					}
 
-					// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x171)), 0x0);
-					if (aCityLayout[i1, i2 + 1] >= 0)
-					{
-						iDirection |= 1;
-					}
-
-					// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x166)), 0x0);
-					if (aCityLayout[i1 + 1, i2] >= 0)
-					{
-						iDirection |= 1;
-					}
-
-					// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x165)), 0x0);
-					if (aCityLayout[i1 + 1, i2 + 1] >= 0)
-					{
-						iDirection |= 1;
-					}
-
-					if (i4 > 350)
-					{
-						iDirection |= 1;
-					}
-
-					// ??? this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x17d)), 0xf);
-					if (aCityLayout[i1 - 1, i2 + 1] >= 15)
-					{
-						iDirection |= 2;
-					}
-
-					//this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x172)), 0xf);
-					if (aCityLayout[i1, i2] >= 15)
-					{
-						iDirection |= 2;
-					}
-
-					// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x171)), 0xf);
-					if (aCityLayout[i1, i2 + 1] >= 15)
-					{
-						iDirection |= 2;
-					}
-
-					// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x166)), 0xf);
-					if (aCityLayout[i1 + 1, i2] >= 15)
-					{
-						iDirection |= 2;
-					}
-
-					// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x165)), 0xf);
-					if (aCityLayout[i1 + 1, i2 + 1] >= 15)
-					{
-						iDirection |= 2;
-					}
-
-					// ??? this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x17d)), 0xfe);
-					if (aCityLayout[i1 - 1, i2 + 1] == -2)
-					{
-						iDirection |= 2;
-					}
-
-					//this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x172)), 0xfe);
-					if (aCityLayout[i1, i2] == -2)
-					{
-						iDirection |= 2;
-					}
-
-					//this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x171)), 0xfe);
-					if (aCityLayout[i1, i2 + 1] == -2)
-					{
-						iDirection |= 2;
-					}
-
-					// this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x166)), 0xfe);
-					if (aCityLayout[i1 + 1, i2] == -2)
-					{
-						iDirection |= 2;
-					}
-
-					//this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x165)), 0xfe);
-					if (aCityLayout[i1 + 1, i2 + 1] == -2)
-					{
-						iDirection |= 2;
-					}
-
-					if (iDirection == 1)
+					if (iFlags == 1)
 						break;
 				}
 
-				if (i4 < 500)
+				if (j < 500)
 				{
-					aCityLayout[i1 - 1, i2 + 1] = 15;
-					aCityLayout[i1, i2] = i5 + 15;
-					aCityLayout[i1, i2 + 1] = 15;
-					aCityLayout[i1 + 1, i2] = 15;
-					aCityLayout[i1 + 1, i2 + 1] = 15;
+					aCityLayout[iXPos1 - 1, iYPos1 + 1] = 15;
+					aCityLayout[iXPos1, iYPos1] = i + 15;
+					aCityLayout[iXPos1, iYPos1 + 1] = 15;
+					aCityLayout[iXPos1 + 1, iYPos1] = 15;
+					aCityLayout[iXPos1 + 1, iYPos1 + 1] = 15;
 
-					if (i2 < 7)
+					if (iYPos1 < 7)
 					{
-						// this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BP.Word + (i1 * 12 + i2) - 0x164)), 0x7);
-						if ((aCityLayout[i1 + 1, i2 + 2] & 7) == 0)
+						if ((aCityLayout[iXPos1 + 1, iYPos1 + 2] & 7) == 0)
 						{
-							aCityLayout[i1 + 1, i2 + 2] = -1;
+							aCityLayout[iXPos1 + 1, iYPos1 + 2] = -1;
 						}
 					}
 				}
@@ -424,508 +251,364 @@ namespace OpenCiv1
 
 			if ((oCity.BuildingFlags1 & 8) != 0)
 			{
-				aCityLayout[17, 7] = 34; // this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x9f), 0x22);
-				aCityLayout[17, 8] = 15; // this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x9e), 0xf);
-				aCityLayout[18, 7] = 15; // this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x93), 0xf);
-				aCityLayout[18, 8] = 15; // this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x92), 0xf);
+				aCityLayout[17, 7] = 34;
+				aCityLayout[17, 8] = 15;
+				aCityLayout[18, 7] = 15;
+				aCityLayout[18, 8] = 15;
 			}
-		
+
 			if ((oCity.BuildingFlags0 & 0x100) != 0)
 			{
-				aCityLayout[0, i8 - 1] = 23; // this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + i8 - 0x173), 23);
-				aCityLayout[0, i8] = 15; // this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + i8 - 0x172), 0xf);
-				aCityLayout[1, i8] = 15; // this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + i8 - 0x166), 0xf);
-				aCityLayout[1, i8 + 1] = 15; // this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + i8 - 0x167), 0xf);
-				aCityLayout[2, i8] = 15; // this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + i8 - 0x15a), 0xf);
-				aCityLayout[2, i8 + 1] = 15; // this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + i8 - 0x15b), 0xf);
+				aCityLayout[0, i8 - 1] = 23;
+				aCityLayout[0, i8] = 15;
+				aCityLayout[1, i8] = 15;
+				aCityLayout[1, i8 + 1] = 15;
+				aCityLayout[2, i8] = 15;
+				aCityLayout[2, i8 + 1] = 15;
 			}
-		
+
 			// Instruction address 0x0000:0x08e4, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
 			// Instruction address 0x0000:0x08f0, size: 5
 			this.oParent.Segment_11a8.F0_11a8_02a4(1, 1);
 
-			F19_0000_137f(param2, oCity.PlayerID, cityID);
+			F19_0000_137f((ushort)param2, oCity.PlayerID, cityID);
 
-		L0913:
-			// Instruction address 0x0000:0x091b, size: 5
-			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x4e98, 0);
+			int i3 = 0;
 
-			i5 = 1;
-			goto L093d;
-
-		L092b:
-			if (((1 << i9) & 0x808a) != 0)
-				goto L0977;
-
-		L0939:
-			i5++;
-
-		L093d:
-			if (i5 > 7)
-				goto L09df;
-
-			i9 = i5;
-			
-			if (i5 == 2)
+			do
 			{
-				i9 = 15;
-			}
-		
-			if (this.oParent.GameState.WonderCityID[i9] != cityID)
-				goto L0939;
+				// Instruction address 0x0000:0x091b, size: 5
+				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x4e98, 0);
 
-			if ((i9 + 24) != param2)
-				goto L092b;
-
-			goto L0939;
-
-		L0977:
-			if (i9 <= 7)
-			{
-				this.oCPU.AX.Word = 0;
-			}
-			else
-			{
-				this.oCPU.AX.Word = this.oCPU.ReadUInt16(0x3767, (ushort)((i9 << 3) + 0x2));
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, 0x6);
-			}
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-		
-			this.oCPU.AX.Word = (ushort)((i9 == 3) ? 80 : 0);
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, (ushort)((this.oCPU.ReadInt16(0x3767, (ushort)((i9 << 3) + 0x0)) < 10) ? 0xffff : 2));
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(0x3767, (ushort)((i9 << 3) + 0x0)));
-
-			// Instruction address 0x0000:0x09d4, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
-				(short)this.oCPU.AX.Word,
-				(short)this.oCPU.PopWord(),
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((i9 << 1) + 0x68a0)));
-
-			goto L0939;
-
-		L09df:
-			if ((oCity.BuildingFlags1 & 0x4) == 0 || param2 == 19)
-				goto L0a2f;
-
-			i5 = (cityID == this.oParent.GameState.WonderCityID[7]) ? 69 : 0;
-
-			goto L0a27;
-
-		L0a0a:
-			// Instruction address 0x0000:0x0a1a, size: 5
-			this.oParent.Segment_1000.F0_1000_0797_DrawBitmapToScreen(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
-				(short)i5, 2, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x81c4));
-
-			i5 += 45;
-
-		L0a27:
-			if (i5 < 310)
-				goto L0a0a;
-
-		L0a2f:
-			i2 = 0;
-			goto L0aeb;
-
-		L0a38:
-			int iPrefixTemp = ((this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i11 << 1) + 0x18e4)) <= 0) ? 0 : -1);
-
-		L0a4c:
-			int iXTemp = iPrefixTemp + this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i11 << 1) + 0x1882)) + i1;
-			int iYTemp = this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i11 << 1) + 0x18e4)) + i2;
-
-			if (iYTemp < 12 && aCityLayout[iXTemp, iYTemp] >= 0)
-			{
-				iDirection = 1;
-			}
-		
-			i11++;
-
-		L0a7a:
-			if (i11 > 8)
-				goto L0a9a;
-
-			if ((i2 & 0x1) == 0)
-				goto L0a38;
-
-			if (this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i11 << 1) + 0x18e4)) >= 0)
-			{
-				iPrefixTemp = 0;
-			}
-			else
-			{
-				iPrefixTemp = 1;
-			}
-			goto L0a4c;
-
-		L0a9a:
-			if (iDirection != 0)
-				goto L0ab3;
-
-			aCityLayout[i1, i2] = -1;
-
-		L0ab3:
-			i1++;
-
-		L0ab7:
-			if (i1 >= 19)
-				goto L0ae7;
-
-			iValue = aCityLayout[i1, i2];
-
-			if (iValue != -2)
-				goto L0ab3;
-
-			iDirection = 0;
-			i11 = 1;
-
-			goto L0a7a;
-
-		L0ae7:
-			i2++;
-
-		L0aeb:
-			if (i2 > 11)
-				goto L0afa;
-
-			i1 = 0;
-			goto L0ab7;
-
-		L0afa:
-			i2 = 0;
-			goto L0c9a;
-
-		L0b03:
-			if (iValue != -2)
-				goto L0c05;
-
-			i10 = 0;
-			i11 = 1;
-			goto L0b68;
-
-		L0b1b:
-			iPrefixTemp = (this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i11 << 1) + 0x18e4)) <= 0) ? 0 : -1;
-
-		L0b2f:
-			iXTemp = iPrefixTemp + this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i11 << 1) + 0x1882)) + i1;
-			iYTemp = this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i11 << 1) + 0x18e4)) + i2;
-
-			if ((i11 & 1) != 0)
-			{
-				i10 >>= 1;
-
-				if (iYTemp < 12 && aCityLayout[iXTemp, iYTemp] == -2)
+				for (int i = 1; i < 8; i++)
 				{
-					i10 |= 8;
+					int iWonderID = i;
+
+					if (i == 2)
+					{
+						iWonderID = 15;
+					}
+
+					if (this.oParent.GameState.WonderCityID[iWonderID] == cityID)
+					{
+						if ((iWonderID + 24) != param2)
+						{
+							if (((1 << iWonderID) & 0x808a) != 0)
+							{
+								// Instruction address 0x0000:0x09d4, size: 5
+								this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(
+									this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
+									(short)(((iWonderID == 3) ? 80 : 0) +
+										((this.oCPU.ReadInt16(0x3767, (ushort)((iWonderID << 3) + 0x0)) < 10) ? -1 : 2) +
+										this.oCPU.ReadInt16(0x3767, (ushort)((iWonderID << 3) + 0x0))),
+									(short)((iWonderID <= 7) ? 0 : (this.oCPU.ReadInt16(0x3767, (ushort)((iWonderID << 3) + 0x2)) - 6)),
+									this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((iWonderID << 1) + 0x68a0)));
+							}
+						}
+					}
 				}
-			}
-		
-			i11++;
 
-		L0b68:
-			if (i11 > 8)
-				goto L0b88;
+				if ((oCity.BuildingFlags1 & 0x4) != 0 && param2 != 19)
+				{
+					for (int i = (cityID == this.oParent.GameState.WonderCityID[7]) ? 69 : 0; i < 310; i += 45)
+					{
+						// Instruction address 0x0000:0x0a1a, size: 5
+						this.oParent.Segment_1000.F0_1000_0797_DrawBitmapToScreen(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
+							(short)i, 2, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x81c4));
+					}
+				}
 
-			if ((i2 & 1) == 0)
-				goto L0b1b;
+				for (iYPos1 = 0; iYPos1 < 12; iYPos1++)
+				{
+					for (iXPos1 = 0; iXPos1 < 19; iXPos1++)
+					{
+						iValue = aCityLayout[iXPos1, iYPos1];
 
-			iPrefixTemp = (this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i11 << 1) + 0x18e4)) >= 0) ? 0 : 1;
+						if (iValue == -2)
+						{
+							int iDirection = 0;
 
-			goto L0b2f;
+							for (int i = 1; i < 9; i++)
+							{
+								int iPrefixTemp;
 
-		L0b88:
-			F19_0000_0ff4((ushort)i1, (ushort)i2, (ushort)i10);
+								if ((iYPos1 & 0x1) == 0)
+								{
+									iPrefixTemp = ((this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x18e4)) <= 0) ? 0 : -1);
+								}
+								else
+								{
+									iPrefixTemp = (this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x18e4)) >= 0) ? 0 : 1;
+								}
 
-		L0b9b:
-			i1++;
+								int iXTemp = iPrefixTemp + this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x1882)) + iXPos1;
+								int iYTemp = this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x18e4)) + iYPos1;
 
-		L0b9f:
-			if (i1 >= 19)
-				goto L0c96;
+								if (iYTemp < 12 && aCityLayout[iXTemp, iYTemp] >= 0)
+								{
+									iDirection = 1;
+								}
+							}
 
-			iValue = aCityLayout[i1, i2];
+							if (iDirection == 0)
+							{
+								aCityLayout[iXPos1, iYPos1] = -1;
+							}
+						}
+					}
+				}
 
-			if (iValue != -1)
-				goto L0bf2;
+				for (iYPos1 = 0; iYPos1 < 12; iYPos1++)
+				{
+					for (iXPos1 = 0; iXPos1 < 19; iXPos1++)
+					{
+						iValue = aCityLayout[iXPos1, iYPos1];
 
-			if (i1 <= 2 || aCityLayout[i1 - 1, i2] == -1 || ((i1 + i2) & 1) == 0)
-				goto L0bf2;
+						if (iValue == -1 && iXPos1 > 2 && aCityLayout[iXPos1 - 1, iYPos1] != -1 && ((iXPos1 + iYPos1) & 1) != 0)
+						{
+							F19_0000_0ff4((ushort)iXPos1, (ushort)iYPos1, 0);
+						}
 
-			F19_0000_0ff4((ushort)i1, (ushort)i2, 0);
+						if (iValue != -1 && iValue != 15)
+						{
+							if (iValue != -2)
+							{
+								if (iValue >= 16)
+								{
+									if (param2 + 14 != iValue && param2 + 40 != iValue)
+									{
+										F19_0000_106c((ushort)iXPos1, (ushort)iYPos1, (ushort)(iValue - 16));
+									}
+								}
+								else if (iValue >= 2)
+								{
+									F19_0000_102e((ushort)iXPos1, (ushort)iYPos1, (ushort)(((iXPos1 + iYPos1) & 1) + ((iValue & 1) << 1)), (ushort)(iValue >> 1));
+								}
+								else
+								{
+									F19_0000_102e((ushort)iXPos1, (ushort)iYPos1, (ushort)(((iValue & 1) << 1) + (cityID & 1)), (ushort)(iValue >> 1));
+								}
+							}
+							else
+							{
+								int iFlag = 0;
 
-		L0bf2:
-			if (iValue == -1)
-				goto L0b9b;
+								for (int i = 1; i < 9; i++)
+								{
+									int iPrefixTemp;
+									if ((iYPos1 & 1) == 0)
+									{
+										iPrefixTemp = (this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x18e4)) <= 0) ? 0 : -1;
+									}
+									else
+									{
+										iPrefixTemp = (this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x18e4)) >= 0) ? 0 : 1;
+									}
 
-			if (iValue != 15)
-				goto L0b03;
+									int iXTemp = iPrefixTemp + this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x1882)) + iXPos1;
+									int iYTemp = this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x18e4)) + iYPos1;
 
-			goto L0b9b;
+									if ((i & 1) != 0)
+									{
+										iFlag >>= 1;
 
-		L0c05:
-			if (iValue >= 16)
-				goto L0c61;
+										if (iYTemp < 12 && aCityLayout[iXTemp, iYTemp] == -2)
+										{
+											iFlag |= 8;
+										}
+									}
+								}
 
-			if (iValue >= 2)
-				goto L0c41;
+								F19_0000_0ff4((ushort)iXPos1, (ushort)iYPos1, (ushort)iFlag);
+							}
+						}
+					}
+				}
+				
+				if ((oCity.BuildingFlags0 & 0x80) != 0 && param2 != 8)
+				{
+					for (int i = 0; i < 320; i += 43)
+					{
+						if (i == 172)
+						{
+							i += 19;
+						}
 
-			F19_0000_102e((ushort)i1, (ushort)i2, (ushort)(((iValue & 1) << 1) + (cityID & 1)), (ushort)(iValue >> 1));
-			
-			goto L0b9b;
+						// Instruction address 0x0000:0x0ce2, size: 5
+						this.oParent.Segment_1000.F0_1000_0797_DrawBitmapToScreen(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
+							(short)i, 108, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x81ce));
+					}
 
-		L0c41:
-			F19_0000_102e((ushort)i1, (ushort)i2, (ushort)(((i1 + i2) & 1) + ((iValue & 1) << 1)), (ushort)(iValue >> 1));
+					// Instruction address 0x0000:0x0d07, size: 5
+					this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
+						142, 108, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x81ae));
+				}
 
-			goto L0b9b;
+				if ((oCity.BuildingFlags0 & 0x1000) != 0 && param2 != 13)
+				{
+					for (int i = 0; i < 310; i += 46)
+					{
+						// Instruction address 0x0000:0x0d3b, size: 5
+						this.oParent.Segment_1000.F0_1000_0797_DrawBitmapToScreen(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
+							(short)i, 115, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x81cc));
+					}
 
-		L0c61:
-			if (param2 + 14 != iValue && param2 + 40 != iValue)
-			{
-				F19_0000_106c((ushort)i1, (ushort)i2, (ushort)(iValue - 16));
-			}
-
-			goto L0b9b;
-
-		L0c96:
-			i2++;
-
-		L0c9a:
-			if (i2 > 11)
-				goto L0caa;
-
-			i1 = 0;
-
-			goto L0b9f;
-
-		L0caa:
-			if ((oCity.BuildingFlags0 & 0x80) == 0 || param2 == 8)
-				goto L0d0f;
-
-			i5 = 0;
-
-		L0cc5:
-			if (i5 == 172)
-			{
-				i5 += 19;
-			}
-		
-			// Instruction address 0x0000:0x0ce2, size: 5
-			this.oParent.Segment_1000.F0_1000_0797_DrawBitmapToScreen(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
-				(short)i5, 108, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x81ce));
-
-			i5 += 43;
-
-			if (i5 < 320)
-				goto L0cc5;
-
-			// Instruction address 0x0000:0x0d07, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
-				142, 108, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x81ae));
-
-		L0d0f:
-			if ((oCity.BuildingFlags0 & 0x1000) == 0 || param2 == 13)
-				goto L0d67;
-
-			i5 = 0;
-
-		L0d2b:
-			// Instruction address 0x0000:0x0d3b, size: 5
-			this.oParent.Segment_1000.F0_1000_0797_DrawBitmapToScreen(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
-				(short)i5, 115, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x81cc));
-
-			i5 += 46;
-			
-			if (i5 < 310)
-				goto L0d2b;
-
-			// Instruction address 0x0000:0x0d5f, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
-				0, 115, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x81b8));
-
-		L0d67:
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, this.oCPU.BX.Word, 0x1);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x6);
-
-			if (this.oParent.MSCAPI.strlen((ushort)(this.oCPU.BP.Word - 0x80)) == 0)
-			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
-
-				// Instruction address 0x0000:0x0d82, size: 5
-				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
-
-				// Instruction address 0x0000:0x0db1, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(0xba06, 160, 2, 15);
-
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
-
-				// Instruction address 0x0000:0x0dbe, size: 5
-				this.oParent.Segment_1238.F0_1238_1720_GetCurrentYearAsString();
-
-				// Instruction address 0x0000:0x0de7, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(0xba06, 160, 15, 15);
-			}
-			else
-			{
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdb38, 0x1);
-
-				// Instruction address 0x0000:0x0e03, size: 5
-				this.oParent.Segment_2d05.F0_2d05_0031((ushort)(this.oCPU.BP.Word - 0x80), 80, 8, 1);
+					// Instruction address 0x0000:0x0d5f, size: 5
+					this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
+						0, 115, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x81b8));
+				}
 
 				this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa);
+				this.oCPU.WriteUInt16(this.oCPU.DS.Word, this.oCPU.BX.Word, 0x1);
+				this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x6);
+
+				if (this.oParent.MSCAPI.strlen((ushort)(this.oCPU.BP.Word - 0x80)) == 0)
+				{
+					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+
+					// Instruction address 0x0000:0x0d82, size: 5
+					this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+
+					// Instruction address 0x0000:0x0db1, size: 5
+					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(0xba06, 160, 2, 15);
+
+					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+
+					// Instruction address 0x0000:0x0dbe, size: 5
+					this.oParent.Segment_1238.F0_1238_1720_GetCurrentYearAsString();
+
+					// Instruction address 0x0000:0x0de7, size: 5
+					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(0xba06, 160, 15, 15);
+				}
+				else
+				{
+					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdb38, 0x1);
+
+					// Instruction address 0x0000:0x0e03, size: 5
+					this.oParent.Segment_2d05.F0_2d05_0031((ushort)(this.oCPU.BP.Word - 0x80), 80, 8, 1);
+				}
+
+				this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa);
+				this.oCPU.WriteUInt16(this.oCPU.DS.Word, this.oCPU.BX.Word, 0x0);
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x1);
+
+				if (i3 != 0)
+				{
+					// Instruction address 0x0000:0x0e2c, size: 5
+					this.oParent.Segment_1000.F0_1000_0a32(0x2c, 0);
+
+					// Instruction address 0x0000:0x0e3c, size: 5
+					this.oParent.VGADriver.F0_VGA_06b7_DrawScreenToMainScreen(1, 10);
+				}
+				else
+				{
+					// Instruction address 0x0000:0x0e5a, size: 5
+					this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(
+						this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
+						0, 0, 0x140, 0xc8, 0);
+
+					if (param2 != -3)
+					{
+						// Instruction address 0x0000:0x0e6c, size: 5
+						this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4ea1, 1);
+					}
+
+					// Instruction address 0x0000:0x0e8c, size: 5
+					this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+						this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
+						0, 0, 320, 200,
+						this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
+						0, 0);
+
+					if (param2 == -3 && this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) != 0)
+					{
+						// Instruction address 0x0000:0x0ea9, size: 5
+						this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4eaa, 0xbdee);
+
+						// Instruction address 0x0000:0x0eb9, size: 5
+						this.oParent.Segment_1000.F0_1000_04aa(15, 0xbdee);
+					}
+
+					if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) != 0)
+					{
+						// Instruction address 0x0000:0x0ed8, size: 5
+						this.oParent.Segment_1000.F0_1000_0382(4, 15, 64, 79);
+
+						// Instruction address 0x0000:0x0ee4, size: 5
+						this.oParent.Segment_1000.F0_1000_03fa(4);
+					}
+				}
+
+				if (param2 == -1 && i3 == 0)
+				{
+					// Instruction address 0x0000:0x0f01, size: 5
+					this.oParent.Segment_2dc4.F0_2dc4_0523_MemoryError(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x817a), 0x4eb3);
+
+					F19_0000_111f(cityID, 0x18, 0x8c, 0x100);
+				}
+
+				if (param2 <= -1 || this.oParent.MSCAPI.kbhit() != 0)
+					break;
+
+				param2 = -1;
+				i3 = 1;
+
+				// Instruction address 0x0000:0x0f3d, size: 5
+				this.oParent.Segment_1182.F0_1182_0134_WaitTime(60);
 			}
-		
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x1);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, this.oCPU.BX.Word, 0x0);
+			while (this.oParent.MSCAPI.kbhit() == 0);
 
-			if (i3 == 0)
-				goto L0e47;
-
-			// Instruction address 0x0000:0x0e2c, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(0x2c, 0);
-
-			// Instruction address 0x0000:0x0e3c, size: 5
-			this.oParent.VGADriver.F0_VGA_06b7_DrawScreenToMainScreen(1, 10);
-			
-			goto L0eec;
-
-		L0e47:
-			// Instruction address 0x0000:0x0e5a, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-				0, 0, 0x140, 0xc8, 0);
-
-			this.oCPU.CMPWord(param2, 0xfffd);
-			if (this.oCPU.Flags.E) goto L0e74;
-
-			// Instruction address 0x0000:0x0e6c, size: 5
-			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4ea1, 1);
-
-		L0e74:
-			// Instruction address 0x0000:0x0e8c, size: 5
-			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
-				0, 0, 320, 200,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-				0, 0);
-
-			if (param2 != 0xfffd || this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) == 0)
-				goto L0ec1;
-
-			// Instruction address 0x0000:0x0ea9, size: 5
-			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4eaa, 0xbdee);
-
-			// Instruction address 0x0000:0x0eb9, size: 5
-			this.oParent.Segment_1000.F0_1000_04aa(15, 0xbdee);
-
-		L0ec1:
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) != 0)
+			if (param2 != -1 || i3 != 0)
 			{
-				// Instruction address 0x0000:0x0ed8, size: 5
-				this.oParent.Segment_1000.F0_1000_0382(4, 15, 64, 79);
-
-				// Instruction address 0x0000:0x0ee4, size: 5
-				this.oParent.Segment_1000.F0_1000_03fa(4);
+				// Instruction address 0x0000:0x0f66, size: 5
+				this.oParent.Segment_2dc4.F0_2dc4_0523_MemoryError(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x817a), 0x4eb8);
 			}
 
-		L0eec:
-			if (param2 == 0xffff && i3 == 0)
+			if (param2 == -2)
 			{
-				// Instruction address 0x0000:0x0f01, size: 5
-				this.oParent.Segment_2dc4.F0_2dc4_0523_MemoryError(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x817a), 0x4eb3);
-
-				F19_0000_111f(cityID, 0x18, 0x8c, 0x100);
+				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) != 0)
+				{
+					// Instruction address 0x0000:0x0fe6, size: 5
+					this.oParent.Segment_1000.F0_1000_042b(4);
+				}
 			}
-		
-			this.oCPU.CMPWord(param2, 0xffff);
-			if (this.oCPU.Flags.LE) goto L0f51;
+			else
+			{
+				if (this.oParent.MSCAPI.kbhit() != 0)
+				{
+					// Instruction address 0x0000:0x0f84, size: 5
+					this.oParent.Segment_1403.F0_1403_4545();
+				}
+				else
+				{
+					// Instruction address 0x0000:0x0f7d, size: 5
+					this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
+				}
 
-			// Instruction address 0x0000:0x0f25, size: 5
-			this.oParent.MSCAPI.kbhit();
+				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) != 0)
+				{
+					// Instruction address 0x0000:0x0f94, size: 5
+					this.oParent.Segment_1000.F0_1000_042b(4);
+				}
 
-			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L0f51;
-			param2 = 0xffff;
-			i3 = 1;
+				// Instruction address 0x0000:0x0fa5, size: 5
+				this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
-			// Instruction address 0x0000:0x0f3d, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime(60);
+				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) != 0)
+				{
+					// Instruction address 0x0000:0x0fc7, size: 5
+					this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 0, 0, 0x140, 0xc8, 0);
 
-			// Instruction address 0x0000:0x0f45, size: 5
-			this.oParent.MSCAPI.kbhit();
+					// Instruction address 0x0000:0x0fcf, size: 5
+					this.oParent.Segment_1238.F0_1238_1beb();
+				}
 
-			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L0f51;
-			goto L0913;
+				// Instruction address 0x0000:0x0fd4, size: 5
+				this.oParent.Segment_2dc4.F0_2dc4_0626();
+			}
 
-		L0f51:
-			if (param2 != 0xffff)
-				goto L0f5e;
-
-			if (i3 == 0)
-				goto L0f6e;
-
-		L0f5e:
-			// Instruction address 0x0000:0x0f66, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0523_MemoryError(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x817a), 0x4eb8);
-
-		L0f6e:
-			this.oCPU.CMPWord(param2, 0xfffe);
-			if (this.oCPU.Flags.E) goto L0fdb;
-
-			// Instruction address 0x0000:0x0f74, size: 5
-			this.oParent.MSCAPI.kbhit();
-
-			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L0f84;
-
-			// Instruction address 0x0000:0x0f7d, size: 5
-			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
-
-			goto L0f89;
-
-		L0f84:
-			// Instruction address 0x0000:0x0f84, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
-
-		L0f89:
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
-			if (this.oCPU.Flags.E) goto L0f9c;
-
-			// Instruction address 0x0000:0x0f94, size: 5
-			this.oParent.Segment_1000.F0_1000_042b(4);
-
-		L0f9c:
-			// Instruction address 0x0000:0x0fa5, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
-
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
-			if (this.oCPU.Flags.E) goto L0fd4;
-
-			// Instruction address 0x0000:0x0fc7, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 0, 0, 0x140, 0xc8, 0);
-
-			// Instruction address 0x0000:0x0fcf, size: 5
-			this.oParent.Segment_1238.F0_1238_1beb();
-
-		L0fd4:
-			// Instruction address 0x0000:0x0fd4, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0626();
-
-			goto L0fee;
-
-		L0fdb:
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
-			if (this.oCPU.Flags.E) goto L0fee;
-
-			// Instruction address 0x0000:0x0fe6, size: 5
-			this.oParent.Segment_1000.F0_1000_042b(4);
-
-		L0fee:
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return

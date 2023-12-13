@@ -3153,7 +3153,7 @@ namespace OpenCiv1
 
 		L1dce:
 			this.oParent.CityView.F19_0000_0000(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)),
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe8)));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe8)));
 
 			goto L1deb;
 
@@ -8151,7 +8151,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x1);
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
-			this.oParent.CityView.F19_0000_0000(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0xffff);
+			this.oParent.CityView.F19_0000_0000(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), -1);
 			
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6b64, 0x1);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2496, 0x0);
@@ -9605,7 +9605,7 @@ namespace OpenCiv1
 			goto L5d9f;
 
 		L5d69:
-			this.oParent.CityView.F19_0000_0000(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0xfffe);
+			this.oParent.CityView.F19_0000_0000(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), -2);
 			
 			this.oParent.CityView.F19_0000_18c1();
 
@@ -9982,7 +9982,7 @@ namespace OpenCiv1
 			goto L6185;
 
 		L6155:
-			this.oParent.CityView.F19_0000_0000(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), 0xfffe);
+			this.oParent.CityView.F19_0000_0000(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x6)), -2);
 			
 			this.oParent.CityView.F19_0000_1ae1();
 

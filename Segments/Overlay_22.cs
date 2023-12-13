@@ -1648,7 +1648,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L1123;
 
-			this.oParent.CityView.F19_0000_0000(cityID, 0xfffd);
+			this.oParent.CityView.F19_0000_0000(cityID, -3);
 
 			goto L1143;
 
