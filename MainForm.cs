@@ -552,8 +552,8 @@ namespace OpenCiv1
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
 #if !DEBUG
-            MessageBox.Show("This Alpha pre-release version is a preview version of OpenCiv1 (Open Civilization 1) project.\n" +
-				"It most certainly has bugs, but most functions should work normally, and has no sound at this point. " +
+            MessageBox.Show("This Alpha Release of OpenCiv1 (Open Civilization 1) project " +
+				"most certainly has bugs, but most functions should work normally, and has no sound at this point. " +
 				"It is compatible with old civ.exe and can save/load original game files.\n" +
 				"The Debug mode can be toggled by pressing Alt + D Key.\n\n" +
 				"Technicalities:\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR " +
@@ -635,15 +635,15 @@ namespace OpenCiv1
 				if (this.oGame != null && this.oGame.CPU != null)
 				{
 					this.oGame.CPU.OnApplicationExit();
-				}
 
-				if (this.oGameThread != null)
-				{
-					while (this.oGameThread.ThreadState == ThreadState.Running ||
-						this.oGameThread.ThreadState == ThreadState.WaitSleepJoin)
+					/*if (this.oGameThread != null)
 					{
-						Thread.Sleep(200);
-					}
+						while (this.oGameThread.ThreadState == ThreadState.Running ||
+							this.oGameThread.ThreadState == ThreadState.WaitSleepJoin)
+						{
+							Thread.Sleep(200);
+						}
+					}*/
 				}
 			}
 			else

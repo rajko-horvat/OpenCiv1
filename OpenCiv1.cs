@@ -195,9 +195,9 @@ namespace OpenCiv1
 			this.oCPU.DS.Word = 0x3b01;
 
 			// Check for Default directory and individual Resource files
-			if (!Directory.Exists(this.oCPU.DefaultDirectory))
+			if (!string.IsNullOrEmpty(this.oCPU.DefaultDirectory) && !Directory.Exists(this.oCPU.DefaultDirectory))
 			{
-				MessageBox.Show($"OpenCiv1 resource files not found at '{this.oCPU.DefaultDirectory}'.\n"+
+				MessageBox.Show($"OpenCiv1 resource files not found at '{this.oCPU.DefaultDirectory}'.\n" +
 					"The OpenCiv1 depends on Civilization resource files (*.pic, *.pal and *.txt).\nPlease adjust path to these resources.",
 					"Resource path error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 				this.oCPU.Exit(-1);
