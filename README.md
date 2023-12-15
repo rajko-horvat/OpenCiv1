@@ -22,7 +22,7 @@ If you want to compile the code, it is assumed that:
 <ul>
 <li>You are using Visual Studio 2022.</li>
 <li>You have .NET Framework 4.8 installed.</li>
-<li>You have installed DOS CIV I game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Mono on Linux.
+<li>For debugging you have installed DOS CIV I game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Mono on Linux.
 It's where it's home directory resides (Images, palettes, text and save games are loaded/saved there, for now).</li>
 </ul>
 
@@ -66,4 +66,5 @@ For this stage of code rewrite, the programmings skills needed are:
 <img src="Screenshots/Screenshot11.png" alt="Screenshot 11" /><br/>
 <img src="Screenshots/Screenshot12.png" alt="Screenshot 12" /><br/>
 <img src="Screenshots/Screenshot13.png" alt="Screenshot 13" /><br/>
+<img src="Screenshots/Screenshot14.png" alt="Screenshot 14" /><br/>
 </p>

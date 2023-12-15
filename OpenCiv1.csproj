@@ -189,6 +189,7 @@
     <Content Include="Screenshots\Screenshot11.png" />
     <Content Include="Screenshots\Screenshot12.png" />
     <Content Include="Screenshots\Screenshot13.png" />
+    <Content Include="Screenshots\Screenshot14.png" />
     <Content Include="Screenshots\Screenshot2.png" />
     <Content Include="Screenshots\Screenshot3.png" />
     <Content Include="Screenshots\Screenshot4.png" />
@@ -202,6 +203,7 @@
     <Content Include="Screenshots\Small\Screenshot11.jpg" />
     <Content Include="Screenshots\Small\Screenshot12.jpg" />
     <Content Include="Screenshots\Small\Screenshot13.jpg" />
+    <Content Include="Screenshots\Small\Screenshot14.jpg" />
     <Content Include="Screenshots\Small\Screenshot2.jpg" />
     <Content Include="Screenshots\Small\Screenshot3.jpg" />
     <Content Include="Screenshots\Small\Screenshot4.jpg" />
