@@ -15,6 +15,11 @@ namespace OpenCiv1
 			this.oCPU = parent.CPU;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="flag"></param>
+		/// <returns></returns>
 		public ushort F11_0000_0000(ushort flag)
 		{
 			this.oCPU.Log.EnterBlock("'F11_0000_0000'(Cdecl, Far) at 0x0000:0x0000");
@@ -24,11 +29,9 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x6);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681a, 0x1);
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0011); // stack management - push return offset
-										// Instruction address 0x0000:0x000c, size: 5
+
+			// Instruction address 0x0000:0x000c, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 			F11_0000_05f8();
 
@@ -68,21 +71,18 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))));
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0xa);
 			if (this.oCPU.Flags.B) goto L0044;
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x007b); // stack management - push return offset
-										// Instruction address 0x0000:0x0076, size: 5
+
+			// Instruction address 0x0000:0x0076, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 			// Instruction address 0x0000:0x0087, size: 5
 			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 48, 65, 1);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xe168, this.oCPU.AX.Word);
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0097); // stack management - push return offset
-										// Instruction address 0x0000:0x0092, size: 5
+
+			// Instruction address 0x0000:0x0092, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
+
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0xe168);
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
@@ -112,20 +112,16 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x00e5, size: 5
 			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x00f2); // stack management - push return offset
-										// Instruction address 0x0000:0x00ed, size: 5
+			// Instruction address 0x0000:0x00ed, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
+
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xe168);
 			goto L00ff;
 
 		L00f7:
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x00fc); // stack management - push return offset
-										// Instruction address 0x0000:0x00f7, size: 5
+			// Instruction address 0x0000:0x00f7, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
+
 			this.oCPU.AX.Word = 0xffff;
 
 		L00ff:
@@ -138,6 +134,12 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="filenamePtr"></param>
+		/// <param name="flag"></param>
+		/// <returns></returns>
 		public ushort F11_0000_0103_LoadGame(ushort filenamePtr, ushort flag)
 		{
 			this.oCPU.Log.EnterBlock("'F11_0000_0103'(Cdecl, Far) at 0x0000:0x0103");
@@ -303,6 +305,10 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
 		public void F11_0000_036a(ushort param1)
 		{
 			this.oCPU.Log.EnterBlock("'F11_0000_036a'(Cdecl, Far) at 0x0000:0x036a");
@@ -314,11 +320,9 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681c, 0);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681a, 0);
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x037d); // stack management - push return offset
-										// Instruction address 0x0000:0x0378, size: 5
+
+			// Instruction address 0x0000:0x0378, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
@@ -359,22 +363,16 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(param1, 0xffff);
 			if (this.oCPU.Flags.NE) goto L0405;
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x03e9); // stack management - push return offset
-										// Instruction address 0x0000:0x03e4, size: 5
+			// Instruction address 0x0000:0x03e4, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 			// Instruction address 0x0000:0x03f5, size: 5
 			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 48, 33, 1);
 
 			param1 = this.oCPU.AX.Word;
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0405); // stack management - push return offset
-										// Instruction address 0x0000:0x0400, size: 5
+			// Instruction address 0x0000:0x0400, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 		L0405:
 			this.oCPU.CMPWord(param1, 0xffff);
@@ -446,17 +444,20 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
 				0, 0);
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x04eb); // stack management - push return offset
-										// Instruction address 0x0000:0x04e6, size: 5
+			// Instruction address 0x0000:0x04e6, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
+
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
 			this.oCPU.Log.ExitBlock("'F11_0000_036a'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="filenamePtr"></param>
+		/// <returns></returns>
 		public ushort F11_0000_04ef_SaveGame(ushort filenamePtr)
 		{
 			this.oCPU.Log.EnterBlock("'F11_0000_04ef'(Cdecl, Far) at 0x0000:0x04ef");
@@ -524,6 +525,10 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <returns></returns>
 		public ushort F11_0000_05f8()
 		{
 			this.oCPU.Log.EnterBlock("'F11_0000_05f8'(Cdecl, Far) at 0x0000:0x05f8");
@@ -549,11 +554,9 @@ namespace OpenCiv1
 
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681a), 0x0);
 			if (this.oCPU.Flags.NE) goto L063d;
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x063d); // stack management - push return offset
-										// Instruction address 0x0000:0x0638, size: 5
+
+			// Instruction address 0x0000:0x0638, size: 5
 			this.oParent.Segment_1866.F0_1866_260e();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 		L063d:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681a), 0x0);
@@ -718,6 +721,11 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
+		/// <returns></returns>
 		public ushort F11_0000_07d6(ushort param1)
 		{
 			this.oCPU.Log.EnterBlock("'F11_0000_07d6'(Cdecl, Far) at 0x0000:0x07d6");
@@ -768,6 +776,11 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
 		public bool F11_0000_083b_LoadGameData(string path)
 		{
 			path = path.ToUpper();
@@ -1143,18 +1156,8 @@ namespace OpenCiv1
 			{
 				this.oParent.MSCAPI.strcpy(0xba06, ex.Message);
 
-				this.oCPU.AX.Word = 0x50;
-				this.oCPU.PushWord(this.oCPU.AX.Word);
-				this.oCPU.AX.Word = 0x64;
-				this.oCPU.PushWord(this.oCPU.AX.Word);
-				this.oCPU.AX.Word = 0xba06;
-				this.oCPU.PushWord(this.oCPU.AX.Word);
-				this.oCPU.PushWord(0); // stack management - push return segment, ignored
-				this.oCPU.PushWord(0x08a8); // stack management - push return offset
-											// Instruction address 0x0000:0x08a3, size: 5
-				this.oParent.Segment_1238.F0_1238_001e();
-				this.oCPU.PopDWord(); // stack management - pop return offset and segment
-				this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+				// Instruction address 0x0000:0x08a3, size: 5
+				this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
 
 				bSuccess = false;
 			}
@@ -1165,18 +1168,36 @@ namespace OpenCiv1
 			return bSuccess;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <param name="bufferPtr"></param>
+		/// <param name="length"></param>
 		private void ReadData(Stream reader, ushort bufferPtr, ushort length)
 		{
 			reader.Read(this.oCPU.Memory.MemoryContent,
 				(int)CPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr), length);
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <param name="bufferSeg"></param>
+		/// <param name="bufferPtr"></param>
+		/// <param name="length"></param>
 		private void ReadData(Stream reader, ushort bufferSeg, ushort bufferPtr, ushort length)
 		{
 			reader.Read(this.oCPU.Memory.MemoryContent,
 				(int)CPU.ToLinearAddress(bufferSeg, bufferPtr), length);
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <returns></returns>
 		public static byte ReadUInt8(Stream reader)
 		{
 			int byte0 = reader.ReadByte();
@@ -1189,6 +1210,11 @@ namespace OpenCiv1
 			return 0;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <returns></returns>
 		public static ushort ReadUInt16(Stream reader)
 		{
 			int byte0 = reader.ReadByte();
@@ -1202,6 +1228,11 @@ namespace OpenCiv1
 			return 0;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <returns></returns>
 		public static short ReadInt16(Stream reader)
 		{
 			int byte0 = reader.ReadByte();
@@ -1215,6 +1246,11 @@ namespace OpenCiv1
 			return 0;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
 		public bool F11_0000_08f6_SaveGameData(string path)
 		{
 			path = path.ToUpper();
@@ -1583,24 +1619,47 @@ namespace OpenCiv1
 			return bSuccess;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="writer"></param>
+		/// <param name="bufferPtr"></param>
+		/// <param name="length"></param>
 		private void WriteData(Stream writer, ushort bufferPtr, ushort length)
 		{
 			writer.Write(this.oCPU.Memory.MemoryContent,
 				(int)CPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr), length);
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="writer"></param>
+		/// <param name="bufferSeg"></param>
+		/// <param name="bufferPtr"></param>
+		/// <param name="length"></param>
 		private void WriteData(Stream writer, ushort bufferSeg, ushort bufferPtr, ushort length)
 		{
 			writer.Write(this.oCPU.Memory.MemoryContent,
 				(int)CPU.ToLinearAddress(bufferSeg, bufferPtr), length);
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="writer"></param>
+		/// <param name="value"></param>
 		public static void WriteUInt16(Stream writer, ushort value)
 		{
 			writer.WriteByte((byte)(value & 0xff));
 			writer.WriteByte((byte)((value & 0xff00) >> 8));
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="writer"></param>
+		/// <param name="value"></param>
 		public static void WriteInt16(Stream writer, short value)
 		{
 			writer.WriteByte((byte)((ushort)value & 0xff));

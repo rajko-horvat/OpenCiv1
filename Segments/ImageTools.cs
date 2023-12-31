@@ -19,6 +19,15 @@ namespace OpenCiv1
 		}
 
 		#region New Image loading functions
+		/// <summary>
+		/// Loads and .pic or .map Image from given filename with optional palette data
+		/// </summary>
+		/// <param name="screenID"></param>
+		/// <param name="xPos"></param>
+		/// <param name="yPos"></param>
+		/// <param name="filenamePtr"></param>
+		/// <param name="palettePtr"></param>
+		/// <exception cref="Exception"></exception>
 		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, ushort xPos, ushort yPos, ushort filenamePtr, ushort palettePtr)
 		{
 			string filename = this.oCPU.DefaultDirectory +
@@ -113,85 +122,14 @@ namespace OpenCiv1
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2fa1_01a2_LoadBitmapOrPalette");
 		}
-		#endregion
 
-		#region Old Image loading functions
-		public void F0_2fa1_044c_LoadIcon(ushort filenamePtr)
+		/// <summary>
+		/// Loads an Bitmap (Icon) from given image Filename
+		/// </summary>
+		/// <param name="filenamePtr"></param>
+		public ushort F0_2fa1_044c_LoadIcon(ushort filenamePtr)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2fa1_044c_LoadIcon('{this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr))}')");
-			/*
-			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x4);
-			this.oCPU.PushWord(this.oCPU.SI.Word);
-
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x045d); // stack management - push return offset
-										// Instruction address 0x2fa1:0x045a, size: 3
-			F0_2fa1_000a_OpenFile(filenamePtr, 0);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
-
-			short sHandle = (short)this.oCPU.AX.Word;
-			//this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x68da, usHandle);
-			this.oParent.Var_b26e = OpenCiv1.Constant_5528;
-
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0473); // stack management - push return offset
-										// Instruction address 0x2fa1:0x046e, size: 5
-			F0_1000_108e_LoadPalette1(0, sHandle);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
-
-			// Instruction address 0x2fa1:0x047e, size: 5
-			this.oParent.VGADriver.F0_VGA_0a78(this.oParent.Var_68e2, this.oParent.Var_68e4);
-
-			this.oCPU.SI.Word = 0;
-			goto L04a3;
-
-		L048a:
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0493); // stack management - push return offset
-										// Instruction address 0x2fa1:0x048e, size: 5
-			F0_1000_1208_1(0xe17e, sHandle);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
-
-			this.oCPU.AX.Word = 0xe17e;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x049f); // stack management - push return offset
-			// Instruction address 0x2fa1:0x049a, size: 5
-			this.oParent.VGADriver.F0_VGA_0ae3();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
-			this.oCPU.SI.Word = this.oCPU.INCWord(this.oCPU.SI.Word);
-
-		L04a3:
-			this.oCPU.CMPWord(this.oCPU.SI.Word, this.oParent.Var_68e4);
-			if (this.oCPU.Flags.L) goto L048a;
-
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x04b3); // stack management - push return offset
-										// Instruction address 0x2fa1:0x04b0, size: 3
-			F0_2fa1_009e_CloseFile(sHandle);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			//this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
-
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x04bb); // stack management - push return offset
-			// Instruction address 0x2fa1:0x04b6, size: 5
-			this.oParent.VGADriver.F0_VGA_0ac6();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.SI.Word = this.oCPU.PopWord();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();*/
-
-			this.oCPU.AX.Word = 0xffff; // !!! Or zero perhaps?
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2fa1_044c_LoadIcon");
+			return this.oParent.VGADriver.LoadIcon(MSCAPI.GetDOSFileName(this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr))));
 		}
 		#endregion
 	}

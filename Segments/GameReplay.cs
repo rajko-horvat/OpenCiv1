@@ -14,6 +14,9 @@ namespace OpenCiv1
 			this.oCPU = parent.CPU;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F9_0000_0000()
 		{
 			this.oCPU.Log.EnterBlock("'F9_0000_0000'(Cdecl, Far) at 0x0000:0x0000");
@@ -27,18 +30,10 @@ namespace OpenCiv1
 		L0007:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x680e), 0x0);
 			if (this.oCPU.Flags.NE) goto L0027;
-			this.oCPU.AX.Word = 0x50;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x64;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x3fb0;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x001f); // stack management - push return offset
+
 			// Instruction address 0x0000:0x001a, size: 5
-			this.oParent.Segment_1238.F0_1238_001e();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+			this.oParent.Segment_1238.F0_1238_001e(0x3fb0, 100, 80);
+
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x680a, this.oCPU.AX.Word);
 			goto L002d;
 
@@ -64,29 +59,17 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0062, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_4008);
 
-			this.oCPU.AX.Word = 0x50;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x64;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x007b); // stack management - push return offset
 			// Instruction address 0x0000:0x0076, size: 5
-			this.oParent.Segment_1238.F0_1238_001e();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+			this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+
 			goto L089e;
 
 		L0081:
 			F9_0000_0c30();
 
 		L0085:
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x008a); // stack management - push return offset
 			// Instruction address 0x0000:0x0085, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
@@ -766,11 +749,9 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
 				0, 0);
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0881); // stack management - push return offset
 			// Instruction address 0x0000:0x087c, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
+
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x680a), 0x3);
 			if (this.oCPU.Flags.NE) goto L0894;
 			
@@ -790,6 +771,9 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F9_0000_0000'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F9_0000_08a3()
 		{
 			this.oCPU.Log.EnterBlock("'F9_0000_08a3'(Cdecl, Far) at 0x0000:0x08a3");
@@ -863,6 +847,11 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F9_0000_08a3'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
+		/// <returns></returns>
 		public ushort F9_0000_097c(ushort param1)
 		{
 			this.oCPU.Log.EnterBlock("'F9_0000_097c'(Cdecl, Far) at 0x0000:0x097c");
@@ -912,6 +901,12 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
+		/// <param name="param2"></param>
+		/// <param name="param3"></param>
 		public void F9_0000_09dc(ushort param1, ushort param2, ushort param3)
 		{
 			this.oCPU.Log.EnterBlock("'F9_0000_09dc'(Cdecl, Far) at 0x0000:0x09dc");
@@ -950,6 +945,12 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F9_0000_09dc'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
+		/// <param name="param2"></param>
+		/// <param name="param3"></param>
 		public void F9_0000_0a22(ushort param1, ushort param2, ushort param3)
 		{
 			this.oCPU.Log.EnterBlock("'F9_0000_0a22'(Cdecl, Far) at 0x0000:0x0a22");
@@ -990,6 +991,12 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F9_0000_0a22'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
+		/// <param name="param2"></param>
+		/// <returns></returns>
 		public ushort F9_0000_0a64(ushort param1, ushort param2)
 		{
 			this.oCPU.Log.EnterBlock("'F9_0000_0a64'(Cdecl, Far) at 0x0000:0x0a64");
@@ -1045,6 +1052,11 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
+		/// <param name="param2"></param>
 		public void F9_0000_0ac8(ushort param1, ushort param2)
 		{
 			this.oCPU.Log.EnterBlock("'F9_0000_0ac8'(Cdecl, Far) at 0x0000:0x0ac8");
@@ -1212,6 +1224,9 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F9_0000_0ac8'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F9_0000_0c30()
 		{
 			this.oCPU.Log.EnterBlock("'F9_0000_0c30'(Cdecl, Far) at 0x0000:0x0c30");
@@ -1350,6 +1365,10 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F9_0000_0c30'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="playerID"></param>
 		public void F9_0000_0d5d(short playerID)
 		{
 			this.oCPU.Log.EnterBlock("'F9_0000_0d5d'(Cdecl, Far) at 0x0000:0x0d5d");
@@ -1404,6 +1423,9 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F9_0000_0d5d'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F9_0000_0dde()
 		{
 			this.oCPU.Log.EnterBlock("'F9_0000_0dde'(Cdecl, Far) at 0x0000:0x0dde");
@@ -1417,11 +1439,9 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0dea, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0df4); // stack management - push return offset
 			// Instruction address 0x0000:0x0def, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
+
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xb1d4, 0x0);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x0);
 
@@ -1524,16 +1544,12 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0f5d, size: 5
 			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0f6a); // stack management - push return offset
 			// Instruction address 0x0000:0x0f65, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0f6f); // stack management - push return offset
+
 			// Instruction address 0x0000:0x0f6a, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
+
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x680e, 0x0);
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
@@ -1541,6 +1557,11 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F9_0000_0dde'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="playerID"></param>
+		/// <param name="param2"></param>
 		public void F9_0000_0f79(short playerID, ushort param2)
 		{
 			this.oCPU.Log.EnterBlock("'F9_0000_0f79'(Cdecl, Far) at 0x0000:0x0f79");

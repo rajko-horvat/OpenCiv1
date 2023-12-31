@@ -16,6 +16,9 @@ namespace OpenCiv1
 			this.oCPU = parent.CPU;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F0_1000_0000()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_0000'(Cdecl, Far) at 0x1000:0x0000");
@@ -41,6 +44,9 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_0000'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F0_1000_0051()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_0051'(Cdecl, Far) at 0x1000:0x0051");
@@ -58,6 +64,9 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_0051'");
 		}
 
+		/// <summary>
+		/// Timer function, it should fire appoximately every 20-25 ms
+		/// </summary>
 		public void F0_1000_01a7_Timer()
 		{
 			this.oCPU.Log.EnterBlock("F0_1000_01a7_Timer()");
@@ -139,6 +148,9 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("F0_1000_01a7_Timer");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F0_1000_0276()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_0276'(Cdecl, Near) at 0x1000:0x0276");
@@ -208,6 +220,10 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_0276'");
 		}
 
+		/// <summary>
+		/// Reset timer count
+		/// </summary>
+		/// <returns></returns>
 		public ushort F0_1000_033e_ResetTimer()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_033e'(Cdecl, Far) at 0x1000:0x033e");
@@ -222,6 +238,9 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F0_1000_0345()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_0345'(Cdecl, Far) at 0x1000:0x0345");
@@ -277,6 +296,14 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_0345'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
+		/// <param name="param2"></param>
+		/// <param name="param3"></param>
+		/// <param name="param4"></param>
+		/// <exception cref="Exception"></exception>
 		public void F0_1000_0382(ushort param1, ushort param2, ushort param3, ushort param4)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_0382'(Cdecl, Far) at 0x1000:0x0382");
@@ -360,6 +387,10 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_0382'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
 		public void F0_1000_03fa(ushort param1)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_03fa'(Cdecl, Far) at 0x1000:0x03fa");
@@ -394,6 +425,10 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_03fa'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
 		public void F0_1000_042b(ushort param1)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_042b'(Cdecl, Far) at 0x1000:0x042b");
@@ -418,6 +453,10 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_042b'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <exception cref="Exception"></exception>
 		public void F0_1000_044a()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_044a'(Cdecl, Far) at 0x1000:0x044a");
@@ -496,6 +535,11 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_044a'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
+		/// <param name="palettePtr"></param>
 		public void F0_1000_04aa(ushort param1, ushort palettePtr)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_04aa'(Cdecl, Far) at 0x1000:0x04aa");
@@ -532,6 +576,13 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_04aa'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
+		/// <param name="param2"></param>
+		/// <param name="param3"></param>
+		/// <param name="param4"></param>
 		public void F0_1000_04d4(ushort param1, byte param2, byte param3, byte param4)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_04d4'(Cdecl, Far) at 0x1000:0x04d4");
@@ -574,6 +625,10 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_04d4'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
 		public void F0_1000_050c(ushort param1)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_050c'(Cdecl, Near) at 0x1000:0x050c");
@@ -620,6 +675,10 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_050c'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <exception cref="Exception"></exception>
 		public void F0_1000_0554_ReadCurrentPalette()
 		{
 			this.oCPU.Log.EnterBlock("F0_1000_0554_ReadCurrentPalette()");
@@ -653,6 +712,11 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("F0_1000_0554_ReadCurrentPalette");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <returns></returns>
+		/// <exception cref="Exception"></exception>
 		public ushort F0_1000_0573_MeasurePalettePerformance()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_0573'(Cdecl, Near) at 0x1000:0x0573");
@@ -692,6 +756,9 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F0_1000_05b7()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_05b7'(Cdecl, Near) at 0x1000:0x05b7");
@@ -770,6 +837,9 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_05b7'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F0_1000_05b7_Int()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_05b7'(Cdecl, Near) at 0x1000:0x05b7");
@@ -848,6 +918,10 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_05b7'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <exception cref="Exception"></exception>
 		public void F0_1000_0631_SetPalette()
 		{
 			this.oCPU.Log.EnterBlock("F0_1000_0631()");
@@ -891,6 +965,11 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("F0_1000_0631");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="fileNamePtr"></param>
+		/// <returns></returns>
 		public ushort F0_1000_066a_FileExists(ushort fileNamePtr)
 		{
 			string fileName = MSCAPI.GetDOSFileName(this.oParent.CPU.ReadString(CPU.ToLinearAddress(this.oParent.CPU.DS.Word, fileNamePtr)).ToUpper());
@@ -913,6 +992,9 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F0_1000_07d6()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_07d6'(Undefined) at 0x1000:0x07d6");
@@ -955,6 +1037,12 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_07d6'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
+		/// <param name="param2"></param>
+		/// <param name="param3"></param>
 		public void F0_1000_083f(short param1, short param2, ushort param3)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_083f'(Undefined) at 0x1000:0x083f");
@@ -997,6 +1085,10 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_083f'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="screenID"></param>
 		public void F0_1000_0846(ushort screenID)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_0846'(Undefined) at 0x1000:0x0846");
@@ -1039,6 +1131,13 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_0846'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="rectPtr"></param>
+		/// <param name="xPos"></param>
+		/// <param name="yPos"></param>
+		/// <param name="bitmapPtr"></param>
 		public void F0_1000_0797_DrawBitmapToScreen(ushort rectPtr, short xPos, short yPos, ushort bitmapPtr)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1000_0797_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
@@ -1081,6 +1180,13 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_0797_DrawBitmapToScreen'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="rectPtr"></param>
+		/// <param name="xPos"></param>
+		/// <param name="yPos"></param>
+		/// <param name="bitmapPtr"></param>
 		public void F0_1000_084d_DrawBitmapToScreen(ushort rectPtr, short xPos, short yPos, ushort bitmapPtr)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1000_084d_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
@@ -1123,6 +1229,9 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("F0_1000_084d_DrawBitmapToScreen");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F0_1000_0a2b()
 		{
 			//this.oCPU.Log.EnterBlock("Sound overlay 'F0_1000_0a2b'");
@@ -1146,6 +1255,10 @@ namespace OpenCiv1
 			}
 		}
 
+		/// <summary>
+		/// Sound function
+		/// </summary>
+		/// <returns></returns>
 		public ushort F0_1000_0a39()
 		{
 			//this.oCPU.Log.EnterBlock("Sound overlay 'F0_1000_0a39'");
@@ -1157,6 +1270,10 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// Sound function
+		/// </summary>
+		/// <returns></returns>
 		public ushort F0_1000_0a40()
 		{
 			//this.oCPU.Log.EnterBlock("Sound overlay 'F0_1000_0a40'");
@@ -1168,6 +1285,9 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// Sound function, possibly advance sound buffer
+		/// </summary>
 		public void F0_1000_0a47()
 		{
 			//this.oCPU.Log.EnterBlock("Sound overlay 'F0_1000_0a47'");
@@ -1178,6 +1298,10 @@ namespace OpenCiv1
 			//this.oCPU.Log.ExitBlock("Sound overlay 'F0_1000_0a47'");
 		}
 
+		/// <summary>
+		/// Sound function
+		/// </summary>
+		/// <returns></returns>
 		public ushort F0_1000_0a4e()
 		{
 			//this.oCPU.Log.EnterBlock("Sound overlay 'F0_1000_0a4e'");
@@ -1189,6 +1313,15 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// Fills the rectangle with color
+		/// </summary>
+		/// <param name="rectPtr"></param>
+		/// <param name="xPos"></param>
+		/// <param name="yPos"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="mode"></param>
 		public void F0_1000_0bfa_FillRectangle(ushort rectPtr, ushort xPos, ushort yPos, ushort width, ushort height, ushort mode)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1000_0bfa_FillRectangle(0x{rectPtr:4}, {xPos}, {yPos}, {width}, {height}, 0x{mode:4})");
@@ -1206,6 +1339,12 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("F0_1000_0bfa_FillRectangle");
 		}
 
+		/// <summary>
+		/// Sets a pixel on screen set by structure at 0xaa
+		/// </summary>
+		/// <param name="xPos"></param>
+		/// <param name="yPos"></param>
+		/// <param name="mode"></param>
 		public void F0_1000_104f_SetPixel(int xPos, int yPos, ushort mode)
 		{
 			CivRectangle rect = new CivRectangle(this.oParent.CPU, CPU.ToLinearAddress(this.oParent.CPU.DS.Word, this.oParent.CPU.ReadUInt16(this.oParent.CPU.DS.Word, 0xaa)));
@@ -1223,6 +1362,13 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("F0_1000_104f_SetPixel");
 		}
 
+		/// <summary>
+		/// Sets a pixel on selected screen
+		/// </summary>
+		/// <param name="screenID"></param>
+		/// <param name="xPos"></param>
+		/// <param name="yPos"></param>
+		/// <param name="mode"></param>
 		public void F0_1000_104f_SetPixel(ushort screenID, int xPos, int yPos, ushort mode)
 		{
 			CivRectangle rect = new CivRectangle(this.oParent.CPU, CPU.ToLinearAddress(this.oParent.CPU.DS.Word, this.oParent.CPU.ReadUInt16(this.oParent.CPU.DS.Word, 0xaa)));
@@ -1240,6 +1386,10 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("F0_1000_104f_SetPixel");
 		}
 
+		/// <summary>
+		/// Resets and inits the mouse subsystem
+		/// </summary>
+		/// <returns>true if mouse is detected</returns>
 		public ushort F0_1000_163e_InitMouse()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_163e_InitMouse'");
@@ -1279,6 +1429,9 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F0_1000_1687()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_1687'(Cdecl, Far) at 0x1000:0x1687");
@@ -1301,6 +1454,12 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_1687'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
+		/// <param name="param2"></param>
+		/// <param name="param3"></param>
 		public void F0_1000_1697(ushort param1, ushort param2, ushort param3)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1000_1697({param1}, {param2}, {param3})");
@@ -1314,6 +1473,11 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("F0_1000_1697");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="param1"></param>
+		/// <param name="param2"></param>
 		public void F0_1000_16ae(ushort param1, ushort param2)
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_16ae'(Cdecl, Far) at 0x1000:0x16ae");
@@ -1343,20 +1507,22 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_16ae'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <returns></returns>
 		public ushort F0_1000_16d4()
 		{
-			this.oCPU.Log.EnterBlock("F0_1000_16d4()");
-
 			// function body
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5874);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5874, 0);
 
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_16d4");
-
 			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F0_1000_16db()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_16db'(Cdecl, Far) at 0x1000:0x16db");
@@ -1379,6 +1545,9 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_16db'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F0_1000_170b()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_170b'(Cdecl, Far) at 0x1000:0x170b");
@@ -1400,6 +1569,9 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_170b'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
 		public void F0_1000_179a()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_179a'(Cdecl, Near) at 0x1000:0x179a");
@@ -1427,6 +1599,9 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_1000_179a'");
 		}
 
+		/// <summary>
+		/// Handles mouse events
+		/// </summary>
 		public void F0_1000_17db_MouseEvent()
 		{
 			this.oCPU.Log.EnterBlock("'F0_1000_17db'(Cdecl, Far) at 0x1000:0x17db");

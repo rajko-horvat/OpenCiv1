@@ -565,18 +565,8 @@ namespace OpenCiv1
 			// Instruction address 0x2dc4:0x055c, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2fe5);
 
-			this.oCPU.AX.Word = 0x50;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x64;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0xba06;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0575); // stack management - push return offset
 			// Instruction address 0x2dc4:0x0570, size: 5
-			this.oParent.Segment_1238.F0_1238_001e();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x6);
+			this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
 
 		L0578:
 			this.oCPU.BP.Word = this.oCPU.PopWord();

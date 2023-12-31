@@ -8,6 +8,7 @@ using System.IO.Compression;
 using IRB.VirtualCPU;
 using OpenCiv1.GPU;
 using IRB.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace OpenCiv1
 {
@@ -1311,29 +1312,17 @@ namespace OpenCiv1
 		}
 
 		#region Memory and Initialization functions
-		public void F0_VGA_0492_GetFreeMemory()
+		public ushort F0_VGA_0492_GetFreeMemory()
 		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0492_GetFreeMemory()");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock("F0_VGA_0492_GetFreeMemory()");
-
 			// function body
 			this.oCPU.AX.Word = (ushort)((this.oCPU.Memory.FreeMemory.Size >> 4) & 0xffff);
 			this.oCPU.Flags.C = true;
 
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_0492_GetFreeMemory");
-			this.oCPU.Log = oTempLog;
+			return this.oCPU.AX.Word;
 		}
 
-		public void F0_VGA_04ae_AllocateScreen(ushort screenID)
+		public ushort F0_VGA_04ae_AllocateScreen(ushort screenID)
 		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_04ae_AllocateScreen({screenID})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_04ae_AllocateScreen({screenID})");
-
 			// function body
 			if (!this.aScreens.ContainsKey(screenID))
 			{
@@ -1349,9 +1338,7 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = 0xa000; // return something to make underlying code happy
 
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_04ae_AllocateScreen");
-			this.oCPU.Log = oTempLog;
+			return this.oCPU.AX.Word;
 		}
 		#endregion
 
@@ -1588,7 +1575,7 @@ namespace OpenCiv1
 			this.oCPU.Log = oTempLog;
 		}
 
-		#region Icon load functions
+		#region Icon functions
 		public void F0_VGA_0a78(ushort param1, ushort param2)
 		{
 			LogWrapper oTempLog = this.oCPU.Log;
@@ -1745,11 +1732,6 @@ namespace OpenCiv1
 		#region Palette functions
 		public void F0_VGA_010c_SetColorsByIndexArray(ushort indexArrayPtr)
 		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_010c_SetColorsByIndexArray()");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock("F0_VGA_010c_SetColorsByIndexArray()");
-
 			// function body
 			lock (this.VGALock)
 			{
@@ -1768,18 +1750,12 @@ namespace OpenCiv1
 					this.aScreens[i].Value.SetColorsFromArray(aColors, 0, 0, 16);
 				}
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_010c_SetColorsByIndexArray");
-			this.oCPU.Log = oTempLog;
 		}
 
 		public void SetColor(int index, Color color)
 		{
 			lock (this.VGALock)
 			{
-				this.oCPU.Log.WriteLine($"Setting palette index {index}, #{color.A:x2}{color.R:x2}{color.G:x2}{color.B:x2}");
-
 				// set colors to all planes, as this is what original code does
 				for (int i = 0; i < this.aScreens.Count; i++)
 				{
@@ -1790,11 +1766,6 @@ namespace OpenCiv1
 
 		public void F0_VGA_0162_SetColorsFromColorStruct(ushort colorStructPtr)
 		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0162_SetColorsFromStruct(0x{colorStructPtr:x4})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_0162_SetColorsFromStruct(0x{colorStructPtr:x4})");
-
 			// function body
 			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, colorStructPtr) == 0x304d)
 			{
@@ -1823,10 +1794,6 @@ namespace OpenCiv1
 					}
 				}
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_0162_SetColorsFromStruct");
-			this.oCPU.Log = oTempLog;
 		}
 
 		public void SetColorsFromColorStruct(byte[] colorStruct)
@@ -1849,8 +1816,6 @@ namespace OpenCiv1
 						aColors[i] = VGABitmap.Color18ToColor(colorStruct[iStructPos + (i * 3)],
 							colorStruct[iStructPos + (i * 3) + 1],
 							colorStruct[iStructPos + (i * 3) + 2]);
-
-						this.oCPU.Log.WriteLine($"Setting palette index {iFrom + i}, #{aColors[i].A:x2}{aColors[i].R:x2}{aColors[i].G:x2}{aColors[i].B:x2}");
 					}
 
 					// set colors to all screens, as this is what original code does
@@ -1866,11 +1831,7 @@ namespace OpenCiv1
 		#region Drawing functions
 		public void F0_VGA_06b7_DrawScreenToMainScreen(ushort screenID, ushort param1)
 		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_06b7_DrawScreenToMainScreen({screenID}, {param1})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_06b7_DrawScreenToMainScreen({screenID}, {param1})");
-
+			// function body
 			// this is either random fade in image, or a scrolling from right to left
 			if (screenID != 0)
 			{
@@ -1878,9 +1839,9 @@ namespace OpenCiv1
 				{
 					lock (this.VGALock)
 					{
-						VGABitmap mainScreen = this.aScreens.GetValueByKey(0);
+						VGABitmap screen0 = this.aScreens.GetValueByKey(0);
 
-						mainScreen.DrawImage(this.aScreens.GetValueByKey(screenID));
+						screen0.DrawImage(this.aScreens.GetValueByKey(screenID));
 					}
 				}
 				else
@@ -1888,11 +1849,6 @@ namespace OpenCiv1
 					throw new Exception($"The screen {screenID} is not allocated");
 				}
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_VGA_06b7_DrawScreenToMainScreen'");
-			this.oCPU.Log = oTempLog;
-			return;
 		}
 
 		public void F0_VGA_07d8_DrawImage(ushort srcRectPtr, int xFrom, int yFrom, int width, int height, ushort destRectPtr, int xTo, int yTo)
@@ -1904,11 +1860,6 @@ namespace OpenCiv1
 			CivRectangle rectTo = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, destRectPtr));
 			int iXOffsetTo = rectTo.X + xTo;
 			int iYOffsetTo = rectTo.Y + yTo;
-
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_07d8_DrawImage({rectTo.ScreenID}, {iXOffsetTo}, {iYOffsetTo}, {rectFrom.ScreenID}, {iXOffsetFrom}, {iYOffsetFrom}, {width}, {height})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_07d8_DrawImage({rectTo.ScreenID}, {iXOffsetTo}, {iYOffsetTo}, {rectFrom.ScreenID}, {iXOffsetFrom}, {iYOffsetFrom}, {width}, {height})");
 
 			// function body
 			if (this.aScreens.ContainsKey(rectFrom.ScreenID))
@@ -1933,20 +1884,10 @@ namespace OpenCiv1
 			{
 				throw new Exception($"The screen {rectFrom.ScreenID} is not allocated");
 			}
-
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_07d8_DrawImage");
-			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_VGA_0b85_ScreenToBitmap(ushort screenID, ushort xPos, ushort yPos, ushort width, ushort height)
+		public ushort F0_VGA_0b85_ScreenToBitmap(ushort screenID, ushort xPos, ushort yPos, ushort width, ushort height)
 		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0b85_ScreenToBitmap({screenID}, {xPos}, {yPos}, {width}, {height})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_0b85_ScreenToBitmap({screenID}, {xPos}, {yPos}, {width}, {height})");
-
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
 			{
@@ -1960,7 +1901,6 @@ namespace OpenCiv1
 					bitmap.DrawImage(Point.Empty, screen, rect, false);
 
 					this.aBitmaps.Add(this.iBitmapNextID, bitmap);
-					this.oCPU.Log.WriteLine($"// Bitmap ID: 0x{this.iBitmapNextID:x4}");
 
 					//bitmap.Bitmap.Save($"Bitmaps{Path.DirectorySeparatorChar}Image_{this.iBitmapNextID:x4}.png", ImageFormat.Png);
 
@@ -1973,18 +1913,11 @@ namespace OpenCiv1
 				throw new Exception($"The screen {screenID} is not allocated");
 			}
 
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_0b85_ScreenToBitmap");
-			this.oCPU.Log = oTempLog;
+			return this.oCPU.AX.Word;
 		}
 
 		public void F0_VGA_0c3e_DrawBitmapToScreen(ushort rectPtr, short xPos, short yPos, ushort bitmapPtr)
 		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0c3e(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_0c3e(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
-
 			// function body
 			CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
 
@@ -2009,22 +1942,13 @@ namespace OpenCiv1
 			{
 				throw new Exception($"The screen {rect.ScreenID} is not allocated");
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_0c3e");
-			this.oCPU.Log = oTempLog;
 		}
 
 		public void F0_VGA_0d47_DrawBitmapToScreen(ushort rectPtr, short xPos, short yPos, ushort bitmapPtr)
 		{
+			// function body
 			CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
 
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0d47_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_0d47_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
-
-			// function body
 			if (this.aScreens.ContainsKey(rect.ScreenID))
 			{
 				if (this.aBitmaps.ContainsKey(bitmapPtr))
@@ -2046,19 +1970,23 @@ namespace OpenCiv1
 			{
 				throw new Exception($"The screen {rect.ScreenID} is not allocated");
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_0d47_DrawBitmapToScreen");
-			this.oCPU.Log = oTempLog;
 		}
 
-		public void F0_VGA_038c_GetPixel(ushort screenID, int xPos, int yPos)
+		public ushort LoadIcon(string filename)
 		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_038c_GetPixel({screenID}, {xPos}, {yPos})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_038c_GetPixel({screenID}, {xPos}, {yPos})");
+			byte[] aTemp;
+			VGABitmap bitmap = VGABitmap.FromFile(this.oCPU.DefaultDirectory + filename.ToUpper(), out aTemp);
 
+			this.aBitmaps.Add(this.iBitmapNextID, bitmap);
+
+			this.oCPU.AX.Word = (ushort)this.iBitmapNextID;
+			this.iBitmapNextID++;
+			
+			return this.oCPU.AX.Word;
+		}
+
+		public ushort F0_VGA_038c_GetPixel(ushort screenID, int xPos, int yPos)
+		{
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
 			{
@@ -2072,18 +2000,11 @@ namespace OpenCiv1
 				throw new Exception($"The screen {screenID} is not allocated");
 			}
 
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_038c_GetPixel");
-			this.oCPU.Log = oTempLog;
+			return this.oCPU.AX.Word;
 		}
 
 		public void F0_VGA_0550_SetPixel(ushort screenID, int xPos, int yPos, byte frontColor, byte pixelMode)
 		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0550_SetPixel({screenID}, {xPos}, {yPos}, {frontColor}, {(PixelWriteModeEnum)pixelMode})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_0550_SetPixel({screenID}, {xPos}, {yPos}, {frontColor}, {(PixelWriteModeEnum)pixelMode})");
-
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
 			{
@@ -2098,19 +2019,11 @@ namespace OpenCiv1
 			{
 				throw new Exception($"The screen {screenID} is not allocated");
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_0550_SetPixel");
-			this.oCPU.Log = oTempLog;
 		}
 
 		public void F0_VGA_0599_DrawLine(CivRectangle rect, short x1, short y1, short x2, short y2, ushort mode)
 		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_0599_DrawLine({x1}, {y1}, {x2}, {y2})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_0599_DrawLine({x1}, {y1}, {x2}, {y2})");
-
+			// function body
 			if (this.aScreens.ContainsKey(rect.ScreenID))
 			{
 				lock (this.VGALock)
@@ -2129,19 +2042,10 @@ namespace OpenCiv1
 			{
 				throw new Exception($"The screen {rect.ScreenID} is not allocated");
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_0599_DrawLine");
-			this.oCPU.Log = oTempLog;
 		}
 
 		public void F0_VGA_040a_FillRectangle(int screenID, Rectangle rect, byte frontColor, byte pixelMode)
 		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_040a_FillRectangle({screenID}, {rect.X}, {rect.Y}, {rect.Width}, {rect.Height})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_040a_FillRectangle({screenID}, {rect.X}, {rect.Y}, {rect.Width}, {rect.Height})");
-
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
 			{
@@ -2154,19 +2058,10 @@ namespace OpenCiv1
 			{
 				throw new Exception($"The screen {screenID} is not allocated");
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_040a_FillRectangle");
-			this.oCPU.Log = oTempLog;
 		}
 
 		public void F0_VGA_009a_ReplaceColor(ushort struct1, ushort xPos, ushort yPos, ushort width, ushort height, byte oldColor, byte newColor)
 		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_009a_ReplaceColor(0x{struct1:x4}, {xPos}, {yPos}, {width}, {height}, {oldColor}, {newColor})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_009a_ReplaceColor(0x{struct1:x4}, {xPos}, {yPos}, {width}, {height}, {oldColor}, {newColor})");
-
 			// function body
 			lock (this.VGALock)
 			{
@@ -2183,27 +2078,16 @@ namespace OpenCiv1
 					throw new Exception($"The screen {usScreenID} is not allocated");
 				}
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_009a_ReplaceColor");
-			this.oCPU.Log = oTempLog;
 		}
 		#endregion
 
 		#region Fonts
-		public void F0_VGA_115d_GetCharWidth(ushort fontID, byte ch)
+		public ushort F0_VGA_115d_GetCharWidth(ushort fontID, byte ch)
 		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_115d_GetCharWidth({fontID}, '{(char)ch}')");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_115d_GetCharWidth({fontID}, '{(char)ch}')");
-
 			// function body
 			this.oCPU.AX.Word = (ushort)GetDrawStringSize(fontID, new string((char)ch, 1)).Width;
 
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_115d_GetCharWidth");
-			this.oCPU.Log = oTempLog;
+			return this.oCPU.AX.Word;
 		}
 
 		public Size GetDrawStringSize(int fontID, string text)
@@ -2243,45 +2127,18 @@ namespace OpenCiv1
 			return new Size(iWidth, iHeight);
 		}
 
-		public void F0_VGA_11ae_GetTextHeight(ushort fontID)
+		public ushort F0_VGA_11ae_GetTextHeight(ushort fontID)
 		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling F0_VGA_11ae_GetTextHeight({fontID})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_11ae_GetTextHeight({fontID})");
-
 			// function body
 			this.oCPU.AX.Word = (ushort)GetDrawStringSize(fontID, "?").Height;
 
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_11ae_GetTextHeight");
-			this.oCPU.Log = oTempLog;
+			return this.oCPU.AX.Word;
 		}
 
 		public void F0_VGA_11d7_DrawString(ushort rectPtr, int xPos, int yPos, ushort stringPtr)
 		{
 			CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
 			string text = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
-
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_11d7_DrawText({xPos}, {yPos}, '{text}')");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_11d7_DrawText({xPos}, {yPos}, '{text}')");
-
-			this.oCPU.Log.WriteLine("// Parameters: ({" +
-				$"ScreenID: {rect.ScreenID}, " +
-				$"X: {rect.X}, " +
-				$"Y: {rect.Y}, " +
-				$"Width: {rect.Width}, " +
-				$"Height: {rect.Height}, " +
-				$"Flags: 0x{rect.Flags:x4}, " +
-				$"Back color: {rect.BackColor}, " +
-				$"Pixel mode: {rect.PixelMode}, " +
-				$"Front color: {rect.FrontColor}, " +
-				$"Font ID: {rect.FontID}" +
-				"}, " +
-				$"{xPos}, {yPos}, '{text}'" +
-				")");
 
 			if (!this.aFonts.ContainsKey(rect.FontID))
 			{
@@ -2305,10 +2162,6 @@ namespace OpenCiv1
 			{
 				throw new Exception($"The screen {rect.ScreenID} is not allocated");
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_VGA_11d7_DrawText");
-			this.oCPU.Log = oTempLog;
 		}
 		#endregion
 	}

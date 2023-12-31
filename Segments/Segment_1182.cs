@@ -15,6 +15,13 @@ namespace OpenCiv1
 			this.oCPU = parent.CPU;
 		}
 
+		/// <summary>
+		/// Draws a string at specified coordinates on screen selected by rectangle at 0xaa
+		/// </summary>
+		/// <param name="stringPtr"></param>
+		/// <param name="xPos"></param>
+		/// <param name="yPos"></param>
+		/// <param name="frontColor"></param>
 		public void F0_1182_002a_DrawString(ushort stringPtr, int xPos, int yPos, ushort frontColor)
 		{
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0xc), frontColor);
@@ -28,6 +35,13 @@ namespace OpenCiv1
 			this.oParent.VGADriver.F0_VGA_11d7_DrawString(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), xPos, yPos, stringPtr);
 		}
 
+		/// <summary>
+		/// Draws a string at specified coordinates on screen 0
+		/// </summary>
+		/// <param name="stringPtr"></param>
+		/// <param name="xPos"></param>
+		/// <param name="yPos"></param>
+		/// <param name="frontColor"></param>
 		public void F0_1182_005c_DrawStringToScreen0(ushort stringPtr, int xPos, int yPos, ushort frontColor)
 		{
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0xa), 0x0);
@@ -37,12 +51,26 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0xa), 0x1);
 		}
 
+		/// <summary>
+		/// Draws a string with shadow at specified coordinates on screen 0
+		/// </summary>
+		/// <param name="stringPtr"></param>
+		/// <param name="xPos"></param>
+		/// <param name="yPos"></param>
+		/// <param name="mode"></param>
 		public void F0_1182_0086_DrawStringWithShadow(ushort stringPtr, int xPos, int yPos, ushort mode)
 		{
 			F0_1182_005c_DrawStringToScreen0(stringPtr, xPos, yPos + 1, 0);
 			F0_1182_005c_DrawStringToScreen0(stringPtr, xPos, yPos, mode);
 		}
 
+		/// <summary>
+		/// Draws a centered string by rectangle defined at 0xaa on screen 0
+		/// </summary>
+		/// <param name="stringPtr"></param>
+		/// <param name="xPos"></param>
+		/// <param name="yPos"></param>
+		/// <param name="mode"></param>
 		public void F0_1182_00b3_DrawCenteredStringToScreen0(ushort stringPtr, ushort xPos, ushort yPos, ushort mode)
 		{
 			F0_1182_00ef_GetStringWidth(stringPtr);
@@ -56,6 +84,13 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0xa), 0x1);
 		}
 
+		/// <summary>
+		/// Draws a centered string with shaddow by rectangle defined at 0xaa on screen 0
+		/// </summary>
+		/// <param name="stringPtr"></param>
+		/// <param name="xPos"></param>
+		/// <param name="yPos"></param>
+		/// <param name="mode"></param>
 		public void F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(ushort stringPtr, ushort xPos, ushort yPos, ushort mode)
 		{
 			F0_1182_00ef_GetStringWidth(stringPtr);
@@ -70,6 +105,11 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0xa), 0x1);
 		}
 
+		/// <summary>
+		/// Calculates the string width
+		/// </summary>
+		/// <param name="stringPtr"></param>
+		/// <returns></returns>
 		public int F0_1182_00ef_GetStringWidth(ushort stringPtr)
 		{
 			ushort usFontID = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0x10));
@@ -80,6 +120,10 @@ namespace OpenCiv1
 			return this.oParent.VGADriver.GetDrawStringSize(usFontID, text).Width;
 		}
 
+		/// <summary>
+		/// Waits for specified number of main timer ticks
+		/// </summary>
+		/// <param name="waitTime"></param>
 		public void F0_1182_0134_WaitTime(short waitTime)
 		{
 			this.oParent.Segment_1000.F0_1000_033e_ResetTimer();
