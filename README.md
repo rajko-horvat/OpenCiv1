@@ -24,6 +24,7 @@ If you want to compile the code, it is assumed that:
 <li>You have .NET Framework 4.8 installed.</li>
 <li>For debugging you have installed DOS CIV I game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Mono on Linux.
 It's where it's home directory resides (Images, palettes, text and save games are loaded/saved there, for now).</li>
+<li>For Release mode it is expected that OpenCiv1.exe (for simlicity) is put exactly into directory with resource files, for example: 'c:\Dos\Civ1\', or '~/Dos/Civ1/'.</li>
 </ul>
 
 ## Help needed
