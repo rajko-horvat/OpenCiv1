@@ -570,14 +570,16 @@ namespace OpenCiv1
 
 			if (rect1.Width > 0 && rect1.Height > 0)
 			{
-				int iXPosition = rect1.X;
-				int iYPosition = rect1.Y;
 				int iBitmapPosition = (this.iStride * rect1.Y) + rect1.X;
 
 				for (int i = 0; i < text.Length; i++)
 				{
 					char ch = text[i];
+					frontColor = (byte)((ch > 0x7f) ? (ch - 0x80) : frontColor);
 					CivFontCharacter fontCh;
+
+					if (ch > 0x7f)
+						continue;
 
 					if (i > 0)
 						iBitmapPosition += font.CharacterWidthSpacing;
@@ -622,10 +624,13 @@ namespace OpenCiv1
 								}
 							}
 						}
+
 						iBitmapPosition1 += this.iStride;
 					}
+
 					iBitmapPosition += fontCh.Width;
 				}
+
 				this.bModified = true;
 			}
 		}

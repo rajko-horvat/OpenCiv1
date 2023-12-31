@@ -106,22 +106,16 @@ namespace OpenCiv1
 			goto L0125;
 
 		L00e2:
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x00ee); // stack management - push return offset
 			// Instruction address 0x1403:0x00e9, size: 5
 			this.oParent.Segment_1d12.F0_1d12_6c97(playerID, 4);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x0);
 			if (this.oCPU.Flags.E) goto L00f9;
 			goto L0110;
 
 		L00f9:
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0105); // stack management - push return offset
 			// Instruction address 0x1403:0x0100, size: 5
 			this.oParent.Segment_1d12.F0_1d12_6c97(playerID, 8);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x0);
 			if (this.oCPU.Flags.NE) goto L0110;
