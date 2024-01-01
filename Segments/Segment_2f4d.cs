@@ -331,9 +331,16 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.fscanf((short)this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x110)),
 				OpenCiv1.String_300d, (ushort)(this.oCPU.BP.Word - 0x100));
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10c), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10c))));
+			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10c), 
+				this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10c))));
 			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x100)), 0x2a);
 			if (this.oCPU.Flags.NE) goto L0349;
+
+			// Let's try to trim the dialog text, and fix the bug with unecessary lines in dialogs
+			string sInput = this.oCPU.ReadString(CPU.ToLinearAddress(this.oParent.CPU.DS.Word, 0xba06));
+			sInput = sInput.TrimEnd(new char[] {' ', '^'});
+			this.oCPU.WriteString(CPU.ToLinearAddress(this.oParent.CPU.DS.Word, 0xba06), sInput, sInput.Length);
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108), 0x1);
 			goto L03b5;
 
