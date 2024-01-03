@@ -241,7 +241,7 @@ namespace OpenCiv1
 
 			short sHandle = -1;
 			string sPath = Path.Combine(this.oCPU.DefaultDirectory, GetDOSFileName(filename.ToUpper()));
-			this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
+			//this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 
 			try
 			{
@@ -372,7 +372,7 @@ namespace OpenCiv1
 						throw new Exception($"fscanf has undefined format '{format}'");
 				}
 
-				this.oCPU.Log.WriteLine($"fscanf('%[^\\n]\\n') = '{sbResult.ToString()}'");
+				// this.oCPU.Log.WriteLine($"fscanf('%[^\\n]\\n') = '{sbResult.ToString()}'");
 			}
 			else
 			{
@@ -609,7 +609,7 @@ namespace OpenCiv1
 			short sHandle = -1;
 			string sPath = Path.Combine(this.oCPU.DefaultDirectory, GetDOSFileName(filename.ToUpper()));
 
-			this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
+			//this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 			try
 			{
 				this.oCPU.Files.Add(this.oCPU.FileHandleCount, new FileStreamItem(new FileStream($"{sPath}", eMode, eAccess), eType));
@@ -631,7 +631,7 @@ namespace OpenCiv1
 
 			if (this.oCPU.Files.ContainsKey(handle))
 			{
-				this.oCPU.Log.WriteLine($"Closing file handle {handle}");
+				//this.oCPU.Log.WriteLine($"Closing file handle {handle}");
 				this.oCPU.Files.GetValueByKey(handle).Stream.Close();
 				this.oCPU.Files.RemoveByKey(handle);
 			}
@@ -764,7 +764,7 @@ namespace OpenCiv1
 			string sPath = Path.Combine(this.oCPU.DefaultDirectory, GetDOSFileName(sName.ToUpper()));
 			if (File.Exists(sPath))
 			{
-				this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
+				// this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 				this.oCPU.Files.Add(this.oCPU.FileHandleCount, new FileStreamItem(new FileStream(sPath, eMode, eAccess), eType));
 				short sHandle = this.oCPU.FileHandleCount;
 				this.oCPU.FileHandleCount++;
