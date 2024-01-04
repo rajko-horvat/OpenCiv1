@@ -13,6 +13,12 @@ namespace OpenCiv1
 			this.oCPU = parent.CPU;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="playerID"></param>
+		/// <param name="cityID"></param>
+		/// <param name="flag"></param>
 		public void F0_2459_0000(short playerID, short cityID, ushort flag)
 		{
 			this.oCPU.Log.EnterBlock("'F0_2459_0000'(Cdecl, Far) at 0x2459:0x0000");
@@ -103,11 +109,8 @@ namespace OpenCiv1
 			this.oCPU.TESTWord(this.oParent.GameState.Cities[cityID].BuildingFlags0, 0x1);
 			if (this.oCPU.Flags.E) goto L00de;
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x00db); // stack management - push return offset
 			// Instruction address 0x2459:0x00d8, size: 3
 			F0_2459_05ee(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 		L00de:
 			this.oCPU.AX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
@@ -117,11 +120,8 @@ namespace OpenCiv1
 				this.oParent.GameState.Players[playerID].ContactPlayerCountdown = -1;
 			}
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0104); // stack management - push return offset
 			// Instruction address 0x2459:0x0101, size: 3
 			F0_2459_0687(cityID);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 			// Instruction address 0x2459:0x0108, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
@@ -458,14 +458,11 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_28b9);
 
 			// Instruction address 0x2459:0x04b4, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 		L04bc:
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x04c6); // stack management - push return offset
 			// Instruction address 0x2459:0x04c3, size: 3
 			F0_2459_06f2(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 			// Instruction address 0x2459:0x04d2, size: 5
 			this.oParent.Segment_2aea.F0_2aea_138c_SetCityOwner(
@@ -589,6 +586,10 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_2459_0000'");
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="playerID"></param>
 		public void F0_2459_05ee(short playerID)
 		{
 			this.oCPU.Log.EnterBlock("'F0_2459_05ee'(Cdecl, Far) at 0x2459:0x05ee");
@@ -628,7 +629,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
 
 			// Instruction address 0x2459:0x0656, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 		L065e:
 			this.oCPU.AX.Word = 0x1;
@@ -650,7 +651,12 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_2459_05ee'");
 		}
 
-		public void F0_2459_0687(short cityID)
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="cityID"></param>
+		/// <returns></returns>
+		public ushort F0_2459_0687(short cityID)
 		{
 			this.oCPU.Log.EnterBlock("'F0_2459_0687'(Cdecl, Far) at 0x2459:0x0687");
 
@@ -703,8 +709,15 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_2459_0687'");
+
+			return this.oCPU.AX.Word;
 		}
 
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="playerID1"></param>
+		/// <param name="playerID2"></param>
 		public void F0_2459_06f2(short playerID1, short playerID2)
 		{
 			this.oCPU.Log.EnterBlock("'F0_2459_06f2'(Cdecl, Far) at 0x2459:0x06f2");
@@ -795,7 +808,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L07ed;
 
 			// Instruction address 0x2459:0x07e6, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 80, 32);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 32);
 
 			goto L07fe;
 
@@ -846,7 +859,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L088d;
 
 			// Instruction address 0x2459:0x0886, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 80, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
 
 			goto L08a1;
 
@@ -956,7 +969,14 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("'F0_2459_0918'");
 		}
 
-		public void F0_2459_0948(short playerID, short unitID, short cityID)
+		/// <summary>
+		/// ?
+		/// </summary>
+		/// <param name="playerID"></param>
+		/// <param name="unitID"></param>
+		/// <param name="cityID"></param>
+		/// <returns></returns>
+		public ushort F0_2459_0948(short playerID, short unitID, short cityID)
 		{
 			this.oCPU.Log.EnterBlock("'F0_2459_0948'(Cdecl, Far) at 0x2459:0x0948");
 
@@ -1115,7 +1135,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2958);
 
 			// Instruction address 0x2459:0x0b16, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 80, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
 
 			// Instruction address 0x2459:0x0b1e, size: 5
 			this.oParent.Segment_1238.F0_1238_107e();
@@ -1209,6 +1229,8 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_2459_0948'");
+
+			return this.oCPU.AX.Word;
 		}
 	}
 }

@@ -111,7 +111,7 @@
     <Compile Include="Segments\Overlay_13.cs" />
     <Compile Include="Segments\Overlay_14.cs" />
     <Compile Include="Segments\Overlay_15.cs" />
-    <Compile Include="Segments\Overlay_17.cs" />
+    <Compile Include="Segments\Palace.cs" />
     <Compile Include="Segments\Overlay_18.cs" />
     <Compile Include="Segments\CityView.cs" />
     <Compile Include="Segments\MainIntro.cs" />

@@ -232,17 +232,15 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("'F0_11a8_0268'(Cdecl, Far) at 0x11a8:0x0268");
 
 			// function body
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1a3c), 0x0);
-			if (this.oCPU.Flags.E) goto L027b;
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1a3c) != 0 && this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea) == 1)
+			{
+				// Instruction address 0x11a8:0x0276, size: 5
+				this.oParent.Segment_1000.F0_1000_170b();
+			}
+		
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdeea, 
+				this.oCPU.DECWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea)));
 
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea), 0x1);
-			if (this.oCPU.Flags.NE) goto L027b;
-
-			// Instruction address 0x11a8:0x0276, size: 5
-			this.oParent.Segment_1000.F0_1000_170b();
-
-		L027b:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdeea, this.oCPU.DECWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea)));
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_11a8_0268'");
 		}

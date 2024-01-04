@@ -2678,7 +2678,7 @@ namespace OpenCiv1
 
 		L17b3:
 			// Instruction address 0x2aea:0x17bf, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0x2bc6, 100, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0x2bc6, 100, 80);
 
 			this.oCPU.AX.Word = 0xffff;
 

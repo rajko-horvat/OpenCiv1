@@ -1587,7 +1587,7 @@ namespace OpenCiv1
 			goto L137e;
 
 		L1350:
-			this.oParent.Overlay_17.F17_0000_07ec(1);
+			this.oParent.Palace.F17_0000_07ec(1);
 
 			// Instruction address 0x0000:0x1376, size: 5
 			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(

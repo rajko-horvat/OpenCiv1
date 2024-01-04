@@ -718,27 +718,27 @@ namespace OpenCiv1
 			goto L0715;
 
 		L06d2:
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x58)), 0x0);
-			if (this.oCPU.Flags.A)
+			// ??? This is dialog image being drawn for future reference
+			if (this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x58)) > 0)
 			{
 				// Instruction address 0x2d05:0x070d, size: 5
 				this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
 					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19e8),
-					(ushort)((0x28 * this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2f9e)) + 0x28), 0x8c, 0x28, 0x3c,
+					(40 * this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x2f9e)) + 40, 140, 40, 60,
 					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-					(ushort)(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)) - 0x28),
-					(ushort)(((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x58)) - 1) +
-						this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa))) - 6));
+					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)) - 40,
+					(((this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x58)) - 1) +
+						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa))) - 6));
 			}
 			else
 			{
 				// Instruction address 0x2d05:0x070d, size: 5
 				this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
 					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19e8),
-					(ushort)((0x28 * this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2f9e)) + 0x28), 0x8c, 0x28, 0x3c,
+					(40 * this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2f9e)) + 40, 140, 40, 60,
 					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-					(ushort)(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)) - 0x28),
-					(ushort)(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)) - 6));
+					this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0x8)) - 40,
+					this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + 0xa)) - 6);
 			}
 
 		L0715:

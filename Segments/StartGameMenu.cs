@@ -1421,13 +1421,10 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x0000:0x0f32, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0f42); // stack management - push return offset
 			// Instruction address 0x0000:0x0f3d, size: 5
 			this.oParent.Segment_2459.F0_2459_05ee(playerID);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			
 			// Instruction address 0x0000:0x0f53, size: 5
 			this.oParent.Segment_1866.F0_1866_250e_AddReplayData(13, (byte)playerID, (byte)playerID1);

@@ -748,11 +748,8 @@ namespace OpenCiv1
 			goto L02e2;
 
 		L0628:
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x063a); // stack management - push return offset
 			// Instruction address 0x1866:0x0635, size: 5
 			this.oParent.Segment_2517.F0_2517_0737(playerID, this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd7f0), xPos, yPos);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			
 			this.oCPU.BX.Word = (ushort)playerID;
 			this.oCPU.CX.Low = 0x4;
@@ -1785,7 +1782,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 			// Instruction address 0x1866:0x0efa, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 80, 64);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 64);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd760, 0x1);
 
@@ -3489,7 +3486,7 @@ namespace OpenCiv1
 				goto L1a51;
 
 			// Instruction address 0x1866:0x1a49, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 		L1a51:
 			this.oCPU.AX.Word = 0x600;
@@ -3518,7 +3515,7 @@ namespace OpenCiv1
 			if (playerID == this.oParent.GameState.HumanPlayerID)
 			{
 				// Instruction address 0x1866:0x1ab2, size: 5
-				this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 			}
 
 			this.oParent.GameState.Players[playerID].Coins += 50;
@@ -3531,7 +3528,7 @@ namespace OpenCiv1
 			if (playerID == this.oParent.GameState.HumanPlayerID)
 			{
 				// Instruction address 0x1866:0x1aeb, size: 5
-				this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 			}
 		
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x0);
@@ -3605,7 +3602,7 @@ namespace OpenCiv1
 			if (playerID == this.oParent.GameState.HumanPlayerID)
 			{
 				// Instruction address 0x1866:0x1bbe, size: 5
-				this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 			}
 		
 			goto L1d28;
@@ -3617,7 +3614,7 @@ namespace OpenCiv1
 			if (playerID == this.oParent.GameState.HumanPlayerID)
 			{
 				// Instruction address 0x1866:0x1c23, size: 5
-				this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 			}
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), 0x1);

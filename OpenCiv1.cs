@@ -56,7 +56,7 @@ namespace OpenCiv1
 		private Overlay_13 oOverlay_13;
 		private WorldMap oWorldMap;
 		private Overlay_20 oOverlay_20;
-		private Overlay_17 oOverlay_17;
+		private Palace oPalace;
 		private Overlay_10 oOverlay_10;
 		private Overlay_15 oOverlay_15;
 		private MSCAPI oMSCAPI;
@@ -131,7 +131,7 @@ namespace OpenCiv1
 			this.oOverlay_13 = new Overlay_13(this);
 			this.oWorldMap = new WorldMap(this);
 			this.oOverlay_20 = new Overlay_20(this);
-			this.oOverlay_17 = new Overlay_17(this);
+			this.oPalace = new Palace(this);
 			this.oOverlay_10 = new Overlay_10(this);
 			this.oOverlay_15 = new Overlay_15(this);
 			#endregion
@@ -610,9 +610,9 @@ namespace OpenCiv1
 			get { return this.oOverlay_20; }
 		}
 
-		public Overlay_17 Overlay_17
+		public Palace Palace
 		{
-			get { return this.oOverlay_17; }
+			get { return this.oPalace; }
 		}
 
 		public Overlay_10 Overlay_10

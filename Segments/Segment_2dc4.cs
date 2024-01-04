@@ -458,7 +458,7 @@ namespace OpenCiv1
 			// Instruction address 0x2dc4:0x0435, size: 5
 			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19e8),
-				0x120, 0x78,
+				288, 120,
 				this.oCPU.AX.Word,
 				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
@@ -566,7 +566,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2fe5);
 
 			// Instruction address 0x2dc4:0x0570, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 		L0578:
 			this.oCPU.BP.Word = this.oCPU.PopWord();

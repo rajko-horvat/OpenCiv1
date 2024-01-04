@@ -524,7 +524,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
 
 			// Instruction address 0x0000:0x0530, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 64, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 64, 80);
 
 			goto L00f8;
 
@@ -1064,7 +1064,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0a14;
 
 			// Instruction address 0x0000:0x09f3, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 			// Instruction address 0x0000:0x0a07, size: 5
 			this.oParent.Segment_1403.F0_1403_3ed7(this.oParent.GameState.Cities[cityID].Position.X, this.oParent.GameState.Cities[cityID].Position.Y);
@@ -1195,7 +1195,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_5068);
 
 			// Instruction address 0x0000:0x0b8a, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 80, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
 
 		L0b92:
 			this.oParent.Overlay_22.F22_0000_0af5(cityID, 
@@ -1220,7 +1220,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x4);
 
 			// Instruction address 0x0000:0x0bf9, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 			// Instruction address 0x0000:0x0c0d, size: 5
 			this.oParent.Segment_1403.F0_1403_3ed7(this.oParent.GameState.Cities[cityID].Position.X, this.oParent.GameState.Cities[cityID].Position.Y);
@@ -1248,7 +1248,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x2);
 
 			// Instruction address 0x0000:0x0c73, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 64);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 64);
 
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);

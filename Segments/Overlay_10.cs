@@ -45,7 +45,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L001b;
 
 			// Instruction address 0x0000:0x0055, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 			this.oCPU.AX.Word = this.oCPU.INCWord(this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
@@ -594,7 +594,7 @@ namespace OpenCiv1
 
 		L0690:
 			// Instruction address 0x0000:0x0699, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 10, 10);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 10, 10);
 
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;

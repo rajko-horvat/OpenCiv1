@@ -32,7 +32,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0027;
 
 			// Instruction address 0x0000:0x001a, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0x3fb0, 100, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0x3fb0, 100, 80);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x680a, this.oCPU.AX.Word);
 			goto L002d;
@@ -60,7 +60,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_4008);
 
 			// Instruction address 0x0000:0x0076, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 			goto L089e;
 

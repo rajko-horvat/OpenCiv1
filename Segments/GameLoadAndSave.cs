@@ -1157,7 +1157,7 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.strcpy(0xba06, ex.Message);
 
 				// Instruction address 0x0000:0x08a3, size: 5
-				this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 				bSuccess = false;
 			}

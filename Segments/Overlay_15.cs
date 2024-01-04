@@ -269,7 +269,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x5);
 
 			// Instruction address 0x0000:0x0281, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 80, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
 
 			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[playerID].Coins;
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);

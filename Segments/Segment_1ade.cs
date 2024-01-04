@@ -2952,7 +2952,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_23d5);
 
 			// Instruction address 0x1ade:0x1d18, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 			this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].CurrentResearchID = 71;
 
@@ -3168,7 +3168,7 @@ namespace OpenCiv1
 
 		L1f30:
 			// Instruction address 0x1ade:0x1f3c, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 100, 80);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 			goto L2013;
 
@@ -3308,7 +3308,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x1);
 
 			// Instruction address 0x1ade:0x20cc, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 80, 100);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 100);
 
 			this.oParent.Overlay_14.F14_0000_0d43();
 
@@ -3355,7 +3355,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x3);
 
 			// Instruction address 0x1ade:0x216c, size: 5
-			this.oParent.Segment_1238.F0_1238_001e(0xba06, 80, 100);
+			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 100);
 
 		L2174:
 			this.oCPU.TESTByte((byte)this.oParent.GameState.TechnologyFirstDiscoveredBy[technologyID], 0x7);
