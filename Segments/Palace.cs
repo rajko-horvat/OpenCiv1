@@ -581,7 +581,7 @@ namespace OpenCiv1
 
 		L06ae:
 			// Instruction address 0x0000:0x06b6, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0523_MemoryError(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6828), 0x4b27);
+			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6828), 0x4b27);
 
 			// Instruction address 0x0000:0x06be, size: 5
 			this.oParent.Segment_1403.F0_1403_4545();
@@ -1084,7 +1084,7 @@ namespace OpenCiv1
 
 		L0bc0:
 			// Instruction address 0x0000:0x0bc8, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0523_MemoryError(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6828), 0x4b9f);
+			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6828), 0x4b9f);
 
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd930), 0x0);
 			if (this.oCPU.Flags.NE) goto L0be1;
@@ -1146,7 +1146,7 @@ namespace OpenCiv1
 
 		L0c8b:
 			// Instruction address 0x0000:0x0c8c, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0523_MemoryError(this.oCPU.AX.Word, 0);
+			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.AX.Word, 0);
 
 		L0c94:
 			this.oCPU.CMPWord(flag, 0x0);

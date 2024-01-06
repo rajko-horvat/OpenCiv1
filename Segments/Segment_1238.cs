@@ -181,17 +181,11 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x01ab, size: 5
 			this.oParent.Segment_2517.F0_2517_0004(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x01bb); // stack management - push return offset
 			// Instruction address 0x1238:0x01b6, size: 5
 			this.oParent.Segment_25fb.F0_25fb_0004(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x01c6); // stack management - push return offset
 			// Instruction address 0x1238:0x01c1, size: 5
 			this.oParent.Segment_25fb.F0_25fb_2fd7(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 			// Instruction address 0x1238:0x01de, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(

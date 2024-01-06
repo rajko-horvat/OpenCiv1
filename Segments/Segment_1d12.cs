@@ -2743,11 +2743,8 @@ namespace OpenCiv1
 			}
 
 		L1aa8:
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x1ab0); // stack management - push return offset
 			// Instruction address 0x1d12:0x1aab, size: 5
 			this.oParent.Segment_25fb.F0_25fb_34b6(cityID);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			
 			goto L1b60;
 
@@ -3555,11 +3552,8 @@ namespace OpenCiv1
 			goto L2336;
 
 		L232b:
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x2333); // stack management - push return offset
 			// Instruction address 0x1d12:0x232e, size: 5
 			this.oParent.Segment_25fb.F0_25fb_34b6(cityID);
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 
 		L2336:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xcc), 0x0);
@@ -3572,6 +3566,7 @@ namespace OpenCiv1
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x4);
 
+			// ??? Needs further investigation why this happens
 			if (this.oCPU.AX.Word >= this.oParent.GameState.Players.Length)
 			{
 				this.oCPU.AX.Word = 0;
@@ -8976,7 +8971,7 @@ namespace OpenCiv1
 		L5d69:
 			this.oParent.CityView.F19_0000_0000(cityID, -2);
 			
-			this.oParent.CityView.F19_0000_18c1();
+			this.oParent.CityView.F19_0000_18c1_CivilDisorderAnimation();
 
 			// Instruction address 0x1d12:0x5d89, size: 5
 			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
@@ -9807,13 +9802,10 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xd8)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe4)));
 
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x66ca); // stack management - push return offset
 			// Instruction address 0x1d12:0x66c5, size: 5
 			this.oParent.Segment_29f3.F0_29f3_0ec3(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xd8)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe4)));
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);

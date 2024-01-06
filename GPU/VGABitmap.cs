@@ -536,6 +536,19 @@ namespace OpenCiv1
 			Rectangle srcRect1 = new Rectangle(srcRect.Location, srcRect.Size);
 			srcRect1.Intersect(srcBitmap.Rectangle);
 
+			if (destPoint.X < 0)
+			{
+				srcRect1.X -= destPoint.X;
+				srcRect1.Width += destPoint.X;
+				destPoint.X = 0;
+			}
+			if (destPoint.Y < 0)
+			{
+				srcRect1.Y -= destPoint.Y;
+				srcRect1.Height += destPoint.Y;
+				destPoint.Y = 0;
+			}
+
 			Rectangle destRect = new Rectangle(destPoint, srcRect1.Size);
 			destRect.Intersect(this.oRectangle);
 

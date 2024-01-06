@@ -2999,7 +2999,7 @@ namespace OpenCiv1
 			F6_0000_21ac(playerID);
 			
 			// Instruction address 0x0000:0x1f8c, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0523_MemoryError(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x804e), 0x3aee);
+			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x804e), 0x3aee);
 			
 			// Instruction address 0x0000:0x1fa1, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, (ushort)(this.oCPU.BP.Word - 0x10), 0);
@@ -3323,7 +3323,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L235b;
 
 			// Instruction address 0x0000:0x2353, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0523_MemoryError(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x7efe), 0);
+			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x7efe), 0);
 
 		L235b:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x67ea, 0x0);

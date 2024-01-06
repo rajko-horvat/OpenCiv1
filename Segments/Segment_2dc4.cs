@@ -535,11 +535,11 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// Memory error dialog
+		/// Free resource, show Memory error dialog if error happens
 		/// </summary>
 		/// <param name="param1"></param>
 		/// <param name="stringPtr"></param>
-		public void F0_2dc4_0523_MemoryError(ushort param1, ushort stringPtr)
+		public void F0_2dc4_0523_FreeResource(ushort param1, ushort stringPtr)
 		{
 			this.oCPU.Log.EnterBlock("'F0_2dc4_0523'(Cdecl, Far) at 0x2dc4:0x0523");
 
@@ -550,25 +550,24 @@ namespace OpenCiv1
 			// Instruction address 0x2dc4:0x0529, size: 5
 			this.oParent.MSCAPI._dos_freemem(param1);
 
-			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L0578;
-
-			// Instruction address 0x2dc4:0x053d, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2fdc);
-
-			if (stringPtr != 0)
+			if (this.oCPU.AX.Word != 0)
 			{
-				// Instruction address 0x2dc4:0x054c, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, stringPtr);
+				// Instruction address 0x2dc4:0x053d, size: 5
+				this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2fdc);
+
+				if (stringPtr != 0)
+				{
+					// Instruction address 0x2dc4:0x054c, size: 5
+					this.oParent.MSCAPI.strcat(0xba06, stringPtr);
+				}
+
+				// Instruction address 0x2dc4:0x055c, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2fe5);
+
+				// Instruction address 0x2dc4:0x0570, size: 5
+				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 			}
-
-			// Instruction address 0x2dc4:0x055c, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2fe5);
-
-			// Instruction address 0x2dc4:0x0570, size: 5
-			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
-
-		L0578:
+		
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
 			this.oCPU.Log.ExitBlock("'F0_2dc4_0523'");

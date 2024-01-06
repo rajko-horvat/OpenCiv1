@@ -139,8 +139,8 @@ namespace OpenCiv1
 		L014d:
 			// Instruction address 0x0000:0x016e, size: 5
 			this.oParent.Segment_1000.F0_1000_0797_DrawBitmapToScreen(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-				(short)(0x14 * (short)this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))),
-				(short)((short)0x64 - (short)this.oParent.MSCAPI.RNG.Next(2)),
+				20 * this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
+				100 - this.oParent.MSCAPI.RNG.Next(2),
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdf0c));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))));

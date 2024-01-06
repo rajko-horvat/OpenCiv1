@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
 using IRB.VirtualCPU;
@@ -144,7 +145,7 @@ namespace OpenCiv1
 				VGABitmap bitmap = VGABitmap.FromFile(aFiles[i], out palette);
 
 				bitmap.Bitmap.Save(Path.GetFileNameWithoutExtension(aFiles[i]) + ".bmp", ImageFormat.Bmp);
-			}*/
+			}//*/
 		}
 
 		public void Start()

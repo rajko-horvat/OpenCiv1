@@ -1916,7 +1916,7 @@ namespace OpenCiv1
 			return this.oCPU.AX.Word;
 		}
 
-		public void F0_VGA_0c3e_DrawBitmapToScreen(ushort rectPtr, short xPos, short yPos, ushort bitmapPtr)
+		public void F0_VGA_0c3e_DrawBitmapToScreen(ushort rectPtr, int xPos, int yPos, ushort bitmapPtr)
 		{
 			// function body
 			CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));

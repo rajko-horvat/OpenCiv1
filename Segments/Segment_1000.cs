@@ -1138,7 +1138,7 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="bitmapPtr"></param>
-		public void F0_1000_0797_DrawBitmapToScreen(ushort rectPtr, short xPos, short yPos, ushort bitmapPtr)
+		public void F0_1000_0797_DrawBitmapToScreen(ushort rectPtr, int xPos, int yPos, ushort bitmapPtr)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1000_0797_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 
