@@ -2183,13 +2183,11 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_2aea_138c_SetCityOwner({playerID}, {xPos}, {yPos})");
 
 			// function body
-
 			// Instruction address 0x2aea:0x13a2, size: 5
-			this.oParent.VGADriver.F0_VGA_038c_GetPixel(2, xPos + 160, yPos);
-			ushort usOldValue = this.oCPU.AX.Word;
+			ushort usOldValue = this.oParent.VGADriver.F0_VGA_038c_GetPixel(2, xPos + 160, yPos);
 
 			// Instruction address 0x2aea:0x13c0, size: 3
-			this.oParent.Segment_1000.F0_1000_104f_SetPixel(2, xPos + 160, yPos, (ushort)((usOldValue & 8) + playerID));
+			this.oParent.VGADriver.F0_VGA_0550_SetPixel(2, xPos + 160, yPos, (byte)((usOldValue & 8) + playerID), 0);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2aea_138c_SetCityOwner");

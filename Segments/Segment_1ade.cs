@@ -2244,7 +2244,7 @@ namespace OpenCiv1
 			goto L14c8;
 
 		L14bd:
-			this.oParent.Civilopedia.F8_0000_062a((ushort)(~this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x134))), 1);
+			this.oParent.Civilopedia.F8_0000_062a((ushort)(-this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x134))), 1);
 
 		L14c8:
 			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
