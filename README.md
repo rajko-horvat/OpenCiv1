@@ -1,12 +1,12 @@
 ## About this repository
-<p>This is a rewrite of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991.</p>
+<p>This is an Open source rewrite of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991.</p>
 <p>The game logic is <b>Based on original DOS CIV I version 475.05</b> disassembly.</p>
 <p>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform 
 and the bugs that have never been fixed are hindering the popularity of the game.<p>
 <p>The news, discussions about this project and releases are published regularly on <a href="https://forums.civfanatics.com/threads/rewrite-of-civilization-1-source-code-openciv1-project.682623/" target="_blank">Civilization Fanatics Forum page</a></p>
 
 ## Copyright considerations
-<p><b>The available code is not a full working copy of the game.</b> <b>To run Open Civilization 1 you are legally required to own your own copy of the Civilization game.</b> 
+<p><b>The available code is not a full working copy of the game.</b> <b>To run OpenCiv1 you are legally required to own your own copy of the Civilization game.</b> 
 This is the reason that game files are not included (sounds, images and text) as they are copyrighted.</p>
 
 <p>The part of the game assembly code is emulated with Virtual CPU, and the rest of the code has been rewritten from scratch 
@@ -17,14 +17,15 @@ will also be completely replaced with copyright free resources before publishing
 <p><b>The game is in working state</b>, but you have to legally own the Original game (the .txt, .pic and .pal files have to be present).
 The <b>Debug mode</b> can be toggled by pressing Alt + D Key.</p>
 
-## Running the code
+## How to run the code
 If you want to compile the code, it is assumed that:
 <ul>
 <li>You are using Visual Studio 2022.</li>
 <li>You have .NET Framework 4.8 installed.</li>
 <li>For debugging you have installed DOS CIV I game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Mono on Linux.
 It's where it's home directory resides (Images, palettes, text and save games are loaded/saved there, for now).</li>
-<li>For Release mode it is expected that OpenCiv1.exe (for simlicity) is put directly into directory with resource files, for example: 'c:\Dos\Civ1\', or '~/Dos/Civ1/'.</li>
+<li>For Release mode it is expected that OpenCiv1.exe (for simlicity) is put directly into directory with resource files, 
+for example: 'c:\Dos\Civ1\', '~/Dos/Civ1/' or any other path.</li>
 </ul>
 
 ## Help needed
@@ -52,7 +53,7 @@ For this stage of code rewrite, the programmings skills needed are:
 <li>Redesigning graphics and music.</li>
 </ul>
 
-## Screenshots of the Open Civilization 1 game
+## Screenshots of the OpenCiv1 game
 <p align="center">
 <img src="Screenshots/Screenshot1.png" alt="Screenshot 1" /><br/>
 <img src="Screenshots/Screenshot2.png" alt="Screenshot 2" /><br/>

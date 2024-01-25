@@ -552,7 +552,7 @@ namespace OpenCiv1
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
 #if !DEBUG
-            MessageBox.Show("This Alpha Release of OpenCiv1 (Open Civilization 1) project " +
+            MessageBox.Show("This Alpha Release of OpenCiv1 (OpenCiv1) project " +
 				"most certainly has bugs, but most functions should work normally, and has no sound at this point. " +
 				"It is compatible with old civ.exe and can save/load original game files.\n" +
 				"The Debug mode can be toggled by pressing Alt + D Key.\n\n" +
@@ -602,7 +602,7 @@ namespace OpenCiv1
 					this.oGame.Log.WriteLine($"Exception stack trace: {e.StackTrace}");
 				}
 
-				MessageBox.Show("There was an error (Exception) in the Open Civilization 1 application, "+
+				MessageBox.Show("There was an error (Exception) in the OpenCiv1 application, "+
 					"the details about the error should be in a Log.txt file.");
 			}
 #endif

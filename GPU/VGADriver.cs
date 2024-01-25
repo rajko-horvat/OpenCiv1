@@ -1944,7 +1944,7 @@ namespace OpenCiv1
 			}
 		}
 
-		public void F0_VGA_0d47_DrawBitmapToScreen(ushort rectPtr, short xPos, short yPos, ushort bitmapPtr)
+		public void F0_VGA_0d47_DrawBitmapToScreen(ushort rectPtr, int xPos, int yPos, int bitmapPtr)
 		{
 			// function body
 			CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
@@ -2021,9 +2021,11 @@ namespace OpenCiv1
 			}
 		}
 
-		public void F0_VGA_0599_DrawLine(CivRectangle rect, short x1, short y1, short x2, short y2, ushort mode)
+		public void F0_VGA_0599_DrawLine(ushort rectPtr, int x1, int y1, int x2, int y2, ushort mode)
 		{
 			// function body
+			CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
+
 			if (this.aScreens.ContainsKey(rect.ScreenID))
 			{
 				lock (this.VGALock)
@@ -2060,22 +2062,22 @@ namespace OpenCiv1
 			}
 		}
 
-		public void F0_VGA_009a_ReplaceColor(ushort struct1, ushort xPos, ushort yPos, ushort width, ushort height, byte oldColor, byte newColor)
+		public void F0_VGA_009a_ReplaceColor(ushort rectPtr, int xPos, int yPos, int width, int height, byte oldColor, byte newColor)
 		{
 			// function body
 			lock (this.VGALock)
 			{
-				ushort usScreenID = this.oCPU.ReadUInt16(this.oCPU.DS.Word, struct1);
-				int iTop = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(struct1 + 0x2)) + xPos;
-				int iLeft = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(struct1 + 0x4)) + yPos;
+				CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
+				int iTop = rect.X + xPos;
+				int iLeft = rect.Y + yPos;
 
-				if (this.aScreens.ContainsKey(usScreenID))
+				if (this.aScreens.ContainsKey(rect.ScreenID))
 				{
-					this.aScreens.GetValueByKey(usScreenID).ReplaceColor(new Rectangle(iTop, iLeft, width, height), oldColor, newColor);
+					this.aScreens.GetValueByKey(rect.ScreenID).ReplaceColor(new Rectangle(iTop, iLeft, width, height), oldColor, newColor);
 				}
 				else
 				{
-					throw new Exception($"The screen {usScreenID} is not allocated");
+					throw new Exception($"The screen {rect.ScreenID} is not allocated");
 				}
 			}
 		}

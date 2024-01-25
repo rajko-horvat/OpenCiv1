@@ -68,18 +68,18 @@ namespace OpenCiv1
 
 		public void ToStream(Stream stream)
 		{
-			stream.WriteByte(CPU.ForceUInt8(this.Status));
-			stream.WriteByte(CPU.ForceUInt8(this.Position.X));
-			stream.WriteByte(CPU.ForceUInt8(this.Position.Y));
-			stream.WriteByte(CPU.ForceUInt8(this.TypeID));
-			stream.WriteByte(CPU.ForceUInt8(this.RemainingMoves));
-			stream.WriteByte(CPU.ForceUInt8(this.SpecialMoves));
-			stream.WriteByte(CPU.ForceUInt8(this.GoToPosition.X));
-			stream.WriteByte(CPU.ForceUInt8(this.GoToPosition.Y));
-			stream.WriteByte(CPU.ForceUInt8(this.GoToNextDirection));
-			stream.WriteByte(CPU.ForceUInt8(this.VisibleByPlayer));
-			stream.WriteByte(CPU.ForceUInt8(this.NextUnitID));
-			stream.WriteByte(CPU.ForceUInt8(this.HomeCityID));
+			stream.WriteByte((byte)((sbyte)this.Status));
+			stream.WriteByte((byte)((sbyte)this.Position.X));
+			stream.WriteByte((byte)((sbyte)this.Position.Y));
+			stream.WriteByte((byte)((sbyte)this.TypeID));
+			stream.WriteByte((byte)((sbyte)this.RemainingMoves));
+			stream.WriteByte((byte)((sbyte)this.SpecialMoves));
+			stream.WriteByte((byte)((sbyte)this.GoToPosition.X));
+			stream.WriteByte((byte)((sbyte)this.GoToPosition.Y));
+			stream.WriteByte((byte)((sbyte)this.GoToNextDirection));
+			stream.WriteByte((byte)((sbyte)this.VisibleByPlayer));
+			stream.WriteByte((byte)((sbyte)this.NextUnitID));
+			stream.WriteByte((byte)((sbyte)this.HomeCityID));
 		}
 	}
 }

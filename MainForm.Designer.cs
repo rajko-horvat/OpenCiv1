@@ -119,7 +119,7 @@
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
 			this.ShowIcon = false;
-			this.Text = "Open Civilization 1";
+			this.Text = "OpenCiv1";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Shown += new System.EventHandler(this.MainForm_Shown);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form_Paint);

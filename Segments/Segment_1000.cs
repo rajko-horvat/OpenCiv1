@@ -21,7 +21,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_0000()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_0000'(Cdecl, Far) at 0x1000:0x0000");
+			this.oCPU.Log.EnterBlock("F0_1000_0000()");
 
 			// function body
 			this.oCPU.AX.Low = 0x1;
@@ -41,7 +41,7 @@ namespace OpenCiv1
 
 		L004f:
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_0000'");
+			this.oCPU.Log.ExitBlock("F0_1000_0000");
 		}
 
 		/// <summary>
@@ -49,7 +49,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_0051()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_0051'(Cdecl, Far) at 0x1000:0x0051");
+			this.oCPU.Log.EnterBlock("F0_1000_0051()");
 
 			// function body
 			this.oCPU.AX.Low = 0x0;
@@ -61,7 +61,7 @@ namespace OpenCiv1
 
 		L0075:
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_0051'");
+			this.oCPU.Log.ExitBlock("F0_1000_0051");
 		}
 
 		/// <summary>
@@ -153,7 +153,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_0276()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_0276'(Cdecl, Near) at 0x1000:0x0276");
+			this.oCPU.Log.EnterBlock("F0_1000_0276()");
 
 			// function body
 			this.oCPU.PushF();
@@ -217,7 +217,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x46, this.oCPU.AX.Word);
 			this.oCPU.PopF();
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_1000_0276'");
+			this.oCPU.Log.ExitBlock("F0_1000_0276");
 		}
 
 		/// <summary>
@@ -226,14 +226,14 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public ushort F0_1000_033e_ResetTimer()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_033e'(Cdecl, Far) at 0x1000:0x033e");
+			this.oCPU.Log.EnterBlock("F0_1000_033e_ResetTimer()");
 
 			// function body
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5c);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5c, 0);
 
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_033e'");
+			this.oCPU.Log.ExitBlock("F0_1000_033e_ResetTimer");
 
 			return this.oCPU.AX.Word;
 		}
@@ -243,7 +243,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_0345()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_0345'(Cdecl, Far) at 0x1000:0x0345");
+			this.oCPU.Log.EnterBlock("F0_1000_0345()");
 
 			// function body
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5c, this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5c)));
@@ -293,7 +293,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x59, 0x1);
 
 		ExitFn:
-			this.oCPU.Log.ExitBlock("'F0_1000_0345'");
+			this.oCPU.Log.ExitBlock("F0_1000_0345");
 		}
 
 		/// <summary>
@@ -306,7 +306,7 @@ namespace OpenCiv1
 		/// <exception cref="Exception"></exception>
 		public void F0_1000_0382(ushort param1, ushort param2, ushort param3, ushort param4)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_0382'(Cdecl, Far) at 0x1000:0x0382");
+			this.oCPU.Log.EnterBlock($"F0_1000_0382({param1}, {param2}, {param3}, {param4})");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -384,7 +384,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_0382'");
+			this.oCPU.Log.ExitBlock("F0_1000_0382");
 		}
 
 		/// <summary>
@@ -393,7 +393,7 @@ namespace OpenCiv1
 		/// <param name="param1"></param>
 		public void F0_1000_03fa(ushort param1)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_03fa'(Cdecl, Far) at 0x1000:0x03fa");
+			this.oCPU.Log.EnterBlock($"F0_1000_03fa({param1})");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -422,7 +422,7 @@ namespace OpenCiv1
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_03fa'");
+			this.oCPU.Log.ExitBlock("F0_1000_03fa");
 		}
 
 		/// <summary>
@@ -431,7 +431,7 @@ namespace OpenCiv1
 		/// <param name="param1"></param>
 		public void F0_1000_042b(ushort param1)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_042b'(Cdecl, Far) at 0x1000:0x042b");
+			this.oCPU.Log.EnterBlock($"F0_1000_042b({param1})");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -450,7 +450,7 @@ namespace OpenCiv1
 			this.oCPU.DS.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_042b'");
+			this.oCPU.Log.ExitBlock("F0_1000_042b");
 		}
 
 		/// <summary>
@@ -459,7 +459,7 @@ namespace OpenCiv1
 		/// <exception cref="Exception"></exception>
 		public void F0_1000_044a()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_044a'(Cdecl, Far) at 0x1000:0x044a");
+			this.oCPU.Log.EnterBlock("F0_1000_044a()");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.SI.Word);
@@ -532,7 +532,7 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.PopWord();
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_044a'");
+			this.oCPU.Log.ExitBlock("F0_1000_044a");
 		}
 
 		/// <summary>
@@ -542,7 +542,7 @@ namespace OpenCiv1
 		/// <param name="palettePtr"></param>
 		public void F0_1000_04aa(ushort param1, ushort palettePtr)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_04aa'(Cdecl, Far) at 0x1000:0x04aa");
+			this.oCPU.Log.EnterBlock($"F0_1000_04aa({param1}, 0x{palettePtr:x4})");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -573,7 +573,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_04aa'");
+			this.oCPU.Log.ExitBlock("F0_1000_04aa");
 		}
 
 		/// <summary>
@@ -585,7 +585,7 @@ namespace OpenCiv1
 		/// <param name="param4"></param>
 		public void F0_1000_04d4(ushort param1, byte param2, byte param3, byte param4)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_04d4'(Cdecl, Far) at 0x1000:0x04d4");
+			this.oCPU.Log.EnterBlock($"F0_1000_04d4({param1}, {param2}, {param3}, {param4})");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -622,7 +622,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.PopWord();
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_04d4'");
+			this.oCPU.Log.ExitBlock("F0_1000_04d4");
 		}
 
 		/// <summary>
@@ -631,7 +631,7 @@ namespace OpenCiv1
 		/// <param name="param1"></param>
 		public void F0_1000_050c(ushort param1)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_050c'(Cdecl, Near) at 0x1000:0x050c");
+			this.oCPU.Log.EnterBlock($"F0_1000_050c({param1})");
 
 			// function body
 			param1 *= 6;
@@ -672,7 +672,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x68, param1);
 
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_1000_050c'");
+			this.oCPU.Log.ExitBlock("F0_1000_050c");
 		}
 
 		/// <summary>
@@ -719,7 +719,7 @@ namespace OpenCiv1
 		/// <exception cref="Exception"></exception>
 		public ushort F0_1000_0573_MeasurePalettePerformance()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_0573'(Cdecl, Near) at 0x1000:0x0573");
+			this.oCPU.Log.EnterBlock("F0_1000_0573_MeasurePalettePerformance()");
 
 			// function body
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x60, 0xffff);
@@ -751,7 +751,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 6553 * 10; // maximum performance
 
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_1000_0573'");
+			this.oCPU.Log.ExitBlock("F0_1000_0573_MeasurePalettePerformance");
 
 			return this.oCPU.AX.Word;
 		}
@@ -761,7 +761,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_05b7()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_05b7'(Cdecl, Near) at 0x1000:0x05b7");
+			this.oCPU.Log.EnterBlock("F0_1000_05b7()");
 
 			// function body
 			this.oCPU.CLI();
@@ -834,7 +834,7 @@ namespace OpenCiv1
 			this.oCPU.STI();
 
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_1000_05b7'");
+			this.oCPU.Log.ExitBlock("F0_1000_05b7");
 		}
 
 		/// <summary>
@@ -842,7 +842,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_05b7_Int()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_05b7'(Cdecl, Near) at 0x1000:0x05b7");
+			this.oCPU.Log.EnterBlock("F0_1000_05b7_Int()");
 
 			// function body
 			this.oCPU.CLI();
@@ -915,7 +915,7 @@ namespace OpenCiv1
 			this.oCPU.STI();
 
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_1000_05b7'");
+			this.oCPU.Log.ExitBlock("F0_1000_05b7_Int");
 		}
 
 		/// <summary>
@@ -924,7 +924,7 @@ namespace OpenCiv1
 		/// <exception cref="Exception"></exception>
 		public void F0_1000_0631_SetPalette()
 		{
-			this.oCPU.Log.EnterBlock("F0_1000_0631()");
+			this.oCPU.Log.EnterBlock("F0_1000_0631_SetPalette()");
 
 			// function body
 			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x68) != 0)
@@ -962,7 +962,7 @@ namespace OpenCiv1
 			}
 			
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_0631");
+			this.oCPU.Log.ExitBlock("F0_1000_0631_SetPalette");
 		}
 
 		/// <summary>
@@ -974,7 +974,7 @@ namespace OpenCiv1
 		{
 			string fileName = MSCAPI.GetDOSFileName(this.oParent.CPU.ReadString(CPU.ToLinearAddress(this.oParent.CPU.DS.Word, fileNamePtr)).ToUpper());
 
-			this.oCPU.Log.EnterBlock($"F0_1000_066a_IsFileExists('{fileName}')");
+			this.oCPU.Log.EnterBlock($"F0_1000_066a_FileExists('{fileName}')");
 
 			// function body
 			if (File.Exists($"{this.oParent.CPU.DefaultDirectory}{fileName}"))
@@ -987,7 +987,7 @@ namespace OpenCiv1
 			}
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_066a_IsFileExists");
+			this.oCPU.Log.ExitBlock("F0_1000_066a_FileExists");
 
 			return this.oCPU.AX.Word;
 		}
@@ -997,7 +997,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_07d6()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_07d6'(Undefined) at 0x1000:0x07d6");
+			this.oCPU.Log.EnterBlock("F0_1000_07d6()");
 
 			// function body
 			this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
@@ -1034,7 +1034,7 @@ namespace OpenCiv1
 				this.oCPU.AX.Word |= 0;
 			}
 
-			this.oCPU.Log.ExitBlock("'F0_1000_07d6'");
+			this.oCPU.Log.ExitBlock("F0_1000_07d6");
 		}
 
 		/// <summary>
@@ -1045,7 +1045,7 @@ namespace OpenCiv1
 		/// <param name="param3"></param>
 		public void F0_1000_083f(short param1, short param2, ushort param3)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_083f'(Undefined) at 0x1000:0x083f");
+			this.oCPU.Log.EnterBlock($"F0_1000_083f({param1}, {param2}, {param3})");
 
 			// function body
 			//this.oParent.VGADriver.F0_VGA_0270(param1, param2, param3);
@@ -1082,7 +1082,7 @@ namespace OpenCiv1
 				this.oCPU.AX.Word |= 0;
 			}
 
-			this.oCPU.Log.ExitBlock("'F0_1000_083f'");
+			this.oCPU.Log.ExitBlock("F0_1000_083f");
 		}
 
 		/// <summary>
@@ -1091,7 +1091,7 @@ namespace OpenCiv1
 		/// <param name="screenID"></param>
 		public void F0_1000_0846(ushort screenID)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_0846'(Undefined) at 0x1000:0x0846");
+			this.oCPU.Log.EnterBlock($"F0_1000_0846({screenID})");
 
 			// function body
 			this.oParent.VGADriver.F0_VGA_063c(screenID);
@@ -1128,7 +1128,7 @@ namespace OpenCiv1
 				this.oCPU.AX.Word |= 0;
 			}
 
-			this.oCPU.Log.ExitBlock("'F0_1000_0846'");
+			this.oCPU.Log.ExitBlock("F0_1000_0846");
 		}
 
 		/// <summary>
@@ -1177,7 +1177,7 @@ namespace OpenCiv1
 				this.oCPU.AX.Word |= 0;
 			}
 
-			this.oCPU.Log.ExitBlock("'F0_1000_0797_DrawBitmapToScreen'");
+			this.oCPU.Log.ExitBlock("F0_1000_0797_DrawBitmapToScreen");
 		}
 
 		/// <summary>
@@ -1187,14 +1187,14 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="bitmapPtr"></param>
-		public void F0_1000_084d_DrawBitmapToScreen(ushort rectPtr, short xPos, short yPos, ushort bitmapPtr)
+		public void F0_1000_084d_DrawBitmapToScreen(ushort rectPtr, int xPos, int yPos, ushort bitmapPtr)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1000_084d_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 
 			// function body
 			this.oParent.VGADriver.F0_VGA_0d47_DrawBitmapToScreen(rectPtr, xPos, yPos, bitmapPtr);
 
-			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
+			/*if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
 			{
 				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0x1);
 
@@ -1210,12 +1210,12 @@ namespace OpenCiv1
 				// Instruction address 0x1000:0x17a2, size: 5
 				this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
 
-				/*this.oCPU.ES.Word = 0x1000;
+				this.oCPU.ES.Word = 0x1000;
 				// Instruction address 0x1000:0x17c0, size: 5
 				this.oParent.VGADriver.F0_VGA_0270(
 					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
 					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x587a)),
-					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5876));*/
+					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5876));
 
 				this.oCPU.ES.Word = this.oCPU.PopWord();
 				this.oCPU.DX.Word = this.oCPU.PopWord();
@@ -1224,7 +1224,7 @@ namespace OpenCiv1
 
 			L0769:
 				this.oCPU.AX.Word |= 0;
-			}
+			}*/
 
 			this.oCPU.Log.ExitBlock("F0_1000_084d_DrawBitmapToScreen");
 		}
@@ -1322,7 +1322,7 @@ namespace OpenCiv1
 		/// <param name="width"></param>
 		/// <param name="height"></param>
 		/// <param name="mode"></param>
-		public void F0_1000_0bfa_FillRectangle(ushort rectPtr, ushort xPos, ushort yPos, ushort width, ushort height, ushort mode)
+		public void F0_1000_0bfa_FillRectangle(ushort rectPtr, int xPos, int yPos, int width, int height, ushort mode)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1000_0bfa_FillRectangle(0x{rectPtr:4}, {xPos}, {yPos}, {width}, {height}, 0x{mode:4})");
 
@@ -1392,7 +1392,7 @@ namespace OpenCiv1
 		/// <returns>true if mouse is detected</returns>
 		public ushort F0_1000_163e_InitMouse()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_163e_InitMouse'");
+			this.oCPU.Log.EnterBlock("F0_1000_163e_InitMouse()");
 
 			// function body
 			// assume our mouse is initialized
@@ -1424,7 +1424,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x587d, this.oCPU.AX.Low);
 
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_163e_InitMouse'");
+			this.oCPU.Log.ExitBlock("F0_1000_163e_InitMouse");
 
 			return this.oCPU.AX.Word;
 		}
@@ -1434,7 +1434,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_1687()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_1687'(Cdecl, Far) at 0x1000:0x1687");
+			this.oCPU.Log.EnterBlock("F0_1000_1687()");
 
 			// function body
 			this.oCPU.AX.Low = 0x0;
@@ -1451,7 +1451,7 @@ namespace OpenCiv1
 
 		L1696:
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_1687'");
+			this.oCPU.Log.ExitBlock("F0_1000_1687");
 		}
 
 		/// <summary>
@@ -1480,7 +1480,7 @@ namespace OpenCiv1
 		/// <param name="param2"></param>
 		public void F0_1000_16ae(ushort param1, ushort param2)
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_16ae'(Cdecl, Far) at 0x1000:0x16ae");
+			this.oCPU.Log.EnterBlock($"F0_1000_16ae({param1}, {param2})");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -1504,7 +1504,7 @@ namespace OpenCiv1
 		L16d2:
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_16ae'");
+			this.oCPU.Log.ExitBlock("F0_1000_16ae");
 		}
 
 		/// <summary>
@@ -1525,7 +1525,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_16db()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_16db'(Cdecl, Far) at 0x1000:0x16db");
+			this.oCPU.Log.EnterBlock("F0_1000_16db()");
 
 			// function body
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5876), 0x0);
@@ -1542,7 +1542,7 @@ namespace OpenCiv1
 
 		L170a:
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_16db'");
+			this.oCPU.Log.ExitBlock("F0_1000_16db");
 		}
 
 		/// <summary>
@@ -1550,7 +1550,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_170b()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_170b'(Cdecl, Far) at 0x1000:0x170b");
+			this.oCPU.Log.EnterBlock("F0_1000_170b()");
 
 			// function body
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5876), 0x0);
@@ -1566,7 +1566,7 @@ namespace OpenCiv1
 
 		L1723:
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_170b'");
+			this.oCPU.Log.ExitBlock("F0_1000_170b");
 		}
 
 		/// <summary>
@@ -1574,7 +1574,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_179a()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_179a'(Cdecl, Near) at 0x1000:0x179a");
+			this.oCPU.Log.EnterBlock("F0_1000_179a()");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.AX.Word);
@@ -1596,7 +1596,7 @@ namespace OpenCiv1
 			this.oCPU.DX.Word = this.oCPU.PopWord();
 			this.oCPU.AX.Word = this.oCPU.PopWord();
 			// Near return
-			this.oCPU.Log.ExitBlock("'F0_1000_179a'");
+			this.oCPU.Log.ExitBlock("F0_1000_179a");
 		}
 
 		/// <summary>
@@ -1604,7 +1604,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_17db_MouseEvent()
 		{
-			this.oCPU.Log.EnterBlock("'F0_1000_17db'(Cdecl, Far) at 0x1000:0x17db");
+			//this.oCPU.Log.EnterBlock("F0_1000_17db_MouseEvent()");
 
 			// function body
 			this.oCPU.DS.Word = 0x3b01;
@@ -1613,7 +1613,8 @@ namespace OpenCiv1
 			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x587c);
 			this.oCPU.BP.Word = this.oCPU.SHRWord(this.oCPU.BP.Word, this.oCPU.CX.Low);
 			this.oCPU.CX.Word = this.oCPU.BP.Word;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5874, this.oCPU.ORWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5874), this.oCPU.BX.Word));
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5874, 
+				this.oCPU.ORWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5874), this.oCPU.BX.Word));
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5872, this.oCPU.BX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x586e, this.oCPU.CX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5870, this.oCPU.DX.Word);
@@ -1637,7 +1638,8 @@ namespace OpenCiv1
 
 		L1829:
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_1000_17db'");
+			//this.oCPU.Log.ExitBlock("F0_1000_17db_MouseEvent");
+			this.oCPU.AX.Low = this.oCPU.AX.Low;
 		}
 	}
 }

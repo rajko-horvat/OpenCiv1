@@ -20,7 +20,7 @@ namespace OpenCiv1
 		/// <param name="playerID"></param>
 		public void F0_2517_0004(short playerID)
 		{
-			this.oCPU.Log.EnterBlock("'F0_2517_0004'(Cdecl, Far) at 0x2517:0x0004");
+			this.oCPU.Log.EnterBlock($"F0_2517_0004({playerID})");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -263,14 +263,8 @@ namespace OpenCiv1
 			// Instruction address 0x2517:0x0248, size: 5
 			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30be), this.oCPU.AX.Word);
 
-			this.oCPU.AX.Word = 0x29a6;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x0259); // stack management - push return offset
 			// Instruction address 0x2517:0x0254, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.Segment_2f4d.F0_2f4d_044f(0x29a6);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3936, 0x1);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
@@ -384,14 +378,10 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30bc), 0xba06);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
-			this.oCPU.AX.Word = 0x2988;
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(0); // stack management - push return segment, ignored
-			this.oCPU.PushWord(0x03b8); // stack management - push return offset
+
 			// Instruction address 0x2517:0x03b3, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f();
-			this.oCPU.PopDWord(); // stack management - pop return offset and segment
-			this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x2);
+			this.oParent.Segment_2f4d.F0_2f4d_044f(0x2988);
+
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3936, 0x1);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
 
@@ -468,7 +458,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2517_0004'");
+			this.oCPU.Log.ExitBlock("F0_2517_0004");
 		}
 
 		/// <summary>
@@ -478,7 +468,7 @@ namespace OpenCiv1
 		/// <param name="governmentType"></param>
 		public void F0_2517_04a1(short playerID, short governmentType)
 		{
-			this.oCPU.Log.EnterBlock("'F0_2517_04a1'(Cdecl, Far) at 0x2517:0x04a1");
+			this.oCPU.Log.EnterBlock($"F0_2517_04a1({playerID}, {governmentType})");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -722,7 +712,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2517_04a1'");
+			this.oCPU.Log.ExitBlock("F0_2517_04a1");
 		}
 
 		/// <summary>
@@ -734,7 +724,7 @@ namespace OpenCiv1
 		/// <param name="yPos"></param>
 		public void F0_2517_0737(short playerID1, short playerID2, int xPos, int yPos)
 		{
-			this.oCPU.Log.EnterBlock("'F0_2517_0737'(Cdecl, Far) at 0x2517:0x0737");
+			this.oCPU.Log.EnterBlock($"F0_2517_0737({playerID1}, {playerID2}, {xPos}, {yPos})");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -1025,7 +1015,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2517_0737'");
+			this.oCPU.Log.ExitBlock("F0_2517_0737");
 		}
 
 		/// <summary>
@@ -1098,7 +1088,7 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public ushort F0_2517_0b1d(short playerID1, short playerID2)
 		{
-			this.oCPU.Log.EnterBlock("'F0_2517_0b1d'(Cdecl, Far) at 0x2517:0x0b1d");
+			this.oCPU.Log.EnterBlock($"F0_2517_0b1d({playerID1}, {playerID2})");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -1322,7 +1312,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2517_0b1d'");
+			this.oCPU.Log.ExitBlock("F0_2517_0b1d");
 
 			return this.oCPU.AX.Word;
 		}
@@ -1334,7 +1324,7 @@ namespace OpenCiv1
 		/// <param name="playerID2"></param>
 		public void F0_2517_0cef(short playerID1, short playerID2)
 		{
-			this.oCPU.Log.EnterBlock("'F0_2517_0cef'(Cdecl, Far) at 0x2517:0x0cef");
+			this.oCPU.Log.EnterBlock($"F0_2517_0cef({playerID1}, {playerID2})");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -1413,7 +1403,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2517_0cef'");
+			this.oCPU.Log.ExitBlock("F0_2517_0cef");
 		}
 
 		/// <summary>
@@ -1425,7 +1415,7 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public ushort F0_2517_0d97(short playerID, int xPos, int yPos)
 		{
-			this.oCPU.Log.EnterBlock("'F0_2517_0d97'(Cdecl, Far) at 0x2517:0x0d97");
+			this.oCPU.Log.EnterBlock($"F0_2517_0d97({playerID}, {xPos}, {yPos})");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -1441,16 +1431,12 @@ namespace OpenCiv1
 					this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].PlayerID == playerID &&
 					(this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].BuildingFlags0 & 0x1) != 0)
 				{
-					this.oCPU.PushWord((ushort)yPos);
-					this.oCPU.PushWord((ushort)this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Position.Y);
-					this.oCPU.PushWord((ushort)xPos);
-					this.oCPU.PushWord((ushort)this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Position.X);
-					this.oCPU.PushWord(0); // stack management - push return segment, ignored
-					this.oCPU.PushWord(0x0ddf); // stack management - push return offset
-												// Instruction address 0x2517:0x0dda, size: 5
-					this.oParent.Segment_2dc4.F0_2dc4_0289();
-					this.oCPU.PopDWord(); // stack management - pop return offset and segment
-					this.oCPU.SP.Word = this.oCPU.ADDWord(this.oCPU.SP.Word, 0x8);
+					// Instruction address 0x2517:0x0dda, size: 5
+					this.oParent.Segment_2dc4.F0_2dc4_0289(
+						this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Position.X,
+						xPos,
+						this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Position.Y,
+						yPos);
 
 					this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 					this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
@@ -1472,7 +1458,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
-			this.oCPU.Log.ExitBlock("'F0_2517_0d97'");
+			this.oCPU.Log.ExitBlock("F0_2517_0d97");
 
 			return this.oCPU.AX.Word;
 		}

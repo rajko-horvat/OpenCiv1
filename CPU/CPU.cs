@@ -71,13 +71,14 @@ namespace IRB.VirtualCPU
 			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 20, 20);
 
 #if DEBUG
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			if (Environment.OSVersion.Platform != PlatformID.Unix)
 			{
-				this.sDefaultDirectory = Path.Combine("C:" + Path.DirectorySeparatorChar, "Dos", "Civ1") + Path.DirectorySeparatorChar;
+				this.sDefaultDirectory = string.Format("C:{0}Dos{0}Civ1{0}", Path.DirectorySeparatorChar);
 			}
 			else
 			{
-				this.sDefaultDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Dos", "Civ1") + Path.DirectorySeparatorChar;
+				this.sDefaultDirectory = string.Format("{0}{1}Dos{1}Civ1{1}", 
+					Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), Path.DirectorySeparatorChar);
 			}
 #else
 			this.DefaultDirectory = "";
@@ -147,12 +148,14 @@ namespace IRB.VirtualCPU
 			{
 				this.bInTimer = true;
 
-				LogWrapper oLogTemp = this.oLog;
-				this.oLog = this.oParent.InterruptLog;
-
 				if (this.oMouseLocation != this.oParent.VGADriver.ScreenMouseLocation ||
 					this.oMouseButtons != this.oParent.VGADriver.ScreenMouseButtons)
 				{
+					if (this.oMouseButtons != this.oParent.VGADriver.ScreenMouseButtons)
+					{
+						this.oLog.WriteLine($"Mouse buttons changed from 0x{this.oMouseButtons:x2} to 0x{this.oParent.VGADriver.ScreenMouseButtons:x2}");
+					}
+
 					this.PushWord(this.oAX.Word);
 					this.PushWord(this.oCX.Word);
 					this.PushWord(this.oDX.Word);
@@ -209,6 +212,9 @@ namespace IRB.VirtualCPU
 					this.oCX.Word = this.PopWord();
 					this.oAX.Word = this.PopWord();
 				}
+
+				LogWrapper oLogTemp = this.oLog;
+				this.oLog = this.oParent.InterruptLog;
 
 				this.PushF();
 				this.oParent.Segment_1000.F0_1000_01a7_Timer();
@@ -306,7 +312,7 @@ namespace IRB.VirtualCPU
 			return ((uint)highValue << 16) | (uint)lowValue;
 		}
 
-		public static ushort ToUInt16(int value)
+		/*public static ushort ToUInt16(int value)
 		{
 			if (value < 0 || value > UInt16.MaxValue)
 				throw new Exception($"Value {value} out of range for UInt16");
@@ -345,7 +351,7 @@ namespace IRB.VirtualCPU
 		public static short ForceInt16(int value)
 		{
 			return (short)((ushort)(value & 0xffff));
-		}
+		}*/
 		#endregion
 
 		#region Memory

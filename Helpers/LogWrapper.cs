@@ -25,6 +25,11 @@ namespace OpenCiv1
 
 		public void EnterBlock(string text)
 		{
+			EnterBlock(text, false);
+		}
+
+		public void EnterBlock(string text, bool showRegisters)
+		{
 			if (this.oLog != null)
 			{
 				if (this.aStack.Count != this.iLogTabLevel)
@@ -34,8 +39,10 @@ namespace OpenCiv1
 
 				WriteTabs(this.iLogTabLevel);
 				this.oLog.Write($"{text}");
-				if (this.oCPU != null)
+
+				if (this.oCPU != null && showRegisters)
 					this.oLog.Write($" // Stack: 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, DS 0x{this.oCPU.DS.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
+
 				this.oLog.WriteLine();
 
 				WriteTabs(this.iLogTabLevel);
@@ -55,8 +62,9 @@ namespace OpenCiv1
 				this.iLogTabLevel = Math.Max(0, this.iLogTabLevel - 1);
 				WriteTabs(this.iLogTabLevel);
 				this.oLog.Write("}");
-				if (this.oCPU != null)
-					this.oLog.Write($" // Stack: 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, DS 0x{this.oCPU.DS.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
+
+				//if (this.oCPU != null)
+				//	this.oLog.Write($" // Stack: 0x{this.oCPU.SS.Word:x4}:0x{this.oCPU.SP.Word:x4}, DS 0x{this.oCPU.DS.Word:x4}, BP 0x{this.oCPU.BP.Word:x4}");
 
 				ushort usStack = this.aStack.Pop();
 				// _setargv pushes permanent data on the stack!
