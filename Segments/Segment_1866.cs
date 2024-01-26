@@ -2690,13 +2690,13 @@ namespace OpenCiv1
 				xPos += 80;
 			}
 
-			if (xPos < this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd4cc) + 2 &&
+			if (xPos < this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd4cc) + 2 ||
 				xPos > this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd4cc) + 13)
 			{
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x1);
 			}
 
-			if (yPos < this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd75e) + 2 &&
+			if (yPos < this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd75e) + 2 ||
 				yPos > this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd75e) + 9)
 			{
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x1);
