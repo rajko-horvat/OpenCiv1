@@ -41,9 +41,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)((short)this.oParent.GameState.Cities[cityID].Position.Y);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), this.oCPU.AX.Word);
 
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
-			this.oCPU.CMPWord((ushort)playerID, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E)
+			if (playerID == this.oParent.GameState.HumanPlayerID)
 			{
 				this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].ContactPlayerCountdown = -2;
 				this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12));
@@ -196,7 +194,7 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.GameState.Cities[cityID].ActualSize > 1)
+			if (this.oParent.GameState.Cities[cityID].ActualSize <= 1)
 				goto L01dc;
 
 		L01bd:
