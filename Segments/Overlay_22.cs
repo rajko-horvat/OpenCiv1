@@ -984,9 +984,9 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Cities[cityID].PlayerID;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Cities[cityID].Position.X;
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.GameState.Cities[cityID].Position.X);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Cities[cityID].Position.Y;
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.GameState.Cities[cityID].Position.Y);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 0x3e7);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), 0x0);
@@ -1236,7 +1236,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)));
 			
 			// Instruction address 0x0000:0x0de5, size: 5
-			this.oParent.Segment_2aea.F0_2aea_138c_SetCityOwner(playerID,
+			this.oParent.Segment_2aea.F0_2aea_138c_MapSetCityOwner(playerID,
 				this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d5)),
 				this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d6)));
 
@@ -1295,7 +1295,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x0000:0x0ea1, size: 5
-			this.oParent.Segment_2aea.F0_2aea_138c_SetCityOwner(playerID,
+			this.oParent.Segment_2aea.F0_2aea_138c_MapSetCityOwner(playerID,
 				this.oParent.GameState.Cities[cityID].Position.X, this.oParent.GameState.Cities[cityID].Position.Y);
 
 		L0ea9:

@@ -199,7 +199,7 @@ namespace OpenCiv1
 
 			for (int i = 0; i < 256; i++)
 			{
-				this.oParent.GameState.CityPositions[i].X = 255;
+				this.oParent.GameState.CityPositions[i].X = -1;
 			}
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 0x0);
@@ -1220,7 +1220,7 @@ namespace OpenCiv1
 
 			L0dae:
 				// Instruction address 0x0000:0x0db7, size: 5
-				this.oParent.Segment_2aea.F0_2aea_138c_SetCityOwner(playerID,
+				this.oParent.Segment_2aea.F0_2aea_138c_MapSetCityOwner(playerID,
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
 

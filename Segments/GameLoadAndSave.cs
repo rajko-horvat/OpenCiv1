@@ -1102,12 +1102,12 @@ namespace OpenCiv1
 
 				for (int i = 0; i < this.oParent.GameState.CityPositions.Length; i++)
 				{
-					this.oParent.GameState.CityPositions[i].X = ReadUInt8(reader);
+					this.oParent.GameState.CityPositions[i].X = (sbyte)ReadUInt8(reader);
 				}
 
 				for (int i = 0; i < this.oParent.GameState.CityPositions.Length; i++)
 				{
-					this.oParent.GameState.CityPositions[i].Y = ReadUInt8(reader);
+					this.oParent.GameState.CityPositions[i].Y = (sbyte)ReadUInt8(reader);
 				}
 
 				this.oParent.GameState.PalaceLevel = ReadInt16(reader);
@@ -1556,11 +1556,11 @@ namespace OpenCiv1
 
 				for (int i = 0; i < 256; i++)
 				{
-					writer.WriteByte((byte)this.oParent.GameState.CityPositions[i].X);
+					writer.WriteByte((byte)((sbyte)this.oParent.GameState.CityPositions[i].X));
 				}
 				for (int i = 0; i < 256; i++)
 				{
-					writer.WriteByte((byte)this.oParent.GameState.CityPositions[i].Y);
+					writer.WriteByte((byte)((sbyte)this.oParent.GameState.CityPositions[i].Y));
 				}
 
 				WriteInt16(writer, this.oParent.GameState.PalaceLevel);

@@ -234,6 +234,9 @@ namespace OpenCiv1
 			int iColumn = 0;
 			int iRow = 0;
 
+			//g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.AssumeLinear;
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+
 			for (int i = 0; i < this.oGame.VGADriver.Screens.Count; i++)
 			{
 				BKeyValuePair<int, VGABitmap> item = this.oGame.VGADriver.Screens[i];

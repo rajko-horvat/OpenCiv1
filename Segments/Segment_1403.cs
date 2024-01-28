@@ -5001,7 +5001,7 @@ namespace OpenCiv1
 
 		L3054:
 			// Instruction address 0x1403:0x305d, size: 5
-			this.oParent.Segment_2aea.F0_2aea_138c_SetCityOwner(playerID,
+			this.oParent.Segment_2aea.F0_2aea_138c_MapSetCityOwner(playerID,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26)));
 

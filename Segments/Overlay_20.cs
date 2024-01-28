@@ -68,8 +68,10 @@ namespace OpenCiv1
 
 		L0062:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 0x1);
-			this.oCPU.CMPByte((byte)this.oParent.GameState.CityPositions[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))].X, 0xff);
-			if (this.oCPU.Flags.E) goto L00ab;
+
+			if (this.oParent.GameState.CityPositions[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))].X == -1)
+				goto L00ab;
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 0x0);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x10);
@@ -99,8 +101,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10));
 			this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].NameID = this.oCPU.AX.Low;
 
-			this.oParent.GameState.CityPositions[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))] =
-				new Point(xPos, yPos);
+			this.oParent.GameState.CityPositions[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))] = new Point(xPos, yPos);
 
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = (byte)playerID;
@@ -693,12 +694,10 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x073c, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f(0x4f9d);
 
-			this.oCPU.CMPByte((byte)this.oParent.GameState.Cities[cityID].ActualSize, 0x1);
-			if (this.oCPU.Flags.G) goto L074e;
-			goto L0bc6;
+			if (this.oParent.GameState.Cities[cityID].ActualSize > 1)
+				goto L06f3;
 
-		L074e:
-			goto L06f3;
+			goto L0bc6;
 
 		L0750:
 			this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x20);
@@ -726,8 +725,9 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0788, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f(0x4fa1);
 
-			this.oCPU.CMPByte((byte)this.oParent.GameState.Cities[cityID].ActualSize, 0x1);
-			if (this.oCPU.Flags.G) goto L079a;
+			if (this.oParent.GameState.Cities[cityID].ActualSize > 1)
+				goto L079a;
+
 			goto L0bc6;
 
 		L079a:

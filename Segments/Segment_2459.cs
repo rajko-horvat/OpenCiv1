@@ -36,9 +36,9 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Cities[cityID].PlayerID;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Cities[cityID].Position.X;
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.GameState.Cities[cityID].Position.X);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Cities[cityID].Position.Y;
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.GameState.Cities[cityID].Position.Y);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), this.oCPU.AX.Word);
 
 			this.oCPU.AX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
@@ -189,15 +189,15 @@ namespace OpenCiv1
 			this.oParent.GameState.Cities[cityID].BuildingFlags1 &= this.oCPU.DX.Word;
 
 		L01a8:
-			this.oCPU.CMPWord(flag, 0x0);
-			if (this.oCPU.Flags.E) goto L01bd;
+			if (flag == 0)
+				goto L01bd;
 			
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			this.oCPU.CMPByte((byte)this.oParent.GameState.Cities[cityID].ActualSize, 0x1);
-			if (this.oCPU.Flags.LE) goto L01dc;
+			if (this.oParent.GameState.Cities[cityID].ActualSize > 1)
+				goto L01dc;
 
 		L01bd:
 			this.oCPU.AX.Word = 0x1c;
@@ -205,13 +205,14 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
 			this.oParent.GameState.Cities[cityID].ActualSize--;
-			if (this.oCPU.Flags.NE) goto L01dc;
-
-			// Instruction address 0x2459:0x01d4, size: 5
-			this.oParent.Segment_1ade.F0_1ade_018e(
-				cityID,
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
+			if (this.oParent.GameState.Cities[cityID].ActualSize < 1)
+			{
+				// Instruction address 0x2459:0x01d4, size: 5
+				this.oParent.Segment_1ade.F0_1ade_018e(
+					cityID,
+					this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
+					this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
+			}
 
 		L01dc:
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
@@ -446,7 +447,7 @@ namespace OpenCiv1
 			F0_2459_06f2(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
 			// Instruction address 0x2459:0x04d2, size: 5
-			this.oParent.Segment_2aea.F0_2aea_138c_SetCityOwner(
+			this.oParent.Segment_2aea.F0_2aea_138c_MapSetCityOwner(
 				playerID,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
@@ -471,10 +472,10 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Low = (byte)this.oParent.GameState.Cities[cityID].Position.X;
+			this.oCPU.AX.Low = (byte)((sbyte)this.oParent.GameState.Cities[cityID].Position.X);
 			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d5)), this.oCPU.AX.Low);
 			if (this.oCPU.Flags.NE) goto L0523;
-			this.oCPU.AX.Low = (byte)this.oParent.GameState.Cities[cityID].Position.Y;
+			this.oCPU.AX.Low = (byte)((sbyte)this.oParent.GameState.Cities[cityID].Position.Y);
 			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d6)), this.oCPU.AX.Low);
 			if (this.oCPU.Flags.NE) goto L0523;
 			this.oCPU.CMPByte((byte)this.oParent.GameState.Cities[cityID].ActualSize, 0x0);
@@ -999,7 +1000,7 @@ namespace OpenCiv1
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Position.X;
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Position.X);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.AX.Word);
 
 			// Instruction address 0x2459:0x09c4, size: 5
