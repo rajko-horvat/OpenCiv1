@@ -314,7 +314,9 @@ namespace OpenCiv1
 			#region Protect already mapped data objects
 
 			#region Strings
-			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x0267, 9, CPUMemoryFlagsEnum.AccessNotAllowed));
+			// Skip checking of string as it slows down VCPU too much
+
+			/*this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x0267, 9, CPUMemoryFlagsEnum.AccessNotAllowed));
 			//this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x1a22, 14, CPUMemoryFlagsEnum.AccessNotAllowed));
 			//this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x1a30, 12, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x1a93, 20, CPUMemoryFlagsEnum.AccessNotAllowed));
@@ -998,7 +1000,7 @@ namespace OpenCiv1
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x542d, 54, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x5463, 19, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x54b9, 37, CPUMemoryFlagsEnum.AccessNotAllowed));
-			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x54de, 43, CPUMemoryFlagsEnum.AccessNotAllowed));
+			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x54de, 43, CPUMemoryFlagsEnum.AccessNotAllowed));*/
 			#endregion
 
 			#region Objects
