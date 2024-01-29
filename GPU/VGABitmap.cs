@@ -216,12 +216,11 @@ namespace OpenCiv1
 
 		public void Dispose()
 		{
-			if (this.oBitmapMemoryAddress != IntPtr.Zero || (this.oBitmapMemoryHandle != null && this.oBitmapMemoryHandle.IsAllocated))
+			if (this.oBitmapMemoryAddress != IntPtr.Zero || this.oBitmapMemoryHandle.IsAllocated)
 			{
 				this.oBitmap.Dispose();
 				this.oBitmapMemoryAddress = IntPtr.Zero;
 				this.oBitmapMemoryHandle.Free();
-				this.aBitmapMemory = null;
 			}
 		}
 		#endregion
@@ -732,7 +731,7 @@ namespace OpenCiv1
 		public void LoadBitmap(string filename, ushort xPos, ushort yPos, out byte[] palette)
 		{
 			// function body
-			VGABitmap bitmap = VGABitmap.FromFile(filename, out palette);
+			VGABitmap? bitmap = VGABitmap.FromFile(filename, out palette);
 
 			if (bitmap != null)
 			{
@@ -746,12 +745,12 @@ namespace OpenCiv1
 			}
 		}
 
-		public static VGABitmap FromFile(string path, out byte[] palette)
+		public static VGABitmap? FromFile(string path, out byte[] palette)
 		{
-			VGABitmap bitmap = null;
+			VGABitmap? bitmap = null;
 			FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
 			List<BKeyValuePair<int, Color>> aPalette = new List<BKeyValuePair<int, Color>>();
-			palette = null;
+			palette = new byte[0];
 			
 			// PIC file is written in blocks
 			while (true)
@@ -944,7 +943,7 @@ namespace OpenCiv1
 		{
 			FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
 			List<BKeyValuePair<int, Color>> aPalette = new List<BKeyValuePair<int, Color>>();
-			palette = null;
+			palette = new byte[0];
 
 			// PIC file is written in blocks
 			while (true)

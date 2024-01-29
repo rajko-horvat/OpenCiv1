@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -7,14 +6,14 @@ namespace IRB.Collections.Generic.Trees
 {
 	/// <summary>
 	/// The class that holds Key-Index pair for BTree algorithm
-	/// 
+	/// </summary>
+	/// <license>
+	/// 	MIT
+	/// 	Copyright (c) 2023, Ruđer Bošković Institute
+	///
 	/// Authors:
 	/// 	Rajko Horvat (https://github.com/rajko-horvat)
-	/// 
-	/// License:
-	/// 	MIT
-	/// 	Copyright (c) 2011-2023, Ruđer Bošković Institute
-	///		
+	/// 	
 	/// 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software 
 	/// 	and associated documentation files (the "Software"), to deal in the Software without restriction, 
 	/// 	including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -30,7 +29,7 @@ namespace IRB.Collections.Generic.Trees
 	/// 	IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
 	/// 	DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
 	/// 	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	/// </summary>
+	/// </license>
 	public class BKeyIndexPair
 	{
 		private int iKey;
@@ -81,11 +80,34 @@ namespace IRB.Collections.Generic.Trees
 	}
 
 	/// <summary>
-	/// An implementation of a B-Tree algorithm
+	/// An implementation of BTree algorithm
+	/// 
+	/// Authors:
+	///		Rajko Horvat (https://github.com/rajko-horvat)
+	/// 
+	/// License:
+	///		MIT
+	///		Copyright (c) 2023, Ruđer Bošković Institute
+	///		
+	/// 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software 
+	/// 	and associated documentation files (the "Software"), to deal in the Software without restriction, 
+	/// 	including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+	/// 	and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, 
+	/// 	subject to the following conditions: 
+	/// 	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+	/// 	The names of authors and contributors may not be used to endorse or promote Software products derived from this software 
+	/// 	without specific prior written permission.
+	/// 	
+	///		THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+	///		INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+	///		FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+	///		IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+	///		DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+	///		ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	/// </summary>
 	public class BTree : IDisposable
 	{
-		BTreeNode oRootNode = null; // Pointer to root node
+		BTreeNode oRootNode; // Pointer to root node
 		int iMaxNodeSize;  // Minimum degree
 
 		public BTree()
@@ -106,14 +128,13 @@ namespace IRB.Collections.Generic.Trees
 		public void Dispose()
 		{
 			this.oRootNode.Dispose();
-			this.oRootNode = null;
 		}
 
 		#endregion
 
 		public void Clear()
 		{
-			this.oRootNode.Dispose();
+			this.oRootNode.Clear();
 		}
 
 		/// <summary>
@@ -129,7 +150,7 @@ namespace IRB.Collections.Generic.Trees
 		/// </summary>
 		/// <param name="key"></param>
 		/// <returns></returns>
-		public BTreeNode Search(int key)
+		public BTreeNode? Search(int key)
 		{
 			// Call the search function for root
 			return this.oRootNode.Search(key);
@@ -140,7 +161,7 @@ namespace IRB.Collections.Generic.Trees
 		/// </summary>
 		/// <param name="key"></param>
 		/// <returns></returns>
-		public BKeyIndexPair Find(int key)
+		public BKeyIndexPair? Find(int key)
 		{
 			// Call the search function for root
 			return this.oRootNode.Find(key);
@@ -162,7 +183,7 @@ namespace IRB.Collections.Generic.Trees
 		/// <param name="key"></param>
 		public void Delete(int key)
 		{
-			BTreeNode node = this.oRootNode.Search(key);
+			BTreeNode? node = this.oRootNode.Search(key);
 			// if key not found, no need to remove
 			if (node != null)
 			{

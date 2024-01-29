@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace IRB.Collections.Generic
 {
 	/// <summary>
 	/// Implementation of serializable Key-Value pair class
-	/// 
+	/// </summary>
+	/// <license>
+	/// 	MIT
+	/// 	Copyright (c) 2023, Ruđer Bošković Institute
+	///		
 	/// Authors:
 	/// 	Rajko Horvat (https://github.com/rajko-horvat)
-	/// 
-	/// License:
-	/// 	MIT
-	/// 	Copyright (c) 2011-2023, Ruđer Bošković Institute
-	///		
+	/// 	
 	/// 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software 
 	/// 	and associated documentation files (the "Software"), to deal in the Software without restriction, 
 	/// 	including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -29,9 +28,11 @@ namespace IRB.Collections.Generic
 	/// 	IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
 	/// 	DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
 	/// 	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-	/// </summary>
+	/// </license>
 	[Serializable]
-	public struct BKeyValuePair<TKey, TValue>
+	public struct BKeyValuePair<TKey, TValue> 
+		where TKey: notnull
+		where TValue : notnull
 	{
 		private TKey key;
 		private TValue value;

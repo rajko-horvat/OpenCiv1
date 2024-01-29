@@ -54,7 +54,7 @@ namespace IRB.VirtualCPU
 		// DOS file stuff
 		private uint uiDOSDTA = 0;
 		private int iFileCount = 0;
-		private FileStream[] aFileHandles = new FileStream[256];
+		private FileStream?[] aFileHandles = new FileStream?[256];
 
 		private string sDefaultDirectory;
 		private short sFileHandleCount = 0x20;
@@ -69,6 +69,11 @@ namespace IRB.VirtualCPU
 			this.oLog = log;
 			this.oMemory = new CPUMemory(this);
 			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 20, 20);
+
+			for (int i = 0; i < this.aFileHandles.Length; i++)
+			{
+				this.aFileHandles[i] = null;
+			}
 
 #if DEBUG
 			if (Environment.OSVersion.Platform != PlatformID.Unix)
@@ -108,7 +113,7 @@ namespace IRB.VirtualCPU
 			set { this.bPause = value; }
 		}
 
-		private void oTimer_Tick(object state)
+		private void oTimer_Tick(object? state)
 		{
 			if (this.bEnableTimer && !this.bTimerFlag)
 			{
@@ -2464,7 +2469,7 @@ namespace IRB.VirtualCPU
 			DOS_FCB fcb = new DOS_FCB(this.oMemory, seg, offset);
 			string shortname;
 			int handle = -1;
-			FileStream file;
+			FileStream? file;
 			shortname = fcb.GetName();
 
 			// First check if the name is correct
@@ -2577,8 +2582,14 @@ namespace IRB.VirtualCPU
 			fcb.FileClose(out fhandle);
 			if (fhandle >= this.iFileCount)
 				return false;
-			this.aFileHandles[fhandle].Close();
+
+			if (this.aFileHandles[fhandle] != null)
+			{
+				this.aFileHandles[fhandle].Close();
+			}
+
 			this.aFileHandles[fhandle] = null;
+
 			return true;
 		}
 
@@ -2687,7 +2698,7 @@ namespace IRB.VirtualCPU
 
 			uint pos = (((uint)cur_block * 128) + (uint)cur_rec) * (uint)rec_size;
 			byte[] dos_copybuf = new byte[rec_size];
-			FileStream file = this.aFileHandles[fhandle];
+			FileStream? file = this.aFileHandles[fhandle];
 			if (file == null)
 				return 1;
 
@@ -2914,7 +2925,9 @@ namespace IRB.VirtualCPU
 			{
 				this.oMemory = mem;
 				this.pt = CPU.ToLinearAddress(seg, off);
-				extended = false;
+				this.extended = false;
+				this.filename = "";
+				this.ext = "";
 
 				ReadFCBFromMemory();
 
@@ -2923,7 +2936,7 @@ namespace IRB.VirtualCPU
 					if (this.drive == 0xff)
 					{
 						this.pt += 7;
-						extended = true;
+						this.extended = true;
 						ReadFCBFromMemory();
 					}
 				}
@@ -3101,15 +3114,19 @@ namespace IRB.VirtualCPU
 				if (this.drive == 0)
 				{
 					byte drv = 2;
-					string sRoot = Path.GetPathRoot(Assembly.GetExecutingAssembly().Location).ToUpper();
-					if (sRoot.Length == 3 && sRoot[1] == ':' && sRoot[2] == Path.PathSeparator)
+					string? sRoot = Path.GetPathRoot(Assembly.GetExecutingAssembly().Location);
+
+					if (sRoot != null && sRoot.Length == 3 && sRoot[1] == ':' && sRoot[2] == Path.PathSeparator)
 					{
-						drv = (byte)((byte)sRoot[0] - (byte)'A');
+						drv = (byte)((byte)char.ToUpper(sRoot[0]) - (byte)'A');
 					}
+
 					return drv;
 				}
 				else
+				{
 					return (byte)(this.drive - 1);
+				}
 			}
 
 			public bool Extended()

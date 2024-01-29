@@ -144,7 +144,7 @@ namespace OpenCiv1.GPU
 		public static CivFonts Deserialize(Stream reader)
 		{
 			XmlSerializer ser = new XmlSerializer(typeof(CivFonts));
-			object obj = ser.Deserialize(reader);
+			object? obj = ser.Deserialize(reader);
 			if (obj == null)
 				throw new Exception("Can't deserialize object");
 

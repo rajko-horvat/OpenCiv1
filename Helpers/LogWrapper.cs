@@ -9,7 +9,7 @@ namespace OpenCiv1
 	{
 		private StreamWriter oLog;
 		private int iLogTabLevel = 0;
-		private CPU oCPU = null;
+		private CPU? oCPU = null;
 		private Stack<ushort> aStack = new Stack<ushort>();
 
 		public LogWrapper(string path)
@@ -17,7 +17,7 @@ namespace OpenCiv1
 			this.oLog = new StreamWriter(path);
 		}
 
-		public CPU CPU
+		public CPU? CPU
 		{
 			get { return this.oCPU; }
 			set { this.oCPU = value; }
@@ -35,7 +35,8 @@ namespace OpenCiv1
 				if (this.aStack.Count != this.iLogTabLevel)
 					throw new Exception("Unbalanced EnterBlock or ExitBlock");
 
-				this.aStack.Push(this.oCPU.SP.Word);
+				if (this.oCPU != null)
+					this.aStack.Push(this.oCPU.SP.Word);
 
 				WriteTabs(this.iLogTabLevel);
 				this.oLog.Write($"{text}");
@@ -68,7 +69,8 @@ namespace OpenCiv1
 
 				ushort usStack = this.aStack.Pop();
 				// _setargv pushes permanent data on the stack!
-				if (!text.Equals("_setargv", StringComparison.InvariantCultureIgnoreCase) &&
+				if (this.oCPU != null &&
+					!text.Equals("_setargv", StringComparison.InvariantCultureIgnoreCase) &&
 					!text.Equals("start", StringComparison.InvariantCultureIgnoreCase) &&
 					this.oCPU.SP.Word != usStack)
 				{

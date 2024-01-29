@@ -1,236 +1,57 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{55F5F1A4-2E16-46FC-90E1-8E8E52869226}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenCiv1</RootNamespace>
-    <AssemblyName>OpenCiv1</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <StartupObject>OpenCiv1.Program</StartupObject>
+    <Title>OpenCiv1 - Open source rewrite of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991</Title>
+    <Version>1.475.6.7</Version>
+    <Copyright>Copyright (c) 2023- by Rajko Horvat, Parts of the code Copyright (c) 1991 Microprose Software, Inc. and Take-Two Interactive Software, Inc.</Copyright>
+    <PackageProjectUrl>https://github.com/rajko-horvat/OpenCiv1</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/rajko-horvat/OpenCiv1</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>game;retro;remake;civilization;retrogaming;4x-strategy-game;4x;retro-game;civilization-games;sid-meier-civilization;remake-games</PackageTags>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <Authors>Rajko Horvat</Authors>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <None Include="..\..\IONSubs\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="CPU\FileStreamItem.cs" />
-    <Compile Include="Compression\CRC32.cs" />
-    <Compile Include="Compression\LZW.cs" />
-    <Compile Include="Compression\LZWWord.cs" />
-    <Compile Include="Compression\RLE.cs" />
-    <Compile Include="GameState\City.cs" />
-    <Compile Include="GameState\Continents.cs" />
-    <Compile Include="GameState\Player.cs" />
-    <Compile Include="GameState\GameState.cs" />
-    <Compile Include="GameState\PlayerContinent.cs" />
-    <Compile Include="GameState\StrategicLocation.cs" />
-    <Compile Include="GameState\Unit.cs" />
-    <Compile Include="GameState\UnitDefinition.cs" />
-    <Compile Include="OpenCiv1.cs" />
-    <Compile Include="Collections\Generic\BDictionary.cs" />
-    <Compile Include="Collections\Generic\BHashSet.cs" />
-    <Compile Include="Collections\Generic\BKeyValuePair.cs" />
-    <Compile Include="Collections\Generic\Trees\BTree.cs" />
-    <Compile Include="Collections\Generic\Trees\BTreeNode.cs" />
-    <Compile Include="CPU\CPU.cs" />
-    <Compile Include="CPU\CPUFlags.cs" />
-    <Compile Include="CPU\CPURegister.cs" />
-    <Compile Include="CPU\CPUMemory.cs" />
-    <Compile Include="CPU\CPUMemoryRegion.cs" />
-    <Compile Include="GPU\Fonts\CivFontCharacter.cs" />
-    <Compile Include="GPU\Fonts\CivFont.cs" />
-    <Compile Include="GPU\Fonts\CivFonts.cs" />
-    <Compile Include="GPU\CivRectangle.cs" />
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Helpers\LogWrapper.cs" />
-    <Compile Include="MZ\MZExecutable.cs" />
-    <Compile Include="OpenCiv1Globals.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="API\RandomMT19937.cs" />
-    <Compile Include="GPU\VGABitmap.cs" />
-    <Compile Include="GPU\VGADriver.cs" />
-    <Compile Include="API\MSCAPI.cs" />
-    <Compile Include="Segments\NSound.cs" />
-    <Compile Include="Segments\Overlay_10.cs" />
-    <Compile Include="Segments\GameLoadAndSave.cs" />
-    <Compile Include="Segments\WorldMap.cs" />
-    <Compile Include="Segments\Overlay_13.cs" />
-    <Compile Include="Segments\Overlay_14.cs" />
-    <Compile Include="Segments\Overlay_15.cs" />
-    <Compile Include="Segments\Palace.cs" />
-    <Compile Include="Segments\Overlay_18.cs" />
-    <Compile Include="Segments\CityView.cs" />
-    <Compile Include="Segments\MainIntro.cs" />
-    <Compile Include="Segments\Overlay_20.cs" />
-    <Compile Include="Segments\Overlay_21.cs" />
-    <Compile Include="Segments\Overlay_22.cs" />
-    <Compile Include="Segments\Overlay_23.cs" />
-    <Compile Include="Segments\HallOfFame.cs" />
-    <Compile Include="Segments\Help.cs" />
-    <Compile Include="Segments\StartGameMenu.cs" />
-    <Compile Include="Segments\MeetWithKing.cs" />
-    <Compile Include="Segments\GameInitAndIntro.cs" />
-    <Compile Include="Segments\Civilopedia.cs" />
-    <Compile Include="Segments\GameReplay.cs" />
-    <Compile Include="Segments\Segment_1000.cs" />
-    <Compile Include="Segments\Segment_1182.cs" />
-    <Compile Include="Segments\Segment_11a8.cs" />
-    <Compile Include="Segments\Segment_1238.cs" />
-    <Compile Include="Segments\Segment_1403.cs" />
-    <Compile Include="Segments\Segment_1866.cs" />
-    <Compile Include="Segments\Segment_1ade.cs" />
-    <Compile Include="Segments\Segment_1d12.cs" />
-    <Compile Include="Segments\Segment_2459.cs" />
-    <Compile Include="Segments\Segment_2517.cs" />
-    <Compile Include="Segments\Segment_25fb.cs" />
-    <Compile Include="Segments\Segment_29f3.cs" />
-    <Compile Include="Segments\Segment_2aea.cs" />
-    <Compile Include="Segments\Segment_2c84.cs" />
-    <Compile Include="Segments\Segment_2d05.cs" />
-    <Compile Include="Segments\Segment_2dc4.cs" />
-    <Compile Include="Segments\Segment_2e31.cs" />
-    <Compile Include="Segments\Segment_2f4d.cs" />
-    <Compile Include="Segments\ImageTools.cs" />
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="app.config" />
-    <None Include="BinaryResources.bin" />
-    <None Include="Fonts.xml.gz" />
-    <None Include="LICENSE" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <None Include="README.md" />
   </ItemGroup>
+
   <ItemGroup>
-    <Content Include="Documentation\CVL and EXE driver overlays.txt" />
-    <Content Include="Documentation\Font.cv specification.txt" />
-    <Content Include="Documentation\Overlay list.txt" />
-    <Content Include="Documentation\Structure 0xaa.txt" />
-    <Content Include="Icons\playback-32x32.png" />
-    <Content Include="Icons\windows-32x32.png" />
-    <Content Include="Icons\windows_24x24.png" />
-    <Content Include="Readme.txt">
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Screenshots\Screenshot1.png" />
-    <Content Include="Screenshots\Screenshot10.png" />
-    <Content Include="Screenshots\Screenshot11.png" />
-    <Content Include="Screenshots\Screenshot12.png" />
-    <Content Include="Screenshots\Screenshot13.png" />
-    <Content Include="Screenshots\Screenshot14.png" />
-    <Content Include="Screenshots\Screenshot2.png" />
-    <Content Include="Screenshots\Screenshot3.png" />
-    <Content Include="Screenshots\Screenshot4.png" />
-    <Content Include="Screenshots\Screenshot5.png" />
-    <Content Include="Screenshots\Screenshot6.png" />
-    <Content Include="Screenshots\Screenshot7.png" />
-    <Content Include="Screenshots\Screenshot8.png" />
-    <Content Include="Screenshots\Screenshot9.png" />
-    <Content Include="Screenshots\Small\Screenshot1.jpg" />
-    <Content Include="Screenshots\Small\Screenshot10.jpg" />
-    <Content Include="Screenshots\Small\Screenshot11.jpg" />
-    <Content Include="Screenshots\Small\Screenshot12.jpg" />
-    <Content Include="Screenshots\Small\Screenshot13.jpg" />
-    <Content Include="Screenshots\Small\Screenshot14.jpg" />
-    <Content Include="Screenshots\Small\Screenshot2.jpg" />
-    <Content Include="Screenshots\Small\Screenshot3.jpg" />
-    <Content Include="Screenshots\Small\Screenshot4.jpg" />
-    <Content Include="Screenshots\Small\Screenshot5.jpg" />
-    <Content Include="Screenshots\Small\Screenshot6.jpg" />
-    <Content Include="Screenshots\Small\Screenshot7.jpg" />
-    <Content Include="Screenshots\Small\Screenshot8.jpg" />
-    <Content Include="Screenshots\Small\Screenshot9.jpg" />
+    </None>
+    <None Update="README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

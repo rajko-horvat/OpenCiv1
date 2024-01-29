@@ -773,7 +773,11 @@ namespace OpenCiv1
 			{
 				// read map file
 				byte[] temp;
-				VGABitmap map = VGABitmap.FromFile(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.MAP"), out temp);
+				VGABitmap? map = VGABitmap.FromFile(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.MAP"), out temp);
+
+				if (map == null)
+					throw new Exception($"Can't read Map file '{filename}.MAP'");
+
 				this.oParent.VGADriver.Screens.SetValueByKey(2, map);
 
 				// read sve file
@@ -971,7 +975,6 @@ namespace OpenCiv1
 				ReadData(unitReader, 0x81d4, 0x3000);
 
 				unitReader.Close();
-				aUnits = null;
 
 				for (int i = 0; i < this.oParent.GameState.MapVisibility.GetLength(0); i++)
 				{

@@ -70,18 +70,33 @@ namespace OpenCiv1.Compression
 			return new LZWWord(result);
 		}
 
-		public static bool operator ==(LZWWord a, LZWWord b)
+		public static bool operator ==(LZWWord? a, LZWWord? b)
 		{
+			if (a == null && b == null)
+				return true;
+
+			if (a == null || b == null)
+				return false;
+
 			return a.Equals(b);
 		}
 
-		public static bool operator !=(LZWWord a, LZWWord b)
+		public static bool operator !=(LZWWord? a, LZWWord? b)
 		{
+			if (a == null && b == null)
+				return false;
+
+			if (a == null || b == null)
+				return true;
+
 			return !a.Equals(b);
 		}
 
-		public int CompareTo(LZWWord other)
+		public int CompareTo(LZWWord? other)
 		{
+			if (other == null)
+				return 1;
+
 			if (this.aItems.Length != other.aItems.Length)
 				return this.aItems.Length.CompareTo(other.aItems.Length);
 
@@ -94,8 +109,11 @@ namespace OpenCiv1.Compression
 			return 0;
 		}
 
-		public int CompareTo(List<byte> other)
+		public int CompareTo(List<byte>? other)
 		{
+			if (other == null)
+				return 1;
+
 			if (this.aItems.Length != other.Count)
 				return this.aItems.Length.CompareTo(other.Count);
 
@@ -108,19 +126,23 @@ namespace OpenCiv1.Compression
 			return 0;
 		}
 
-		public bool Equals(LZWWord other)
+		public bool Equals(LZWWord? other)
 		{
 			return this.CompareTo(other) == 0;
 		}
 
-		public bool Equals(List<byte> other)
+		public bool Equals(List<byte>? other)
 		{
 			return this.CompareTo(other) == 0;
 		}
 
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
-			if (obj is LZWWord)
+			if (obj == null)
+			{
+				return false;
+			}
+			else if (obj is LZWWord)
 			{
 				return this.CompareTo((LZWWord)obj) == 0;
 			}

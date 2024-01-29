@@ -16,8 +16,8 @@ namespace OpenCiv1
 		private CloseFormDelegate oCloseForm;
 
 		private bool bClosing = false;
-		private Thread oGameThread = null;
-		private OpenCiv1 oGame = null;
+		private Thread? oGameThread = null;
+		private OpenCiv1? oGame = null;
 		private Size oScreenSize;
 		private Rectangle oMouseRect = Rectangle.Empty;
 		private Point oMouseLocation = Point.Empty;
@@ -180,9 +180,9 @@ namespace OpenCiv1
 			this.Close();
 		}
 
-		private void MenuItem_Clicked(object sender, EventArgs e)
+		private void MenuItem_Clicked(object? sender, EventArgs e)
 		{
-			if (sender is ToolStripMenuItem)
+			if (sender!=null && sender is ToolStripMenuItem)
 			{
 				ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
 				int iScreen = Convert.ToInt32(menuItem.Tag);
@@ -234,229 +234,238 @@ namespace OpenCiv1
 			int iColumn = 0;
 			int iRow = 0;
 
-			//g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.AssumeLinear;
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-
-			for (int i = 0; i < this.oGame.VGADriver.Screens.Count; i++)
+			if (this.oGame != null)
 			{
-				BKeyValuePair<int, VGABitmap> item = this.oGame.VGADriver.Screens[i];
+				//g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.AssumeLinear;
+				g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 
-				if (item.Value.Visible)
+				for (int i = 0; i < this.oGame.VGADriver.Screens.Count; i++)
 				{
-					if (item.Value.Modified || forceRedraw)
-					{
-						Rectangle rect = new Rectangle((iColumn * this.oScreenSize.Width) + (iColumn + 1),
-							this.tsMain.Height + (iRow * this.oScreenSize.Height) + (iRow + 1),
-							this.oScreenSize.Width, this.oScreenSize.Height);
-						g.DrawImage(item.Value.Bitmap, rect);
-						g.DrawString($"{item.Key}", this.oFont, Brushes.White, rect.Left + 5.0f, rect.Top + 5.0f);
-						g.DrawRectangle(Pens.Purple, (iColumn * this.oScreenSize.Width) + iColumn,
-							this.tsMain.Height + (iRow * this.oScreenSize.Height) + iRow,
-							this.oScreenSize.Width + 1, this.oScreenSize.Height + 1);
+					BKeyValuePair<int, VGABitmap> item = this.oGame.VGADriver.Screens[i];
 
-						item.Value.Modified = false;
-					}
-
-					iColumn++;
-					if (iColumn >= this.iScreenColumns)
+					if (item.Value.Visible)
 					{
-						iColumn = 0;
-						iRow++;
+						if (item.Value.Modified || forceRedraw)
+						{
+							Rectangle rect = new Rectangle((iColumn * this.oScreenSize.Width) + (iColumn + 1),
+								this.tsMain.Height + (iRow * this.oScreenSize.Height) + (iRow + 1),
+								this.oScreenSize.Width, this.oScreenSize.Height);
+							g.DrawImage(item.Value.Bitmap, rect);
+							g.DrawString($"{item.Key}", this.oFont, Brushes.White, rect.Left + 5.0f, rect.Top + 5.0f);
+							g.DrawRectangle(Pens.Purple, (iColumn * this.oScreenSize.Width) + iColumn,
+								this.tsMain.Height + (iRow * this.oScreenSize.Height) + iRow,
+								this.oScreenSize.Width + 1, this.oScreenSize.Height + 1);
+
+							item.Value.Modified = false;
+						}
+
+						iColumn++;
+						if (iColumn >= this.iScreenColumns)
+						{
+							iColumn = 0;
+							iRow++;
+						}
 					}
 				}
-			}
 
-			if (this.oGame.VGADriver.CPU.Pause)
-			{
-				string sTemp = "Game paused";
-				SizeF size = g.MeasureString(sTemp, this.oLargeFont);
-				g.DrawString(sTemp, this.oLargeFont, Brushes.White,
-					(float)((this.oScreenSize.Width * this.iScreenColumns) - size.Width) / 2.0f,
-					(float)((this.oScreenSize.Height * this.iScreenRows) - size.Height) / 2.0f);
+				if (this.oGame.VGADriver.CPU.Pause)
+				{
+					string sTemp = "Game paused";
+					SizeF size = g.MeasureString(sTemp, this.oLargeFont);
+					g.DrawString(sTemp, this.oLargeFont, Brushes.White,
+						(float)((this.oScreenSize.Width * this.iScreenColumns) - size.Width) / 2.0f,
+						(float)((this.oScreenSize.Height * this.iScreenRows) - size.Height) / 2.0f);
+				}
 			}
 		}
 
 		private void Form_KeyPress(object sender, KeyPressEventArgs e)
 		{
-			lock (this.oGame.VGADriver.VGALock)
+			if (this.oGame != null)
 			{
-				this.oGame.VGADriver.Keys.Enqueue(e.KeyChar);
+				lock (this.oGame.VGADriver.VGALock)
+				{
+					this.oGame.VGADriver.Keys.Enqueue(e.KeyChar);
+				}
 			}
 		}
 
 		private void Form_KeyDown(object sender, KeyEventArgs e)
 		{
-			lock (this.oGame.VGADriver.VGALock)
+			if (this.oGame != null)
 			{
-				if (e.Modifiers == Keys.None)
+				lock (this.oGame.VGADriver.VGALock)
 				{
-					switch (e.KeyCode)
+					if (e.Modifiers == Keys.None)
 					{
-						case Keys.NumPad0:
-							// for testing
-							this.oGame.VGADriver.Keys.Enqueue(0x475c);
-							break;
+						switch (e.KeyCode)
+						{
+							case Keys.NumPad0:
+								// for testing
+								this.oGame.VGADriver.Keys.Enqueue(0x475c);
+								break;
 
-						case Keys.F1:
-							this.oGame.VGADriver.Keys.Enqueue(0x3b00);
-							break;
+							case Keys.F1:
+								this.oGame.VGADriver.Keys.Enqueue(0x3b00);
+								break;
 
-						case Keys.F2:
-							this.oGame.VGADriver.Keys.Enqueue(0x3c00);
-							break;
+							case Keys.F2:
+								this.oGame.VGADriver.Keys.Enqueue(0x3c00);
+								break;
 
-						case Keys.F3:
-							this.oGame.VGADriver.Keys.Enqueue(0x3d00);
-							break;
+							case Keys.F3:
+								this.oGame.VGADriver.Keys.Enqueue(0x3d00);
+								break;
 
-						case Keys.F4:
-							this.oGame.VGADriver.Keys.Enqueue(0x3e00);
-							break;
+							case Keys.F4:
+								this.oGame.VGADriver.Keys.Enqueue(0x3e00);
+								break;
 
-						case Keys.F5:
-							this.oGame.VGADriver.Keys.Enqueue(0x3f00);
-							break;
+							case Keys.F5:
+								this.oGame.VGADriver.Keys.Enqueue(0x3f00);
+								break;
 
-						case Keys.F6:
-							this.oGame.VGADriver.Keys.Enqueue(0x4000);
-							break;
+							case Keys.F6:
+								this.oGame.VGADriver.Keys.Enqueue(0x4000);
+								break;
 
-						case Keys.F7:
-							this.oGame.VGADriver.Keys.Enqueue(0x4100);
-							break;
+							case Keys.F7:
+								this.oGame.VGADriver.Keys.Enqueue(0x4100);
+								break;
 
-						case Keys.F8:
-							this.oGame.VGADriver.Keys.Enqueue(0x4200);
-							break;
+							case Keys.F8:
+								this.oGame.VGADriver.Keys.Enqueue(0x4200);
+								break;
 
-						case Keys.F9:
-							this.oGame.VGADriver.Keys.Enqueue(0x4300);
-							break;
+							case Keys.F9:
+								this.oGame.VGADriver.Keys.Enqueue(0x4300);
+								break;
 
-						case Keys.F10:
-							this.oGame.VGADriver.Keys.Enqueue(0x4400);
-							break;
+							case Keys.F10:
+								this.oGame.VGADriver.Keys.Enqueue(0x4400);
+								break;
 
-						case Keys.Down:
-							this.oGame.VGADriver.Keys.Enqueue(0x5000);
-							break;
+							case Keys.Down:
+								this.oGame.VGADriver.Keys.Enqueue(0x5000);
+								break;
 
-						case Keys.Left:
-							this.oGame.VGADriver.Keys.Enqueue(0x4b00);
-							break;
+							case Keys.Left:
+								this.oGame.VGADriver.Keys.Enqueue(0x4b00);
+								break;
 
-						case Keys.Right:
-							this.oGame.VGADriver.Keys.Enqueue(0x4d00);
-							break;
+							case Keys.Right:
+								this.oGame.VGADriver.Keys.Enqueue(0x4d00);
+								break;
 
-						case Keys.Up:
-							this.oGame.VGADriver.Keys.Enqueue(0x4800);
-							break;
+							case Keys.Up:
+								this.oGame.VGADriver.Keys.Enqueue(0x4800);
+								break;
 
-						case Keys.Home:
-							this.oGame.VGADriver.Keys.Enqueue(0x4700);
-							break;
+							case Keys.Home:
+								this.oGame.VGADriver.Keys.Enqueue(0x4700);
+								break;
 
-						case Keys.End:
-							this.oGame.VGADriver.Keys.Enqueue(0x4f00);
-							break;
+							case Keys.End:
+								this.oGame.VGADriver.Keys.Enqueue(0x4f00);
+								break;
 
-						case Keys.PageUp:
-							this.oGame.VGADriver.Keys.Enqueue(0x4900);
-							break;
+							case Keys.PageUp:
+								this.oGame.VGADriver.Keys.Enqueue(0x4900);
+								break;
 
-						case Keys.PageDown:
-							this.oGame.VGADriver.Keys.Enqueue(0x5100);
-							break;
+							case Keys.PageDown:
+								this.oGame.VGADriver.Keys.Enqueue(0x5100);
+								break;
+						}
 					}
-				}
-				else if ((e.Modifiers & Keys.Shift) == Keys.Shift)
-				{
-					switch (e.KeyCode)
+					else if ((e.Modifiers & Keys.Shift) == Keys.Shift)
 					{
-						case Keys.Down:
-							this.oGame.VGADriver.Keys.Enqueue(0x5032);
-							break;
+						switch (e.KeyCode)
+						{
+							case Keys.Down:
+								this.oGame.VGADriver.Keys.Enqueue(0x5032);
+								break;
 
-						case Keys.Left:
-							this.oGame.VGADriver.Keys.Enqueue(0x4b34);
-							break;
+							case Keys.Left:
+								this.oGame.VGADriver.Keys.Enqueue(0x4b34);
+								break;
 
-						case Keys.Right:
-							this.oGame.VGADriver.Keys.Enqueue(0x4d36);
-							break;
+							case Keys.Right:
+								this.oGame.VGADriver.Keys.Enqueue(0x4d36);
+								break;
 
-						case Keys.Up:
-							this.oGame.VGADriver.Keys.Enqueue(0x4838);
-							break;
+							case Keys.Up:
+								this.oGame.VGADriver.Keys.Enqueue(0x4838);
+								break;
 
-						case Keys.Home:
-							this.oGame.VGADriver.Keys.Enqueue(0x4737);
-							break;
+							case Keys.Home:
+								this.oGame.VGADriver.Keys.Enqueue(0x4737);
+								break;
 
-						case Keys.End:
-							this.oGame.VGADriver.Keys.Enqueue(0x4f31);
-							break;
+							case Keys.End:
+								this.oGame.VGADriver.Keys.Enqueue(0x4f31);
+								break;
 
-						case Keys.PageUp:
-							this.oGame.VGADriver.Keys.Enqueue(0x4939);
-							break;
+							case Keys.PageUp:
+								this.oGame.VGADriver.Keys.Enqueue(0x4939);
+								break;
 
-						case Keys.PageDown:
-							this.oGame.VGADriver.Keys.Enqueue(0x5133);
-							break;
+							case Keys.PageDown:
+								this.oGame.VGADriver.Keys.Enqueue(0x5133);
+								break;
+						}
 					}
-				}
-				else if ((e.Modifiers & Keys.Alt) == Keys.Alt)
-				{
-					e.Handled = true;
-					e.SuppressKeyPress = true;
-
-					switch (e.KeyCode)
+					else if ((e.Modifiers & Keys.Alt) == Keys.Alt)
 					{
-						case Keys.A:
-							this.oGame.VGADriver.Keys.Enqueue(0x1e00);
-							break;
+						e.Handled = true;
+						e.SuppressKeyPress = true;
 
-						case Keys.C:
-							this.oGame.VGADriver.Keys.Enqueue(0x2e00);
-							break;
+						switch (e.KeyCode)
+						{
+							case Keys.A:
+								this.oGame.VGADriver.Keys.Enqueue(0x1e00);
+								break;
 
-						case Keys.D:
-							this.oGame.VGADriver.Keys.Enqueue(0x2000);
-							break;
+							case Keys.C:
+								this.oGame.VGADriver.Keys.Enqueue(0x2e00);
+								break;
 
-						case Keys.G:
-							this.oGame.VGADriver.Keys.Enqueue(0x2200);
-							break;
+							case Keys.D:
+								this.oGame.VGADriver.Keys.Enqueue(0x2000);
+								break;
 
-						case Keys.H:
-							this.oGame.VGADriver.Keys.Enqueue(0x2300);
-							break;
+							case Keys.G:
+								this.oGame.VGADriver.Keys.Enqueue(0x2200);
+								break;
 
-						case Keys.M:
-							this.oGame.VGADriver.Keys.Enqueue(0x3200);
-							break;
+							case Keys.H:
+								this.oGame.VGADriver.Keys.Enqueue(0x2300);
+								break;
 
-						case Keys.O:
-							this.oGame.VGADriver.Keys.Enqueue(0x1800);
-							break;
+							case Keys.M:
+								this.oGame.VGADriver.Keys.Enqueue(0x3200);
+								break;
 
-						case Keys.Q:
-							this.oGame.VGADriver.Keys.Enqueue(0x1000);
-							break;
+							case Keys.O:
+								this.oGame.VGADriver.Keys.Enqueue(0x1800);
+								break;
 
-						case Keys.R:
-							this.oGame.VGADriver.Keys.Enqueue(0x1300);
-							break;
+							case Keys.Q:
+								this.oGame.VGADriver.Keys.Enqueue(0x1000);
+								break;
 
-						case Keys.V:
-							this.oGame.VGADriver.Keys.Enqueue(0x2f00);
-							break;
+							case Keys.R:
+								this.oGame.VGADriver.Keys.Enqueue(0x1300);
+								break;
 
-						case Keys.W:
-							this.oGame.VGADriver.Keys.Enqueue(0x1100);
-							break;
+							case Keys.V:
+								this.oGame.VGADriver.Keys.Enqueue(0x2f00);
+								break;
+
+							case Keys.W:
+								this.oGame.VGADriver.Keys.Enqueue(0x1100);
+								break;
+						}
 					}
 				}
 			}

@@ -352,13 +352,13 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x1ade, this.oCPU.AX.Low);
 
 			// Instruction address 0x11a8:0x034a, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x100), OpenCiv1.String_1a93);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x100), "Please insert Disk ");
 
 			// Instruction address 0x11a8:0x035b, size: 5
-			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x100), OpenCiv1.String_1ade);
+			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x100), "A");
 
 			// Instruction address 0x11a8:0x036c, size: 5
-			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x100), OpenCiv1.String_1aa7);
+			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x100), ".\n \n    Press Return\n    to continue.\n");
 
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3936);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x102), this.oCPU.AX.Word);
@@ -409,7 +409,7 @@ namespace OpenCiv1
 
 		L0494:
 			// Instruction address 0x11a8:0x049c, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1ae2);
+			this.oParent.MSCAPI.strcpy(0xba06, " Start a New Game\n Load a Saved Game\n EARTH\n Customize World\n View Hall of Fame\n");
 
 			// Instruction address 0x11a8:0x04b0, size: 5
 			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 100, 140, 1);
@@ -553,7 +553,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_16ae(210, 11);
 
 			// Instruction address 0x11a8:0x063b, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1b48);
+			this.oParent.MSCAPI.strcpy(0xba06, "LAND MASS:\n Small\n Normal\n Large\n");
 
 			// Instruction address 0x11a8:0x064f, size: 5
 			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 200, 1, 1);
@@ -578,7 +578,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_16ae(210, 61);
 
 			// Instruction address 0x11a8:0x0698, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1b6f);
+			this.oParent.MSCAPI.strcpy(0xba06, "TEMPERATURE:\n Cool\n Temperate\n Warm\n");
 
 			// Instruction address 0x11a8:0x06ac, size: 5
 			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 200, 51, 1);
@@ -603,7 +603,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_16ae(210, 111);
 
 			// Instruction address 0x11a8:0x06f5, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1ba0);
+			this.oParent.MSCAPI.strcpy(0xba06, "CLIMATE:\n Arid\n Normal\n Wet\n");
 
 			// Instruction address 0x11a8:0x0709, size: 5
 			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 200, 101, 1);
@@ -632,7 +632,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_16ae(210, 161);
 
 			// Instruction address 0x11a8:0x0752, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_1bc5);
+			this.oParent.MSCAPI.strcpy(0xba06, "AGE:\n 3 billion years\n 4 billion years\n 5 billion years\n");
 
 			// Instruction address 0x11a8:0x0766, size: 5
 			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 200, 151, 1);
