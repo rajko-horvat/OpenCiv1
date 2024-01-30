@@ -18,6 +18,7 @@
     <NeutralLanguage>en</NeutralLanguage>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+	<WarningsAsErrors>nullable</WarningsAsErrors>
     <Authors>Rajko Horvat</Authors>
   </PropertyGroup>
 

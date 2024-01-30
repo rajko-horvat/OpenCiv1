@@ -2585,7 +2585,7 @@ namespace IRB.VirtualCPU
 
 			if (this.aFileHandles[fhandle] != null)
 			{
-				this.aFileHandles[fhandle].Close();
+				this.aFileHandles[fhandle]!.Close();
 			}
 
 			this.aFileHandles[fhandle] = null;

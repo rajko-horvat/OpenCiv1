@@ -72,10 +72,10 @@ namespace OpenCiv1.Compression
 
 		public static bool operator ==(LZWWord? a, LZWWord? b)
 		{
-			if (a == null && b == null)
+			if (a is null && b is null)
 				return true;
 
-			if (a == null || b == null)
+			if (a is null || b is null)
 				return false;
 
 			return a.Equals(b);
@@ -83,10 +83,10 @@ namespace OpenCiv1.Compression
 
 		public static bool operator !=(LZWWord? a, LZWWord? b)
 		{
-			if (a == null && b == null)
+			if (a is null && b is null)
 				return false;
 
-			if (a == null || b == null)
+			if (a is null || b is null)
 				return true;
 
 			return !a.Equals(b);
@@ -94,7 +94,7 @@ namespace OpenCiv1.Compression
 
 		public int CompareTo(LZWWord? other)
 		{
-			if (other == null)
+			if (other is null)
 				return 1;
 
 			if (this.aItems.Length != other.aItems.Length)
@@ -111,7 +111,7 @@ namespace OpenCiv1.Compression
 
 		public int CompareTo(List<byte>? other)
 		{
-			if (other == null)
+			if (other is null)
 				return 1;
 
 			if (this.aItems.Length != other.Count)
@@ -138,7 +138,7 @@ namespace OpenCiv1.Compression
 
 		public override bool Equals(object? obj)
 		{
-			if (obj == null)
+			if (obj is null)
 			{
 				return false;
 			}
