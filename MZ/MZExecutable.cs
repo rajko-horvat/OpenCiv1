@@ -310,7 +310,7 @@ namespace IRB.VirtualCPU.MZ
 			return abTemp;
 		}
 
-		public static string ReadString(Stream stream)
+		public static string? ReadString(Stream stream)
 		{
 			int iLength = ReadByte(stream);
 			byte[] abTemp = new byte[iLength];

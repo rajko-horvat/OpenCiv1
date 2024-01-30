@@ -23,8 +23,6 @@ The Debug mode can be toggled by pressing Alt + D Key.</p>
 
 <p>The only dependency is .NET 8</p>
 
-<p>I hope you enjoy this Alpha Release!</p>
-
 ## How to run the code
 If you want to compile the code, it is assumed that:
 <ul>

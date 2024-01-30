@@ -33,22 +33,6 @@ namespace OpenCiv1
 
 		#region Global strings
 		/// <summary>
-		/// "!\n"
-		/// </summary>
-		public static string String_1d6c = "!\n";
-		/// <summary>
-		/// "#"
-		/// </summary>
-		public static string String_1d9b = "#";
-		/// <summary>
-		/// "$"
-		/// </summary>
-		public static string String_1d9d = "$";
-		/// <summary>
-		/// " "
-		/// </summary>
-		public static string String_1d9f = " ";
-		/// <summary>
 		/// "."
 		/// </summary>
 		public static string String_1da1 = ".";
