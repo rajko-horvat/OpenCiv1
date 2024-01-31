@@ -786,7 +786,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x3);
 
 			// Instruction address 0x29f3:0x0790, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2aae);
+			this.oParent.MSCAPI.strcpy(0xba06, "Sneak attack by\n");
 
 			this.oCPU.BX.Word = (ushort)playerID1;
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
@@ -794,7 +794,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982)));
 
 			// Instruction address 0x29f3:0x07b5, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2abf);
+			this.oParent.MSCAPI.strcat(0xba06, " forces!\n");
 
 			// Instruction address 0x29f3:0x07c9, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -845,7 +845,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
 
 			// Instruction address 0x29f3:0x0839, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2ac9);
+			this.oParent.MSCAPI.strcat(0xba06, " cancel\npeace treaty\nwith ");
 
 			this.oCPU.BX.Word = (ushort)playerID1;
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
@@ -853,7 +853,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
 
 			// Instruction address 0x29f3:0x085e, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2ae4);
+			this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
 			// Instruction address 0x29f3:0x0872, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -1002,7 +1002,7 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.itoa((short)this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)), 10));
 
 			// Instruction address 0x29f3:0x0a08, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2aef);
+			this.oParent.MSCAPI.strcat(0xba06, " units destroyed.\n");
 
 			// Instruction address 0x29f3:0x0a19, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -1338,13 +1338,13 @@ namespace OpenCiv1
 				goto L0d48;
 
 			// Instruction address 0x29f3:0x0cc1, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2b02);
+			this.oParent.MSCAPI.strcpy(0xba06, "We have signed a\npeace treaty with\nthe ");
 
 			// Instruction address 0x29f3:0x0cd1, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1992)));
 
 			// Instruction address 0x29f3:0x0ce1, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2b2a);
+			this.oParent.MSCAPI.strcat(0xba06, "!\n Cancel action.\n Break treaty.\n");
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x5);
 
@@ -1362,7 +1362,7 @@ namespace OpenCiv1
 			if (this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].GovernmentType < 4) goto L0d43;
 
 			// Instruction address 0x29f3:0x0d1f, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2b4c);
+			this.oParent.MSCAPI.strcpy(0xba06, "Overruled by\nthe Senate.\nAction canceled.\n");
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x4);
 
@@ -1413,7 +1413,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
 
 			// Instruction address 0x29f3:0x0d7f, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2b77);
+			this.oParent.MSCAPI.strcat(0xba06, " use\nnuclear weapons!\n");
 
 			// Instruction address 0x29f3:0x0d93, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -1461,13 +1461,13 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0e4d;
 
 			// Instruction address 0x29f3:0x0e11, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2b8e);
+			this.oParent.MSCAPI.strcpy(0xba06, "SDI protects ");
 
 			// Instruction address 0x29f3:0x0e1c, size: 5
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
 
 			// Instruction address 0x29f3:0x0e2c, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2b9c);
+			this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
 			// Instruction address 0x29f3:0x0e40, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 100);

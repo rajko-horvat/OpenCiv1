@@ -91,7 +91,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 0, 0, 320, 200, 14);
 
 			// Instruction address 0x0000:0x0092, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x4c), OpenCiv1.String_3c8e);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x4c), "a");
 
 			// Instruction address 0x0000:0x00b2, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 60, 2, 200, 9, 15);
@@ -131,7 +131,7 @@ namespace OpenCiv1
 
 		L015f:
 			// Instruction address 0x0000:0x0167, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x32), OpenCiv1.String_3cd6);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x32), "zzz");
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x5a), 0xffff);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34), 0xffff);
@@ -756,7 +756,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x0743, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3cda);
+			this.oParent.MSCAPI.strcpy(0xba06, "iconpg1.pic");
 
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34));
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
@@ -799,7 +799,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x7);
 
 			// Instruction address 0x0000:0x081b, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x2c), OpenCiv1.String_3d99);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x2c), "*");
 
 			// Instruction address 0x0000:0x082b, size: 5
 			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x2c), 0xba06);
@@ -832,7 +832,7 @@ namespace OpenCiv1
 
 		L089c:
 			// Instruction address 0x0000:0x08a4, size: 5
-			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x2c), OpenCiv1.String_3d9b);
+			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x2c), "2");
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 			this.oCPU.CMPWord(param2, 0x0);
@@ -933,7 +933,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x09f7, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3d42);
+			this.oParent.MSCAPI.strcpy(0xba06, "iconpga.pic");
 
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34));
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
@@ -980,7 +980,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x0acb, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3d68);
+			this.oParent.MSCAPI.strcpy(0xba06, "iconpgt1.pic");
 
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34));
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
@@ -1044,7 +1044,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0bf3;
 
 			// Instruction address 0x0000:0x0bd7, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3d9d);
+			this.oParent.MSCAPI.strcpy(0xba06, "Requires ");
 
 			this.oCPU.AX.Low = 0x16;
 			this.oCPU.IMULByte(this.oCPU.AX, this.oCPU.ReadUInt8(this.oCPU.DS.Word, this.oCPU.SI.Word));
@@ -1061,7 +1061,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0c28;
 
 			// Instruction address 0x0000:0x0c0c, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3da7);
+			this.oParent.MSCAPI.strcat(0xba06, " and ");
 
 			this.oCPU.AX.Low = 0x16;
 			this.oCPU.IMULByte(this.oCPU.AX, this.oCPU.ReadUInt8(this.oCPU.DS.Word, this.oCPU.SI.Word));
@@ -1101,7 +1101,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0cca;
 
 			// Instruction address 0x0000:0x0c9c, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3db6);
+			this.oParent.MSCAPI.strcat(0xba06, " (with ");
 
 			this.oCPU.AX.Low = 0x16;
 			this.oCPU.IMULByte(this.oCPU.AX, this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x4ef)));
@@ -1110,7 +1110,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x0cc2, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3dbe);
+			this.oParent.MSCAPI.strcat(0xba06, ")");
 
 		L0cca:
 			// Instruction address 0x0000:0x0cd9, size: 5
@@ -1137,7 +1137,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0d46;
 
 			// Instruction address 0x0000:0x0d18, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3dc0);
+			this.oParent.MSCAPI.strcat(0xba06, " (with ");
 
 			this.oCPU.AX.Low = 0x16;
 			this.oCPU.IMULByte(this.oCPU.AX, this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x4ee)));
@@ -1146,7 +1146,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x0d3e, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3dc8);
+			this.oParent.MSCAPI.strcat(0xba06, ")");
 
 		L0d46:
 			// Instruction address 0x0000:0x0d55, size: 5
@@ -1187,7 +1187,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x0dc5, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3dca);
+			this.oParent.MSCAPI.strcat(0xba06, " unit");
 
 			// Instruction address 0x0000:0x0ddc, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 60, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 12);
@@ -1266,7 +1266,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0f32;
 
 			// Instruction address 0x0000:0x0ec0, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3e10);
+			this.oParent.MSCAPI.strcpy(0xba06, "(Taken from ");
 
 			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].TechnologyAcquiredFrom[technologyID];
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
@@ -1275,7 +1275,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
 
 			// Instruction address 0x0000:0x0efa, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3e1d);
+			this.oParent.MSCAPI.strcat(0xba06, ")");
 			goto L0f11;
 
 		L0f01:
@@ -1301,7 +1301,7 @@ namespace OpenCiv1
 
 		L0f37:
 			// Instruction address 0x0000:0x0f3f, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3e1f);
+			this.oParent.MSCAPI.strcpy(0xba06, "Requires ");
 
 			this.oCPU.AX.Word = 0x1e;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, technologyID);
@@ -1319,14 +1319,14 @@ namespace OpenCiv1
 				this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
 
 			// Instruction address 0x0000:0x0f89, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3e29);
+			this.oParent.MSCAPI.strcpy(0xba06, "Cost: ");
 
 			// Instruction address 0x0000:0x0fae, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
 				this.oParent.MSCAPI.itoa((short)(0xa * (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xbb2))), 10));
 
 			// Instruction address 0x0000:0x0fbe, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3e30);
+			this.oParent.MSCAPI.strcat(0xba06, " shields.");
 
 			// Instruction address 0x0000:0x0fd5, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 12, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
@@ -1335,7 +1335,7 @@ namespace OpenCiv1
 				this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
 
 			// Instruction address 0x0000:0x0fe9, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3e3a);
+			this.oParent.MSCAPI.strcpy(0xba06, "Maintenance: $");
 
 			// Instruction address 0x0000:0x100a, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
@@ -1352,7 +1352,7 @@ namespace OpenCiv1
 
 		L102d:
 			// Instruction address 0x0000:0x1035, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3e49);
+			this.oParent.MSCAPI.strcpy(0xba06, "Requires ");
 
 			this.oCPU.AX.Word = 0x22;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, technologyID);
@@ -1367,7 +1367,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L1072;
 
 			// Instruction address 0x0000:0x106a, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3e53);
+			this.oParent.MSCAPI.strcat(0xba06, " and Nuclear Fission");
 
 		L1072:
 			// Instruction address 0x0000:0x1081, size: 5
@@ -1377,7 +1377,7 @@ namespace OpenCiv1
 				this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
 
 			// Instruction address 0x0000:0x1095, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3e68);
+			this.oParent.MSCAPI.strcpy(0xba06, "Cost: ");
 
 			this.oCPU.AX.Word = 0x22;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, technologyID);
@@ -1388,7 +1388,7 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.itoa((short)(0xa * (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1142))), 10));
 
 			// Instruction address 0x0000:0x10d2, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3e6f);
+			this.oParent.MSCAPI.strcat(0xba06, " resources.");
 
 			// Instruction address 0x0000:0x10e9, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 100, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
@@ -1397,7 +1397,7 @@ namespace OpenCiv1
 				this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
 
 			// Instruction address 0x0000:0x10fd, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3e7b);
+			this.oParent.MSCAPI.strcpy(0xba06, "Attack Strength: ");
 
 			// Instruction address 0x0000:0x111e, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
@@ -1410,7 +1410,7 @@ namespace OpenCiv1
 				this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
 
 			// Instruction address 0x0000:0x1149, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3e8d);
+			this.oParent.MSCAPI.strcpy(0xba06, "Defense Strength: ");
 
 			// Instruction address 0x0000:0x116a, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
@@ -1423,7 +1423,7 @@ namespace OpenCiv1
 				this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
 
 			// Instruction address 0x0000:0x1195, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3ea0);
+			this.oParent.MSCAPI.strcpy(0xba06, "Movement Rate: ");
 
 			// Instruction address 0x0000:0x11b6, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
@@ -1472,7 +1472,7 @@ namespace OpenCiv1
 
 		L122b:
 			// Instruction address 0x0000:0x1233, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3eb0);
+			this.oParent.MSCAPI.strcpy(0xba06, "Food: ");
 
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
@@ -1487,7 +1487,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L127d;
 
 			// Instruction address 0x0000:0x1275, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3eb7);
+			this.oParent.MSCAPI.strcat(0xba06, "*");
 
 		L127d:
 			this.oCPU.AX.Word = 0xc;
@@ -1498,7 +1498,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L12f3;
 
 			// Instruction address 0x0000:0x1296, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3eb9);
+			this.oParent.MSCAPI.strcat(0xba06, " (");
 
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
@@ -1514,15 +1514,15 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L12e3;
 
 			// Instruction address 0x0000:0x12db, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3ebc);
+			this.oParent.MSCAPI.strcat(0xba06, "*");
 
 		L12e3:
 			// Instruction address 0x0000:0x12eb, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3ebe);
+			this.oParent.MSCAPI.strcat(0xba06, " with Irrigation)");
 
 		L12f3:
 			// Instruction address 0x0000:0x12fb, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3ed0);
+			this.oParent.MSCAPI.strcat(0xba06, " units.");
 
 			// Instruction address 0x0000:0x1312, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 16, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
@@ -1545,7 +1545,7 @@ namespace OpenCiv1
 
 		L133f:
 			// Instruction address 0x0000:0x1347, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3ed8);
+			this.oParent.MSCAPI.strcpy(0xba06, "Production: ");
 
 			this.oCPU.CMPWord(technologyID, 0x2);
 			if (this.oCPU.Flags.E) goto L135b;
@@ -1554,7 +1554,7 @@ namespace OpenCiv1
 
 		L135b:
 			// Instruction address 0x0000:0x1363, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3ee5);
+			this.oParent.MSCAPI.strcat(0xba06, "0/");
 
 		L136b:
 			this.oCPU.AX.Word = 0x13;
@@ -1574,7 +1574,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L1408;
 
 			// Instruction address 0x0000:0x13b1, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3ee8);
+			this.oParent.MSCAPI.strcat(0xba06, " (");
 
 			// Instruction address 0x0000:0x13d5, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
@@ -1589,15 +1589,15 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L13f8;
 
 			// Instruction address 0x0000:0x13f0, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3eeb);
+			this.oParent.MSCAPI.strcat(0xba06, "*");
 
 		L13f8:
 			// Instruction address 0x0000:0x1400, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3eed);
+			this.oParent.MSCAPI.strcat(0xba06, " with Mining)");
 
 		L1408:
 			// Instruction address 0x0000:0x1410, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3efb);
+			this.oParent.MSCAPI.strcat(0xba06, " units.");
 
 			// Instruction address 0x0000:0x1427, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 16, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
@@ -1617,7 +1617,7 @@ namespace OpenCiv1
 
 		L144b:
 			// Instruction address 0x0000:0x1453, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3f03);
+			this.oParent.MSCAPI.strcpy(0xba06, "Trade: ");
 
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
@@ -1632,7 +1632,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L149d;
 
 			// Instruction address 0x0000:0x1495, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3f0b);
+			this.oParent.MSCAPI.strcat(0xba06, "%");
 
 		L149d:
 			this.oCPU.AX.Word = 0x13;
@@ -1642,14 +1642,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L14bc;
 
 			// Instruction address 0x0000:0x14b4, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3f0d);
+			this.oParent.MSCAPI.strcat(0xba06, "*");
 
 		L14bc:
 			this.oCPU.CMPWord(technologyID, 0x2);
 			if (this.oCPU.Flags.G) goto L150e;
 
 			// Instruction address 0x0000:0x14ca, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3f0f);
+			this.oParent.MSCAPI.strcat(0xba06, " (");
 
 			// Instruction address 0x0000:0x14f6, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
@@ -1657,7 +1657,7 @@ namespace OpenCiv1
 					(ushort)(0x13 * (short)this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) + 0x292))) + 1), 10));
 
 			// Instruction address 0x0000:0x1506, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3f12);
+			this.oParent.MSCAPI.strcat(0xba06, "% with Roads)");
 
 		L150e:
 			// Instruction address 0x0000:0x151d, size: 5
@@ -1705,7 +1705,7 @@ namespace OpenCiv1
 				this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0xc));
 
 			// Instruction address 0x0000:0x159e, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3f7d);
+			this.oParent.MSCAPI.strcpy(0xba06, "Movement cost: ");
 
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, technologyID);
@@ -1716,7 +1716,7 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.itoa((sbyte)this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x28e)), 10));
 
 			// Instruction address 0x0000:0x15d9, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3f8d);
+			this.oParent.MSCAPI.strcat(0xba06, " MP");
 
 			// Instruction address 0x0000:0x15ed, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 12, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 12);
@@ -1725,7 +1725,7 @@ namespace OpenCiv1
 				this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
 
 			// Instruction address 0x0000:0x1601, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3f91);
+			this.oParent.MSCAPI.strcpy(0xba06, "Defense bonus: +");
 
 			// Instruction address 0x0000:0x1628, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
@@ -1733,7 +1733,7 @@ namespace OpenCiv1
 					10));
 
 			// Instruction address 0x0000:0x100a, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_3fa2);
+			this.oParent.MSCAPI.strcat(0xba06, "%");
 			goto L1005;
 
 		L1636:

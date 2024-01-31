@@ -1618,7 +1618,7 @@ namespace OpenCiv1
 
 		L1120:
 			// Instruction address 0x2aea:0x1128, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2ba4);
+			this.oParent.MSCAPI.strcpy(0xba06, " ");
 
 			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, this.oCPU.AX.Low);

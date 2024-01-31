@@ -75,6 +75,9 @@ namespace IRB.VirtualCPU
 				this.aFileHandles[i] = null;
 			}
 
+			// We need this because of different paths between Debug and Release versions
+			// The Release executable is intended to be put directly into CIV 1 directory
+			// Also, for Debug there are different platforms and paths
 #if DEBUG
 			if (Environment.OSVersion.Platform != PlatformID.Unix)
 			{

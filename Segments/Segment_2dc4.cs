@@ -401,12 +401,12 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.strcat(0xba06, this.oParent.MSCAPI.itoa(population / 100, 10));
 
 				// Instruction address 0x2dc4:0x036f, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2fd2);
+				this.oParent.MSCAPI.strcat(0xba06, ",");
 
 				if ((population % 100) < 10)
 				{
 					// Instruction address 0x2dc4:0x038d, size: 5
-					this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2fd4);
+					this.oParent.MSCAPI.strcat(0xba06, "0");
 				}
 			}
 
@@ -414,7 +414,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, this.oParent.MSCAPI.itoa(population % 100, 10));
 
 			// Instruction address 0x2dc4:0x03c4, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2fd6);
+			this.oParent.MSCAPI.strcat(0xba06, "0,000");
 		}
 
 		/// <summary>
@@ -529,7 +529,7 @@ namespace OpenCiv1
 			if (this.oCPU.AX.Word != 0)
 			{
 				// Instruction address 0x2dc4:0x053d, size: 5
-				this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2fdc);
+				this.oParent.MSCAPI.strcpy(0xba06, "MEM.ERR:");
 
 				if (stringPtr != 0)
 				{
@@ -538,7 +538,7 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x2dc4:0x055c, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2fe5);
+				this.oParent.MSCAPI.strcat(0xba06, "\n");
 
 				// Instruction address 0x2dc4:0x0570, size: 5
 				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);

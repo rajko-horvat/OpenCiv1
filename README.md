@@ -7,7 +7,7 @@ and the bugs that have never been fixed are hindering the popularity of the game
 
 ## Copyright considerations
 <p><b>The available code is not a full working copy of the game.</b> <b>To run OpenCiv1 you are legally required to own your own copy of the Civilization game.</b> 
-This is the reason that game files are not included (sounds, images and text) as they are copyrighted.</p>
+<b>This is the reason that not a single file from original game is included in this GitHub repository as they are copyrighted.</b></p>
 
 <p>The part of the game assembly code is emulated with Virtual CPU, and the rest of the code has been rewritten from scratch 
 until all of the code is replaced with new copyright free code. The other resources (like graphics, music and text) 

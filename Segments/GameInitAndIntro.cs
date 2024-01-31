@@ -2751,7 +2751,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L18a1;
 
 			// Instruction address 0x0000:0x1869, size: 5
-			this.oParent.MSCAPI.fopen(OpenCiv1.String_3b41, OpenCiv1.String_3b3e);
+			this.oParent.MSCAPI.fopen("story.txt", "rt");
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6804, this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3b62, 0x1);
@@ -2760,7 +2760,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6800, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x188a, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3b4b);
+			this.oParent.MSCAPI.strcpy(0xba06, "");
 
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x7);
@@ -2797,7 +2797,7 @@ namespace OpenCiv1
 
 		L18f3:
 			// Instruction address 0x0000:0x18ff, size: 5
-			this.oParent.MSCAPI.fscanf((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6804), OpenCiv1.String_3b4c, 0xba06);
+			this.oParent.MSCAPI.fscanf((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6804), "%[^\n]\n", 0xba06);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18), this.oCPU.AX.Word);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xffff);
@@ -2864,7 +2864,7 @@ namespace OpenCiv1
 
 		L19db:
 			// Instruction address 0x0000:0x19e3, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), OpenCiv1.String_3b53);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), "birth0.pic");
 
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3b64);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3b64, this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3b64)));
@@ -2910,7 +2910,7 @@ namespace OpenCiv1
 
 		L1a6b:
 			// Instruction address 0x0000:0x1a73, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x9), OpenCiv1.String_3b5e);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x9), "pal");
 
 			// Instruction address 0x0000:0x1a83, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, (ushort)(this.oCPU.BP.Word - 0x10), 0xc5be);
@@ -3061,7 +3061,7 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.SI.Word);
 
 			// Instruction address 0x0000:0x1bf2, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_3b6a);
+			this.oParent.MSCAPI.strcpy(0xba06, "Global temperature\nrises! Icecaps melt.\nSevere Drought.\n");
 
 			this.oParent.Overlay_21.F21_0000_0000(-1);
 			

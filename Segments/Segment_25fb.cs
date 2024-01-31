@@ -5924,7 +5924,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x3);
 
 			// Instruction address 0x25fb:0x3829, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2a70);
+			this.oParent.MSCAPI.strcpy(0xba06, "Barbarian raiding party\nlands near ");
 
 			// Instruction address 0x25fb:0x3837, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0102(
@@ -5937,7 +5937,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName((short)this.oCPU.AX.Word);
 
 			// Instruction address 0x25fb:0x3853, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2a94);
+			this.oParent.MSCAPI.strcat(0xba06, "!\nCitizens are alarmed.\n");
 
 
 			// Instruction address 0x25fb:0x3867, size: 5

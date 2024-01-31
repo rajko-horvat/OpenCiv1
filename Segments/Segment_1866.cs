@@ -3113,7 +3113,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.LE) goto L1a8e;
 
 			// Instruction address 0x1866:0x1a2d, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_212c);
+			this.oParent.MSCAPI.strcpy(0xba06, "You have discovered\nan advanced tribe.\n");
 
 			if (playerID != this.oParent.GameState.HumanPlayerID)
 				goto L1a51;
@@ -3138,12 +3138,15 @@ namespace OpenCiv1
 			goto L1d30;
 
 		L1a7f:
-			if (this.oParent.GameState.TurnCount == 0) goto L1a8e;
-			if (this.oParent.GameState.Year <= 1000) goto L1ac7;
+			if (this.oParent.GameState.TurnCount == 0)
+				goto L1a8e;
+
+			if (this.oParent.GameState.Year <= 1000)
+				goto L1ac7;
 
 			L1a8e:
 			// Instruction address 0x1866:0x1a96, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2184);
+			this.oParent.MSCAPI.strcpy(0xba06, "You have discovered\nvaluable metal deposits\nworth 50$\n");
 
 			if (playerID == this.oParent.GameState.HumanPlayerID)
 			{
@@ -3156,7 +3159,7 @@ namespace OpenCiv1
 
 		L1ac7:
 			// Instruction address 0x1866:0x1acf, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_2154);
+			this.oParent.MSCAPI.strcpy(0xba06, "You have discovered\nscrolls of ancient wisdom.\n");
 
 			if (playerID == this.oParent.GameState.HumanPlayerID)
 			{
@@ -3230,7 +3233,7 @@ namespace OpenCiv1
 
 		L1b9a:
 			// Instruction address 0x1866:0x1ba2, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_21e6);
+			this.oParent.MSCAPI.strcpy(0xba06, "You have discovered\na friendly tribe of\nskilled mercenaries.\n");
 
 			if (playerID == this.oParent.GameState.HumanPlayerID)
 			{
@@ -3242,7 +3245,7 @@ namespace OpenCiv1
 
 		L1bff:
 			// Instruction address 0x1866:0x1c07, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_21bb);
+			this.oParent.MSCAPI.strcpy(0xba06, "You have unleashed\na horde of barbarians!\n");
 
 			if (playerID == this.oParent.GameState.HumanPlayerID)
 			{
@@ -3683,7 +3686,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L206a;
 
 			// Instruction address 0x1866:0x2062, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_2224);
+			this.oParent.MSCAPI.strcat(0xba06, " (V)");
 
 		L206a:
 			// Instruction address 0x1866:0x2079, size: 5

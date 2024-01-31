@@ -663,7 +663,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.G) goto L0640;
 
 			// Instruction address 0x2d05:0x0638, size: 5
-			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x50), OpenCiv1.String_2fb4);
+			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x50), " report:");
 
 		L0640:
 			// Instruction address 0x2d05:0x0644, size: 5
