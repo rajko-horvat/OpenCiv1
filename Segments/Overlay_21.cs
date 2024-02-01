@@ -147,11 +147,8 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x01d1, size: 5
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 
-			this.oCPU.AX.Word = 0x5118;
-
-		L01dc:
 			// Instruction address 0x0000:0x01e1, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcat(0xba06, 0x5118);
 
 		L01e9:
 			// Instruction address 0x0000:0x01ed, size: 5
@@ -166,7 +163,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 
 			// Instruction address 0x0000:0x0215, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_5141);
+			this.oParent.MSCAPI.strcat(0xba06, " News");
 
 			// Instruction address 0x0000:0x0221, size: 5
 			this.oParent.Segment_1182.F0_1182_00ef_GetStringWidth(0xba06);
@@ -199,28 +196,34 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0290, size: 5
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 			
-			this.oCPU.AX.Word = 0x5120;
-			goto L01dc;
+			// Instruction address 0x0000:0x01e1, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, 0x5120);
+
+			goto L01e9;
 
 		L029e:
 			// Instruction address 0x0000:0x02a6, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_5127);
+			this.oParent.MSCAPI.strcpy(0xba06, "The ");
 
 			// Instruction address 0x0000:0x02b1, size: 5
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 			
-			this.oCPU.AX.Word = 0x512c;
-			goto L01dc;
+			// Instruction address 0x0000:0x01e1, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, 0x512c);
+
+			goto L01e9;
 
 		L02bf:
 			// Instruction address 0x0000:0x02c7, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_5133);
+			this.oParent.MSCAPI.strcpy(0xba06, "The ");
 
 			// Instruction address 0x0000:0x02d2, size: 5
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 			
-			this.oCPU.AX.Word = 0x5138;
-			goto L01dc;
+			// Instruction address 0x0000:0x01e1, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, 0x5138);
+
+			goto L01e9;
 
 		L02e0:
 			this.oCPU.AX.Word = 0x5156;
@@ -243,13 +246,13 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x033d, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_515c);
+			this.oParent.MSCAPI.strcat(0xba06, "10 cents");
 
 			// Instruction address 0x0000:0x0354, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 272, 28, 0);
 
 			// Instruction address 0x0000:0x0364, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_5165);
+			this.oParent.MSCAPI.strcpy(0xba06, "January 1, ");
 
 			// Instruction address 0x0000:0x036c, size: 5
 			this.oParent.Segment_1238.F0_1238_1720_GetCurrentYearAsString();
@@ -261,7 +264,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x2);
 
 			// Instruction address 0x0000:0x0399, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0xc), OpenCiv1.String_5171);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0xc), "*NEWSA");
 
 			// Instruction address 0x0000:0x03a5, size: 5
 			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(14));

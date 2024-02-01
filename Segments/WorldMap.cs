@@ -608,17 +608,16 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06,
 				this.oParent.MSCAPI.itoa(Math.Abs((short)this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))), 10));
 
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)), 0x0);
-			if (this.oCPU.Flags.GE) goto L064a;
-			this.oCPU.AX.Word = 0x43d2;
-			goto L064d;
-
-		L064a:
-			this.oCPU.AX.Word = 0x43d5;
-
-		L064d:
-			// Instruction address 0x0000:0x0652, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			if (this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)) < 0)
+			{
+				// Instruction address 0x0000:0x0652, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, 0x43d2);
+			}
+			else
+			{
+				// Instruction address 0x0000:0x0652, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, 0x43d5);
+			}
 
 			// Instruction address 0x0000:0x0667, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, (short)this.oCPU.SI.Word, 194, 15);
@@ -817,12 +816,10 @@ namespace OpenCiv1
 			goto L0902;
 
 		L082a:
-			this.oCPU.AX.Word = 0x4413;
+			// Instruction address 0x0000:0x0832, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, 0x4413);
 
 		L082d:
-			// Instruction address 0x0000:0x0832, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
-
 			// Instruction address 0x0000:0x083d, size: 5
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
 
@@ -932,7 +929,9 @@ namespace OpenCiv1
 			goto L082a;
 
 		L09c9:
-			this.oCPU.AX.Word = 0x440e;
+			// Instruction address 0x0000:0x0832, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, 0x440e);
+
 			goto L082d;
 
 		L09cf:
@@ -2228,33 +2227,29 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06,
 				this.oParent.MSCAPI.itoa((short)this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 10));
 
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1);
-			if (this.oCPU.Flags.E) goto L1a1e;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2);
-			if (this.oCPU.Flags.E) goto L1a30;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3);
-			if (this.oCPU.Flags.E) goto L1a35;
-			this.oCPU.AX.Word = 0x4679;
-			goto L1a21;
+			switch (this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)))
+			{
+				case 1:
+					// Instruction address 0x0000:0x1a26, size: 5
+					this.oParent.MSCAPI.strcat(0xba06, 0x4670);
+					break;
 
-		L1a1e:
-			this.oCPU.AX.Word = 0x4670;
+				case 2:
+					// Instruction address 0x0000:0x1a26, size: 5
+					this.oParent.MSCAPI.strcat(0xba06, 0x4673);
+					break;
 
-		L1a21:
-			// Instruction address 0x0000:0x1a26, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
-			goto L1a3a;
+				case 3:
+					// Instruction address 0x0000:0x1a26, size: 5
+					this.oParent.MSCAPI.strcat(0xba06, 0x4676);
+					break;
 
-		L1a30:
-			this.oCPU.AX.Word = 0x4673;
-			goto L1a21;
+				default:
+					// Instruction address 0x0000:0x1a26, size: 5
+					this.oParent.MSCAPI.strcat(0xba06, 0x4679);
+					break;
+			}
 
-		L1a35:
-			this.oCPU.AX.Word = 0x4676;
-			goto L1a21;
-
-		L1a3a:
 			// Instruction address 0x0000:0x1a64, size: 5
 			this.oParent.VGADriver.F0_VGA_0599_DrawLine(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
 				4, Math.Abs(yPos) - 3, 316, Math.Abs(yPos) - 3, 9);

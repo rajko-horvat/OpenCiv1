@@ -144,7 +144,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L0217;
 
 			// Instruction address 0x0000:0x01e2, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, OpenCiv1.String_4b11);
+			this.oParent.MSCAPI.strcpy(0xba06, "A");
 
 			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108));
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 
@@ -762,7 +762,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.LE) goto L08e0;
 
 			// Instruction address 0x0000:0x08b6, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), OpenCiv1.String_4b93);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), "cbacks0.pic");
 
 			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0xd932);
 			this.oCPU.AX.Low = this.oCPU.ADDByte(this.oCPU.AX.Low, 0x30);
@@ -1074,7 +1074,7 @@ namespace OpenCiv1
 
 		L0be1:
 			// Instruction address 0x0000:0x0bee, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), OpenCiv1.String_4ba4);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), "cbrush0.pic");
 
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd930), 0x0);
 			if (this.oCPU.Flags.E) goto L0c36;
@@ -1572,7 +1572,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L104b;
 
 			// Instruction address 0x0000:0x1069, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), OpenCiv1.String_4bb8);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), "castle0.pic");
 
 			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a));
 			this.oCPU.AX.Low = this.oCPU.ADDByte(this.oCPU.AX.Low, 0x30);

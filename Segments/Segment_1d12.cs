@@ -782,20 +782,16 @@ namespace OpenCiv1
 			// Instruction address 0x1d12:0x07b1, size: 5
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 			
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe8)), 0xffff);
-			if (this.oCPU.Flags.NE) goto L07c3;
-			goto L07c9;
-
-		L07c3:
-			this.oCPU.AX.Word = 0x2510;
-			goto L07cc;
-
-		L07c9:
-			this.oCPU.AX.Word = 0x2522;
-
-		L07cc:
-			// Instruction address 0x1d12:0x07d1, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			if (this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe8)) != 0xffff)
+			{
+				// Instruction address 0x1d12:0x07d1, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, 0x2510);
+			}
+			else
+			{
+				// Instruction address 0x1d12:0x07d1, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, 0x2522);
+			}
 
 			// Instruction address 0x1d12:0x07dd, size: 5
 			this.oParent.Segment_1000.F0_1000_0a32(0x24, 0);

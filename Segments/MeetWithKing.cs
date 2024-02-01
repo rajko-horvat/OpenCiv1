@@ -2269,11 +2269,9 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x190f, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x19a2)));
 
-			this.oCPU.AX.Word = 0x3a0d;
-
-		L191a:
 			// Instruction address 0x0000:0x191f, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcat(0xba06, " ");
+
 			goto L19e6;
 
 		L192a:
@@ -2290,8 +2288,10 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x195d, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x19b2)));
 
-			this.oCPU.AX.Word = 0x3a1c;
-			goto L191a;
+			// Instruction address 0x0000:0x191f, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, " ");
+
+			goto L19e6;
 
 		L196a:
 			// Instruction address 0x0000:0x1972, size: 5
@@ -2311,8 +2311,10 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x19ad, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x19a2)));
 
-			this.oCPU.AX.Word = 0x3a30;
-			goto L191a;
+			// Instruction address 0x0000:0x191f, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, " ");
+
+			goto L19e6;
 
 		L19bb:
 			// Instruction address 0x0000:0x19c3, size: 5
@@ -2323,8 +2325,10 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x19d8, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x19a2)));
 
-			this.oCPU.AX.Word = 0x3a51;
-			goto L191a;
+			// Instruction address 0x0000:0x191f, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, " ");
+
+			goto L19e6;
 
 		L19e6:
 			// Instruction address 0x0000:0x19ee, size: 5

@@ -161,86 +161,85 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.open(filenamePtr, 0x8000);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681e, this.oCPU.AX.Word);
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xffff);
-			if (this.oCPU.Flags.NE) goto L013f;
-			goto L02d1;
+			
+			if (this.oCPU.AX.Word == 0xffff)
+			{
+				// Instruction address 0x0000:0x02d9, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, " (EMPTY)\n");
+			}
+			else
+			{
+				// Instruction address 0x0000:0x014c, size: 5
+				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 2, 0);
 
-		L013f:
-			// Instruction address 0x0000:0x014c, size: 5
-			this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 2, 0);
+				// Instruction address 0x0000:0x0160, size: 5
+				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 0x6822, 2);
 
-			// Instruction address 0x0000:0x0160, size: 5
-			this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 0x6822, 2);
+				// Instruction address 0x0000:0x0175, size: 5
+				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 8, 0);
 
-			// Instruction address 0x0000:0x0175, size: 5
-			this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 8, 0);
+				// Instruction address 0x0000:0x0189, size: 5
+				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 0x6826, 2);
 
-			// Instruction address 0x0000:0x0189, size: 5
-			this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 0x6826, 2);
+				// Instruction address 0x0000:0x0199, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, " ");
 
-			// Instruction address 0x0000:0x0199, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, " ");
+				// Instruction address 0x0000:0x01ae, size: 5
+				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 10, 0);
 
-			// Instruction address 0x0000:0x01ae, size: 5
-			this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 10, 0);
+				// Instruction address 0x0000:0x01c2, size: 5
+				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 0x6824, 2);
 
-			// Instruction address 0x0000:0x01c2, size: 5
-			this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 0x6824, 2);
+				this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6824);
+				this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
+				// Instruction address 0x0000:0x01d8, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x33a2)));
 
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6824);
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
-			// Instruction address 0x0000:0x01d8, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x33a2)));
+				// Instruction address 0x0000:0x01e8, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, " ");
 
-			// Instruction address 0x0000:0x01e8, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, " ");
+				// Instruction address 0x0000:0x0207, size: 5
+				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e),
+					((14 * (int)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6822))) + 16), 0);
 
-			// Instruction address 0x0000:0x0207, size: 5
-			this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e),
-				((14 * (int)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6822))) + 16), 0);
+				// Instruction address 0x0000:0x021b, size: 5
+				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), (ushort)(this.oCPU.BP.Word - 0x10), 14);
 
-			// Instruction address 0x0000:0x021b, size: 5
-			this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), (ushort)(this.oCPU.BP.Word - 0x10), 14);
+				// Instruction address 0x0000:0x022b, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, (ushort)(this.oCPU.BP.Word - 0x10));
 
-			// Instruction address 0x0000:0x022b, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, (ushort)(this.oCPU.BP.Word - 0x10));
+				// Instruction address 0x0000:0x024a, size: 5
+				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e),
+					((12 * (int)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6822))) + 0x80), 0);
 
-			// Instruction address 0x0000:0x024a, size: 5
-			this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e),
-				((12 * (int)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6822))) + 0x80), 0);
+				// Instruction address 0x0000:0x025e, size: 5
+				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), (ushort)(this.oCPU.BP.Word - 0x10), 0xc);
 
-			// Instruction address 0x0000:0x025e, size: 5
-			this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), (ushort)(this.oCPU.BP.Word - 0x10), 0xc);
+				// Instruction address 0x0000:0x026e, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, ", ");
 
-			// Instruction address 0x0000:0x026e, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, ", ");
+				// Instruction address 0x0000:0x027e, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, (ushort)(this.oCPU.BP.Word - 0x10));
 
-			// Instruction address 0x0000:0x027e, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, (ushort)(this.oCPU.BP.Word - 0x10));
+				// Instruction address 0x0000:0x028e, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, "/");
 
-			// Instruction address 0x0000:0x028e, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, "/");
+				// Instruction address 0x0000:0x02b8, size: 5
+				this.oParent.MSCAPI.strcat(0xba06,
+					this.oParent.MSCAPI.itoa(Math.Abs((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6826)), 10));
 
-			// Instruction address 0x0000:0x02b8, size: 5
-			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(Math.Abs((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6826)), 10));
-
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6826), 0x0);
-			if (this.oCPU.Flags.GE) goto L02cc;
-			this.oCPU.AX.Word = 0x41e0;
-			goto L02d4;
-
-		L02cc:
-			this.oCPU.AX.Word = 0x41e5;
-			goto L02d4;
-
-		L02d1:
-			this.oCPU.AX.Word = 0x41ea;
-
-		L02d4:
-			// Instruction address 0x0000:0x02d9, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
-
+				if (this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6826) < 0)
+				{
+					// Instruction address 0x0000:0x02d9, size: 5
+					this.oParent.MSCAPI.strcat(0xba06, " BC\n");
+				}
+				else
+				{
+					// Instruction address 0x0000:0x02d9, size: 5
+					this.oParent.MSCAPI.strcat(0xba06, " AD\n");
+				}
+			}
+		
 			// Instruction address 0x0000:0x02e5, size: 5
 			this.oParent.MSCAPI.close((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e));
 

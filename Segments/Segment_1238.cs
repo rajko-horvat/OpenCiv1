@@ -1130,22 +1130,26 @@ namespace OpenCiv1
 
 			this.oCPU.TESTWord((ushort)this.oParent.GameState.TechnologyFirstDiscoveredBy[35], 0x7);
 			if (this.oCPU.Flags.E) goto L0c74;
-			this.oCPU.AX.Word = 0x1d26;
+
+			// Instruction address 0x1238:0x0c89, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, 0x1d26);
+
 			goto L0c84;
 
 		L0c74:
 			this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.ES.Word, 0x4f4), 0x7);
 			if (this.oCPU.Flags.E) goto L0c81;
-			this.oCPU.AX.Word = 0x1d3f;
+
+			// Instruction address 0x1238:0x0c89, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, 0x1d3f);
+
 			goto L0c84;
 
 		L0c81:
-			this.oCPU.AX.Word = 0x1d53;
+			// Instruction address 0x1238:0x0c89, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, 0x1d53);
 
 		L0c84:
-			// Instruction address 0x1238:0x0c89, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
-
 			// Instruction address 0x1238:0x0c94, size: 5
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)));
 

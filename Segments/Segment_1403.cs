@@ -1241,8 +1241,8 @@ namespace OpenCiv1
 
 		L0c18:
 			this.oParent.Overlay_10.F10_0000_0477(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd7f0),
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)));
+				this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd7f0),
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)));
 
 		L0c27:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)), 0xffff);
@@ -5777,21 +5777,17 @@ namespace OpenCiv1
 			// Instruction address 0x1403:0x385c, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Sounds ");
 
-			this.oCPU.TESTByte((byte)(this.oParent.GameState.GameSettingFlags & 0xff), 0x10);
-			if (this.oCPU.Flags.NE) goto L386e;
-			goto L3874;
-
-		L386e:
-			this.oCPU.AX.Word = 0x2020;
-			goto L3877;
-
-		L3874:
-			this.oCPU.AX.Word = 0x2024;
-
-		L3877:
-			// Instruction address 0x1403:0x387c, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
-
+			if ((this.oParent.GameState.GameSettingFlags & 0x10) != 0)
+			{
+				// Instruction address 0x1403:0x387c, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, 0x2020);
+			}
+			else
+			{
+				// Instruction address 0x1403:0x387c, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, 0x2024);
+			}
+		
 			// Instruction address 0x1403:0x3890, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 

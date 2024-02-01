@@ -28,7 +28,7 @@ If you want to compile the code, it is assumed that:
 <ul>
 <li>You are using Visual Studio 2022.</li>
 <li>You have .NET 8 installed.</li>
-<li>For debugging you have installed DOS CIV I game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Mono on Linux.
+<li>For debugging you have installed DOS CIV I game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Linux.
 It's where it's home directory resides (Images, palettes, text and save games are loaded/saved there, for now).</li>
 <li>For Release mode it is expected that OpenCiv1.exe (for simlicity) is put directly into directory with resource files, 
 for example: 'c:\Dos\Civ1\', '~/Dos/Civ1/' or any other path.</li>
@@ -45,18 +45,31 @@ For this stage of code rewrite, the programmings skills needed are:
 
 ## Project milestones
 <p>The goal is to completely rewrite the code (first stage), fix the bugs and port the code to a modern platform (second stage).</p>
-<b>Milestones for a first stage are:</b>
+
+### Milestones for a first stage
 <ul>
 <li>Reaching the initial playability of the game (passed),</li>
 <li>Rewrite of the game code, functionalities and features (in progress...),</li>
 <li>Archive the game code.</li>
-</ul><br>
-<b>Planned milestones for a second stage are:</b>
+</ul>
+
+### Planned milestones for a second stage
+<b>What will change in the new version:</b>
 <ul>
-<li>Fixing the bugs and introduction of new features 
-(Multiple languages besides basic English, Multiplayer capabilities...),</li>
-<li>Porting to HTML5 platform,</li>
-<li>Redesigning graphics and music.</li>
+<li>Porting to HTML5 platform (Web interface, online gaming),</li>
+<li>Graphics (the new graphics will be as close as possible to the spirit of the original version),</li>
+<li>Music/Sounds (the new music/sounds will be as close as possible to the spirit of the original version),</li>
+<li>Some text where appropriate,</li>
+<li>Design (Map zoom functionality, some small updates, also some dialogs will be slightly different),</li>
+<li>Multilanguage capability,</li>
+<li>Multiplayer capability,</li>
+<li>Cheat capability,</li>
+<li>Plugin capability (can override rules, graphics and music/sounds).</li>
+</ul>
+<b>What will stay the same:</b>
+<ul>
+<li>Original game rules and logic (except for established bugs),</li>
+<li>Overall look and feel of the original game.</li>
 </ul>
 
 ## Screenshots of the OpenCiv1 game

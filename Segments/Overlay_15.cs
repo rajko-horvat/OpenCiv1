@@ -225,7 +225,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)));
 
 			// Instruction address 0x0000:0x0212, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, OpenCiv1.String_4a16);
+			this.oParent.MSCAPI.strcat(0xba06, "s");
 
 		L021a:
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16));

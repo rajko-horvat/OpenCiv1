@@ -195,11 +195,8 @@ namespace OpenCiv1
 			goto L03f5;
 
 		L0391:
-			this.oCPU.AX.Word = 0x4716;
-
-		L0394:
 			// Instruction address 0x0000:0x0399, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcat(0xba06, ": Peace");
 
 		L03a1:
 			this.oCPU.SI.Word = (ushort)playerID;
@@ -269,8 +266,10 @@ namespace OpenCiv1
 			if ((this.oParent.GameState.Players[playerID].Diplomacy[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))] & 4) == 0)
 				goto L0391;
 
-			this.oCPU.AX.Word = 0x470d;
-			goto L0394;
+			// Instruction address 0x0000:0x0399, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, ": Allied");
+
+			goto L03a1;
 
 		L0464:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x38);

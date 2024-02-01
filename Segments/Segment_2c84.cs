@@ -312,17 +312,16 @@ namespace OpenCiv1
 			goto L042d;
 
 		L0267:
-			this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)), 0x1);
-			if (this.oCPU.Flags.E) goto L0272;
-			this.oCPU.AX.Word = 0x2cbc;
-			goto L0275;
-
-		L0272:
-			this.oCPU.AX.Word = 0x2ccd;
-
-		L0275:
-			// Instruction address 0x2c84:0x027a, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			if ((this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)) & 1) != 0)
+			{
+				// Instruction address 0x2c84:0x027a, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, 0x2cbc);
+			}
+			else
+			{
+				// Instruction address 0x2c84:0x027a, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, 0x2ccd);
+			}
 
 			this.oCPU.DI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))));
@@ -422,8 +421,11 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x44e)), 0xfffe);
 			if (this.oCPU.Flags.G) goto L03a8;
-			this.oCPU.AX.Word = 0x2d28;
-			goto L03d7;
+			
+			// Instruction address 0x2c84:0x03dc, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, 0x2d28);
+
+			goto L03e4;
 
 		L03a8:
 			this.oCPU.AX.Word = 0xc;
@@ -441,8 +443,6 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x2ba6)));
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x282);
-
-		L03d7:
 			// Instruction address 0x2c84:0x03dc, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
 

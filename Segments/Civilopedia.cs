@@ -1011,11 +1011,12 @@ namespace OpenCiv1
 
 		L0b68:
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0);
+
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, technologyID);
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x282);
 			// Instruction address 0x0000:0x0b76, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word); // !!! was strcat
+			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x07da, size: 5
 			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0x3d7f, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 36, 7);
@@ -1204,12 +1205,10 @@ namespace OpenCiv1
 			goto L0e26;
 
 		L0df8:
-			this.oCPU.AX.Word = 0x3ddd;
+			// Instruction address 0x0000:0x0e00, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, " Wonder");
 
 		L0dfb:
-			// Instruction address 0x0000:0x0e00, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
-
 			// Instruction address 0x0000:0x0e17, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 60, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 2);
 
@@ -1241,7 +1240,10 @@ namespace OpenCiv1
 
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e)), 0x18);
 			if (this.oCPU.Flags.G) goto L0df8;
-			this.oCPU.AX.Word = 0x3dd0;
+
+			// Instruction address 0x0000:0x0e00, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, " improvement");
+
 			goto L0dfb;
 
 		L0e6f:

@@ -411,17 +411,16 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			this.oCPU.CMPByte((byte)this.oParent.GameState.Cities[cityID].ActualSize, 0x0);
-			if (this.oCPU.Flags.E) goto L0459;
-			this.oCPU.AX.Word = 0x2893;
-			goto L045c;
-
-		L0459:
-			this.oCPU.AX.Word = 0x28a1;
-
-		L045c:
-			// Instruction address 0x2459:0x0461, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			if (this.oParent.GameState.Cities[cityID].ActualSize != 0)
+			{
+				// Instruction address 0x2459:0x0461, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, 0x2893);
+			}
+			else
+			{
+				// Instruction address 0x2459:0x0461, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, 0x28a1);
+			}
 
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12));
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
@@ -596,17 +595,17 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = (byte)playerID;
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.TESTWord(this.oCPU.AX.Word, (ushort)this.oParent.GameState.SpaceshipFlags);
-			if (this.oCPU.Flags.E) goto L063a;
-			this.oCPU.AX.Word = 0x28ca;
-			goto L063d;
 
-		L063a:
-			this.oCPU.AX.Word = 0x28dd;
-
-		L063d:
-			// Instruction address 0x2459:0x0642, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			if ((this.oParent.GameState.SpaceshipFlags & this.oCPU.AX.Word) != 0)
+			{
+				// Instruction address 0x2459:0x0642, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, 0x28ca);
+			}
+			else
+			{
+				// Instruction address 0x2459:0x0642, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, 0x28dd);
+			}
 
 			// Instruction address 0x2459:0x0656, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);

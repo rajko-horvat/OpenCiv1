@@ -1632,11 +1632,8 @@ namespace OpenCiv1
 			goto L11ea;
 
 		L11da:
-			this.oCPU.AX.Word = 0x3695;
-
-		L11dd:
 			// Instruction address 0x0000:0x11e2, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcat(0xba06, 0x3695);
 
 		L11ea:
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24));
@@ -1751,21 +1748,24 @@ namespace OpenCiv1
 			goto L10b5;
 
 		L1317:
-			this.oCPU.AX.Word = 0x36a3;
-			goto L11dd;
+			// Instruction address 0x0000:0x11e2, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, 0x36a3);
+
+			goto L11ea;
 
 		L131d:
-			this.oCPU.AX.Word = 0x36b1;
+			// Instruction address 0x0000:0x1325, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, 0x36b1);
 
 		L1320:
-			// Instruction address 0x0000:0x1325, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
+			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 
+				this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
 			goto L11ea;
 
 		L1333:
-			this.oCPU.AX.Word = 0x36c2;
+			// Instruction address 0x0000:0x1325, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, 0x36c2);
+
 			goto L1320;
 
 		L1338:

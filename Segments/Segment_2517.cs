@@ -990,15 +990,14 @@ namespace OpenCiv1
 
 			if ((this.oParent.GameState.Players[playerID1].Diplomacy[playerID2] & 2) != 0)
 			{
-				this.oCPU.AX.Word = 0x2a36;
+				// Instruction address 0x2517:0x09f7, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, 0x2a36);
 			}
 			else
 			{
-				this.oCPU.AX.Word = 0x2a4d;
+				// Instruction address 0x2517:0x09f7, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, 0x2a4d);
 			}
-		
-			// Instruction address 0x2517:0x09f7, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x1);
 
