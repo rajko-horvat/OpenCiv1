@@ -617,7 +617,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x068d, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x4f8c);
+			this.oParent.MSCAPI.strcat(0xba06, " destroyed.\n");
 
 			goto L0bc6;
 
@@ -768,7 +768,7 @@ namespace OpenCiv1
 			this.oParent.GameState.Cities[cityID].ActualSize -= (sbyte)this.oCPU.AX.Low;
 
 			// Instruction address 0x0000:0x068d, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x4fa9);
+			this.oParent.MSCAPI.strcat(0xba06, "Citizens demand GRANARY.\n");
 
 			goto L0bc6;
 
@@ -904,7 +904,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L096d;
 			
 			// Instruction address 0x0000:0x09c8, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x5005);
+			this.oParent.MSCAPI.strcat(0xba06, "TEMPLE\n");
 
 			goto L09c3;
 

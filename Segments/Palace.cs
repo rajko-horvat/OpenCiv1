@@ -1112,7 +1112,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
 				184,
-				((this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd934) <= 1) ? 105 : 94),
+				((this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd934) <= 1) ? 105 : 94),
 				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)));
 
 		L0c77:

@@ -237,7 +237,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0270, size: 5
 			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-				(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)) >> 3) +
+				(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)) / 8) +
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
 				33,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((0xc << 1) + 0xd4ce)));
@@ -1133,7 +1133,7 @@ namespace OpenCiv1
 
 		L0eb0:
 			// Instruction address 0x0000:0x0eb8, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x4890);
+			this.oParent.MSCAPI.strcat(0xba06, ":\x008f PEACE");
 
 		L0eb3:
 			// Instruction address 0x0000:0x0ece, size: 5
@@ -1201,7 +1201,7 @@ namespace OpenCiv1
 				goto L0eb0;
 
 			// Instruction address 0x0000:0x0eb8, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x4886);
+			this.oParent.MSCAPI.strcat(0xba06, ":\x008f ALLIED");
 
 			goto L0eb3;
 
@@ -2003,7 +2003,7 @@ namespace OpenCiv1
 						10));
 
 			// Instruction address 0x0000:0x1942, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x4a14);
+			this.oParent.MSCAPI.strcat(0xba06, ")");
 
 		L194a:
 			// Instruction address 0x0000:0x1959, size: 5
@@ -2121,7 +2121,7 @@ namespace OpenCiv1
 					(ushort)(0x22 * this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].CurrentProductionID + 0x1142))), 10));
 
 			// Instruction address 0x0000:0x1942, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x4a0c);
+			this.oParent.MSCAPI.strcat(0xba06, ")");
 
 			goto L194a;
 
