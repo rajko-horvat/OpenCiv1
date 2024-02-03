@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCiv1", "OpenCiv1\OpenCiv1.csproj", "{55F5F1A4-2E16-46FC-90E1-8E8E52869226}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCiv1", "OpenCiv1\OpenCiv1.csproj", "{55F5F1A4-2E16-46FC-90E1-8E8E52869226}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{A7B335C6-7B2B-4822-BC76-540B2AAB241E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCiv1UI", "OpenCiv1UI\OpenCiv1UI.Core\OpenCiv1UI.Core.csproj", "{22BEE957-D7F3-458E-937B-32498FDAAE05}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCiv1UI.Desktop", "OpenCiv1UI\OpenCiv1UI.Desktop\OpenCiv1UI.Desktop.csproj", "{0C0CD04F-701A-4AA7-8D28-08F346D46D07}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,11 +21,23 @@ Global
 		{55F5F1A4-2E16-46FC-90E1-8E8E52869226}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55F5F1A4-2E16-46FC-90E1-8E8E52869226}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55F5F1A4-2E16-46FC-90E1-8E8E52869226}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22BEE957-D7F3-458E-937B-32498FDAAE05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22BEE957-D7F3-458E-937B-32498FDAAE05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22BEE957-D7F3-458E-937B-32498FDAAE05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22BEE957-D7F3-458E-937B-32498FDAAE05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C0CD04F-701A-4AA7-8D28-08F346D46D07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C0CD04F-701A-4AA7-8D28-08F346D46D07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C0CD04F-701A-4AA7-8D28-08F346D46D07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C0CD04F-701A-4AA7-8D28-08F346D46D07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-		GlobalSection(ExtensibilityGlobals) = postSolution
+	GlobalSection(NestedProjects) = preSolution
+		{22BEE957-D7F3-458E-937B-32498FDAAE05} = {A7B335C6-7B2B-4822-BC76-540B2AAB241E}
+		{0C0CD04F-701A-4AA7-8D28-08F346D46D07} = {A7B335C6-7B2B-4822-BC76-540B2AAB241E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0341100A-257F-42BD-BB34-625C806DEF6F}
 	EndGlobalSection
 EndGlobal

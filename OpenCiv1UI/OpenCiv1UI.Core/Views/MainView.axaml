@@ -1,0 +1,31 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:OpenCiv1UI.Core.ViewModels"
+             xmlns:views="clr-namespace:OpenCiv1UI.Core.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="OpenCiv1UI.Core.Views.MainView"
+             x:DataType="vm:MainViewModel">
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainViewModel />
+    </Design.DataContext>
+    <Grid>
+        <Grid RowDefinitions="Auto,*" IsVisible="{Binding !DialogService.IsDialogOpen}">
+            <WrapPanel Orientation="Horizontal" Grid.Row="0">
+                <Button Content="Pause" Command="{Binding PauseCommand}" IsVisible="{Binding CanPause}" IsEnabled="{Binding CanPause}"></Button>
+                <Button Content="Run" Command="{Binding RunCommand}" IsVisible="{Binding CanRun}" IsEnabled="{Binding CanRun}"></Button>
+                <ComboBox ItemsSource="{Binding Screens}" DisplayMemberBinding="{Binding Key}" IsEnabled="{Binding AreScreensEnabled}"></ComboBox>
+            </WrapPanel>
+            <Viewbox Grid.Row="1">
+                <Image x:Name="Image"
+                       RenderOptions.BitmapInterpolationMode="None"
+                       Source="{Binding Bitmap}" />
+            </Viewbox>
+            <TextBlock Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.RowSpan="2" Text="{Binding LabelScreens}" />
+        </Grid>
+        <views:MessageBoxView IsVisible="{Binding IsDialogOpen}" DataContext="{Binding DialogService}" />
+    </Grid>
+</UserControl>

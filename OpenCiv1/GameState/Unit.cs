@@ -5,81 +5,81 @@ using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {
-	[Flags]
-	public enum UnitStatusEnum
-	{
-		None = 0,
-		Sentry = 1,
-		Fortifying = 4,
-		Fortified = 8,
-		Unknown1 = 0x10,
-		Veteran = 0x20,
-		SettlerBuildRoadOrRail = 2,
-		SettlerBuildIrrigation = 0x40,
-		SettlerBuildMineOrForest = 0x80,
-		SettlerBuildFortress = 0xc0,
-		SettlerCleanPollution = 0x82,
-		SettlerBuildMask = 0xc2
-	}
+    [Flags]
+    public enum UnitStatusEnum
+    {
+        None = 0,
+        Sentry = 1,
+        Fortifying = 4,
+        Fortified = 8,
+        Unknown1 = 0x10,
+        Veteran = 0x20,
+        SettlerBuildRoadOrRail = 2,
+        SettlerBuildIrrigation = 0x40,
+        SettlerBuildMineOrForest = 0x80,
+        SettlerBuildFortress = 0xc0,
+        SettlerCleanPollution = 0x82,
+        SettlerBuildMask = 0xc2
+    }
 
-	public class Unit
-	{
-		public short Status = 0;
-		public Point Position = new Point(-1, -1);
-		public short TypeID = 0;
-		public short RemainingMoves = 0;
-		public short SpecialMoves = 0;
-		public Point GoToPosition = new Point(-1, -1);
-		public short GoToNextDirection = 0;
-		public ushort VisibleByPlayer = 0;
-		public short NextUnitID = 0;
-		public short HomeCityID = 0;
+    public class Unit
+    {
+        public short Status = 0;
+        public Point Position = new Point(-1, -1);
+        public short TypeID = 0;
+        public short RemainingMoves = 0;
+        public short SpecialMoves = 0;
+        public Point GoToPosition = new Point(-1, -1);
+        public short GoToNextDirection = 0;
+        public ushort VisibleByPlayer = 0;
+        public short NextUnitID = 0;
+        public short HomeCityID = 0;
 
 
-		public void ClearStatus(short status)
-		{
-			this.Status &= status;
-		}
+        public void ClearStatus(short status)
+        {
+            this.Status &= status;
+        }
 
-		public bool TestStatus(short status)
-		{
-			return (this.Status & status) != 0;
-		}
+        public bool TestStatus(short status)
+        {
+            return (this.Status & status) != 0;
+        }
 
-		public static Unit FromStream(Stream stream)
-		{
-			Unit unit = new Unit();
+        public static Unit FromStream(Stream stream)
+        {
+            Unit unit = new Unit();
 
-			unit.Status = GameLoadAndSave.ReadUInt8(stream);
-			unit.Position.X = (sbyte)GameLoadAndSave.ReadUInt8(stream);
-			unit.Position.Y = (sbyte)GameLoadAndSave.ReadUInt8(stream);
-			unit.TypeID = (sbyte)GameLoadAndSave.ReadUInt8(stream);
-			unit.RemainingMoves = (sbyte)GameLoadAndSave.ReadUInt8(stream);
-			unit.SpecialMoves = (sbyte)GameLoadAndSave.ReadUInt8(stream);
-			unit.GoToPosition.X = (sbyte)GameLoadAndSave.ReadUInt8(stream);
-			unit.GoToPosition.Y = (sbyte)GameLoadAndSave.ReadUInt8(stream);
-			unit.GoToNextDirection = (sbyte)GameLoadAndSave.ReadUInt8(stream);
-			unit.VisibleByPlayer = GameLoadAndSave.ReadUInt8(stream);
-			unit.NextUnitID = (sbyte)GameLoadAndSave.ReadUInt8(stream);
-			unit.HomeCityID = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+            unit.Status = GameLoadAndSave.ReadUInt8(stream);
+            unit.Position.X = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+            unit.Position.Y = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+            unit.TypeID = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+            unit.RemainingMoves = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+            unit.SpecialMoves = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+            unit.GoToPosition.X = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+            unit.GoToPosition.Y = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+            unit.GoToNextDirection = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+            unit.VisibleByPlayer = GameLoadAndSave.ReadUInt8(stream);
+            unit.NextUnitID = (sbyte)GameLoadAndSave.ReadUInt8(stream);
+            unit.HomeCityID = (sbyte)GameLoadAndSave.ReadUInt8(stream);
 
-			return unit;
-		}
+            return unit;
+        }
 
-		public void ToStream(Stream stream)
-		{
-			stream.WriteByte((byte)((sbyte)this.Status));
-			stream.WriteByte((byte)((sbyte)this.Position.X));
-			stream.WriteByte((byte)((sbyte)this.Position.Y));
-			stream.WriteByte((byte)((sbyte)this.TypeID));
-			stream.WriteByte((byte)((sbyte)this.RemainingMoves));
-			stream.WriteByte((byte)((sbyte)this.SpecialMoves));
-			stream.WriteByte((byte)((sbyte)this.GoToPosition.X));
-			stream.WriteByte((byte)((sbyte)this.GoToPosition.Y));
-			stream.WriteByte((byte)((sbyte)this.GoToNextDirection));
-			stream.WriteByte((byte)((sbyte)this.VisibleByPlayer));
-			stream.WriteByte((byte)((sbyte)this.NextUnitID));
-			stream.WriteByte((byte)((sbyte)this.HomeCityID));
-		}
-	}
+        public void ToStream(Stream stream)
+        {
+            stream.WriteByte((byte)((sbyte)this.Status));
+            stream.WriteByte((byte)((sbyte)this.Position.X));
+            stream.WriteByte((byte)((sbyte)this.Position.Y));
+            stream.WriteByte((byte)((sbyte)this.TypeID));
+            stream.WriteByte((byte)((sbyte)this.RemainingMoves));
+            stream.WriteByte((byte)((sbyte)this.SpecialMoves));
+            stream.WriteByte((byte)((sbyte)this.GoToPosition.X));
+            stream.WriteByte((byte)((sbyte)this.GoToPosition.Y));
+            stream.WriteByte((byte)((sbyte)this.GoToNextDirection));
+            stream.WriteByte((byte)((sbyte)this.VisibleByPlayer));
+            stream.WriteByte((byte)((sbyte)this.NextUnitID));
+            stream.WriteByte((byte)((sbyte)this.HomeCityID));
+        }
+    }
 }

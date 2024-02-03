@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="clr-namespace:OpenCiv1UI.Core.ViewModels"
+             x:Class="OpenCiv1UI.Core.Views.MessageBoxView"
+             x:DataType="vm:MessageBoxViewModel">
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MessageBoxViewModel />
+    </Design.DataContext>
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Label FontWeight="Bold" Grid.Row="0" Content="{Binding Title}" HorizontalAlignment="Center" />
+        <TextBlock TextWrapping="Wrap" Grid.Row="1" Text="{Binding Message}" HorizontalAlignment="Stretch" />
+        <Button MinHeight="40" MinWidth="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Right" Grid.Row="2" Margin="10" Content="OK" IsDefault="True" Command="{Binding CloseCommand}" />
+    </Grid>
+</UserControl>
