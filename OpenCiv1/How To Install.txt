@@ -1,4 +1,4 @@
-The file OpenCiv1.exe should be copied directly into installed and working DOS Civilization 1 directory.
+The file OpenCiv1.exe should be copied directly into installed and working DOS Civilization game directory.
 The Debug mode can be toggled by pressing Alt + D Key.
 
 The only dependency is .NET 8

@@ -1,25 +1,21 @@
 ## About
-<p>OpenCiv1 project is an open source rewrite of <a href="https://en.wikipedia.org/wiki/Civilization_(video_game)">Civilization Game</a> designed by Sid Meier and Bruce Shelley in year 1991.</p>
+<p>OpenCiv1 project is an open source rewrite of <a href="https://en.wikipedia.org/wiki/Civilization_(video_game)">Civilization game</a> designed by Sid Meier and Bruce Shelley in year 1991.</p>
 <p>The game logic is <b>Based on original DOS Civilization game version 475.05</b> disassembly.</p>
-<p>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform 
-and the bugs that have never been fixed are hindering the popularity of the game.<p>
+<p>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform and the bugs that have never been fixed are hindering the popularity of the game.<p>
 <p>The news, discussions about this project and releases are published regularly on <a href="https://forums.civfanatics.com/threads/rewrite-of-civilization-1-source-code-openciv1-project.682623/" target="_blank">Civilization Fanatics Forum page</a></p>
 
 ## Copyright considerations
 <p><b>The available code is not a full working copy of the game.</b> <b>To run OpenCiv1 you are legally required to own your own copy of the DOS Civilization game.</b> 
 <b>This is the reason that not a single file from the original game is included in this GitHub repository as they are copyrighted.</b></p>
 
-<p>The part of the game assembly code is emulated with Virtual CPU, and the rest of the code has been rewritten from scratch 
-until all of the code is replaced with new copyright free code. The other resources (like graphics, music and text) 
-will also be completely replaced with copyright free resources before publishing the complete game.</p>
+<p>The part of the game assembly code is emulated with Virtual CPU, and the rest of the code has been rewritten from scratch until all of the code is replaced with new copyright free code. The other resources (like graphics, music and text) will also be completely replaced with copyright free resources before publishing the complete game.</p>
 
 ## Current status
 <p><b>The game is in working state</b>, but you have to legally own the Original game (the .txt, .pic and .pal files have to be present).
-The <b>Debug mode</b> can be toggled by pressing Alt + D Key.</p>
+The <b>Debug mode (Shift-56)</b> can be toggled by pressing Alt + D Key.</p>
 
 ## How to install release version of OpenCiv1
-<p>The file OpenCiv1.exe should be copied directly into installed and working DOS Civilization directory.
-The Debug mode can be toggled by pressing Alt + D Key.</p>
+<p>The file OpenCiv1.exe should be copied directly into installed and working DOS Civilization game directory.</p>
 
 <p>The only dependency is .NET 8</p>
 
