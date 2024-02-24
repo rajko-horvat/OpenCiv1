@@ -924,7 +924,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0981;
 			
 			// Instruction address 0x0000:0x09c8, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x500d);
+			this.oParent.MSCAPI.strcat(0xba06, "COURTHOUSE\n");
 
 			goto L09c3;
 
@@ -932,11 +932,12 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
+
 			this.oCPU.TESTWord(this.oParent.GameState.Cities[cityID].BuildingFlags0, 0x10);
 			if (this.oCPU.Flags.NE) goto L0995;
 			
 			// Instruction address 0x0000:0x09c8, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x5019);
+			this.oParent.MSCAPI.strcat(0xba06, "MARKETPLACE\n");
 
 			goto L09c3;
 
@@ -949,18 +950,19 @@ namespace OpenCiv1
 				(this.oParent.GameState.Cities[cityID].BuildingFlags0 & 0x400) == 0)
 			{
 				// Instruction address 0x0000:0x09c8, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, 0x5026);
+				this.oParent.MSCAPI.strcat(0xba06, "CATHEDRAL\n");
 			}
 			else
 			{
 				// Instruction address 0x0000:0x09c8, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, 0x5031);
+				this.oParent.MSCAPI.strcat(0xba06, "lower taxes.\n");
 			}
 
 		L09c3:
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
+
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = (byte)this.oParent.GameState.Cities[cityID].PlayerID;
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);

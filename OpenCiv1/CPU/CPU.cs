@@ -76,7 +76,7 @@ namespace IRB.VirtualCPU
 			}
 
 			// We need this because of different paths between Debug and Release versions
-			// The Release executable is intended to be put directly into CIV 1 directory
+			// The Release executable is intended to be put directly into DOS Cilization game directory
 			// Also, for Debug there are different platforms and paths
 #if DEBUG
 			if (Environment.OSVersion.Platform != PlatformID.Unix)

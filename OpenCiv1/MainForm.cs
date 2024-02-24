@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
 using IRB.Collections.Generic;
+using OpenCiv1.GPU;
 
 namespace OpenCiv1
 {
@@ -602,6 +603,10 @@ namespace OpenCiv1
 			}
 			catch (ApplicationExitException)
 			{
+			}
+			catch (ResourceMissingExitException ex)
+			{
+				MessageBox.Show(ex.Message, "OpenCiv1 resource error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 #if !DEBUG
 			catch (Exception e)

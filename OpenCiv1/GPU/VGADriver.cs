@@ -1,17 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Threading;
-using System.Windows.Forms;
 using System.IO.Compression;
 using IRB.VirtualCPU;
-using OpenCiv1.GPU;
 using IRB.Collections.Generic;
-using System.Runtime.InteropServices;
 using OpenCiv1.Properties;
 
-namespace OpenCiv1
+namespace OpenCiv1.GPU
 {
 	public class VGADriver
 	{

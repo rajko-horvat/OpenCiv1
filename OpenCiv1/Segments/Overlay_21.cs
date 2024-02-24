@@ -148,7 +148,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 
 			// Instruction address 0x0000:0x01e1, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x5118);
+			this.oParent.MSCAPI.strcat(0xba06, " Weekly");
 
 		L01e9:
 			// Instruction address 0x0000:0x01ed, size: 5
@@ -197,7 +197,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 			
 			// Instruction address 0x0000:0x01e1, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x5120);
+			this.oParent.MSCAPI.strcat(0xba06, " Today");
 
 			goto L01e9;
 
@@ -209,7 +209,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 			
 			// Instruction address 0x0000:0x01e1, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x512c);
+			this.oParent.MSCAPI.strcat(0xba06, " Times");
 
 			goto L01e9;
 
@@ -221,7 +221,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 			
 			// Instruction address 0x0000:0x01e1, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x5138);
+			this.oParent.MSCAPI.strcat(0xba06, " Tribune");
 
 			goto L01e9;
 

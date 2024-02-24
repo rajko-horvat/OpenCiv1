@@ -8,7 +8,7 @@ using IRB.Collections.Generic;
 using OpenCiv1.Compression;
 using OpenCiv1.GPU;
 
-namespace OpenCiv1
+namespace OpenCiv1.GPU
 {
 	public enum PixelWriteModeEnum
 	{

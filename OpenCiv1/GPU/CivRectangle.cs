@@ -1,6 +1,6 @@
 ﻿using IRB.VirtualCPU;
 
-namespace OpenCiv1
+namespace OpenCiv1.GPU
 {
 	public class CivRectangle
 	{

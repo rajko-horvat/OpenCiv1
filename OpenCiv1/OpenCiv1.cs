@@ -3,18 +3,10 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
 using IRB.VirtualCPU;
+using OpenCiv1.GPU;
 
 namespace OpenCiv1
 {
-	public class ApplicationExitException : Exception
-	{
-		public ApplicationExitException() : base() { }
-
-		public ApplicationExitException(string message) : base(message) { }
-
-		public ApplicationExitException(string message, Exception innerException) : base(message, innerException) { }
-	}
-
 	public partial class OpenCiv1
 	{
 		private CPU oCPU;
@@ -167,11 +159,7 @@ namespace OpenCiv1
 
 			if (resources == null)
 			{
-				MessageBox.Show($"OpenCiv1 resource BinaryResources is missing.",
-					"Resource missing", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-				this.oCPU.Exit(-1);
-
-				throw new Exception("Embedded resource missing"); // Fool compiler as Exit already throws an exception
+				throw new Exception("Embedded BinaryResources are missing");
 			}
 
 			this.oCPU.Memory.AllocateMemoryBlock(uiEXEStart, uiEXELength, CPUMemoryFlagsEnum.ReadWrite);
@@ -207,10 +195,7 @@ namespace OpenCiv1
 			// Check for Default directory and individual Resource files
 			if (!string.IsNullOrEmpty(this.oCPU.DefaultDirectory) && !Directory.Exists(this.oCPU.DefaultDirectory))
 			{
-				MessageBox.Show($"OpenCiv1 resource files not found at '{this.oCPU.DefaultDirectory}'.\n" +
-					"The OpenCiv1 depends on Civilization resource files (*.pic, *.pal and *.txt).\nPlease adjust path to these resources.",
-					"Resource path error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-				this.oCPU.Exit(-1);
+				throw new ResourceMissingExitException($"Resource path not found at '{this.oCPU.DefaultDirectory}'.");
 			}
 
 			string[] aResourceFiles = new string[] {
@@ -242,20 +227,12 @@ namespace OpenCiv1
 
 				while (!File.Exists(sFilePath))
 				{
-					DialogResult result = MessageBox.Show($"Missing resource file {sFilePath}. Plsease ensure that the file exists at specified path.\n" +
-					   "Some File systems are case sensitive, ensure that the file name is in uppercase.",
-					   "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-
-					if (result == DialogResult.Cancel)
-					{
-						this.oCPU.Exit(-1);
-						break;
-					}
+					throw new ResourceMissingExitException($"Missing resource file {sFilePath}. Plsease ensure that the file exists at specified path.");
 				}
 			}
 
 			// Not important, but just for case it's still needed, to be removed later
-			string sPath = Path.Combine(this.oCPU.DefaultDirectory, "CIV.EXE");
+			string sPath = $"{this.oCPU.DefaultDirectory}{Path.DirectorySeparatorChar}CIV.EXE";
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x61ee, (byte)'C');
 			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, 0x6156), sPath, sPath.Length);
@@ -314,7 +291,7 @@ namespace OpenCiv1
 			#region Protect already mapped data objects
 
 			#region Strings
-			// Skip checking of string as it slows down VCPU too much
+			// Skip checking of strings as it slows down VCPU too much
 
 			/*this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x0267, 9, CPUMemoryFlagsEnum.AccessNotAllowed));
 			//this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x1a22, 14, CPUMemoryFlagsEnum.AccessNotAllowed));

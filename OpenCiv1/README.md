@@ -1,13 +1,13 @@
 ## About
-<p>OpenCiv1 project is an open source rewrite of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991.</p>
-<p>The game logic is <b>Based on original DOS CIV I version 475.05</b> disassembly.</p>
+<p>OpenCiv1 project is an open source rewrite of <a href="https://en.wikipedia.org/wiki/Civilization_(video_game)">Civilization Game</a> designed by Sid Meier and Bruce Shelley in year 1991.</p>
+<p>The game logic is <b>Based on original DOS Civilization game version 475.05</b> disassembly.</p>
 <p>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform 
 and the bugs that have never been fixed are hindering the popularity of the game.<p>
 <p>The news, discussions about this project and releases are published regularly on <a href="https://forums.civfanatics.com/threads/rewrite-of-civilization-1-source-code-openciv1-project.682623/" target="_blank">Civilization Fanatics Forum page</a></p>
 
 ## Copyright considerations
-<p><b>The available code is not a full working copy of the game.</b> <b>To run OpenCiv1 you are legally required to own your own copy of the Civilization game.</b> 
-<b>This is the reason that not a single file from original game is included in this GitHub repository as they are copyrighted.</b></p>
+<p><b>The available code is not a full working copy of the game.</b> <b>To run OpenCiv1 you are legally required to own your own copy of the DOS Civilization game.</b> 
+<b>This is the reason that not a single file from the original game is included in this GitHub repository as they are copyrighted.</b></p>
 
 <p>The part of the game assembly code is emulated with Virtual CPU, and the rest of the code has been rewritten from scratch 
 until all of the code is replaced with new copyright free code. The other resources (like graphics, music and text) 
@@ -18,7 +18,7 @@ will also be completely replaced with copyright free resources before publishing
 The <b>Debug mode</b> can be toggled by pressing Alt + D Key.</p>
 
 ## How to install release version of OpenCiv1
-<p>The file OpenCiv1.exe should be copied directly into installed and working DOS Civilization 1 directory.
+<p>The file OpenCiv1.exe should be copied directly into installed and working DOS Civilization directory.
 The Debug mode can be toggled by pressing Alt + D Key.</p>
 
 <p>The only dependency is .NET 8</p>
@@ -28,7 +28,7 @@ If you want to compile the code, it is assumed that:
 <ul>
 <li>You are using Visual Studio 2022.</li>
 <li>You have .NET 8 installed.</li>
-<li>For debugging you have installed DOS CIV I game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Linux.
+<li>For debugging you have installed DOS Civilization game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Linux.
 It's where it's home directory resides (Images, palettes, text and save games are loaded/saved there, for now).</li>
 <li>For Release mode it is expected that OpenCiv1.exe (for simlicity) is put directly into directory with resource files, 
 for example: 'c:\Dos\Civ1\', '~/Dos/Civ1/' or any other path.</li>

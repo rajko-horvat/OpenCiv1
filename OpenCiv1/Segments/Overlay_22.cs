@@ -1146,12 +1146,12 @@ namespace OpenCiv1
 			if (playerID == 0)
 			{
 				// Instruction address 0x0000:0x0ce6, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, 0x5322);
+				this.oParent.MSCAPI.strcat(0xba06, " declare\nindependence in\n");
 			}
 			else
 			{
 				// Instruction address 0x0000:0x0ce6, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, 0x533c);
+				this.oParent.MSCAPI.strcat(0xba06, " rebel!\nCivil War in\n");
 			}
 
 			// Instruction address 0x0000:0x0cf1, size: 5

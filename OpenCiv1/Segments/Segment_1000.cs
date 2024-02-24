@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using IRB.VirtualCPU;
+using OpenCiv1.GPU;
 
 namespace OpenCiv1
 {
