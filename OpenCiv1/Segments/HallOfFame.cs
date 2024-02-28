@@ -141,10 +141,10 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 0, 0, 320, 200, 15);
 
 			// Instruction address 0x0000:0x010a, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0x33be, 160, 16, 0);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("CIVILIZATION", 160, 16, 0);
 
 			// Instruction address 0x0000:0x0121, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0x33cb, 160, 24, 0);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("HALL OF FAME", 160, 24, 0);
 
 			// Instruction address 0x0000:0x013d, size: 5
 			this.oParent.VGADriver.F0_VGA_0599_DrawLine(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 80, 32, 240, 32, 14);
@@ -176,7 +176,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L01ad;
 
 			// Instruction address 0x0000:0x0189, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x346a, 252, 189, 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("'C\x0083lear'", 252, 189, 0);
 
 			// Instruction address 0x0000:0x01a5, size: 5
 			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(236, 187, 60, 10, 11);
@@ -281,16 +281,17 @@ namespace OpenCiv1
 			this.oCPU.ES.Word = 0x3772; // segment
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.ES.Word, (ushort)(this.oCPU.SI.Word + 0x37d8)), 0x0);
 			if (this.oCPU.Flags.GE) goto L0343;
-			this.oCPU.AX.Word = 0x33f1;
+			
+			// Instruction address 0x0000:0x034b, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, " BC.");
+
 			goto L0346;
 
 		L0343:
-			this.oCPU.AX.Word = 0x33f6;
+			// Instruction address 0x0000:0x034b, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, " AD.");
 
 		L0346:
-			// Instruction address 0x0000:0x034b, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
-
 			// Instruction address 0x0000:0x0357, size: 5
 			this.oParent.Segment_1182.F0_1182_00ef_GetStringWidth(0xba06);
 
@@ -357,11 +358,8 @@ namespace OpenCiv1
 			goto L0426;
 
 		L0416:
-			this.oCPU.AX.Word = 0x3412;
-
-		L0419:
 			// Instruction address 0x0000:0x041e, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcat(0xba06, " (Chieftan)");
 
 		L0426:
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
@@ -415,20 +413,28 @@ namespace OpenCiv1
 			goto L015d;
 
 		L04f3:
-			this.oCPU.AX.Word = 0x341e;
-			goto L0419;
+			// Instruction address 0x0000:0x041e, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, " (Warlord)");
+
+			goto L0426;
 
 		L04f9:
-			this.oCPU.AX.Word = 0x3429;
-			goto L0419;
+			// Instruction address 0x0000:0x041e, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, " (Prince)");
+
+			goto L0426;
 
 		L04ff:
-			this.oCPU.AX.Word = 0x3433;
-			goto L0419;
+			// Instruction address 0x0000:0x041e, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, " (King)");
+
+			goto L0426;
 
 		L0505:
-			this.oCPU.AX.Word = 0x343b;
-			goto L0419;
+			// Instruction address 0x0000:0x041e, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, " (Emperor)");
+
+			goto L0426;
 
 		L050b:
 			this.oCPU.AX.Word = 0;
@@ -712,7 +718,9 @@ namespace OpenCiv1
 				0xba06,
 				0x20);
 
-			this.oCPU.AX.Word = 0x3471;
+			// Instruction address 0x0000:0x08d2, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, "!");
+
 			goto L08cd;
 
 		L0814:
@@ -750,12 +758,10 @@ namespace OpenCiv1
 				0xba06,
 				0x20);
 
-			this.oCPU.AX.Word = 0x3482;
+			// Instruction address 0x0000:0x08d2, size: 5
+			this.oParent.MSCAPI.strcat(0xba06, "!");
 
 		L08cd:
-			// Instruction address 0x0000:0x08d2, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
-
 			// Instruction address 0x0000:0x08ea, size: 5
 			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 22, 15);
 
@@ -940,7 +946,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 0, 0, 320, 200, 3);
 
 			// Instruction address 0x0000:0x0ac4, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0x3486, 80, 12, 15);
+			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("The Top Five Cities in the World", 80, 12, 15);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0x20);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14), 0x0);

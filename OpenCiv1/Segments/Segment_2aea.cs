@@ -144,8 +144,7 @@ namespace OpenCiv1
 				(ushort)(327 - this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x6dac))));
 
 			// Instruction address 0x2aea:0x018d, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(
-				0xba06,
+			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0xba06,
 				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x6dac)) - 8, 80, 999),
 				this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x6e3e)) + 16,
 				11);
@@ -1529,7 +1528,7 @@ namespace OpenCiv1
 
 		L102a:
 			// Instruction address 0x2aea:0x103d, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0x2ba0,	xPos + 4, yPos + 7, this.oCPU.AX.Word);
+			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("F", xPos + 4, yPos + 7, this.oCPU.AX.Word);
 
 		L1045:
 			this.oCPU.AX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
@@ -1553,7 +1552,7 @@ namespace OpenCiv1
 
 		L1072:
 			// Instruction address 0x2aea:0x1085, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0x2ba2, xPos + 4, yPos + 7, this.oCPU.AX.Word);
+			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("G", xPos + 4, yPos + 7, this.oCPU.AX.Word);
 
 		L108d:
 			this.oCPU.AX.Word = 0x600;

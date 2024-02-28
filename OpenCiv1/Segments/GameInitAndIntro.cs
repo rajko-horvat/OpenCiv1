@@ -2742,7 +2742,7 @@ namespace OpenCiv1
 
 		L183d:
 			// Instruction address 0x0000:0x1847, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0x3b28, 160, 160, this.oCPU.AX.Word);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("BUILDING NEW WORLD...", 160, 160, this.oCPU.AX.Word);
 
 		L184f:
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa);

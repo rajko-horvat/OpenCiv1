@@ -267,7 +267,6 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x16;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x4da);
-
 			// Instruction address 0x0000:0x0284, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
 
@@ -378,9 +377,13 @@ namespace OpenCiv1
 			this.oParent.GameState.Cities[cityID].ShieldsCount = 0;
 			this.oCPU.CMPByte((byte)this.oParent.GameState.Cities[cityID].CurrentProductionID, 0x0);
 			if (this.oCPU.Flags.L) goto L03c9;
+
 			this.oCPU.AX.Low = 0x22;
 			this.oCPU.IMULByte(this.oCPU.AX, (byte)this.oParent.GameState.Cities[cityID].CurrentProductionID);
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x112a);
+			// Instruction address 0x0000:0x03e5, size: 5
+			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.AX.Word);
+
 			goto L03e0;
 
 		L03c9:
@@ -393,11 +396,10 @@ namespace OpenCiv1
 			this.oCPU.CX.Word = 0x1e;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0xb9a);
-
-		L03e0:
 			// Instruction address 0x0000:0x03e5, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.AX.Word);
 
+		L03e0:
 			// Instruction address 0x0000:0x03f5, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " production sabotaged\n");
 
@@ -667,7 +669,6 @@ namespace OpenCiv1
 			this.oCPU.AX.Low = 0x22;
 			this.oCPU.IMULByte(this.oCPU.AX, this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.DI.Word + 0x81d7)));
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x112a);
-
 			// Instruction address 0x0000:0x0719, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
 
@@ -1168,13 +1169,13 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982)));
 
 			// Instruction address 0x0000:0x0d31, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x5355);
+			this.oParent.MSCAPI.strcat(0xba06, " influence\nsuspected.\n");
 
 			goto L0d2c;
 
 		L0d29:
 			// Instruction address 0x0000:0x0d31, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x536c);
+			this.oParent.MSCAPI.strcat(0xba06, "\n");
 
 		L0d2c:
 			// Instruction address 0x0000:0x0d45, size: 5

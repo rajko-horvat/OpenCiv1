@@ -257,12 +257,10 @@ namespace OpenCiv1
 			goto L02db;
 
 		L0240:
-			this.oCPU.AX.Word = 0x299b;
+			// Instruction address 0x2517:0x0248, size: 5
+			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30be), "agree to a");
 
 		L0243:
-			// Instruction address 0x2517:0x0248, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30be), this.oCPU.AX.Word);
-
 			// Instruction address 0x2517:0x0254, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f(0x29a6);
 
@@ -365,8 +363,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 
 			// Instruction address 0x2517:0x036d, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30ba),
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1992)));
+			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30ba), this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1992)));
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -436,8 +433,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x2517:0x0475, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30ba),
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x1992)));
+			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30ba), this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x1992)));
 
 			this.oCPU.BX.Word = (ushort)playerID;
 			this.oCPU.CX.Low = 0x4;
@@ -449,7 +445,9 @@ namespace OpenCiv1
 			if ((this.oParent.GameState.Players[playerID].Diplomacy[this.oParent.GameState.HumanPlayerID] & 2) == 0)
 				goto L0240;
 
-			this.oCPU.AX.Word = 0x2990;
+			// Instruction address 0x2517:0x0248, size: 5
+			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30be), "extend our");
+
 			goto L0243;
 
 		L049b:
@@ -991,12 +989,12 @@ namespace OpenCiv1
 			if ((this.oParent.GameState.Players[playerID1].Diplomacy[playerID2] & 2) != 0)
 			{
 				// Instruction address 0x2517:0x09f7, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, 0x2a36);
+				this.oParent.MSCAPI.strcat(0xba06, " cancel\npeace treaty.\n");
 			}
 			else
 			{
 				// Instruction address 0x2517:0x09f7, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, 0x2a4d);
+				this.oParent.MSCAPI.strcat(0xba06, " declare\nwar on each other.\n");
 			}
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x1);

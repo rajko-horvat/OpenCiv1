@@ -175,10 +175,10 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L0261;
 
 			// Instruction address 0x0000:0x0242, size: 5
-			this.oParent.Segment_1182.F0_1182_002a_DrawString(0x5147, 8, 11, 0);
+			this.oParent.Segment_1182.F0_1182_002a_DrawString(",-.", 8, 11, 0);
 
 			// Instruction address 0x0000:0x0259, size: 5
-			this.oParent.Segment_1182.F0_1182_002a_DrawString(0x514b, 268, 11, 0);
+			this.oParent.Segment_1182.F0_1182_002a_DrawString(",-.", 268, 11, 0);
 
 		L0261:
 			// Instruction address 0x0000:0x0270, size: 5
@@ -189,7 +189,10 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L02e0;
-			this.oCPU.AX.Word = 0x514f;
+
+			// Instruction address 0x0000:0x02e8, size: 5
+			this.oParent.MSCAPI.strcpy(0xba06, "EXTRA!");
+
 			goto L02e3;
 
 		L028d:
@@ -226,12 +229,10 @@ namespace OpenCiv1
 			goto L01e9;
 
 		L02e0:
-			this.oCPU.AX.Word = 0x5156;
+			// Instruction address 0x0000:0x02e8, size: 5
+			this.oParent.MSCAPI.strcpy(0xba06, "FLASH");
 
 		L02e3:
-			// Instruction address 0x0000:0x02e8, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.AX.Word);
-
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x10), 0x3);
 

@@ -315,12 +315,12 @@ namespace OpenCiv1
 			if ((this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)) & 1) != 0)
 			{
 				// Instruction address 0x2c84:0x027a, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, 0x2cbc);
+				this.oParent.MSCAPI.strcat(0xba06, " Add to City \x008fb\n");
 			}
 			else
 			{
 				// Instruction address 0x2c84:0x027a, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, 0x2ccd);
+				this.oParent.MSCAPI.strcat(0xba06, " Found New City \x008fb\n");
 			}
 
 			this.oCPU.DI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
@@ -423,7 +423,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.G) goto L03a8;
 			
 			// Instruction address 0x2c84:0x03dc, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x2d28);
+			this.oParent.MSCAPI.strcat(0xba06, " Build Mines");
 
 			goto L03e4;
 

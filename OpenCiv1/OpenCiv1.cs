@@ -195,7 +195,7 @@ namespace OpenCiv1
 			// Check for Default directory and individual Resource files
 			if (!string.IsNullOrEmpty(this.oCPU.DefaultDirectory) && !Directory.Exists(this.oCPU.DefaultDirectory))
 			{
-				throw new ResourceMissingExitException($"Resource path not found at '{this.oCPU.DefaultDirectory}'.");
+				throw new ResourceMissingException($"Resource path not found at '{this.oCPU.DefaultDirectory}'.");
 			}
 
 			string[] aResourceFiles = new string[] {
@@ -225,9 +225,9 @@ namespace OpenCiv1
 			{
 				string sFilePath = Path.Combine(this.oCPU.DefaultDirectory, aResourceFiles[i].ToUpper());
 
-				while (!File.Exists(sFilePath))
+				if (!File.Exists(sFilePath))
 				{
-					throw new ResourceMissingExitException($"Missing resource file {sFilePath}. Plsease ensure that the file exists at specified path.");
+					throw new ResourceMissingException($"Missing resource file {sFilePath}. Plsease ensure that the file exists at specified path.");
 				}
 			}
 

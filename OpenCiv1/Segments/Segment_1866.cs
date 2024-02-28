@@ -1230,7 +1230,7 @@ namespace OpenCiv1
 
 		L0bc9:
 			// Instruction address 0x1866:0x0bd9, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x20f6, 4, 124, 7);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("End of Turn", 4, 124, 7);
 
 		L0be1:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0xffff);
@@ -1305,7 +1305,7 @@ namespace OpenCiv1
 
 		L0c86:
 			// Instruction address 0x1866:0x0c95, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x2102, 4, 124, 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("End of Turn", 4, 124, 0);
 
 		L0c9d:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0xffff);

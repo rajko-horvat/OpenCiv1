@@ -948,8 +948,14 @@ namespace OpenCiv1.GPU
 
 		public void F0_VGA_11d7_DrawString(ushort rectPtr, int xPos, int yPos, ushort stringPtr)
 		{
-			CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
 			string text = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+
+			F0_VGA_11d7_DrawString(rectPtr, xPos, yPos, text);
+		}
+
+		public void F0_VGA_11d7_DrawString(ushort rectPtr, int xPos, int yPos, string text)
+		{
+			CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
 
 			if (!this.aFonts.ContainsKey(rect.FontID))
 			{

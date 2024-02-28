@@ -750,12 +750,12 @@ namespace OpenCiv1
 			if (this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe8)) != 0xffff)
 			{
 				// Instruction address 0x1d12:0x07d1, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, 0x2510);
+				this.oParent.MSCAPI.strcat(0xba06, "!\nSettlers lost.\n");
 			}
 			else
 			{
 				// Instruction address 0x1d12:0x07d1, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, 0x2522);
+				this.oParent.MSCAPI.strcat(0xba06, "!\nFamine feared.\n");
 			}
 
 			// Instruction address 0x1d12:0x07dd, size: 5
@@ -4821,7 +4821,7 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 92);
 
 			// Instruction address 0x1d12:0x32a5, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x25fe, 190, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42)) + 5, 15);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("WONDERS", 190, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42)) + 5, 15);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42), 
 				this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42)), 0x10));
@@ -5947,7 +5947,7 @@ namespace OpenCiv1
 				1);
 
 			// Instruction address 0x1d12:0x3fcd, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x2640, 8, 108, 15);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Food Storage", 8, 108, 15);
 
 			// Instruction address 0x1d12:0x3ffc, size: 5
 			F0_1d12_710d_FillRectangleWithPattern(3, 115,
@@ -6010,7 +6010,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 2, 23, 122, 9, 1);
 
 			// Instruction address 0x1d12:0x4108, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x264d, 8, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xfc)), 15);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("City Resources", 8, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xfc)), 15);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xfc), 
 				this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xfc)), 0x8));

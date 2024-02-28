@@ -604,7 +604,7 @@ namespace OpenCiv1
 			catch (ApplicationExitException)
 			{
 			}
-			catch (ResourceMissingExitException ex)
+			catch (ResourceMissingException ex)
 			{
 				MessageBox.Show(ex.Message, "OpenCiv1 resource error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}

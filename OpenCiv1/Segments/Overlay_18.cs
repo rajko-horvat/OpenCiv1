@@ -495,7 +495,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), 0x10);
 
 			// Instruction address 0x0000:0x05ab, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x4d08, 242, 16, 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Population:", 242, 16, 0);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), 
 				this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)), 0x8));
@@ -623,7 +623,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0784;
 			
 			// Instruction address 0x0000:0x077c, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x4d31, 242, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)), 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Mass:", 242, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)), 0);
 
 		L0784:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), 
@@ -694,7 +694,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L08c5;
 
 			// Instruction address 0x0000:0x08bd, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x4d4a, 242, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)), 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Flight Time:", 242, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)), 0);
 
 		L08c5:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), 
@@ -756,7 +756,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L09c8;
 
 			// Instruction address 0x0000:0x09c0, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x4d60, 242, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)), 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Prob. of Success", 242, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)), 0);
 
 		L09c8:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)), 0x8));
@@ -795,8 +795,7 @@ namespace OpenCiv1
 
 		L0a4f:
 			// Instruction address 0x0000:0x0a70, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(
-				(ushort)((this.oParent.GameState.Players[playerID].SpaceshipETAYear < oParent.GameState.Year) ? 0x4d7c : 0x4d84),
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(((this.oParent.GameState.Players[playerID].SpaceshipETAYear < oParent.GameState.Year) ? "Landed!" : "Launched!"),
 				242,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
 				0);
@@ -821,7 +820,7 @@ namespace OpenCiv1
 			if (param3 == 0) goto L0ada;
 
 			// Instruction address 0x0000:0x0ab7, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x4d8e, 256, 190, 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("LAUNCH", 256, 190, 0);
 
 			// Instruction address 0x0000:0x0ad2, size: 5
 			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(242, 188, 76, 9, 0);
@@ -1602,7 +1601,6 @@ namespace OpenCiv1
 			this.oCPU.CX.Word = 0x1a;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x4bd0);
-
 			// Instruction address 0x0000:0x1249, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
 

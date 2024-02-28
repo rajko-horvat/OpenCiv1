@@ -14,14 +14,4 @@ namespace OpenCiv1
 
 		public ApplicationExitException(string message, Exception innerException) : base(message, innerException) { }
 	}
-
-	public class ResourceMissingExitException : Exception
-	{
-		public ResourceMissingExitException() : base() { }
-
-		public ResourceMissingExitException(string message) : base(message) { }
-
-		public ResourceMissingExitException(string message, Exception innerException) : base(message, innerException) { }
-	}
-
 }

@@ -44,8 +44,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 
 			// Instruction address 0x0000:0x005d, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)),
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)),
 				128, 4, 15);
 
 			// Instruction address 0x0000:0x0078, size: 5
@@ -99,7 +98,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 16, 40, 15);
 
 			// Instruction address 0x0000:0x01ac, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x46be, 16, 50, 15);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("/Units/Cities/Settlers/Land", 16, 50, 15);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -276,7 +275,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 0x0);
 
 			// Instruction address 0x0000:0x047e, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x4729, 16, 56, 15);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Civilization:", 16, 56, 15);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 
 				this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x8));
@@ -436,8 +435,7 @@ namespace OpenCiv1
 				this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))));
 
 			// Instruction address 0x0000:0x0635, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(
-				(ushort)((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)) * 0x22) + 0x112a),
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0((ushort)((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)) * 0x22) + 0x112a),
 				36, 
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)), 
 				15);
@@ -652,8 +650,7 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x0000:0x0877, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)),
+			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)) * 40,
 				8,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1946)));
@@ -666,8 +663,7 @@ namespace OpenCiv1
 					(ushort)((((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)) << 5) + 0x40) << 1) + 0xd4ce)));
 
 			// Instruction address 0x0000:0x08ad, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)),
+			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)),
 				4,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)) * 12 + 32,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1946)));

@@ -43,7 +43,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x1238:0x0058, size: 3
-			this.oParent.Segment_2d05.F0_2d05_0031(stringPtr, xPos,	yPos, 1);
+			this.oParent.Segment_2d05.F0_2d05_0031(stringPtr, xPos, yPos, 1);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 
@@ -1132,7 +1132,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0c74;
 
 			// Instruction address 0x1238:0x0c89, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x1d26);
+			this.oParent.MSCAPI.strcat(0xba06, "Guerrilla uprising\nnear ");
 
 			goto L0c84;
 
@@ -1141,13 +1141,13 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0c81;
 
 			// Instruction address 0x1238:0x0c89, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x1d3f);
+			this.oParent.MSCAPI.strcat(0xba06, "Native unrest\nnear ");
 
 			goto L0c84;
 
 		L0c81:
 			// Instruction address 0x1238:0x0c89, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 0x1d53);
+			this.oParent.MSCAPI.strcat(0xba06, "Barbarian uprising\nnear ");
 
 		L0c84:
 			// Instruction address 0x1238:0x0c94, size: 5
@@ -1506,19 +1506,19 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 0, 0, 320, 8, 0);
 
 			// Instruction address 0x1238:0x1015, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x1d6f, 8, 1, 15);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("G\x0087AME", 8, 1, 15);
 
 			// Instruction address 0x1238:0x102d, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x1d75, 64, 1, 15);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("O\x0087RDERS", 64, 1, 15);
 
 			// Instruction address 0x1238:0x1045, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x1d7d, 128, 1, 15);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("A\x0087DVISORS", 128, 1, 15);
 
 			// Instruction address 0x1238:0x105d, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x1d87, 192, 1, 15);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("W\x0087ORLD", 192, 1, 15);
 
 			// Instruction address 0x1238:0x1075, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0x1d8e, 240, 1, 15);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("C\x0087IVILOPEDIA", 240, 1, 15);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1238_0fea");
@@ -2076,7 +2076,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, this.oParent.MSCAPI.itoa(Math.Abs(this.oParent.GameState.Year), 10));
 
 			// Instruction address 0x1238:0x175e, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, (ushort)((this.oParent.GameState.Year >= 0) ? 0x1df4 : 0x1df0));
+			this.oParent.MSCAPI.strcat(0xba06, (this.oParent.GameState.Year >= 0) ? " AD" : " BC");
 		}
 
 		/// <summary>

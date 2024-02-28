@@ -287,11 +287,8 @@ namespace OpenCiv1
 			goto L02ac;
 
 		L026b:
-			this.oCPU.AX.Word = 0x417f;
-
-		L026e:
 			// Instruction address 0x0000:0x0273, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcpy(0xba06, "S");
 
 		L027b:
 			this.oCPU.SI.Word = (ushort)playerID;
@@ -333,12 +330,16 @@ namespace OpenCiv1
 			goto L027b;
 
 		L02d8:
-			this.oCPU.AX.Word = 0x4181;
-			goto L026e;
+			// Instruction address 0x0000:0x0273, size: 5
+			this.oParent.MSCAPI.strcpy(0xba06, "A");
+
+			goto L027b;
 
 		L02dd:
-			this.oCPU.AX.Word = 0x4183;
-			goto L026e;
+			// Instruction address 0x0000:0x0273, size: 5
+			this.oParent.MSCAPI.strcpy(0xba06, "D");
+
+			goto L027b;
 
 		L02e2:
 			// Instruction address 0x0000:0x02e2, size: 5

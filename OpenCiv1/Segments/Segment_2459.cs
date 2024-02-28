@@ -414,12 +414,12 @@ namespace OpenCiv1
 			if (this.oParent.GameState.Cities[cityID].ActualSize != 0)
 			{
 				// Instruction address 0x2459:0x0461, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, 0x2893);
+				this.oParent.MSCAPI.strcat(0xba06, " capture\nthe ");
 			}
 			else
 			{
 				// Instruction address 0x2459:0x0461, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, 0x28a1);
+				this.oParent.MSCAPI.strcat(0xba06, " destroy\nthe ");
 			}
 
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12));
@@ -599,12 +599,12 @@ namespace OpenCiv1
 			if ((this.oParent.GameState.SpaceshipFlags & this.oCPU.AX.Word) != 0)
 			{
 				// Instruction address 0x2459:0x0642, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, 0x28ca);
+				this.oParent.MSCAPI.strcat(0xba06, "returns to Earth.\n");
 			}
 			else
 			{
 				// Instruction address 0x2459:0x0642, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, 0x28dd);
+				this.oParent.MSCAPI.strcat(0xba06, "construction cancelled.\n");
 			}
 
 			// Instruction address 0x2459:0x0656, size: 5

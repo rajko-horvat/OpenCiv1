@@ -884,11 +884,8 @@ namespace OpenCiv1
 			goto L0934;
 
 		L0924:
-			this.oCPU.AX.Word = 0x4fcb;
-
-		L0927:
 			// Instruction address 0x0000:0x092c, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcpy(0xba06, "Rioting in ");
 
 		L0934:
 			// Instruction address 0x0000:0x0937, size: 5
@@ -909,12 +906,16 @@ namespace OpenCiv1
 			goto L09c3;
 
 		L0963:
-			this.oCPU.AX.Word = 0x4fd7;
-			goto L0927;
+			// Instruction address 0x0000:0x092c, size: 5
+			this.oParent.MSCAPI.strcpy(0xba06, "Corruption in ");
+
+			goto L0934;
 
 		L0968:
-			this.oCPU.AX.Word = 0x4fe6;
-			goto L0927;
+			// Instruction address 0x0000:0x092c, size: 5
+			this.oParent.MSCAPI.strcpy(0xba06, "Scandal in ");
+
+			goto L0934;
 
 		L096d:
 			this.oCPU.AX.Word = 0x1c;
@@ -1203,7 +1204,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0d3e;
 
 			// Instruction address 0x0000:0x0cfd, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0x507e, 160, 100, 15);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("SCORING COMPLETED", 160, 100, 15);
 
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, this.oCPU.BX.Word, 0x0);
@@ -1359,8 +1360,7 @@ namespace OpenCiv1
 			if (!flag) goto L0ef9;
 
 			// Instruction address 0x0000:0x0ef1, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(
-				0xba06,
+			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0xba06,
 				16,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
 				15);
@@ -1420,8 +1420,7 @@ namespace OpenCiv1
 				(short)(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)) - 2));
 			
 			// Instruction address 0x0000:0x0fac, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(
-				(ushort)((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)) * 0x1e) + 0xe6a),
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0((ushort)((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)) * 0x1e) + 0xe6a),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)) + 20,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)),
 				11);
