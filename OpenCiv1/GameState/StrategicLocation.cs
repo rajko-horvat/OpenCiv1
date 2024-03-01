@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Drawing;
+using OpenCiv1.GPU;
 
 namespace OpenCiv1
 {
@@ -7,6 +7,6 @@ namespace OpenCiv1
 	{
 		public sbyte Active = 0;
 		public byte Policy = 0;
-		public Point Position = new Point(0, 0);
+		public GPoint Position = new GPoint(0, 0);
 	}
 }

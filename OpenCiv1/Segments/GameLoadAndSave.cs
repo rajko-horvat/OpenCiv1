@@ -773,7 +773,7 @@ namespace OpenCiv1
 			{
 				// read map file
 				byte[] temp;
-				VGABitmap? map = VGABitmap.FromFile(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.MAP"), out temp);
+				GBitmap? map = GBitmap.FromPICFile(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.MAP"), out temp);
 
 				if (map == null)
 					throw new Exception($"Can't read Map file '{filename}.MAP'");
@@ -1245,7 +1245,7 @@ namespace OpenCiv1
 			try
 			{
 				// write map file
-				this.oParent.VGADriver.Screens.GetValueByKey(2).Save(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.MAP"), false);
+				this.oParent.VGADriver.Screens.GetValueByKey(2).SaveToPIC(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.MAP"), false);
 
 				// write sve file
 				FileStream writer = new FileStream(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.SVE"), FileMode.Create);

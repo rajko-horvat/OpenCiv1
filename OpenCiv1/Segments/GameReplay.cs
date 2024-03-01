@@ -1850,7 +1850,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0a32(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x151a)), 3);
 
 			// Instruction address 0x0000:0x1518, size: 5
-			this.oParent.VGADriver.F0_VGA_06b7_DrawScreenToMainScreen(1, 0x1e);
+			this.oParent.VGADriver.F0_VGA_06b7_DrawScreenToMainScreen(1);
 
 			// Instruction address 0x0000:0x1538, size: 5
 			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(

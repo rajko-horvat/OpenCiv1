@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Threading;
 using IRB.Collections.Generic;
 using OpenCiv1.GPU;
+using System.Runtime.InteropServices;
 
 namespace OpenCiv1
 {
@@ -19,9 +19,9 @@ namespace OpenCiv1
 		private bool bClosing = false;
 		private Thread? oGameThread = null;
 		private OpenCiv1? oGame = null;
-		private Size oScreenSize;
-		private Rectangle oMouseRect = Rectangle.Empty;
-		private Point oMouseLocation = Point.Empty;
+		private GSize oScreenSize = new GSize(640, 400);
+		private GRectangle oMouseRect = new GRectangle();
+		private GPoint oMouseLocation = new GPoint();
 		private MouseButtons oMouseButtons = MouseButtons.None;
 		private int iScreenColumns = 1;
 		private int iScreenRows = 1;
@@ -43,7 +43,7 @@ namespace OpenCiv1
 			this.oLargeFont = new Font("Verdana", 40.0f, FontStyle.Bold, GraphicsUnit.Pixel);
 		}
 
-		public Point ScreenMouseLocation
+		public GPoint ScreenMouseLocation
 		{
 			get { return this.oMouseLocation; }
 		}
@@ -56,13 +56,6 @@ namespace OpenCiv1
 		private void InitializeControlsMethod()
 		{
 			ScreenCountChangeMethod();
-
-			this.cmdPause.Enabled = true;
-			this.cmdRun.Enabled = true;
-			this.tsScreens.Enabled = true;
-
-			this.cmdPause.Visible = true;
-			this.cmdRun.Visible = false;
 		}
 
 		public void OnScreenCountChange()
@@ -84,22 +77,11 @@ namespace OpenCiv1
 				lock (this.oGame.VGADriver.VGALock)
 				{
 					int iScreenCount = 0;
-					// update screen list
-					this.lblScreens.Text = $"Screens ({this.oGame.VGADriver.Screens.Count})";
 
-					this.tsScreens.DropDownItems.Clear();
+					// update screen list
 					for (int i = 0; i < this.oGame.VGADriver.Screens.Count; i++)
 					{
-						BKeyValuePair<int, VGABitmap> item = this.oGame.VGADriver.Screens[i];
-
-						ToolStripMenuItem menuItem = new ToolStripMenuItem($"Screen ({item.Key})");
-						//menuItem.Checked = true;
-						menuItem.CheckState = item.Value.Visible ? CheckState.Checked : CheckState.Unchecked;
-						menuItem.Tag = item.Key;
-						//menuItem.CheckOnClick = true;
-						menuItem.Click += MenuItem_Clicked;
-
-						this.tsScreens.DropDownItems.Add(menuItem);
+						BKeyValuePair<int, GBitmap> item = this.oGame.VGADriver.Screens[i];
 
 						if (item.Value.Visible)
 						{
@@ -112,54 +94,54 @@ namespace OpenCiv1
 						case 1:
 							this.iScreenColumns = 1;
 							this.iScreenRows = 1;
-							this.oScreenSize = new Size(640, 400);
+							this.oScreenSize = new GSize(640, 400);
 							break;
 
 						case 2:
 							this.iScreenColumns = 2;
 							this.iScreenRows = 1;
-							this.oScreenSize = new Size(320, 200);
+							this.oScreenSize = new GSize(320, 200);
 							break;
 
 						case 3:
 							this.iScreenColumns = 2;
 							this.iScreenRows = 2;
-							this.oScreenSize = new Size(320, 200);
+							this.oScreenSize = new GSize(320, 200);
 							break;
 
 						case 4:
 							this.iScreenColumns = 2;
 							this.iScreenRows = 2;
-							this.oScreenSize = new Size(320, 200);
+							this.oScreenSize = new GSize(320, 200);
 							break;
 
 						case 5:
 							this.iScreenColumns = 3;
 							this.iScreenRows = 2;
-							this.oScreenSize = new Size(320, 200);
+							this.oScreenSize = new GSize(320, 200);
 							break;
 
 						case 6:
 							this.iScreenColumns = 3;
 							this.iScreenRows = 2;
-							this.oScreenSize = new Size(320, 200);
+							this.oScreenSize = new GSize(320, 200);
 							break;
 
 						case 7:
 							this.iScreenColumns = 3;
 							this.iScreenRows = 3;
-							this.oScreenSize = new Size(320, 200);
+							this.oScreenSize = new GSize(320, 200);
 							break;
 
 						case 8:
 							this.iScreenColumns = 3;
 							this.iScreenRows = 3;
-							this.oScreenSize = new Size(320, 200);
+							this.oScreenSize = new GSize(320, 200);
 							break;
 					}
 					this.ClientSize = new Size(this.oScreenSize.Width * this.iScreenColumns + 1 + this.iScreenColumns,
-						this.tsMain.Height + this.oScreenSize.Height * this.iScreenRows + 1 + this.iScreenRows);
-					this.oMouseRect = new Rectangle(Point.Empty, this.oScreenSize);
+						this.oScreenSize.Height * this.iScreenRows + 1 + this.iScreenRows);
+					this.oMouseRect = new GRectangle(0,0, this.oScreenSize);
 					this.Invalidate();
 				}
 			}
@@ -167,39 +149,33 @@ namespace OpenCiv1
 			{
 				this.iScreenColumns = 1;
 				this.iScreenRows = 1;
-				this.oScreenSize = new Size(640, 400);
+				this.oScreenSize = new GSize(640, 400);
 
-				this.ClientSize = new Size(this.oScreenSize.Width * this.iScreenColumns + 1 + this.iScreenColumns,
-					this.tsMain.Height + this.oScreenSize.Height * this.iScreenRows + 1 + this.iScreenRows);
-				this.oMouseRect = new Rectangle(Point.Empty, this.oScreenSize);
+				this.ClientSize = new Size(this.oScreenSize.Width * this.iScreenColumns + this.iScreenColumns + 1,
+					this.oScreenSize.Height * this.iScreenRows + this.iScreenRows + 1);
+				this.oMouseRect = new GRectangle(0, 0, this.oScreenSize);
 				this.Invalidate();
+			}
+		}
+
+		private void ToggleScreen(int screen)
+		{
+			if (this.oGame != null && this.oGame.VGADriver != null)
+			{
+				if (this.oGame.VGADriver.Screens.ContainsKey(screen))
+				{
+					GBitmap oScreen = this.oGame.VGADriver.Screens.GetValueByKey(screen);
+
+					oScreen.Visible = !oScreen.Visible;
+
+					OnScreenCountChange();
+				}
 			}
 		}
 
 		private void CloseFormMethod()
 		{
 			this.Close();
-		}
-
-		private void MenuItem_Clicked(object? sender, EventArgs e)
-		{
-			if (sender!=null && sender is ToolStripMenuItem)
-			{
-				ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
-				int iScreen = Convert.ToInt32(menuItem.Tag);
-
-				if (this.oGame != null && this.oGame.VGADriver != null)
-				{
-					if (this.oGame.VGADriver.Screens.ContainsKey(iScreen))
-					{
-						VGABitmap screen = this.oGame.VGADriver.Screens.GetValueByKey(iScreen);
-
-						screen.Visible = !screen.Visible;
-
-						OnScreenCountChange();
-					}
-				}
-			}
 		}
 
 		private void tmrRefresh_Tick(object sender, EventArgs e)
@@ -237,25 +213,67 @@ namespace OpenCiv1
 
 			if (this.oGame != null)
 			{
-				//g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.AssumeLinear;
 				g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 
 				for (int i = 0; i < this.oGame.VGADriver.Screens.Count; i++)
 				{
-					BKeyValuePair<int, VGABitmap> item = this.oGame.VGADriver.Screens[i];
+					BKeyValuePair<int, GBitmap> item = this.oGame.VGADriver.Screens[i];
 
 					if (item.Value.Visible)
 					{
 						if (item.Value.Modified || forceRedraw)
 						{
+							GBitmap gbmp = item.Value;
+
+							// construct byte array from out indexed bitmap
+							int iBitmapMemoryStride = (int)(Math.Ceiling((double)gbmp.Width / 4.0) * 4.0) * 4;
+							byte[] aBitmapMemory = new byte[iBitmapMemoryStride * gbmp.Height];
+
+							int iPixelAddress = 0;
+							int iBitmapAddress0 = 0;
+
+							for (int y = 0; y < gbmp.Height; y++)
+							{
+								int iBitmapAddress = iBitmapAddress0;
+
+								for (int x = 0; x < gbmp.Width; x++)
+								{
+									Color color = gbmp.Palette[gbmp.Pixels[iPixelAddress]];
+
+									aBitmapMemory[iBitmapAddress] = color.B;
+									aBitmapMemory[iBitmapAddress + 1] = color.G;
+									aBitmapMemory[iBitmapAddress + 2] = color.R;
+									aBitmapMemory[iBitmapAddress + 3] = color.A;
+
+									iPixelAddress++;
+									iBitmapAddress += 4;
+								}
+
+								iBitmapAddress0 += iBitmapMemoryStride;
+
+								for (; iBitmapAddress < iBitmapAddress0; iBitmapAddress++)
+								{
+									aBitmapMemory[iBitmapAddress] = 0;
+								}
+							}
+
+							// Draw the bitmap to the screen
+							GCHandle handle = GCHandle.Alloc(aBitmapMemory, GCHandleType.Pinned);
+							Bitmap bmp = new Bitmap(gbmp.Width, gbmp.Height, iBitmapMemoryStride, System.Drawing.Imaging.PixelFormat.Format32bppArgb,
+								Marshal.UnsafeAddrOfPinnedArrayElement(aBitmapMemory, 0));
+							handle.Free();
+
 							Rectangle rect = new Rectangle((iColumn * this.oScreenSize.Width) + (iColumn + 1),
-								this.tsMain.Height + (iRow * this.oScreenSize.Height) + (iRow + 1),
+								(iRow * this.oScreenSize.Height) + (iRow + 1),
 								this.oScreenSize.Width, this.oScreenSize.Height);
-							g.DrawImage(item.Value.Bitmap, rect);
+							g.DrawImage(bmp, rect);
 							g.DrawString($"{item.Key}", this.oFont, Brushes.White, rect.Left + 5.0f, rect.Top + 5.0f);
 							g.DrawRectangle(Pens.Purple, (iColumn * this.oScreenSize.Width) + iColumn,
-								this.tsMain.Height + (iRow * this.oScreenSize.Height) + iRow,
+								(iRow * this.oScreenSize.Height) + iRow,
 								this.oScreenSize.Width + 1, this.oScreenSize.Height + 1);
+
+							g.Flush();
+							bmp.Dispose();
 
 							item.Value.Modified = false;
 						}
@@ -423,6 +441,18 @@ namespace OpenCiv1
 
 						switch (e.KeyCode)
 						{
+							case Keys.D1:
+								ToggleScreen(0);
+								break;
+
+							case Keys.D2:
+								ToggleScreen(1);
+								break;
+
+							case Keys.D3:
+								ToggleScreen(2);
+								break;
+
 							case Keys.A:
 								this.oGame.VGADriver.Keys.Enqueue(0x1e00);
 								break;
@@ -451,6 +481,10 @@ namespace OpenCiv1
 								this.oGame.VGADriver.Keys.Enqueue(0x1800);
 								break;
 
+							case Keys.P:
+								this.oGame.CPU.Pause = !this.oGame.CPU.Pause;
+								break;
+
 							case Keys.Q:
 								this.oGame.VGADriver.Keys.Enqueue(0x1000);
 								break;
@@ -474,11 +508,11 @@ namespace OpenCiv1
 
 		private void Form_MouseMove(object sender, MouseEventArgs e)
 		{
-			Point location = new Point(e.Location.X, e.Location.Y - this.tsMain.Height);
+			GPoint location = new GPoint(e.Location.X, e.Location.Y);
 
 			if (this.oMouseRect.Contains(location))
 			{
-				this.oMouseLocation = new Point(location.X / (this.oScreenSize.Width / 320),
+				this.oMouseLocation = new GPoint(location.X / (this.oScreenSize.Width / 320),
 					location.Y / (this.oScreenSize.Height / 200));
 				this.oMouseButtons = e.Button;
 			}
@@ -486,7 +520,7 @@ namespace OpenCiv1
 
 		private void Form_MouseDown(object sender, MouseEventArgs e)
 		{
-			Point location = new Point(e.Location.X, e.Location.Y - this.tsMain.Height);
+			GPoint location = new GPoint(e.Location.X, e.Location.Y);
 
 			if (this.oMouseRect.Contains(location))
 			{
@@ -503,7 +537,7 @@ namespace OpenCiv1
 
 		private void Form_MouseUp(object sender, MouseEventArgs e)
 		{
-			Point location = new Point(e.Location.X, e.Location.Y - this.tsMain.Height);
+			GPoint location = new GPoint(e.Location.X, e.Location.Y);
 
 			if (this.oMouseRect.Contains(location))
 			{
@@ -516,48 +550,6 @@ namespace OpenCiv1
 				{
 					this.oMouseButtons |= MouseButtons.Right;
 					this.oMouseButtons ^= MouseButtons.Right;
-				}
-			}
-		}
-
-		private void cmdPause_Click(object sender, EventArgs e)
-		{
-			if (this.oGame != null && this.oGame.CPU != null)
-			{
-				if (!this.oGame.VGADriver.CPU.Pause)
-				{
-					this.oGame.VGADriver.CPU.Pause = true;
-					this.cmdPause.Visible = false;
-					this.cmdRun.Visible = true;
-
-					lock (this.oGame.VGADriver.VGALock)
-					{
-						Graphics g = Graphics.FromHwnd(this.Handle);
-						RedrawScreens(g, true);
-						g.Flush();
-						g.Dispose();
-					}
-				}
-			}
-		}
-
-		private void cmdRun_Click(object sender, EventArgs e)
-		{
-			if (this.oGame != null && this.oGame.CPU != null)
-			{
-				if (this.oGame.VGADriver.CPU.Pause)
-				{
-					this.oGame.VGADriver.CPU.Pause = false;
-					this.cmdPause.Visible = true;
-					this.cmdRun.Visible = false;
-
-					lock (this.oGame.VGADriver.VGALock)
-					{
-						Graphics g = Graphics.FromHwnd(this.Handle);
-						RedrawScreens(g, true);
-						g.Flush();
-						g.Dispose();
-					}
 				}
 			}
 		}
@@ -652,15 +644,6 @@ namespace OpenCiv1
 				if (this.oGame != null && this.oGame.CPU != null)
 				{
 					this.oGame.CPU.OnApplicationExit();
-
-					/*if (this.oGameThread != null)
-					{
-						while (this.oGameThread.ThreadState == ThreadState.Running ||
-							this.oGameThread.ThreadState == ThreadState.WaitSleepJoin)
-						{
-							Thread.Sleep(200);
-						}
-					}*/
 				}
 			}
 			else

@@ -1,5 +1,4 @@
 using IRB.VirtualCPU;
-using System.Runtime.InteropServices;
 
 namespace OpenCiv1
 {

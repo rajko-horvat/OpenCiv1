@@ -1,7 +1,4 @@
 using IRB.VirtualCPU;
-using Microsoft.Win32;
-using System.Threading;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace OpenCiv1
 {

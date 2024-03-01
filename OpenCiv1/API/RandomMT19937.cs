@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
 
 /* 
    MT19937, with initialization improved 2002/1/26.
@@ -54,7 +51,7 @@ using System.Runtime.InteropServices;
    
  ***********************************************************************************
 */
-[Serializable, ComVisible(true)]
+[Serializable]
 public class RandomMT19937
 {
 	// Fields

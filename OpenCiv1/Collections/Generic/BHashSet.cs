@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using IRB.Collections.Generic.Trees;
 
 namespace IRB.Collections.Generic

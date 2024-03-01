@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
 using IRB.VirtualCPU;
@@ -53,7 +52,7 @@ namespace OpenCiv1
 		private Overlay_10 oOverlay_10;
 		private Overlay_15 oOverlay_15;
 		private MSCAPI oMSCAPI;
-		private VGADriver oVGADriver;
+		private GDriver oVGADriver;
 		private NSound oSoundDriver;
 		#endregion
 
@@ -84,7 +83,7 @@ namespace OpenCiv1
 
 			#region Initialize Segments
 			this.oMSCAPI = new MSCAPI(this);
-			this.oVGADriver = new VGADriver(this, form);
+			this.oVGADriver = new GDriver(this, form);
 			this.oSoundDriver = new NSound(this);
 
 			this.oSegment_11a8 = new Segment_11a8(this);
@@ -134,9 +133,9 @@ namespace OpenCiv1
 			for (int i = 0; i < aFiles.Length; i++)
 			{
 				byte[] palette;
-				VGABitmap bitmap = VGABitmap.FromFile(aFiles[i], out palette);
+				VGABitmap bitmap = VGABitmap.FromPICFile(aFiles[i], out palette);
 
-				bitmap.Bitmap.Save(Path.GetFileNameWithoutExtension(aFiles[i]) + ".bmp", ImageFormat.Bmp);
+				bitmap.Bitmap.SaveToPIC(Path.GetFileNameWithoutExtension(aFiles[i]) + ".bmp", ImageFormat.Bmp);
 			}//*/
 		}
 
@@ -1312,7 +1311,7 @@ namespace OpenCiv1
 			get { return this.oMSCAPI; }
 		}
 
-		public VGADriver VGADriver
+		public GDriver VGADriver
 		{
 			get { return this.oVGADriver; }
 		}

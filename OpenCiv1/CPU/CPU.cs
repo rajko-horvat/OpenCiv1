@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Drawing;
-using System.IO;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using OpenCiv1;
 using IRB.Collections.Generic;
 using IRB.VirtualCPU.MZ;
-using System.Runtime.InteropServices;
+using OpenCiv1.GPU;
 
 namespace IRB.VirtualCPU
 {
@@ -48,7 +45,7 @@ namespace IRB.VirtualCPU
 		private System.Threading.Timer oTimer;
 
 		// Mouse
-		private Point oMouseLocation = new Point(-1, -1);
+		private GPoint oMouseLocation = new GPoint(-1, -1);
 		private ushort oMouseButtons = 0;
 
 		// DOS file stuff

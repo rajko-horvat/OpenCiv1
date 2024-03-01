@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Drawing;
-using System.IO;
+using OpenCiv1.GPU;
 
 namespace OpenCiv1
 {
@@ -8,7 +7,7 @@ namespace OpenCiv1
 	{
 		public ushort BuildingFlags0 = 0;
 		public ushort BuildingFlags1 = 0;
-		public Point Position = new Point(0, 0);
+		public GPoint Position = new GPoint(0, 0);
 		public byte StatusFlag = 0;
 		public sbyte ActualSize = 0;
 		public sbyte VisibleSize = 0;

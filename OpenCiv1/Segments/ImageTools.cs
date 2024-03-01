@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using IRB.VirtualCPU;
 using OpenCiv1.GPU;
 
@@ -43,7 +42,7 @@ namespace OpenCiv1
 				{
 					byte[] palette;
 					ushort startPtr;
-					this.oParent.VGADriver.Screens.GetValueByKey(screenID).LoadBitmap(filename, xPos, yPos, out palette);
+					this.oParent.VGADriver.Screens.GetValueByKey(screenID).LoadPIC(filename, xPos, yPos, out palette);
 
 					if (palette != null)
 					{
@@ -87,7 +86,7 @@ namespace OpenCiv1
 				byte[] palette;
 				ushort startPtr;
 
-				VGABitmap.PaletteFromFile(filename, out palette);
+				GBitmap.ReadPaletteFromPICFile(filename, out palette);
 				if (palette != null)
 				{
 					switch (palettePtr)

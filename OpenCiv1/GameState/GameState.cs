@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Drawing;
+using OpenCiv1.GPU;
 
 namespace OpenCiv1
 {
@@ -94,7 +94,7 @@ namespace OpenCiv1
 			"Bergen      \0", "Venice      \0", "Milan       \0", "Ghent       \0", "Pisa        \0",
 			"Cordoba     \0", "Seville     \0", "Dublin      \0", "Toronto     \0", "Melbourne   \0",
 			"Sydney      \0" };
-		public Point[] CityPositions = new Point[256];
+		public GPoint[] CityPositions = new GPoint[256];
 
 		// Wonders
 		public short[] WonderCityID = new short[22];
@@ -195,7 +195,7 @@ namespace OpenCiv1
 
 			for (int i = 0; i < this.CityPositions.Length; i++)
 			{
-				this.CityPositions[i] = new Point(0, 0);
+				this.CityPositions[i] = new GPoint(0, 0);
 			}
 
 			for (int i = 0; i < this.WonderCityID.Length; i++)

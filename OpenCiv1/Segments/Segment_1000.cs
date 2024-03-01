@@ -1,6 +1,4 @@
 using System;
-using System.Drawing;
-using System.IO;
 using IRB.VirtualCPU;
 using OpenCiv1.GPU;
 
@@ -347,12 +345,12 @@ namespace OpenCiv1
 			{
 				lock (this.oParent.VGADriver.VGALock)
 				{
-					VGABitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
+					GBitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
 					uint uiBufferPos = CPU.ToLinearAddress(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x9));
 
 					for (int i = 0; i < this.oCPU.DX.Word; i++)
 					{
-						Color color = VGABitmap.ColorToColor18(screen.GetColor(i + this.oCPU.AX.Low));
+						Color color = GBitmap.ColorToColor18(screen.GetPaletteColor((byte)(i + this.oCPU.AX.Low)));
 
 						this.oCPU.Memory.WriteUInt8(uiBufferPos++, color.R);
 						this.oCPU.Memory.WriteUInt8(uiBufferPos++, color.G);
@@ -503,7 +501,7 @@ namespace OpenCiv1
 			{
 				lock (this.oParent.VGADriver.VGALock)
 				{
-					VGABitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
+					GBitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
 					uint uiBufferPos = CPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.SI.Word);
 					int iCount = this.oCPU.CX.Word / 3;
 
@@ -513,7 +511,7 @@ namespace OpenCiv1
 						byte green = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
 						byte blue = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
 
-						screen.SetColor(i + this.oCPU.AX.Low, VGABitmap.Color18ToColor(red, green, blue));
+						screen.SetPaletteColor((byte)(i + this.oCPU.AX.Low), GBitmap.Color18ToColor(red, green, blue));
 					}
 				}
 			}
@@ -690,12 +688,12 @@ namespace OpenCiv1
 			{
 				lock (this.oParent.VGADriver.VGALock)
 				{
-					VGABitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
+					GBitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
 					uint uiBufferPos = CPU.ToLinearAddress(this.oCPU.DS.Word, 0xbd06);
 
-					for (int i = 0; i < 0x100; i++)
+					for (int i = 0; i < 256; i++)
 					{
-						Color color = VGABitmap.ColorToColor18(screen.GetColor(i));
+						Color color = GBitmap.ColorToColor18(screen.GetPaletteColor((byte)i));
 
 						this.oCPU.Memory.WriteUInt8(uiBufferPos++, color.R);
 						this.oCPU.Memory.WriteUInt8(uiBufferPos++, color.G);
@@ -730,7 +728,7 @@ namespace OpenCiv1
 			{
 				lock (this.oParent.VGADriver.VGALock)
 				{
-					VGABitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
+					GBitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
 					uint uiBufferPos = CPU.ToLinearAddress(this.oCPU.DS.Word, 0xbd06);
 
 					for (int i = 0; i < 10; i++)
@@ -739,7 +737,7 @@ namespace OpenCiv1
 						byte green = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
 						byte blue = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
 
-						screen.SetColor(i, VGABitmap.Color18ToColor(red, green, blue));
+						screen.SetPaletteColor((byte)i, GBitmap.Color18ToColor(red, green, blue));
 					}
 				}
 			}
@@ -937,7 +935,7 @@ namespace OpenCiv1
 				{
 					lock (this.oParent.VGADriver.VGALock)
 					{
-						VGABitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
+						GBitmap screen = this.oParent.VGADriver.Screens.GetValueByKey(0);
 						uint uiBufferPos = CPU.ToLinearAddress(this.oCPU.DS.Word, 0xc006);
 
 						for (int i = 0; i < this.oCPU.BX.Word; i++)
@@ -946,7 +944,7 @@ namespace OpenCiv1
 							byte green = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
 							byte blue = this.oCPU.Memory.ReadUInt8(uiBufferPos++);
 
-							screen.SetColor(i + this.oCPU.AX.Low, VGABitmap.Color18ToColor(red, green, blue));
+							screen.SetPaletteColor((byte)(i + this.oCPU.AX.Low), GBitmap.Color18ToColor(red, green, blue));
 						}
 					}
 				}
@@ -1001,38 +999,9 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_1000_07d6()");
 
 			// function body
-			this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
-
 			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
 			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0x1);
-
-			L075e:
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, this.oCPU.DECByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5402)));
-				if (this.oCPU.Flags.E) goto L0769;
-
-				this.oCPU.PushWord(this.oCPU.AX.Word);
-				this.oCPU.PushWord(this.oCPU.DX.Word);
-				this.oCPU.PushWord(this.oCPU.ES.Word);
-
-				this.oCPU.ES.Word = 0x1000;
-				// Instruction address 0x1000:0x17a2, size: 5
-				this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
-
-				/*this.oCPU.ES.Word = 0x1000;
-				// Instruction address 0x1000:0x17c0, size: 5
-				this.oParent.VGADriver.F0_VGA_0270(
-					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
-					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x587a)),
-					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5876));*/
-
-				this.oCPU.ES.Word = this.oCPU.PopWord();
-				this.oCPU.DX.Word = this.oCPU.PopWord();
-				this.oCPU.AX.Word = this.oCPU.PopWord();
-				goto L075e;
-
-			L0769:
-				this.oCPU.AX.Word |= 0;
+				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0);
 			}
 
 			this.oCPU.Log.ExitBlock("F0_1000_07d6");
@@ -1053,34 +1022,7 @@ namespace OpenCiv1
 
 			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
 			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0x1);
-
-			L075e:
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, this.oCPU.DECByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5402)));
-				if (this.oCPU.Flags.E) goto L0769;
-
-				this.oCPU.PushWord(this.oCPU.AX.Word);
-				this.oCPU.PushWord(this.oCPU.DX.Word);
-				this.oCPU.PushWord(this.oCPU.ES.Word);
-
-				this.oCPU.ES.Word = 0x1000;
-				// Instruction address 0x1000:0x17a2, size: 5
-				this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
-
-				/*this.oCPU.ES.Word = 0x1000;
-				// Instruction address 0x1000:0x17c0, size: 5
-				this.oParent.VGADriver.F0_VGA_0270(
-					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
-					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x587a)),
-					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5876));*/
-
-				this.oCPU.ES.Word = this.oCPU.PopWord();
-				this.oCPU.DX.Word = this.oCPU.PopWord();
-				this.oCPU.AX.Word = this.oCPU.PopWord();
-				goto L075e;
-
-			L0769:
-				this.oCPU.AX.Word |= 0;
+				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0);
 			}
 
 			this.oCPU.Log.ExitBlock("F0_1000_083f");
@@ -1095,38 +1037,12 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_1000_0846({screenID})");
 
 			// function body
-			this.oParent.VGADriver.F0_VGA_063c(screenID);
+			//this.oParent.VGADriver.F0_VGA_063c(screenID);
+			this.oParent.VGADriver.F0_VGA_06b7_DrawScreenToMainScreen(screenID);
 
 			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
 			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0x1);
-
-			L075e:
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, this.oCPU.DECByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5402)));
-				if (this.oCPU.Flags.E) goto L0769;
-
-				this.oCPU.PushWord(this.oCPU.AX.Word);
-				this.oCPU.PushWord(this.oCPU.DX.Word);
-				this.oCPU.PushWord(this.oCPU.ES.Word);
-				
-				this.oCPU.ES.Word = 0x1000;
-				// Instruction address 0x1000:0x17a2, size: 5
-				this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
-
-				/*this.oCPU.ES.Word = 0x1000;
-				// Instruction address 0x1000:0x17c0, size: 5
-				this.oParent.VGADriver.F0_VGA_0270(
-					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
-					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x587a)),
-					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5876));*/
-
-				this.oCPU.ES.Word = this.oCPU.PopWord();
-				this.oCPU.DX.Word = this.oCPU.PopWord();
-				this.oCPU.AX.Word = this.oCPU.PopWord();
-				goto L075e;
-
-			L0769:
-				this.oCPU.AX.Word |= 0;
+				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0);
 			}
 
 			this.oCPU.Log.ExitBlock("F0_1000_0846");
@@ -1148,34 +1064,7 @@ namespace OpenCiv1
 
 			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
 			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0x1);
-
-			L075e:
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, this.oCPU.DECByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5402)));
-				if (this.oCPU.Flags.E) goto L0769;
-
-				this.oCPU.PushWord(this.oCPU.AX.Word);
-				this.oCPU.PushWord(this.oCPU.DX.Word);
-				this.oCPU.PushWord(this.oCPU.ES.Word);
-				
-				this.oCPU.ES.Word = 0x1000;
-				// Instruction address 0x1000:0x17a2, size: 5
-				this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
-
-				/*this.oCPU.ES.Word = 0x1000;
-				// Instruction address 0x1000:0x17c0, size: 5
-				this.oParent.VGADriver.F0_VGA_0270(
-					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
-					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x587a)),
-					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5876));*/
-
-				this.oCPU.ES.Word = this.oCPU.PopWord();
-				this.oCPU.DX.Word = this.oCPU.PopWord();
-				this.oCPU.AX.Word = this.oCPU.PopWord();
-				goto L075e;
-
-			L0769:
-				this.oCPU.AX.Word |= 0;
+				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0);
 			}
 
 			this.oCPU.Log.ExitBlock("F0_1000_0797_DrawBitmapToScreen");
@@ -1332,7 +1221,7 @@ namespace OpenCiv1
 
 			if (width > 0 && height > 0)
 			{
-				Rectangle rect1 = new Rectangle(rect.X + xPos, rect.Y + yPos, width, height);
+				GRectangle rect1 = new GRectangle(rect.X + xPos, rect.Y + yPos, width, height);
 				this.oParent.VGADriver.F0_VGA_040a_FillRectangle(rect.ScreenID, rect1, (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
 			}
 
@@ -1578,24 +1467,6 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_1000_179a()");
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.AX.Word);
-			this.oCPU.PushWord(this.oCPU.DX.Word);
-			this.oCPU.PushWord(this.oCPU.ES.Word);
-
-			this.oCPU.ES.Word = 0x1000;
-			// Instruction address 0x1000:0x17a2, size: 5
-			this.oParent.VGADriver.F0_VGA_0224_DrawBufferToScreen();
-
-			/*this.oCPU.ES.Word = 0x1000;
-			// Instruction address 0x1000:0x17c0, size: 5
-			this.oParent.VGADriver.F0_VGA_0270(
-					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
-					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x587a)),
-					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5876));*/
-
-			this.oCPU.ES.Word = this.oCPU.PopWord();
-			this.oCPU.DX.Word = this.oCPU.PopWord();
-			this.oCPU.AX.Word = this.oCPU.PopWord();
 			// Near return
 			this.oCPU.Log.ExitBlock("F0_1000_179a");
 		}
