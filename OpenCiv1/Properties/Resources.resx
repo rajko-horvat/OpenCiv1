@@ -121,7 +121,7 @@
   <data name="BinaryResources" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BinaryResources.bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Fonts_xml" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Fonts_xml_gz" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Fonts.xml.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

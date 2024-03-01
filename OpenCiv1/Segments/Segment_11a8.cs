@@ -41,7 +41,7 @@ namespace OpenCiv1
 			this.oCPU.PushWord(0); // stack management - push return segment, ignored
 			this.oCPU.PushWord(0x0055); // stack management - push return offset
 			// Instruction address 0x11a8:0x0050, size: 5
-			this.oParent.VGADriver.F0_VGA_0492_GetFreeMemory();
+			this.oParent.Graphics.F0_VGA_0492_GetFreeMemory();
 			this.oCPU.PopDWord(); // stack management - pop return offset and segment
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6dfc), 0x0);
@@ -502,7 +502,7 @@ namespace OpenCiv1
 
 		L0549:
 			// Instruction address 0x11a8:0x0576, size: 5
-			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
 				0xa0, 0x32, 0xa0, 0x96,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19e8),
@@ -537,7 +537,7 @@ namespace OpenCiv1
 			F0_11a8_02a4(0, 1);
 
 			// Instruction address 0x11a8:0x0611, size: 5
-			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
 				0, 0, 0x140, 0xc8,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),

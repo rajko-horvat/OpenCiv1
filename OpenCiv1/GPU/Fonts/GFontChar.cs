@@ -3,13 +3,13 @@
 namespace OpenCiv1.GPU
 {
 	[Serializable]
-	public class CivFontCharacter
+	public class GFontChar
 	{
 		private int iWidth = 8;
 		private int iHeight = 8;
 		private int[][] aiBitmap;
 
-		public CivFontCharacter()
+		public GFontChar()
 		{
 			this.aiBitmap = new int[this.iHeight][];
 

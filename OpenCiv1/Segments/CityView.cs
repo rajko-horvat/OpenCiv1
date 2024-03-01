@@ -506,7 +506,7 @@ namespace OpenCiv1
 					this.oParent.Segment_1000.F0_1000_0a32(0x2c, 0);
 
 					// Instruction address 0x0000:0x0e3c, size: 5
-					this.oParent.VGADriver.F0_VGA_06b7_DrawScreenToMainScreen(1);
+					this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreen(1);
 				}
 				else
 				{
@@ -520,7 +520,7 @@ namespace OpenCiv1
 					}
 
 					// Instruction address 0x0000:0x0e8c, size: 5
-					this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+					this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 						this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
 						0, 0, 320, 200,
 						this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
@@ -764,14 +764,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E)
 			{
 				// Instruction address 0x0000:0x1152, size: 5
-				this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1,
+				this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1,
 					(ushort)(((0x23 * this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)))) + 1),
 					0x34, 0x22, 0x32);
 			}
 			else
 			{
 				// Instruction address 0x0000:0x1152, size: 5
-				this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1,
+				this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1,
 					(ushort)(((0x23 * this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)))) + 1),
 					1, 0x22, 0x32);
 			}
@@ -1010,22 +1010,22 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.INCWord(this.oCPU.DI.Word);
 
 			// Instruction address 0x0000:0x13c0, size: 5
-			this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1, this.oCPU.DI.Word, 1, 0x1f, 0x1f);
+			this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, this.oCPU.DI.Word, 1, 0x1f, 0x1f);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x817a), this.oCPU.AX.Word);
 			
 			// Instruction address 0x0000:0x13da, size: 5
-			this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1, this.oCPU.DI.Word, 0x21, 0x1f, 0x1f);
+			this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, this.oCPU.DI.Word, 0x21, 0x1f, 0x1f);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x817e), this.oCPU.AX.Word);
 
 			this.oCPU.DI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
 			this.oCPU.DI.Word = this.oCPU.ADDWord(this.oCPU.DI.Word, 0x21);
 
 			// Instruction address 0x0000:0x13f7, size: 5
-			this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1, this.oCPU.DI.Word, 1, 0x1f, 0x1f);
+			this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, this.oCPU.DI.Word, 1, 0x1f, 0x1f);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x817c), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x1411, size: 5
-			this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1, this.oCPU.DI.Word, 0x21, 0x1f, 0x1f);
+			this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, this.oCPU.DI.Word, 0x21, 0x1f, 0x1f);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x8180), this.oCPU.AX.Word);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 
@@ -1055,7 +1055,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E)
 			{
 				// Instruction address 0x0000:0x145f, size: 5
-				this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1,
+				this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1,
 					(ushort)((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) & 0x7) * 0x18),
 					(ushort)(((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) >> 3) << 3) + 0x41),
 					0x18, 0x8);
@@ -1063,7 +1063,7 @@ namespace OpenCiv1
 			else
 			{
 				// Instruction address 0x0000:0x145f, size: 5
-				this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1,
+				this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1,
 					(ushort)((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) & 0x7) * 0x18),
 					(ushort)(((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) >> 3) << 3) + 0x51),
 					0x18, 0x8);
@@ -1115,7 +1115,7 @@ namespace OpenCiv1
 
 		L14fb:
 			// Instruction address 0x0000:0x1529, size: 5
-			this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1,
+			this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1,
 				(ushort)(((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) >> 2) * 0x32) + 1),
 				(ushort)(((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) & 0x3) * 0x32) + 1),
 				0x31, 0x31);
@@ -1244,7 +1244,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = param1;
 			this.oCPU.SI.Word <<= 3;
 			// Instruction address 0x0000:0x166e, size: 5
-			this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1,
+			this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1,
 				this.oCPU.ReadUInt16(this.oCPU.ES.Word, (ushort)(this.oCPU.SI.Word + 0x0)),
 				this.oCPU.ReadUInt16(this.oCPU.ES.Word, (ushort)(this.oCPU.SI.Word + 0x2)),
 				this.oCPU.ReadUInt16(this.oCPU.ES.Word, (ushort)(this.oCPU.SI.Word + 0x4)),
@@ -1278,7 +1278,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L16a0;
 
 			// Instruction address 0x0000:0x1698, size: 5
-			this.oParent.VGADriver.SetColor(0xfd, GBitmap.Color18ToColor(3, 3, 3));
+			this.oParent.Graphics.SetColor(0xfd, GBitmap.Color18ToColor(3, 3, 3));
 
 		L16a0:
 			// Instruction address 0x0000:0x16a5, size: 5
@@ -1323,7 +1323,7 @@ namespace OpenCiv1
 
 		L16fb:
 			// Instruction address 0x0000:0x1731, size: 5
-			this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1,
+			this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1,
 				(ushort)((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)) % 4) * 0x4f),
 				(ushort)(((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)) >> 2) * 0x3d) + 2),
 				0x4e, 0x3c);
@@ -1341,7 +1341,7 @@ namespace OpenCiv1
 
 		L1758:
 			// Instruction address 0x0000:0x178e, size: 5
-			this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1,
+			this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1,
 				(ushort)(((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)) % 4) * 0x4f) + 1),
 				(ushort)(((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)) >> 2) * 0x42) + 1),
 				0x4e, 0x41);
@@ -1356,7 +1356,7 @@ namespace OpenCiv1
 
 		L17a7:
 			// Instruction address 0x0000:0x17c7, size: 5
-			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
 				0, 0x64, 0x140, 0x64,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
@@ -1380,7 +1380,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_033e_ResetTimer();
 			
 			// Instruction address 0x0000:0x1809, size: 5
-			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
 				0, 0, 0x140, 0x64,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
@@ -1417,7 +1417,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NS) goto L1816;
 			
 			// Instruction address 0x0000:0x1875, size: 5
-			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
 				0, 0x64, 0x140, 0x64,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
@@ -1488,7 +1488,7 @@ namespace OpenCiv1
 				for (int i = 0; i < 10; i++)
 				{
 					// Instruction address 0x0000:0x1943, size: 5
-					aBitmaps[i] = this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1, (ushort)(((i % 4) * 79) + 1), (ushort)(((i >> 2) * 64) + 1), 78, 63);
+					aBitmaps[i] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, (ushort)(((i % 4) * 79) + 1), (ushort)(((i >> 2) * 64) + 1), 78, 63);
 				}
 			}
 			else
@@ -1499,13 +1499,13 @@ namespace OpenCiv1
 				for (int i = 0; i < 10; i++)
 				{
 					// Instruction address 0x0000:0x19a0, size: 5
-					aBitmaps[i] = this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1, (ushort)(((i % 4) * 75) + 1), (ushort)(((i >> 2) * 66) + 1), 74, 65);
+					aBitmaps[i] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, (ushort)(((i % 4) * 75) + 1), (ushort)(((i >> 2) * 66) + 1), 74, 65);
 				}
 			}
 
 			// Draw City View to screen 0
 			// Instruction address 0x0000:0x19d9, size: 5
-			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
 				0, 100, 320, 100,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
@@ -1518,7 +1518,7 @@ namespace OpenCiv1
 
 				// Draw a lower portion of City View to screen 0
 				// Instruction address 0x0000:0x1a1b, size: 5
-				this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+				this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
 					0, 0, 320, 100,
 					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
@@ -1539,7 +1539,7 @@ namespace OpenCiv1
 
 				// Draw a lower portion of City View to screen 0
 				// Instruction address 0x0000:0x1a9a, size: 5
-				this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+				this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
 					0, 100, 320, 100,
 					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
@@ -1607,7 +1607,7 @@ namespace OpenCiv1
 
 		L1b20:
 			// Instruction address 0x0000:0x1b56, size: 5
-			this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1,
+			this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1,
 				(ushort)(((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)) % 4) * 0x4f) + 1),
 				(ushort)(((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)) >> 2) * 0x42) + 1),
 				0x4e, 0x41);
@@ -1624,7 +1624,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
 			// Instruction address 0x0000:0x1b94, size: 5
-			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
 				0,0x64,0x140,0x64,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
@@ -1648,7 +1648,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_033e_ResetTimer();
 
 			// Instruction address 0x0000:0x1bd5, size: 5
-			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
 				0,0,0x140,0x64,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
@@ -1693,7 +1693,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L1be2;
 
 			// Instruction address 0x0000:0x1c5c, size: 5
-			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
 				0, 0x64, 0x140, 0x64,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),

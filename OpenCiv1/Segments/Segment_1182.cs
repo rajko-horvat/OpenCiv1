@@ -44,7 +44,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x1182:0x0053, size: 5
-			this.oParent.VGADriver.F0_VGA_11d7_DrawString(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), xPos, yPos, text);
+			this.oParent.Graphics.F0_VGA_11d7_DrawString(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), xPos, yPos, text);
 		}
 
 		/// <summary>
@@ -189,9 +189,9 @@ namespace OpenCiv1
 		{
 			ushort usFontID = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0x10));
 
-			this.oCPU.AX.Word = (ushort)this.oParent.VGADriver.GetDrawStringSize(usFontID, text).Width;
+			this.oCPU.AX.Word = (ushort)this.oParent.Graphics.GetDrawStringSize(usFontID, text).Width;
 
-			return this.oParent.VGADriver.GetDrawStringSize(usFontID, text).Width;
+			return this.oParent.Graphics.GetDrawStringSize(usFontID, text).Width;
 		}
 
 		/// <summary>

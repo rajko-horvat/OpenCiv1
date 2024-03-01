@@ -444,7 +444,7 @@ namespace OpenCiv1
 						int iCellWidth = Math.Min(iWidthTemp, 32);
 
 						// Instruction address 0x2dc4:0x0435, size: 5
-						this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 							this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19e8),
 							288, 120, iCellWidth, iCellHeight,
 							this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
@@ -498,10 +498,10 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L049f;
 			
 			// Instruction address 0x2dc4:0x04b9, size: 5
-			this.oParent.VGADriver.F0_VGA_0162_SetColorsFromColorStruct(0xbdee);
+			this.oParent.Graphics.F0_VGA_0162_SetColorsFromColorStruct(0xbdee);
 			
 			// Instruction address 0x2dc4:0x04d2, size: 3
-			this.oParent.VGADriver.SetColor(0x2d, GBitmap.Color18ToColor(0x33, 0x27, 0x19));
+			this.oParent.Graphics.SetColor(0x2d, GBitmap.Color18ToColor(0x33, 0x27, 0x19));
 
 		L04d8:
 			this.oCPU.SI.Word = this.oCPU.PopWord();

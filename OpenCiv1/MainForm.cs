@@ -72,16 +72,16 @@ namespace OpenCiv1
 
 		private void ScreenCountChangeMethod()
 		{
-			if (this.oGame != null && this.oGame.VGADriver != null)
+			if (this.oGame != null && this.oGame.Graphics != null)
 			{
-				lock (this.oGame.VGADriver.VGALock)
+				lock (this.oGame.Graphics.GLock)
 				{
 					int iScreenCount = 0;
 
 					// update screen list
-					for (int i = 0; i < this.oGame.VGADriver.Screens.Count; i++)
+					for (int i = 0; i < this.oGame.Graphics.Screens.Count; i++)
 					{
-						BKeyValuePair<int, GBitmap> item = this.oGame.VGADriver.Screens[i];
+						BKeyValuePair<int, GBitmap> item = this.oGame.Graphics.Screens[i];
 
 						if (item.Value.Visible)
 						{
@@ -160,11 +160,11 @@ namespace OpenCiv1
 
 		private void ToggleScreen(int screen)
 		{
-			if (this.oGame != null && this.oGame.VGADriver != null)
+			if (this.oGame != null && this.oGame.Graphics != null)
 			{
-				if (this.oGame.VGADriver.Screens.ContainsKey(screen))
+				if (this.oGame.Graphics.Screens.ContainsKey(screen))
 				{
-					GBitmap oScreen = this.oGame.VGADriver.Screens.GetValueByKey(screen);
+					GBitmap oScreen = this.oGame.Graphics.Screens.GetValueByKey(screen);
 
 					oScreen.Visible = !oScreen.Visible;
 
@@ -180,9 +180,9 @@ namespace OpenCiv1
 
 		private void tmrRefresh_Tick(object sender, EventArgs e)
 		{
-			if (this.oGame != null && this.oGame.VGADriver != null)
+			if (this.oGame != null && this.oGame.Graphics != null)
 			{
-				lock (this.oGame.VGADriver.VGALock)
+				lock (this.oGame.Graphics.GLock)
 				{
 					Graphics g = Graphics.FromHwnd(this.Handle);
 					RedrawScreens(g, false);
@@ -197,9 +197,9 @@ namespace OpenCiv1
 			Graphics g = e.Graphics;
 			g.FillRectangle(Brushes.Black, this.ClientRectangle);
 
-			if (this.oGame != null && this.oGame.VGADriver != null)
+			if (this.oGame != null && this.oGame.Graphics != null)
 			{
-				lock (this.oGame.VGADriver.VGALock)
+				lock (this.oGame.Graphics.GLock)
 				{
 					RedrawScreens(g, true);
 				}
@@ -215,9 +215,9 @@ namespace OpenCiv1
 			{
 				g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 
-				for (int i = 0; i < this.oGame.VGADriver.Screens.Count; i++)
+				for (int i = 0; i < this.oGame.Graphics.Screens.Count; i++)
 				{
-					BKeyValuePair<int, GBitmap> item = this.oGame.VGADriver.Screens[i];
+					BKeyValuePair<int, GBitmap> item = this.oGame.Graphics.Screens[i];
 
 					if (item.Value.Visible)
 					{
@@ -287,7 +287,7 @@ namespace OpenCiv1
 					}
 				}
 
-				if (this.oGame.VGADriver.CPU.Pause)
+				if (this.oGame.Graphics.CPU.Pause)
 				{
 					string sTemp = "Game paused";
 					SizeF size = g.MeasureString(sTemp, this.oLargeFont);
@@ -302,9 +302,9 @@ namespace OpenCiv1
 		{
 			if (this.oGame != null)
 			{
-				lock (this.oGame.VGADriver.VGALock)
+				lock (this.oGame.Graphics.GLock)
 				{
-					this.oGame.VGADriver.Keys.Enqueue(e.KeyChar);
+					this.oGame.Graphics.Keys.Enqueue(e.KeyChar);
 				}
 			}
 		}
@@ -313,7 +313,7 @@ namespace OpenCiv1
 		{
 			if (this.oGame != null)
 			{
-				lock (this.oGame.VGADriver.VGALock)
+				lock (this.oGame.Graphics.GLock)
 				{
 					if (e.Modifiers == Keys.None)
 					{
@@ -321,79 +321,79 @@ namespace OpenCiv1
 						{
 							case Keys.NumPad0:
 								// for testing
-								this.oGame.VGADriver.Keys.Enqueue(0x475c);
+								this.oGame.Graphics.Keys.Enqueue(0x475c);
 								break;
 
 							case Keys.F1:
-								this.oGame.VGADriver.Keys.Enqueue(0x3b00);
+								this.oGame.Graphics.Keys.Enqueue(0x3b00);
 								break;
 
 							case Keys.F2:
-								this.oGame.VGADriver.Keys.Enqueue(0x3c00);
+								this.oGame.Graphics.Keys.Enqueue(0x3c00);
 								break;
 
 							case Keys.F3:
-								this.oGame.VGADriver.Keys.Enqueue(0x3d00);
+								this.oGame.Graphics.Keys.Enqueue(0x3d00);
 								break;
 
 							case Keys.F4:
-								this.oGame.VGADriver.Keys.Enqueue(0x3e00);
+								this.oGame.Graphics.Keys.Enqueue(0x3e00);
 								break;
 
 							case Keys.F5:
-								this.oGame.VGADriver.Keys.Enqueue(0x3f00);
+								this.oGame.Graphics.Keys.Enqueue(0x3f00);
 								break;
 
 							case Keys.F6:
-								this.oGame.VGADriver.Keys.Enqueue(0x4000);
+								this.oGame.Graphics.Keys.Enqueue(0x4000);
 								break;
 
 							case Keys.F7:
-								this.oGame.VGADriver.Keys.Enqueue(0x4100);
+								this.oGame.Graphics.Keys.Enqueue(0x4100);
 								break;
 
 							case Keys.F8:
-								this.oGame.VGADriver.Keys.Enqueue(0x4200);
+								this.oGame.Graphics.Keys.Enqueue(0x4200);
 								break;
 
 							case Keys.F9:
-								this.oGame.VGADriver.Keys.Enqueue(0x4300);
+								this.oGame.Graphics.Keys.Enqueue(0x4300);
 								break;
 
 							case Keys.F10:
-								this.oGame.VGADriver.Keys.Enqueue(0x4400);
+								this.oGame.Graphics.Keys.Enqueue(0x4400);
 								break;
 
 							case Keys.Down:
-								this.oGame.VGADriver.Keys.Enqueue(0x5000);
+								this.oGame.Graphics.Keys.Enqueue(0x5000);
 								break;
 
 							case Keys.Left:
-								this.oGame.VGADriver.Keys.Enqueue(0x4b00);
+								this.oGame.Graphics.Keys.Enqueue(0x4b00);
 								break;
 
 							case Keys.Right:
-								this.oGame.VGADriver.Keys.Enqueue(0x4d00);
+								this.oGame.Graphics.Keys.Enqueue(0x4d00);
 								break;
 
 							case Keys.Up:
-								this.oGame.VGADriver.Keys.Enqueue(0x4800);
+								this.oGame.Graphics.Keys.Enqueue(0x4800);
 								break;
 
 							case Keys.Home:
-								this.oGame.VGADriver.Keys.Enqueue(0x4700);
+								this.oGame.Graphics.Keys.Enqueue(0x4700);
 								break;
 
 							case Keys.End:
-								this.oGame.VGADriver.Keys.Enqueue(0x4f00);
+								this.oGame.Graphics.Keys.Enqueue(0x4f00);
 								break;
 
 							case Keys.PageUp:
-								this.oGame.VGADriver.Keys.Enqueue(0x4900);
+								this.oGame.Graphics.Keys.Enqueue(0x4900);
 								break;
 
 							case Keys.PageDown:
-								this.oGame.VGADriver.Keys.Enqueue(0x5100);
+								this.oGame.Graphics.Keys.Enqueue(0x5100);
 								break;
 						}
 					}
@@ -402,35 +402,35 @@ namespace OpenCiv1
 						switch (e.KeyCode)
 						{
 							case Keys.Down:
-								this.oGame.VGADriver.Keys.Enqueue(0x5032);
+								this.oGame.Graphics.Keys.Enqueue(0x5032);
 								break;
 
 							case Keys.Left:
-								this.oGame.VGADriver.Keys.Enqueue(0x4b34);
+								this.oGame.Graphics.Keys.Enqueue(0x4b34);
 								break;
 
 							case Keys.Right:
-								this.oGame.VGADriver.Keys.Enqueue(0x4d36);
+								this.oGame.Graphics.Keys.Enqueue(0x4d36);
 								break;
 
 							case Keys.Up:
-								this.oGame.VGADriver.Keys.Enqueue(0x4838);
+								this.oGame.Graphics.Keys.Enqueue(0x4838);
 								break;
 
 							case Keys.Home:
-								this.oGame.VGADriver.Keys.Enqueue(0x4737);
+								this.oGame.Graphics.Keys.Enqueue(0x4737);
 								break;
 
 							case Keys.End:
-								this.oGame.VGADriver.Keys.Enqueue(0x4f31);
+								this.oGame.Graphics.Keys.Enqueue(0x4f31);
 								break;
 
 							case Keys.PageUp:
-								this.oGame.VGADriver.Keys.Enqueue(0x4939);
+								this.oGame.Graphics.Keys.Enqueue(0x4939);
 								break;
 
 							case Keys.PageDown:
-								this.oGame.VGADriver.Keys.Enqueue(0x5133);
+								this.oGame.Graphics.Keys.Enqueue(0x5133);
 								break;
 						}
 					}
@@ -454,31 +454,31 @@ namespace OpenCiv1
 								break;
 
 							case Keys.A:
-								this.oGame.VGADriver.Keys.Enqueue(0x1e00);
+								this.oGame.Graphics.Keys.Enqueue(0x1e00);
 								break;
 
 							case Keys.C:
-								this.oGame.VGADriver.Keys.Enqueue(0x2e00);
+								this.oGame.Graphics.Keys.Enqueue(0x2e00);
 								break;
 
 							case Keys.D:
-								this.oGame.VGADriver.Keys.Enqueue(0x2000);
+								this.oGame.Graphics.Keys.Enqueue(0x2000);
 								break;
 
 							case Keys.G:
-								this.oGame.VGADriver.Keys.Enqueue(0x2200);
+								this.oGame.Graphics.Keys.Enqueue(0x2200);
 								break;
 
 							case Keys.H:
-								this.oGame.VGADriver.Keys.Enqueue(0x2300);
+								this.oGame.Graphics.Keys.Enqueue(0x2300);
 								break;
 
 							case Keys.M:
-								this.oGame.VGADriver.Keys.Enqueue(0x3200);
+								this.oGame.Graphics.Keys.Enqueue(0x3200);
 								break;
 
 							case Keys.O:
-								this.oGame.VGADriver.Keys.Enqueue(0x1800);
+								this.oGame.Graphics.Keys.Enqueue(0x1800);
 								break;
 
 							case Keys.P:
@@ -486,19 +486,19 @@ namespace OpenCiv1
 								break;
 
 							case Keys.Q:
-								this.oGame.VGADriver.Keys.Enqueue(0x1000);
+								this.oGame.Graphics.Keys.Enqueue(0x1000);
 								break;
 
 							case Keys.R:
-								this.oGame.VGADriver.Keys.Enqueue(0x1300);
+								this.oGame.Graphics.Keys.Enqueue(0x1300);
 								break;
 
 							case Keys.V:
-								this.oGame.VGADriver.Keys.Enqueue(0x2f00);
+								this.oGame.Graphics.Keys.Enqueue(0x2f00);
 								break;
 
 							case Keys.W:
-								this.oGame.VGADriver.Keys.Enqueue(0x1100);
+								this.oGame.Graphics.Keys.Enqueue(0x1100);
 								break;
 						}
 					}

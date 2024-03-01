@@ -38,11 +38,11 @@ namespace OpenCiv1
 			if (screenID >= 0 && (Path.GetExtension(filename).Equals(".pic", StringComparison.InvariantCultureIgnoreCase) ||
 				Path.GetExtension(filename).Equals(".map", StringComparison.InvariantCultureIgnoreCase)))
 			{
-				if (this.oParent.VGADriver.Screens.ContainsKey(screenID))
+				if (this.oParent.Graphics.Screens.ContainsKey(screenID))
 				{
 					byte[] palette;
 					ushort startPtr;
-					this.oParent.VGADriver.Screens.GetValueByKey(screenID).LoadPIC(filename, xPos, yPos, out palette);
+					this.oParent.Graphics.Screens.GetValueByKey(screenID).LoadPIC(filename, xPos, yPos, out palette);
 
 					if (palette != null)
 					{
@@ -72,7 +72,7 @@ namespace OpenCiv1
 								break;
 						}
 						if (palettePtr == 1 || palettePtr == 0xba06)
-							this.oParent.VGADriver.SetColorsFromColorStruct(palette);
+							this.oParent.Graphics.SetColorsFromColorStruct(palette);
 					}
 				}
 				else
@@ -115,7 +115,7 @@ namespace OpenCiv1
 							break;
 					}
 					if (palettePtr == 1 || palettePtr == 0xba06)
-						this.oParent.VGADriver.SetColorsFromColorStruct(palette);
+						this.oParent.Graphics.SetColorsFromColorStruct(palette);
 				}
 			}
 
@@ -129,7 +129,7 @@ namespace OpenCiv1
 		/// <param name="filenamePtr"></param>
 		public ushort F0_2fa1_044c_LoadIcon(ushort filenamePtr)
 		{
-			return this.oParent.VGADriver.LoadIcon(MSCAPI.GetDOSFileName(this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr))));
+			return this.oParent.Graphics.LoadIcon(MSCAPI.GetDOSFileName(this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr))));
 		}
 		#endregion
 	}

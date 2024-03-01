@@ -49,7 +49,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x0000:0x0071, size: 5
-			this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1,
+			this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x4be2)),
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x4be4)),
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x4be6)),
@@ -186,7 +186,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 0, 0, 320, 200, 0);
 
 			// Instruction address 0x0000:0x0243, size: 5
-			this.oParent.VGADriver.F0_VGA_0162_SetColorsFromColorStruct(0xc5be);
+			this.oParent.Graphics.F0_VGA_0162_SetColorsFromColorStruct(0xc5be);
 			
 			// Instruction address 0x0000:0x024b, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_05dd();
@@ -483,11 +483,11 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, this.oCPU.SI.Word));
 
 			// Instruction address 0x0000:0x0571, size: 5
-			this.oParent.VGADriver.F0_VGA_0599_DrawLine(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
 				0, 8, 0, 199, this.oCPU.ReadUInt16(this.oCPU.DS.Word, this.oCPU.SI.Word));
 
 			// Instruction address 0x0000:0x058a, size: 5
-			this.oParent.VGADriver.F0_VGA_0599_DrawLine(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
 				0, 199, 240, 199, this.oCPU.ReadUInt16(this.oCPU.DS.Word, this.oCPU.SI.Word));
 
 		L0592:
@@ -1038,7 +1038,7 @@ namespace OpenCiv1
 
 		L0c8d:
 			// Instruction address 0x0000:0x0c9c, size: 5
-			this.oParent.VGADriver.F0_VGA_038c_GetPixel(0, 
+			this.oParent.Graphics.F0_VGA_038c_GetPixel(0, 
 				this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(0x683e + this.oCPU.BX.Word)),
 				this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(0x6852 + this.oCPU.BX.Word)));
 

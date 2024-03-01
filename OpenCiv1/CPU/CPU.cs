@@ -153,12 +153,12 @@ namespace IRB.VirtualCPU
 			{
 				this.bInTimer = true;
 
-				if (this.oMouseLocation != this.oParent.VGADriver.ScreenMouseLocation ||
-					this.oMouseButtons != this.oParent.VGADriver.ScreenMouseButtons)
+				if (this.oMouseLocation != this.oParent.Graphics.ScreenMouseLocation ||
+					this.oMouseButtons != this.oParent.Graphics.ScreenMouseButtons)
 				{
-					if (this.oMouseButtons != this.oParent.VGADriver.ScreenMouseButtons)
+					if (this.oMouseButtons != this.oParent.Graphics.ScreenMouseButtons)
 					{
-						this.oLog.WriteLine($"Mouse buttons changed from 0x{this.oMouseButtons:x2} to 0x{this.oParent.VGADriver.ScreenMouseButtons:x2}");
+						this.oLog.WriteLine($"Mouse buttons changed from 0x{this.oMouseButtons:x2} to 0x{this.oParent.Graphics.ScreenMouseButtons:x2}");
 					}
 
 					this.PushWord(this.oAX.Word);
@@ -173,15 +173,15 @@ namespace IRB.VirtualCPU
 					this.PushF();
 
 					this.oAX.Word = 0;
-					if (this.oMouseLocation != this.oParent.VGADriver.ScreenMouseLocation)
+					if (this.oMouseLocation != this.oParent.Graphics.ScreenMouseLocation)
 					{
 						this.oAX.Word |= 1;
 					}
-					this.oCX.Word = (ushort)this.oParent.VGADriver.ScreenMouseLocation.X;
-					this.oDX.Word = (ushort)this.oParent.VGADriver.ScreenMouseLocation.Y;
+					this.oCX.Word = (ushort)this.oParent.Graphics.ScreenMouseLocation.X;
+					this.oDX.Word = (ushort)this.oParent.Graphics.ScreenMouseLocation.Y;
 
 					this.oBX.Word = 0;
-					ushort usLeft = (ushort)(this.oParent.VGADriver.ScreenMouseButtons & 1);
+					ushort usLeft = (ushort)(this.oParent.Graphics.ScreenMouseButtons & 1);
 					this.oBX.Word |= usLeft;
 					if ((this.oMouseButtons & 1) != usLeft)
 					{
@@ -191,7 +191,7 @@ namespace IRB.VirtualCPU
 							this.oAX.Word |= 4;
 					}
 
-					ushort usRight = (ushort)(this.oParent.VGADriver.ScreenMouseButtons & 2);
+					ushort usRight = (ushort)(this.oParent.Graphics.ScreenMouseButtons & 2);
 					this.oBX.Word |= usRight;
 					if ((this.oMouseButtons & 2) != usRight)
 					{
@@ -201,8 +201,8 @@ namespace IRB.VirtualCPU
 							this.oAX.Word |= 0x10;
 					}
 
-					this.oMouseLocation = this.oParent.VGADriver.ScreenMouseLocation;
-					this.oMouseButtons = this.oParent.VGADriver.ScreenMouseButtons;
+					this.oMouseLocation = this.oParent.Graphics.ScreenMouseLocation;
+					this.oMouseButtons = this.oParent.Graphics.ScreenMouseButtons;
 
 					this.oParent.Segment_1000.F0_1000_17db_MouseEvent();
 
@@ -2051,15 +2051,15 @@ namespace IRB.VirtualCPU
 
 		private void DOSKeyboardInputWithEcho()
 		{
-			while (this.oParent.VGADriver.Keys.Count == 0)
+			while (this.oParent.Graphics.Keys.Count == 0)
 			{
 				Thread.Sleep(200);
 				this.DoEvents();
 			}
 
-			lock (this.oParent.VGADriver.VGALock)
+			lock (this.oParent.Graphics.GLock)
 			{
-				int iTemp = this.oParent.VGADriver.Keys.Dequeue();
+				int iTemp = this.oParent.Graphics.Keys.Dequeue();
 				if (iTemp < 0x80)
 				{
 					this.oAX.Low = (byte)(iTemp & 0xff);
@@ -2186,12 +2186,12 @@ namespace IRB.VirtualCPU
 			}
 			else
 			{
-				if (this.oParent.VGADriver.Keys.Count > 0)
+				if (this.oParent.Graphics.Keys.Count > 0)
 				{
 					oFlags.Z = false;
-					lock (this.oParent.VGADriver.VGALock)
+					lock (this.oParent.Graphics.GLock)
 					{
-						int iTemp = this.oParent.VGADriver.Keys.Dequeue();
+						int iTemp = this.oParent.Graphics.Keys.Dequeue();
 						if (iTemp < 0x80)
 						{
 							this.oAX.Low = (byte)(iTemp & 0xff);

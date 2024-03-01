@@ -26,22 +26,22 @@ namespace OpenCiv1
 		#region Keyboard operations
 		public short kbhit()
 		{
-			this.oCPU.AX.Word = (ushort)((this.oParent.VGADriver.Keys.Count > 0) ? 0xffff : 0);
+			this.oCPU.AX.Word = (ushort)((this.oParent.Graphics.Keys.Count > 0) ? 0xffff : 0);
 
 			return (short)this.oCPU.AX.Word;
 		}
 
 		public short getch()
 		{
-			while (this.oParent.VGADriver.Keys.Count == 0)
+			while (this.oParent.Graphics.Keys.Count == 0)
 			{
 				Thread.Sleep(200);
 				this.oCPU.DoEvents();
 			}
 
-			lock (this.oParent.VGADriver.VGALock)
+			lock (this.oParent.Graphics.GLock)
 			{
-				this.oCPU.AX.Word = (ushort)this.oParent.VGADriver.Keys.Dequeue();
+				this.oCPU.AX.Word = (ushort)this.oParent.Graphics.Keys.Dequeue();
 			}
 
 			return (short)this.oCPU.AX.Word;
@@ -136,9 +136,9 @@ namespace OpenCiv1
 			if (segment >= 0xb000)
 			{
 				// this is a graphics bitmap
-				if (this.oParent.VGADriver.Bitmaps.ContainsKey(segment))
+				if (this.oParent.Graphics.Bitmaps.ContainsKey(segment))
 				{
-					this.oParent.VGADriver.Bitmaps.RemoveByKey(segment);
+					this.oParent.Graphics.Bitmaps.RemoveByKey(segment);
 
 					this.oCPU.Flags.C = false;
 					this.oCPU.AX.Word = 0;

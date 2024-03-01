@@ -324,7 +324,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0378, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
 				0, 0, 0x140, 0xc8,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
@@ -435,7 +435,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x04d9, size: 5
 			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
-			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
 				0, 0, 0x140, 0xc8,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
@@ -778,7 +778,7 @@ namespace OpenCiv1
 				if (map == null)
 					throw new Exception($"Can't read Map file '{filename}.MAP'");
 
-				this.oParent.VGADriver.Screens.SetValueByKey(2, map);
+				this.oParent.Graphics.Screens.SetValueByKey(2, map);
 
 				// read sve file
 				FileStream reader = new FileStream(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.SVE"), FileMode.Open);
@@ -1245,7 +1245,7 @@ namespace OpenCiv1
 			try
 			{
 				// write map file
-				this.oParent.VGADriver.Screens.GetValueByKey(2).SaveToPIC(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.MAP"), false);
+				this.oParent.Graphics.Screens.GetValueByKey(2).SaveToPIC(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.MAP"), false);
 
 				// write sve file
 				FileStream writer = new FileStream(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.SVE"), FileMode.Create);

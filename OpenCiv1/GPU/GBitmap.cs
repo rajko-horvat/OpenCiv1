@@ -419,7 +419,7 @@ namespace OpenCiv1.GPU
 			}
 		}
 
-		public void DrawString(string text, CivFont font, GRectangle rect, byte frontColor, byte backColor, PixelWriteModeEnum writeMode)
+		public void DrawString(string text, GFont font, GRectangle rect, byte frontColor, byte backColor, PixelWriteModeEnum writeMode)
 		{
 			GRectangle rect1 = new GRectangle(rect.Location, rect.Size);
 			rect1.Intersect(this.oRectangle);
@@ -432,7 +432,7 @@ namespace OpenCiv1.GPU
 				{
 					char ch = text[i];
 					frontColor = (byte)((ch > 0x7f) ? (ch - 0x80) : frontColor);
-					CivFontCharacter fontCh;
+					GFontChar fontCh;
 
 					if (ch > 0x7f)
 						continue;

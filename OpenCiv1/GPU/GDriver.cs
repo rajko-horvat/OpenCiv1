@@ -12,35 +12,12 @@ namespace OpenCiv1.GPU
 		private CPU oCPU;
 
 		private MainForm? oMainForm = null;
-		public object VGALock = new object();
+		public object GLock = new object();
 		private BDictionary<int, GBitmap> aScreens = new BDictionary<int, GBitmap>();
-		private int iBitmapNextID = 0xb000;
+		private int iNextBitmapID = 0xb000;
 		private BDictionary<int, GBitmap> aBitmaps = new BDictionary<int, GBitmap>();
 		private Queue<int> aKeys = new Queue<int>();
-		private CivFonts aFonts;
-
-		/*private ushort Var_89e = 0;
-		private ushort Var_8a0 = 0;
-		private ushort Var_8a2 = 0;
-		private ushort Var_8a4 = 0;
-		private ushort Var_8a6 = 0;
-		private ushort Var_8a8 = 0;
-		private ushort Var_8aa = 0;
-		private ushort Var_8ac = 0;
-		private ushort Var_8ae = 0;
-		private ushort Var_8b0 = 0;
-
-		private ushort Var_15c0 = 0;
-		private short Var_15c2_xPos = 0;
-		private short Var_15c4_yPos = 0;
-		private ushort Var_15ca_BufferX = 0;
-		private ushort Var_15cc_BufferY = 0;
-		private ushort Var_15ce_BufferWidth = 0;
-		private ushort Var_15d0_BufferHeight = 0;
-		private ushort Var_15d2_BufferFlag = 0;
-		private ushort Var_15d4_ScreenID = 0;
-
-		private byte[] Var_15d6_Buffer = new byte[512];*/
+		private GFonts aFonts;
 
 		public GDriver(OpenCiv1 parent, MainForm form)
 		{
@@ -48,9 +25,9 @@ namespace OpenCiv1.GPU
 			this.oCPU = parent.CPU;
 			this.oMainForm = form;
 
-			this.aScreens.Add(0, new GBitmap()); // our Main screen
+			this.aScreens.Add(0, new GBitmap()); // Main screen
 
-			byte[]? fonts = (byte[]?)Resources.ResourceManager.GetObject("Fonts_xml");
+			byte[]? fonts = (byte[]?)Resources.ResourceManager.GetObject("Fonts_xml_gz");
 
 			if (fonts == null)
 			{
@@ -58,10 +35,18 @@ namespace OpenCiv1.GPU
 			}
 
 			Stream fonts1 = new GZipStream(new MemoryStream(fonts), CompressionMode.Decompress);
-			this.aFonts = CivFonts.Deserialize(fonts1);
+			//Stream fonts1 = new MemoryStream(fonts);
+			this.aFonts = GFonts.Deserialize(fonts1);
+
 			fonts1.Close();
+			
+			//Stream writer = new GZipStream(new FileStream("Fonts.xml.gz", FileMode.Create), CompressionMode.Compress);
+			//writer.Write(fonts, 0, fonts.Length);
+			//writer.Flush();
+			//writer.Close();
 		}
 
+		#region Properties
 		public CPU CPU
 		{
 			get { return this.oCPU; }
@@ -108,6 +93,7 @@ namespace OpenCiv1.GPU
 					return 0;
 			}
 		}
+		#endregion
 
 		#region Memory and Initialization functions
 		public ushort F0_VGA_0492_GetFreeMemory()
@@ -124,7 +110,7 @@ namespace OpenCiv1.GPU
 			// function body
 			if (!this.aScreens.ContainsKey(screenID))
 			{
-				lock (this.VGALock)
+				lock (this.GLock)
 				{
 					GBitmap bitmap = new GBitmap();
 					bitmap.Visible = false; // additional screens are not shown by default
@@ -140,49 +126,11 @@ namespace OpenCiv1.GPU
 		}
 		#endregion
 
-		/*public void F0_VGA_063c(ushort screenID)
-		{
-			LogWrapper oTempLog = this.oCPU.Log;
-			this.oCPU.Log.WriteLine($"// Calling: F0_VGA_063c(0x{screenID:x4})");
-			this.oCPU.Log = this.oParent.VGADriverLog;
-			this.oCPU.Log.EnterBlock($"F0_VGA_063c(0x{screenID:x4})");
-
-			// function body
-			if (screenID != 0)
-			{
-				if (this.aScreens.ContainsKey(0))
-				{
-					if (this.aScreens.ContainsKey(screenID))
-					{
-						lock (this.VGALock)
-						{
-							VGABitmap mainScreen = this.aScreens.GetValueByKey(0);
-							VGABitmap screen = this.aScreens.GetValueByKey(screenID);
-
-							mainScreen.DrawImage(Point.Empty, screen, new Rectangle(0, 0, 320, 100), false);
-						}
-					}
-					else
-					{
-						throw new Exception($"The screen {screenID} is not allocated");
-					}
-				}
-				else
-				{
-					throw new Exception($"The screen 0 is not allocated");
-				}
-			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("'F0_VGA_063c'");
-			this.oCPU.Log = oTempLog;
-		}*/
-
 		#region Palette functions
 		public void F0_VGA_010c_SetColorsByIndexArray(ushort indexArrayPtr)
 		{
 			// function body
-			lock (this.VGALock)
+			lock (this.GLock)
 			{
 				Color[] aColors = new Color[16];
 
@@ -203,7 +151,7 @@ namespace OpenCiv1.GPU
 
 		public void SetColor(byte index, Color color)
 		{
-			lock (this.VGALock)
+			lock (this.GLock)
 			{
 				// set colors to all planes, as this is what original code does
 				for (int i = 0; i < this.aScreens.Count; i++)
@@ -223,7 +171,7 @@ namespace OpenCiv1.GPU
 				int iCount = (iTo - iFrom) + 1;
 				colorStructPtr += 6;
 
-				lock (this.VGALock)
+				lock (this.GLock)
 				{
 					Color[] aColors = new Color[iCount];
 
@@ -256,7 +204,7 @@ namespace OpenCiv1.GPU
 				int iCount = (iTo - iFrom) + 1;
 				iStructPos += 6;
 
-				lock (this.VGALock)
+				lock (this.GLock)
 				{
 					Color[] aColors = new Color[iCount];
 
@@ -286,7 +234,7 @@ namespace OpenCiv1.GPU
 			{
 				if (this.aScreens.ContainsKey(screenID))
 				{
-					lock (this.VGALock)
+					lock (this.GLock)
 					{
 						GBitmap screen0 = this.aScreens.GetValueByKey(0);
 
@@ -317,7 +265,7 @@ namespace OpenCiv1.GPU
 
 				if (this.aScreens.ContainsKey(rectTo.ScreenID))
 				{
-					lock (this.VGALock)
+					lock (this.GLock)
 					{
 						GBitmap destBitmap = this.aScreens.GetValueByKey(rectTo.ScreenID);
 
@@ -340,7 +288,7 @@ namespace OpenCiv1.GPU
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
 			{
-				lock (this.VGALock)
+				lock (this.GLock)
 				{
 					GBitmap screen = this.aScreens.GetValueByKey(screenID);
 					GBitmap bitmap = new GBitmap(width, height);
@@ -349,12 +297,12 @@ namespace OpenCiv1.GPU
 
 					bitmap.DrawImage(0, 0, screen, rect, false);
 
-					this.aBitmaps.Add(this.iBitmapNextID, bitmap);
+					this.aBitmaps.Add(this.iNextBitmapID, bitmap);
 
-					//bitmap.Bitmap.SaveToPIC($"Bitmaps{Path.DirectorySeparatorChar}Image_{this.iBitmapNextID:x4}.png", ImageFormat.Png);
+					//bitmap.Bitmap.SaveToPIC($"Bitmaps{Path.DirectorySeparatorChar}Image_{this.iNextBitmapID:x4}.png", ImageFormat.Png);
 
-					this.oCPU.AX.Word = (ushort)this.iBitmapNextID;
-					this.iBitmapNextID++;
+					this.oCPU.AX.Word = (ushort)this.iNextBitmapID;
+					this.iNextBitmapID++;
 				}
 			}
 			else
@@ -374,7 +322,7 @@ namespace OpenCiv1.GPU
 			{
 				if (this.aBitmaps.ContainsKey(bitmapPtr))
 				{
-					lock (this.VGALock)
+					lock (this.GLock)
 					{
 						GBitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 						GBitmap bitmap = this.aBitmaps.GetValueByKey(bitmapPtr);
@@ -402,7 +350,7 @@ namespace OpenCiv1.GPU
 			{
 				if (this.aBitmaps.ContainsKey(bitmapPtr))
 				{
-					lock (this.VGALock)
+					lock (this.GLock)
 					{
 						GBitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 						GBitmap bitmap = this.aBitmaps.GetValueByKey(bitmapPtr);
@@ -428,10 +376,10 @@ namespace OpenCiv1.GPU
 
 			if (bitmap != null)
 			{
-				this.aBitmaps.Add(this.iBitmapNextID, bitmap);
+				this.aBitmaps.Add(this.iNextBitmapID, bitmap);
 
-				this.oCPU.AX.Word = (ushort)this.iBitmapNextID;
-				this.iBitmapNextID++;
+				this.oCPU.AX.Word = (ushort)this.iNextBitmapID;
+				this.iNextBitmapID++;
 			}
 			else
 			{
@@ -446,7 +394,7 @@ namespace OpenCiv1.GPU
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
 			{
-				lock (this.VGALock)
+				lock (this.GLock)
 				{
 					this.oCPU.AX.Word = this.aScreens.GetValueByKey(screenID).GetPixel(xPos, yPos);
 				}
@@ -464,7 +412,7 @@ namespace OpenCiv1.GPU
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
 			{
-				lock (this.VGALock)
+				lock (this.GLock)
 				{
 					GBitmap screen = this.aScreens.GetValueByKey(screenID);
 
@@ -484,7 +432,7 @@ namespace OpenCiv1.GPU
 
 			if (this.aScreens.ContainsKey(rect.ScreenID))
 			{
-				lock (this.VGALock)
+				lock (this.GLock)
 				{
 					GBitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 
@@ -507,7 +455,7 @@ namespace OpenCiv1.GPU
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
 			{
-				lock (this.VGALock)
+				lock (this.GLock)
 				{
 					this.aScreens.GetValueByKey(screenID).FillRectangle(rect, frontColor, (PixelWriteModeEnum)pixelMode);
 				}
@@ -521,7 +469,7 @@ namespace OpenCiv1.GPU
 		public void F0_VGA_009a_ReplaceColor(ushort rectPtr, int xPos, int yPos, int width, int height, byte oldColor, byte newColor)
 		{
 			// function body
-			lock (this.VGALock)
+			lock (this.GLock)
 			{
 				CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
 				int iTop = rect.X + xPos;
@@ -558,12 +506,12 @@ namespace OpenCiv1.GPU
 				fontID = 1; // default font
 			}
 
-			CivFont font = this.aFonts.GetValueByKey(fontID);
+			GFont font = this.aFonts.GetValueByKey(fontID);
 
 			for (int i = 0; i < text.Length; i++)
 			{
 				char ch = text[i];
-				CivFontCharacter fontCh;
+				GFontChar fontCh;
 
 				//if (i > 0)
 				iWidth += font.CharacterWidthSpacing;
@@ -593,13 +541,6 @@ namespace OpenCiv1.GPU
 			return this.oCPU.AX.Word;
 		}
 
-		public void F0_VGA_11d7_DrawString(ushort rectPtr, int xPos, int yPos, ushort stringPtr)
-		{
-			string text = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
-
-			F0_VGA_11d7_DrawString(rectPtr, xPos, yPos, text);
-		}
-
 		public void F0_VGA_11d7_DrawString(ushort rectPtr, int xPos, int yPos, string text)
 		{
 			CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
@@ -610,11 +551,11 @@ namespace OpenCiv1.GPU
 			}
 
 			// function body
-			CivFont font = this.aFonts.GetValueByKey(rect.FontID);
+			GFont font = this.aFonts.GetValueByKey(rect.FontID);
 
 			if (this.aScreens.ContainsKey(rect.ScreenID))
 			{
-				lock (this.VGALock)
+				lock (this.GLock)
 				{
 					GBitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 					GRectangle rect1 = new GRectangle(rect.X + xPos, rect.Y + yPos, rect.Width, rect.Height);

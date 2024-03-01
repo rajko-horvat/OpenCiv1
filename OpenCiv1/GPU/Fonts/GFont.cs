@@ -4,13 +4,13 @@ using IRB.Collections.Generic;
 namespace OpenCiv1.GPU
 {
 	[Serializable]
-	public class CivFont
+	public class GFont
 	{
-		private BDictionary<char, CivFontCharacter> aCharacters = new BDictionary<char, CivFontCharacter>();
+		private BDictionary<char, GFontChar> aCharacters = new BDictionary<char, GFontChar>();
 		private int iCharacterWidthSpacing = 1;
 		private int iLineSpacing = 1;
 
-		public CivFont()
+		public GFont()
 		{ }
 
 		public int LineSpacing
@@ -25,7 +25,7 @@ namespace OpenCiv1.GPU
 			set { this.iCharacterWidthSpacing = value; }
 		}
 
-		public BDictionary<char, CivFontCharacter> Characters
+		public BDictionary<char, GFontChar> Characters
 		{
 			get { return this.aCharacters; }
 		}

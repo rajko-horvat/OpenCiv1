@@ -473,7 +473,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x5c), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x04cd, size: 5
-			this.oParent.VGADriver.F0_VGA_009a_ReplaceColor(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 
+			this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 
 				(short)this.oCPU.SI.Word, (short)this.oCPU.DI.Word,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x5c)), 8, 15, 10);
 
@@ -483,7 +483,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x54), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x04f2, size: 5
-			this.oParent.VGADriver.F0_VGA_009a_ReplaceColor(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 
+			this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 
 				(short)this.oCPU.SI.Word, (short)this.oCPU.DI.Word,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x5c)), 8, 10, 15);
 
@@ -686,7 +686,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0xfd);
 
 			// Instruction address 0x0000:0x0696, size: 5
-			this.oParent.VGADriver.SetColor(0xfd, GBitmap.Color18ToColor(0x3d, 0x3d, 0x3d));
+			this.oParent.Graphics.SetColor(0xfd, GBitmap.Color18ToColor(0x3d, 0x3d, 0x3d));
 
 		L069e:
 			// Instruction address 0x0000:0x06b1, size: 5
@@ -885,7 +885,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.SUBWord(this.oCPU.SI.Word, 0x2);
 			
 			// Instruction address 0x0000:0x0973, size: 5
-			this.oParent.VGADriver.F0_VGA_0b85_ScreenToBitmap(1,
+			this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1,
 				(ushort)(((this.oCPU.SI.Word >> 2) * 0x32) + 1),
 				(ushort)(((this.oCPU.SI.Word & 3) * 0x32) + 1),
 				0x31, 0x31);
@@ -998,10 +998,10 @@ namespace OpenCiv1
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x3d75, 0xc5be);
 
 			// Instruction address 0x0000:0x0b0b, size: 5
-			this.oParent.VGADriver.F0_VGA_0162_SetColorsFromColorStruct(0xc5be);
+			this.oParent.Graphics.F0_VGA_0162_SetColorsFromColorStruct(0xc5be);
 			
 			// Instruction address 0x0000:0x0b1d, size: 5
-			this.oParent.VGADriver.SetColor(0xfd, GBitmap.Color18ToColor(0x3d, 0x3d, 0x3d));
+			this.oParent.Graphics.SetColor(0xfd, GBitmap.Color18ToColor(0x3d, 0x3d, 0x3d));
 
 		L0b25:
 			F8_0000_16f7(
@@ -1906,7 +1906,7 @@ namespace OpenCiv1
 
 		L1753:
 			// Instruction address 0x0000:0x1783, size: 5
-			this.oParent.VGADriver.F0_VGA_07d8_DrawImage(
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
 				param1,
 				param2,
