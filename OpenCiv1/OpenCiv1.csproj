@@ -1,57 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <StartupObject>OpenCiv1.Program</StartupObject>
-    <Title>OpenCiv1 - Open source rewrite of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991</Title>
-    <Version>1.475.6.7</Version>
-    <Copyright>Copyright (c) 2023- by Rajko Horvat, Parts of the code Copyright (c) 1991 Microprose Software, Inc. and Take-Two Interactive Software, Inc.</Copyright>
-    <PackageProjectUrl>https://github.com/rajko-horvat/OpenCiv1</PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/rajko-horvat/OpenCiv1</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>game;retro;remake;civilization;retrogaming;4x-strategy-game;4x;retro-game;civilization-games;sid-meier-civilization;remake-games</PackageTags>
-    <NeutralLanguage>en</NeutralLanguage>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-    <WarningsAsErrors>nullable</WarningsAsErrors>
-    <Authors>Rajko Horvat</Authors>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Title>OpenCiv1 - Open source rewrite of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991</Title>
+        <Version>1.475.6.7</Version>
+        <Copyright>Copyright (c) 2023- by Rajko Horvat, Parts of the code Copyright (c) 1991 Microprose Software, Inc. and Take-Two Interactive Software, Inc.</Copyright>
+        <PackageProjectUrl>https://github.com/rajko-horvat/OpenCiv1</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/rajko-horvat/OpenCiv1</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>game;retro;remake;civilization;retrogaming;4x-strategy-game;4x;retro-game;civilization-games;sid-meier-civilization;remake-games</PackageTags>
+        <NeutralLanguage>en</NeutralLanguage>
+        <PackageLicenseFile>..\LICENSE</PackageLicenseFile>
+        <WarningsAsErrors>nullable</WarningsAsErrors>
+        <Authors>Rajko Horvat</Authors>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Update="OpenCiv1\Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="OpenCiv1\Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
+    <ItemGroup>
     <None Update="How To Install.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="OpenCiv1\How To Install.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="..\How To Install.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="OpenCiv1\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="..\LICENSE">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="OpenCiv1\README.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="..\README.md">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
+    </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 ﻿using System;
 using IRB.Collections.Generic;
 using OpenCiv1.Compression;
+using OpenCiv1.Drawing;
 
 namespace OpenCiv1.GPU
 {
@@ -106,7 +107,7 @@ namespace OpenCiv1.GPU
 			get => this.oPalette;
 		}
 
-		internal byte[] Pixels
+		public byte[] Pixels
 		{
 			get => this.aPixels;
 		}

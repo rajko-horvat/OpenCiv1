@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<!--If you are willing to use Windows/MacOS native APIs you will need to create 3 projects.
+		One for Windows with net8.0-windows TFM, one for MacOS with net8.0-macos and one with net8.0 TFM for Linux.-->
+		<WarningsAsErrors>nullable</WarningsAsErrors>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+		<Title>OpenCiv1 - Open source rewrite of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991</Title>
+		<Version>1.475.6.7</Version>
+		<Copyright>Copyright (c) 2023- by Rajko Horvat, Parts of the code Copyright (c) 1991 Microprose Software, Inc. and Take-Two Interactive Software, Inc.</Copyright>
+		<PackageProjectUrl>https://github.com/rajko-horvat/OpenCiv1</PackageProjectUrl>
+		<PackageReadmeFile>..\README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/rajko-horvat/OpenCiv1</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>game;retro;remake;civilization;retrogaming;4x-strategy-game;4x;retro-game;civilization-games;sid-meier-civilization;remake-games</PackageTags>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageLicenseFile>..\LICENSE</PackageLicenseFile>
+		<WarningsAsErrors>nullable</WarningsAsErrors>
+		<Authors>Rajko Horvat</Authors>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia.Desktop" Version="11.0.9" />
+		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.9" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\OpenCiv1.UI\OpenCiv1.UI.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="How To Install.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="..\How To Install.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="..\README.md">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+</Project>

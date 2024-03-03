@@ -1,8 +1,11 @@
-using System;
 using System.IO.Compression;
-using IRB.VirtualCPU;
+
 using IRB.Collections.Generic;
-using OpenCiv1.Properties;
+using IRB.VirtualCPU;
+
+using OpenCiv1.Contracts;
+using OpenCiv1.Drawing;
+using OpenCiv1.Input;
 
 namespace OpenCiv1.GPU
 {
@@ -11,7 +14,7 @@ namespace OpenCiv1.GPU
 		private OpenCiv1 oParent;
 		private CPU oCPU;
 
-		private MainForm? oMainForm = null;
+		private IMainForm? oMainForm = null;
 		public object GLock = new object();
 		private BDictionary<int, GBitmap> aScreens = new BDictionary<int, GBitmap>();
 		private int iNextBitmapID = 0xb000;
@@ -19,15 +22,15 @@ namespace OpenCiv1.GPU
 		private Queue<int> aKeys = new Queue<int>();
 		private GFonts aFonts;
 
-		public GDriver(OpenCiv1 parent, MainForm form)
+		public GDriver(OpenCiv1 parent, IMainForm mainForm)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
-			this.oMainForm = form;
+			this.oMainForm = mainForm;
 
 			this.aScreens.Add(0, new GBitmap()); // Main screen
 
-			byte[]? fonts = (byte[]?)Resources.ResourceManager.GetObject("Fonts_xml_gz");
+			byte[]? fonts = (byte[]?)mainForm.GetObject("Fonts_xml_gz");
 
 			if (fonts == null)
 			{

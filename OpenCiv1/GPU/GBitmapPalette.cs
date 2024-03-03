@@ -1,5 +1,7 @@
 ﻿using System;
 
+using OpenCiv1.Drawing;
+
 namespace OpenCiv1.GPU
 {
 	public class GBitmapPalette

@@ -1,5 +1,7 @@
 using System;
 using IRB.VirtualCPU;
+
+using OpenCiv1.Drawing;
 using OpenCiv1.GPU;
 
 namespace OpenCiv1

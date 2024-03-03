@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using IRB.VirtualCPU;
+
+using OpenCiv1.Contracts;
 using OpenCiv1.GPU;
 
 namespace OpenCiv1
@@ -64,7 +66,7 @@ namespace OpenCiv1
 
 		private GameState oGameState;
 
-		public OpenCiv1(MainForm form)
+		public OpenCiv1(IMainForm form)
 		{
 			this.oLog = new LogWrapper("Log.txt");
 			this.oInterruptLog = new LogWrapper("InterruptLog.txt");
@@ -179,7 +181,7 @@ namespace OpenCiv1
 			}//*/
 		}
 
-		public void Start()
+		public void Start(IMainForm mainForm)
 		{
 			//ushort usInitialCS = 0x2045; // oEXE.InitialCS;
 			ushort usInitialSS = 0x398d; // oEXE.InitialSS;
@@ -194,7 +196,7 @@ namespace OpenCiv1
 			uint uiEXEStart = CPU.ToLinearAddress(usStartSegment, 0);
 			uint uiEXELength = 0x3a0e0;
 
-			byte[]? resources = (byte[]?)Properties.Resources.ResourceManager.GetObject("BinaryResources");
+			byte[]? resources = (byte[]?)mainForm.GetObject("BinaryResources");
 
 			if (resources == null)
 			{
