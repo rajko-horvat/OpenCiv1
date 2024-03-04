@@ -774,11 +774,11 @@ namespace OpenCiv1
 				// read map file
 				byte[] temp;
 
-				if (!this.oParent.Graphics.Screens.GetValueByKey(2).LoadPIC($"{this.oCPU.DefaultDirectory}{filename}.MAP", 0, 0, out temp))
+				if (!this.oParent.Graphics.Screens.GetValueByKey(2).LoadPIC($"{CPU.DefaultCIVPath}{filename}.MAP", 0, 0, out temp))
 					throw new Exception($"Can't read Map file '{filename}.MAP'");
 
 				// read sve file
-				FileStream reader = new FileStream(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.SVE"), FileMode.Open);
+				FileStream reader = new FileStream($"{CPU.DefaultCIVPath}{filename}.SVE", FileMode.Open);
 				this.oParent.GameState.TurnCount = ReadInt16(reader);
 				this.oParent.GameState.HumanPlayerID = ReadInt16(reader);
 				this.oParent.GameState.PlayerFlags = ReadInt16(reader);
@@ -1242,10 +1242,10 @@ namespace OpenCiv1
 			try
 			{
 				// write map file
-				this.oParent.Graphics.Screens.GetValueByKey(2).SaveToPIC(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.MAP"), false);
+				this.oParent.Graphics.Screens.GetValueByKey(2).SaveToPIC($"{CPU.DefaultCIVPath}{filename}.MAP", false);
 
 				// write sve file
-				FileStream writer = new FileStream(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.SVE"), FileMode.Create);
+				FileStream writer = new FileStream($"{CPU.DefaultCIVPath}{filename}.SVE", FileMode.Create);
 				WriteInt16(writer, this.oParent.GameState.TurnCount);
 				WriteInt16(writer, this.oParent.GameState.HumanPlayerID);
 				WriteInt16(writer, this.oParent.GameState.PlayerFlags);

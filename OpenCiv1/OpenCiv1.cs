@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using IRB.VirtualCPU;
 using OpenCiv1.GPU;
 
@@ -66,10 +67,10 @@ namespace OpenCiv1
 
 		public OpenCiv1()
 		{
-			this.oLog = new LogWrapper("Log.txt");
-			this.oInterruptLog = new LogWrapper("InterruptLog.txt");
-			this.oVGADriverLog = new LogWrapper("VGADriverLog.txt");
-			this.oIntroLog = new LogWrapper("IntroLog.txt");
+			this.oLog = new LogWrapper($"{CPU.AssemblyPath}Log.txt");
+			this.oInterruptLog = new LogWrapper($"{CPU.AssemblyPath}InterruptLog.txt");
+			this.oVGADriverLog = new LogWrapper($"{CPU.AssemblyPath}VGADriverLog.txt");
+			this.oIntroLog = new LogWrapper($"{CPU.AssemblyPath}IntroLog.txt");
 
 			this.oCPU = new CPU(this, this.oLog);
 
@@ -129,9 +130,9 @@ namespace OpenCiv1
 
 			#region Check Resources
 			// Check for Default directory and individual Resource files
-			if (!string.IsNullOrEmpty(this.oCPU.DefaultDirectory) && !Directory.Exists(this.oCPU.DefaultDirectory))
+			if (!string.IsNullOrEmpty(CPU.DefaultCIVPath) && !Directory.Exists(CPU.DefaultCIVPath))
 			{
-				throw new ResourceMissingException($"Resource path not found at '{this.oCPU.DefaultDirectory}'.");
+				throw new ResourceMissingException($"Resource path not found at '{CPU.DefaultCIVPath}'.");
 			}
 
 			string[] aResourceFiles = new string[] {
@@ -159,7 +160,7 @@ namespace OpenCiv1
 
 			for (int i = 0; i < aResourceFiles.Length; i++)
 			{
-				string sFilePath = Path.Combine(this.oCPU.DefaultDirectory, aResourceFiles[i].ToUpper());
+				string sFilePath = $"{CPU.DefaultCIVPath}{aResourceFiles[i].ToUpper()}";
 
 				if (!File.Exists(sFilePath))
 				{
@@ -168,7 +169,7 @@ namespace OpenCiv1
 			}
 			#endregion
 
-			/*string[] aFiles = Directory.GetFiles(this.oCPU.DefaultDirectory, "*.pic");
+			/*string[] aFiles = Directory.GetFiles(this.oCPU.DefaultCIVPath, "*.pic");
 
 			for (int i = 0; i < aFiles.Length; i++)
 			{
@@ -228,7 +229,7 @@ namespace OpenCiv1
 			this.oCPU.DS.Word = 0x3b01;
 
 			// Not important, but just for case it's still needed, to be removed later
-			string sPath = $"{this.oCPU.DefaultDirectory}{Path.DirectorySeparatorChar}CIV.EXE";
+			string sPath = $"{CPU.DefaultCIVPath}CIV.EXE";
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x61ee, (byte)'C');
 			this.oCPU.WriteString(CPU.ToLinearAddress(this.oCPU.DS.Word, 0x6156), sPath, sPath.Length);

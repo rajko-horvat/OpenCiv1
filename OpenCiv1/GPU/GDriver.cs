@@ -336,7 +336,7 @@ namespace OpenCiv1.GPU
 		public ushort LoadIcon(string filename)
 		{
 			byte[] aTemp;
-			GBitmap? bitmap = GBitmap.FromPICFile(this.oCPU.DefaultDirectory + filename.ToUpper(), out aTemp);
+			GBitmap? bitmap = GBitmap.FromPICFile($"{CPU.DefaultCIVPath}{filename.ToUpper()}", out aTemp);
 
 			if (bitmap != null)
 			{

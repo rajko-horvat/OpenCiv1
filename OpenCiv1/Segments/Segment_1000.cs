@@ -977,7 +977,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_1000_066a_FileExists('{fileName}')");
 
 			// function body
-			if (File.Exists($"{this.oParent.CPU.DefaultDirectory}{fileName}"))
+			if (File.Exists($"{CPU.DefaultCIVPath}{fileName}"))
 			{
 				this.oCPU.AX.Word = 0;
 			}

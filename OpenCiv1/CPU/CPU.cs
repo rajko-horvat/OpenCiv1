@@ -58,12 +58,37 @@ namespace IRB.VirtualCPU
 		private int iFileCount = 0;
 		private FileStream?[] aFileHandles = new FileStream?[256];
 
-		private string sDefaultDirectory;
 		private short sFileHandleCount = 0x20;
 		private BDictionary<short, FileStreamItem> aOpenFiles = new BDictionary<short, FileStreamItem>();
 
 		private OpenCiv1.OpenCiv1 oParent;
 		private LogWrapper oLog;
+
+		public static string AssemblyPath;
+		public static string DefaultCIVPath;
+
+		static CPU()
+		{
+			// We need this because of different paths between Debug and Release versions
+			// The Release executable is intended to be put directly into DOS Cilization game directory
+			// Also, for Debug there are different platforms and paths
+			string? assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+			AssemblyPath = (!string.IsNullOrEmpty(assemblyPath)) ? assemblyPath + Path.DirectorySeparatorChar : "";
+
+#if DEBUG
+			if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+			{
+				DefaultCIVPath = string.Format("C:{0}Dos{0}Civ1{0}", Path.DirectorySeparatorChar);
+			}
+			else
+			{
+				DefaultCIVPath = string.Format("{0}{1}Dos{1}Civ1{1}",
+					Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), Path.DirectorySeparatorChar);
+			}
+#else
+			DefaultCIVPath = "";
+#endif
+		}
 
 		public CPU(OpenCiv1.OpenCiv1 parent, LogWrapper log)
 		{
@@ -76,23 +101,6 @@ namespace IRB.VirtualCPU
 			{
 				this.aFileHandles[i] = null;
 			}
-
-			// We need this because of different paths between Debug and Release versions
-			// The Release executable is intended to be put directly into DOS Cilization game directory
-			// Also, for Debug there are different platforms and paths
-#if DEBUG
-			if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-			{
-				this.sDefaultDirectory = string.Format("C:{0}Dos{0}Civ1{0}", Path.DirectorySeparatorChar);
-			}
-			else
-			{
-				this.sDefaultDirectory = string.Format("{0}{1}Dos{1}Civ1{1}", 
-					Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), Path.DirectorySeparatorChar);
-			}
-#else
-			this.DefaultDirectory = "";
-#endif
 		}
 
 		public OpenCiv1.OpenCiv1 Parent
@@ -102,8 +110,8 @@ namespace IRB.VirtualCPU
 
 		public LogWrapper Log
 		{
-			get { return this.oLog; }
-			set { this.oLog = value; }
+			get => this.oLog;
+			set => this.oLog = value;
 		}
 
 		public bool EnableTimer
@@ -540,16 +548,10 @@ namespace IRB.VirtualCPU
 		#endregion
 
 		#region File operations
-		public string DefaultDirectory
-		{
-			get { return this.sDefaultDirectory; }
-			set { this.sDefaultDirectory = value; }
-		}
-
 		public short FileHandleCount
 		{
-			get { return this.sFileHandleCount; }
-			set { this.sFileHandleCount = value; }
+			get => this.sFileHandleCount;
+			set => this.sFileHandleCount = value;
 		}
 
 		public BDictionary<short, FileStreamItem> Files
@@ -2113,7 +2115,7 @@ namespace IRB.VirtualCPU
 			if (this.oAX.Low == 3)
 			{
 				string sName = MSCAPI.GetDOSFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper());
-				string sPath = Path.Combine(this.sDefaultDirectory, sName);
+				string sPath = $"{CPU.DefaultCIVPath}{sName}";
 				ushort usSegment = ReadUInt16(this.oES.Word, this.oBX.Word);
 				ushort usRelocationSegment = ReadUInt16(this.oES.Word, (ushort)(this.oBX.Word + 2));
 
@@ -2268,7 +2270,7 @@ namespace IRB.VirtualCPU
 		{
 			// open file
 			string sName = MSCAPI.GetDOSFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper());
-			string sPath = Path.Combine(this.sDefaultDirectory, sName);
+			string sPath = $"{CPU.DefaultCIVPath}{sName}";
 			FileAccess access = FileAccess.ReadWrite;
 
 			/*switch (this.oCX.Low & 0x7)
@@ -2373,7 +2375,7 @@ namespace IRB.VirtualCPU
 		{
 			// open file
 			string sName = this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper();
-			string sPath = Path.Combine(this.sDefaultDirectory, sName);
+			string sPath = $"{CPU.DefaultCIVPath}{sName}";
 			FileAccess access = FileAccess.Read;
 
 			switch (this.oAX.Low & 0x7)
@@ -2484,7 +2486,7 @@ namespace IRB.VirtualCPU
 		private void DOSGetCurrentDefaultDrive()
 		{
 			// Force C drive
-			//string sTemp = Path.GetPathRoot(sDefaultDirectory).ToUpper();
+			//string sTemp = Path.GetPathRoot(sDefaultCIVPath).ToUpper();
 			this.oAX.Low = 2; // (byte)(sTemp[0] - 'A');
 			this.oFlags.C = false;
 		}
@@ -2495,7 +2497,7 @@ namespace IRB.VirtualCPU
 			{
 				this.oLog.WriteLine($"Wrong drive number {this.oDX.Low}");
 			}
-			string sTemp = this.sDefaultDirectory.Substring(3).ToUpper();
+			string sTemp = CPU.DefaultCIVPath.Substring(3).ToUpper();
 			this.WriteString(CPU.ToLinearAddress(this.oDS.Word, this.oSI.Word), sTemp, sTemp.Length);
 			this.oFlags.C = false;
 		}
@@ -2574,7 +2576,7 @@ namespace IRB.VirtualCPU
 			string sFilename = MSCAPI.GetDOSFileName(this.ReadString(CPU.ToLinearAddress(this.oDS.Word, this.oSI.Word)).ToUpper());
 			string sName = Path.GetFileNameWithoutExtension(sFilename);
 			string sExtension = Path.GetExtension(sFilename).Substring(1);
-			string sPath = Path.Combine(this.sDefaultDirectory, sFilename);
+			string sPath = $"{CPU.DefaultCIVPath}{sFilename}";
 
 			if (File.Exists(sPath))
 			{
@@ -2596,7 +2598,7 @@ namespace IRB.VirtualCPU
 		{
 			DOS_FCB fcb = new DOS_FCB(this.oMemory, this.oDS.Word, this.oDX.Word);
 			string sFileName = fcb.GetName();
-			string sPath = Path.Combine(this.sDefaultDirectory, sFileName.ToUpper());
+			string sPath = $"{CPU.DefaultCIVPath}{sFileName.ToUpper()}";
 
 			if (File.Exists(sPath))
 			{
