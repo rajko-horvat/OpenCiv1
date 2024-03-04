@@ -64,7 +64,7 @@ namespace OpenCiv1
 
 		private GameState oGameState;
 
-		public OpenCiv1(MainForm form)
+		public OpenCiv1()
 		{
 			this.oLog = new LogWrapper("Log.txt");
 			this.oInterruptLog = new LogWrapper("InterruptLog.txt");
@@ -82,7 +82,7 @@ namespace OpenCiv1
 
 			#region Initialize Segments
 			this.oMSCAPI = new MSCAPI(this);
-			this.oGraphics = new GDriver(this, form);
+			this.oGraphics = new GDriver(this);
 			this.oSound = new NSound(this);
 
 			this.oSegment_11a8 = new Segment_11a8(this);

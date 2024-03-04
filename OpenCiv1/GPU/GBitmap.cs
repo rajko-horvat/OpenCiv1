@@ -1,4 +1,5 @@
 ﻿using System;
+using Avalonia.Media;
 using IRB.Collections.Generic;
 using OpenCiv1.Compression;
 
@@ -14,34 +15,34 @@ namespace OpenCiv1.GPU
 
 	public class GBitmap
 	{
-		protected int iWidth;
-		protected int iHeight;
-		protected GSize oSize;
-		protected GRectangle oRectangle;
-		protected bool bModified = true;
-		protected bool bVisible = true;
+		private int iWidth;
+		private int iHeight;
+		private GSize oSize;
+		private GRectangle oRectangle;
+		private bool bModified = true;
+		private bool bVisible = true;
 
-		protected byte[] aPixels;
+		private byte[] aPixels;
 		private GBitmapPalette oPalette;
 
 		#region Palette 1
 		public static Color[] Palette1 = new Color[] {
-			Color.FromArgb(0x000000),
-			Color.FromArgb(0x0000a7),
-			Color.FromArgb(0x00a700),
-			Color.FromArgb(0x00a7a7),
-			Color.FromArgb(0xa70000),
-			Color.FromArgb(0xa700a7),
-			Color.FromArgb(0xa75300),
-			Color.FromArgb(0xa7a7a7),
-			Color.FromArgb(0x535353),
-			Color.FromArgb(0x5353fb),
-			Color.FromArgb(0x53fb53),
-			Color.FromArgb(0x53fbfb),
-			Color.FromArgb(0xfb5353),
-			Color.FromArgb(0xfb53fb),
-			Color.FromArgb(0xfbfb53),
-			Color.FromArgb(0xfbfbfb)
+			Color.FromUInt32(0x000000),
+			Color.FromUInt32(0x0000a7),
+			Color.FromUInt32(0x00a700),
+			Color.FromUInt32(0x00a7a7),
+			Color.FromUInt32(0xa70000),
+			Color.FromUInt32(0xa700a7),
+			Color.FromUInt32(0xa75300),
+			Color.FromUInt32(0xa7a7a7),
+			Color.FromUInt32(0x535353),
+			Color.FromUInt32(0x5353fb),
+			Color.FromUInt32(0x53fb53),
+			Color.FromUInt32(0x53fbfb),
+			Color.FromUInt32(0xfb5353),
+			Color.FromUInt32(0xfb53fb),
+			Color.FromUInt32(0xfbfb53),
+			Color.FromUInt32(0xfbfbfb)
 		};
 		#endregion
 
@@ -113,12 +114,12 @@ namespace OpenCiv1.GPU
 
 		public static Color Color18ToColor(int red, int green, int blue)
 		{
-			return Color.FromArgb((255 * (red & 0x3f)) / 63, (255 * (green & 0x3f)) / 63, (255 * (blue & 0x3f)) / 63);
+			return Color.FromArgb(0, (byte)((255 * (red & 0x3f)) / 63), (byte)((255 * (green & 0x3f)) / 63), (byte)((255 * (blue & 0x3f)) / 63));
 		}
 
 		public static Color ColorToColor18(Color color)
 		{
-			return Color.FromArgb((63 * color.R) / 255, (63 * color.G) / 255, (63 * color.B) / 255);
+			return Color.FromArgb(0, (byte)((63 * color.R) / 255), (byte)((63 * color.G) / 255), (byte)((63 * color.B) / 255));
 		}
 
 		public Color GetPaletteColor(byte colorIndex)
@@ -405,9 +406,9 @@ namespace OpenCiv1.GPU
 				{
 					for (int j = 0; j < destRect.Width; j++)
 					{
-						if (srcBitmap.aPixels[iSrcPosition + j] != 0 || !transparent)
+						if (srcBitmap.Pixels[iSrcPosition + j] != 0 || !transparent)
 						{
-							this.aPixels[iDestPosition + j] = srcBitmap.aPixels[iSrcPosition + j];
+							this.aPixels[iDestPosition + j] = srcBitmap.Pixels[iSrcPosition + j];
 						}
 					}
 
@@ -571,21 +572,24 @@ namespace OpenCiv1.GPU
 			writer.Close();
 		}
 
-		public void LoadPIC(string filename, ushort xPos, ushort yPos, out byte[] palette)
+		public bool LoadPIC(string filename, ushort xPos, ushort yPos, out byte[] palette)
 		{
 			// function body
 			GBitmap? bitmap = GBitmap.FromPICFile(filename, out palette);
 
 			if (bitmap != null)
 			{
-				for (int i = 0; i < bitmap.iHeight; i++)
+				for (int i = 0; i < bitmap.Height; i++)
 				{
-					for (int j = 0; j < bitmap.iWidth; j++)
+					for (int j = 0; j < bitmap.Width; j++)
 					{
 						this.SetPixel(xPos + j, yPos + i, bitmap.GetPixel(j, i));
 					}
 				}
+				return true;
 			}
+
+			return false;
 		}
 
 		public static GBitmap? FromPICFile(string path, out byte[] palette)
@@ -702,7 +706,7 @@ namespace OpenCiv1.GPU
 									if (c < 0)
 										break;
 
-									bitmap.aPixels[iPixelAddress] = (byte)c;
+									bitmap.Pixels[iPixelAddress] = (byte)c;
 									iPixelAddress++;
 								}
 							}
@@ -752,9 +756,9 @@ namespace OpenCiv1.GPU
 									if (c < 0)
 										break;
 
-									bitmap.aPixels[iPixelAddress] = (byte)(c & 0xf);
+									bitmap.Pixels[iPixelAddress] = (byte)(c & 0xf);
 									iPixelAddress++;
-									bitmap.aPixels[iPixelAddress] = (byte)((c & 0xf0) >> 4);
+									bitmap.Pixels[iPixelAddress] = (byte)((c & 0xf0) >> 4);
 									iPixelAddress++;
 								}
 							}

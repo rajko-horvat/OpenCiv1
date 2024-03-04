@@ -773,12 +773,9 @@ namespace OpenCiv1
 			{
 				// read map file
 				byte[] temp;
-				GBitmap? map = GBitmap.FromPICFile(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.MAP"), out temp);
 
-				if (map == null)
+				if (!this.oParent.Graphics.Screens.GetValueByKey(2).LoadPIC($"{this.oCPU.DefaultDirectory}{filename}.MAP", 0, 0, out temp))
 					throw new Exception($"Can't read Map file '{filename}.MAP'");
-
-				this.oParent.Graphics.Screens.SetValueByKey(2, map);
 
 				// read sve file
 				FileStream reader = new FileStream(Path.Combine(this.oCPU.DefaultDirectory, $"{filename}.SVE"), FileMode.Open);

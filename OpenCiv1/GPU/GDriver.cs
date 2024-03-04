@@ -3,6 +3,7 @@ using System.IO.Compression;
 using IRB.VirtualCPU;
 using IRB.Collections.Generic;
 using OpenCiv1.Properties;
+using Avalonia.Media;
 
 namespace OpenCiv1.GPU
 {
@@ -11,19 +12,16 @@ namespace OpenCiv1.GPU
 		private OpenCiv1 oParent;
 		private CPU oCPU;
 
-		private MainForm? oMainForm = null;
 		public object GLock = new object();
 		private BDictionary<int, GBitmap> aScreens = new BDictionary<int, GBitmap>();
 		private int iNextBitmapID = 0xb000;
 		private BDictionary<int, GBitmap> aBitmaps = new BDictionary<int, GBitmap>();
-		private Queue<int> aKeys = new Queue<int>();
 		private GFonts aFonts;
 
-		public GDriver(OpenCiv1 parent, MainForm form)
+		public GDriver(OpenCiv1 parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
-			this.oMainForm = form;
 
 			this.aScreens.Add(0, new GBitmap()); // Main screen
 
@@ -61,38 +59,6 @@ namespace OpenCiv1.GPU
 		{
 			get { return this.aBitmaps; }
 		}
-
-		public Queue<int> Keys
-		{
-			get { return this.aKeys; }
-		}
-
-		public GPoint ScreenMouseLocation
-		{
-			get
-			{
-				if (this.oMainForm != null)
-					return this.oMainForm.ScreenMouseLocation;
-				else
-					return new GPoint(0, 0);
-			}
-		}
-
-		public ushort ScreenMouseButtons
-		{
-			get
-			{
-				if (this.oMainForm != null)
-				{
-					ushort usTemp = 0;
-					usTemp |= (ushort)(((this.oMainForm.ScreenMouseButtons & MouseButtons.Left) == MouseButtons.Left) ? 1 : 0);
-					usTemp |= (ushort)(((this.oMainForm.ScreenMouseButtons & MouseButtons.Right) == MouseButtons.Right) ? 2 : 0);
-					return usTemp;
-				}
-				else
-					return 0;
-			}
-		}
 		#endregion
 
 		#region Memory and Initialization functions
@@ -116,8 +82,6 @@ namespace OpenCiv1.GPU
 					bitmap.Visible = false; // additional screens are not shown by default
 					this.aScreens.Add(screenID, bitmap);
 				}
-				if (this.oMainForm != null)
-					this.oMainForm.OnScreenCountChange();
 			}
 
 			this.oCPU.AX.Word = 0xa000; // return something to make underlying code happy
@@ -496,7 +460,7 @@ namespace OpenCiv1.GPU
 			return this.oCPU.AX.Word;
 		}
 
-		public Size GetDrawStringSize(int fontID, string text)
+		public GSize GetDrawStringSize(int fontID, string text)
 		{
 			int iWidth = 0;
 			int iHeight = 0;
@@ -530,7 +494,7 @@ namespace OpenCiv1.GPU
 				iHeight += font.LineSpacing;
 			}
 
-			return new Size(iWidth, iHeight);
+			return new GSize(iWidth, iHeight);
 		}
 
 		public ushort F0_VGA_11ae_GetTextHeight(ushort fontID)

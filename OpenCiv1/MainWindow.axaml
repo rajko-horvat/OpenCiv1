@@ -1,0 +1,13 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="400"
+        x:Class="OpenCiv1.MainWindow"
+        Title="OpenCiv1" CanResize="False"
+		Background="Black" Width="640" Height="400">
+	<Canvas>
+		<Image Name="mainImage" Width="640" Height="400" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+		<Label Name="gamePaused" IsVisible="False" Foreground="White" FontSize="40">Game paused</Label>
+	</Canvas>
+</Window>

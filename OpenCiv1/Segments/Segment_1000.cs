@@ -1,4 +1,5 @@
 using System;
+using Avalonia.Media;
 using IRB.VirtualCPU;
 using OpenCiv1.GPU;
 
@@ -1303,11 +1304,11 @@ namespace OpenCiv1
 			//this.oCPU.AX.Word = 0x3;
 			//this.oCPU.INT(0x33);
 			this.oCPU.CX.Low = 0;
-			this.oCPU.AX.Word = (ushort)(this.oParent.Graphics.ScreenMouseLocation.X >> this.oCPU.CX.Low);
+			this.oCPU.AX.Word = (ushort)(this.oCPU.MouseLocation.X >> this.oCPU.CX.Low);
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x587c, this.oCPU.CX.Low);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x586e, this.oCPU.AX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5870, (ushort)this.oParent.Graphics.ScreenMouseLocation.Y);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5872, this.oParent.Graphics.ScreenMouseButtons);
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5870, (ushort)this.oCPU.MouseLocation.Y);
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5872, (ushort)this.oCPU.MouseButtons);
 			this.oCPU.AX.Word = 0xffff;
 
 		//L1683:
@@ -1480,8 +1481,8 @@ namespace OpenCiv1
 
 			// function body
 			this.oCPU.DS.Word = 0x3b01;
-			this.oCPU.BP.Word = this.oCPU.CX.Word;
 
+			this.oCPU.BP.Word = this.oCPU.CX.Word;
 			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x587c);
 			this.oCPU.BP.Word = this.oCPU.SHRWord(this.oCPU.BP.Word, this.oCPU.CX.Low);
 			this.oCPU.CX.Word = this.oCPU.BP.Word;

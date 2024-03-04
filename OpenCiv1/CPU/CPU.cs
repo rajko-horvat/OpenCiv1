@@ -42,11 +42,16 @@ namespace IRB.VirtualCPU
 		private bool bTimerFlag = false;
 		private bool bInTimer = false;
 		private bool bApplicationExit = false;
-		private System.Threading.Timer oTimer;
+		private Timer oTimer;
+
+		// Keyboard
+		private Queue<int> aKeys = new Queue<int>();
 
 		// Mouse
 		private GPoint oMouseLocation = new GPoint(-1, -1);
-		private ushort oMouseButtons = 0;
+		private GPoint oOldMouseLocation = new GPoint(-1, -1);
+		private MouseButtonsEnum oMouseButtons = MouseButtonsEnum.None;
+		private MouseButtonsEnum oOldMouseButtons = MouseButtonsEnum.None;
 
 		// DOS file stuff
 		private uint uiDOSDTA = 0;
@@ -65,7 +70,7 @@ namespace IRB.VirtualCPU
 			this.oParent = parent;
 			this.oLog = log;
 			this.oMemory = new CPUMemory(this);
-			this.oTimer = new System.Threading.Timer(oTimer_Tick, null, 20, 20);
+			this.oTimer = new Timer(oTimer_Tick, null, 20, 20);
 
 			for (int i = 0; i < this.aFileHandles.Length; i++)
 			{
@@ -76,7 +81,7 @@ namespace IRB.VirtualCPU
 			// The Release executable is intended to be put directly into DOS Cilization game directory
 			// Also, for Debug there are different platforms and paths
 #if DEBUG
-			if (Environment.OSVersion.Platform != PlatformID.Unix)
+			if (Environment.OSVersion.Platform == PlatformID.Win32NT)
 			{
 				this.sDefaultDirectory = string.Format("C:{0}Dos{0}Civ1{0}", Path.DirectorySeparatorChar);
 			}
@@ -111,6 +116,35 @@ namespace IRB.VirtualCPU
 		{
 			get { return this.bPause; }
 			set { this.bPause = value; }
+		}
+
+		public Queue<int> Keys
+		{
+			get { return this.aKeys; }
+		}
+
+		public GPoint MouseLocation
+		{
+			get => this.oMouseLocation;
+			set => this.oMouseLocation = value;
+		}
+
+		public GPoint OldMouseLocation
+		{
+			get => this.oOldMouseLocation;
+			set => this.oOldMouseLocation = value;
+		}
+
+		public MouseButtonsEnum MouseButtons
+		{
+			get => this.oMouseButtons;
+			set => this.oMouseButtons = value;
+		}
+
+		public MouseButtonsEnum OldMouseButtons
+		{
+			get => this.oOldMouseButtons;
+			set => this.oOldMouseButtons = value;
 		}
 
 		private void oTimer_Tick(object? state)
@@ -153,13 +187,13 @@ namespace IRB.VirtualCPU
 			{
 				this.bInTimer = true;
 
-				if (this.oMouseLocation != this.oParent.Graphics.ScreenMouseLocation ||
-					this.oMouseButtons != this.oParent.Graphics.ScreenMouseButtons)
+				if (this.oOldMouseLocation != this.oMouseLocation ||
+					this.oOldMouseButtons != this.oMouseButtons)
 				{
-					if (this.oMouseButtons != this.oParent.Graphics.ScreenMouseButtons)
+					/*if (this.oOldMouseButtons != this.oMouseButtons)
 					{
-						this.oLog.WriteLine($"Mouse buttons changed from 0x{this.oMouseButtons:x2} to 0x{this.oParent.Graphics.ScreenMouseButtons:x2}");
-					}
+						this.oLog.WriteLine($"Mouse buttons changed from {this.oOldMouseButtons} to {this.oMouseButtons}");
+					}*/
 
 					this.PushWord(this.oAX.Word);
 					this.PushWord(this.oCX.Word);
@@ -173,17 +207,18 @@ namespace IRB.VirtualCPU
 					this.PushF();
 
 					this.oAX.Word = 0;
-					if (this.oMouseLocation != this.oParent.Graphics.ScreenMouseLocation)
+					if (this.oOldMouseLocation != this.oMouseLocation)
 					{
 						this.oAX.Word |= 1;
 					}
-					this.oCX.Word = (ushort)this.oParent.Graphics.ScreenMouseLocation.X;
-					this.oDX.Word = (ushort)this.oParent.Graphics.ScreenMouseLocation.Y;
+					this.oCX.Word = (ushort)this.oMouseLocation.X;
+					this.oDX.Word = (ushort)this.oMouseLocation.Y;
 
 					this.oBX.Word = 0;
-					ushort usLeft = (ushort)(this.oParent.Graphics.ScreenMouseButtons & 1);
+					ushort usLeft = (ushort)((this.oMouseButtons & MouseButtonsEnum.Left) == MouseButtonsEnum.Left ? 1 : 0);
 					this.oBX.Word |= usLeft;
-					if ((this.oMouseButtons & 1) != usLeft)
+
+					if ((this.oOldMouseButtons & MouseButtonsEnum.Left) != (this.oMouseButtons & MouseButtonsEnum.Left))
 					{
 						if (usLeft != 0)
 							this.oAX.Word |= 2;
@@ -191,9 +226,10 @@ namespace IRB.VirtualCPU
 							this.oAX.Word |= 4;
 					}
 
-					ushort usRight = (ushort)(this.oParent.Graphics.ScreenMouseButtons & 2);
+					ushort usRight = (ushort)((this.oMouseButtons & MouseButtonsEnum.Right) == MouseButtonsEnum.Right ? 2 : 0);
 					this.oBX.Word |= usRight;
-					if ((this.oMouseButtons & 2) != usRight)
+
+					if ((this.oOldMouseButtons & MouseButtonsEnum.Right) != (this.oMouseButtons & MouseButtonsEnum.Right))
 					{
 						if (usRight != 0)
 							this.oAX.Word |= 8;
@@ -201,8 +237,8 @@ namespace IRB.VirtualCPU
 							this.oAX.Word |= 0x10;
 					}
 
-					this.oMouseLocation = this.oParent.Graphics.ScreenMouseLocation;
-					this.oMouseButtons = this.oParent.Graphics.ScreenMouseButtons;
+					this.oOldMouseLocation = this.oMouseLocation;
+					this.oOldMouseButtons = this.oMouseButtons;
 
 					this.oParent.Segment_1000.F0_1000_17db_MouseEvent();
 
@@ -2051,7 +2087,7 @@ namespace IRB.VirtualCPU
 
 		private void DOSKeyboardInputWithEcho()
 		{
-			while (this.oParent.Graphics.Keys.Count == 0)
+			while (this.aKeys.Count == 0)
 			{
 				Thread.Sleep(200);
 				this.DoEvents();
@@ -2059,7 +2095,7 @@ namespace IRB.VirtualCPU
 
 			lock (this.oParent.Graphics.GLock)
 			{
-				int iTemp = this.oParent.Graphics.Keys.Dequeue();
+				int iTemp = this.aKeys.Dequeue();
 				if (iTemp < 0x80)
 				{
 					this.oAX.Low = (byte)(iTemp & 0xff);
@@ -2186,12 +2222,12 @@ namespace IRB.VirtualCPU
 			}
 			else
 			{
-				if (this.oParent.Graphics.Keys.Count > 0)
+				if (this.aKeys.Count > 0)
 				{
 					oFlags.Z = false;
 					lock (this.oParent.Graphics.GLock)
 					{
-						int iTemp = this.oParent.Graphics.Keys.Dequeue();
+						int iTemp = this.aKeys.Dequeue();
 						if (iTemp < 0x80)
 						{
 							this.oAX.Low = (byte)(iTemp & 0xff);
