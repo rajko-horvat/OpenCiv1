@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+Log.txt
+VGADriverLog.txt
+IntroLog.txt
+InterruptLog.txt
