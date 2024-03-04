@@ -6,8 +6,13 @@
         x:Class="OpenCiv1.MainWindow"
         Title="OpenCiv1" CanResize="False"
 		Background="Black" Width="640" Height="400">
-	<Canvas>
-		<Image Name="mainImage" Width="640" Height="400" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
-		<Label Name="gamePaused" IsVisible="False" Foreground="White" FontSize="40">Game paused</Label>
-	</Canvas>
+		<Grid>
+			<Viewbox>
+				<Image Name="mainImage" Width="640" Height="400" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+			</Viewbox>
+			<Label Name="gamePaused" FontSize="40" Foreground="White" IsVisible="False" VerticalAlignment="Center" HorizontalAlignment="Center">
+				Game paused
+				<Label.Effect><DropShadowDirectionEffect ShadowDepth="6" Direction="45" Color="Black" Opacity="0.7" BlurRadius="6"/></Label.Effect>
+			</Label>
+		</Grid>
 </Window>
