@@ -3,16 +3,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="400"
-        x:Class="OpenCiv1.MainWindow"
+        x:Class="OpenCiv1.UI.MainWindow"
         Title="OpenCiv1" CanResize="False"
 		Background="Black" Width="640" Height="400">
 		<Grid>
 			<Viewbox>
 				<Image Name="mainImage" Width="640" Height="400" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
 			</Viewbox>
-			<Label Name="gamePaused" FontSize="40" Foreground="White" IsVisible="False" VerticalAlignment="Center" HorizontalAlignment="Center">
+			<TextBlock Name="gamePaused" FontSize="40" Foreground="White" IsVisible="False" VerticalAlignment="Center" HorizontalAlignment="Center">
 				Game paused
-				<Label.Effect><DropShadowDirectionEffect ShadowDepth="6" Direction="45" Color="Black" Opacity="0.7" BlurRadius="6"/></Label.Effect>
-			</Label>
+				<TextBlock.Effect><DropShadowDirectionEffect ShadowDepth="6" Direction="45" Color="Black" Opacity="0.7" BlurRadius="6"/></TextBlock.Effect>
+			</TextBlock>
 		</Grid>
 </Window>

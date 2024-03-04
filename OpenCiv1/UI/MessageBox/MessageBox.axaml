@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" x:Class="OpenCiv1.UI.MessageBox"
+        Title="MessageBox" CanResize="False" SystemDecorations="BorderOnly">
+	<Grid Background="Gainsboro"
+		HorizontalAlignment="Center"
+		VerticalAlignment="Top"
+		MinWidth="425" MinHeight="165" MaxWidth="800" MaxHeight="600"
+		ColumnDefinitions="Auto,*,Auto,Auto"
+		RowDefinitions="Auto,*,*,Auto">
+
+		<TextBlock Name="messageTitle" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
+			Text="Title" Margin="10" FontWeight="Bold"
+			TextWrapping="Wrap" HorizontalAlignment="Center" />
+
+		<Image Name="messageIcon" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" />
+
+		<ScrollViewer MaxHeight="200" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="10">
+			<TextBlock Name="messageText" TextWrapping="Wrap" xml:space="preserve" >Some text</TextBlock>
+		</ScrollViewer>
+		
+		<Button Name="messageButton1" Grid.Row="3" Grid.Column="2" Content="OK" Margin="10" />
+		<Button Name="messageButton2" Grid.Row="3" Grid.Column="3" Content="Cancel" Margin="10" />
+	</Grid>
+</Window>

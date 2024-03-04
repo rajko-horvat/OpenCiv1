@@ -1,8 +1,9 @@
 ﻿using Avalonia;
+using OpenCiv1.UI;
 
 namespace OpenCiv1
 {
-	public static class Program
+    public static class Program
 	{
 		/// <summary>
 		/// The main entry point for the application.

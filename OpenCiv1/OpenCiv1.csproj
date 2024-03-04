@@ -43,10 +43,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="App.axaml.cs">
+    <Compile Update="UI\App.axaml.cs">
       <DependentUpon>App.axaml</DependentUpon>
     </Compile>
-    <Compile Update="MainWindow.axaml.cs">
+    <Compile Update="UI\MainWindow.axaml.cs">
       <DependentUpon>MainWindow.axaml</DependentUpon>
     </Compile>
   </ItemGroup>

@@ -10,7 +10,7 @@ using IRB.VirtualCPU;
 using OpenCiv1.GPU;
 using System.Runtime.InteropServices;
 
-namespace OpenCiv1
+namespace OpenCiv1.UI
 {
 	public partial class MainWindow : Window
 	{
