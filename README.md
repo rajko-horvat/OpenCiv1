@@ -20,16 +20,22 @@ The <b>Debug mode (Shift-56)</b> can be toggled by pressing Alt + D Key.</p>
 
 <p>The only dependency is .NET 8</p>
 
-## How to run the code
+## How to compile the code (.NET 8 required)
 If you want to compile the code, it is assumed that:
 <ul>
 <li>You are using Visual Studio 2022 (or equivalent).</li>
-<li>.NET 8 is installed.</li>
 <li>Avalonia, Avalonia.Desktop, Avalonia.Fonts.Iter and Avalonia.Themes.Fluent dependencies are installed.</li>
 <li>For debugging you have installed DOS Civilization game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Linux (uppercase files!).
 It is where its home directory resides (Images, palettes, text and save games are loaded/saved there, for now).</li>
 <li>For Release mode it is expected that OpenCiv1 and it's dependencies (for simlicity) are put directly into directory with resource files, 
 for example: 'c:\Dos\Civ1\', '~/Dos/Civ1/' or any other path.</li>
+</ul>
+CLI method:
+<ul>
+<li>git clone https://github.com/rajko-horvat/OpenCiv1</li>
+<li>cd OpenCiv1</li>
+<li>dotnet add package Avalonia Avalonia.Desktop Avalonia.Fonts.Iter Avalonia.Themes.Fluent</li>
+<li>dotnet build -c Release</li>
 </ul>
 
 ## Help needed

@@ -2,8 +2,9 @@
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using OpenCiv1.UI;
 
-namespace OpenCiv1.UI
+namespace OpenCiv1
 {
     class App : Application
     {

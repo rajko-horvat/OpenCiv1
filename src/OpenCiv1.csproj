@@ -31,10 +31,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.9" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.9" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.9" />
-	<PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.9" />
+    <PackageReference Include="Avalonia" Version="11.0.10" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
+	<PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.10" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,7 +43,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="UI\App.axaml.cs">
+    <Compile Update="App.axaml.cs">
       <DependentUpon>App.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\MainWindow.axaml.cs">
@@ -68,10 +68,6 @@
     <None Update="..\README.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>
