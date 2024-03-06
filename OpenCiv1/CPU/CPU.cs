@@ -61,7 +61,7 @@ namespace IRB.VirtualCPU
 		private short sFileHandleCount = 0x20;
 		private BDictionary<short, FileStreamItem> aOpenFiles = new BDictionary<short, FileStreamItem>();
 
-		private OpenCiv1.OpenCiv1 oParent;
+		private OpenCiv1.GameEngine oParent;
 		private LogWrapper oLog;
 
 		public static string AssemblyPath;
@@ -90,7 +90,7 @@ namespace IRB.VirtualCPU
 #endif
 		}
 
-		public CPU(OpenCiv1.OpenCiv1 parent, LogWrapper log)
+		public CPU(OpenCiv1.GameEngine parent, LogWrapper log)
 		{
 			this.oParent = parent;
 			this.oLog = log;
@@ -103,7 +103,7 @@ namespace IRB.VirtualCPU
 			}
 		}
 
-		public OpenCiv1.OpenCiv1 Parent
+		public OpenCiv1.GameEngine Parent
 		{
 			get { return this.oParent; }
 		}
@@ -364,7 +364,7 @@ namespace IRB.VirtualCPU
 		/*public static ushort ToUInt16(int value)
 		{
 			if (value < 0 || value > UInt16.MaxValue)
-				throw new Exception($"Value {value} out of range for UInt16");
+				throw new Exception($"ReturnValue {value} out of range for UInt16");
 
 			return (ushort)value;
 		}
@@ -377,7 +377,7 @@ namespace IRB.VirtualCPU
 		public static short ToInt16(int value)
 		{
 			if (value < Int16.MinValue || value > Int16.MaxValue)
-				throw new Exception($"Value {value} out of range for Int16");
+				throw new Exception($"ReturnValue {value} out of range for Int16");
 
 			return (short)value;
 		}

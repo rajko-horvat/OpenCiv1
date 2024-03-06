@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 
 namespace OpenCiv1.UI
 {
@@ -16,8 +17,9 @@ namespace OpenCiv1.UI
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+				desktop.ShutdownMode = Avalonia.Controls.ShutdownMode.OnMainWindowClose;
                 desktop.MainWindow = new MainWindow();
-            }
+			}
 
             base.OnFrameworkInitializationCompleted();
         }

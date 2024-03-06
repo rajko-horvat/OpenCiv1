@@ -8,7 +8,9 @@ using Avalonia.Threading;
 using IRB.Collections.Generic;
 using IRB.VirtualCPU;
 using OpenCiv1.GPU;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
+using ThreadState = System.Threading.ThreadState;
 
 namespace OpenCiv1.UI
 {
@@ -16,7 +18,7 @@ namespace OpenCiv1.UI
 	{
 		private bool bClosing = false;
 
-		private OpenCiv1 oGame;
+		private GameEngine oGame;
 		private DispatcherTimer oTimer;
 		private Thread oGameThread;
 
@@ -41,8 +43,21 @@ namespace OpenCiv1.UI
 		{
 			InitializeComponent();
 
-			// Initialize OpenCiv1 game state
-			this.oGame = new OpenCiv1();
+#if !DEBUG
+            MessageBox.Show("This Alpha Release of OpenCiv1 project " +
+				"most certainly has bugs, but most functions should work normally, and has no sound at this point. " +
+				"It is compatible with old civ.exe and can save/load original game files.\n\n\n" +
+				"Technicalities:\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR " +
+				"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, " +
+				"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE " +
+				"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER " +
+				"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, " +
+				"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+				"Warning", MessageBoxIcon.Warning, MessageBoxButtons.OK);
+#endif
+
+			// Initialize Game game state
+			this.oGame = new GameEngine();
 
 			// Main Windows events
 			this.Closing += this.MainWindow_Closing;
@@ -371,9 +386,8 @@ namespace OpenCiv1.UI
 		{
 			if (!this.bClosing)
 			{
-				if (true)
-				//MessageBox.Show("Are you sure you want to quit?", "Exiting application", 
-				//MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.OK)
+				if (MessageBox.Show(this, "Are you sure you want to exit OpenCiv1 (Current game, if any, will not be automatically saved)?", "Exit application",
+					MessageBoxIcon.Question, MessageBoxButtons.OKCancel, MessageBoxDefaultButton.Button2) == MessageBoxResult.OK)
 				{
 					this.bClosing = true;
 					this.oGame.CPU.OnApplicationExit();
@@ -601,7 +615,7 @@ namespace OpenCiv1.UI
 			}
 			catch (ResourceMissingException ex)
 			{
-				//MessageBox.Show(ex.Message, "OpenCiv1 resource error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(this, ex.Message, "Game resource error", MessageBoxIcon.Error, MessageBoxButtons.OK);
 			}
 #if !DEBUG
 			catch (Exception e)
@@ -614,8 +628,8 @@ namespace OpenCiv1.UI
 					this.oGame.Log.WriteLine($"Exception stack trace: {e.StackTrace}");
 				}
 
-				//MessageBox.Show("There was an error in the OpenCiv1 application, "+
-				//	"the details about the error should are in the Log.txt file.");
+				MessageBox.Show(this, "There was an error in the OpenCiv1 game engine, "+
+					"the details about the error should are in the Log.txt file.", "Game engine error", MessageBoxIcon.Error, MessageBoxButtons.OK);
 			}
 #endif
 		}

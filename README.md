@@ -1,5 +1,6 @@
 ## About
 <p>OpenCiv1 project is an open source rewrite of <a href="https://en.wikipedia.org/wiki/Civilization_(video_game)">Civilization game</a> designed by Sid Meier and Bruce Shelley in year 1991.</p>
+<p>The OpenCiv1 uses Avalonia UI framework and is platform independent. It is currently compatible with Windows Desktop, Linux Desktop (MacOS Desktop is still untested).</p>
 <p>The game logic is <b>Based on original DOS Civilization game version 475.05</b> disassembly.</p>
 <p>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform and the bugs that have never been fixed are hindering the popularity of the game.<p>
 <p>The news, discussions about this project and releases are published regularly on <a href="https://forums.civfanatics.com/threads/rewrite-of-civilization-1-source-code-openciv1-project.682623/" target="_blank">Civilization Fanatics Forum page</a></p>
@@ -15,18 +16,19 @@
 The <b>Debug mode (Shift-56)</b> can be toggled by pressing Alt + D Key.</p>
 
 ## How to install release version of OpenCiv1
-<p>The file OpenCiv1.exe should be copied directly into installed and working DOS Civilization game directory.</p>
+<p>The files from the Release should be copied directly into installed and working DOS Civilization game directory.</p>
 
 <p>The only dependency is .NET 8</p>
 
 ## How to run the code
 If you want to compile the code, it is assumed that:
 <ul>
-<li>You are using Visual Studio 2022.</li>
-<li>You have .NET 8 installed.</li>
-<li>For debugging you have installed DOS Civilization game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Linux.
-It's where it's home directory resides (Images, palettes, text and save games are loaded/saved there, for now).</li>
-<li>For Release mode it is expected that OpenCiv1.exe (for simlicity) is put directly into directory with resource files, 
+<li>You are using Visual Studio 2022 (or equivalent).</li>
+<li>.NET 8 is installed.</li>
+<li>Avalonia, Avalonia.Desktop, Avalonia.Fonts.Iter and Avalonia.Themes.Fluent dependencies are installed.</li>
+<li>For debugging you have installed DOS Civilization game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Linux (uppercase files!).
+It is where its home directory resides (Images, palettes, text and save games are loaded/saved there, for now).</li>
+<li>For Release mode it is expected that OpenCiv1 and it's dependencies (for simlicity) are put directly into directory with resource files, 
 for example: 'c:\Dos\Civ1\', '~/Dos/Civ1/' or any other path.</li>
 </ul>
 

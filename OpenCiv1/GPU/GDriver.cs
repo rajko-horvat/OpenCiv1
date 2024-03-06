@@ -2,14 +2,14 @@ using System;
 using System.IO.Compression;
 using IRB.VirtualCPU;
 using IRB.Collections.Generic;
-using OpenCiv1.Properties;
+using OpenCiv1.Resources;
 using Avalonia.Media;
 
 namespace OpenCiv1.GPU
 {
 	public class GDriver
 	{
-		private OpenCiv1 oParent;
+		private GameEngine oParent;
 		private CPU oCPU;
 
 		public object GLock = new object();
@@ -18,19 +18,14 @@ namespace OpenCiv1.GPU
 		private BDictionary<int, GBitmap> aBitmaps = new BDictionary<int, GBitmap>();
 		private GFonts aFonts;
 
-		public GDriver(OpenCiv1 parent)
+		public GDriver(GameEngine parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
 
 			this.aScreens.Add(0, new GBitmap()); // Main screen
 
-			byte[]? fonts = (byte[]?)Resources.ResourceManager.GetObject("Fonts_xml_gz");
-
-			if (fonts == null)
-			{
-				throw new ResourceMissingException($"OpenCiv1 Font resources are missing.");
-			}
+			byte[] fonts = OpenCiv1.Resources.Resources.Fonts_xml;
 
 			Stream fonts1 = new GZipStream(new MemoryStream(fonts), CompressionMode.Decompress);
 			//Stream fonts1 = new MemoryStream(fonts);
