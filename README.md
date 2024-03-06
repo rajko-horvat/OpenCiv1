@@ -30,11 +30,14 @@ It is where its home directory resides (Images, palettes, text and save games ar
 <li>For Release mode it is expected that OpenCiv1 and it's dependencies (for simlicity) are put directly into directory with resource files, 
 for example: 'c:\Dos\Civ1\', '~/Dos/Civ1/' or any other path.</li>
 </ul>
-CLI method:
+Compile with CLI method:
 <ul>
 <li>git clone https://github.com/rajko-horvat/OpenCiv1</li>
 <li>cd OpenCiv1</li>
-<li>dotnet add package Avalonia Avalonia.Desktop Avalonia.Fonts.Iter Avalonia.Themes.Fluent</li>
+<li>dotnet add package Avalonia</li>
+<li>dotnet add package Avalonia.Desktop</li>
+<li>dotnet add package Avalonia.Fonts.Inter</li>
+<li>dotnet add package Avalonia.Themes.Fluent</li>
 <li>dotnet build -c Release</li>
 </ul>
 
@@ -78,18 +81,18 @@ For this stage of code rewrite, the programmings skills needed are:
 
 ## Screenshots of the OpenCiv1 game
 <p align="center">
-<img src="OpenCiv1/Resources/Screenshots/Screenshot1.png" alt="Screenshot 1" /><br/>
-<img src="OpenCiv1/Resources/Screenshots/Screenshot2.png" alt="Screenshot 2" /><br/>
-<img src="OpenCiv1/Resources/Screenshots/Screenshot3.png" alt="Screenshot 3" /><br/>
-<img src="OpenCiv1/Resources/Screenshots/Screenshot4.png" alt="Screenshot 4" /><br/>
-<img src="OpenCiv1/Resources/Screenshots/Screenshot5.png" alt="Screenshot 5" /><br/>
-<img src="OpenCiv1/Resources/Screenshots/Screenshot6.png" alt="Screenshot 6" /><br/>
-<img src="OpenCiv1/Resources/Screenshots/Screenshot7.png" alt="Screenshot 7" /><br/>
-<img src="OpenCiv1/Resources/Screenshots/Screenshot8.png" alt="Screenshot 8" /><br/>
-<img src="OpenCiv1/Resources/Screenshots/Screenshot9.png" alt="Screenshot 9" /><br/>
-<img src="OpenCiv1/Resources/Screenshots/Screenshot10.png" alt="Screenshot 10" /><br/>
-<img src="OpenCiv1/Resources/Screenshots/Screenshot11.png" alt="Screenshot 11" /><br/>
-<img src="OpenCiv1/Resources/Screenshots/Screenshot12.png" alt="Screenshot 12" /><br/>
-<img src="OpenCiv1/Resources/Screenshots/Screenshot13.png" alt="Screenshot 13" /><br/>
-<img src="OpenCiv1/Resources/Screenshots/Screenshot14.png" alt="Screenshot 14" /><br/>
+<img src="src/Resources/Screenshots/Screenshot1.png" alt="Screenshot 1" /><br/>
+<img src="src/Resources/Screenshots/Screenshot2.png" alt="Screenshot 2" /><br/>
+<img src="src/Resources/Screenshots/Screenshot3.png" alt="Screenshot 3" /><br/>
+<img src="src/Resources/Screenshots/Screenshot4.png" alt="Screenshot 4" /><br/>
+<img src="src/Resources/Screenshots/Screenshot5.png" alt="Screenshot 5" /><br/>
+<img src="src/Resources/Screenshots/Screenshot6.png" alt="Screenshot 6" /><br/>
+<img src="src/Resources/Screenshots/Screenshot7.png" alt="Screenshot 7" /><br/>
+<img src="src/Resources/Screenshots/Screenshot8.png" alt="Screenshot 8" /><br/>
+<img src="src/Resources/Screenshots/Screenshot9.png" alt="Screenshot 9" /><br/>
+<img src="src/Resources/Screenshots/Screenshot10.png" alt="Screenshot 10" /><br/>
+<img src="src/Resources/Screenshots/Screenshot11.png" alt="Screenshot 11" /><br/>
+<img src="src/Resources/Screenshots/Screenshot12.png" alt="Screenshot 12" /><br/>
+<img src="src/Resources/Screenshots/Screenshot13.png" alt="Screenshot 13" /><br/>
+<img src="src/Resources/Screenshots/Screenshot14.png" alt="Screenshot 14" /><br/>
 </p>
