@@ -72,18 +72,18 @@ For this stage of code rewrite, the programmings skills needed are:
 
 ## Screenshots of the OpenCiv1 game
 <p align="center">
-<img src="OpenCiv1/Screenshots/Screenshot1.png" alt="Screenshot 1" /><br/>
-<img src="OpenCiv1/Screenshots/Screenshot2.png" alt="Screenshot 2" /><br/>
-<img src="OpenCiv1/Screenshots/Screenshot3.png" alt="Screenshot 3" /><br/>
-<img src="OpenCiv1/Screenshots/Screenshot4.png" alt="Screenshot 4" /><br/>
-<img src="OpenCiv1/Screenshots/Screenshot5.png" alt="Screenshot 5" /><br/>
-<img src="OpenCiv1/Screenshots/Screenshot6.png" alt="Screenshot 6" /><br/>
-<img src="OpenCiv1/Screenshots/Screenshot7.png" alt="Screenshot 7" /><br/>
-<img src="OpenCiv1/Screenshots/Screenshot8.png" alt="Screenshot 8" /><br/>
-<img src="OpenCiv1/Screenshots/Screenshot9.png" alt="Screenshot 9" /><br/>
-<img src="OpenCiv1/Screenshots/Screenshot10.png" alt="Screenshot 10" /><br/>
-<img src="OpenCiv1/Screenshots/Screenshot11.png" alt="Screenshot 11" /><br/>
-<img src="OpenCiv1/Screenshots/Screenshot12.png" alt="Screenshot 12" /><br/>
-<img src="OpenCiv1/Screenshots/Screenshot13.png" alt="Screenshot 13" /><br/>
-<img src="OpenCiv1/Screenshots/Screenshot14.png" alt="Screenshot 14" /><br/>
+<img src="OpenCiv1/Resources/Screenshots/Screenshot1.png" alt="Screenshot 1" /><br/>
+<img src="OpenCiv1/Resources/Screenshots/Screenshot2.png" alt="Screenshot 2" /><br/>
+<img src="OpenCiv1/Resources/Screenshots/Screenshot3.png" alt="Screenshot 3" /><br/>
+<img src="OpenCiv1/Resources/Screenshots/Screenshot4.png" alt="Screenshot 4" /><br/>
+<img src="OpenCiv1/Resources/Screenshots/Screenshot5.png" alt="Screenshot 5" /><br/>
+<img src="OpenCiv1/Resources/Screenshots/Screenshot6.png" alt="Screenshot 6" /><br/>
+<img src="OpenCiv1/Resources/Screenshots/Screenshot7.png" alt="Screenshot 7" /><br/>
+<img src="OpenCiv1/Resources/Screenshots/Screenshot8.png" alt="Screenshot 8" /><br/>
+<img src="OpenCiv1/Resources/Screenshots/Screenshot9.png" alt="Screenshot 9" /><br/>
+<img src="OpenCiv1/Resources/Screenshots/Screenshot10.png" alt="Screenshot 10" /><br/>
+<img src="OpenCiv1/Resources/Screenshots/Screenshot11.png" alt="Screenshot 11" /><br/>
+<img src="OpenCiv1/Resources/Screenshots/Screenshot12.png" alt="Screenshot 12" /><br/>
+<img src="OpenCiv1/Resources/Screenshots/Screenshot13.png" alt="Screenshot 13" /><br/>
+<img src="OpenCiv1/Resources/Screenshots/Screenshot14.png" alt="Screenshot 14" /><br/>
 </p>
