@@ -128,6 +128,19 @@ namespace OpenCiv1
 			this.oOverlay_15 = new Overlay_15(this);
 			#endregion
 
+			/*string[] aFiles = Directory.GetFiles(this.oCPU.DefaultCIVPath, "*.pic");
+
+			for (int i = 0; i < aFiles.Length; i++)
+			{
+				byte[] palette;
+				VGABitmap bitmap = VGABitmap.FromPICFile(aFiles[i], out palette);
+
+				bitmap.Bitmap.SaveToPIC(Path.GetFileNameWithoutExtension(aFiles[i]) + ".bmp", ImageFormat.Bmp);
+			}//*/
+		}
+
+		public void Start()
+		{
 			#region Check Resources
 			// Check for Default directory and individual Resource files
 			if (!string.IsNullOrEmpty(CPU.DefaultCIVPath) && !Directory.Exists(CPU.DefaultCIVPath))
@@ -169,19 +182,6 @@ namespace OpenCiv1
 			}
 			#endregion
 
-			/*string[] aFiles = Directory.GetFiles(this.oCPU.DefaultCIVPath, "*.pic");
-
-			for (int i = 0; i < aFiles.Length; i++)
-			{
-				byte[] palette;
-				VGABitmap bitmap = VGABitmap.FromPICFile(aFiles[i], out palette);
-
-				bitmap.Bitmap.SaveToPIC(Path.GetFileNameWithoutExtension(aFiles[i]) + ".bmp", ImageFormat.Bmp);
-			}//*/
-		}
-
-		public void Start()
-		{
 			//ushort usInitialCS = 0x2045; // oEXE.InitialCS;
 			ushort usInitialSS = 0x398d; // oEXE.InitialSS;
 			ushort usInitialSP = 0x0800; // oEXE.InitialSP;

@@ -21,6 +21,7 @@ namespace OpenCiv1.UI
 		private GameEngine oGame;
 		private DispatcherTimer oTimer;
 		private Thread oGameThread;
+		private Exception? oGameException = null;
 
 		// track how many screens, columns and rows we have to show
 		private int iScreenCount = 0;
@@ -44,7 +45,7 @@ namespace OpenCiv1.UI
 			InitializeComponent();
 
 #if !DEBUG
-            MessageBox.Show("This Alpha Release of OpenCiv1 project " +
+			MessageBox.Show("This Alpha Release of OpenCiv1 project " +
 				"most certainly has bugs, but most functions should work normally, and has no sound at this point. " +
 				"It is compatible with old civ.exe and can save/load original game files.\n\n\n" +
 				"Technicalities:\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR " +
@@ -81,6 +82,20 @@ namespace OpenCiv1.UI
 		{
 			if (!this.bClosing && this.oGameThread.ThreadState == ThreadState.Stopped)
 			{
+				if (this.oGameException != null)
+				{
+					Exception ex = this.oGameException;
+					if (ex is ResourceMissingException)
+					{
+						MessageBox.Show(this, ex.Message, "Game resource error", MessageBoxIcon.Error, MessageBoxButtons.OK);
+					}
+					else
+					{
+						MessageBox.Show(this, "There was an error in the OpenCiv1 game engine, " +
+							"the details about the error should are in the Log.txt file.", "Game engine error", MessageBoxIcon.Error, MessageBoxButtons.OK);
+					}
+				}
+
 				this.bClosing = true;
 				this.Close();
 			}
@@ -615,21 +630,22 @@ namespace OpenCiv1.UI
 			}
 			catch (ResourceMissingException ex)
 			{
-				MessageBox.Show(this, ex.Message, "Game resource error", MessageBoxIcon.Error, MessageBoxButtons.OK);
+				// Show exceptions on UI Thread
+				this.oGameException = ex;
 			}
 #if !DEBUG
-			catch (Exception e)
+			catch (Exception ex)
 			{
 				if (this.oGame != null && this.oGame.Log != null)
 				{
 					this.oGame.Log.WriteLine("");
-					this.oGame.Log.WriteLine($"Exception message: {e.Message}");
-					this.oGame.Log.WriteLine($"Exception source: {e.Source}");
-					this.oGame.Log.WriteLine($"Exception stack trace: {e.StackTrace}");
+					this.oGame.Log.WriteLine($"Exception message: {ex.Message}");
+					this.oGame.Log.WriteLine($"Exception source: {ex.Source}");
+					this.oGame.Log.WriteLine($"Exception stack trace: {ex.StackTrace}");
 				}
 
-				MessageBox.Show(this, "There was an error in the OpenCiv1 game engine, "+
-					"the details about the error should are in the Log.txt file.", "Game engine error", MessageBoxIcon.Error, MessageBoxButtons.OK);
+				// Show exceptions on UI Thread
+				this.oGameException = ex;
 			}
 #endif
 		}
