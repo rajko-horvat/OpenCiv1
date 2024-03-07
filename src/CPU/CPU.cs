@@ -61,7 +61,7 @@ namespace IRB.VirtualCPU
 		private short sFileHandleCount = 0x20;
 		private BDictionary<short, FileStreamItem> aOpenFiles = new BDictionary<short, FileStreamItem>();
 
-		private OpenCiv1.GameEngine oParent;
+		private OpenCiv1.Game oParent;
 		private LogWrapper oLog;
 
 		public static string AssemblyPath;
@@ -90,7 +90,7 @@ namespace IRB.VirtualCPU
 #endif
 		}
 
-		public CPU(OpenCiv1.GameEngine parent, LogWrapper log)
+		public CPU(OpenCiv1.Game parent, LogWrapper log)
 		{
 			this.oParent = parent;
 			this.oLog = log;
@@ -103,7 +103,7 @@ namespace IRB.VirtualCPU
 			}
 		}
 
-		public OpenCiv1.GameEngine Parent
+		public OpenCiv1.Game Parent
 		{
 			get { return this.oParent; }
 		}

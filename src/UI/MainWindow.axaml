@@ -4,11 +4,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="400"
         x:Class="OpenCiv1.UI.MainWindow"
-        Title="OpenCiv1" CanResize="False"
+        Title="OpenCiv1"
 		Background="Black" Width="640" Height="400">
 		<Grid>
-			<Viewbox>
-				<Image Name="mainImage" Width="640" Height="400" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+			<Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" StretchDirection="Both">
+				<Image Name="mainImage" Width="640" Height="400"></Image>
 			</Viewbox>
 			<TextBlock Name="gamePaused" FontSize="40" Foreground="White" IsVisible="False" VerticalAlignment="Center" HorizontalAlignment="Center">
 				Game paused

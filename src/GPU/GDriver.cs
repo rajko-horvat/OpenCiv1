@@ -9,7 +9,7 @@ namespace OpenCiv1.GPU
 {
 	public class GDriver
 	{
-		private GameEngine oParent;
+		private Game oParent;
 		private CPU oCPU;
 
 		public object GLock = new object();
@@ -18,7 +18,7 @@ namespace OpenCiv1.GPU
 		private BDictionary<int, GBitmap> aBitmaps = new BDictionary<int, GBitmap>();
 		private GFonts aFonts;
 
-		public GDriver(GameEngine parent)
+		public GDriver(Game parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;

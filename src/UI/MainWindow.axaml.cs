@@ -18,7 +18,7 @@ namespace OpenCiv1.UI
 	{
 		private bool bClosing = false;
 
-		private GameEngine oGame;
+		private Game oGame;
 		private DispatcherTimer oTimer;
 		private Thread oGameThread;
 		private Exception? oGameException = null;
@@ -58,7 +58,7 @@ namespace OpenCiv1.UI
 #endif
 
 			// Initialize Game game state
-			this.oGame = new GameEngine();
+			this.oGame = new Game();
 
 			// Main Windows events
 			this.Closing += this.MainWindow_Closing;
@@ -401,7 +401,7 @@ namespace OpenCiv1.UI
 		{
 			if (!this.bClosing)
 			{
-				if (MessageBox.Show(this, "Are you sure you want to exit OpenCiv1 (Current game, if any, will not be automatically saved)?", "Exit application",
+				if (MessageBox.Show(this, "Are you sure you want to exit OpenCiv1?\nCurrent game, if any, will not be automatically saved!", "Exit application",
 					MessageBoxIcon.Question, MessageBoxButtons.OKCancel, MessageBoxDefaultButton.Button2) == MessageBoxResult.OK)
 				{
 					this.bClosing = true;
