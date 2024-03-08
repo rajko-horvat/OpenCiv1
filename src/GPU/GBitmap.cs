@@ -579,13 +579,14 @@ namespace OpenCiv1.GPU
 
 			if (bitmap != null)
 			{
-				for (int i = 0; i < bitmap.Height; i++)
+				this.DrawImage(xPos, yPos, bitmap, false);
+				/*for (int i = 0; i < bitmap.Height; i++)
 				{
 					for (int j = 0; j < bitmap.Width; j++)
 					{
 						this.SetPixel(xPos + j, yPos + i, bitmap.GetPixel(j, i));
 					}
-				}
+				}*/
 				return true;
 			}
 
@@ -739,7 +740,7 @@ namespace OpenCiv1.GPU
 							// construct bitmap with our raw data
 							int iPixelAddress = 0;
 
-							bitmap = new GBitmap(iWidth * 2, iHeight);
+							bitmap = new GBitmap(iWidth, iHeight * 2);
 
 							// set bitmap palette
 							for (int i = 0; i < aPalette.Count; i++)

@@ -29,9 +29,8 @@ namespace OpenCiv1.UI
 		private int iScreenRows = 1;
 
 		// Main screen dimensions
-		private GSize oScreenSize = new GSize(640, 480);
-		private GSize oImageSize = new GSize(642, 482);
-		private GSize oPixelSize = new GSize(2, 2);
+		private GSize oScreenSize = new GSize(320, 200);
+		private GSize oImageSize = new GSize(320, 200);
 
 		// Mouse region
 		private GRectangle oMouseRect = new GRectangle();
@@ -424,29 +423,20 @@ namespace OpenCiv1.UI
 					case 1:
 						this.iScreenColumns = 1;
 						this.iScreenRows = 1;
-						this.oPixelSize = new GSize(2, 2);
-						this.oScreenSize = new GSize(640, 400);
 						break;
 
 					case 2:
 						this.iScreenColumns = 2;
 						this.iScreenRows = 1;
-						this.oPixelSize = new GSize(1, 1);
-						this.oScreenSize = new GSize(320, 200);
 						break;
 
 					case 3:
 						this.iScreenColumns = 2;
 						this.iScreenRows = 2;
-						this.oPixelSize = new GSize(1, 1);
-						this.oScreenSize = new GSize(320, 200);
 						break;
 				}
-				this.oImageSize = new GSize(this.oScreenSize.Width * this.iScreenColumns + this.iScreenColumns + 1,
-					this.oScreenSize.Height * this.iScreenRows + this.iScreenRows + 1);
+				this.oImageSize = new GSize(this.oScreenSize.Width * this.iScreenColumns, this.oScreenSize.Height * this.iScreenRows);
 
-				this.Width = this.oImageSize.Width + 1;
-				this.Height = this.oImageSize.Height + 1;
 				this.mainImage.Width = this.oImageSize.Width;
 				this.mainImage.Height = this.oImageSize.Height;
 
@@ -504,8 +494,6 @@ namespace OpenCiv1.UI
 					{
 						WriteableBitmap currentBitmap = this.aBitmaps[this.iBitmapIndex];
 						int iPixelByteSize = 4;
-						Color borderColor = Color.Parse("Purple");
-						//byte[] aBitmapData = new byte[this.oImageSize.Width * this.oImageSize.Height * iPixelByteSize];
 						int iStride = this.oImageSize.Width * iPixelByteSize;
 
 						using (ILockedFramebuffer l = currentBitmap.Lock())
@@ -516,80 +504,31 @@ namespace OpenCiv1.UI
 
 								if (item.Value.Visible)
 								{
-									int iBitmapAddress0 = (iRow * (this.oScreenSize.Height + 1) * iStride) +
-										((iColumn * (this.oScreenSize.Width + 1)) * iPixelByteSize);
+									int iBitmapAddress0 = ((iRow * this.oScreenSize.Height) * iStride) +
+										((iColumn * this.oScreenSize.Width) * iPixelByteSize);
 
 									GBitmap bitmap = item.Value;
 									int iBitmapAddress = iBitmapAddress0;
 									int iGBitmapAddress0 = 0;
 
-									for (int x = 0; x < (bitmap.Width * this.oPixelSize.Width) + 2; x++)
-									{
-										//aBitmapData[iBitmapAddress] = borderColor.B;
-										//aBitmapData[iBitmapAddress + 1] = borderColor.G;
-										//aBitmapData[iBitmapAddress + 2] = borderColor.R;
-										//aBitmapData[iBitmapAddress + 3] = borderColor.A;
-										Marshal.WriteInt32(l.Address, iBitmapAddress, (int)borderColor.ToUInt32());
-										iBitmapAddress += iPixelByteSize;
-									}
-
-									iBitmapAddress0 += iStride;
-
 									for (int y = 0; y < bitmap.Height; y++)
 									{
-										for (int j = 0; j < this.oPixelSize.Height; j++)
-										{
-											int iGBitmapAddress = iGBitmapAddress0;
-											iBitmapAddress = iBitmapAddress0;
+										int iGBitmapAddress = iGBitmapAddress0;
+										iBitmapAddress = iBitmapAddress0;
 
-											//aBitmapData[iBitmapAddress] = borderColor.B;
-											//aBitmapData[iBitmapAddress + 1] = borderColor.G;
-											//aBitmapData[iBitmapAddress + 2] = borderColor.R;
-											//aBitmapData[iBitmapAddress + 3] = borderColor.A;
-											Marshal.WriteInt32(l.Address, iBitmapAddress, (int)borderColor.ToUInt32());
+										for (int x = 0; x < bitmap.Width; x++)
+										{
+											Color color = bitmap.Palette[bitmap.Pixels[iGBitmapAddress]];
+
+											Marshal.WriteInt32(l.Address, iBitmapAddress, (int)color.ToUInt32());
 											iBitmapAddress += iPixelByteSize;
 
-											for (int x = 0; x < bitmap.Width; x++)
-											{
-												Color color = bitmap.Palette[bitmap.Pixels[iGBitmapAddress]];
-
-												for (int k = 0; k < this.oPixelSize.Width; k++)
-												{
-													//aBitmapData[iBitmapAddress] = color.B;
-													//aBitmapData[iBitmapAddress + 1] = color.G;
-													//aBitmapData[iBitmapAddress + 2] = color.R;
-													//aBitmapData[iBitmapAddress + 3] = color.A;
-													Marshal.WriteInt32(l.Address, iBitmapAddress, (int)color.ToUInt32());
-													iBitmapAddress += iPixelByteSize;
-												}
-
-												iGBitmapAddress++;
-											}
-
-											//aBitmapData[iBitmapAddress] = borderColor.B;
-											//aBitmapData[iBitmapAddress + 1] = borderColor.G;
-											//aBitmapData[iBitmapAddress + 2] = borderColor.R;
-											//aBitmapData[iBitmapAddress + 3] = borderColor.A;
-											Marshal.WriteInt32(l.Address, iBitmapAddress, (int)borderColor.ToUInt32());
-
-											iBitmapAddress0 += iStride;
+											iGBitmapAddress++;
 										}
 
+										iBitmapAddress0 += iStride;
 										iGBitmapAddress0 += bitmap.Width;
 									}
-
-									iBitmapAddress = iBitmapAddress0;
-									for (int x = 0; x < (bitmap.Width * this.oPixelSize.Width) + 2; x++)
-									{
-										//aBitmapData[iBitmapAddress] = borderColor.B;
-										//aBitmapData[iBitmapAddress + 1] = borderColor.G;
-										//aBitmapData[iBitmapAddress + 2] = borderColor.R;
-										//aBitmapData[iBitmapAddress + 3] = borderColor.A;
-										Marshal.WriteInt32(l.Address, iBitmapAddress, (int)borderColor.ToUInt32());
-										iBitmapAddress += iPixelByteSize;
-									}
-
-									iBitmapAddress0 += iStride;
 
 									item.Value.Modified = false;
 
@@ -602,13 +541,6 @@ namespace OpenCiv1.UI
 								}
 							}
 						}
-
-						/*GCHandle handle = GCHandle.Alloc(aBitmapData, GCHandleType.Pinned);
-						this.mainImage.Source = new Bitmap(PixelFormat.Bgra8888, AlphaFormat.Opaque,
-							Marshal.UnsafeAddrOfPinnedArrayElement(aBitmapData, 0),
-							new PixelSize(this.oImageSize.Width, this.oImageSize.Height),
-							new Vector(96, 96), iStride);
-						handle.Free();*/
 
 						this.mainImage.Source = currentBitmap;
 

@@ -2,13 +2,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="400"
+        mc:Ignorable="d" MinWidth="322" MinHeight="202" d:DesignWidth="644" d:DesignHeight="404"
         x:Class="OpenCiv1.UI.MainWindow"
         Title="OpenCiv1"
-		Background="Black" Width="640" Height="400">
+		Background="Black" Width="644" Height="404">
 		<Grid>
 			<Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" StretchDirection="Both">
-				<Image Name="mainImage" Width="640" Height="400"></Image>
+				<Border BorderBrush="Purple" BorderThickness="1">
+					<Image Name="mainImage" Width="320" Height="200" Margin="0" RenderOptions.BitmapInterpolationMode="None"/>
+				</Border>
 			</Viewbox>
 			<TextBlock Name="gamePaused" FontSize="40" Foreground="White" IsVisible="False" VerticalAlignment="Center" HorizontalAlignment="Center">
 				Game paused
