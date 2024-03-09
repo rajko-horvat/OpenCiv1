@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 
@@ -32,15 +33,35 @@ namespace OpenCiv1.UI
 
 		private void MessageBox_KeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
 		{
-			if (e.KeyModifiers == KeyModifiers.None && e.Key == Key.Escape)
+			if (e.KeyModifiers == KeyModifiers.None)
 			{
-				this.eReturnValue = MessageBoxDefaultButton.None;
-				this.bHasReturnValue = true;
-				this.Close();
+				switch (e.Key)
+				{
+					case Key.Escape:
+						this.eReturnValue = MessageBoxDefaultButton.None;
+						this.bHasReturnValue = true;
+						this.Close();
+						break;
+
+					case Key.Enter:
+						if (this.messageButton1.IsDefault)
+						{
+							MessageButton1_Click(this, new RoutedEventArgs());
+						}
+						else if (this.messageButton2.IsDefault)
+						{
+							MessageButton2_Click(this, new RoutedEventArgs());
+						}
+						else if (this.messageButton3.IsDefault)
+						{
+							MessageButton3_Click(this, new RoutedEventArgs());
+						}
+						break;
+				}
 			}
 		}
 
-		private void MessageButton1_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+		private void MessageButton1_Click(object? sender, RoutedEventArgs e)
 		{
 			this.eReturnValue = MessageBoxDefaultButton.Button1;
 			this.bHasReturnValue = true;
