@@ -3,9 +3,9 @@
 <ul>
 <li>The OpenCiv1 uses Avalonia UI framework and is platform independent. It is currently compatible with desktops: Windows, Linux and MacOSX.</li>
 <p align="center">
-<img src="src/Resources/Screenshots/Windows.png" alt="Windows OS" width="300" />
-<img src="src/Resources/Screenshots/Linux.png" alt="Linux OS" width="300" />
-<img src="src/Resources/Screenshots/MacOSX.png" alt="MacOSX OS" width="300" /></p>
+<img src="src/Resources/Screenshots/Windows.png" alt="Windows OS" width="260" />
+<img src="src/Resources/Screenshots/Linux.png" alt="Linux OS" width="260" />
+<img src="src/Resources/Screenshots/MacOSX.png" alt="MacOSX OS" width="260" /></p>
 <li>The game logic is <b>Based on original DOS Civilization game version 475.05</b> disassembly.</li>
 <li>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform and the bugs that have never been fixed are hindering the popularity of the game.</li>
 <li>The news, discussions about this project and releases are published regularly on <a href="https://forums.civfanatics.com/threads/rewrite-of-civilization-1-source-code-openciv1-project.682623/" target="_blank">Civilization Fanatics Forum page</a></li>
