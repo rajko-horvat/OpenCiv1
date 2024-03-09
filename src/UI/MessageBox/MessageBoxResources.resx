@@ -118,10 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="BinaryResources" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>BinaryResources.bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Information" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\Information.ico;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Fonts.xml" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Fonts.xml.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Information_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\Information_64.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Question" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\Question.ico;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Question_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\Question_64.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Stop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\Stop.ico;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Stop_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\Stop_64.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\Warning.ico;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Warning_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\Warning_64.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

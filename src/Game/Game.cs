@@ -195,7 +195,7 @@ namespace OpenCiv1
 			uint uiEXEStart = CPU.ToLinearAddress(usStartSegment, 0);
 			uint uiEXELength = 0x3a0e0;
 
-			byte[] resources = OpenCiv1.Resources.Resources.BinaryResources;
+			byte[] resources = Resources.BinaryResources;
 
 			this.oCPU.Memory.AllocateMemoryBlock(uiEXEStart, uiEXELength, CPUMemoryFlagsEnum.ReadWrite);
 			this.oCPU.Memory.WriteBlock(CPU.ToLinearAddress(0x35cf, 0), resources, 0, resources.Length);

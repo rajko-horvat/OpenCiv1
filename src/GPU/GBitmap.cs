@@ -580,6 +580,7 @@ namespace OpenCiv1.GPU
 			if (bitmap != null)
 			{
 				this.DrawImage(xPos, yPos, bitmap, false);
+
 				/*for (int i = 0; i < bitmap.Height; i++)
 				{
 					for (int j = 0; j < bitmap.Width; j++)

@@ -2,7 +2,6 @@ using System;
 using System.IO.Compression;
 using IRB.VirtualCPU;
 using IRB.Collections.Generic;
-using OpenCiv1.Resources;
 using Avalonia.Media;
 
 namespace OpenCiv1.GPU
@@ -25,7 +24,7 @@ namespace OpenCiv1.GPU
 
 			this.aScreens.Add(0, new GBitmap()); // Main screen
 
-			byte[] fonts = OpenCiv1.Resources.Resources.Fonts_xml;
+			byte[] fonts = Resources.Fonts_xml;
 
 			Stream fonts1 = new GZipStream(new MemoryStream(fonts), CompressionMode.Decompress);
 			//Stream fonts1 = new MemoryStream(fonts);

@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
-using System.Threading.Tasks;
 
 namespace OpenCiv1.UI
 {
@@ -75,13 +74,13 @@ namespace OpenCiv1.UI
 			return MessageBox.Show(text, title, MessageBoxIcon.None, MessageBoxButtons.OK, MessageBoxDefaultButton.None);
 		}
 
-		/// <summary>Displays a Message Box dialog with specified text, title, and icon</summary>
+		/// <summary>Displays a Message Box dialog with specified text, title, and bitmap</summary>
 		public static MessageBoxResult Show(string text, string title, MessageBoxIcon icon)
 		{
 			return MessageBox.Show(text, title, icon, MessageBoxButtons.OK, MessageBoxDefaultButton.None);
 		}
 
-		/// <summary>Displays a Message Box dialog with specified text, title, and custon icon</summary>
+		/// <summary>Displays a Message Box dialog with specified text, title, and custon bitmap</summary>
 		public static MessageBoxResult Show(string text, string title, Bitmap icon)
 		{
 			return MessageBox.Show(text, title, icon, MessageBoxButtons.OK, MessageBoxDefaultButton.None);
@@ -100,11 +99,11 @@ namespace OpenCiv1.UI
 			return MessageBox.Show(text, title, icon, buttons, MessageBoxDefaultButton.None);
 		}
 
-		/// <summary>Displays a Message Box dialog with specified text, title, custom icon and style</summary>
+		/// <summary>Displays a Message Box dialog with specified text, title, custom bitmap and style</summary>
 		public static MessageBoxResult Show(string text, string title,
-			Bitmap icon, MessageBoxButtons buttons)
+			Bitmap bitmap, MessageBoxButtons buttons)
 		{
-			return MessageBox.Show(text, title, icon, buttons, MessageBoxDefaultButton.None);
+			return MessageBox.Show(text, title, bitmap, buttons, MessageBoxDefaultButton.None);
 		}
 
 		/// <summary>Displays a Message Box dialog with specified text, title and selected style</summary>
@@ -112,34 +111,39 @@ namespace OpenCiv1.UI
 			MessageBoxIcon icon, MessageBoxButtons buttons, MessageBoxDefaultButton defaultButton)
 		{
 			Bitmap? iconBitmap = null;
+			WindowIcon? windowIcon = null;
 
 			switch (icon)
 			{
 				case MessageBoxIcon.Stop:
-					iconBitmap = new Bitmap(new MemoryStream(OpenCiv1.Resources.Resources.Stop_64x64));
+					iconBitmap = new Bitmap(new MemoryStream(UI.MessageBoxResources.Stop_64));
+					windowIcon = new WindowIcon(new MemoryStream(UI.MessageBoxResources.Stop));
 					break;
 
 				case MessageBoxIcon.Question:
-					iconBitmap = new Bitmap(new MemoryStream(OpenCiv1.Resources.Resources.Question_64x64));
+					iconBitmap = new Bitmap(new MemoryStream(UI.MessageBoxResources.Question_64));
+					windowIcon = new WindowIcon(new MemoryStream(UI.MessageBoxResources.Question));
 					break;
 
 				case MessageBoxIcon.Warning:
-					iconBitmap = new Bitmap(new MemoryStream(OpenCiv1.Resources.Resources.Warning_64x64));
+					iconBitmap = new Bitmap(new MemoryStream(UI.MessageBoxResources.Warning_64));
+					windowIcon = new WindowIcon(new MemoryStream(UI.MessageBoxResources.Warning));
 					break;
 
 				case MessageBoxIcon.Information:
-					iconBitmap = new Bitmap(new MemoryStream(OpenCiv1.Resources.Resources.Information_64x64));
+					iconBitmap = new Bitmap(new MemoryStream(UI.MessageBoxResources.Information_64));
+					windowIcon = new WindowIcon(new MemoryStream(UI.MessageBoxResources.Information));
 					break;
 			}
 
-			return MessageBox.ShowInternal(null, text, title, iconBitmap, buttons, defaultButton);
+			return MessageBox.ShowInternal(null, text, title, iconBitmap, windowIcon, buttons, defaultButton);
 		}
 
-		/// <summary>Displays a Message Box dialog with specified text, title, custom icon and selected style</summary>
+		/// <summary>Displays a Message Box dialog with specified text, title, custom bitmap and selected style</summary>
 		public static MessageBoxResult Show(string text, string title,
-			Bitmap icon, MessageBoxButtons buttons, MessageBoxDefaultButton defaultButton)
+			Bitmap bitmap, MessageBoxButtons buttons, MessageBoxDefaultButton defaultButton)
 		{
-			return MessageBox.ShowInternal(null, text, title, icon, buttons, defaultButton);
+			return MessageBox.ShowInternal(null, text, title, bitmap, null, buttons, defaultButton);
 		}
 		#endregion
 
@@ -156,13 +160,13 @@ namespace OpenCiv1.UI
 			return MessageBox.Show(owner, text, title, MessageBoxIcon.None, MessageBoxButtons.OK, MessageBoxDefaultButton.None);
 		}
 
-		/// <summary>Displays a Message Box dialog with specified text, title, and icon</summary>
+		/// <summary>Displays a Message Box dialog with specified text, title, and bitmap</summary>
 		public static MessageBoxResult Show(Window owner, string text, string title, MessageBoxIcon icon)
 		{
 			return MessageBox.Show(owner, text, title, icon, MessageBoxButtons.OK, MessageBoxDefaultButton.None);
 		}
 
-		/// <summary>Displays a Message Box dialog with specified text, title, and custon icon</summary>
+		/// <summary>Displays a Message Box dialog with specified text, title, and custon bitmap</summary>
 		public static MessageBoxResult Show(Window owner, string text, string title, Bitmap icon)
 		{
 			return MessageBox.Show(owner, text, title, icon, MessageBoxButtons.OK, MessageBoxDefaultButton.None);
@@ -181,58 +185,72 @@ namespace OpenCiv1.UI
 			return MessageBox.Show(owner, text, title, icon, buttons, MessageBoxDefaultButton.None);
 		}
 
-		/// <summary>Displays a Message Box dialog with specified text, title, custom icon and style</summary>
+		/// <summary>Displays a Message Box dialog with specified text, title, custom bitmap and style</summary>
 		public static MessageBoxResult Show(Window owner, string text, string title,
-			Bitmap icon, MessageBoxButtons buttons)
+			Bitmap bitmap, MessageBoxButtons buttons)
 		{
-			return MessageBox.Show(owner, text, title, icon, buttons, MessageBoxDefaultButton.None);
+			return MessageBox.Show(owner, text, title, bitmap, buttons, MessageBoxDefaultButton.None);
 		}
 
 		/// <summary>Displays a Message Box dialog with specified text, title and selected style</summary>
 		public static MessageBoxResult Show(Window owner, string text, string title,
 			MessageBoxIcon icon, MessageBoxButtons buttons, MessageBoxDefaultButton defaultButton)
 		{
-			Bitmap? iconBitmap = null;
+			Bitmap? bitmap = null;
+			WindowIcon? windowIcon = null;
 
 			switch (icon)
 			{
 				case MessageBoxIcon.Stop:
-					iconBitmap = new Bitmap(new MemoryStream(OpenCiv1.Resources.Resources.Stop_64x64));
+					bitmap = new Bitmap(new MemoryStream(UI.MessageBoxResources.Stop_64));
+					windowIcon = new WindowIcon(new MemoryStream(UI.MessageBoxResources.Stop));
 					break;
 
 				case MessageBoxIcon.Question:
-					iconBitmap = new Bitmap(new MemoryStream(OpenCiv1.Resources.Resources.Question_64x64));
+					bitmap = new Bitmap(new MemoryStream(UI.MessageBoxResources.Question_64));
+					windowIcon = new WindowIcon(new MemoryStream(UI.MessageBoxResources.Question));
 					break;
 
 				case MessageBoxIcon.Warning:
-					iconBitmap = new Bitmap(new MemoryStream(OpenCiv1.Resources.Resources.Warning_64x64));
+					bitmap = new Bitmap(new MemoryStream(UI.MessageBoxResources.Warning_64));
+					windowIcon = new WindowIcon(new MemoryStream(UI.MessageBoxResources.Warning));
 					break;
 
 				case MessageBoxIcon.Information:
-					iconBitmap = new Bitmap(new MemoryStream(OpenCiv1.Resources.Resources.Information_64x64));
+					bitmap = new Bitmap(new MemoryStream(UI.MessageBoxResources.Information_64));
+					windowIcon = new WindowIcon(new MemoryStream(UI.MessageBoxResources.Information));
 					break;
 			}
 
-			return MessageBox.ShowInternal(owner, text, title, iconBitmap, buttons, defaultButton);
+			return MessageBox.ShowInternal(owner, text, title, bitmap, windowIcon, buttons, defaultButton);
 		}
 
-		/// <summary>Displays a Message Box dialog with specified text, title, custom icon and selected style</summary>
+		/// <summary>Displays a Message Box dialog with specified text, title, custom bitmap and selected style</summary>
 		public static MessageBoxResult Show(Window owner, string text, string title,
 			Bitmap icon, MessageBoxButtons buttons, MessageBoxDefaultButton defaultButton)
 		{
-			return MessageBox.ShowInternal(owner, text, title, icon, buttons, defaultButton);
+			return MessageBox.ShowInternal(owner, text, title, icon, null, buttons, defaultButton);
 		}
 
 		private static MessageBoxResult ShowInternal(Window? owner, string text, string title,
-			Bitmap? icon, MessageBoxButtons buttons, MessageBoxDefaultButton defaultButton)
+			Bitmap? bitmap, WindowIcon? icon, MessageBoxButtons buttons, MessageBoxDefaultButton defaultButton)
 		{
 			MessageBox messageBox = new MessageBox();
 
+			if (icon == null)
+			{
+				messageBox.Icon = new WindowIcon(new MemoryStream(UI.MessageBoxResources.Information));
+			}
+			else
+			{
+				messageBox.Icon = icon;
+			}
+
 			messageBox.Title = title;
 
-			if (icon != null)
+			if (bitmap != null)
 			{
-				messageBox.messageIcon.Source = icon;
+				messageBox.messageIcon.Source = bitmap;
 			}
 
 			messageBox.messageText.Text = text;
@@ -244,12 +262,7 @@ namespace OpenCiv1.UI
 					messageBox.messageButton2.IsVisible = false;
 					messageBox.messageButton3.Content = "OK";
 					
-					switch (defaultButton)
-					{
-						case MessageBoxDefaultButton.Button1:
-							messageBox.messageButton3.IsDefault = true;
-							break;
-					}
+					messageBox.messageButton3.IsDefault = true;
 					break;
 
 				case MessageBoxButtons.OKCancel:

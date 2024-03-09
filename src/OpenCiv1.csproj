@@ -49,12 +49,21 @@
     <Compile Update="UI\MainWindow.axaml.cs">
       <DependentUpon>MainWindow.axaml</DependentUpon>
     </Compile>
+    <Compile Update="UI\MessageBox\MessageBoxResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessageBoxResources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="UI\MessageBox\MessageBoxResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageBoxResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

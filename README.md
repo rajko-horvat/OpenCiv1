@@ -34,10 +34,6 @@ Compile with CLI method:
 <ul>
 <li>git clone https://github.com/rajko-horvat/OpenCiv1</li>
 <li>cd OpenCiv1</li>
-<li>dotnet add package Avalonia</li>
-<li>dotnet add package Avalonia.Desktop</li>
-<li>dotnet add package Avalonia.Fonts.Inter</li>
-<li>dotnet add package Avalonia.Themes.Fluent</li>
 <li>dotnet build -c Release</li>
 </ul>
 

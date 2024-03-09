@@ -8,8 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OpenCiv1 {
+namespace OpenCiv1.UI {
     using System;
+    
     
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
@@ -21,24 +22,24 @@ namespace OpenCiv1 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
+    internal class MessageBoxResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal MessageBoxResources() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpenCiv1.Resources.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpenCiv1.UI.MessageBox.MessageBoxResources", typeof(MessageBoxResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -50,7 +51,7 @@ namespace OpenCiv1 {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -62,9 +63,9 @@ namespace OpenCiv1 {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] BinaryResources {
+        internal static byte[] Information {
             get {
-                object obj = ResourceManager.GetObject("BinaryResources", resourceCulture);
+                object obj = ResourceManager.GetObject("Information", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -72,9 +73,69 @@ namespace OpenCiv1 {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] Fonts_xml {
+        internal static byte[] Information_64 {
             get {
-                object obj = ResourceManager.GetObject("Fonts.xml", resourceCulture);
+                object obj = ResourceManager.GetObject("Information_64", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Question {
+            get {
+                object obj = ResourceManager.GetObject("Question", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Question_64 {
+            get {
+                object obj = ResourceManager.GetObject("Question_64", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Stop {
+            get {
+                object obj = ResourceManager.GetObject("Stop", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Stop_64 {
+            get {
+                object obj = ResourceManager.GetObject("Stop_64", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Warning {
+            get {
+                object obj = ResourceManager.GetObject("Warning", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Warning_64 {
+            get {
+                object obj = ResourceManager.GetObject("Warning_64", resourceCulture);
                 return ((byte[])(obj));
             }
         }
