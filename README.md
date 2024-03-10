@@ -1,7 +1,7 @@
 ## About
 <p>OpenCiv1 project is an open source rewrite of <a href="https://en.wikipedia.org/wiki/Civilization_(video_game)">Civilization game</a> designed by Sid Meier and Bruce Shelley in year 1991.</p>
 <ul>
-<li>The OpenCiv1 uses Avalonia UI framework and is platform independent. It is currently compatible with desktops: Windows, Linux and MacOSX.</li>
+<li>The OpenCiv1 uses .NET 8 and Avalonia UI framework and is OS independent. It is currently compatible with desktops: Windows, Linux and MacOSX.</li>
 <p align="center">
 <img src="src/Resources/Screenshots/Windows.png" alt="Windows OS" width="260" />
 <img src="src/Resources/Screenshots/Linux.png" alt="Linux OS" width="260" />
@@ -21,7 +21,7 @@
 <p><b>The game is in working state</b>, but you have to legally own the Original game (the .txt, .pic and .pal files have to be present).<br/><br/>
 Keyboard shortcuts:
 <ul>
-<li>The <b>Debug mode (Shift-56)</b> can be toggled by pressing Alt + D Key.</li>
+<li>Alt + D - Enable / Disable the <b>Debug mode (Shift-56)</b></li>
 <li>Alt + P - Pause / Resume game</li>
 <li>Alt + 1 - Show / Hide Screen 1</li>
 <li>Alt + 2 - Show / Hide Screen 2</li>
@@ -33,11 +33,10 @@ Keyboard shortcuts:
 
 <p>The only dependency is .NET 8</p>
 
-## How to compile the code (.NET 8 required)
+## How to compile the code (.NET 8 SDK required)
 If you want to compile the code, it is assumed that:
 <ul>
 <li>You are using Visual Studio 2022 (or equivalent).</li>
-<li>Avalonia, Avalonia.Desktop, Avalonia.Fonts.Inter and Avalonia.Themes.Fluent dependencies are installed.</li>
 <li>For debugging you have installed DOS Civilization game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Linux (uppercase files!).
 It is where its home directory resides (Images, palettes, text and save games are loaded/saved there, for now).</li>
 <li>For Release mode it is expected that OpenCiv1 and it's dependencies (for simlicity) are put directly into directory with resource files, 
