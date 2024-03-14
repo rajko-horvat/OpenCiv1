@@ -496,34 +496,34 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0543, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d5)), 10));
+				this.oParent.MSCAPI.itoa(this.oParent.GameState.Players[playerID].Units[unitID].Position.X, 10));
 
 			// Instruction address 0x0000:0x0553, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ",");
 
 			// Instruction address 0x0000:0x0577, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d6)), 10));
+				this.oParent.MSCAPI.itoa(this.oParent.GameState.Players[playerID].Units[unitID].Position.Y, 10));
 
 			// Instruction address 0x0000:0x0587, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\n");
 
-			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81da)), 0xff);
-			if (this.oCPU.Flags.E) goto L060e;
+			if(this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition.X == -1)
+				goto L060e;
 
 			// Instruction address 0x0000:0x059e, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "To:");
 
 			// Instruction address 0x0000:0x05c2, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81da)), 10));
+				this.oParent.MSCAPI.itoa(this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition.X, 10));
 
 			// Instruction address 0x0000:0x05d2, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ",");
 
 			// Instruction address 0x0000:0x05f6, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81db)), 10));
+				this.oParent.MSCAPI.itoa(this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition.Y, 10));
 
 			// Instruction address 0x0000:0x0606, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\n");
