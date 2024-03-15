@@ -285,11 +285,11 @@ namespace OpenCiv1
 
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)), 0x0);
 			if (this.oCPU.Flags.NE) goto L02a2;
-						
+			
 			this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition.X = -1;
 			this.oParent.GameState.Players[playerID].Units[unitID].GoToNextDirection = -1;
+			this.oParent.GameState.Players[playerID].Units[unitID].RemainingMoves = 0;
 
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d8), 0x0);
 			this.oCPU.AX.Word = 0xffff;
 
 			goto L05e0;
@@ -619,7 +619,8 @@ namespace OpenCiv1
 				if ((this.oParent.GameState.Players[playerID].Units[unitID].GoToNextDirection ^ 0x4) ==
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)))
 				{
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d8), 0);
+					this.oParent.GameState.Players[playerID].Units[unitID].RemainingMoves = 0;
+
 					this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14), 0);
 				}
 			}

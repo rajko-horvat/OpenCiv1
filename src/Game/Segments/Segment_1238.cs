@@ -1129,8 +1129,8 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x0c5b, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Travellers report:\n");
 
-			this.oCPU.TESTWord((ushort)this.oParent.GameState.TechnologyFirstDiscoveredBy[35], 0x7);
-			if (this.oCPU.Flags.E) goto L0c74;
+			if ((this.oParent.GameState.TechnologyFirstDiscoveredBy[35] & 7) == 0)
+				goto L0c74;
 
 			// Instruction address 0x1238:0x0c89, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "Guerrilla uprising\nnear ");
@@ -1138,8 +1138,8 @@ namespace OpenCiv1
 			goto L0c84;
 
 		L0c74:
-			this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.ES.Word, 0x4f4), 0x7);
-			if (this.oCPU.Flags.E) goto L0c81;
+			if ((this.oParent.GameState.TechnologyFirstDiscoveredBy[68] & 7) == 0)
+				goto L0c81;
 
 			// Instruction address 0x1238:0x0c89, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "Native unrest\nnear ");

@@ -569,13 +569,7 @@ namespace OpenCiv1
 				this.oParent.GameState.Players[playerID].Units[unitID].Position.X, this.oParent.GameState.Players[playerID].Units[unitID].Position.Y, 1);
 
 		L061e:
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0x81d8), 0x0);
+			this.oParent.GameState.Players[playerID].Units[unitID].RemainingMoves = 0;
 
 		L0633:
 			this.oCPU.SI.Word = this.oCPU.PopWord();
