@@ -1373,10 +1373,12 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0xc;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
 			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
+
 			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d7)), 0xf);
 			if (this.oCPU.Flags.NE) goto L0cf3;
-			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d9)), 0x0);
-			if (this.oCPU.Flags.G) goto L0cf3;
+
+			if (this.oParent.GameState.Players[playerID].Units[unitID].SpecialMoves > 0)
+				goto L0cf3;
 
 		L0ced:
 			this.oCPU.AX.Word = 0x68;
