@@ -86,7 +86,7 @@ namespace IRB.VirtualCPU
 					Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), Path.DirectorySeparatorChar);
 			}
 #else
-			DefaultCIVPath = "";
+			DefaultCIVPath = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}{Path.DirectorySeparatorChar}";
 #endif
 		}
 

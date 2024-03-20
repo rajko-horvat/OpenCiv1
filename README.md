@@ -28,10 +28,14 @@ Keyboard shortcuts:
 <li>Alt + 3 - Show / Hide Screen 3</li>
 </ul></p>
 
+## Dependencies
+<ul>
+<li>.NET 8</li>
+<li>Visual C++ 2015-2019 redistributable (on some Windows machines)</li>
+</ul>
+
 ## How to install release version of OpenCiv1
 <p>The files from the Release should be copied directly into installed and working DOS Civilization game directory.</p>
-
-<p>The only dependency is .NET 8</p>
 
 ## How to compile the code (.NET 8 SDK required)
 If you want to compile the code, it is assumed that:

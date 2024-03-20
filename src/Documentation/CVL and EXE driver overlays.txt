@@ -91,8 +91,8 @@ Sound drivers ASOUND.CVL, ISOUND.CVL, NSOUND.CVL, RSOUND.CVL and TSOUND.CVL (onl
 * jmp instruction at offset 0xa41 is mapped to function 4
 * jmp instruction at offset 0xa48 is mapped to function 5
 * jmp instruction at offset 0xa4f is mapped to function 6
-* jmp instruction at offset 0xa56 is mapped to function 7
-* jmp instruction at offset 0xa5d is mapped to function 8
-* jmp instruction at offset 0xa64 is mapped to function 9
-* jmp instruction at offset 0xa6b is mapped to function 10
-* jmp instruction at offset 0xa72 is mapped to function 11
+* jmp instruction at offset 0xa56 is mapped to function 7 (Not used)
+* jmp instruction at offset 0xa5d is mapped to function 8 (Not used)
+* jmp instruction at offset 0xa64 is mapped to function 9 (Not used)
+* jmp instruction at offset 0xa6b is mapped to function 10 (Not used)
+* jmp instruction at offset 0xa72 is mapped to function 11 (Not used)

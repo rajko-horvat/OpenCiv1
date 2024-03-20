@@ -1121,7 +1121,7 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Sound function
 		/// </summary>
 		public void F0_1000_0a2b()
 		{
@@ -1155,7 +1155,7 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock("Sound overlay 'F0_1000_0a39'");
 
 			// Instruction address 0x1000:0x0a39, size: 5
-			this.oCPU.AX.Word =  this.oParent.Sound.F0_0000_006a();
+			this.oCPU.AX.Word = this.oParent.Sound.F0_0000_006a();
 			//this.oCPU.Log.ExitBlock("Sound overlay 'F0_1000_0a39'");
 
 			return this.oCPU.AX.Word;

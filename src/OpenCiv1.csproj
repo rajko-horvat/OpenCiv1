@@ -68,15 +68,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="..\How To Install.txt">
+    <None Remove="..\LICENSE" />
+    <None Remove="..\README.md" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Content Include="..\LICENSE">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="..\LICENSE">
+    </Content>
+    <Content Include="..\README.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="..\README.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
 
 </Project>
