@@ -177,7 +177,7 @@ namespace OpenCiv1
 
 				if (!File.Exists(sFilePath))
 				{
-					throw new ResourceMissingException($"Missing resource file {sFilePath}. Plsease ensure that the file exists at specified path.");
+					throw new ResourceMissingException($"Missing resource file {sFilePath}. Please ensure that the file exists at specified path.");
 				}
 			}
 			#endregion

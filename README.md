@@ -17,21 +17,14 @@
 
 <p>The part of the game assembly code is emulated with Virtual CPU, and the rest of the code has been rewritten from scratch until all of the code is replaced with new copyright free code. The other resources (like graphics, music and text) will also be completely replaced with copyright free resources before publishing the complete game.</p>
 
-## Current status
-<p><b>The game is in working state</b>, but you have to legally own the Original game (the .txt, .pic and .pal files have to be present).<br/><br/>
-Keyboard shortcuts:
+## Dependencies
 <ul>
-<li>Alt + D - Enable / Disable the <b>Debug mode (Shift-56)</b></li>
-<li>Alt + P - Pause / Resume game</li>
-<li>Alt + 1 - Show / Hide Screen 1</li>
-<li>Alt + 2 - Show / Hide Screen 2</li>
-<li>Alt + 3 - Show / Hide Screen 3</li>
-</ul></p>
+<li>.NET 8</li>
+<li>Visual C++ 2015-2019 redistributable (on some Windows machines)</li>
+</ul>
 
 ## How to install release version of OpenCiv1
 <p>The files from the Release should be copied directly into installed and working DOS Civilization game directory.</p>
-
-<p>The only dependency is .NET 8</p>
 
 ## How to compile the code (.NET 8 SDK required)
 If you want to compile the code, it is assumed that:
@@ -48,6 +41,17 @@ Compile with CLI method:
 <li>cd OpenCiv1</li>
 <li>dotnet build -c Release</li>
 </ul>
+
+## Current status
+<p><b>The game is in working state</b>, but you have to legally own the Original game (the .txt, .pic and .pal files have to be present).<br/><br/>
+Keyboard shortcuts:
+<ul>
+<li>Alt + D - Enable / Disable the <b>Debug mode (Shift-56)</b></li>
+<li>Alt + P - Pause / Resume game</li>
+<li>Alt + 1 - Show / Hide Screen 1</li>
+<li>Alt + 2 - Show / Hide Screen 2</li>
+<li>Alt + 3 - Show / Hide Screen 3</li>
+</ul></p>
 
 ## Help needed
 <p>All contributions are welcome.</p>
