@@ -224,8 +224,8 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x01fe, size: 5
 			this.oParent.Segment_2aea.F0_2aea_1653(0, xPos, yPos);
 
-			this.oCPU.AX.Low = (byte)this.oParent.GameState.MapVisibility[xPos, yPos];
-			this.oCPU.CBW(this.oCPU.AX);
+			this.oCPU.AX.Word = this.oParent.GameState.MapVisibility[xPos, yPos];
+			
 			this.oCPU.DX.Word = 0x1;
 			this.oCPU.CX.Low = (byte)(this.oParent.GameState.HumanPlayerID & 0xff);
 			this.oCPU.DX.Word = this.oCPU.SHLWord(this.oCPU.DX.Word, this.oCPU.CX.Low);
