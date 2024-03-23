@@ -33,15 +33,17 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x26);
 			this.oCPU.PushWord(this.oCPU.DI.Word);
 			this.oCPU.PushWord(this.oCPU.SI.Word);
+
 			this.oCPU.AX.Word = 0xc;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID1);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
+
 			this.oCPU.AX.Word = 0x600;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID1);
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.DI.Word + 0x81d7));
-			this.oCPU.CBW(this.oCPU.AX);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), this.oCPU.AX.Word);
+
+			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8),
+				(short)this.oParent.GameState.Players[playerID1].Units[unitID1].TypeID);
 
 			this.oCPU.AX.Word = 0x600;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID2);
@@ -50,9 +52,8 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID2);
 			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81d7));
-			this.oCPU.CBW(this.oCPU.AX);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), this.oCPU.AX.Word);
+			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe),
+				(short)this.oParent.GameState.Players[playerID2].Units[unitID2].TypeID);
 
 			// Instruction address 0x29f3:0x0052, size: 5
 			this.oParent.Segment_2aea.F0_2aea_134a(
@@ -662,8 +663,7 @@ namespace OpenCiv1
 				(short)this.oCPU.SI.Word + 1,
 				(short)this.oCPU.DI.Word + 1,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word,
-					(ushort)(((this.oCPU.ReadUInt8(this.oCPU.DS.Word,
-						(ushort)(((0x600 * playerID1) + (0xc * unitID1)) + 0x81d7)) +
+					(ushort)(((this.oParent.GameState.Players[playerID1].Units[unitID1].TypeID +
 					(playerID1 << 5) + 0x40) << 1) + 0xd4ce)));
 
 			// Instruction address 0x29f3:0x062a, size: 5
@@ -938,31 +938,33 @@ namespace OpenCiv1
 			goto L0b1b;
 
 		L0902:
-			this.oCPU.CMPWord((ushort)playerID2, 0x0);
-			if (this.oCPU.Flags.NE) goto L0953;
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID2);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID2);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0x81d7)), 0x1a);
-			if (this.oCPU.Flags.NE) goto L0953;
+			if (playerID2 == 0)
+			{
+				this.oCPU.AX.Word = 0xc;
+				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID2);
+				this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			this.oParent.GameState.Players[playerID1].Coins += 100;
+				this.oCPU.AX.Word = 0x600;
+				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID2);
+				this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
-			this.oCPU.CMPWord((ushort)playerID1, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L0953;
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+				if (this.oParent.GameState.Players[playerID2].Units[unitID2].TypeID == 0x1a)
+				{
+					this.oParent.GameState.Players[playerID1].Coins += 100;
 
-			// Instruction address 0x29f3:0x093a, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x2ae7);
+					if (playerID1 == this.oParent.GameState.HumanPlayerID)
+					{
+						this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
-			// Instruction address 0x29f3:0x094b, size: 5
-			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
+						// Instruction address 0x29f3:0x093a, size: 5
+						this.oParent.Segment_2f4d.F0_2f4d_044f(0x2ae7);
 
-		L0953:
+						// Instruction address 0x29f3:0x094b, size: 5
+						this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
+					}
+				}
+			}
+
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0xffff);
 			if (this.oCPU.Flags.E) goto L095c;
 			goto L0a24;
