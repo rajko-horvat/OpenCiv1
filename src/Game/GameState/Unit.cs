@@ -48,7 +48,7 @@ namespace OpenCiv1
 		{
 			Unit unit = new Unit();
 
-			unit.Status = GameLoadAndSave.ReadUInt8(stream);
+			unit.Status = (sbyte)GameLoadAndSave.ReadUInt8(stream);
 			unit.Position.X = (sbyte)GameLoadAndSave.ReadUInt8(stream);
 			unit.Position.Y = (sbyte)GameLoadAndSave.ReadUInt8(stream);
 			unit.TypeID = (sbyte)GameLoadAndSave.ReadUInt8(stream);
@@ -75,7 +75,7 @@ namespace OpenCiv1
 			stream.WriteByte((byte)((sbyte)this.GoToPosition.X));
 			stream.WriteByte((byte)((sbyte)this.GoToPosition.Y));
 			stream.WriteByte((byte)((sbyte)this.GoToNextDirection));
-			stream.WriteByte((byte)((sbyte)this.VisibleByPlayer));
+			stream.WriteByte((byte)(this.VisibleByPlayer & 0xff));
 			stream.WriteByte((byte)((sbyte)this.NextUnitID));
 			stream.WriteByte((byte)((sbyte)this.HomeCityID));
 		}
