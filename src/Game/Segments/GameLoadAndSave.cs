@@ -973,11 +973,11 @@ namespace OpenCiv1
 
 				unitReader.Close();
 
-				for (int i = 0; i < this.oParent.GameState.MapVisibility.GetLength(0); i++)
+				for (int i = 0; i < 80; i++)
 				{
-					for (int j = 0; j < this.oParent.GameState.MapVisibility.GetLength(1); j++)
+					for (int j = 0; j < 50; j++)
 					{
-						this.oParent.GameState.MapVisibility[i, j] = (sbyte)ReadUInt8(reader);
+						this.oParent.GameState.MapVisibility[i, j] = (ushort)((short)((sbyte)ReadUInt8(reader)));
 					}
 				}
 
@@ -1432,11 +1432,11 @@ namespace OpenCiv1
 				}*/
 				WriteData(writer, 0x81d4, 0x3000);
 
-				for (int i = 0; i < this.oParent.GameState.MapVisibility.GetLength(0); i++)
+				for (int i = 0; i < 80; i++)
 				{
-					for (int j = 0; j < this.oParent.GameState.MapVisibility.GetLength(1); j++)
+					for (int j = 0; j < 50; j++)
 					{
-						writer.WriteByte((byte)this.oParent.GameState.MapVisibility[i, j]);
+						writer.WriteByte((byte)((sbyte)((short)this.oParent.GameState.MapVisibility[i, j])));
 					}
 				}
 

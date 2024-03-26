@@ -68,7 +68,7 @@ namespace OpenCiv1.UI
 
 			// Initialize Widnows refresh timer
 			this.oTimer = new DispatcherTimer(DispatcherPriority.Normal);
-			this.oTimer.Interval = TimeSpan.FromMilliseconds(50);
+			this.oTimer.Interval = TimeSpan.FromMilliseconds(20);
 			this.oTimer.Tick += this.Timer_Tick;
 			this.oTimer.Start();
 

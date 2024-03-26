@@ -135,7 +135,7 @@ namespace OpenCiv1
 			new UnitDefinition("Caravan", 127, 0, 1, 0, 0, 1, 5, 0, 0, 6, 24)};
 
 		// Map
-		public sbyte[,] MapVisibility = new sbyte[80, 50];
+		public ushort[,] MapVisibility = new ushort[80, 50];
 		public short PollutedSquareCount = 0;
 		public short PollutionEffectLevel = 0;
 		public short GlobalWarmingCount = 0;
@@ -208,9 +208,9 @@ namespace OpenCiv1
 				this.TechnologyFirstDiscoveredBy[i] = 0;
 			}
 
-			for (int i = 0; i < this.MapVisibility.GetLength(0); i++)
+			for (int i = 0; i < 80; i++)
 			{
-				for (int j = 0; j < this.MapVisibility.GetLength(1); j++)
+				for (int j = 0; j < 50; j++)
 					this.MapVisibility[i, j] = 0;
 			}
 

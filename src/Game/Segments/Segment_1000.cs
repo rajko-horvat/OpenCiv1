@@ -162,8 +162,8 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x58, 0x1);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x50, this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x52, this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 100;
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
+
+			this.oCPU.BX.Word = 100;
 			this.oCPU.CX.Word = 0x10;
 
 		L0292:
@@ -175,10 +175,13 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x52, this.oCPU.ADCWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x52), 0x0));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			if (this.oCPU.Loop(this.oCPU.CX)) goto L0292;
+
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x50);
 			this.oCPU.DX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x52);
+
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x42, this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x42), this.oCPU.AX.Word));
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x44, this.oCPU.ADCWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x44), this.oCPU.DX.Word));
+
 			this.oCPU.CX.Word = 0x10;
 			this.oCPU.DIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
 			this.oCPU.AX.Word = this.oCPU.SHRWord(this.oCPU.AX.Word, 0x1);
@@ -226,14 +229,9 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public ushort F0_1000_033e_ResetTimer()
 		{
-			this.oCPU.Log.EnterBlock("F0_1000_033e_ResetTimer()");
-
 			// function body
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5c);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5c, 0);
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_033e_ResetTimer");
 
 			return this.oCPU.AX.Word;
 		}
@@ -1121,7 +1119,7 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Sound function
 		/// </summary>
 		public void F0_1000_0a2b()
 		{
@@ -1155,7 +1153,7 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock("Sound overlay 'F0_1000_0a39'");
 
 			// Instruction address 0x1000:0x0a39, size: 5
-			this.oCPU.AX.Word =  this.oParent.Sound.F0_0000_006a();
+			this.oCPU.AX.Word = this.oParent.Sound.F0_0000_006a();
 			//this.oCPU.Log.ExitBlock("Sound overlay 'F0_1000_0a39'");
 
 			return this.oCPU.AX.Word;
