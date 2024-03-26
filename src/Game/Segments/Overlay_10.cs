@@ -485,7 +485,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, "\n");
 
 			// Instruction address 0x0000:0x04ff, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x81df)));
+			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oParent.GameState.Players[playerID].Units[unitID].HomeCityID);
 
 			// Instruction address 0x0000:0x050f, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\n");

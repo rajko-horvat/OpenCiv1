@@ -95,7 +95,7 @@ namespace IRB.VirtualCPU
 			this.oParent = parent;
 			this.oLog = log;
 			this.oMemory = new CPUMemory(this);
-			this.oTimer = new Timer(oTimer_Tick, null, 20, 20);
+			this.oTimer = new Timer(oTimer_Tick, null, 10, 10);
 
 			for (int i = 0; i < this.aFileHandles.Length; i++)
 			{
