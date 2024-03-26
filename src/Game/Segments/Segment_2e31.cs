@@ -1977,16 +1977,17 @@ namespace OpenCiv1
 			// function body
 			if (Math.Abs(xPos - xPos1) <= 7 && Math.Abs(yPos - yPos1) <= 7)
 			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x87c9, (byte)((sbyte)xPos));
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x87ca, (byte)((sbyte)yPos));				
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x87cb, (byte)((flag == 0) ? 1 : 0x10));
+				// !!! Why do we write at unit structure?
+				//this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x87c9, (byte)((sbyte)xPos));
+				//this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x87ca, (byte)((sbyte)yPos));				
+				//this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x87cb, (byte)((flag == 0) ? 1 : 0x10));
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6590, (ushort)((short)xPos1));
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6592, (ushort)((short)yPos1));
 
 				// Instruction address 0x2e31:0x117c, size: 3
 				F0_2e31_0c1d(0, 127, param6);
 
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x87cb, 0xff);
+				//this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x87cb, 0xff);
 				
 				if (this.oCPU.AX.Word == 0xffff)
 				{

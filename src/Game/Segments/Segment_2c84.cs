@@ -561,8 +561,8 @@ namespace OpenCiv1
 			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30),
 				(short)this.oParent.GameState.Players[playerID].Units[unitID].TypeID);
 
-			if (this.oParent.GameState.Players[playerID].Units[unitID].TypeID < 0x1a &&
-				this.oParent.GameState.Players[playerID].Units[unitID].TypeID != 0xe)
+			if (this.oParent.GameState.Players[playerID].Units[unitID].TypeID < 26 &&
+				this.oParent.GameState.Players[playerID].Units[unitID].TypeID != 14)
 			{
 				// Instruction address 0x2c84:0x0528, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " Pillage \x008fP\n");

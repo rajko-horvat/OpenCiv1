@@ -956,22 +956,22 @@ namespace OpenCiv1
 
 				ReadData(reader, 0x112a, 0x3b8);
 
-				byte[] aUnits = new byte[0x3000];
-				reader.Read(aUnits, 0, 0x3000);
-				MemoryStream unitReader = new MemoryStream(aUnits);
+				//byte[] aUnits = new byte[0x3000];
+				//reader.Read(aUnits, 0, 0x3000);
+				//MemoryStream unitReader = new MemoryStream(aUnits);
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 128; j++)
 					{
-						this.oParent.GameState.Players[i].Units[j] = Unit.FromStream(unitReader);
+						this.oParent.GameState.Players[i].Units[j] = Unit.FromStream(reader);
 					}
 				}
 
-				unitReader.Position = 0;
-				ReadData(unitReader, 0x81d4, 0x3000);
+				//unitReader.Position = 0;
+				//ReadData(unitReader, 0x81d4, 0x3000);
 
-				unitReader.Close();
+				//unitReader.Close();
 
 				for (int i = 0; i < 80; i++)
 				{
@@ -1423,14 +1423,14 @@ namespace OpenCiv1
 
 				WriteData(writer, 0x112a, 0x3b8);
 
-				/*for (int i = 0; i < 8; i++)
+				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 128; j++)
 					{
 						this.oParent.GameState.Players[i].Units[j].ToStream(writer);
 					}
-				}*/
-				WriteData(writer, 0x81d4, 0x3000);
+				}
+				//WriteData(writer, 0x81d4, 0x3000);
 
 				for (int i = 0; i < 80; i++)
 				{

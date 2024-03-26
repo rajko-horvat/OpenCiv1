@@ -956,7 +956,7 @@ namespace OpenCiv1
 				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID2);
 				this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-				if (this.oParent.GameState.Players[playerID2].Units[unitID2].TypeID == 0x1a)
+				if (this.oParent.GameState.Players[playerID2].Units[unitID2].TypeID == 26)
 				{
 					this.oParent.GameState.Players[playerID1].Coins += 100;
 
