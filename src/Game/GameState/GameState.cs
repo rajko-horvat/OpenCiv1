@@ -104,7 +104,7 @@ namespace OpenCiv1
 		public short MaximumTechnologyCount = 0;
 
 		// Units
-		public UnitDefinition[] aUnitDefinitions = new UnitDefinition[]{
+		private UnitDefinition[] aUnitDefinitions = new UnitDefinition[]{
 			new UnitDefinition("Settlers", 127, 0, 1, 0, 0, 1, 4, 0, 0, 0, -1),	// 0
 			new UnitDefinition("Militia", 34, 0, 1, 0, 1, 1, 1, 0, 0, 2, -1),	// 1
 			new UnitDefinition("Phalanx", 34, 0, 1, 0, 1, 2, 2, 0, 0, 2, 17),	// 2
@@ -223,6 +223,11 @@ namespace OpenCiv1
 			{
 				this.LandPathfinding[i] = 0;
 			}
+		}
+
+		public UnitDefinition[] UnitDefinitions
+		{
+			get => this.aUnitDefinitions;
 		}
 	}
 }

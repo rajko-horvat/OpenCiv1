@@ -383,11 +383,8 @@ namespace OpenCiv1
 			this.oCPU.CMPByte((byte)this.oParent.GameState.Cities[cityID].CurrentProductionID, 0x0);
 			if (this.oCPU.Flags.L) goto L03c9;
 
-			this.oCPU.AX.Low = 0x22;
-			this.oCPU.IMULByte(this.oCPU.AX, (byte)this.oParent.GameState.Cities[cityID].CurrentProductionID);
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x112a);
 			// Instruction address 0x0000:0x03e5, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Cities[cityID].CurrentProductionID].Name);
 
 			goto L03e0;
 
@@ -665,10 +662,8 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x112a);
 			// Instruction address 0x0000:0x0719, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].Name);
 
 			// Instruction address 0x0000:0x0729, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\nwill desert for ");
@@ -728,10 +723,8 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x082b, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " ");
 
-			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x112a);
 			// Instruction address 0x0000:0x0841, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].Name);
 
 			// Instruction address 0x0000:0x0851, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " unit\nbribed by ");

@@ -498,6 +498,11 @@ namespace IRB.VirtualCPU
 		#endregion
 
 		#region String instructions
+		public string ReadString(ushort segment, ushort offset)
+		{
+			return ReadString(CPU.ToLinearAddress(segment, offset));
+		}
+
 		public string ReadString(uint address)
 		{
 			if (address == 0)
