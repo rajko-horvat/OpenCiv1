@@ -525,7 +525,8 @@ namespace OpenCiv1
 				goto L05c1;
 
 			// Instruction address 0x1ade:0x04c1, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1136)));
+			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID,
+				this.oParent.GameState.UnitDefinitions[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].CancelTechnology);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L04ce;
