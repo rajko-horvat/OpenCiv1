@@ -1418,7 +1418,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
 			this.oParent.GameState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].SpecialMoves =
-				this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x113c));
+				this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID].TurnsOutside;
 
 			// Instruction address 0x1866:0x0db6, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0102(xPos, yPos);
@@ -2397,11 +2397,10 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			this.oCPU.DI.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x113c));
-			this.oCPU.DI.Word = this.oCPU.ORWord(this.oCPU.DI.Word, this.oCPU.DI.Word);
-			if (this.oCPU.Flags.NE)
+			if (this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].TurnsOutside != 0)
 			{
-				this.oParent.GameState.Players[playerID].Units[unitID].SpecialMoves = (short)((short)this.oCPU.DI.Word - 1);
+				this.oParent.GameState.Players[playerID].Units[unitID].SpecialMoves =
+					(short)(this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].TurnsOutside - 1);
 			}
 
 		L1542:
