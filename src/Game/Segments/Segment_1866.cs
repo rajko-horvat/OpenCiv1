@@ -2391,7 +2391,8 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			this.oParent.GameState.Players[playerID].Units[unitID].RemainingMoves = (short)(this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x113a)) * 3);
+			this.oParent.GameState.Players[playerID].Units[unitID].RemainingMoves = 
+				(short)(this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].MoveCount * 3);
 
 			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
@@ -2464,7 +2465,8 @@ namespace OpenCiv1
 				this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
 				this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-				this.oParent.GameState.Players[playerID].Units[unitID].RemainingMoves = (short)(this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x113a)) * 3);
+				this.oParent.GameState.Players[playerID].Units[unitID].RemainingMoves = 
+					(short)(this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].MoveCount * 3);
 			}
 
 			this.oParent.GameState.Players[playerID].Units[unitID].Status &= 0x30;
@@ -3719,7 +3721,8 @@ namespace OpenCiv1
 				this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].TypeID));
 				this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-				this.oParent.GameState.Players[playerID].Units[unitID].RemainingMoves = (short)(this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x113a)) * 3);
+				this.oParent.GameState.Players[playerID].Units[unitID].RemainingMoves = 
+					(short)(this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].TypeID].MoveCount * 3);
 			}
 
 			this.oCPU.AX.Word = 0x600;

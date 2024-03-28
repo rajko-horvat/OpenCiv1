@@ -530,8 +530,9 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x113a)), 0x1);
-			if (this.oCPU.Flags.LE) goto L04e3;
+			if (this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].MoveCount <= 1)
+				goto L04e3;
+
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
@@ -1488,8 +1489,10 @@ namespace OpenCiv1
 
 		L0d0d:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1e), this.oCPU.AX.Word);
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x113a)), 0x1);
-			if (this.oCPU.Flags.NE) goto L0d1c;
+			
+			if (this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].MoveCount != 1)
+				goto L0d1c;
+
 			this.oCPU.AX.Word = 0x1;
 			goto L0d1e;
 
@@ -1968,18 +1971,20 @@ namespace OpenCiv1
 			// function body
 			if (Math.Abs(xPos - xPos1) <= 7 && Math.Abs(yPos - yPos1) <= 7)
 			{
-				// !!! Why do we write at unit structure?
-				//this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x87c9, (byte)((sbyte)xPos));
-				//this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x87ca, (byte)((sbyte)yPos));				
-				//this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x87cb, (byte)((flag == 0) ? 1 : 0x10));
+				// Barbarian unit...
+				this.oParent.GameState.Players[0].Units[127].Position.X = xPos;
+				this.oParent.GameState.Players[0].Units[127].Position.Y = yPos;
+				this.oParent.GameState.Players[0].Units[127].TypeID = (short)((flag == 0) ? 1 : 16);
+
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6590, (ushort)((short)xPos1));
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6592, (ushort)((short)yPos1));
 
 				// Instruction address 0x2e31:0x117c, size: 3
 				F0_2e31_0c1d(0, 127, param6);
 
-				//this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x87cb, 0xff);
-				
+				this.oParent.GameState.Players[0].Units[127].TypeID = -1;
+
+
 				if (this.oCPU.AX.Word == 0xffff)
 				{
 					this.oCPU.AX.Word = 0xffff;
