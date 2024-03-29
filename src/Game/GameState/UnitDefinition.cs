@@ -11,7 +11,7 @@ namespace OpenCiv1
 		public short MoveCount;
 		public short TurnsOutside;
 		public short AttackStrength;
-		public short DefenceStrength;
+		public short DefenseStrength;
 		public short Cost;
 		public short SightRange;
 		public short TransportCapacity;
@@ -29,7 +29,7 @@ namespace OpenCiv1
 			this.MoveCount = moveCount;
 			this.TurnsOutside = turnsOutside;
 			this.AttackStrength = attackStrength;
-			this.DefenceStrength = defenceStrength;
+			this.DefenseStrength = defenceStrength;
 			this.Cost = cost;
 			this.SightRange = sightRange;
 			this.TransportCapacity = transportCapacity;
