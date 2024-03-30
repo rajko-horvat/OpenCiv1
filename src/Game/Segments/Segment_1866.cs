@@ -1568,115 +1568,118 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.DI.Word);
 			this.oCPU.PushWord(this.oCPU.SI.Word);
 
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x70d8) != 0)
-			{
-				this.oParent.GameState.Players[playerID].LostUnits[this.oParent.GameState.Players[playerID].Units[unitID].TypeID]++;
-			}
-
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
-
-			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1146)), 0x0);
-			if (this.oCPU.Flags.E) goto L0f9a;
-
-			if (this.oParent.GameState.Players[playerID].Units[unitID].NextUnitID == -1)
-				goto L0f9a;
-
-			// Instruction address 0x1866:0x0f78, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a(
-				this.oParent.GameState.Players[playerID].Units[unitID].Position.X,
-				this.oParent.GameState.Players[playerID].Units[unitID].Position.Y);
-
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L0f9a;
-
-			// Instruction address 0x1866:0x0f94, size: 3
-			F0_1866_144b(playerID, unitID, 0x1610);
-
-		L0f9a:
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
-
-			if (this.oParent.GameState.Players[playerID].Units[unitID].TypeID != 23)
-				goto L0fe6;
-
-			if (this.oParent.GameState.Players[playerID].Units[unitID].NextUnitID == -1)
-				goto L0fe6;
-
-			// Instruction address 0x1866:0x0fc4, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a(
-				this.oParent.GameState.Players[playerID].Units[unitID].Position.X,
-				this.oParent.GameState.Players[playerID].Units[unitID].Position.Y);
-
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L0fe6;
-
-			// Instruction address 0x1866:0x0fe0, size: 3
-			F0_1866_144b(playerID, unitID, 0x1676);
-
-		L0fe6:
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
-
-			this.oCPU.DI.Word = (ushort)((short)this.oParent.GameState.Players[playerID].Units[unitID].TypeID);
-			this.oCPU.DI.Word = this.oCPU.SHLWord(this.oCPU.DI.Word, 0x1);
-
 			if (this.oParent.GameState.Players[playerID].Units[unitID].TypeID != -1)
-				this.oParent.GameState.Players[playerID].ActiveUnits[this.oParent.GameState.Players[playerID].Units[unitID].TypeID]--;
+			{
+				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x70d8) != 0)
+				{
+					this.oParent.GameState.Players[playerID].LostUnits[this.oParent.GameState.Players[playerID].Units[unitID].TypeID]++;
+				}
 
-			this.oParent.GameState.Players[playerID].Units[unitID].TypeID = -1;
-			this.oParent.GameState.Players[playerID].Units[unitID].RemainingMoves = 0;
+				this.oCPU.AX.Word = 0x600;
+				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+				this.oCPU.SI.Word = this.oCPU.AX.Word;
+				this.oCPU.AX.Word = 0xc;
+				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+				this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
-			// Instruction address 0x1866:0x1027, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1412(playerID, unitID,
-				this.oParent.GameState.Players[playerID].Units[unitID].Position.X,
-				this.oParent.GameState.Players[playerID].Units[unitID].Position.Y);
+				this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
+				this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4), 0x0);
-			if (this.oCPU.Flags.NE) goto L1085;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3936), 0xffff);
-			if (this.oCPU.Flags.NE) goto L1085;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806), 0x0);
-			if (this.oCPU.Flags.NE) goto L105e;
+				this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1146)), 0x0);
+				if (this.oCPU.Flags.E) goto L0f9a;
 
-			if (playerID == this.oParent.GameState.HumanPlayerID)
-				goto L105e;
+				if (this.oParent.GameState.Players[playerID].Units[unitID].NextUnitID == -1)
+					goto L0f9a;
 
-			this.oCPU.AX.Word = this.oParent.GameState.Players[playerID].Units[unitID].VisibleByPlayer;
-			
-			this.oCPU.DX.Word = 0x1;
-			this.oCPU.CX.Low = (byte)(this.oParent.GameState.HumanPlayerID & 0xff);
-			this.oCPU.DX.Word = this.oCPU.SHLWord(this.oCPU.DX.Word, this.oCPU.CX.Low);
-			this.oCPU.TESTWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-			if (this.oCPU.Flags.E) goto L1085;
+				// Instruction address 0x1866:0x0f78, size: 5
+				this.oParent.Segment_2aea.F0_2aea_134a(
+					this.oParent.GameState.Players[playerID].Units[unitID].Position.X,
+					this.oParent.GameState.Players[playerID].Units[unitID].Position.Y);
 
-		L105e:
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
+				this.oCPU.CMPWord(this.oCPU.AX.Word, 0xa);
+				if (this.oCPU.Flags.NE) goto L0f9a;
 
-			// Instruction address 0x1866:0x107d, size: 5
-			this.oParent.Segment_2aea.F0_2aea_11d4(
-				this.oParent.GameState.Players[playerID].Units[unitID].Position.X,
-				this.oParent.GameState.Players[playerID].Units[unitID].Position.Y);
+				// Instruction address 0x1866:0x0f94, size: 3
+				F0_1866_144b(playerID, unitID, 0x1610);
+
+			L0f9a:
+				this.oCPU.AX.Word = 0x600;
+				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+				this.oCPU.SI.Word = this.oCPU.AX.Word;
+				this.oCPU.AX.Word = 0xc;
+				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+				this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
+
+				if (this.oParent.GameState.Players[playerID].Units[unitID].TypeID != 23)
+					goto L0fe6;
+
+				if (this.oParent.GameState.Players[playerID].Units[unitID].NextUnitID == -1)
+					goto L0fe6;
+
+				// Instruction address 0x1866:0x0fc4, size: 5
+				this.oParent.Segment_2aea.F0_2aea_134a(
+					this.oParent.GameState.Players[playerID].Units[unitID].Position.X,
+					this.oParent.GameState.Players[playerID].Units[unitID].Position.Y);
+
+				this.oCPU.CMPWord(this.oCPU.AX.Word, 0xa);
+				if (this.oCPU.Flags.NE) goto L0fe6;
+
+				// Instruction address 0x1866:0x0fe0, size: 3
+				F0_1866_144b(playerID, unitID, 0x1676);
+
+			L0fe6:
+				this.oCPU.AX.Word = 0x600;
+				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+				this.oCPU.SI.Word = this.oCPU.AX.Word;
+				this.oCPU.AX.Word = 0xc;
+				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+				this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
+
+				this.oCPU.DI.Word = (ushort)((short)this.oParent.GameState.Players[playerID].Units[unitID].TypeID);
+				this.oCPU.DI.Word = this.oCPU.SHLWord(this.oCPU.DI.Word, 0x1);
+
+				if (this.oParent.GameState.Players[playerID].Units[unitID].TypeID != -1)
+					this.oParent.GameState.Players[playerID].ActiveUnits[this.oParent.GameState.Players[playerID].Units[unitID].TypeID]--;
+
+				this.oParent.GameState.Players[playerID].Units[unitID].TypeID = -1;
+				this.oParent.GameState.Players[playerID].Units[unitID].RemainingMoves = 0;
+
+				// Instruction address 0x1866:0x1027, size: 5
+				this.oParent.Segment_2aea.F0_2aea_1412(playerID, unitID,
+					this.oParent.GameState.Players[playerID].Units[unitID].Position.X,
+					this.oParent.GameState.Players[playerID].Units[unitID].Position.Y);
+
+				this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4), 0x0);
+				if (this.oCPU.Flags.NE) goto L1085;
+				this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3936), 0xffff);
+				if (this.oCPU.Flags.NE) goto L1085;
+				this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806), 0x0);
+				if (this.oCPU.Flags.NE) goto L105e;
+
+				if (playerID == this.oParent.GameState.HumanPlayerID)
+					goto L105e;
+
+				this.oCPU.AX.Word = this.oParent.GameState.Players[playerID].Units[unitID].VisibleByPlayer;
+
+				this.oCPU.DX.Word = 0x1;
+				this.oCPU.CX.Low = (byte)(this.oParent.GameState.HumanPlayerID & 0xff);
+				this.oCPU.DX.Word = this.oCPU.SHLWord(this.oCPU.DX.Word, this.oCPU.CX.Low);
+				this.oCPU.TESTWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
+				if (this.oCPU.Flags.E) goto L1085;
+
+				L105e:
+				this.oCPU.AX.Word = 0x600;
+				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+				this.oCPU.SI.Word = this.oCPU.AX.Word;
+				this.oCPU.AX.Word = 0xc;
+				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+				this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
+
+				// Instruction address 0x1866:0x107d, size: 5
+				this.oParent.Segment_2aea.F0_2aea_11d4(
+					this.oParent.GameState.Players[playerID].Units[unitID].Position.X,
+					this.oParent.GameState.Players[playerID].Units[unitID].Position.Y);
+			}
 
 		L1085:
 			this.oCPU.SI.Word = this.oCPU.PopWord();
@@ -2022,7 +2025,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1142));
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].Cost);
 
 		L12c1:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6532, this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6532), this.oCPU.AX.Word));

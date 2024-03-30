@@ -549,7 +549,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, this.oParent.GameState.UnitDefinitions[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].Name);
 
 			// Instruction address 0x1ade:0x0508, size: 3
-			F0_1ade_14ed(cityID, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1142)));
+			F0_1ade_14ed(cityID, this.oParent.GameState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].Cost);
 
 			// Instruction address 0x1ade:0x0516, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ", ADM:");
@@ -1862,8 +1862,8 @@ namespace OpenCiv1
 			{
 				this.oCPU.AX.Word = 0x10;
 			}
-		
-			this.oCPU.CX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1142));
+
+			this.oCPU.CX.Word = (ushort)((short)this.oParent.GameState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].Cost);
 			this.oCPU.CX.Word = this.oCPU.INCWord(this.oCPU.CX.Word);
 			this.oCPU.CX.Word = this.oCPU.INCWord(this.oCPU.CX.Word);
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
@@ -2214,10 +2214,10 @@ namespace OpenCiv1
 		/// ?
 		/// </summary>
 		/// <param name="cityID"></param>
-		/// <param name="param2"></param>
-		public void F0_1ade_14ed(short cityID, ushort param2)
+		/// <param name="cost"></param>
+		public void F0_1ade_14ed(short cityID, int cost)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1ade_14ed({cityID}, {param2})");
+			this.oCPU.Log.EnterBlock($"F0_1ade_14ed({cityID}, {cost})");
 
 			// function body
 			this.oCPU.PushWord(this.oCPU.BP.Word);
@@ -2232,7 +2232,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x1ade:0x152d, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				(((10 * param2) - this.oParent.GameState.Cities[cityID].ShieldsCount - 1) / (short)this.oCPU.CX.Word) + 1,
+				(((10 * cost) - this.oParent.GameState.Cities[cityID].ShieldsCount - 1) / (short)this.oCPU.CX.Word) + 1,
 				1, 999);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);

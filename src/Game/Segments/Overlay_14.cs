@@ -2112,8 +2112,8 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x1b5b, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa((short)(0xa * this.oCPU.ReadUInt16(this.oCPU.DS.Word,
-					(ushort)(0x22 * this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].CurrentProductionID + 0x1142))), 10));
+				this.oParent.MSCAPI.itoa(
+					10 * this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].CurrentProductionID].Cost, 10));
 
 			// Instruction address 0x0000:0x1942, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ")");

@@ -37,7 +37,7 @@ for example: 'c:\Dos\Civ1\', '~/Dos/Civ1/' or any other path.</li>
 </ul>
 Compile with CLI method:
 <ul>
-<li>git clone https://github.com/rajko-horvat/OpenCiv1 (To clone a specific branch use: git clone -b <branch> <remote_repo>)</li>
+<li>git clone https://github.com/rajko-horvat/OpenCiv1 (To clone a specific branch use: git clone -b [branch] https://github.com/rajko-horvat/OpenCiv1)</li>
 <li>cd OpenCiv1</li>
 <li>dotnet build -c Release</li>
 </ul>

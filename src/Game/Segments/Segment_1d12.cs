@@ -2082,10 +2082,12 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
+
 			this.oCPU.AX.Low = 0x22;
 			this.oCPU.IMULByte(this.oCPU.AX, (byte)this.oParent.GameState.Cities[cityID].CurrentProductionID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1142));
+
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Cities[cityID].CurrentProductionID].Cost);
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4a)));
 			this.oCPU.CMPWord(this.oCPU.AX.Word, (ushort)this.oParent.GameState.Cities[cityID].ShieldsCount);
 			if (this.oCPU.Flags.LE) goto L156a;
@@ -2118,10 +2120,12 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
+
 			this.oCPU.AX.Low = 0x22;
 			this.oCPU.IMULByte(this.oCPU.AX, (byte)this.oParent.GameState.Cities[cityID].CurrentProductionID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1142));
+
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Cities[cityID].CurrentProductionID].Cost);
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4a)));
 			this.oParent.GameState.Cities[cityID].ShieldsCount -= (short)this.oCPU.AX.Word;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xba), 0xffff);
@@ -2576,10 +2580,12 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
+
 			this.oCPU.AX.Low = 0x22;
 			this.oCPU.IMULByte(this.oCPU.AX, (byte)this.oParent.GameState.Cities[cityID].CurrentProductionID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1142));
+
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Cities[cityID].CurrentProductionID].Cost);
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4a)));
 			this.oParent.GameState.Cities[cityID].ShieldsCount += (short)this.oCPU.AX.Word;
 
@@ -3588,8 +3594,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x1d12:0x2530, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				(this.oCPU.ReadInt16(this.oCPU.DS.Word,
-					(ushort)((0x22 * this.oParent.GameState.Cities[cityID].CurrentProductionID) + 0x1142)) *
+				(this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Cities[cityID].CurrentProductionID].Cost *
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4a))) -
 					this.oParent.GameState.Cities[cityID].ShieldsCount,
 				0, this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6548)].Coins / 3);
@@ -3617,8 +3622,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x1d12:0x2591, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				(this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((0x22 *
-					this.oParent.GameState.Cities[cityID].CurrentProductionID) + 0x1142)) *
+				(this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Cities[cityID].CurrentProductionID].Cost *
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4a))) -
 					this.oParent.GameState.Cities[cityID].ShieldsCount,
 				0, this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6548)].Coins / 3);
@@ -3653,8 +3657,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x1d12:0x260d, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				(this.oCPU.ReadInt16(this.oCPU.DS.Word,(ushort)((0x22 *
-					this.oParent.GameState.Cities[cityID].CurrentProductionID) + 0x1142)) *
+				(this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Cities[cityID].CurrentProductionID].Cost *
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4a))) -
 					this.oParent.GameState.Cities[cityID].ShieldsCount,
 				0, this.oParent.GameState.Players[this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6548)].Coins / 4);
@@ -5750,14 +5753,13 @@ namespace OpenCiv1
 			goto L3d36;
 
 		L3d1b:
-			this.oCPU.AX.Word = 0x1c;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Low = 0x22;
 			this.oCPU.IMULByte(this.oCPU.AX, (byte)this.oParent.GameState.Cities[cityID].CurrentProductionID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1142));
+
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Cities[cityID].CurrentProductionID].Cost);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xde), this.oCPU.AX.Word);
+
 			goto L3d54;
 
 		L3d36:
@@ -6928,14 +6930,8 @@ namespace OpenCiv1
 			goto L4c66;
 
 		L4c09:
-			this.oCPU.AX.Word = 0x1c;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Low = 0x22;
-			this.oCPU.IMULByte(this.oCPU.AX, (byte)this.oParent.GameState.Cities[cityID].CurrentProductionID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1142));
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x106), this.oCPU.AX.Word);
+			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x106),
+				(short)this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Cities[cityID].CurrentProductionID].Cost);
 
 			// Instruction address 0x1d12:0x4c3d, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(

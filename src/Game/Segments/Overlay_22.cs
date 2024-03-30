@@ -625,7 +625,7 @@ namespace OpenCiv1
 			this.oCPU.CX.Word = this.oCPU.INCWord(this.oCPU.CX.Word);
 			this.oCPU.CX.Word = this.oCPU.INCWord(this.oCPU.CX.Word);
 			this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1142)));
+			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)((short)this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].Cost));
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 
 			if (this.oParent.GameState.Players[playerID].Units[unitID].TypeID != 0)

@@ -3358,24 +3358,12 @@ namespace OpenCiv1
 			goto L2154;
 
 		L2116:
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
 			this.oCPU.AX.Word = 0x600;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].TypeID));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			this.oCPU.AX.Word = 0xa;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1142)));
-			this.oCPU.CX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0x1c;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))].ShieldsCount += (short)this.oCPU.CX.Word;
+			this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))].ShieldsCount +=
+				(short)(10 * this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].TypeID].Cost);
 			
 			// Instruction address 0x1403:0x2149, size: 5
 			this.oParent.Segment_1866.F0_1866_0f10(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
