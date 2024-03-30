@@ -675,11 +675,8 @@ namespace OpenCiv1
 			if ((this.oParent.GameState.Players[this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd7f0)].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Status & 0x8) == 0)
 				goto L0686;
 
-			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd7f0)].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1148)), 0x2);
-			if (this.oCPU.Flags.E) goto L068b;
+			if (this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd7f0)].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID].UnitCategory == 2)
+				goto L068b;
 
 		L0686:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x3);
@@ -2061,19 +2058,8 @@ namespace OpenCiv1
 			if (unitID >= this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6538))
 				goto L132e;
 			
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-
-			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1148)), 0x2);
-			if (this.oCPU.Flags.NE) goto L132e;
+			if (this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].UnitCategory != 2)
+				goto L132e;
 
 		L132a:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6532, this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6532)));
@@ -2166,12 +2152,10 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_1866_13a9({playerID}, {unitID})");
 
 			// function body
-			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1148)) == this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x653a))
+			if (this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].UnitCategory == this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x653a))
 			{
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x653c, this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x653c)));
+				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x653c, 
+					this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x653c)));
 			}
 
 			// Far return
@@ -2220,10 +2204,7 @@ namespace OpenCiv1
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x653c, this.oCPU.DECWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x653c)));
 			}
 
-			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			if (this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1148)) == 5)
+			if (this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].UnitCategory == 5)
 			{
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x653c, this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x653c),
 					(ushort)((short)this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].TransportCapacity)));
