@@ -263,8 +263,8 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1144)), 0x2);
-			if (this.oCPU.Flags.E) goto L02a3;
+			if ((this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].SightRange & 0x2) == 0)
+				goto L02a3;
 
 			if (this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].TerrainCategory != 2)
 				goto L0266;
@@ -753,11 +753,9 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd7f0)].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1144)), 0x2);
-			if (this.oCPU.Flags.NE) goto L0743;
-			goto L07f0;
+			if ((this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd7f0)].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID].SightRange & 0x2) == 0)
+				goto L07f0;
 
-		L0743:
 			if (this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd7f0)].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID].TerrainCategory != 2)
 				goto L0760;
 
@@ -947,11 +945,9 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.GameState.Players[playerID].Units[unitID].TypeID));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1144)), 0x2);
-			if (this.oCPU.Flags.NE) goto L093b;
-			goto L06ea;
+			if ((this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].SightRange & 0x2) == 0)
+				goto L06ea;
 
-		L093b:
 			if (this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[unitID].TypeID].TerrainCategory != 2)
 				goto L0958;
 
