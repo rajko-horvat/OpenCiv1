@@ -954,11 +954,10 @@ namespace OpenCiv1
 					this.oParent.GameState.Cities[i] = City.FromStream(reader);
 				}
 
-				ReadData(reader, 0x112a, 0x3b8);
-
-				//byte[] aUnits = new byte[0x3000];
-				//reader.Read(aUnits, 0, 0x3000);
-				//MemoryStream unitReader = new MemoryStream(aUnits);
+				for (int i = 0; i < 28; i++)
+				{
+					this.oParent.GameState.UnitDefinitions[i] = UnitDefinition.FromStream(reader);
+				}
 
 				for (int i = 0; i < 8; i++)
 				{
@@ -967,11 +966,6 @@ namespace OpenCiv1
 						this.oParent.GameState.Players[i].Units[j] = Unit.FromStream(reader);
 					}
 				}
-
-				//unitReader.Position = 0;
-				//ReadData(unitReader, 0x81d4, 0x3000);
-
-				//unitReader.Close();
 
 				for (int i = 0; i < 80; i++)
 				{
@@ -1088,6 +1082,7 @@ namespace OpenCiv1
 				}
 
 				ReadData(reader, 0x3772, 0x16e0, 0x5a0);
+
 				this.oParent.GameState.SpaceshipFlags = ReadInt16(reader);
 				this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].SpaceshipSuccessRate = ReadInt16(reader);
 				this.oParent.GameState.AISpaceshipSuccessRate = ReadInt16(reader);
@@ -1222,6 +1217,41 @@ namespace OpenCiv1
 			}
 
 			return 0;
+		}
+
+		/// <summary>
+		/// Reads a null terminated string from the stream (null characher included)
+		/// </summary>
+		/// <param name="reader">Reading stream</param>
+		/// <param name="length">Full string length, including null character</param>
+		/// <returns></returns>
+		public static string ReadString(Stream reader, int length)
+		{
+			int len = 0;
+			char[] str = new char[length];
+			bool end = false;
+
+			for (int i = 0; i < length - 1; i++)
+			{
+				int ch = reader.ReadByte();
+
+				if (!end && ch >= 0)
+				{
+					if (ch == 0)
+					{
+						end = true;
+					}
+					else
+					{
+						str[len] = (char)ch;
+						len++;
+					}
+				}
+			}
+
+			reader.ReadByte();
+
+			return new string(str, 0, len);
 		}
 
 		/// <summary>
@@ -1421,7 +1451,10 @@ namespace OpenCiv1
 					this.oParent.GameState.Cities[i].ToStream(writer);
 				}
 
-				WriteData(writer, 0x112a, 0x3b8);
+				for (int i = 0; i < 28; i++)
+				{
+					this.oParent.GameState.UnitDefinitions[i].ToStream(writer);
+				}
 
 				for (int i = 0; i < 8; i++)
 				{
@@ -1430,7 +1463,6 @@ namespace OpenCiv1
 						this.oParent.GameState.Players[i].Units[j].ToStream(writer);
 					}
 				}
-				//WriteData(writer, 0x81d4, 0x3000);
 
 				for (int i = 0; i < 80; i++)
 				{
@@ -1642,6 +1674,39 @@ namespace OpenCiv1
 		{
 			writer.WriteByte((byte)((ushort)value & 0xff));
 			writer.WriteByte((byte)(((ushort)value & 0xff00) >> 8));
+		}
+
+		/// <summary>
+		/// Writes a null terminated string to a stream. Null character is included in the string length
+		/// </summary>
+		/// <param name="writer">Writer</param>
+		/// <param name="text">String to write</param>
+		/// <param name="length">maximum string length including the null character</param>
+		public static void WriteString(Stream writer, string text, int length)
+		{
+			bool end = false;
+
+			for (int i = 0; i < length - 1; i++)
+			{
+				if (!end && i < text.Length)
+				{
+					if (text[i] == 0)
+					{
+						end = true;
+						writer.WriteByte(0);
+					}
+					else
+					{
+						writer.WriteByte((byte)text[i]);
+					}
+				}
+				else
+				{
+					writer.WriteByte(0);
+				}
+			}
+
+			writer.WriteByte(0);
 		}
 	}
 }
