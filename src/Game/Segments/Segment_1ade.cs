@@ -519,7 +519,8 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1ade:0x04ac, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x114a)));
+			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, 
+				this.oParent.GameState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].TechnologyRequired);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L05c1;
@@ -2664,20 +2665,19 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14));
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x114a)), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L1aad;
+			if (this.oParent.GameState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18))].TechnologyRequired ==
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)))
+			{
+				// Instruction address 0x1ade:0x1a92, size: 5
+				this.oParent.MSCAPI.strcat(0xba06,
+					this.oParent.GameState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18))].Name);
 
-			// Instruction address 0x1ade:0x1a92, size: 5
-			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.GameState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18))].Name);
+				// Instruction address 0x1ade:0x1aa2, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, "\n-");
 
-			// Instruction address 0x1ade:0x1aa2, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, "\n-");
+				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))));
+			}
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))));
-
-		L1aad:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18))));
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)), 0x1c);
 			if (this.oCPU.Flags.L) goto L1a77;
@@ -3054,19 +3054,19 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Word = (ushort)technologyID;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x114a)), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L1ef0;
+			if (this.oParent.GameState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TechnologyRequired == technologyID)
+			{
+				// Instruction address 0x1ade:0x1ed8, size: 5
+				this.oParent.MSCAPI.strcat(0xba06,
+					this.oParent.GameState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Name);
 
-			// Instruction address 0x1ade:0x1ed8, size: 5
-			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.GameState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Name);
+				// Instruction address 0x1ade:0x1ee8, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, "\n ");
+			}
 
-			// Instruction address 0x1ade:0x1ee8, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, "\n ");
+			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 
+				this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))));
 
-		L1ef0:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))));
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x1c);
 			if (this.oCPU.Flags.L) goto L1ebd;
 
