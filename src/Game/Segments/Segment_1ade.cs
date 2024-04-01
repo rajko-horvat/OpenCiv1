@@ -181,7 +181,7 @@ namespace OpenCiv1
 		/// <param name="cityID"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		public void F0_1ade_018e(short cityID, ushort xPos, ushort yPos)
+		public void F0_1ade_018e(short cityID, int xPos, int yPos)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1ade_018e({cityID}, {xPos}, {yPos})");
 
@@ -197,7 +197,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1ade:0x01b7, size: 5
-			this.oParent.Segment_1866.F0_1866_250e_AddReplayData(1, 0xff, (byte)this.oParent.GameState.Cities[cityID].NameID, (byte)xPos, (byte)yPos);
+			this.oParent.Segment_1866.F0_1866_250e_AddReplayData(1, 0xff, (byte)this.oParent.GameState.Cities[cityID].NameID, (byte)((sbyte)xPos), (byte)((sbyte)yPos));
 
 			this.oCPU.CMPByte((byte)this.oParent.GameState.Cities[cityID].CurrentProductionID, 0x0);
 			if (this.oCPU.Flags.L) goto L01db;
@@ -333,7 +333,7 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x18e4));
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, yPos);
+			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, (ushort)((short)yPos));
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), this.oCPU.AX.Word);
 
 			// Instruction address 0x1ade:0x0342, size: 5
