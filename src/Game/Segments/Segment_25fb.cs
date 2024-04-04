@@ -2420,8 +2420,8 @@ namespace OpenCiv1
 			goto L172f;
 
 		L16f8:
-			// !!! Why the index goes out of range here?
-			if (this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)) >= 0x80 ||
+			// !!! Illegal memory access, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)) > 127
+			if (this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)) >= 128 ||
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)) != 0x5)
 				goto L1732;
 

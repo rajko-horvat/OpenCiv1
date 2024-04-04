@@ -1060,6 +1060,27 @@ namespace OpenCiv1
 
 			this.oCPU.BP.Word = 0x0;
 
+			/*this.oCPU.ES.Word = 0x375a; // segment
+			StreamWriter writer = new StreamWriter("Spaceship.cs");
+			writer.Write("{");
+			for (int i = 0, j=0; i < 69; i++)
+			{
+				if (i > 0)
+					writer.Write(", ");
+
+				if (j > 2)
+				{
+					writer.WriteLine();
+					j = 0;
+				}
+
+				writer.Write($"new SpaceshipCell({this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)((i*3) + 0))}, {this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)((i * 3) + 1))}, {this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)((i * 3) + 2))})");
+				j++;
+			}
+			writer.Write("}");
+			writer.Close();
+			this.oCPU.ES.Word = this.oCPU.SS.Word;//*/
+
 			// Call our 'short Main()' function
 			this.Segment_11a8.F0_11a8_0008_Main();
 

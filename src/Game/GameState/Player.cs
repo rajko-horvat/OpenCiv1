@@ -106,7 +106,7 @@ namespace OpenCiv1
 
 			for (int i = 0; i < this.SpaceshipData.Length; i++)
 			{
-				this.SpaceshipData[i] = 0;
+				this.SpaceshipData[i] = -1;
 			}
 		}
 	}

@@ -1081,7 +1081,16 @@ namespace OpenCiv1
 					this.oParent.GameState.Players[i].CumulativeEpicRanking = ReadInt16(reader);
 				}
 
-				ReadData(reader, 0x3772, 0x16e0, 0x5a0);
+				for (int i = 0; i < 8; i++)
+				{
+					byte[] buffer = new byte[180];
+					reader.Read(buffer, 0, 180);
+
+					for (int j = 0; j < 180; j++)
+					{
+						this.oParent.GameState.Players[i].SpaceshipData[j] = (sbyte)buffer[j];
+					}
+				}
 
 				this.oParent.GameState.SpaceshipFlags = ReadInt16(reader);
 				this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].SpaceshipSuccessRate = ReadInt16(reader);
@@ -1573,7 +1582,18 @@ namespace OpenCiv1
 					WriteInt16(writer, this.oParent.GameState.Players[i].CumulativeEpicRanking);
 				}
 
-				WriteData(writer, 0x3772, 0x16e0, 0x5a0);
+				for (int i = 0; i < 8; i++)
+				{
+					byte[] buffer = new byte[180];
+
+					for (int j = 0; j < 180; j++)
+					{
+						buffer[j] = (byte)this.oParent.GameState.Players[i].SpaceshipData[j];
+					}
+
+					writer.Write(buffer, 0, 180);
+				}
+
 				WriteInt16(writer, this.oParent.GameState.SpaceshipFlags);
 				WriteInt16(writer, this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].SpaceshipSuccessRate);
 				WriteInt16(writer, this.oParent.GameState.AISpaceshipSuccessRate);

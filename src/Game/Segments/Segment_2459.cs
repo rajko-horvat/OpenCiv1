@@ -622,7 +622,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.NOTWord(this.oCPU.AX.Word);
 			this.oParent.GameState.SpaceshipFlags &= (short)this.oCPU.AX.Word;
 
-			this.oParent.StartGameMenu.F5_0000_1d1a(playerID);
+			this.oParent.StartGameMenu.F5_0000_1d1a_InitSpaceshipData(playerID);
 			
 			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return

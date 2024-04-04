@@ -1561,6 +1561,7 @@ namespace OpenCiv1
 			this.oCPU.PushWord(this.oCPU.DI.Word);
 			this.oCPU.PushWord(this.oCPU.SI.Word);
 
+			// !!! Illegal memory access this.oParent.GameState.Players[playerID].Units[unitID].TypeID == -1
 			if (this.oParent.GameState.Players[playerID].Units[unitID].TypeID != -1)
 			{
 				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x70d8) != 0)
