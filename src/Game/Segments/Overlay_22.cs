@@ -1054,7 +1054,6 @@ namespace OpenCiv1
 		L0bed:
 			if (playerID == -1) goto L0ea9;
 
-			this.oCPU.ES.Word = 0x3772; // segment
 			this.oParent.GameState.MapVisibility[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
 				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))] |= (ushort)(1 << playerID);
 
