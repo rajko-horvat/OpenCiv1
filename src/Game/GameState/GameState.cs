@@ -26,11 +26,6 @@ namespace OpenCiv1
 		// Players
 		public Player[] Players = new Player[8];
 
-		// Palace
-		public short PalaceLevel = 0;
-		public short[] PalaceData1 = new short[13];
-		public short[] PalaceData2 = new short[13];
-
 		// Continents
 		public short[] PerContinentSizeAndPerOceanSize = new short[128];
 		public Continent[] Continents = new Continent[16];
@@ -180,16 +175,6 @@ namespace OpenCiv1
 			for (int i = 0; i < this.Players.Length; i++)
 			{
 				this.Players[i] = new Player();
-			}
-
-			for (int i = 0; i < this.PalaceData1.Length; i++)
-			{
-				this.PalaceData1[i] = 0;
-			}
-
-			for (int i = 0; i < this.PalaceData2.Length; i++)
-			{
-				this.PalaceData2[i] = 0;
 			}
 
 			for (int i = 0; i < this.PerContinentSizeAndPerOceanSize.Length; i++)

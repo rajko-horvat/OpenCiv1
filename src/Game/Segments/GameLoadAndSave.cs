@@ -1105,7 +1105,11 @@ namespace OpenCiv1
 				}
 
 				ReadData(reader, 0xd91e, 0x18);
-				ReadData(reader, 0xb222, 0x18);
+
+				for (int i = 0; i < 12; i++)
+				{
+					this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].PalaceData2[i] = ReadInt16(reader);
+				}
 
 				for (int i = 0; i < this.oParent.GameState.CityPositions.Length; i++)
 				{
@@ -1117,7 +1121,7 @@ namespace OpenCiv1
 					this.oParent.GameState.CityPositions[i].Y = (sbyte)ReadUInt8(reader);
 				}
 
-				this.oParent.GameState.PalaceLevel = ReadInt16(reader);
+				this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].PalaceLevel = ReadInt16(reader);
 				this.oParent.GameState.PeaceTurnCount = ReadInt16(reader);
 				this.oParent.GameState.AIOpponentCount = ReadInt16(reader);
 
@@ -1610,7 +1614,11 @@ namespace OpenCiv1
 				}
 
 				WriteData(writer, 0xd91e, 0x18);
-				WriteData(writer, 0xb222, 0x18);
+
+				for (int i = 0; i < 12; i++)
+				{
+					WriteInt16(writer, (short)this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].PalaceData2[i]);
+				}
 
 				for (int i = 0; i < 256; i++)
 				{
@@ -1621,7 +1629,7 @@ namespace OpenCiv1
 					writer.WriteByte((byte)((sbyte)this.oParent.GameState.CityPositions[i].Y));
 				}
 
-				WriteInt16(writer, this.oParent.GameState.PalaceLevel);
+				WriteInt16(writer, this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].PalaceLevel);
 				WriteInt16(writer, this.oParent.GameState.PeaceTurnCount);
 				WriteInt16(writer, this.oParent.GameState.AIOpponentCount);
 

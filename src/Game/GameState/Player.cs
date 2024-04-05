@@ -52,6 +52,11 @@ namespace OpenCiv1
 		public short SpaceshipLaunchYear = 0;
 		public short SpaceshipSuccessRate = 0;
 
+		// Palace
+		public short PalaceLevel = 0;
+		public short[] PalaceData1 = new short[13];
+		public short[] PalaceData2 = new short[13];
+
 		public Player()
 		{
 			for (int i = 0; i < this.Diplomacy.Length; i++)
@@ -107,6 +112,16 @@ namespace OpenCiv1
 			for (int i = 0; i < this.SpaceshipData.Length; i++)
 			{
 				this.SpaceshipData[i] = -1;
+			}
+
+			for (int i = 0; i < this.PalaceData1.Length; i++)
+			{
+				this.PalaceData1[i] = 0;
+			}
+
+			for (int i = 0; i < this.PalaceData2.Length; i++)
+			{
+				this.PalaceData2[i] = 0;
 			}
 		}
 	}
