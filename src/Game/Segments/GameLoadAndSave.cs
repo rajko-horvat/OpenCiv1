@@ -1104,7 +1104,10 @@ namespace OpenCiv1
 					this.oParent.GameState.Players[i].SpaceshipETAYear = ReadInt16(reader);
 				}
 
-				ReadData(reader, 0xd91e, 0x18);
+				for (int i = 0; i < 12; i++)
+				{
+					this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].PalaceData1[i + 2] = ReadInt16(reader);
+				}
 
 				for (int i = 0; i < 12; i++)
 				{
@@ -1613,7 +1616,10 @@ namespace OpenCiv1
 					WriteInt16(writer, this.oParent.GameState.Players[i].SpaceshipETAYear);
 				}
 
-				WriteData(writer, 0xd91e, 0x18);
+				for (int i = 0; i < 12; i++)
+				{
+					WriteInt16(writer, (short)this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].PalaceData1[i + 2]);
+				}
 
 				for (int i = 0; i < 12; i++)
 				{
