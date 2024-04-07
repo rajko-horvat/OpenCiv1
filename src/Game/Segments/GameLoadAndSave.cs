@@ -1067,7 +1067,12 @@ namespace OpenCiv1
 				this.oParent.GameState.PollutionEffectLevel = ReadInt16(reader);
 				this.oParent.GameState.GlobalWarmingCount = ReadInt16(reader);
 				this.oParent.GameState.GameSettingFlags = ReadInt16(reader);
-				ReadData(reader, 0xdb44, 0x104);
+
+				for (int i = 0; i < 260; i++)
+				{
+					this.oParent.GameState.LandPathfinding[i] = ReadUInt8(reader);
+				}
+
 				this.oParent.GameState.MaximumTechnologyCount = ReadInt16(reader);
 				this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].FutureTechnologyCount = ReadInt16(reader);
 				this.oParent.GameState.DebugFlags = ReadInt16(reader);
@@ -1578,7 +1583,12 @@ namespace OpenCiv1
 				WriteInt16(writer, this.oParent.GameState.PollutionEffectLevel);
 				WriteInt16(writer, this.oParent.GameState.GlobalWarmingCount);
 				WriteInt16(writer, this.oParent.GameState.GameSettingFlags);
-				WriteData(writer, 0xdb44, 0x104);
+
+				for (int i = 0; i < 260; i++)
+				{
+					writer.WriteByte(this.oParent.GameState.LandPathfinding[i]);
+				}
+
 				WriteInt16(writer, this.oParent.GameState.MaximumTechnologyCount);
 				WriteInt16(writer, this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].FutureTechnologyCount);
 				WriteInt16(writer, this.oParent.GameState.DebugFlags);
