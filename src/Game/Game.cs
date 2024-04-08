@@ -1069,7 +1069,7 @@ namespace OpenCiv1
 			/*this.oCPU.ES.Word = 0x3b01; // segment
 			StreamWriter writer = new StreamWriter("Data.cs");
 			writer.Write("{");
-			for (int i = 0; i < 9; i++)
+			for (int i = 0; i < 49; i++)
 			{
 				if (i > 0)
 					writer.Write(", ");
