@@ -2423,18 +2423,16 @@ namespace OpenCiv1
 				// Instruction address 0x2aea:0x1979, size: 3
 				F0_2aea_1942(xPos, yPos);
 
-				this.oCPU.BX.Word = this.oCPU.AX.Word;
-				this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
-				this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xdcfe));
+				// Land
+				this.oCPU.AX.Word = (ushort)this.oParent.GameState.Continents[this.oCPU.AX.Word].Size;
 			}
 			else
 			{
 				// Instruction address 0x2aea:0x1990, size: 3
 				F0_2aea_1942(xPos, yPos);
 
-				this.oCPU.BX.Word = this.oCPU.AX.Word;
-				this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
-				this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xdd7e));
+				// Oceans
+				this.oCPU.AX.Word = (ushort)this.oParent.GameState.Oceans[this.oCPU.AX.Word].Size;
 			}
 
 			// Far return

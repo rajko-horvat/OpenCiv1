@@ -935,7 +935,15 @@ namespace OpenCiv1
 					}
 				}
 
-				ReadData(reader, 0xdcfe, 0x100);
+				for (int i = 0; i < 64; i++)
+				{
+					this.oParent.GameState.Continents[i].Size = ReadInt16(reader);
+				}
+
+				for (int i = 0; i < 64; i++)
+				{
+					this.oParent.GameState.Oceans[i].Size = ReadInt16(reader);
+				}
 
 				for (int i = 0; i < 16; i++)
 				{
@@ -1456,7 +1464,15 @@ namespace OpenCiv1
 					}
 				}
 
-				WriteData(writer, 0xdcfe, 0x100);
+				for (int i = 0; i < 64; i++)
+				{
+					WriteInt16(writer, this.oParent.GameState.Continents[i].Size);
+				}
+
+				for (int i = 0; i < 64; i++)
+				{
+					WriteInt16(writer, this.oParent.GameState.Oceans[i].Size);
+				}
 
 				for (int i = 0; i < 16; i++)
 				{

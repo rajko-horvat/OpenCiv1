@@ -28,7 +28,8 @@ namespace OpenCiv1
 
 		// Continents
 		public short[] PerContinentSizeAndPerOceanSize = new short[128];
-		public Continent[] Continents = new Continent[16];
+		public Continent[] Continents = new Continent[64];
+		public Continent[] Oceans = new Continent[64];
 
 		// Graphs
 		public byte[] ScoreGraphData = new byte[1200];
@@ -182,9 +183,14 @@ namespace OpenCiv1
 				this.PerContinentSizeAndPerOceanSize[i] = 0;
 			}
 
-			for (int i = 0; i < 16; i++)
+			for (int i = 0; i < 64; i++)
 			{
 				this.Continents[i] = new Continent();
+			}
+
+			for (int i = 0; i < 64; i++)
+			{
+				this.Oceans[i] = new Continent();
 			}
 
 			for (int i = 0; i < this.ScoreGraphData.Length; i++)
