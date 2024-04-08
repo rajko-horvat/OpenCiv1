@@ -1679,6 +1679,7 @@ namespace OpenCiv1
 		L0fe7:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46)), 0x19);
 			if (this.oCPU.Flags.NE) goto L1009;
+
 			this.oCPU.AX.Word = 0x38;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
@@ -1686,9 +1687,8 @@ namespace OpenCiv1
 			if (this.oParent.GameState.Players[playerID].ActiveUnits[25] >= 4)
 				goto L0f53;
 
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xd33a)), 0x2);
-			if (this.oCPU.Flags.L) goto L1009;
-			goto L0f53;
+			if (this.oParent.GameState.Players[playerID].UnitsInProduction[25] >= 2)
+				goto L0f53;
 
 		L1009:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46)), 0xe);
