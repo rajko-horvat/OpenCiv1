@@ -13,6 +13,11 @@ namespace OpenCiv1
 			new GPoint(1, -2), new GPoint(2, -1), new GPoint(2, 1), new GPoint(1, 2), new GPoint(-1, 2), 
 			new GPoint(-2, 1), new GPoint(-2, -1), new GPoint(0, 0) };
 
+		public GPoint[] MoveDirections = new GPoint[] {
+			new GPoint(0, 0), new GPoint(0, -1), new GPoint(1, -1), 
+			new GPoint(1, 0), new GPoint(1, 1), new GPoint(0, 1), 
+			new GPoint(-1, 1), new GPoint(-1, 0), new GPoint(-1, -1)};
+
 		public ushort Var_d768 = 0;
 		public ushort Var_db3a = 0;
 		public ushort Var_db3c = 0;

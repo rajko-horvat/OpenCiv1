@@ -1,5 +1,6 @@
 using System;
 using IRB.VirtualCPU;
+using OpenCiv1.GPU;
 
 namespace OpenCiv1
 {
@@ -457,22 +458,23 @@ namespace OpenCiv1
 
 		L04ce:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), this.oCPU.SARWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), 0x1));
+			
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc));
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 
+			GPoint direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))];
+
 			// Instruction address 0x2aea:0x04e6, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1882)) + xPos);
+			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
 			// Instruction address 0x2aea:0x04f0, size: 3
-			F0_2aea_134a((short)this.oCPU.AX.Word,
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x18e4)) + yPos);
+			F0_2aea_134a((short)this.oCPU.AX.Word, yPos + direction.Y);
 
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xa);
 			if (this.oCPU.Flags.E) goto L0515;
 
 			// Instruction address 0x2aea:0x0507, size: 3
-			F0_2aea_1326_CheckMapBounds(0, this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x18e4)) + yPos);
+			F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y);
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0515;
@@ -499,22 +501,23 @@ namespace OpenCiv1
 
 		L054e:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), this.oCPU.SARWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), 0x1));
+			
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc));
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 
+			direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))];
+
 			// Instruction address 0x2aea:0x0566, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1882)) + xPos);
+			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
 			// Instruction address 0x2aea:0x0570, size: 3
-			F0_2aea_134a((short)this.oCPU.AX.Word,
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x18e4)) + yPos);
+			F0_2aea_134a((short)this.oCPU.AX.Word, yPos + direction.Y);
 
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xa);
 			if (this.oCPU.Flags.E) goto L0595;
 
 			// Instruction address 0x2aea:0x0587, size: 3
-			F0_2aea_1326_CheckMapBounds(0, this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x18e4)) + yPos);
+			F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y);
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0595;
@@ -669,13 +672,13 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc));
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 
+			direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))];
+
 			// Instruction address 0x2aea:0x0748, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1882)) + xPos);
+			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
 			// Instruction address 0x2aea:0x0752, size: 3
-			F0_2aea_134a((short)this.oCPU.AX.Word,
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x18e4)) + yPos);
+			F0_2aea_134a((short)this.oCPU.AX.Word, yPos + direction.Y);
 
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xb);
 			if (this.oCPU.Flags.NE) goto L077f;
@@ -755,9 +758,12 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc));
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 
+			direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))];
+
+			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+
 			// Instruction address 0x2aea:0x082c, size: 3
-			F0_2aea_134a(this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1882)) + xPos,
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x18e4)) + yPos);
+			F0_2aea_134a((short)this.oCPU.AX.Word, yPos + direction.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xb);
@@ -814,22 +820,23 @@ namespace OpenCiv1
 
 		L08b3:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), this.oCPU.SARWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), 0x1));
+			
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc));
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 
+			direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))];
+
 			// Instruction address 0x2aea:0x08cb, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1882)) + xPos);
+			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
 			// Instruction address 0x2aea:0x08d5, size: 3
-			F0_2aea_134a((short)this.oCPU.AX.Word,
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x18e4)) + yPos);
+			F0_2aea_134a((short)this.oCPU.AX.Word, yPos + direction.Y);
 
 			this.oCPU.CMPWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)));
 			if (this.oCPU.Flags.NE) goto L08fa;
 
 			// Instruction address 0x2aea:0x08ec, size: 3
-			F0_2aea_1326_CheckMapBounds(0, this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x18e4)) + yPos);
+			F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y);
 
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L08fa;
@@ -989,10 +996,12 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc));
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 
+			direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))];
+
+			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+
 			// Instruction address 0x2aea:0x0a9a, size: 3
-			F0_2aea_15c1(
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1882)) + xPos,
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x18e4)) + yPos);
+			F0_2aea_15c1((short)this.oCPU.AX.Word, yPos + direction.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), this.oCPU.AX.Word);
 			this.oCPU.TESTByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)), 0x8);
@@ -1080,12 +1089,12 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc));
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 
-			// Instruction address 0x2aea:0x0b87, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1882)) + xPos);
+			direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))];
 
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x18e4));
-			this.oCPU.BX.Word = this.oCPU.ADDWord(this.oCPU.BX.Word, (ushort)yPos);
+			// Instruction address 0x2aea:0x0b87, size: 5
+			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+
+			this.oCPU.BX.Word = (ushort)((short)(yPos + direction.Y));
 
 			this.oCPU.AX.Word = this.oParent.GameState.MapVisibility[this.oCPU.AX.Word, this.oCPU.BX.Word];
 			

@@ -1,4 +1,5 @@
 using IRB.VirtualCPU;
+using OpenCiv1.GPU;
 
 namespace OpenCiv1
 {
@@ -151,6 +152,8 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8));
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 
+			GPoint direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))];
+
 			this.oCPU.AX.Word = 0x600;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
@@ -160,10 +163,8 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x016c, size: 5
 			this.oParent.Graphics.F0_VGA_038c_GetPixel(2,
-				this.oParent.GameState.Players[playerID].Units[unitID].Position.X +
-					this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x1882 + this.oCPU.SI.Word)) + 80,
-				this.oParent.GameState.Players[playerID].Units[unitID].Position.Y +
-					this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x18e4)));
+				this.oParent.GameState.Players[playerID].Units[unitID].Position.X + direction.X + 80,
+				this.oParent.GameState.Players[playerID].Units[unitID].Position.Y + direction.Y);
 
 			this.oCPU.CMPWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 			if (this.oCPU.Flags.LE) goto L017e;

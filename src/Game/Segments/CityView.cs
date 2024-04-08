@@ -87,10 +87,10 @@ namespace OpenCiv1
 					}
 				}
 
-				iYPos2 = oRNG.Next(8) + 1;
+				GPoint direction = this.oParent.MoveDirections[oRNG.Next(8) + 1];
 
-				iXPos1 = Math.Min(Math.Max(this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((iYPos2 << 1) + 0x1882)) + iXPos1, 0), 18);
-				iYPos1 = Math.Min(Math.Max(this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((iYPos2 << 1) + 0x18e4)) + (ushort)iYPos1, 0), 11);
+				iXPos1 = Math.Min(Math.Max(iXPos1 + direction.X, 0), 18);
+				iYPos1 = Math.Min(Math.Max(iYPos1 + direction.Y, 0), 11);
 			}
 
 			iYPos2 = 4 + oRNG.Next(2);
@@ -339,18 +339,19 @@ namespace OpenCiv1
 							for (int i = 1; i < 9; i++)
 							{
 								int iPrefixTemp;
+								GPoint direction = this.oParent.MoveDirections[i];
 
 								if ((iYPos1 & 0x1) == 0)
 								{
-									iPrefixTemp = ((this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x18e4)) <= 0) ? 0 : -1);
+									iPrefixTemp = ((direction.Y <= 0) ? 0 : -1);
 								}
 								else
 								{
-									iPrefixTemp = (this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x18e4)) >= 0) ? 0 : 1;
+									iPrefixTemp = (direction.Y >= 0) ? 0 : 1;
 								}
 
-								int iXTemp = iPrefixTemp + this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x1882)) + iXPos1;
-								int iYTemp = this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x18e4)) + iYPos1;
+								int iXTemp = iXPos1 + iPrefixTemp + direction.X;
+								int iYTemp = iYPos1 + direction.Y;
 
 								if (iYTemp < 12 && aCityLayout[iXTemp, iYTemp] >= 0)
 								{
@@ -404,17 +405,19 @@ namespace OpenCiv1
 								for (int i = 1; i < 9; i++)
 								{
 									int iPrefixTemp;
+									GPoint direction = this.oParent.MoveDirections[i];
+
 									if ((iYPos1 & 1) == 0)
 									{
-										iPrefixTemp = (this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x18e4)) <= 0) ? 0 : -1;
+										iPrefixTemp = (direction.Y <= 0) ? 0 : -1;
 									}
 									else
 									{
-										iPrefixTemp = (this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x18e4)) >= 0) ? 0 : 1;
+										iPrefixTemp = (direction.Y >= 0) ? 0 : 1;
 									}
 
-									int iXTemp = iPrefixTemp + this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x1882)) + iXPos1;
-									int iYTemp = this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)((i << 1) + 0x18e4)) + iYPos1;
+									int iXTemp = iXPos1 + iPrefixTemp + direction.X;
+									int iYTemp = iYPos1 + direction.Y;
 
 									if ((i & 1) != 0)
 									{
