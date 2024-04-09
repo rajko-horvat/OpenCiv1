@@ -1094,9 +1094,16 @@ namespace OpenCiv1
 			// Instruction address 0x2aea:0x0b87, size: 5
 			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
-			this.oCPU.BX.Word = (ushort)((short)(yPos + direction.Y));
+			int yTemp = (ushort)((short)(yPos + direction.Y));
 
-			this.oCPU.AX.Word = this.oParent.GameState.MapVisibility[this.oCPU.AX.Word, this.oCPU.BX.Word];
+			if (yTemp >= 0 && yTemp < 50)
+			{
+				this.oCPU.AX.Word = this.oParent.GameState.MapVisibility[(short)this.oCPU.AX.Word, yTemp];
+			}
+			else
+			{
+				this.oCPU.AX.Word = 0;
+			}
 			
 			this.oCPU.DX.Word = 0x1;
 			this.oCPU.CX.Low = (byte)(this.oParent.GameState.HumanPlayerID & 0xff);
