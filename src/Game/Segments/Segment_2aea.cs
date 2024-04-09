@@ -1557,20 +1557,20 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition.X == -1)
-				goto L108d;
+			if (this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition.X != -1)
+			{
+				if (playerID == 1)
+				{
+					this.oCPU.AX.Word = 0x9;
+				}
+				else
+				{
+					this.oCPU.AX.Word = 0xf;
+				}
 
-			this.oCPU.CMPWord((ushort)playerID, 0x1);
-			if (this.oCPU.Flags.NE) goto L106f;
-			this.oCPU.AX.Word = 0x9;
-			goto L1072;
-
-		L106f:
-			this.oCPU.AX.Word = 0xf;
-
-		L1072:
-			// Instruction address 0x2aea:0x1085, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("G", xPos + 4, yPos + 7, this.oCPU.AX.Word);
+				// Instruction address 0x2aea:0x1085, size: 5
+				this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("G", xPos + 4, yPos + 7, this.oCPU.AX.Word);
+			}
 
 		L108d:
 			this.oCPU.AX.Word = 0x600;
