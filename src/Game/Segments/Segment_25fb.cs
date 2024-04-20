@@ -2070,7 +2070,7 @@ namespace OpenCiv1
 			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x40))];
 
 			// Instruction address 0x25fb:0x136c, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)) + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26), this.oCPU.AX.Word);
@@ -2807,7 +2807,7 @@ namespace OpenCiv1
 			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x40))];
 
 			// Instruction address 0x25fb:0x1a7b, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)) + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26), this.oCPU.AX.Word);
@@ -3261,7 +3261,7 @@ namespace OpenCiv1
 			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a))];
 
 			// Instruction address 0x25fb:0x1ed9, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
 				(direction.X * this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x40))) +
 					this.oParent.GameState.Players[playerID].Units[unitID].Position.X);
 
@@ -4114,7 +4114,7 @@ namespace OpenCiv1
 			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x40))];
 
 			// Instruction address 0x25fb:0x2691, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)) + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26), this.oCPU.AX.Word);
@@ -4974,7 +4974,7 @@ namespace OpenCiv1
 			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44))];
 
 			// Instruction address 0x25fb:0x2e59, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26)) + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), this.oCPU.AX.Word);
@@ -5992,7 +5992,7 @@ namespace OpenCiv1
 			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x38))];
 
 			// Instruction address 0x25fb:0x3722, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2a)) + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20), this.oCPU.AX.Word);
@@ -6343,7 +6343,7 @@ namespace OpenCiv1
 				this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e))].Position.Y;
 			
 			// Instruction address 0x25fb:0x3ac3, size: 5
-			this.oParent.Segment_2e31.F0_2e31_000e(playerID, unitID);
+			this.oParent.UnitGoTo.F0_2e31_000e_GetNextMove(playerID, unitID);
 			
 			this.oParent.GameState.Players[playerID].Units[unitID].GoToNextDirection = (sbyte)this.oCPU.AX.Low;
 
@@ -6486,7 +6486,7 @@ namespace OpenCiv1
 			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x38))];
 
 			// Instruction address 0x25fb:0x3c03, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(this.oParent.GameState.Players[playerID].Units[unitID].Position.X + direction.X);
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(this.oParent.GameState.Players[playerID].Units[unitID].Position.X + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20), this.oCPU.AX.Word);
 

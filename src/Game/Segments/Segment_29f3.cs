@@ -617,7 +617,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
 			// Instruction address 0x29f3:0x052d, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
 				this.oParent.GameState.Players[playerID1].Units[unitID1].Position.X - this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd4cc));
 
 			this.oCPU.CX.Low = 0x4;
@@ -1550,7 +1550,7 @@ namespace OpenCiv1
 			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))];
 
 			// Instruction address 0x29f3:0x0f26, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 

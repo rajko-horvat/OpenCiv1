@@ -373,7 +373,7 @@ namespace OpenCiv1
 			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))];
 
 			// Instruction address 0x0000:0x0424, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), (ushort)((short)(yPos + direction.Y)));

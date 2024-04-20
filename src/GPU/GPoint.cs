@@ -17,6 +17,14 @@ namespace OpenCiv1.GPU
 			this.y = 0;
 		}
 
+		/// <summary>Initializes a new instance of the GPoint class with one value for horizontal and vertical position</summary>
+		/// <param name="xy">The horizontal and vertical position of the point</param>
+		public GPoint(int xy)
+		{
+			this.x = xy;
+			this.y = xy;
+		}
+
 		/// <summary>Initializes a new instance of the GPoint class with the specified coordinates</summary>
 		/// <param name="x">The horizontal position of the point</param>
 		/// <param name="y">The vertical position of the point</param>
@@ -94,7 +102,7 @@ namespace OpenCiv1.GPU
 		/// <returns>true if the GPoint.X and GPoint.Y values of <paramref name="left" /> and <paramref name="right" /> are equal; otherwise, false</returns>
 		/// <param name="left">A GPoint to compare</param>
 		/// <param name="right">A GPoint to compare</param>
-		public static bool operator ==(GPoint left, GPoint right) => left.X == right.X && left.Y == right.Y;
+		public static bool operator ==(GPoint left, GPoint right) => (left.X == right.X && left.Y == right.Y);
 
 		/// <summary>Compares two GPoint objects. The result specifies whether the values of the GPoint.X or GPoint.Y properties of the two GPoint objects are unequal</summary>
 		/// <returns>true if the values of either the GPoint.X properties or the GPoint.Y properties of <paramref name="left" /> and <paramref name="right" /> differ; otherwise, false</returns>
@@ -136,11 +144,16 @@ namespace OpenCiv1.GPU
 		}
 
 		/// <summary>Translates this GPoint by the specified GPoint</summary>
-		/// <param name="pt">The GPoint used offset this GPoint</param>
+		/// <param name="pt">The GPoint used to offset this GPoint</param>
 		public void Offset(GPoint pt)
 		{
 			this.Offset(pt.X, pt.Y);
 		}
+
+		/// <summary>Returns new GPoint class containing absoulte X and Y coordinates</summary>
+		/// <returns>A GPoint class containing absolute coordinates</returns>
+		/// <param name="pt">The GPoint class to contert to absolute coordinates</param>
+		public static GPoint Abs(GPoint pt) => new GPoint(Math.Abs(pt.X), Math.Abs(pt.Y));
 
 		/// <summary>Specifies whether this GPoint contains the same coordinates as the specified <see cref="T:System.Object" /></summary>
 		/// <returns>true if <paramref name="obj" /> is a GPoint and has the same coordinates as this GPoint</returns>

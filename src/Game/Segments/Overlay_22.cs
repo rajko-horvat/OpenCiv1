@@ -865,7 +865,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L099f;
 
 			// Instruction address 0x0000:0x09f0, size: 5
-			this.oParent.Segment_2e31.F0_2e31_119b_AdjustXPosition(
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
 				xPos - this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd4cc));
 
 			this.oCPU.CX.Low = 0x4;

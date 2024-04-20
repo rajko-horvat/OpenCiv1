@@ -2048,7 +2048,7 @@ namespace IRB.VirtualCPU
 							break;
 
 						case 0x42:
-							DOSMoviFilePointerUsingHandle();
+							DOSMoveFilePointerUsingHandle();
 							break;
 
 						case 0x44:
@@ -2340,7 +2340,7 @@ namespace IRB.VirtualCPU
 			}
 		}
 
-		private void DOSMoviFilePointerUsingHandle()
+		private void DOSMoveFilePointerUsingHandle()
 		{
 			if (this.aOpenFiles.ContainsKey((short)this.oBX.Word))
 			{

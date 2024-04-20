@@ -23,11 +23,11 @@ namespace OpenCiv1
 	public class Unit
 	{
 		public short Status = 0;
-		public GPoint Position = new GPoint(-1, -1);
+		public GPoint Position = new GPoint(-1);
 		public short TypeID = 0;
 		public short RemainingMoves = 0;
 		public short SpecialMoves = 0;
-		public GPoint GoToPosition = new GPoint(-1, -1);
+		public GPoint GoToPosition = new GPoint(-1);
 		public short GoToNextDirection = 0;
 		public ushort VisibleByPlayer = 0;
 		public short NextUnitID = 0;

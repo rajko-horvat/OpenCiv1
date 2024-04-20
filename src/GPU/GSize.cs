@@ -17,6 +17,14 @@ namespace OpenCiv1.GPU
 			this.height = 0;
 		}
 
+		/// <summary>Initializes a new instance of the GSize class with one value for width and height dimension</summary>
+		/// <param name="xy">The width and height dimension</param>
+		public GSize(int wh)
+		{
+			this.width = wh;
+			this.height = wh;
+		}
+
 		/// <summary>Initializes a new instance of the GSize class from the specified GPoint class</summary>
 		/// <param name="pt">The GPoint class from which to initialize this GSize class</param>
 		public GSize(GPoint pt)

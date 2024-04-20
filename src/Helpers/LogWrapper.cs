@@ -53,6 +53,16 @@ namespace OpenCiv1
 			}
 		}
 
+		public void ExitBlock(string text, int returnValue)
+		{
+			if (this.oLog != null)
+			{
+				this.WriteLine($"// Function returns: {returnValue} (0x{returnValue:x})");
+
+				this.ExitBlock(text);
+			}
+		}
+
 		public void ExitBlock(string text)
 		{
 			if (this.oLog != null)

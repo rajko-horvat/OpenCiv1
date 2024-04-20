@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using IRB.VirtualCPU;
 using OpenCiv1.GPU;
 
@@ -22,7 +23,7 @@ namespace OpenCiv1
 		private Segment_2f4d oSegment_2f4d;
 		private Segment_2aea oSegment_2aea;
 		private Segment_1866 oSegment_1866;
-		private Segment_2e31 oSegment_2e31;
+		private UnitGoTo oUnitGoTo;
 		private Segment_2459 oSegment_2459;
 		private Segment_25fb oSegment_25fb;
 		private Segment_1ade oSegment_1ade;
@@ -58,8 +59,7 @@ namespace OpenCiv1
 
 		private LogWrapper oLog;
 		private LogWrapper oInterruptLog;
-		private LogWrapper oVGADriverLog;
-		private LogWrapper oIntroLog;
+		private LogWrapper oGoToLog;
 
 		private ushort usStartSegment = 0x1000;
 
@@ -69,15 +69,13 @@ namespace OpenCiv1
 		{
 			this.oLog = new LogWrapper($"{CPU.AssemblyPath}Log.txt");
 			this.oInterruptLog = new LogWrapper($"{CPU.AssemblyPath}InterruptLog.txt");
-			this.oVGADriverLog = new LogWrapper($"{CPU.AssemblyPath}VGADriverLog.txt");
-			this.oIntroLog = new LogWrapper($"{CPU.AssemblyPath}IntroLog.txt");
+			this.oGoToLog = new LogWrapper($"{CPU.AssemblyPath}GoToLog.txt");
 
 			this.oCPU = new CPU(this, this.oLog);
 
 			this.oLog.CPU = this.oCPU;
 			this.oInterruptLog.CPU = this.oCPU;
-			this.oVGADriverLog.CPU = this.oCPU;
-			this.oIntroLog.CPU = this.oCPU;
+			this.oGoToLog.CPU = this.oCPU;
 
 			this.oGameState = new GameState();
 
@@ -97,7 +95,7 @@ namespace OpenCiv1
 			this.oSegment_2f4d = new Segment_2f4d(this);
 			this.oSegment_2aea = new Segment_2aea(this);
 			this.oSegment_1866 = new Segment_1866(this);
-			this.oSegment_2e31 = new Segment_2e31(this);
+			this.oUnitGoTo = new UnitGoTo(this);
 			this.oSegment_2459 = new Segment_2459(this);
 			this.oSegment_25fb = new Segment_25fb(this);
 			this.oSegment_1ade = new Segment_1ade(this);
@@ -1088,6 +1086,20 @@ namespace OpenCiv1
 			this.MSCAPI.exit((short)this.oCPU.AX.Word);
 		}
 
+		public static void LogUnit(Game game, LogWrapper log, int playerID, int unitID, int humanPlayerID)
+		{
+			if (playerID >= game.GameState.Players.Length || unitID >= game.GameState.Players[playerID].Units.Length)
+			{
+				log.WriteLine($"// Illegal indexes, PlayerID: {playerID}{((playerID == humanPlayerID) ? " (Human player)" : "")}, UnitID: {unitID}");
+			}
+			else
+			{
+				Unit unit = game.GameState.Players[playerID].Units[unitID];
+
+				log.WriteLine($"// Player[{playerID}{((playerID == humanPlayerID) ? " (Human player)" : "")}].Unit[{unitID}] = {{TypeID: {unit.TypeID}, Status: {unit.Status}, Position: {unit.Position}, GoTo: {unit.GoToPosition}}}");
+			}
+		}
+
 		public CPU CPU
 		{
 			get { return this.oCPU; }
@@ -1109,14 +1121,9 @@ namespace OpenCiv1
 			get { return this.oInterruptLog; }
 		}
 
-		public LogWrapper VGADriverLog
+		public LogWrapper GoToLog
 		{
-			get { return this.oVGADriverLog; }
-		}
-
-		public LogWrapper IntroLog
-		{
-			get { return this.oIntroLog; }
+			get { return this.oGoToLog; }
 		}
 		#endregion
 
@@ -1176,9 +1183,9 @@ namespace OpenCiv1
 			get { return this.oSegment_1866; }
 		}
 
-		public Segment_2e31 Segment_2e31
+		public UnitGoTo UnitGoTo
 		{
-			get { return this.oSegment_2e31; }
+			get { return this.oUnitGoTo; }
 		}
 
 		public Segment_2459 Segment_2459

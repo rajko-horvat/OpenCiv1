@@ -479,17 +479,11 @@ namespace OpenCiv1
 
 			L052e:
 			// Intro...
-			this.oCPU.Log = this.oParent.IntroLog;
-			this.oCPU.Log.EnterBlock("'Intro start'");
-			this.oParent.VGADriverLog.EnterBlock("'Intro start'");
-			this.oParent.InterruptLog.EnterBlock("'Intro start'");
+			this.oCPU.Log.EnterBlock("// Intro start");
 
 			this.oParent.GameInitAndIntro.F7_0000_0012_GameIntro();
 
-			this.oParent.InterruptLog.ExitBlock("'Intro end'");
-			this.oParent.VGADriverLog.ExitBlock("'Intro end'");
-			this.oCPU.Log.ExitBlock("'Intro end'");
-			this.oCPU.Log = this.oParent.Log;
+			this.oCPU.Log.ExitBlock("// Intro end");
 
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, this.oCPU.BX.Word, 0x0);
