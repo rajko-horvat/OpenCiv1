@@ -1353,11 +1353,11 @@ namespace OpenCiv1
 				this.oCPU.AX.Word = 0x2;
 			}
 		
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, this.oCPU.AX.Word);
+			this.oParent.Var_2f9e_Unknown = this.oCPU.AX.Word;
 
 			if (playerID1 == this.oParent.GameState.HumanPlayerID)
 			{
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x3);
+				this.oParent.Var_2f9e_Unknown = 0x3;
 			}
 
 			// Instruction address 0x0000:0x0f32, size: 5

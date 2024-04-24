@@ -618,7 +618,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x29f3:0x052d, size: 5
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
-				this.oParent.GameState.Players[playerID1].Units[unitID1].Position.X - this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd4cc));
+				this.oParent.GameState.Players[playerID1].Units[unitID1].Position.X - this.oParent.Var_d4cc_XPos);
 
 			this.oCPU.CX.Low = 0x4;
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
@@ -626,7 +626,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Word);
 
 			this.oCPU.AX.Word = (ushort)((short)this.oParent.GameState.Players[playerID1].Units[unitID1].Position.Y);
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd75e));
+			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, (ushort)this.oParent.Var_d75e_YPos);
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x8);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Word);
@@ -843,7 +843,7 @@ namespace OpenCiv1
 				goto L07e2;
 
 		L0782:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x3);
+			this.oParent.Var_2f9e_Unknown = 0x3;
 
 			// Instruction address 0x29f3:0x0790, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Sneak attack by\n");
@@ -897,7 +897,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L087a;
 
 		L0816:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x5);
+			this.oParent.Var_2f9e_Unknown = 0x5;
 
 			this.oCPU.BX.Word = (ushort)playerID2;
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
@@ -1315,7 +1315,7 @@ namespace OpenCiv1
 			// Instruction address 0x29f3:0x0ce1, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "!\n Cancel action.\n Break treaty.\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x5);
+			this.oParent.Var_2f9e_Unknown = 0x5;
 
 			// Instruction address 0x29f3:0x0cf8, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -1333,7 +1333,7 @@ namespace OpenCiv1
 			// Instruction address 0x29f3:0x0d1f, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Overruled by\nthe Senate.\nAction canceled.\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x4);
+			this.oParent.Var_2f9e_Unknown = 0x4;
 
 			// Instruction address 0x29f3:0x0d39, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -1374,7 +1374,8 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
 			this.oCPU.CMPWord((ushort)playerID, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0d9b;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x3);
+
+			this.oParent.Var_2f9e_Unknown = 0x3;
 
 			this.oCPU.BX.Word = (ushort)playerID;
 			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);

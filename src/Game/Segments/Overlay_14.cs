@@ -710,7 +710,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x08d3, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, 
-				this.oParent.MSCAPI.itoa((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x70e0), 10));
+				this.oParent.MSCAPI.itoa((short)this.oParent.Var_70da_Arr[3], 10));
 
 			// Instruction address 0x0000:0x08e3, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\\/");
@@ -1813,7 +1813,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1d12.F0_1d12_6ed4(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
 				(short)(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)) - 3),
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xe8b8), 124);
+				this.oParent.Var_e8b8, 124);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), 0xd4);
 
@@ -2064,21 +2064,21 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x1a3a, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x70da), 10));
+				this.oParent.MSCAPI.itoa((short)this.oParent.Var_70da_Arr[0], 10));
 
 			// Instruction address 0x0000:0x1a4a, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "{ ");
 
 			// Instruction address 0x0000:0x1a6b, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x70dc), 10));
+				this.oParent.MSCAPI.itoa((short)this.oParent.Var_70da_Arr[1], 10));
 
 			// Instruction address 0x0000:0x1a7b, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "| ");
 
 			// Instruction address 0x0000:0x1a9c, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x70de), 10));
+				this.oParent.MSCAPI.itoa((short)this.oParent.Var_70da_Arr[2], 10));
 
 			// Instruction address 0x0000:0x1aac, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "}");

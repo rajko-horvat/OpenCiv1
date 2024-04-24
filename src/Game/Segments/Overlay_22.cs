@@ -278,7 +278,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0294, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x0);
+			this.oParent.Var_2f9e_Unknown = 0x0;
 
 			// Instruction address 0x0000:0x02ab, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -415,7 +415,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0420, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x0);
+			this.oParent.Var_2f9e_Unknown = 0x0;
 
 			// Instruction address 0x0000:0x0437, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -501,7 +501,7 @@ namespace OpenCiv1
 			}
 
 		L054b:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x0);
+			this.oParent.Var_2f9e_Unknown = 0x0;
 
 			// Instruction address 0x0000:0x055d, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -737,7 +737,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0876, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "!\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x0);
+			this.oParent.Var_2f9e_Unknown = 0x0;
 
 			// Instruction address 0x0000:0x0890, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 40);
@@ -865,15 +865,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L099f;
 
 			// Instruction address 0x0000:0x09f0, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
-				xPos - this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd4cc));
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos - this.oParent.Var_d4cc_XPos);
 
 			this.oCPU.CX.Low = 0x4;
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x42);
 			xPos = (short)this.oCPU.AX.Word;
 			this.oCPU.AX.Word = (ushort)((short)yPos);
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd75e));
+			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, (ushort)this.oParent.Var_d75e_YPos);
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, 0x6);
 			yPos = (short)this.oCPU.AX.Word;

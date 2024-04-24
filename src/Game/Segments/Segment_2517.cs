@@ -180,7 +180,7 @@ namespace OpenCiv1
 			// Instruction address 0x2517:0x01a0, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " has ended.\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x1);
+			this.oParent.Var_2f9e_Unknown = 0x1;
 
 			// Instruction address 0x2517:0x01ba, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -662,7 +662,7 @@ namespace OpenCiv1
 			this.oParent.GameState.Players[playerID].Diplomacy[0] |= 4;
 
 		L06bc:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x1);
+			this.oParent.Var_2f9e_Unknown = 0x1;
 
 			// Instruction address 0x2517:0x06ce, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 64);
@@ -924,7 +924,7 @@ namespace OpenCiv1
 			// Instruction address 0x2517:0x0933, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " sign\na peace treaty.\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x1);
+			this.oParent.Var_2f9e_Unknown = 0x1;
 
 			// Instruction address 0x2517:0x094d, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -996,7 +996,7 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.strcat(0xba06, " declare\nwar on each other.\n");
 			}
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x1);
+			this.oParent.Var_2f9e_Unknown = 0x1;
 
 			// Instruction address 0x2517:0x0a11, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);

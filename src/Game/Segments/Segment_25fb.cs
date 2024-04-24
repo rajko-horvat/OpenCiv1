@@ -6089,7 +6089,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x28)));
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x3);
+			this.oParent.Var_2f9e_Unknown = 0x3;
 
 			// Instruction address 0x25fb:0x3829, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Barbarian raiding party\nlands near ");

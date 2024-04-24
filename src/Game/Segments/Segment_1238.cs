@@ -121,11 +121,11 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.GameState.HumanPlayerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.WriteInt16(this.oCPU.DS.Word, 0xd4cc,
-				(short)(this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].Units[0].Position.X - 7));
+			this.oParent.Var_d4cc_XPos = 
+				(short)(this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].Units[0].Position.X - 7);
 
-			this.oCPU.WriteInt16(this.oCPU.DS.Word, 0xd75e, 
-				(short)(this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].Units[0].Position.Y - 6));
+			this.oParent.Var_d75e_YPos = 
+				(short)(this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].Units[0].Position.Y - 6);
 
 			// Instruction address 0x1238:0x0119, size: 3
 			F0_1238_1b44();
@@ -339,7 +339,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x034f, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f(0x1c2a);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x4);
+			this.oParent.Var_2f9e_Unknown = 0x4;
 
 			// Instruction address 0x1238:0x0367, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -1157,7 +1157,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x0ca4, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "!\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x2);
+			this.oParent.Var_2f9e_Unknown = 0x2;
 
 			// Instruction address 0x1238:0x0cbf, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 32);
@@ -1764,7 +1764,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x147d, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "00,000 citizens.\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x4);
+			this.oParent.Var_2f9e_Unknown = 0x4;
 
 			// Instruction address 0x1238:0x1498, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -2137,7 +2137,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x2;
 
 		L17f2:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, this.oCPU.AX.Word);
+			this.oParent.Var_2f9e_Unknown = this.oCPU.AX.Word;
 
 			// Instruction address 0x1238:0x1802, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -2473,8 +2473,8 @@ namespace OpenCiv1
 
 			// Instruction address 0x1238:0x1b7f, size: 5
 			this.oParent.Segment_2aea.F0_2aea_0008(this.oParent.GameState.HumanPlayerID,
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd4cc),
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd75e));
+				this.oParent.Var_d4cc_XPos,
+				this.oParent.Var_d75e_YPos);
 
 			// Instruction address 0x1238:0x1b97, size: 3
 			F0_1238_1bb2_FillRectangleWithShadow(0, 97, 80, 103);

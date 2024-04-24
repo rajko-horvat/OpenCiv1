@@ -32,10 +32,22 @@ namespace OpenCiv1
 			new GPoint(3, 3), new GPoint(3, -3), new GPoint(-3, 3), 
 			new GPoint(-3, -3)};
 
+		public ushort Var_2f9e_Unknown = 0xffff;
+
+		// 0x652e - after this offset the default values are set to 0
+
+		public ushort[] Var_70da_Arr = new ushort[4];
+		public ushort Var_b882 = 0;
+		public ushort Var_d2f6 = 0;
+		public short Var_d4cc_XPos = 0;
+		public short Var_d75e_YPos = 0;
 		public ushort Var_d768 = 0;
 		public ushort Var_db3a = 0;
 		public ushort Var_db3c = 0;
 		public ushort Var_db3e = 0;
+		public ushort Var_deb8 = 0;
+		public ushort Var_e3c6 = 0;
+		public ushort Var_e8b8 = 0;
 		#endregion
 	}
 }

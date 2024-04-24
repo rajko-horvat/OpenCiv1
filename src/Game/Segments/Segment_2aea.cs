@@ -48,11 +48,11 @@ namespace OpenCiv1
 			// Instruction address 0x2aea:0x002d, size: 5
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4cc, this.oCPU.AX.Word);
+			this.oParent.Var_d4cc_XPos = (short)this.oCPU.AX.Word;
 
 			// Instruction address 0x2aea:0x0042, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(yPos, 0, 38);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd75e, this.oCPU.AX.Word);
+			this.oParent.Var_d75e_YPos = (short)this.oCPU.AX.Word;
 
 			// Another error, the code modified first parameter (playerID) to a
 			// Visibility Mask and that conflicts with other code which expects playerID.
@@ -103,11 +103,10 @@ namespace OpenCiv1
 
 			// Instruction address 0x2aea:0x00e0, size: 5
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)) +
-					this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd4cc));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)) + this.oParent.Var_d4cc_XPos);
 
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c));
-			this.oCPU.BX.Word = this.oCPU.ADDWord(this.oCPU.BX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd75e));
+			this.oCPU.BX.Word = this.oCPU.ADDWord(this.oCPU.BX.Word, (ushort)this.oParent.Var_d75e_YPos);
 
 			this.oCPU.AX.Word = this.oParent.GameState.MapVisibility[this.oCPU.AX.Word, this.oCPU.BX.Word];
 			
@@ -118,12 +117,11 @@ namespace OpenCiv1
 		L0108:
 			// Instruction address 0x2aea:0x0118, size: 5
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)) +
-					this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd4cc));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)) + this.oParent.Var_d4cc_XPos);
 
 			// Instruction address 0x2aea:0x0122, size: 3
 			F0_2aea_11d4((short)this.oCPU.AX.Word,
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)) + this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd75e));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)) + this.oParent.Var_d75e_YPos);
 
 			goto L009c;
 
@@ -396,15 +394,14 @@ namespace OpenCiv1
 
 		L0430:
 			// Instruction address 0x2aea:0x0438, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
-				xPos - this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd4cc));
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos - this.oParent.Var_d4cc_XPos);
 
 			this.oCPU.CX.Low = 0x4;
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x50);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = (ushort)yPos;
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd75e));
+			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, (ushort)this.oParent.Var_d75e_YPos);
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x8);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Word);
@@ -1394,14 +1391,14 @@ namespace OpenCiv1
 
 			// Instruction address 0x2aea:0x0ecd, size: 5
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
-				this.oParent.GameState.Players[playerID].Units[unitID].Position.X - this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd4cc));
+				this.oParent.GameState.Players[playerID].Units[unitID].Position.X - this.oParent.Var_d4cc_XPos);
 
 			this.oCPU.CX.Low = 0x4;
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 
 			this.oCPU.AX.Word = (ushort)((short)this.oParent.GameState.Players[playerID].Units[unitID].Position.Y);
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd75e));
+			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, (ushort)this.oParent.Var_d75e_YPos);
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x8);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);

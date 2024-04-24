@@ -244,7 +244,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x026a, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f((ushort)((playerID == this.oParent.GameState.HumanPlayerID) ? 0x4a18 : 0x4a20));
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9e, 0x5);
+			this.oParent.Var_2f9e_Unknown = 0x5;
 
 			// Instruction address 0x0000:0x0281, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -790,8 +790,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x082f, size: 5
 			this.oParent.Segment_2aea.F0_2aea_0008(this.oParent.GameState.HumanPlayerID,
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd4cc),
-				this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd75e));
+				this.oParent.Var_d4cc_XPos, this.oParent.Var_d75e_YPos);
 
 			goto L0876;
 
