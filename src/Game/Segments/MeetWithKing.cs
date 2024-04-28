@@ -2433,7 +2433,7 @@ namespace OpenCiv1
 				this.oCPU.BX.Word = this.oCPU.AX.Word;
 
 				if (this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].PlayerID ==
-					this.oParent.GameState.HumanPlayerID && this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6c9a) <= 2)
+					this.oParent.GameState.HumanPlayerID && (short)this.oParent.Var_6c9a <= 2)
 				{
 					// Instruction address 0x0000:0x1b1c, size: 5
 					this.oParent.Segment_1866.F0_1866_0f10(playerID,

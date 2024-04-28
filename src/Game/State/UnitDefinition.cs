@@ -16,7 +16,7 @@ namespace OpenCiv1
 		public short SightRange = 0;
 		public short TransportCapacity = 0;
 		public short UnitCategory = 0;
-		public short TechnologyRequired = 0;
+		public TechnologyEnum RequiredTechnology = TechnologyEnum.None;
 
 		public UnitDefinition()
 		{ }
@@ -24,7 +24,7 @@ namespace OpenCiv1
 		public UnitDefinition(string name, short cancelTechnology, short terrainCategory,
 			short moveCount, short turnsOutside, short attackStrength, short defenceStrength,
 			short cost, short sightRange, short transportCapacity, short unitCategory,
-			short technologyRequired)
+			TechnologyEnum requiredTechnology)
 		{
 			this.Name = name;
 			this.CancelTechnology = cancelTechnology;
@@ -37,7 +37,7 @@ namespace OpenCiv1
 			this.SightRange = sightRange;
 			this.TransportCapacity = transportCapacity;
 			this.UnitCategory = unitCategory;
-			this.TechnologyRequired = technologyRequired;
+			this.RequiredTechnology = requiredTechnology;
 		}
 
 		public static UnitDefinition FromStream(Stream stream)
@@ -55,7 +55,7 @@ namespace OpenCiv1
 			ud.SightRange = GameLoadAndSave.ReadInt16(stream);
 			ud.TransportCapacity = GameLoadAndSave.ReadInt16(stream);
 			ud.UnitCategory = GameLoadAndSave.ReadInt16(stream);
-			ud.TechnologyRequired = GameLoadAndSave.ReadInt16(stream);
+			ud.RequiredTechnology = (TechnologyEnum)GameLoadAndSave.ReadInt16(stream);
 
 			return ud;
 		}
@@ -73,7 +73,7 @@ namespace OpenCiv1
 			GameLoadAndSave.WriteInt16(stream, this.SightRange);
 			GameLoadAndSave.WriteInt16(stream, this.TransportCapacity);
 			GameLoadAndSave.WriteInt16(stream, this.UnitCategory);
-			GameLoadAndSave.WriteInt16(stream, this.TechnologyRequired);
+			GameLoadAndSave.WriteInt16(stream, (short)this.RequiredTechnology);
 		}
 	}
 }

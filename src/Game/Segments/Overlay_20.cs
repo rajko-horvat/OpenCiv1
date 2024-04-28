@@ -609,11 +609,9 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0667, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "!\n");
 
-			this.oCPU.AX.Word = 0x1e;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)));
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0xbb8);
 			// Instruction address 0x0000:0x067d, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcat(0xba06,
+				this.oParent.GameState.BuildingDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)) + 1].Name);
 
 			// Instruction address 0x0000:0x068d, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " destroyed.\n");
@@ -828,11 +826,9 @@ namespace OpenCiv1
 			this.oParent.GameState.Cities[cityID].BuildingFlags0 &= this.oCPU.AX.Word;
 			this.oParent.GameState.Cities[cityID].BuildingFlags1 &= this.oCPU.DX.Word;
 
-			this.oCPU.AX.Word = 0x1e;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)));
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0xbb8);
 			// Instruction address 0x0000:0x089a, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30b8), this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30b8),
+				this.oParent.GameState.BuildingDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)) + 1].Name);
 
 			// Instruction address 0x0000:0x08a6, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f(0x4fc3);

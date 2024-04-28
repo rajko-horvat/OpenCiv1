@@ -99,37 +99,6 @@ namespace OpenCiv1
 		public short[] TechnologyFirstDiscoveredBy = new short[72];
 		public short MaximumTechnologyCount = 0;
 
-		// Units
-		private UnitDefinition[] aUnitDefinitions = new UnitDefinition[]{
-			new UnitDefinition("Settlers", 127, 0, 1, 0, 0, 1, 4, 0, 0, 0, -1),	// 0
-			new UnitDefinition("Militia", 34, 0, 1, 0, 1, 1, 1, 0, 0, 2, -1),	// 1
-			new UnitDefinition("Phalanx", 34, 0, 1, 0, 1, 2, 2, 0, 0, 2, 17),	// 2
-			new UnitDefinition("Legion", 64, 0, 1, 0, 3, 1, 2, 0, 0, 1, 18),	// 3
-			new UnitDefinition("Musketeers", 64, 0, 1, 0, 2, 3, 3, 0, 0, 2, 34),	// 4
-			new UnitDefinition("Riflemen", 127, 0, 1, 0, 3, 5, 3, 0, 0, 2, 64),	// 5
-			new UnitDefinition("Cavalry", 64, 0, 2, 0, 2, 1, 2, 0, 0, 1, 31),	// 6
-			new UnitDefinition("Knights", 58, 0, 2, 0, 4, 2, 4, 0, 0, 1, 62),	// 7
-			new UnitDefinition("Catapult", 48, 0, 1, 0, 6, 1, 4, 0, 0, 1, 9),	// 8
-			new UnitDefinition("Cannon", 63, 0, 1, 0, 8, 1, 4, 0, 0, 1, 48),	// 9
-			new UnitDefinition("Chariot", 62, 0, 2, 0, 4, 1, 4, 0, 0, 1, 33),	// 10
-			new UnitDefinition("Armor", 127, 0, 3, 0, 10, 5, 8, 0, 0, 1, 58),	// 11
-			new UnitDefinition("Mech. Inf.", 127, 0, 3, 0, 6, 6, 5, 0, 0, 2, 65),	// 12
-			new UnitDefinition("Artillery", 127, 0, 2, 0, 12, 2, 6, 0, 0, 1, 63),	// 13
-			new UnitDefinition("Fighter", 127, 1, 10, 1, 4, 2, 6, 2, 0, 4, 38),	// 14
-			new UnitDefinition("Bomber", 127, 1, 8, 2, 12, 1, 12, 2, 0, 1, 39),	// 15
-			new UnitDefinition("Trireme", 8, 2, 3, 0, 1, 0, 4, 0, 2, 5, 7),	// 16
-			new UnitDefinition("Sail", 14, 2, 3, 0, 1, 1, 4, 0, 3, 5, 8),	// 17
-			new UnitDefinition("Frigate", 35, 2, 3, 0, 2, 2, 4, 0, 4, 5, 14),	// 18
-			new UnitDefinition("Ironclad", 37, 2, 4, 0, 4, 4, 6, 0, 0, 3, 23),	// 19
-			new UnitDefinition("Cruiser", 127, 2, 6, 0, 6, 6, 8, 3, 0, 3, 37),	// 20
-			new UnitDefinition("Battleship", 127, 2, 4, 0, 18, 12, 16, 3, 0, 3, 52),	// 21
-			new UnitDefinition("Submarine", 127, 2, 3, 0, 8, 2, 5, 3, 0, 3, 41),	// 22
-			new UnitDefinition("Carrier", 127, 2, 5, 0, 1, 12, 16, 3, 0, 3, 39),	// 23
-			new UnitDefinition("Transport", 127, 2, 4, 0, 0, 3, 5, 0, 8, 5, 35),	// 24
-			new UnitDefinition("Nuclear", 127, 1, 16, 1, 99, 0, 16, 0, 0, 1, 46),	// 25
-			new UnitDefinition("Diplomat", 127, 0, 2, 0, 0, 0, 3, 0, 0, 6, 22),	// 26
-			new UnitDefinition("Caravan", 127, 0, 1, 0, 0, 1, 5, 0, 0, 6, 24)}; // 27
-
 		// Map
 		public ushort[,] MapVisibility = new ushort[80, 50];
 		public short PollutedSquareCount = 0;
@@ -140,10 +109,10 @@ namespace OpenCiv1
 		public short ReplayDataLength = 0;
 		public byte[] ReplayData = new byte[4096];
 
-		// ?
+		// Unused GoTo data
 		public byte[] LandPathfinding = new byte[260];
 
-		// Spaceships
+		// Spaceship
 		public short SpaceshipFlags = 0;
 		public short AISpaceshipSuccessRate = 0;
 		private SpaceshipCell[] aSpaceshipCells = new SpaceshipCell[] {
@@ -170,6 +139,85 @@ namespace OpenCiv1
 			new SpaceshipCell(4, 3, 0), new SpaceshipCell(3, 3, 0), new SpaceshipCell(3, 6, 7),
 			new SpaceshipCell(4, 8, 0), new SpaceshipCell(3, 8, 0), new SpaceshipCell(4, 1, 8),
 			new SpaceshipCell(3, 4, 6), new SpaceshipCell(-1, -1, -1), new SpaceshipCell(0, 0, 0)};
+
+		// Unit definitions
+		private UnitDefinition[] aUnitDefinitions = new UnitDefinition[] {
+			new UnitDefinition("Settlers", 127, 0, 1, 0, 0, 1, 4, 0, 0, 0, TechnologyEnum.None),	// 0
+			new UnitDefinition("Militia", 34, 0, 1, 0, 1, 1, 1, 0, 0, 2, TechnologyEnum.None),	// 1
+			new UnitDefinition("Phalanx", 34, 0, 1, 0, 1, 2, 2, 0, 0, 2, TechnologyEnum.BronzeWorking),	// 2
+			new UnitDefinition("Legion", 64, 0, 1, 0, 3, 1, 2, 0, 0, 1, TechnologyEnum.IronWorking),	// 3
+			new UnitDefinition("Musketeers", 64, 0, 1, 0, 2, 3, 3, 0, 0, 2, TechnologyEnum.Gunpowder),	// 4
+			new UnitDefinition("Riflemen", 127, 0, 1, 0, 3, 5, 3, 0, 0, 2, TechnologyEnum.Conscription),	// 5
+			new UnitDefinition("Cavalry", 64, 0, 2, 0, 2, 1, 2, 0, 0, 1, TechnologyEnum.HorsebackRiding),	// 6
+			new UnitDefinition("Knights", 58, 0, 2, 0, 4, 2, 4, 0, 0, 1, TechnologyEnum.Chivalry),	// 7
+			new UnitDefinition("Catapult", 48, 0, 1, 0, 6, 1, 4, 0, 0, 1, TechnologyEnum.Mathematics),	// 8
+			new UnitDefinition("Cannon", 63, 0, 1, 0, 8, 1, 4, 0, 0, 1, TechnologyEnum.Metallurgy),	// 9
+			new UnitDefinition("Chariot", 62, 0, 2, 0, 4, 1, 4, 0, 0, 1, TechnologyEnum.TheWheel),	// 10
+			new UnitDefinition("Armor", 127, 0, 3, 0, 10, 5, 8, 0, 0, 1, TechnologyEnum.Automobile),	// 11
+			new UnitDefinition("Mech. Inf.", 127, 0, 3, 0, 6, 6, 5, 0, 0, 2, TechnologyEnum.LaborUnion),	// 12
+			new UnitDefinition("Artillery", 127, 0, 2, 0, 12, 2, 6, 0, 0, 1, TechnologyEnum.Robotics),	// 13
+			new UnitDefinition("Fighter", 127, 1, 10, 1, 4, 2, 6, 2, 0, 4, TechnologyEnum.Flight),	// 14
+			new UnitDefinition("Bomber", 127, 1, 8, 2, 12, 1, 12, 2, 0, 1, TechnologyEnum.AdvancedFlight),	// 15
+			new UnitDefinition("Trireme", 8, 2, 3, 0, 1, 0, 4, 0, 2, 5, TechnologyEnum.Mapmaking),	// 16
+			new UnitDefinition("Sail", 14, 2, 3, 0, 1, 1, 4, 0, 3, 5, TechnologyEnum.Navigation),	// 17
+			new UnitDefinition("Frigate", 35, 2, 3, 0, 2, 2, 4, 0, 4, 5, TechnologyEnum.Magnetism),	// 18
+			new UnitDefinition("Ironclad", 37, 2, 4, 0, 4, 4, 6, 0, 0, 3, TechnologyEnum.SteamEngine),	// 19
+			new UnitDefinition("Cruiser", 127, 2, 6, 0, 6, 6, 8, 3, 0, 3, TechnologyEnum.Combustion),	// 20
+			new UnitDefinition("Battleship", 127, 2, 4, 0, 18, 12, 16, 3, 0, 3, TechnologyEnum.Steel),	// 21
+			new UnitDefinition("Submarine", 127, 2, 3, 0, 8, 2, 5, 3, 0, 3, TechnologyEnum.MassProduction),	// 22
+			new UnitDefinition("Carrier", 127, 2, 5, 0, 1, 12, 16, 3, 0, 3, TechnologyEnum.AdvancedFlight),	// 23
+			new UnitDefinition("Transport", 127, 2, 4, 0, 0, 3, 5, 0, 8, 5, TechnologyEnum.Industrialization),	// 24
+			new UnitDefinition("Nuclear", 127, 1, 16, 1, 99, 0, 16, 0, 0, 1, TechnologyEnum.Rocketry),	// 25
+			new UnitDefinition("Diplomat", 127, 0, 2, 0, 0, 0, 3, 0, 0, 6, TechnologyEnum.Writing),	// 26
+			new UnitDefinition("Caravan", 127, 0, 1, 0, 0, 1, 5, 0, 0, 6, TechnologyEnum.Trade)}; // 27
+
+		private BuildingDefinition[] aBuildingDefinitions = new BuildingDefinition[]{
+			new BuildingDefinition(0, "NONE", 8, 0, TechnologyEnum.None),
+			new BuildingDefinition(1, "Palace", 20, 5, TechnologyEnum.Masonry),
+			new BuildingDefinition(2, "Barracks", 4, 0, TechnologyEnum.None),
+			new BuildingDefinition(3, "Granary", 6, 1, TechnologyEnum.Pottery),
+			new BuildingDefinition(4, "Temple", 4, 1, TechnologyEnum.CeremonialBurial),
+			new BuildingDefinition(5, "MarketPlace", 8, 1, TechnologyEnum.Currency),
+			new BuildingDefinition(6, "Library", 8, 1, TechnologyEnum.Writing),
+			new BuildingDefinition(7, "Courthouse", 8, 1, TechnologyEnum.CodeOfLaws),
+			new BuildingDefinition(8, "City Walls", 12, 2, TechnologyEnum.Masonry),
+			new BuildingDefinition(9, "Aqueduct", 12, 2, TechnologyEnum.Construction),
+			new BuildingDefinition(10, "Bank", 12, 3, TechnologyEnum.Banking),
+			new BuildingDefinition(11, "Cathedral", 16, 3, TechnologyEnum.Religion),
+			new BuildingDefinition(12, "University", 16, 3, TechnologyEnum.University),
+			new BuildingDefinition(13, "Mass Transit", 16, 4, TechnologyEnum.MassProduction),
+			new BuildingDefinition(14, "Colosseum", 10, 4, TechnologyEnum.Construction),
+			new BuildingDefinition(15, "Factory", 20, 4, TechnologyEnum.Industrialization),
+			new BuildingDefinition(16, "Mfg. Plant", 32, 6, TechnologyEnum.Robotics),
+			new BuildingDefinition(17, "SDI Defense", 20, 4, TechnologyEnum.Superconductor),
+			new BuildingDefinition(18, "Recycling Cntr.", 20, 2, TechnologyEnum.Recycling),
+			new BuildingDefinition(19, "Power Plant", 16, 4, TechnologyEnum.Refining),
+			new BuildingDefinition(20, "Hydro Plant", 24, 4, TechnologyEnum.Electronics),
+			new BuildingDefinition(21, "Nuclear Plant", 16, 2, TechnologyEnum.NuclearPower),
+			new BuildingDefinition(22, "SS Structural", 8, 0, TechnologyEnum.SpaceFlight),
+			new BuildingDefinition(23, "SS Component", 16, 0, TechnologyEnum.Plastics),
+			new BuildingDefinition(24, "SS Module", 32, 0, TechnologyEnum.Robotics),
+			new BuildingDefinition(25, "Pyramids", 30, 0, TechnologyEnum.Masonry),
+			new BuildingDefinition(26, "Hanging Gardens", 30, 0, TechnologyEnum.Pottery),
+			new BuildingDefinition(27, "Colossus", 20, 0, TechnologyEnum.BronzeWorking),
+			new BuildingDefinition(28, "Lighthouse", 20, 0, TechnologyEnum.Mapmaking),
+			new BuildingDefinition(29, "Great Library", 30, 0, TechnologyEnum.Literacy),
+			new BuildingDefinition(30, "Oracle", 30, 0, TechnologyEnum.Mysticism),
+			new BuildingDefinition(31, "Great Wall", 30, 0, TechnologyEnum.Masonry),
+			new BuildingDefinition(32, "Magellan's Expedition", 40, 0, TechnologyEnum.Navigation),
+			new BuildingDefinition(33, "Michelangelo's Chapel", 30, 0, TechnologyEnum.Religion),
+			new BuildingDefinition(34, "Copernicus' Observatory", 30, 0, TechnologyEnum.Astronomy),
+			new BuildingDefinition(35, "Shakespeare's Theatre", 40, 0, TechnologyEnum.Medicine),
+			new BuildingDefinition(36, "Isaac Newton's College", 40, 0, TechnologyEnum.TheoryOfGravity),
+			new BuildingDefinition(37, "J.S.Bach's Cathedral", 40, 0, TechnologyEnum.Religion),
+			new BuildingDefinition(38, "Darwin's Voyage", 30, 0, TechnologyEnum.Railroad),
+			new BuildingDefinition(39, "Hoover Dam", 60, 0, TechnologyEnum.Electronics),
+			new BuildingDefinition(40, "Women's Suffrage", 60, 0, TechnologyEnum.Industrialization),
+			new BuildingDefinition(41, "Manhattan Project", 60, 0, TechnologyEnum.NuclearFission),
+			new BuildingDefinition(42, "United Nations", 60, 0, TechnologyEnum.Communism),
+			new BuildingDefinition(43, "Apollo Program", 60, 0, TechnologyEnum.SpaceFlight),
+			new BuildingDefinition(44, "SETI Program", 60, 0, TechnologyEnum.Computers),
+			new BuildingDefinition(45, "Cure for Cancer", 60, 0, TechnologyEnum.GeneticEngineering) };
 
 		public GameState()
 		{
@@ -240,15 +288,19 @@ namespace OpenCiv1
 			}
 		}
 
-		public UnitDefinition[] UnitDefinitions
-		{
-			get => this.aUnitDefinitions;
-		}
-
 		public SpaceshipCell[] SpaceshipCells
 		{
 			get => this.aSpaceshipCells;
 		}
 
+		public UnitDefinition[] UnitDefinitions
+		{
+			get => this.aUnitDefinitions;
+		}
+
+		public BuildingDefinition[] BuildingDefinitions
+		{
+			get => this.aBuildingDefinitions;
+		}
 	}
 }

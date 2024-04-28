@@ -35,8 +35,10 @@ namespace OpenCiv1
 		public ushort Var_2f9e_Unknown = 0xffff;
 
 		// 0x652e - after this offset the default values are set to 0
-
+		public ushort Var_6c98 = 0;
+		public ushort Var_6c9a = 0;
 		public ushort[] Var_70da_Arr = new ushort[4];
+		public ushort Var_b1e8 = 0;
 		public ushort Var_b882 = 0;
 		public ushort Var_d2f6 = 0;
 		public short Var_d4cc_XPos = 0;

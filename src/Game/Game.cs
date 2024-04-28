@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Avalonia.Controls.Templates;
 using IRB.VirtualCPU;
 using OpenCiv1.GPU;
 
@@ -1056,7 +1057,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5903, 0x616);
 
 			// Environment block is not used
-			// Argument block in not used
+			// Argument block is not used
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5922, 0);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5920, 0);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x591e, 0);
@@ -1069,12 +1070,18 @@ namespace OpenCiv1
 			/*this.oCPU.ES.Word = 0x3b01; // segment
 			StreamWriter writer = new StreamWriter("Data.cs");
 			writer.Write("{");
-			for (int i = 0; i < 49; i++)
+			for (int i = 0; i < 46; i++)
 			{
 				if (i > 0)
-					writer.Write(", ");
+					writer.WriteLine(", ");
 
-				writer.Write($"new GPoint({this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x1882 + i * 2))}, {this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x18e4 + i * 2))})");
+				ushort dataPtr = (ushort)(0xb9a + (i * 30));
+				writer.Write($"new BuildingDefinition({i}, " +
+					$"\"{this.oCPU.ReadString(this.oCPU.DS.Word, (ushort)(dataPtr))}\", " +
+					$"{this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(dataPtr + 24))}, " +
+					$"{this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(dataPtr + 26))}, " +
+					$"TechnologyEnum.{(TechnologyEnum)this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(dataPtr + 28))}" +
+					$")");
 			}
 			writer.Write("}");
 			writer.Close();

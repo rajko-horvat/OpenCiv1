@@ -218,7 +218,7 @@ namespace OpenCiv1
 			goto L02cd;
 
 		L0207:
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6c9a), 0x1);
+			this.oCPU.CMPWord(this.oParent.Var_6c9a, 0x1);
 			if (this.oCPU.Flags.E) goto L0211;
 			goto L02cd;
 

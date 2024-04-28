@@ -930,6 +930,16 @@ namespace OpenCiv1
 			return (ushort)sSource.Length;
 		}
 
+		public short stricmp(string string1, ushort string2Ptr)
+		{
+			string sS2 = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
+
+			short sRetVal = (short)string.Compare(string1, sS2, StringComparison.CurrentCultureIgnoreCase);
+
+			this.oCPU.AX.Word = (ushort)sRetVal; // preserve compatibility
+			return sRetVal;
+		}
+
 		public short stricmp(ushort string1Ptr, ushort string2Ptr)
 		{
 			string sS1 = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
