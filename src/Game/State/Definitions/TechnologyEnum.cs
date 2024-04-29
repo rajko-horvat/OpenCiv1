@@ -75,6 +75,12 @@ namespace OpenCiv1
 		Robotics = 63,
 		Conscription = 64,
 		LaborUnion = 65,
-		FusionPower = 66
+		FusionPower = 66,
+		FutureTechnology1 = 67,
+		FutureTechnology2 = 68,
+		FutureTechnology3 = 69,
+		FutureTechnology4 = 70,
+		FutureTechnology5 = 71,
+		NewFutureTechnology = 127
 	}
 }

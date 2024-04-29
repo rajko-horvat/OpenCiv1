@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls.Templates;
+using IRB.Collections.Generic;
 using IRB.VirtualCPU;
 using OpenCiv1.GPU;
 
@@ -982,6 +983,9 @@ namespace OpenCiv1
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3772, 0x1f88, 0x4b0, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3772, 0x253c, 0x1c0, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3772, 0x26fc, 0x1000, CPUMemoryFlagsEnum.AccessNotAllowed));
+			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x4da, 1584, CPUMemoryFlagsEnum.AccessNotAllowed));
+			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb9a, 1380, CPUMemoryFlagsEnum.AccessNotAllowed));
+			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x112a, 952, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x1882, 96, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x18e4, 96, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x19be, 2, CPUMemoryFlagsEnum.AccessNotAllowed));
@@ -1070,17 +1074,17 @@ namespace OpenCiv1
 			/*this.oCPU.ES.Word = 0x3b01; // segment
 			StreamWriter writer = new StreamWriter("Data.cs");
 			writer.Write("{");
-			for (int i = 0; i < 46; i++)
+			for (int i = 0; i < 72; i++)
 			{
 				if (i > 0)
 					writer.WriteLine(", ");
 
-				ushort dataPtr = (ushort)(0xb9a + (i * 30));
-				writer.Write($"new BuildingDefinition({i}, " +
+				ushort dataPtr = (ushort)(0x04da + (i * 22));
+
+				writer.Write($"new TechnologyDefinition(TechnologyEnum.{(TechnologyEnum)i}, " +
 					$"\"{this.oCPU.ReadString(this.oCPU.DS.Word, (ushort)(dataPtr))}\", " +
-					$"{this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(dataPtr + 24))}, " +
-					$"{this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(dataPtr + 26))}, " +
-					$"TechnologyEnum.{(TechnologyEnum)this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(dataPtr + 28))}" +
+					$"TechnologyEnum.{(TechnologyEnum)this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(dataPtr + 20))}, " +
+					$"TechnologyEnum.{(TechnologyEnum)this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(dataPtr + 21))}" +
 					$")");
 			}
 			writer.Write("}");

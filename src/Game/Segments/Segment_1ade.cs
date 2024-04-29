@@ -2309,14 +2309,19 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x16;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
+
 			// Instruction address 0x1ade:0x15cd, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, (short)this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x4ee)));
+			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, 
+				(int)this.oParent.GameState.TechnologyDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].RequiresTechnology1);
+
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L162c;
 
 			// Instruction address 0x1ade:0x15e1, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, (short)this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x4ef)));
+			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, 
+				(int)this.oParent.GameState.TechnologyDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].RequiresTechnology2);
+
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) 
 				goto L162c;
@@ -2482,11 +2487,9 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x17d1, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\ndiscover the secret\nof ");
 
-			this.oCPU.AX.Word = 0x16;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].CurrentResearchID);
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x4da);
 			// Instruction address 0x1ade:0x17e8, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcat(0xba06, 
+				this.oParent.GameState.TechnologyDefinitions[this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].CurrentResearchID].Name);
 
 			if (this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].CurrentResearchID != 71) goto L182c;
 
@@ -2643,11 +2646,9 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x1a20, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Science Advisor:\nI recommend we\ndevelop ");
 
-			this.oCPU.AX.Word = 0x16;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)));
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x4da);
 			// Instruction address 0x1ade:0x1a36, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcat(0xba06, 
+				this.oParent.GameState.TechnologyDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14))].Name);
 
 			// Instruction address 0x1ade:0x1a46, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ".\n");
@@ -2765,8 +2766,11 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x16;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
+
 			// Instruction address 0x1ade:0x1bb5, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x4ee)));
+			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, 
+				(int)this.oParent.GameState.TechnologyDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].RequiresTechnology1);
+
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 				goto L1bc2;
@@ -2775,7 +2779,9 @@ namespace OpenCiv1
 
 		L1bc2:
 			// Instruction address 0x1ade:0x1bcc, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x4ef)));
+			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID,
+				(int)this.oParent.GameState.TechnologyDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].RequiresTechnology2);
+
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L1c46;
@@ -2803,11 +2809,9 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L1c46;
 
 		L1c12:
-			this.oCPU.AX.Word = 0x16;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46)));
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x4da);
 			// Instruction address 0x1ade:0x1c20, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcat(0xba06,
+				this.oParent.GameState.TechnologyDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].Name);
 
 			// Instruction address 0x1ade:0x1c30, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\n ");
@@ -2996,11 +3000,8 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.strcat(0xba06, " acquire\n");
 			}
 
-			this.oCPU.AX.Word = 0x16;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)technologyID);
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x4da);
 			// Instruction address 0x1ade:0x1e17, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.GameState.TechnologyDefinitions[technologyID].Name);
 
 			if (playerID == playerID1) goto L1e5c;
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
@@ -3145,11 +3146,9 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x1fc4, size: 5
 			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30b8), this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
 
-			this.oCPU.AX.Word = 0x16;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)technologyID);
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x4da);
 			// Instruction address 0x1ade:0x1fda, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30be), this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30be),
+				this.oParent.GameState.TechnologyDefinitions[technologyID].Name);
 
 			// Instruction address 0x1ade:0x1fe6, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f(0x240e);
@@ -3266,11 +3265,8 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x212c, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Development of ");
 
-			this.oCPU.AX.Word = 0x16;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)technologyID);
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x4da);
 			// Instruction address 0x1ade:0x2142, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.GameState.TechnologyDefinitions[technologyID].Name);
 
 			// Instruction address 0x1ade:0x2152, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\nmakes existing Barracks\nobsolete.\n");
@@ -3309,11 +3305,8 @@ namespace OpenCiv1
 				this.oParent.GameState.HumanPlayerID)
 				goto L2228;
 
-			this.oCPU.AX.Word = 0x16;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)technologyID);
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x4da);
 			// Instruction address 0x1ade:0x21de, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.TechnologyDefinitions[technologyID].Name);
 
 			// Instruction address 0x1ade:0x21ee, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " cancels\nthe effect of\n");
