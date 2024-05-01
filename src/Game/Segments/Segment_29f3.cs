@@ -603,11 +603,7 @@ namespace OpenCiv1
 
 		L04ec:
 			// Instruction address 0x29f3:0x050a, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-				0x50, 0, 0xf0, 0xc8,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
-				0x50, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 80, 0, 240, 200, this.oParent.Var_19d4_Rectangle, 80, 0);
 
 			this.oCPU.AX.Word = 0x600;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)playerID1);
@@ -699,23 +695,17 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.ADDWord(this.oCPU.DI.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
 
 			// Instruction address 0x29f3:0x061e, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-				(short)this.oCPU.SI.Word + 1,
-				(short)this.oCPU.DI.Word + 1,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word,
-					(ushort)(((this.oParent.GameState.Players[playerID1].Units[unitID1].TypeID +
+			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+				(short)this.oCPU.SI.Word + 1, (short)this.oCPU.DI.Word + 1,
+				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(((this.oParent.GameState.Players[playerID1].Units[unitID1].TypeID +
 					(playerID1 << 5) + 0x40) << 1) + 0xd4ce)));
 
 			// Instruction address 0x29f3:0x062a, size: 5
 			this.oParent.Segment_1182.F0_1182_0134_WaitTime(2);
 
 			// Instruction address 0x29f3:0x0643, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
-				this.oCPU.SI.Word, this.oCPU.DI.Word, 16, 16,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-				this.oCPU.SI.Word, this.oCPU.DI.Word);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle,
+				(short)this.oCPU.SI.Word, (short)this.oCPU.DI.Word, 16, 16, this.oParent.Var_aa_Rectangle, (short)this.oCPU.SI.Word, (short)this.oCPU.DI.Word);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c))));
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)), 0xa);
@@ -746,11 +736,7 @@ namespace OpenCiv1
 				this.oParent.GameState.Players[playerID2].Units[unitID2].Position.Y);
 
 			// Instruction address 0x29f3:0x06b4, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-				0, 0, 0x100, 0xc8,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
-				0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 256, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), 0x0);
 
@@ -766,10 +752,8 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.ADDWord(this.oCPU.DI.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
 
 			// Instruction address 0x29f3:0x06e6, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-				(short)this.oCPU.SI.Word + 1,
-				(short)this.oCPU.DI.Word + 1,
+			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+				(short)this.oCPU.SI.Word + 1, (short)this.oCPU.DI.Word + 1,
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word,
 					(ushort)(((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)) + 0x20) << 1) + 0xd4ce)));
 
@@ -777,11 +761,8 @@ namespace OpenCiv1
 			this.oParent.Segment_1182.F0_1182_0134_WaitTime(4);
 
 			// Instruction address 0x29f3:0x070b, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
-				this.oCPU.SI.Word, this.oCPU.DI.Word, 16, 16,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-				this.oCPU.SI.Word, this.oCPU.DI.Word);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle,
+				(short)this.oCPU.SI.Word, (short)this.oCPU.DI.Word, 16, 16, this.oParent.Var_aa_Rectangle, (short)this.oCPU.SI.Word, (short)this.oCPU.DI.Word);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c))));
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)), 0x8);

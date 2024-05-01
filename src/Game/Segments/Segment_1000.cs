@@ -1031,7 +1031,7 @@ namespace OpenCiv1
 		/// ?
 		/// </summary>
 		/// <param name="screenID"></param>
-		public void F0_1000_0846(ushort screenID)
+		public void F0_1000_0846(int screenID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1000_0846({screenID})");
 
@@ -1054,12 +1054,12 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="bitmapPtr"></param>
-		public void F0_1000_0797_DrawBitmapToScreen(ushort rectPtr, int xPos, int yPos, ushort bitmapPtr)
+		public void F0_1000_0797_DrawBitmapToScreen(CRectangle rect, int xPos, int yPos, ushort bitmapPtr)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_0797_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
+			this.oCPU.Log.EnterBlock($"F0_1000_0797_DrawBitmapToScreen({rect}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 
 			// function body
-			this.oParent.Graphics.F0_VGA_0c3e_DrawBitmapToScreen(rectPtr, xPos, yPos, bitmapPtr);
+			this.oParent.Graphics.F0_VGA_0c3e_DrawBitmapToScreen(rect, xPos, yPos, bitmapPtr);
 
 			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
 			{
@@ -1076,18 +1076,18 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="bitmapPtr"></param>
-		public void F0_1000_084d_DrawBitmapToScreen(ushort rectPtr, int xPos, int yPos, ushort bitmapPtr)
+		public void F0_1000_084d_DrawBitmapToScreen(CRectangle rect, int xPos, int yPos, ushort bitmapPtr)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_084d_DrawBitmapToScreen(0x{rectPtr:x4}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
+			this.oCPU.Log.EnterBlock($"F0_1000_084d_DrawBitmapToScreen({rect}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 
 			// function body
-			this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(rectPtr, xPos, yPos, bitmapPtr);
+			this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(rect, xPos, yPos, bitmapPtr);
 
-			/*if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
+			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
 			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0x1);
+				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0);
 
-			L075e:
+			/*L075e:
 				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, this.oCPU.DECByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5402)));
 				if (this.oCPU.Flags.E) goto L0769;
 
@@ -1112,8 +1112,8 @@ namespace OpenCiv1
 				goto L075e;
 
 			L0769:
-				this.oCPU.AX.Word |= 0;
-			}*/
+				this.oCPU.AX.Word |= 0;*/
+			}
 
 			this.oCPU.Log.ExitBlock("F0_1000_084d_DrawBitmapToScreen");
 		}
@@ -1211,16 +1211,14 @@ namespace OpenCiv1
 		/// <param name="width"></param>
 		/// <param name="height"></param>
 		/// <param name="mode"></param>
-		public void F0_1000_0bfa_FillRectangle(ushort rectPtr, int xPos, int yPos, int width, int height, ushort mode)
+		public void F0_1000_0bfa_FillRectangle(CRectangle rect, int xPos, int yPos, int width, int height, ushort mode)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_0bfa_FillRectangle(0x{rectPtr:4}, {xPos}, {yPos}, {width}, {height}, 0x{mode:4})");
+			this.oCPU.Log.EnterBlock($"F0_1000_0bfa_FillRectangle({rect}, {xPos}, {yPos}, {width}, {height}, 0x{mode:4})");
 
 			// function body
-			CivRectangle rect = new CivRectangle(this.oCPU, CPU.ToLinearAddress(this.oCPU.DS.Word, rectPtr));
-
 			if (width > 0 && height > 0)
 			{
-				GRectangle rect1 = new GRectangle(rect.X + xPos, rect.Y + yPos, width, height);
+				GRectangle rect1 = new GRectangle(rect.Left + xPos, rect.Top + yPos, width, height);
 				this.oParent.Graphics.F0_VGA_040a_FillRectangle(rect.ScreenID, rect1, (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
 			}
 
@@ -1236,7 +1234,7 @@ namespace OpenCiv1
 		/// <param name="mode"></param>
 		public void F0_1000_104f_SetPixel(int xPos, int yPos, ushort mode)
 		{
-			CivRectangle rect = new CivRectangle(this.oParent.CPU, CPU.ToLinearAddress(this.oParent.CPU.DS.Word, this.oParent.CPU.ReadUInt16(this.oParent.CPU.DS.Word, 0xaa)));
+			CRectangle rect = this.oParent.Var_aa_Rectangle;
 
 			this.oCPU.Log.EnterBlock($"F0_1000_104f_SetPixel({rect.ScreenID}, {xPos}, {yPos}, 0x{mode:x4})");
 
@@ -1244,7 +1242,7 @@ namespace OpenCiv1
 			if (xPos >= 0 && xPos <= rect.Width && yPos >= 0 && yPos <= rect.Height)
 			{
 				// Instruction address 0x1000:0x1080, size: 5
-				this.oParent.Graphics.F0_VGA_0550_SetPixel(rect.ScreenID, rect.X + xPos, rect.Y + yPos, (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(rect.ScreenID, rect.Left + xPos, rect.Top + yPos, (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
 			}
 
 			// Far return
@@ -1260,7 +1258,7 @@ namespace OpenCiv1
 		/// <param name="mode"></param>
 		public void F0_1000_104f_SetPixel(ushort screenID, int xPos, int yPos, ushort mode)
 		{
-			CivRectangle rect = new CivRectangle(this.oParent.CPU, CPU.ToLinearAddress(this.oParent.CPU.DS.Word, this.oParent.CPU.ReadUInt16(this.oParent.CPU.DS.Word, 0xaa)));
+			CRectangle rect = this.oParent.Var_aa_Rectangle;
 
 			this.oCPU.Log.EnterBlock($"F0_1000_104f_SetPixel({screenID}, {xPos}, {yPos}, 0x{mode:x4})");
 
@@ -1268,7 +1266,7 @@ namespace OpenCiv1
 			if (xPos >= 0 && xPos <= rect.Width && yPos >= 0 && yPos <= rect.Height)
 			{
 				// Instruction address 0x1000:0x1080, size: 5
-				this.oParent.Graphics.F0_VGA_0550_SetPixel(screenID, rect.X + xPos, rect.Y + yPos, (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(screenID, rect.Left + xPos, rect.Top + yPos, (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
 			}
 
 			// Far return

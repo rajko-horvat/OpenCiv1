@@ -19,12 +19,12 @@ namespace OpenCiv1
 		/// <param name="stringPtr"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <param name="mode"></param>
-		public void F0_1182_002a_DrawString(ushort stringPtr, int xPos, int yPos, ushort mode)
+		/// <param name="frontColor"></param>
+		public void F0_1182_002a_DrawString(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
 			string text = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
-			F0_1182_002a_DrawString(text, xPos, yPos, mode);
+			F0_1182_002a_DrawString(text, xPos, yPos, frontColor);
 		}
 
 		/// <summary>
@@ -33,10 +33,10 @@ namespace OpenCiv1
 		/// <param name="text"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <param name="mode"></param>
-		public void F0_1182_002a_DrawString(string text, int xPos, int yPos, ushort mode)
+		/// <param name="frontColor"></param>
+		public void F0_1182_002a_DrawString(string text, int xPos, int yPos, byte frontColor)
 		{
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0xc), mode);
+			this.oParent.Var_aa_Rectangle.FrontColor = frontColor;
 
 			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6b8c) != 0x0)
 			{
@@ -44,7 +44,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x1182:0x0053, size: 5
-			this.oParent.Graphics.F0_VGA_11d7_DrawString(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), xPos, yPos, text);
+			this.oParent.Graphics.F0_VGA_11d7_DrawString(this.oParent.Var_aa_Rectangle, xPos, yPos, text);
 		}
 
 		/// <summary>
@@ -53,12 +53,12 @@ namespace OpenCiv1
 		/// <param name="stringPtr"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <param name="mode"></param>
-		public void F0_1182_005c_DrawStringToScreen0(ushort stringPtr, int xPos, int yPos, ushort mode)
+		/// <param name="frontColor"></param>
+		public void F0_1182_005c_DrawStringToScreen0(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
 			string text = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
-			F0_1182_005c_DrawStringToScreen0(text, xPos, yPos, mode);
+			F0_1182_005c_DrawStringToScreen0(text, xPos, yPos, frontColor);
 		}
 
 		/// <summary>
@@ -67,14 +67,14 @@ namespace OpenCiv1
 		/// <param name="text"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <param name="mode"></param>
-		public void F0_1182_005c_DrawStringToScreen0(string text, int xPos, int yPos, ushort mode)
+		/// <param name="frontColor"></param>
+		public void F0_1182_005c_DrawStringToScreen0(string text, int xPos, int yPos, byte frontColor)
 		{
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0xa), 0x0);
+			this.oParent.Var_aa_Rectangle.Flags = 0;
 
-			F0_1182_002a_DrawString(text, xPos, yPos, mode);
+			F0_1182_002a_DrawString(text, xPos, yPos, frontColor);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0xa), 0x1);
+			this.oParent.Var_aa_Rectangle.Flags = 1;
 		}
 
 		/// <summary>
@@ -83,11 +83,11 @@ namespace OpenCiv1
 		/// <param name="stringPtr"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <param name="mode"></param>
-		public void F0_1182_0086_DrawStringWithShadow(ushort stringPtr, int xPos, int yPos, ushort mode)
+		/// <param name="frontColor"></param>
+		public void F0_1182_0086_DrawStringWithShadow(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
 			F0_1182_005c_DrawStringToScreen0(stringPtr, xPos, yPos + 1, 0);
-			F0_1182_005c_DrawStringToScreen0(stringPtr, xPos, yPos, mode);
+			F0_1182_005c_DrawStringToScreen0(stringPtr, xPos, yPos, frontColor);
 		}
 
 		/// <summary>
@@ -96,11 +96,11 @@ namespace OpenCiv1
 		/// <param name="text"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <param name="mode"></param>
-		public void F0_1182_0086_DrawStringWithShadow(string text, int xPos, int yPos, ushort mode)
+		/// <param name="frontColor"></param>
+		public void F0_1182_0086_DrawStringWithShadow(string text, int xPos, int yPos, byte frontColor)
 		{
 			F0_1182_005c_DrawStringToScreen0(text, xPos, yPos + 1, 0);
-			F0_1182_005c_DrawStringToScreen0(text, xPos, yPos, mode);
+			F0_1182_005c_DrawStringToScreen0(text, xPos, yPos, frontColor);
 		}
 
 		/// <summary>
@@ -109,12 +109,12 @@ namespace OpenCiv1
 		/// <param name="stringPtr"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <param name="mode"></param>
-		public void F0_1182_00b3_DrawCenteredStringToScreen0(ushort stringPtr, int xPos, int yPos, ushort mode)
+		/// <param name="frontColor"></param>
+		public void F0_1182_00b3_DrawCenteredStringToScreen0(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
 			string text = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
-			F0_1182_00b3_DrawCenteredStringToScreen0(text, xPos, yPos, mode);
+			F0_1182_00b3_DrawCenteredStringToScreen0(text, xPos, yPos, frontColor);
 		}
 
 		/// <summary>
@@ -123,16 +123,16 @@ namespace OpenCiv1
 		/// <param name="text"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <param name="mode"></param>
-		public void F0_1182_00b3_DrawCenteredStringToScreen0(string text, int xPos, int yPos, ushort mode)
+		/// <param name="frontColor"></param>
+		public void F0_1182_00b3_DrawCenteredStringToScreen0(string text, int xPos, int yPos, byte frontColor)
 		{
 			xPos -= F0_1182_00ef_GetStringWidth(text) / 2;
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0xa), 0x0);
+			this.oParent.Var_aa_Rectangle.Flags = 0;
 
-			F0_1182_002a_DrawString(text, xPos, yPos, mode);
+			F0_1182_002a_DrawString(text, xPos, yPos, frontColor);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0xa), 0x1);
+			this.oParent.Var_aa_Rectangle.Flags = 1;
 		}
 
 		/// <summary>
@@ -141,12 +141,12 @@ namespace OpenCiv1
 		/// <param name="stringPtr"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <param name="mode"></param>
-		public void F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(ushort stringPtr, int xPos, int yPos, ushort mode)
+		/// <param name="frontColor"></param>
+		public void F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
 			string text = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
-			F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(text, xPos, yPos, mode);
+			F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(text, xPos, yPos, frontColor);
 		}
 
 		/// <summary>
@@ -155,17 +155,17 @@ namespace OpenCiv1
 		/// <param name="text"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <param name="mode"></param>
-		public void F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(string text, int xPos, int yPos, ushort mode)
+		/// <param name="frontColor"></param>
+		public void F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(string text, int xPos, int yPos, byte frontColor)
 		{
 			xPos -= F0_1182_00ef_GetStringWidth(text) / 2;
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0xa), 0x0);
+			this.oParent.Var_aa_Rectangle.Flags = 0;
 
 			F0_1182_002a_DrawString(text, xPos + 1, yPos + 1, 0);
-			F0_1182_002a_DrawString(text, xPos, yPos, mode);
+			F0_1182_002a_DrawString(text, xPos, yPos, frontColor);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0xa), 0x1);
+			this.oParent.Var_aa_Rectangle.Flags = 1;
 		}
 
 		/// <summary>
@@ -187,11 +187,11 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public int F0_1182_00ef_GetStringWidth(string text)
 		{
-			ushort usFontID = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa) + 0x10));
+			int width = this.oParent.Graphics.GetDrawStringSize(this.oParent.Var_aa_Rectangle.FontID, text).Width;
 
-			this.oCPU.AX.Word = (ushort)this.oParent.Graphics.GetDrawStringSize(usFontID, text).Width;
+			this.oCPU.AX.Word = (ushort)((short)width);
 
-			return this.oParent.Graphics.GetDrawStringSize(usFontID, text).Width;
+			return width;
 		}
 
 		/// <summary>

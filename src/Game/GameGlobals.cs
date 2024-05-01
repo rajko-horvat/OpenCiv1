@@ -31,6 +31,13 @@ namespace OpenCiv1
 			new GPoint(-3, -2), new GPoint(-2, -3), new GPoint(-1, -3),
 			new GPoint(3, 3), new GPoint(3, -3), new GPoint(-3, 3), 
 			new GPoint(-3, -3)};
+		
+		public CRectangle Var_aa_Rectangle = new CRectangle(0, 0, 0, 319, 199, 0x1, 15, 0, 4, 0, 0);
+		public CRectangle Var_19d4_Rectangle = new CRectangle(1, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
+		public CRectangle Var_19e8_Rectangle = new CRectangle(2, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
+
+		// !!! This should not be used at all as screen 3 doesn't exist
+		public CRectangle Var_19fc_Rectangle = new CRectangle(3, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 
 		public ushort Var_2f9e_Unknown = 0xffff;
 

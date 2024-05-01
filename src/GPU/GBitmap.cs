@@ -5,14 +5,6 @@ using OpenCiv1.Compression;
 
 namespace OpenCiv1.GPU
 {
-	public enum PixelWriteModeEnum
-	{
-		Normal = 0,
-		And = 1,
-		Or = 2,
-		Xor = 3
-	}
-
 	public class GBitmap
 	{
 		private int iWidth;

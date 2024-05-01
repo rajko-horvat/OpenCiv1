@@ -557,8 +557,15 @@ namespace OpenCiv1
 					goto L0776;
 
 				L076a:
-					this.oCPU.AX.Low = 
-						this.oParent.GameState.LandPathfinding[(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)) * 13) + this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c))];
+					if ((this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)) * 13) + this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)) < this.oParent.GameState.LandPathfinding.Length)
+					{
+						this.oCPU.AX.Low =
+							this.oParent.GameState.LandPathfinding[(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)) * 13) + this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c))];
+					}
+					else
+					{
+						this.oCPU.AX.Low = 0;
+					}
 
 				L0776:
 					this.oCPU.CBW(this.oCPU.AX);

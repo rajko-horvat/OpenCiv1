@@ -451,11 +451,8 @@ namespace OpenCiv1
 						int iCellWidth = Math.Min(iWidthTemp, 32);
 
 						// Instruction address 0x2dc4:0x0435, size: 5
-						this.oParent.Graphics.F0_VGA_07d8_DrawImage(
-							this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19e8),
-							288, 120, iCellWidth, iCellHeight,
-							this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-							iXPosTemp, iYPosTemp);
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 
+							288, 120, iCellWidth, iCellHeight, this.oParent.Var_aa_Rectangle, iXPosTemp, iYPosTemp);
 
 						iXPosTemp += iCellWidth;
 						iWidthTemp -= iCellWidth;
@@ -468,8 +465,7 @@ namespace OpenCiv1
 			else
 			{
 				// Instruction address 0x2dc4:0x0471, size: 5
-				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-					xPos, yPos, width, height, 7);
+				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos, yPos, width, height, 7);
 			}		
 		}
 

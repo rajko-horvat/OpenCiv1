@@ -263,13 +263,12 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0310, size: 5
 			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, this.oCPU.BX.Word, 0x2);
+			this.oParent.Var_aa_Rectangle.ScreenID = 2;
 
 			this.oParent.GameInitAndIntro.F7_0000_1440(0);
 
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, this.oCPU.BX.Word, 0x0);
+			this.oParent.Var_aa_Rectangle.ScreenID = 0;
+
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6820, 0x1);
 			goto L0340;
 
@@ -324,11 +323,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0378, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-				0, 0, 0x140, 0xc8,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
-				0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
 			F11_0000_05f8();
 
@@ -406,7 +401,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, " Game NOT saved.\n");
 
 			// Instruction address 0x0000:0x0470, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 64, 127, 192, 34, 12);
+			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 64, 127, 192, 34, 12);
 
 		L0478:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681c), 0xd);
@@ -435,11 +430,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x04d9, size: 5
 			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19d4),
-				0, 0, 0x140, 0xc8,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa),
-				0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x04e6, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
@@ -545,7 +536,7 @@ namespace OpenCiv1
 
 		L0615:
 			// Instruction address 0x0000:0x0629, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 0, 0, 320, 200, 15);
+			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 15);
 
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681a), 0x0);
 			if (this.oCPU.Flags.NE) goto L063d;
@@ -646,7 +637,7 @@ namespace OpenCiv1
 
 		L0725:
 			// Instruction address 0x0000:0x073d, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 80, 88, 160, 24, 15);
+			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 80, 88, 160, 24, 15);
 
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0xd);
 			if (this.oCPU.Flags.E) goto L0754;
@@ -656,7 +647,7 @@ namespace OpenCiv1
 
 		L0754:
 			// Instruction address 0x0000:0x0769, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xaa), 8, 8, 304, 184, 15);
+			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 8, 8, 304, 184, 15);
 
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x4384), 0xffff);
 			if (this.oCPU.Flags.E) goto L07c7;
