@@ -45,8 +45,11 @@ namespace OpenCiv1
 		public ushort Var_6c98 = 0;
 		public ushort Var_6c9a = 0;
 		public ushort[] Var_70da_Arr = new ushort[4];
+		public ushort Var_70e2 = 0;
+		public ushort Var_70e6 = 0;
 		public ushort Var_b1e8 = 0;
 		public ushort Var_b882 = 0;
+		public ushort Var_d2e0 = 0;
 		public ushort Var_d2f6 = 0;
 		public short Var_d4cc_XPos = 0;
 		public short Var_d75e_YPos = 0;
@@ -55,6 +58,7 @@ namespace OpenCiv1
 		public ushort Var_db3c = 0;
 		public ushort Var_db3e = 0;
 		public ushort Var_deb8 = 0;
+		public ushort Var_e17a = 0;
 		public ushort Var_e3c6 = 0;
 		public ushort Var_e8b8 = 0;
 		#endregion
