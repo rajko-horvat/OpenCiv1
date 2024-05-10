@@ -50,7 +50,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0x0);
 
 		L0064:
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L0070;
 			this.oCPU.AX.Word = 0x1f40;
 			goto L0073;
@@ -83,7 +83,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 64, 49, 1);
 
 		L00ee:
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L0102;
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), 0x23be);
 			if (this.oCPU.Flags.GE) goto L0102;
@@ -511,7 +511,7 @@ namespace OpenCiv1
 			// Instruction address 0x11a8:0x05a0, size: 3
 			F0_11a8_02a4(7, 1);
 
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L05be;
 
 			// Instruction address 0x11a8:0x05b6, size: 5
@@ -691,7 +691,7 @@ namespace OpenCiv1
 			this.oParent.StartGameMenu.F5_0000_1455();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f98, 0x1);
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L0848;
 
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6b32), 0x0);

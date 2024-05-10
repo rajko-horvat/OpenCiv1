@@ -40,6 +40,7 @@ namespace OpenCiv1
 			// function body
 			if (this.oTimer == null)
 			{
+				this.oCPU.EnableTimer = true;
 				this.oTimer = new Timer(F0_1000_01a7_Timer, null, 10, 10);
 			}
 
@@ -601,15 +602,13 @@ namespace OpenCiv1
 		/// Sound function
 		/// </summary>
 		/// <returns></returns>
-		public ushort F0_1000_0a39_CloseSound()
+		public void F0_1000_0a39_CloseSound()
 		{
 			//this.oCPU.Log.EnterBlock("Sound overlay 'F0_1000_0a39_CloseSound'");
 
 			// Instruction address 0x1000:0x0a39, size: 5
-			this.oCPU.AX.Word = this.oParent.Sound.F0_0000_006a_CloseSound();
+			this.oParent.Sound.F0_0000_006a_CloseSound();
 			//this.oCPU.Log.ExitBlock("Sound overlay 'F0_1000_0a39_CloseSound'");
-
-			return this.oCPU.AX.Word;
 		}
 
 		/// <summary>

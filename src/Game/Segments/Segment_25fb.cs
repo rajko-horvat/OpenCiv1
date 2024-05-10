@@ -872,7 +872,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Low = this.oCPU.ADDByte(this.oCPU.AX.Low, (byte)(this.oParent.GameState.TurnCount & 0xff));
 			this.oCPU.TESTByte(this.oCPU.AX.Low, 0x7);
 			if (this.oCPU.Flags.NE) goto L08c1;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xe3c2), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_e3c2, 0x0);
 			if (this.oCPU.Flags.G) goto L08b2;
 
 			// Instruction address 0x25fb:0x085e, size: 5
@@ -881,7 +881,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E)
 				goto L0876;
 
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdb42), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_db42, 0x0);
 			if (this.oCPU.Flags.L) goto L0876;
 
 			// Instruction address 0x25fb:0x08b9, size: 5
@@ -3554,7 +3554,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 
 			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.GameState.Players[playerID].LeaderGraphics);
+			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.GameState.Players[playerID].NationalityID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1514));
 			this.oCPU.AX.Word = this.oCPU.INCWord(this.oCPU.AX.Word);

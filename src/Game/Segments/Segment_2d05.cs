@@ -106,7 +106,7 @@ namespace OpenCiv1
 
 		L00ff:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x654c, this.oCPU.AX.Word);
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.NE) goto L010e;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), 0xffff);
 
@@ -336,7 +336,7 @@ namespace OpenCiv1
 			// Instruction address 0x2d05:0x0349, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L0358;
 			goto L043d;
 

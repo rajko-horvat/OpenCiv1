@@ -5,9 +5,10 @@ namespace OpenCiv1
 	public class Player
 	{
 		public string Name = "";
+		public short NationalityID = 0;
+		public string Nation = "";
 		public string Nationality = "";
-		public string LeaderName = "";
-		public short LeaderGraphics = 0;
+
 		public short Coins = 0;
 		public short GovernmentType = 0;
 		public short TaxRate = 0;

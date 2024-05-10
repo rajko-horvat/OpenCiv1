@@ -439,7 +439,7 @@ namespace OpenCiv1
 
 		L04ba:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), 0x0);
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L04c9;
 			goto L0549;
 
@@ -676,7 +676,7 @@ namespace OpenCiv1
 		L0789:
 			if (this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)) != 0xa)
 			{
-				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) == 0x0)
+				if (this.oParent.Var_d762 == 0x0)
 				{
 					// Instruction address 0x2aea:0x07cd, size: 5
 					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19fc_Rectangle, 0, 80, 16, 16, this.oParent.Var_aa_Rectangle,
@@ -744,7 +744,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x2));
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x9);
 			if (this.oCPU.Flags.L) goto L0813;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L086e;
 
 			// Instruction address 0x2aea:0x0862, size: 5
@@ -775,7 +775,7 @@ namespace OpenCiv1
 			goto L099e;
 
 		L089f:
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.NE) goto L08a9;
 			goto L0955;
 
@@ -879,7 +879,7 @@ namespace OpenCiv1
 			goto L0a40;
 
 		L09a7:
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L09c6;
 
 			// Instruction address 0x2aea:0x09bc, size: 5

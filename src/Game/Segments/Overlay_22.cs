@@ -985,7 +985,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1d12.F0_1d12_0045(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), -1);
 
 			this.oCPU.AX.Word = this.oParent.Var_70e2;
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x70e4));
+			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oParent.Var_70e4);
 			this.oCPU.CX.Low = 0x5;
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
@@ -1413,7 +1413,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x10e4, size: 5
 			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L1104;
 
 			// Instruction address 0x0000:0x10fc, size: 5

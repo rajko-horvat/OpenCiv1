@@ -435,7 +435,7 @@ namespace OpenCiv1
 		public void F0_2dc4_03ce_FillRectangleWithPattern(int xPos, int yPos, int width, int height)
 		{
 			// function body
-			if (this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd762) != 0)
+			if (this.oParent.Var_d762 != 0)
 			{
 				int iYPosTemp = yPos;
 				int iHeightTemp = height;
@@ -482,7 +482,7 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x2);
 			this.oCPU.PushWord(this.oCPU.SI.Word);
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762), 0x0);
+			this.oCPU.CMPWord(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L04d8;
 
 			// Instruction address 0x2dc4:0x0492, size: 5
@@ -580,7 +580,7 @@ namespace OpenCiv1
 		public void F0_2dc4_0626()
 		{
 			// function body
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2fec) == 0 && this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) != 0)
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2fec) == 0 && this.oParent.Var_d762 != 0)
 			{
 				// Instruction address 0x2dc4:0x0638, size: 5
 				this.oParent.Segment_1000.F0_1000_03fa_StartPaletteCycleSlot(1);
@@ -603,8 +603,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_2dc4_065f()");
 
 			// function body
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2fec) != 0 &&
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) != 0)
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2fec) != 0 && this.oParent.Var_d762 != 0)
 			{
 				// Instruction address 0x2dc4:0x0671, size: 5
 				this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(1);

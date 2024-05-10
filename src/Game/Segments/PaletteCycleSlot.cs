@@ -22,10 +22,5 @@ namespace OpenCiv1
 			this.StartPosition = startPosition;
 			this.Palette = colors;
 		}
-
-		public void NextPosition()
-		{
-			this.CurrentPosition = (this.CurrentPosition + 1) % this.Palette.Length;
-		}
 	}
 }

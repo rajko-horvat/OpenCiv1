@@ -899,7 +899,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
-					this.oParent.GameState.Players[i].LeaderGraphics = ReadInt16(reader);
+					this.oParent.GameState.Players[i].NationalityID = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 8; i++)
@@ -1428,7 +1428,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameState.Players[i].LeaderGraphics);
+					WriteInt16(writer, this.oParent.GameState.Players[i].NationalityID);
 				}
 
 				for (int i = 0; i < 8; i++)
