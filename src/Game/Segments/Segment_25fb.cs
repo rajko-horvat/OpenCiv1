@@ -751,7 +751,7 @@ namespace OpenCiv1
 
 		L06ef:
 			// Instruction address 0x25fb:0x06f6, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 7);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Mapmaking);
 			if (this.oCPU.AX.Word != 0)
 			{
 				this.oCPU.AX.Word = 0x5;
@@ -876,7 +876,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.G) goto L08b2;
 
 			// Instruction address 0x25fb:0x085e, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 0x2c);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.TheRepublic);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L0876;
@@ -891,7 +891,7 @@ namespace OpenCiv1
 
 		L0876:
 			// Instruction address 0x25fb:0x087d, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 0x2b);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Communism);
 			if (this.oCPU.AX.Word == 0 ||
 				this.oParent.GameState.Players[playerID].CityCount <= 10)
 				goto L089a;
@@ -903,7 +903,7 @@ namespace OpenCiv1
 
 		L089a:
 			// Instruction address 0x25fb:0x08a1, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 5);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Monarchy);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L08c1;
@@ -962,7 +962,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x25fb:0x0938, size: 5
 			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID,
-				this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x54))].TypeID].CancelTechnology);
+				(int)this.oParent.GameState.UnitDefinitions[this.oParent.GameState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x54))].TypeID].CancelTechnology);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 				goto L0980;
@@ -3369,7 +3369,7 @@ namespace OpenCiv1
 
 		L1fdf:
 			// Instruction address 0x25fb:0x1fe6, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 5);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Monarchy);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 			{
@@ -3504,7 +3504,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L213b;
 			
 			// Instruction address 0x25fb:0x2106, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 0x31);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Railroad);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L213b;
@@ -3603,7 +3603,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x25fb:0x21ea, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 5);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Monarchy);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 			{
@@ -3747,7 +3747,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L233c;
 
 			// Instruction address 0x25fb:0x232d, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 0x13);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.BridgeBuilding);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 				goto L233c;

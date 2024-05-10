@@ -193,26 +193,5 @@ namespace OpenCiv1
 
 			return width;
 		}
-
-		/// <summary>
-		/// Waits for specified number of main timer ticks
-		/// </summary>
-		/// <param name="waitTime"></param>
-		public void F0_1182_0134_WaitTime(short waitTime)
-		{
-			this.oCPU.Log.EnterBlock($"F0_1182_0134_WaitTime({waitTime})");
-
-			Thread.Sleep(Math.Max(waitTime * 13, 1));
-			/*this.oParent.Segment_1000.F0_1000_033e_ResetTimer();
-
-			waitTime = (short)(Math.Ceiling(0.5 * waitTime));
-
-			while (this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x5c) < waitTime)
-			{
-				Thread.Sleep(10);
-			}*/
-
-			this.oCPU.Log.ExitBlock("F0_1182_0134_WaitTime");
-		}
 	}
 }

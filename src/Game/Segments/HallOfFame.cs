@@ -651,7 +651,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x06c8, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(0x22, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x22, 0);
 
 			// Instruction address 0x0000:0x06e4, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 15);
@@ -791,7 +791,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 
 			// Instruction address 0x0000:0x098d, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(1, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 

@@ -503,7 +503,7 @@ namespace OpenCiv1
 				if (i3 != 0)
 				{
 					// Instruction address 0x0000:0x0e2c, size: 5
-					this.oParent.Segment_1000.F0_1000_0a32(0x2c, 0);
+					this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x2c, 0);
 
 					// Instruction address 0x0000:0x0e3c, size: 5
 					this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreen(1);
@@ -528,16 +528,16 @@ namespace OpenCiv1
 						this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4eaa, 0xbdee);
 
 						// Instruction address 0x0000:0x0eb9, size: 5
-						this.oParent.Segment_1000.F0_1000_04aa(15, 0xbdee);
+						this.oParent.Segment_1000.F0_1000_04aa_TransformPalette(15, 0xbdee);
 					}
 
 					if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) != 0)
 					{
 						// Instruction address 0x0000:0x0ed8, size: 5
-						this.oParent.Segment_1000.F0_1000_0382(4, 15, 64, 79);
+						this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(4, 15, 64, 79);
 
 						// Instruction address 0x0000:0x0ee4, size: 5
-						this.oParent.Segment_1000.F0_1000_03fa(4);
+						this.oParent.Segment_1000.F0_1000_03fa_StartPaletteCycleSlot(4);
 					}
 				}
 
@@ -556,7 +556,7 @@ namespace OpenCiv1
 				i3 = 1;
 
 				// Instruction address 0x0000:0x0f3d, size: 5
-				this.oParent.Segment_1182.F0_1182_0134_WaitTime(60);
+				this.oParent.Segment_1000.F0_1182_0134_WaitTimer(60);
 			}
 			while (this.oParent.MSCAPI.kbhit() == 0);
 
@@ -571,7 +571,7 @@ namespace OpenCiv1
 				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) != 0)
 				{
 					// Instruction address 0x0000:0x0fe6, size: 5
-					this.oParent.Segment_1000.F0_1000_042b(4);
+					this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(4);
 				}
 			}
 			else
@@ -590,7 +590,7 @@ namespace OpenCiv1
 				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) != 0)
 				{
 					// Instruction address 0x0000:0x0f94, size: 5
-					this.oParent.Segment_1000.F0_1000_042b(4);
+					this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(4);
 				}
 
 				// Instruction address 0x0000:0x0fa5, size: 5
@@ -737,7 +737,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L118c;
 
 			// Instruction address 0x0000:0x117b, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.HumanPlayerID, 0x23);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.HumanPlayerID, (int)TechnologyEnum.Industrialization);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 			{
@@ -1020,7 +1020,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L1499;
 
 			// Instruction address 0x0000:0x1488, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 0x3a);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Automobile);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 			{
@@ -1042,7 +1042,7 @@ namespace OpenCiv1
 
 		L1499:
 			// Instruction address 0x0000:0x14a0, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 0x25);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Combustion);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L14b1;
@@ -1248,14 +1248,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L16a0;
 
 			// Instruction address 0x0000:0x1698, size: 5
-			this.oParent.Graphics.SetColor(0xfd, GBitmap.Color18ToColor(3, 3, 3));
+			this.oParent.Graphics.SetPaletteColor(0xfd, GBitmap.Color18ToColor(3, 3, 3));
 
 		L16a0:
 			// Instruction address 0x0000:0x16a5, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
 			// Instruction address 0x0000:0x16b1, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 0x22);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Gunpowder);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 				goto L16c0;
@@ -1264,7 +1264,7 @@ namespace OpenCiv1
 
 		L16c0:
 			// Instruction address 0x0000:0x16c7, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 0x3a);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Automobile);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L16d8;
@@ -1343,7 +1343,7 @@ namespace OpenCiv1
 
 		L17e9:
 			// Instruction address 0x0000:0x17e9, size: 5
-			this.oParent.Segment_1000.F0_1000_033e_ResetTimer();
+			this.oParent.Segment_1000.F0_1000_033e_ResetWaitTimer();
 			
 			// Instruction address 0x0000:0x1809, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 100, this.oParent.Var_19d4_Rectangle, 0, 100);
@@ -1384,7 +1384,8 @@ namespace OpenCiv1
 				this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x28))));
 
 		L1880:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5c);
+			this.oCPU.AX.Word = this.oParent.Var_5c_TickCount;
+			this.oCPU.DoEvents();
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xa);
 			if (this.oCPU.Flags.L) goto L1880;
 
@@ -1437,7 +1438,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
 			// Instruction address 0x0000:0x18df, size: 5
-			if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.HumanPlayerID, 13) != 0)
+			if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.HumanPlayerID, (int)TechnologyEnum.University) != 0)
 			{
 				// Instruction address 0x0000:0x18f3, size: 5
 				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x4f2f, 0);
@@ -1467,7 +1468,7 @@ namespace OpenCiv1
 			for (int i = -48, j = 0; i < 420; i += 3, j++)
 			{
 				// Instruction address 0x0000:0x19fb, size: 5
-				this.oParent.Segment_1000.F0_1000_033e_ResetTimer();
+				this.oParent.Segment_1000.F0_1000_033e_ResetWaitTimer();
 
 				// Draw a lower portion of City View to screen 0
 				// Instruction address 0x0000:0x1a1b, size: 5
@@ -1490,7 +1491,11 @@ namespace OpenCiv1
 				// Instruction address 0x0000:0x1a9a, size: 5
 				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 100, 320, 100, this.oParent.Var_aa_Rectangle, 0, 100);
 
-				while (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5c) < 10) ;
+				while (this.oParent.Var_5c_TickCount < 10)
+				{
+					this.oCPU.DoEvents();
+					Thread.Sleep(1);
+				}
 
 				// Instruction address 0x0000:0x1aaf, size: 5
 				this.oParent.Segment_11a8.F0_11a8_0223();
@@ -1533,7 +1538,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
 			// Instruction address 0x0000:0x1afa, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.HumanPlayerID, 0x23);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.HumanPlayerID, (int)TechnologyEnum.Industrialization);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 				goto L1b0b;
@@ -1586,7 +1591,7 @@ namespace OpenCiv1
 
 		L1bb5:
 			// Instruction address 0x0000:0x1bb5, size: 5
-			this.oParent.Segment_1000.F0_1000_033e_ResetTimer();
+			this.oParent.Segment_1000.F0_1000_033e_ResetWaitTimer();
 
 			// Instruction address 0x0000:0x1bd5, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 100, this.oParent.Var_19d4_Rectangle, 0, 100);
@@ -1636,7 +1641,8 @@ namespace OpenCiv1
 				this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x28))));
 
 		L1c67:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5c);
+			this.oCPU.AX.Word = this.oParent.Var_5c_TickCount;
+			this.oCPU.DoEvents();
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xa);
 			if (this.oCPU.Flags.L) goto L1c67;
 

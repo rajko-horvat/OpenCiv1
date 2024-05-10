@@ -504,7 +504,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_0162_SetColorsFromColorStruct(0xbdee);
 			
 			// Instruction address 0x2dc4:0x04d2, size: 3
-			this.oParent.Graphics.SetColor(0x2d, GBitmap.Color18ToColor(0x33, 0x27, 0x19));
+			this.oParent.Graphics.SetPaletteColor(0x2d, GBitmap.Color18ToColor(0x33, 0x27, 0x19));
 
 		L04d8:
 			this.oCPU.SI.Word = this.oCPU.PopWord();
@@ -562,13 +562,13 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x2dc4:0x05ed, size: 5
-			this.oParent.Segment_1000.F0_1000_0382(1, 15, 96, 103);
+			this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(1, 15, 96, 103);
 
 			// Instruction address 0x2dc4:0x0605, size: 5
-			this.oParent.Segment_1000.F0_1000_0382(2, 15, 104, 111);
+			this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(2, 15, 104, 111);
 
 			// Instruction address 0x2dc4:0x061d, size: 5
-			this.oParent.Segment_1000.F0_1000_0382(3, 15, 112, 127);
+			this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(3, 15, 112, 127);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2dc4_05dd");
@@ -583,13 +583,13 @@ namespace OpenCiv1
 			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2fec) == 0 && this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) != 0)
 			{
 				// Instruction address 0x2dc4:0x0638, size: 5
-				this.oParent.Segment_1000.F0_1000_03fa(1);
+				this.oParent.Segment_1000.F0_1000_03fa_StartPaletteCycleSlot(1);
 
 				// Instruction address 0x2dc4:0x0644, size: 5
-				this.oParent.Segment_1000.F0_1000_03fa(2);
+				this.oParent.Segment_1000.F0_1000_03fa_StartPaletteCycleSlot(2);
 
 				// Instruction address 0x2dc4:0x0650, size: 5
-				this.oParent.Segment_1000.F0_1000_03fa(3);
+				this.oParent.Segment_1000.F0_1000_03fa_StartPaletteCycleSlot(3);
 			}
 		
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2fec, 0x1);
@@ -607,13 +607,13 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd762) != 0)
 			{
 				// Instruction address 0x2dc4:0x0671, size: 5
-				this.oParent.Segment_1000.F0_1000_042b(1);
+				this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(1);
 
 				// Instruction address 0x2dc4:0x067d, size: 5
-				this.oParent.Segment_1000.F0_1000_042b(2);
+				this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(2);
 
 				// Instruction address 0x2dc4:0x0689, size: 5
-				this.oParent.Segment_1000.F0_1000_042b(3);
+				this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(3);
 			}
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2fec, 0x0);

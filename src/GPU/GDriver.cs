@@ -107,7 +107,7 @@ namespace OpenCiv1.GPU
 			}
 		}
 
-		public void SetColor(byte index, Color color)
+		public void SetPaletteColor(byte index, Color color)
 		{
 			lock (this.GLock)
 			{
@@ -117,6 +117,20 @@ namespace OpenCiv1.GPU
 					this.aScreens[i].Value.SetPaletteColor(index, color);
 				}
 			}
+		}
+
+		public Color GetPaletteColor(byte index)
+		{
+			lock (this.GLock)
+			{
+				// set colors to all planes, as this is what original code does
+				if (this.aScreens.Count > 0)
+				{
+					return this.aScreens[0].Value.GetPaletteColor(index);
+				}
+			}
+
+			return Color.FromUInt32(0);
 		}
 
 		public void F0_VGA_0162_SetColorsFromColorStruct(ushort colorStructPtr)

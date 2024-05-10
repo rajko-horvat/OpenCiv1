@@ -1,3 +1,4 @@
+using Avalonia.Media;
 using IRB.VirtualCPU;
 
 namespace OpenCiv1
@@ -251,7 +252,8 @@ namespace OpenCiv1
 				goto L01fd;
 
 			// Instruction address 0x0000:0x0234, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 				goto L01fd;
@@ -798,7 +800,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1238.F0_1238_107e();
 
 			// Instruction address 0x0000:0x0959, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime(30);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(30);
 
 		L0961:
 			this.oCPU.SI.Word = this.oCPU.PopWord();
@@ -875,7 +877,7 @@ namespace OpenCiv1
 			yPos = (short)this.oCPU.AX.Word;
 
 			// Instruction address 0x0000:0x0a41, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(0x2a, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x2a, 0);
 
 			// Instruction address 0x0000:0x0a62, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, xPos, yPos, 44, 44, this.oParent.Var_19d4_Rectangle, xPos, yPos);
@@ -894,7 +896,7 @@ namespace OpenCiv1
 				xPos, yPos, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0x38)));
 
 			// Instruction address 0x0000:0x0a92, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime(5);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(5);
 
 			// Instruction address 0x0000:0x0ab3, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, xPos, yPos, 44, 44, this.oParent.Var_aa_Rectangle, xPos, yPos);
@@ -1038,10 +1040,10 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16));
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 
-			this.oCPU.AX.Word = (ushort)((short)(this.oParent.aiCityOffsets[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16))].X +
+			this.oCPU.AX.Word = (ushort)((short)(this.oParent.CityOffsets[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16))].X +
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))));
 
-			this.oCPU.BX.Word = (ushort)((short)(this.oParent.aiCityOffsets[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16))].Y +
+			this.oCPU.BX.Word = (ushort)((short)(this.oParent.CityOffsets[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16))].Y +
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))));
 
 			this.oParent.GameState.MapVisibility[this.oCPU.AX.Word, this.oCPU.BX.Word] |= (ushort)(1 << playerID);
@@ -1358,7 +1360,7 @@ namespace OpenCiv1
 
 		L101a:
 			// Instruction address 0x0000:0x101a, size: 5
-			this.oParent.Segment_1000.F0_1000_033e_ResetTimer();
+			this.oParent.Segment_1000.F0_1000_033e_ResetWaitTimer();
 
 			// Instruction address 0x0000:0x103a, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 40, this.oParent.Var_19d4_Rectangle, 0, 120);
@@ -1387,7 +1389,8 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))));
 
 		L10aa:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5c); 
+			this.oCPU.AX.Word = this.oParent.Var_5c_TickCount;
+			this.oCPU.DoEvents();
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xa);
 			if (this.oCPU.Flags.L) goto L10aa;
 
@@ -1414,7 +1417,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L1104;
 
 			// Instruction address 0x0000:0x10fc, size: 5
-			this.oParent.Segment_1000.F0_1000_04d4(10, 0, 0, 0);
+			this.oParent.Segment_1000.F0_1000_04d4_TransformPaletteToColor(10, Color.FromRgb(0, 0, 0));
 
 		L1104:
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);

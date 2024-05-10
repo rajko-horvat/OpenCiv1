@@ -1,0 +1,31 @@
+﻿using Avalonia.Media;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OpenCiv1
+{
+	public class PaletteCycleSlot
+	{
+		public bool Active = false;
+		public int Speed;
+		public int SpeedCount;
+		public byte StartPosition;
+		public int CurrentPosition = 0;
+		public Color[] Palette;
+
+		public PaletteCycleSlot(int speed, byte startPosition, Color[] colors)
+		{
+			this.Speed = speed;
+			this.StartPosition = startPosition;
+			this.Palette = colors;
+		}
+
+		public void NextPosition()
+		{
+			this.CurrentPosition = (this.CurrentPosition + 1) % this.Palette.Length;
+		}
+	}
+}

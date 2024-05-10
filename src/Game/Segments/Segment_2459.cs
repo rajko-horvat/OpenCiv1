@@ -332,7 +332,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x2459:0x035d, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1518)), 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1518)), 0);
 
 			this.oCPU.TESTByte((byte)(this.oParent.GameState.GameSettingFlags & 0xff), 0x8);
 			if (this.oCPU.Flags.E) goto L03b7;
@@ -363,7 +363,7 @@ namespace OpenCiv1
 
 		L03c2:
 			// Instruction address 0x2459:0x03c6, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(1, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 
 			this.oCPU.AX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
 			this.oCPU.CMPWord((ushort)playerID, this.oCPU.AX.Word);
@@ -1035,7 +1035,7 @@ namespace OpenCiv1
 
 		L0a12:
 			// Instruction address 0x2459:0x0a24, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.Cities[cityID].PlayerID, 0x31);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.Cities[cityID].PlayerID, (int)TechnologyEnum.Railroad);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L0a3c;
@@ -1048,7 +1048,7 @@ namespace OpenCiv1
 
 		L0a3c:
 			// Instruction address 0x2459:0x0a4e, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.Cities[cityID].PlayerID, 0x26);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.Cities[cityID].PlayerID, (int)TechnologyEnum.Flight);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L0a66;

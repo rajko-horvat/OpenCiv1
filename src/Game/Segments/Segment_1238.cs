@@ -1,4 +1,5 @@
 using System;
+using Avalonia.Media;
 using IRB.VirtualCPU;
 
 namespace OpenCiv1
@@ -134,7 +135,7 @@ namespace OpenCiv1
 
 		L013b:
 			// Instruction address 0x1238:0x013f, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(1, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 
 		L0147:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x0);
@@ -708,12 +709,12 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1238:0x0816, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x151a)), 3);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x151a)), 3);
 
 			this.oParent.Overlay_21.F21_0000_0000(-1);
 			
 			// Instruction address 0x1238:0x082e, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(1, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 
 		L0836:
 			// Instruction address 0x1238:0x0836, size: 5
@@ -2123,7 +2124,7 @@ namespace OpenCiv1
 			F0_1238_1b44();
 
 			// Instruction address 0x1238:0x1823, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(1, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 
 		L182b:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 0xe);
@@ -2249,7 +2250,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x1238:0x1972, size: 5
 			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x2e);
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), (int)TechnologyEnum.Rocketry);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 				goto L1981;
@@ -2262,13 +2263,13 @@ namespace OpenCiv1
 
 			// Instruction address 0x1238:0x198e, size: 5
 			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x2e);
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), (int)TechnologyEnum.Rocketry);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L19ba;
 	
 			// Instruction address 0x1238:0x19a2, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.HumanPlayerID, 0x2e);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.HumanPlayerID, (int)TechnologyEnum.Rocketry);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 				goto L19ba;
@@ -2282,7 +2283,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L19ec;
 
 			// Instruction address 0x1238:0x19c8, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.HumanPlayerID, 0x2e);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.HumanPlayerID, (int)TechnologyEnum.Rocketry);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L19ec;
@@ -2377,7 +2378,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1238:0x1b1e, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1518)), 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1518)), 0);
 
 			this.oCPU.BX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
 			this.oCPU.CX.Low = 0x4;
@@ -2412,7 +2413,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L1b6e;
 
 			// Instruction address 0x1238:0x1b66, size: 5
-			this.oParent.Segment_1000.F0_1000_04d4(5, 0, 0, 0);
+			this.oParent.Segment_1000.F0_1000_04d4_TransformPaletteToColor(5, Color.FromRgb(0, 0, 0));
 
 		L1b6e:
 			// Instruction address 0x1238:0x1b6e, size: 5
@@ -2495,7 +2496,7 @@ namespace OpenCiv1
 
 		L1c32:
 			// Instruction address 0x1238:0x1c3a, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.HumanPlayerID, 0x14);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.GameState.HumanPlayerID, (int)TechnologyEnum.Invention);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 			{
@@ -2513,7 +2514,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.memcpy(0xc744, 0xc35c, 0x180);
 
 			// Instruction address 0x1238:0x1c86, size: 5
-			this.oParent.Segment_1000.F0_1000_04aa(5, 0xc5be);
+			this.oParent.Segment_1000.F0_1000_04aa_TransformPalette(5, 0xc5be);
 			
 			// Instruction address 0x1238:0x1c8e, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0626();

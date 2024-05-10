@@ -406,7 +406,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x68ce), 10, 15, 11);
 
 			// Instruction address 0x0000:0x04e2, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime(10);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(10);
 
 			// Instruction address 0x0000:0x0503, size: 5
 			this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, 
@@ -420,7 +420,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0520;
 
 			// Instruction address 0x0000:0x0518, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime(10);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(10);
 
 		L0520:
 			// Instruction address 0x0000:0x0520, size: 5

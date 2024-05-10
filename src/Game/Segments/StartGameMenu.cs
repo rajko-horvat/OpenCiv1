@@ -609,7 +609,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			
 			// Instruction address 0x0000:0x0738, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x151a)), 3);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x151a)), 3);
 
 			// Instruction address 0x0000:0x0740, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
@@ -2358,7 +2358,7 @@ namespace OpenCiv1
 
 		L1b40:
 			// Instruction address 0x0000:0x1b48, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(oParent.GameState.HumanPlayerID, 0x14);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(oParent.GameState.HumanPlayerID, (int)TechnologyEnum.Invention);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 			{

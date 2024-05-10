@@ -1248,7 +1248,7 @@ namespace OpenCiv1
 
 		L0c11:
 			// Instruction address 0x1866:0x0c12, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime((short)this.oCPU.AX.Word);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer((short)this.oCPU.AX.Word);
 
 			// Instruction address 0x1866:0x0c1a, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
@@ -1322,7 +1322,7 @@ namespace OpenCiv1
 
 		L0ccf:
 			// Instruction address 0x1866:0x0cd0, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime((short)this.oCPU.AX.Word);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer((short)this.oCPU.AX.Word);
 
 			// Instruction address 0x1866:0x0cd8, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0223();
@@ -3389,7 +3389,7 @@ namespace OpenCiv1
 					(ushort)(((this.oParent.GameState.Players[playerID].Units[unitID].TypeID + (playerID << 5) + 0x40) << 1) + 0xd4ce)));
 
 			// Instruction address 0x1866:0x1f16, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime(1);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(1);
 
 			this.oCPU.AX.Word = (ushort)((short)direction.X);
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));

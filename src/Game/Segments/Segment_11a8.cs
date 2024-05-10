@@ -1,3 +1,4 @@
+using Avalonia.Media;
 using IRB.VirtualCPU;
 
 namespace OpenCiv1
@@ -155,13 +156,13 @@ namespace OpenCiv1
 
 		L018d:
 			// Instruction address 0x11a8:0x0191, size: 3
-			this.oParent.Segment_1000.F0_1000_0a32(0, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0, 0);
 
 			// Instruction address 0x11a8:0x0197, size: 5
-			this.oParent.Segment_1000.F0_1000_0a39();
+			this.oParent.Segment_1000.F0_1000_0a39_CloseSound();
 
 			// Instruction address 0x11a8:0x019c, size: 5
-			this.oParent.Segment_1000.F0_1000_0051();
+			this.oParent.Segment_1000.F0_1000_0051_StopTimer();
 			
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
@@ -423,7 +424,7 @@ namespace OpenCiv1
 
 		L04c2:
 			// Instruction address 0x11a8:0x04c2, size: 5
-			this.oParent.Segment_1000.F0_1000_0a4e();
+			this.oParent.Segment_1000.F0_1000_0a4e_Soundtimer();
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1495);
@@ -435,9 +436,9 @@ namespace OpenCiv1
 			this.oCPU.DX.Word = this.oCPU.ORWord(this.oCPU.DX.Word, this.oCPU.DX.Word);
 			if (this.oCPU.Flags.NE) goto L04c2;
 
-			L04dc:
+		L04dc:
 			// Instruction address 0x11a8:0x04e1, size: 3
-			this.oParent.Segment_1000.F0_1000_0a32(1, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6b32);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
@@ -514,7 +515,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L05be;
 
 			// Instruction address 0x11a8:0x05b6, size: 5
-			this.oParent.Segment_1000.F0_1000_04d4(5, 0, 0, 0);
+			this.oParent.Segment_1000.F0_1000_04d4_TransformPaletteToColor(5, Color.FromRgb(0, 0, 0));
 
 		L05be:
 			// Instruction address 0x11a8:0x05d1, size: 5
@@ -704,7 +705,7 @@ namespace OpenCiv1
 
 		L0837:
 			// Instruction address 0x11a8:0x0840, size: 5
-			this.oParent.Segment_1000.F0_1000_04d4(5, 0, 0, 0);
+			this.oParent.Segment_1000.F0_1000_04d4_TransformPaletteToColor(5, Color.FromRgb(0, 0, 0));
 
 		L0848:
 			// Instruction address 0x11a8:0x085b, size: 5

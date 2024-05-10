@@ -683,7 +683,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0xfd);
 
 			// Instruction address 0x0000:0x0696, size: 5
-			this.oParent.Graphics.SetColor(0xfd, GBitmap.Color18ToColor(0x3d, 0x3d, 0x3d));
+			this.oParent.Graphics.SetPaletteColor(0xfd, GBitmap.Color18ToColor(0x3d, 0x3d, 0x3d));
 
 		L069e:
 			// Instruction address 0x0000:0x06b1, size: 5
@@ -985,7 +985,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_0162_SetColorsFromColorStruct(0xc5be);
 			
 			// Instruction address 0x0000:0x0b1d, size: 5
-			this.oParent.Graphics.SetColor(0xfd, GBitmap.Color18ToColor(0x3d, 0x3d, 0x3d));
+			this.oParent.Graphics.SetPaletteColor(0xfd, GBitmap.Color18ToColor(0x3d, 0x3d, 0x3d));
 
 		L0b25:
 			F8_0000_16f7(

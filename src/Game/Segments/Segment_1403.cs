@@ -291,7 +291,7 @@ namespace OpenCiv1
 
 		L03d9:
 			// Instruction address 0x1403:0x03dd, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime(30);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(30);
 
 		L03e5:
 			// Instruction address 0x1403:0x040c, size: 5
@@ -1513,7 +1513,7 @@ namespace OpenCiv1
 
 		L1323:
 			// Instruction address 0x1403:0x132a, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 0x2d);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Construction);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x0);
 			if (this.oCPU.Flags.E)
 				goto L133a;
@@ -1595,7 +1595,7 @@ namespace OpenCiv1
 
 		L1443:
 			// Instruction address 0x1403:0x144a, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 0x31);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Railroad);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x0);
 			if (this.oCPU.Flags.NE)
 				goto L145a;
@@ -1636,7 +1636,7 @@ namespace OpenCiv1
 
 		L14b4:
 			// Instruction address 0x1403:0x14bb, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 0x13);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.BridgeBuilding);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x0);
 			if (this.oCPU.Flags.E)
 				goto L14cb;
@@ -2450,7 +2450,7 @@ namespace OpenCiv1
 				goto L1ea4;
 
 			// Instruction address 0x1403:0x1e9c, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(0x25, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x25, 0);
 
 		L1ea4:
 			this.oCPU.TESTByte((byte)(this.oParent.GameState.GameSettingFlags & 0xff), 0x1);
@@ -2510,7 +2510,7 @@ namespace OpenCiv1
 				this.oParent.GameState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].Position.Y);
 
 			// Instruction address 0x1403:0x1f8b, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime(30);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(30);
 
 			// Instruction address 0x1403:0x1f9c, size: 5
 			this.oParent.Segment_1866.F0_1866_1d55(playerID,
@@ -3813,7 +3813,7 @@ namespace OpenCiv1
 
 		L3211:
 			// Instruction address 0x1403:0x3215, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime(30);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(30);
 
 		L321d:
 			goto L3242;
@@ -3828,7 +3828,7 @@ namespace OpenCiv1
 
 		L3236:
 			// Instruction address 0x1403:0x323a, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime(10);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(10);
 
 		L3242:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 0x0);

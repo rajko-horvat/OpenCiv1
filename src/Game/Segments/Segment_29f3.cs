@@ -579,7 +579,7 @@ namespace OpenCiv1
 
 		L04ad:
 			// Instruction address 0x29f3:0x04ae, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(this.oCPU.AX.Word, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.AX.Word, 0);
 
 			// Instruction address 0x29f3:0x04bc, size: 5
 			this.oParent.Segment_2aea.F0_2aea_0e29(playerID2, unitID2);
@@ -701,7 +701,7 @@ namespace OpenCiv1
 					(playerID1 << 5) + 0x40) << 1) + 0xd4ce)));
 
 			// Instruction address 0x29f3:0x062a, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime(2);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(2);
 
 			// Instruction address 0x29f3:0x0643, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle,
@@ -758,7 +758,7 @@ namespace OpenCiv1
 					(ushort)(((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)) + 0x20) << 1) + 0xd4ce)));
 
 			// Instruction address 0x29f3:0x06f2, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime(4);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(4);
 
 			// Instruction address 0x29f3:0x070b, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle,

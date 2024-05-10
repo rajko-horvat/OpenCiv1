@@ -262,14 +262,14 @@ namespace IRB.VirtualCPU
 					this.oAX.Word = this.PopWord();
 				}
 
-				LogWrapper oLogTemp = this.oLog;
+				/*LogWrapper oLogTemp = this.oLog;
 				this.oLog = this.oParent.InterruptLog;
 
 				this.PushF();
 				this.oParent.Segment_1000.F0_1000_01a7_Timer();
 				this.PopF();
 
-				this.oLog = oLogTemp;
+				this.oLog = oLogTemp;*/
 
 				this.bTimerFlag = false;
 				this.bInTimer = false;

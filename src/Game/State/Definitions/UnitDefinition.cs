@@ -5,8 +5,9 @@ namespace OpenCiv1
 	public class UnitDefinition
 	{
 		// Total size: 34 bytes
+		public UnitEnum UnitType = UnitEnum.None;
 		public string Name = ""; // (12 bytes)
-		public short CancelTechnology = 0;
+		public TechnologyEnum CancelTechnology = TechnologyEnum.None;
 		public short TerrainCategory = 0;
 		public short MoveCount = 0;
 		public short TurnsOutside = 0;
@@ -21,11 +22,12 @@ namespace OpenCiv1
 		public UnitDefinition()
 		{ }
 
-		public UnitDefinition(string name, short cancelTechnology, short terrainCategory,
+		public UnitDefinition(UnitEnum unitType, string name, TechnologyEnum cancelTechnology, short terrainCategory,
 			short moveCount, short turnsOutside, short attackStrength, short defenceStrength,
 			short cost, short sightRange, short transportCapacity, short unitCategory,
 			TechnologyEnum requiredTechnology)
 		{
+			this.UnitType= unitType;
 			this.Name = name;
 			this.CancelTechnology = cancelTechnology;
 			this.TerrainCategory = terrainCategory;
@@ -45,7 +47,7 @@ namespace OpenCiv1
 			UnitDefinition ud = new UnitDefinition();
 
 			ud.Name = GameLoadAndSave.ReadString(stream, 12);
-			ud.CancelTechnology = GameLoadAndSave.ReadInt16(stream);
+			ud.CancelTechnology = (TechnologyEnum)GameLoadAndSave.ReadInt16(stream);
 			ud.TerrainCategory = GameLoadAndSave.ReadInt16(stream);
 			ud.MoveCount = GameLoadAndSave.ReadInt16(stream);
 			ud.TurnsOutside = GameLoadAndSave.ReadInt16(stream);
@@ -63,7 +65,7 @@ namespace OpenCiv1
 		public void ToStream(Stream stream)
 		{
 			GameLoadAndSave.WriteString(stream, this.Name, 12);
-			GameLoadAndSave.WriteInt16(stream, this.CancelTechnology);
+			GameLoadAndSave.WriteInt16(stream, (short)this.CancelTechnology);
 			GameLoadAndSave.WriteInt16(stream, this.TerrainCategory);
 			GameLoadAndSave.WriteInt16(stream, this.MoveCount);
 			GameLoadAndSave.WriteInt16(stream, this.TurnsOutside);

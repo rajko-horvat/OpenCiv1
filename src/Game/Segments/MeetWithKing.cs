@@ -923,7 +923,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L08fb;
 
 			// Instruction address 0x0000:0x08f3, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(0x21, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x21, 0);
 
 		L08fb:
 			F6_0000_251d(0xba06, 0x14, 0x8b);
@@ -997,7 +997,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
 
 			// Instruction address 0x0000:0x09e8, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(0x21, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x21, 0);
 
 			F6_0000_251d(0xba06, 0x14, 0x8b);
 			
@@ -1045,7 +1045,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
 
 			// Instruction address 0x0000:0x0a94, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(0x21, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x21, 0);
 
 			F6_0000_251d(0xba06, 0x14, 0x8b);
 			
@@ -1087,7 +1087,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0b54;
 
 			// Instruction address 0x0000:0x0b0a, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(0x21, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x21, 0);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 			
@@ -1128,7 +1128,7 @@ namespace OpenCiv1
 
 		L0b82:
 			// Instruction address 0x0000:0x0b86, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(0x21, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x21, 0);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 			
@@ -1163,7 +1163,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0be5;
 
 			// Instruction address 0x0000:0x0bd2, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(0x21, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x21, 0);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 			
@@ -1521,7 +1521,7 @@ namespace OpenCiv1
 				goto L1097;
 
 			// Instruction address 0x0000:0x1059, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(0x21, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x21, 0);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -1716,7 +1716,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L1376;
 
 			// Instruction address 0x0000:0x133c, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(0x21, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x21, 0);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -2080,7 +2080,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x0000:0x1787, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1518)), 3);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1518)), 3);
 
 			// Instruction address 0x0000:0x178f, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0280();
@@ -2117,7 +2117,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x0000:0x1802, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x151a)), 3);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x151a)), 3);
 
 			// Instruction address 0x0000:0x180a, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
@@ -2643,7 +2643,7 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x7ef4));
 
 			// Instruction address 0x0000:0x1d22, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime(10);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(10);
 
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.PopWord();
@@ -2738,7 +2738,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Low);
 
 			// Instruction address 0x0000:0x1e6f, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, 0x14);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Invention);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x67ee, this.oCPU.AX.Word);
 			
 			if (this.oParent.GameState.Players[playerID].GovernmentType != 3) goto L1e85;
@@ -3107,7 +3107,7 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x0000:0x2340, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(1, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x67ea), 0x0);
 			if (this.oCPU.Flags.E) goto L235b;

@@ -1,3 +1,4 @@
+using Avalonia.Media;
 using IRB.VirtualCPU;
 
 namespace OpenCiv1
@@ -59,7 +60,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x0000:0x0091, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x151a)), 3);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x151a)), 3);
 
 			// Instruction address 0x0000:0x009d, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4ae6, 1);
@@ -641,7 +642,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0846(0);
 			
 			// Instruction address 0x0000:0x07a1, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(1, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 
 			// Instruction address 0x0000:0x07b2, size: 5
 			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
@@ -1146,7 +1147,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.LE) goto L0cc1;
 
 			// Instruction address 0x0000:0x0cb9, size: 5
-			this.oParent.Segment_1000.F0_1000_04d4(5, 0, 0, 0);
+			this.oParent.Segment_1000.F0_1000_04d4_TransformPaletteToColor(5, Color.FromRgb(0, 0, 0));
 
 		L0cc1:
 			// Instruction address 0x0000:0x0cd4, size: 5

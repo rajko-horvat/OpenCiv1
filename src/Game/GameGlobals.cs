@@ -6,7 +6,7 @@ namespace OpenCiv1
 	partial class Game
 	{
 		#region Global variables
-		public GPoint[] aiCityOffsets = new GPoint[] { 
+		public GPoint[] CityOffsets = new GPoint[] { 
 			new GPoint(0, -1), new GPoint(1, 0), new GPoint(0, 1), 
 			new GPoint(-1, 0), new GPoint(1, -1), new GPoint(1, 1), new GPoint(-1, 1), new GPoint(-1, -1), 
 			new GPoint(0, -2), new GPoint(2, 0), new GPoint(0, 2), new GPoint(-2, 0), new GPoint(-1, -2), 
@@ -31,7 +31,32 @@ namespace OpenCiv1
 			new GPoint(-3, -2), new GPoint(-2, -3), new GPoint(-1, -3),
 			new GPoint(3, 3), new GPoint(3, -3), new GPoint(-3, 3), 
 			new GPoint(-3, -3)};
-		
+
+		public int Var_42 = 0; // ushort
+		public int Var_44 = 0; // ushort
+		public int Var_46 = 0; // ushort
+		public int Var_48 = 0; // ushort
+		public ushort Var_4a = 0; // ushort
+		public int Var_4c = 0;  // ushort
+		public int Var_4e = 0; // ushort
+		public int Var_50 = 0; // ushort
+		public int Var_52 = 0; // ushort
+		public int Var_54 = 0; // ushort
+		public ushort Var_56 = 0; // ushort
+		public ushort Var_58 = 0; // byte
+		public ushort Var_59 = 0; // byte
+		public ushort Var_5a_TimerInitialized = 0; // byte
+		public ushort Var_5c_TickCount = 0; // ushort
+		public int Var_5e = 7; // byte
+
+		public ushort Var_60 = 0; // ushort
+		public ushort Var_62 = 0; // ushort
+		public ushort Var_64 = 0; // ushort
+		public ushort Var_66 = 0; // ushort
+		public ushort Var_68 = 0; // ushort
+		public ushort Var_6a = 0; // ushort
+		public ushort Var_6c = 0; // ushort
+
 		public CRectangle Var_aa_Rectangle = new CRectangle(0, 0, 0, 319, 199, 0x1, 15, 0, 4, 0, 0);
 		public CRectangle Var_19d4_Rectangle = new CRectangle(1, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 		public CRectangle Var_19e8_Rectangle = new CRectangle(2, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);

@@ -383,7 +383,7 @@ namespace OpenCiv1
 
 		L03a9:
 			// Instruction address 0x2d05:0x03ad, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32(1, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 
 			goto L0217;
 
@@ -444,7 +444,7 @@ namespace OpenCiv1
 
 		L043d:
 			// Instruction address 0x2d05:0x0441, size: 5
-			this.oParent.Segment_1182.F0_1182_0134_WaitTime(20);
+			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(20);
 
 			// Instruction address 0x2d05:0x0449, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
