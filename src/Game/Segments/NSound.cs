@@ -80,9 +80,9 @@ namespace OpenCiv1
 		/// <summary>
 		/// ?
 		/// </summary>
-		/// <param name="param1"></param>
+		/// <param name="tune"></param>
 		/// <param name="param2"></param>
-		public void F0_0000_0062_PlayTune(ushort param1, ushort param2)
+		public void F0_0000_0062_PlayTune(short tune, ushort param2)
 		{
 			//this.oCPU.Log.EnterBlock("'F0_0000_0062_PlayTune'(Cdecl, Far) at 0x0000:0x0062");
 

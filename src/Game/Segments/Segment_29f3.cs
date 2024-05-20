@@ -545,41 +545,41 @@ namespace OpenCiv1
 			goto L04ad;
 
 		L0473:
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0x0);
-			if (this.oCPU.Flags.E) goto L0481;
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
-			this.oCPU.CMPWord((ushort)playerID1, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L048f;
+			if (this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)) == 0)
+				goto L0481;
+
+			if (playerID1 == this.oParent.GameState.HumanPlayerID)
+				goto L048f;
 
 		L0481:
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0x0);
-			if (this.oCPU.Flags.NE) goto L049f;
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
-			this.oCPU.CMPWord((ushort)playerID2, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L049f;
+			if (this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)) != 0 ||
+				playerID2 != this.oParent.GameState.HumanPlayerID)
+				goto L049f;
 
 		L048f:
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)), 0x0);
-			if (this.oCPU.Flags.NE) goto L049a;
-			this.oCPU.AX.Word = 0x26;
-			goto L04ad;
-
-		L049a:
-			this.oCPU.AX.Word = 0x28;
+			if (this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)) != 0)
+			{
+				this.oCPU.AX.Word = 40;
+			}
+			else
+			{
+				this.oCPU.AX.Word = 38;
+			}
 			goto L04ad;
 
 		L049f:
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)), 0x0);
-			if (this.oCPU.Flags.NE) goto L04aa;
-			this.oCPU.AX.Word = 0x27;
-			goto L04ad;
-
-		L04aa:
-			this.oCPU.AX.Word = 0x29;
+			if (this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)) != 0)
+			{
+				this.oCPU.AX.Word = 41;
+			}
+			else
+			{
+				this.oCPU.AX.Word = 39;
+			}
 
 		L04ad:
 			// Instruction address 0x29f3:0x04ae, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.AX.Word, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune((short)this.oCPU.AX.Word, 0);
 
 			// Instruction address 0x29f3:0x04bc, size: 5
 			this.oParent.Segment_2aea.F0_2aea_0e29(playerID2, unitID2);

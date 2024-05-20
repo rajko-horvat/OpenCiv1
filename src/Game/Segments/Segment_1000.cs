@@ -587,14 +587,14 @@ namespace OpenCiv1
 		/// <summary>
 		/// Sound function, possibly: Play Music
 		/// </summary>
-		/// <param name="param1"></param>
+		/// <param name="tune"></param>
 		/// <param name="param2"></param>
-		public void F0_1000_0a32_PlayTune(ushort param1, ushort param2)
+		public void F0_1000_0a32_PlayTune(short tune, ushort param2)
 		{
 			if ((this.oParent.GameState.GameSettingFlags & 0x10) != 0)
 			{
 				// Instruction address 0x1000:0x0a32, size: 5
-				this.oParent.Sound.F0_0000_0062_PlayTune(param1, param2);
+				this.oParent.Sound.F0_0000_0062_PlayTune(tune, param2);
 			}
 		}
 
