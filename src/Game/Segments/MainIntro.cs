@@ -1743,13 +1743,9 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1771, size: 5
 			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 
-			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX,
-				(ushort)this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].NationalityID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
 			// Instruction address 0x0000:0x178c, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1518)), 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(
+				this.oParent.GameState.Nations[this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].NationalityID].ShortTune, 0);
 
 			// Instruction address 0x0000:0x1798, size: 5
 			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(300);

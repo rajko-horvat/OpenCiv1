@@ -54,13 +54,9 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0075, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX,
-				(ushort)this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].NationalityID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
 			// Instruction address 0x0000:0x0091, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x151a)), 3);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(
+				this.oParent.GameState.Nations[this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].NationalityID].LongTune, 3);
 
 			// Instruction address 0x0000:0x009d, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4ae6, 1);

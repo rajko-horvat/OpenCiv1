@@ -4397,13 +4397,8 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x7;
 
 		L3a53:
-			this.oCPU.CX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX,
-				(ushort)this.oParent.GameState.Players[this.Var_6548_PlayerID].NationalityID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = this.oCPU.CX.Word;
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1516)));
+			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word,
+				(ushort)this.oParent.GameState.Nations[this.oParent.GameState.Players[this.Var_6548_PlayerID].NationalityID].Behavior3);
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.Var_6546);
 			this.oParent.Var_db42 -= this.oCPU.AX.Word;
 

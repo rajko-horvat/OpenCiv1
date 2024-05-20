@@ -1304,26 +1304,21 @@ namespace OpenCiv1
 
 			this.oCPU.SI.Word = (ushort)playerID;
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
-			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.GameState.Players[playerID].NationalityID);
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x1502);
-			// Instruction address 0x0000:0x0d78, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)), this.oCPU.AX.Word);
 
-			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.GameState.Players[playerID].NationalityID);
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x14f2);
+			// Instruction address 0x0000:0x0d78, size: 5
+			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)),
+				this.oParent.GameState.Nations[this.oParent.GameState.Players[playerID].NationalityID].Nationality);
+
 			// Instruction address 0x0000:0x0d8f, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10),
+				this.oParent.GameState.Nations[this.oParent.GameState.Players[playerID].NationalityID].Nation);
 
 			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)), 0x0);
 			if (this.oCPU.Flags.NE) goto L0dc4;
 
-			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.GameState.Players[playerID].NationalityID);
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x1502);
 			// Instruction address 0x0000:0x0dac, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10),
+				this.oParent.GameState.Nations[this.oParent.GameState.Players[playerID].NationalityID].Nationality);
 
 			// Instruction address 0x0000:0x0dbc, size: 5
 			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x10), "s");
@@ -1378,13 +1373,9 @@ namespace OpenCiv1
 
 			F9_0000_0000();
 
-			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX,
-				(ushort)this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].NationalityID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
 			// Instruction address 0x0000:0x0e53, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x151a)), 3);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(
+				this.oParent.GameState.Nations[this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].NationalityID].LongTune, 3);
 
 			this.oCPU.CMPWord(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L0e67;
@@ -1612,13 +1603,8 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)) - 2,
 				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x36)));
 
-			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX,
-				(ushort)this.oParent.GameState.Players[playerID].NationalityID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
 			// Instruction address 0x0000:0x11e9, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x151a)), 3);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oParent.GameState.Nations[this.oParent.GameState.Players[playerID].NationalityID].LongTune, 3);
 
 			this.oCPU.CMPWord(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L1254;
@@ -1815,13 +1801,9 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x14e9, size: 5
 			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(60);
 
-			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX,
-				(ushort)this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].NationalityID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
 			// Instruction address 0x0000:0x1508, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x151a)), 3);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(
+				this.oParent.GameState.Nations[this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].NationalityID].LongTune, 3);
 
 			// Instruction address 0x0000:0x1518, size: 5
 			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreen(1);

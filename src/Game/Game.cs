@@ -1092,17 +1092,22 @@ namespace OpenCiv1
 			/*this.oCPU.ES.Word = 0x3b01; // segment
 			StreamWriter writer = new StreamWriter("Data.cs");
 			writer.Write("{");
-			for (int i = 0; i < 72; i++)
+			for (int i = 0; i < 16; i++)
 			{
 				if (i > 0)
 					writer.WriteLine(", ");
 
-				ushort dataPtr = (ushort)(0x04da + (i * 22));
+				ushort dataPtr = (ushort)(0x14e2 + (i * 58));
 
-				writer.Write($"new TechnologyDefinition(TechnologyEnum.{(TechnologyEnum)i}, " +
-					$"\"{this.oCPU.ReadString(this.oCPU.DS.Word, (ushort)(dataPtr))}\", " +
-					$"TechnologyEnum.{(TechnologyEnum)this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(dataPtr + 20))}, " +
-					$"TechnologyEnum.{(TechnologyEnum)this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(dataPtr + 21))}" +
+				writer.Write($"new NationDefinition(" +
+					$"\"{this.oCPU.ReadString(this.oCPU.ES.Word, (ushort)(dataPtr))}\", " +
+					$"\"{this.oCPU.ReadString(this.oCPU.ES.Word, (ushort)(dataPtr + 16))}\", " +
+					$"\"{this.oCPU.ReadString(this.oCPU.ES.Word, (ushort)(dataPtr + 32))}\", " +
+					$"0x{this.oCPU.ReadInt16(this.oCPU.ES.Word, (ushort)(dataPtr + 48)):x4}, " +
+					$"0x{this.oCPU.ReadInt16(this.oCPU.ES.Word, (ushort)(dataPtr + 50)):x4}, " +
+					$"0x{this.oCPU.ReadInt16(this.oCPU.ES.Word, (ushort)(dataPtr + 52)):x4}, " +
+					$"0x{this.oCPU.ReadInt16(this.oCPU.ES.Word, (ushort)(dataPtr + 54)):x4}, " +
+					$"0x{this.oCPU.ReadInt16(this.oCPU.ES.Word, (ushort)(dataPtr + 56)):x4}" +
 					$")");
 			}
 			writer.Write("}");

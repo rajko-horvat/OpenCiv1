@@ -326,13 +326,8 @@ namespace OpenCiv1
 			// Instruction address 0x2459:0x0348, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " gold\npieces plundered.\n");
 
-			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX,
-				(ushort)this.oParent.GameState.Players[playerID].NationalityID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
 			// Instruction address 0x2459:0x035d, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1518)), 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oParent.GameState.Nations[this.oParent.GameState.Players[playerID].NationalityID].ShortTune, 0);
 
 			this.oCPU.TESTByte((byte)(this.oParent.GameState.GameSettingFlags & 0xff), 0x8);
 			if (this.oCPU.Flags.E) goto L03b7;

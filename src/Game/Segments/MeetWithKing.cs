@@ -563,11 +563,7 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)), 0x8);
 			if (this.oCPU.Flags.L) goto L04df;
 
-			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX,
-				(ushort)this.oParent.GameState.Players[playerID].NationalityID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1512));
+			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Nations[this.oParent.GameState.Players[playerID].NationalityID].Behavior1;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2a), 
 				this.oCPU.SUBWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2a)), this.oCPU.AX.Word));
 
@@ -2075,12 +2071,8 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, " Check Intelligence\n");
 
 		L1771:
-			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.GameState.Players[playerID].NationalityID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
 			// Instruction address 0x0000:0x1787, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1518)), 3);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oParent.GameState.Nations[this.oParent.GameState.Players[playerID].NationalityID].ShortTune, 3);
 
 			// Instruction address 0x0000:0x178f, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0280();
@@ -2112,12 +2104,8 @@ namespace OpenCiv1
 			
 			F6_0000_1d2b(playerID);
 
-			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.GameState.Players[playerID].NationalityID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
 			// Instruction address 0x0000:0x1802, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x151a)), 3);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oParent.GameState.Nations[this.oParent.GameState.Players[playerID].NationalityID].LongTune, 3);
 
 			// Instruction address 0x0000:0x180a, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();

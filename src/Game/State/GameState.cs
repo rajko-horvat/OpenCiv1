@@ -27,6 +27,25 @@ namespace OpenCiv1
 		// Players
 		public Player[] Players = new Player[8];
 
+		// Nations
+		public NationDefinition[] Nations = new NationDefinition[] {
+			new NationDefinition("", "", "", 0, 0, 0, 36, 36),
+			new NationDefinition("Caesar", "", "Roman", 0, 1, 1, 24, 10),
+			new NationDefinition("Hammurabi", "", "Babylonian", -1, -1, 1, 28, 14),
+			new NationDefinition("Frederick", "Germans", "German", 1, -1, 1, 32, 18),
+			new NationDefinition("Ramesses", "", "Egyptian", 0, 0, 1, 21, 7),
+			new NationDefinition("Abe Lincoln", "", "American", -1, 0, 1, 19, 5),
+			new NationDefinition("Alexander", "", "Greek", 0, 1, -1, 26, 12),
+			new NationDefinition("M.Gandhi", "", "Indian", -1, -1, 0, 31, 17),
+			new NationDefinition("", "", "", 0, 0, 0, 36, 36),
+			new NationDefinition("Stalin", "", "Russian", 1, 0, -1, 25, 11),
+			new NationDefinition("Shaka", "", "Zulu", 1, 0, 0, 22, 8),
+			new NationDefinition("Napoleon", "French", "French", 1, 1, 1, 23, 9),
+			new NationDefinition("Montezuma", "", "Aztec", 0, -1, 1, 20, 6),
+			new NationDefinition("Mao Tse Tung", "Chinese", "Chinese", 0, 0, 1, 29, 15),
+			new NationDefinition("Elizabeth I", "English", "English", 0, 1, 0, 27, 13),
+			new NationDefinition("Genghis Khan", "", "Mongol", 1, 1, -1, 30, 16)};
+
 		// Continents
 		public short[] PerContinentSizeAndPerOceanSize = new short[128];
 		public Continent[] Continents = new Continent[64];
