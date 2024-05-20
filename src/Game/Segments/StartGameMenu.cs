@@ -278,11 +278,8 @@ namespace OpenCiv1
 			goto L0392;
 
 		L0369:
-			this.oCPU.AX.Word = 0x3a;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x16d2);
 			// Instruction address 0x0000:0x0377, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.AX.Word);
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.GameState.Nations[8 + this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))].Nationality);
 
 			// Instruction address 0x0000:0x0387, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\n ");
