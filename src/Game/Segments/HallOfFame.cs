@@ -502,20 +502,12 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb77e);
 			this.oCPU.ES.Word = 0x3772; // segment
 			this.oCPU.WriteUInt16(this.oCPU.ES.Word, (ushort)(this.oCPU.SI.Word + 0x37d2), this.oCPU.AX.Word);
-			
-			this.oParent.MSCAPI.movedata(
-				this.oCPU.DS.Word,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((this.oParent.GameState.HumanPlayerID << 1) + 0x19a2)),
-				0x3772,
-				(ushort)(this.oCPU.SI.Word + 0x37e0),
-				0xe);
 
-			this.oParent.MSCAPI.movedata(
-				this.oCPU.DS.Word,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((this.oParent.GameState.HumanPlayerID << 1) + 0x1992)),
-				0x3772,
-				(ushort)(this.oCPU.SI.Word + 0x37f0),
-				0x10);
+			this.oCPU.WriteString(CPU.ToLinearAddress(0x3772, (ushort)(this.oCPU.SI.Word + 0x37e0)),
+				this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].Name, 13);
+
+			this.oCPU.WriteString(CPU.ToLinearAddress(0x3772, (ushort)(this.oCPU.SI.Word + 0x37f0)),
+				this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].Nation, 11);
 
 			this.oCPU.AX.Word = (ushort)this.oParent.GameState.DifficultyLevel;
 			this.oCPU.ES.Word = 0x3772; // segment
@@ -957,10 +949,10 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.BX.Word = (ushort)this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].PlayerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
+
 			// Instruction address 0x0000:0x0b5a, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982)));
+			this.oParent.MSCAPI.strcat(0xba06, 
+				this.oParent.GameState.Players[this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].PlayerID].Nationality);
 
 			// Instruction address 0x0000:0x0b6a, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ")");

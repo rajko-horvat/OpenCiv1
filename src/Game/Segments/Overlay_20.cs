@@ -1340,7 +1340,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd766, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x0e93, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)));
+			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.Players[playerID].Nationality);
 
 			// Instruction address 0x0000:0x0ea3, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " Citizens (");
@@ -1413,9 +1413,10 @@ namespace OpenCiv1
 			this.oParent.Segment_1d12.F0_1d12_7045(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
 				(short)(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)) - 2));
-			
+
 			// Instruction address 0x0000:0x0fac, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0((ushort)((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)) * 0x1e) + 0xe6a),
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(
+				this.oParent.GameState.BuildingDefinitions[24 + this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))].Name,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)) + 20,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)),
 				11);
@@ -1436,10 +1437,8 @@ namespace OpenCiv1
 			goto L0f15;
 
 		L0fd6:
-			this.oCPU.BX.Word = (ushort)playerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x0fe3, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982)));
+			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.Players[playerID].Nationality);
 
 			// Instruction address 0x0000:0x0ff3, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " Achievements (");

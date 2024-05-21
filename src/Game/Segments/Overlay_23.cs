@@ -107,17 +107,13 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0126, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Your Name...", 166, 90, 0);
 
-			this.oCPU.BX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x013c, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x19a2)));
+			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].Name);
 
 			F23_0000_0414(0xa6, 0x68, 0xd);
 
-			this.oCPU.BX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x0165, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x19a2)), 0xba06);
+			this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].Name = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
 
 			// Instruction address 0x0000:0x016d, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
@@ -150,17 +146,13 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x01c9, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Name of your Tribe...", 166, 90, 0);
 
-			this.oCPU.BX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x01df, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
+			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].Nation);
 
 			F23_0000_0414(0xa6, 0x68, 0xb);
 
-			this.oCPU.BX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x0208, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)), 0xba06);
+			this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].Nation = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
 
 			// Instruction address 0x0000:0x0214, size: 5
 			this.oParent.MSCAPI.strlen(0xba06);
@@ -173,15 +165,8 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba06), 0x0);
 
 		L022e:
-			this.oCPU.BX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x023c, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982)), 0xba06);
-
-			this.oCPU.BX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982));
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xa), 0x0);
+			this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].Nationality = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06).Substring(0, 9);
 
 			// Instruction address 0x0000:0x0252, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();

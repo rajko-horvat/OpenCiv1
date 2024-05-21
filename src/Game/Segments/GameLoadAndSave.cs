@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using IRB.VirtualCPU;
 using OpenCiv1.GPU;
 
@@ -473,18 +474,14 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0548, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " ");
 
-			this.oCPU.BX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x055e, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x19a2)));
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].Name);
 
 			// Instruction address 0x0000:0x056e, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\n ");
 
-			this.oCPU.BX.Word = (ushort)this.oParent.GameState.HumanPlayerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x0584, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].Nation);
 
 			// Instruction address 0x0000:0x0594, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "/");
@@ -778,9 +775,57 @@ namespace OpenCiv1
 				this.oParent.GameState.DifficultyLevel = ReadInt16(reader);
 				this.oParent.GameState.ActiveCivilizations = ReadInt16(reader);
 				this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].CurrentResearchID = ReadInt16(reader);
-				ReadData(reader, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19a2), 0x70);
-				ReadData(reader, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1992), 0x60);
-				ReadData(reader, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1982), 0x58);
+
+				for (int i = 0; i < 8; i++)
+				{
+					byte[] buffer = new byte[13];
+					reader.Read(buffer, 0, 13);
+					reader.ReadByte();
+
+					string sTemp = ASCIIEncoding.ASCII.GetString(buffer);
+					int iPosition = sTemp.IndexOf('\0');
+
+					if (iPosition >= 0)
+					{
+						sTemp = sTemp.Substring(0, iPosition);
+					}
+
+					this.oParent.GameState.Players[i].Name = sTemp;
+				}
+
+				for (int i = 0; i < 8; i++)
+				{
+					byte[] buffer = new byte[11];
+					reader.Read(buffer, 0, 11);
+					reader.ReadByte();
+
+					string sTemp = ASCIIEncoding.ASCII.GetString(buffer);
+					int iPosition = sTemp.IndexOf('\0');
+
+					if (iPosition >= 0)
+					{
+						sTemp = sTemp.Substring(0, iPosition);
+					}
+
+					this.oParent.GameState.Players[i].Nation = sTemp;
+				}
+
+				for (int i = 0; i < 8; i++)
+				{
+					byte[] buffer = new byte[10];
+					reader.Read(buffer, 0, 10);
+					reader.ReadByte();
+
+					string sTemp = ASCIIEncoding.ASCII.GetString(buffer);
+					int iPosition = sTemp.IndexOf('\0');
+
+					if (iPosition >= 0)
+					{
+						sTemp = sTemp.Substring(0, iPosition);
+					}
+
+					this.oParent.GameState.Players[i].Nationality = sTemp;
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{
@@ -1307,9 +1352,60 @@ namespace OpenCiv1
 				WriteInt16(writer, this.oParent.GameState.DifficultyLevel);
 				WriteInt16(writer, this.oParent.GameState.ActiveCivilizations);
 				WriteInt16(writer, this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].CurrentResearchID);
-				WriteData(writer, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x19a2), 0x70);
-				WriteData(writer, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1992), 0x60);
-				WriteData(writer, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1982), 0x58);
+
+				for (int i = 0; i < 8; i++)
+				{
+					string sTemp = this.oParent.GameState.Players[i].Name;
+
+					for (int j = 0; j < 13; j++)
+					{
+						if (j >= sTemp.Length)
+						{
+							writer.WriteByte(0);
+						}
+						else
+						{
+							writer.WriteByte((byte)sTemp[j]);
+						}
+					}
+					writer.WriteByte(0);
+				}
+
+				for (int i = 0; i < 8; i++)
+				{
+					string sTemp = this.oParent.GameState.Players[i].Nation;
+
+					for (int j = 0; j < 11; j++)
+					{
+						if (j >= sTemp.Length)
+						{
+							writer.WriteByte(0);
+						}
+						else
+						{
+							writer.WriteByte((byte)sTemp[j]);
+						}
+					}
+					writer.WriteByte(0);
+				}
+
+				for (int i = 0; i < 8; i++)
+				{
+					string sTemp = this.oParent.GameState.Players[i].Nationality;
+
+					for (int j = 0; j < 10; j++)
+					{
+						if (j >= sTemp.Length)
+						{
+							writer.WriteByte(0);
+						}
+						else
+						{
+							writer.WriteByte((byte)sTemp[j]);
+						}
+					}
+					writer.WriteByte(0);
+				}
 
 				for (int i = 0; i < this.oParent.GameState.Players.Length; i++)
 				{

@@ -2482,11 +2482,8 @@ namespace OpenCiv1
 			this.oParent.Var_2f9e_Unknown = 0x1;
 
 		L20a5:
-			this.oCPU.BX.Word = (ushort)((short)this.Var_6548_PlayerID);
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
-
 			// Instruction address 0x1d12:0x20b3, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982)));
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.GameState.Players[this.Var_6548_PlayerID].Nationality);
 
 			// Instruction address 0x1d12:0x20c3, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " capital\nmoved to ");
@@ -4398,7 +4395,7 @@ namespace OpenCiv1
 
 		L3a53:
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word,
-				(ushort)this.oParent.GameState.Nations[this.oParent.GameState.Players[this.Var_6548_PlayerID].NationalityID].Behavior3);
+				(ushort)this.oParent.GameState.Nations[this.oParent.GameState.Players[this.Var_6548_PlayerID].NationalityID].Ideology);
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.Var_6546);
 			this.oParent.Var_db42 -= this.oCPU.AX.Word;
 

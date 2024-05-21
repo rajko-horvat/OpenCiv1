@@ -3553,7 +3553,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a));
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Nations[this.oParent.GameState.Players[playerID].NationalityID].Behavior2;
+			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Nations[this.oParent.GameState.Players[playerID].NationalityID].Policy;
 
 			this.oCPU.AX.Word = this.oCPU.INCWord(this.oCPU.AX.Word);
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.GameState.Continents[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a))].BuildSiteCount);

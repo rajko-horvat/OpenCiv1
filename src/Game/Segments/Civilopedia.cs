@@ -1219,11 +1219,9 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0ec0, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "(Taken from ");
 
-			this.oCPU.AX.Word = (ushort)this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].TechnologyAcquiredFrom[technologyID];
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x0eea, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
+			this.oParent.MSCAPI.strcat(0xba06, 
+				this.oParent.GameState.Players[this.oParent.GameState.Players[this.oParent.GameState.HumanPlayerID].TechnologyAcquiredFrom[technologyID]].Nation);
 
 			// Instruction address 0x0000:0x0efa, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ")");

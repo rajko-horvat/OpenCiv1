@@ -443,7 +443,8 @@ namespace OpenCiv1
 
 		L05ed:
 			// Instruction address 0x1403:0x05fa, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30b8), this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((playerID * 2) + 0x1992)));
+			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30b8),
+				this.oParent.GameState.Players[playerID].Nation);
 
 			this.oParent.Help.F4_0000_02d3(0x1e6e);
 			
@@ -4189,7 +4190,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, "The ");
 
 			// Instruction address 0x1403:0x3595, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((playerID << 1) + 0x1992)));
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.GameState.Players[playerID].Nation);
 
 			// Instruction address 0x1403:0x35a5, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " are\nrevolting! Citizens\ndemand new govt.\n");
@@ -4367,15 +4368,15 @@ namespace OpenCiv1
 
 		L37f9:
 			// Instruction address 0x1403:0x3805, size: 5
-			this.oParent.GameState.Nations[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a))].Behavior1 =
+			this.oParent.GameState.Nations[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a))].Mood =
 				(short)(this.oParent.MSCAPI.RNG.Next(3) - 1); // -1 = Friendly, 0 = Neutral, 1 = Aggressive
 
 			// Instruction address 0x1403:0x3816, size: 5
-			this.oParent.GameState.Nations[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a))].Behavior2 = 
+			this.oParent.GameState.Nations[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a))].Policy = 
 				(short)(this.oParent.MSCAPI.RNG.Next(3) - 1); // -1 = Perfectionist, 0 = Neutral, 1 = Expansionistic
 
 			// Instruction address 0x1403:0x3827, size: 5
-			this.oParent.GameState.Nations[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a))].Behavior3 = 
+			this.oParent.GameState.Nations[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a))].Ideology = 
 				(short)(this.oParent.MSCAPI.RNG.Next(3) - 1); // -1 = Militaristic, 0 = Neutral, 1 = Civilized
 
 			goto L37ed;
@@ -5331,10 +5332,8 @@ namespace OpenCiv1
 		L40ca:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 0x63);
 
-			this.oCPU.BX.Word = (ushort)playerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x1403:0x40dc, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982)));
+			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.Players[playerID].Nationality);
 
 			// Instruction address 0x1403:0x40f3, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 4, 99, 0);

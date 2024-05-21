@@ -48,10 +48,8 @@ namespace OpenCiv1
 
 			this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition.X = -1;
 
-			this.oCPU.BX.Word = (ushort)playerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x003a, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982)));
+			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.Players[playerID].Nationality);
 
 			// Instruction address 0x0000:0x004a, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " diplomat arrives\nin ");
@@ -263,10 +261,8 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26)));
 
-			this.oCPU.BX.Word = (ushort)playerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x025e, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
+			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.Players[playerID].Nation);
 
 			// Instruction address 0x0000:0x026e, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " steal\n");
@@ -636,10 +632,8 @@ namespace OpenCiv1
 			goto L0961;
 
 		L06d6:
-			this.oCPU.BX.Word = (ushort)playerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x06e3, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982)));
+			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.Players[playerID].Nationality);
 
 			// Instruction address 0x0000:0x06f3, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " ");
@@ -704,10 +698,8 @@ namespace OpenCiv1
 				this.oParent.GameState.Players[playerID].Units[unitID].Position.X - 8,
 				this.oParent.GameState.Players[playerID].Units[unitID].Position.Y - 6);
 
-			this.oCPU.BX.Word = (ushort)playerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x081b, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982)));
+			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.Players[playerID].Nationality);
 
 			// Instruction address 0x0000:0x082b, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " ");
@@ -718,10 +710,8 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0851, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " unit\nbribed by ");
 
-			this.oCPU.BX.Word = (ushort)playerID1;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x0866, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.GameState.Players[playerID1].Nation);
 
 			// Instruction address 0x0000:0x0876, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "!\n");
@@ -1090,10 +1080,8 @@ namespace OpenCiv1
 				this.oParent.GameState.Cities[cityID].Position.Y - 5);
 
 		L0cbe:
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x0ccb, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1992)));
+			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Nation);
 
 			if (playerID == 0)
 			{
@@ -1114,10 +1102,8 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0d07, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-			this.oCPU.BX.Word = (ushort)playerID;
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x0d1c, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1982)));
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.GameState.Players[playerID].Nationality);
 
 			// Instruction address 0x0000:0x0d31, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " influence\nsuspected.\n");

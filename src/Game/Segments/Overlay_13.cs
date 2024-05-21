@@ -40,7 +40,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 
 			// Instruction address 0x0000:0x005d, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)),
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(this.oParent.GameState.Players[playerID].Nationality,
 				128, 4, 15);
 
 			// Instruction address 0x0000:0x0078, size: 5
@@ -234,7 +234,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
 
 			// Instruction address 0x0000:0x0410, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)));
+			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Nationality);
 
 			this.oCPU.BX.Word = (ushort)playerID;
 			this.oCPU.CX.Low = 0x4;
@@ -626,7 +626,8 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x0000:0x0877, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)),
+			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(
+				this.oParent.GameState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Nationality,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)) * 40, 8,
 				(byte)this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1946)));
 
@@ -637,7 +638,8 @@ namespace OpenCiv1
 					(ushort)((((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)) << 5) + 0x40) << 1) + 0xd4ce)));
 
 			// Instruction address 0x0000:0x08ad, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1982)),
+			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(
+				this.oParent.GameState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Nationality,
 				4, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)) * 12 + 32,
 				(byte)this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1946)));
 

@@ -11,20 +11,20 @@ namespace OpenCiv1
 		public string Leader;
 		public string Nation;
 		public string Nationality;
-		public short Behavior1;
-		public short Behavior2;
-		public short Behavior3;
+		public short Mood;
+		public short Policy;
+		public short Ideology;
 		public short ShortTune;
 		public short LongTune;
 
-		public NationDefinition(string leader, string nation, string nationality, short behavior1, short behavior2, short behavior3, short shortTune, short longTune)
+		public NationDefinition(string leader, string nation, string nationality, short mood, short policy, short ideology, short shortTune, short longTune)
 		{
 			this.Leader = leader;
 			this.Nation = nation;
 			this.Nationality = nationality;
-			this.Behavior1 = behavior1;
-			this.Behavior2 = behavior2;
-			this.Behavior3 = behavior3;
+			this.Mood = mood; // -1 = Friendly, 0 = Neutral, 1 = Aggressive
+			this.Policy = policy; // -1 = Perfectionist, 0 = Neutral, 1 = Expansionistic
+			this.Ideology = ideology; // -1 = Militaristic, 0 = Neutral, 1 = Civilized
 			this.ShortTune = shortTune;
 			this.LongTune = longTune;
 		}
