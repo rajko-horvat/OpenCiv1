@@ -28,28 +28,88 @@ namespace OpenCiv1
 		public Player[] Players = new Player[8];
 
 		// Nations
-		public NationDefinition[] Nations = new NationDefinition[] {
-			new NationDefinition("", "", "", 0, 0, 0, 36, 36),
-			new NationDefinition("Caesar", "", "Roman", 0, 1, 1, 24, 10),
-			new NationDefinition("Hammurabi", "", "Babylonian", -1, -1, 1, 28, 14),
-			new NationDefinition("Frederick", "Germans", "German", 1, -1, 1, 32, 18),
-			new NationDefinition("Ramesses", "", "Egyptian", 0, 0, 1, 21, 7),
-			new NationDefinition("Abe Lincoln", "", "American", -1, 0, 1, 19, 5),
-			new NationDefinition("Alexander", "", "Greek", 0, 1, -1, 26, 12),
-			new NationDefinition("M.Gandhi", "", "Indian", -1, -1, 0, 31, 17),
-			new NationDefinition("", "", "", 0, 0, 0, 36, 36),
-			new NationDefinition("Stalin", "", "Russian", 1, 0, -1, 25, 11),
-			new NationDefinition("Shaka", "", "Zulu", 1, 0, 0, 22, 8),
-			new NationDefinition("Napoleon", "French", "French", 1, 1, 1, 23, 9),
-			new NationDefinition("Montezuma", "", "Aztec", 0, -1, 1, 20, 6),
-			new NationDefinition("Mao Tse Tung", "Chinese", "Chinese", 0, 0, 1, 29, 15),
-			new NationDefinition("Elizabeth I", "English", "English", 0, 1, 0, 27, 13),
-			new NationDefinition("Genghis Khan", "", "Mongol", 1, 1, -1, 30, 16)};
+		private NationDefinition[] aNations = new NationDefinition[] {
+			new NationDefinition(0, "", "", "", 0, 0, 0, 36, 36,
+				new string[] {"Mecca", "Naples", "Sidon", "Tyre", "Tarsus", "Issus", "Cunaxa", "Cremona", "Cannae", "Capua",
+					"Turin", "Genoa", "Utica", "Crete", "Damascus", "Verona" }),
+			new NationDefinition(1, "Caesar", "", "Roman", 0, 1, 1, 24, 10, 
+				new string[] {"Rome", "Caesarea", "Carthage", "Nicopolis", "Byzantium", "Brundisium", "Syracuse", "Antioch", "Palmyra", "Cyrene",
+					"Gordion", "Tyrus", "Jerusalem", "Seleucia", "Ravenna", "Artaxata" }),
+			new NationDefinition(2, "Hammurabi", "", "Babylonian", -1, -1, 1, 28, 14,
+				new string[] {"Babylon", "Sumer", "Uruk", "Nineveh", "Ashur", "Ellipi", "Akkad", "Eridu", "Kish", "Nippur",
+					"Shuruppak", "Zariqum", "Izibia", "Nimrud", "Arbela", "Zamua" }),
+			new NationDefinition(3, "Frederick", "Germans", "German", 1, -1, 1, 32, 18,
+				new string[] {"Berlin", "Leipzig", "Hamburg", "Bremen", "Frankfurt", "Bonn", "Nuremberg", "Cologne", "Hannover", "Munich",
+					"Stuttgart", "Heidelburg", "Salzburg", "Konigsberg", "Dortmund", "Brandenburg" }),
+			new NationDefinition(4, "Ramesses", "", "Egyptian", 0, 0, 1, 21, 7,
+				new string[] {"Thebes", "Memphis", "Oryx", "Heliopolis", "Gaza", "Alexandria", "Byblos", "Cairo", "Coptos", "Edfu",
+					"Pithom", "Busiris", "Athribis", "Mendes", "Tanis", "Abydos" }),
+			new NationDefinition(5, "Abe Lincoln", "", "American", -1, 0, 1, 19, 5,
+				new string[] {"Washington", "New York", "Boston", "Philadelphia", "Atlanta", "Chicago", "Buffalo", "St.Louis", "Detroit", "New Orleans",
+					"Baltimore", "Denver", "Cincinnati", "Dallas", "Los Angeles", "Las Vegas" }),
+			new NationDefinition(6, "Alexander", "", "Greek", 0, 1, -1, 26, 12,
+				new string[] {"Athens", "Sparta", "Corinth", "Delphi", "Eretria", "Pharsalos", "Argos", "Mycenae", "Herakleia", "Antioch",
+					"Ephesos", "Rhodes", "Knossos", "Troy", "Pergamon", "Miletos" }),
+			new NationDefinition(7, "M.Gandhi", "", "Indian", -1, -1, 0, 31, 17,
+				new string[] {"Delhi", "Bombay", "Madras", "Bangalore", "Calcutta", "Lahore", "Karachi", "Kolhapur", "Jaipur", "Hyderabad",
+					"Bengal", "Chittagong", "Punjab", "Dacca", "Indus", "Ganges" }),
+			new NationDefinition(8, "", "", "", 0, 0, 0, 36, 36,
+				new string[] {"Salamis", "Lisbon", "Hamburg", "Prague", "Salzburg", "Bergen", "Venice", "Milan", "Ghent", "Pisa",
+					"Cordoba", "Seville", "Dublin", "Toronto", "Melbourne", "Sydney" }),
+			new NationDefinition(9, "Stalin", "", "Russian", 1, 0, -1, 25, 11,
+				new string[] {"Moscow", "Leningrad", "Kiev", "Minsk", "Smolensk", "Odessa", "Sevastopol", "Tblisi", "Sverdlovsk", "Yakutsk",
+					"Vladivostok", "Novograd", "Krasnoyarsk", "Riga", "Rostov", "Astrakhan" }),
+			new NationDefinition(10, "Shaka", "", "Zulu", 1, 0, 0, 22, 8,
+				new string[] {"Zimbabwe", "Ulundi", "Bapedi", "Hlobane", "Isandhlwana", "Intombe", "Mpondo", "Ngome", "Swazi", "Tugela",
+					"Umtata", "Umfolozi", "Ibabanago", "Isipezi", "Amatikulu", "Zunguin" }),
+			new NationDefinition(11, "Napoleon", "French", "French", 1, 1, 1, 23, 9,
+				new string[] {"Paris", "Orleans", "Lyons", "Tours", "Chartres", "Bordeaux", "Rouen", "Avignon", "Marseilles", "Grenoble",
+					"Dijon", "Amiens", "Cherbourg", "Poitiers", "Toulouse", "Bayonne" }),
+			new NationDefinition(12, "Montezuma", "", "Aztec", 0, -1, 1, 20, 6,
+				new string[] {"Tenochtitlan", "Chiauhtia", "Chapultepec", "Coatepec", "Ayotzinco", "Itzapalapa", "Iztapam", "Mitxcoac", "Tacubaya", "Tecamac",
+					"Tepezinco", "Ticoman", "Tlaxcala", "Xaltocan", "Xicalango", "Zumpanco" }),
+			new NationDefinition(13, "Mao Tse Tung", "Chinese", "Chinese", 0, 0, 1, 29, 15,
+				new string[] {"Peking", "Shanghai", "Canton", "Nanking", "Tsingtao", "Hangchow", "Tientsin", "Tatung", "Macao", "Anyang",
+					"Shantung", "Chinan", "Kaifeng", "Ningpo", "Paoting", "Yangchow" }),
+			new NationDefinition(14, "Elizabeth I", "English", "English", 0, 1, 0, 27, 13,
+				new string[] {"London", "Coventry", "Birmingham", "Dover", "Nottingham", "York", "Liverpool", "Brighton", "Oxford", "Reading",
+					"Exeter", "Cambridge", "Hastings", "Canterbury", "Banbury", "Newcastle" }),
+			new NationDefinition(15, "Genghis Khan", "", "Mongol", 1, 1, -1, 30, 16,
+				new string[] {"Samarkand", "Bokhara", "Nishapur", "Karakorum", "Kashgar", "Tabriz", "Aleppo", "Kabul", "Ormuz", "Basra",
+					"Khanbalyk", "Khorasan", "Shangtu", "Kazan", "Quinsay", "Kerman" })};
 
 		// Continents
 		public short[] PerContinentSizeAndPerOceanSize = new short[128];
 		public Continent[] Continents = new Continent[64];
 		public Continent[] Oceans = new Continent[64];
+
+		// Terrains
+		private TerrainDefinition[] aTerrains = new TerrainDefinition[]{
+			new TerrainDefinition(0, "Desert", 1, 2, 0, 1, 0, 1, 14),
+			new TerrainDefinition(1, "Plains", 1, 2, 1, 1, 0, 1, 6),
+			new TerrainDefinition(2, "Grassland", 1, 2, 2, 1, 0, 1, 10),
+			new TerrainDefinition(3, "Forest", 2, 3, 1, 2, 0, 2, 2),
+			new TerrainDefinition(4, "Hills", 2, 4, 1, 0, 0, 2, 12),
+			new TerrainDefinition(5, "Mountains", 3, 6, 0, 1, 0, 3, 13),
+			new TerrainDefinition(6, "Tundra", 1, 2, 1, 0, 0, 0, 7),
+			new TerrainDefinition(7, "Arctic", 2, 2, 0, 0, 0, 0, 15),
+			new TerrainDefinition(8, "Swamp", 2, 3, 1, 0, 0, 0, 3),
+			new TerrainDefinition(9, "Jungle", 2, 3, 1, 0, 0, 0, 11),
+			new TerrainDefinition(10, "Ocean", 1, 2, 1, 0, 2, 0, 1),
+			new TerrainDefinition(11, "River", 1, 3, 2, 1, 1, 2, 9),
+			// Terrain addons
+			new TerrainDefinition(12, "Oasis", 1, 2, 3, 1, 0, 1, 14),
+			new TerrainDefinition(13, "Horses", 1, 2, 1, 3, 0, 1, 6),
+			new TerrainDefinition(14, "Grassland", 1, 2, 2, 1, 0, 1, 10),
+			new TerrainDefinition(15, "Game", 2, 3, 3, 2, 0, 2, 2),
+			new TerrainDefinition(16, "Coal", 2, 4, 1, 2, 0, 2, 12),
+			new TerrainDefinition(17, "Gold", 3, 6, 0, 1, 6, 3, 13),
+			new TerrainDefinition(18, "Game", 1, 2, 3, 0, 0, 0, 7),
+			new TerrainDefinition(19, "Seals", 2, 2, 2, 0, 0, 0, 15),
+			new TerrainDefinition(20, "Oil", 2, 3, 1, 4, 0, 0, 3),
+			new TerrainDefinition(21, "Gems", 2, 3, 1, 0, 4, 0, 11),
+			new TerrainDefinition(22, "Fish", 1, 2, 3, 0, 2, 0, 1),
+			new TerrainDefinition(23, "River", 1, 3, 2, 1, 1, 2, 9)};
 
 		// Graphs
 		public byte[] ScoreGraphData = new byte[1200];
@@ -384,6 +444,16 @@ namespace OpenCiv1
 		public SpaceshipCell[] SpaceshipCells
 		{
 			get => this.aSpaceshipCells;
+		}
+
+		public NationDefinition[] Nations
+		{
+			get => this.aNations;
+		}
+
+		public TerrainDefinition[] Terrains
+		{
+			get => this.aTerrains;
 		}
 
 		public UnitDefinition[] UnitDefinitions

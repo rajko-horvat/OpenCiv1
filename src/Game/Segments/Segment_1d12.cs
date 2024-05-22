@@ -8129,7 +8129,25 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 			this.oCPU.BX.Word = param3;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0x374));
+
+			switch (param3)
+			{
+				case 0:
+					this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[12 + this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Food;
+					break;
+
+				case 1:
+					this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[12 + this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Production;
+					break;
+
+				case 2:
+					this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[12 + this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Trade;
+					break;
+
+				default:
+					throw new Exception("Unknown terrain field");
+			}
+
 			goto L6b1c;
 
 		L6b0d:
@@ -8137,7 +8155,24 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 			this.oCPU.BX.Word = param3;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0x290));
+
+			switch (param3)
+			{
+				case 0:
+					this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Food;
+					break;
+
+				case 1:
+					this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Production;
+					break;
+
+				case 2:
+					this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Trade;
+					break;
+
+				default:
+					throw new Exception("Unknown terrain field");
+			}
 
 		L6b1c:
 			this.oCPU.CBW(this.oCPU.AX);

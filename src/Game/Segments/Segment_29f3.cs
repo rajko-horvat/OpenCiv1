@@ -89,7 +89,7 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)));
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.DI.Word + 0x28f));
+			this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20))].DefenseBonus;
 			this.oCPU.CBW(this.oCPU.AX);
 
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, 
@@ -119,7 +119,7 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x28f));
+			this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20))].DefenseBonus;
 			this.oCPU.CBW(this.oCPU.AX);
 
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, 
@@ -141,7 +141,7 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x28f));
+			this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20))].DefenseBonus;
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX,
 				(ushort)((short)this.oParent.GameState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))].DefenseStrength));
@@ -248,7 +248,7 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x28f));
+			this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20))].DefenseBonus;
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX,
 				(ushort)((short)this.oParent.GameState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))].DefenseStrength));

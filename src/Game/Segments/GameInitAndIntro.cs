@@ -1751,18 +1751,22 @@ namespace OpenCiv1
 		L0f54:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x40)), 0x18);
 			if (this.oCPU.Flags.GE) goto L0fb8;
+
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x40)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
+
 			this.oCPU.DI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x40));
 			this.oCPU.DI.Word = this.oCPU.SHLWord(this.oCPU.DI.Word, 0x1);
 			this.oCPU.DI.Word = this.oCPU.ADDWord(this.oCPU.DI.Word, this.oCPU.BP.Word);
 			this.oCPU.DI.Word = this.oCPU.SUBWord(this.oCPU.DI.Word, 0x38);
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x292));
+
+			this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x40))].Trade;
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Low = 0x3;
-			this.oCPU.IMULByte(this.oCPU.AX, this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x290)));
+			this.oCPU.IMULByte(this.oCPU.AX, 
+				(byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x40))].Food);
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, this.oCPU.CX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, this.oCPU.DI.Word, this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x40));
@@ -1774,7 +1778,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0f9c;
 			this.oCPU.CMPWord(this.oCPU.DX.Word, 0xb);
 			if (this.oCPU.Flags.E) goto L0f9c;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x291));
+
+			this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x40))].Production;
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 0x1);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, this.oCPU.DI.Word, this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, this.oCPU.DI.Word), this.oCPU.AX.Word));

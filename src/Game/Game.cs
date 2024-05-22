@@ -987,6 +987,7 @@ namespace OpenCiv1
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x42, 0x1e, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x60, 0xc, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x98, 20, CPUMemoryFlagsEnum.AccessNotAllowed));
+			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x282, 456, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x4da, 1584, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb9a, 1380, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x112a, 952, CPUMemoryFlagsEnum.AccessNotAllowed));
@@ -1093,22 +1094,23 @@ namespace OpenCiv1
 			/*this.oCPU.ES.Word = 0x3b01; // segment
 			StreamWriter writer = new StreamWriter("Data.cs");
 			writer.Write("{");
-			for (int i = 0; i < 16; i++)
+			for (int i = 0; i < 24; i++)
 			{
 				if (i > 0)
 					writer.WriteLine(", ");
 
-				ushort dataPtr = (ushort)(0x14e2 + (i * 58));
+				ushort dataPtr = (ushort)(0x282 + (i * 19));
 
-				writer.Write($"new NationDefinition(" +
+				writer.Write($"new TerrainDefinition(" +
+					$"{i}, "+
 					$"\"{this.oCPU.ReadString(this.oCPU.ES.Word, (ushort)(dataPtr))}\", " +
-					$"\"{this.oCPU.ReadString(this.oCPU.ES.Word, (ushort)(dataPtr + 16))}\", " +
-					$"\"{this.oCPU.ReadString(this.oCPU.ES.Word, (ushort)(dataPtr + 32))}\", " +
-					$"0x{this.oCPU.ReadInt16(this.oCPU.ES.Word, (ushort)(dataPtr + 48)):x4}, " +
-					$"0x{this.oCPU.ReadInt16(this.oCPU.ES.Word, (ushort)(dataPtr + 50)):x4}, " +
-					$"0x{this.oCPU.ReadInt16(this.oCPU.ES.Word, (ushort)(dataPtr + 52)):x4}, " +
-					$"0x{this.oCPU.ReadInt16(this.oCPU.ES.Word, (ushort)(dataPtr + 54)):x4}, " +
-					$"0x{this.oCPU.ReadInt16(this.oCPU.ES.Word, (ushort)(dataPtr + 56)):x4}" +
+					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 12))}, " +
+					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 13))}, " +
+					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 14))}, " +
+					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 15))}, " +
+					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 16))}, " +
+					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 17))}, " +
+					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 18))}" +
 					$")");
 			}
 			writer.Write("}");

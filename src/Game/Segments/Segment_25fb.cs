@@ -3853,12 +3853,13 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L241e;
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a)), 0x0);
 			if (this.oCPU.Flags.E) goto L241e;
+			
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x28e)), 0x1);
-			if (this.oCPU.Flags.NE) goto L241e;
-			goto L20ba;
+
+			if (this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42))].MovementCost == 1)
+				goto L20ba;
 
 		L241e:
 			this.oCPU.AX.Word = 0xc;
@@ -3926,11 +3927,8 @@ namespace OpenCiv1
 				this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition.X,
 				this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition.Y);
 
-			this.oCPU.CX.Word = 0x13;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x291)), 0x0);
-			if (this.oCPU.Flags.E) goto L250b;
+			if (this.oParent.GameState.Terrains[this.oCPU.AX.Word].Production == 0)
+				goto L250b;
 
 			// Instruction address 0x25fb:0x24fb, size: 5
 			this.oParent.Segment_2aea.F0_2aea_1942(
@@ -4370,10 +4368,12 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(3));
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
+
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x38)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x28e));
+
+			this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x38))].MovementCost;
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 0x1);
 
@@ -4387,11 +4387,14 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(3));
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
+
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x38)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x28f));
+
+			this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x38))].DefenseBonus;
 			this.oCPU.CBW(this.oCPU.AX);
+
 			goto L28c6;
 
 		L28eb:
@@ -4437,10 +4440,12 @@ namespace OpenCiv1
 			this.oParent.Segment_1866.F0_1866_1251(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 1);
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
+
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x38)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x28f));
+
+			this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x38))].DefenseBonus;
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, this.oCPU.CX.Word);
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 0x1);
@@ -4469,7 +4474,8 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x38)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x28f));
+
+			this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x38))].DefenseBonus;
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 0x1);
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 0x1);
@@ -4731,11 +4737,10 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x38)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x28f)), 0x4);
-			if (this.oCPU.Flags.GE) goto L2c14;
-			goto L2dbd;
 
-		L2c14:
+			if (this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x38))].DefenseBonus < 4)
+				goto L2dbd;
+
 			// Instruction address 0x25fb:0x2c1e, size: 5
 			this.oParent.Segment_1866.F0_1866_1251(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x58)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 2);
@@ -5042,10 +5047,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)));
 
-			this.oCPU.CX.Word = 0x13;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x290));
+			this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.AX.Word].Food;
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)), this.oCPU.AX.Word));
 
@@ -6557,10 +6559,12 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(4));
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
+			
 			this.oCPU.AX.Word = 0x13;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x28e));
+
+			this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].MovementCost;
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, this.oCPU.CX.Word);
 			this.oCPU.CX.Word = this.oParent.Var_6c9a;
