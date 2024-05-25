@@ -1406,17 +1406,10 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
 
-			if (this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Food != 0)
-				goto L122b;
+			if (this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Food == 0 &&
+				this.oParent.GameState.TerrainMultipliers[id].Multi1 >= -1)
+				goto L131e;
 
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, id);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x44a)), 0xffff);
-			if (this.oCPU.Flags.L) goto L122b;
-			goto L131e;
-
-		L122b:
 			// Instruction address 0x0000:0x1233, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Food: ");
 
@@ -1437,32 +1430,31 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0xc;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, id);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, 0x44a);
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, this.oCPU.SI.Word), 0xffff);
-			if (this.oCPU.Flags.GE) goto L12f3;
 
-			// Instruction address 0x0000:0x1296, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, " (");
-
-			this.oCPU.AX.Word = 0x13;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
-			this.oCPU.DI.Word = this.oCPU.AX.Word;
-
-			// Instruction address 0x0000:0x12c6, size: 5
-			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Food -
-					this.oCPU.ReadInt16(this.oCPU.DS.Word, this.oCPU.SI.Word) - 1, 10));
-
-			if (this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Food >= 2)
+			if (this.oParent.GameState.TerrainMultipliers[id].Multi1 < -1)
 			{
-				// Instruction address 0x0000:0x12db, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, "*");
-			}
-		
-			// Instruction address 0x0000:0x12eb, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, " with Irrigation)");
+				// Instruction address 0x0000:0x1296, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, " (");
 
-		L12f3:
+				this.oCPU.AX.Word = 0x13;
+				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
+				this.oCPU.DI.Word = this.oCPU.AX.Word;
+
+				// Instruction address 0x0000:0x12c6, size: 5
+				this.oParent.MSCAPI.strcat(0xba06,
+					this.oParent.MSCAPI.itoa(this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Food -
+						this.oParent.GameState.TerrainMultipliers[id].Multi1 - 1, 10));
+
+				if (this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Food >= 2)
+				{
+					// Instruction address 0x0000:0x12db, size: 5
+					this.oParent.MSCAPI.strcat(0xba06, "*");
+				}
+
+				// Instruction address 0x0000:0x12eb, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, " with Irrigation)");
+			}
+
 			// Instruction address 0x0000:0x12fb, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " units.");
 
@@ -1480,12 +1472,8 @@ namespace OpenCiv1
 			if (this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Production != 0)
 				goto L133f;
 
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, id);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x44e)), 0xffff);
-			if (this.oCPU.Flags.L) goto L133f;
-			goto L1433;
+			if (this.oParent.GameState.TerrainMultipliers[id].Multi3 >= -1)
+				goto L1433;
 
 		L133f:
 			// Instruction address 0x0000:0x1347, size: 5
@@ -1512,9 +1500,9 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0xc;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, id);
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
-			this.oCPU.DI.Word = this.oCPU.ADDWord(this.oCPU.DI.Word, 0x44e);
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, this.oCPU.DI.Word), 0xffff);
-			if (this.oCPU.Flags.GE) goto L1408;
+
+			if (this.oParent.GameState.TerrainMultipliers[id].Multi3 >= -1)
+				goto L1408;
 
 			// Instruction address 0x0000:0x13b1, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " (");
@@ -1522,11 +1510,11 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x13d5, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
 				this.oParent.MSCAPI.itoa(this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Production -
-						this.oCPU.ReadInt16(this.oCPU.DS.Word, this.oCPU.DI.Word) - 1, 10));
+						this.oParent.GameState.TerrainMultipliers[id].Multi3 - 1, 10));
 
 			this.oCPU.AX.Low = (byte)this.oParent.GameState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Production;
 			this.oCPU.CBW(this.oCPU.AX);
-			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, this.oCPU.DI.Word));
+			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, (ushort)this.oParent.GameState.TerrainMultipliers[id].Multi3);
 			this.oCPU.AX.Word = this.oCPU.DECWord(this.oCPU.AX.Word);
 			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x3);
 			if (this.oCPU.Flags.L) goto L13f8;

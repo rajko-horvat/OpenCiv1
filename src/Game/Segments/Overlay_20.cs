@@ -152,16 +152,12 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x01a1, size: 5
 			this.oParent.Segment_2aea.F0_2aea_134a(xPos, yPos);
 
-			this.oCPU.CX.Word = 0xc;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x44a)), 0xffff);
-			if (this.oCPU.Flags.GE) goto L01c9;
-
-			// Instruction address 0x0000:0x01c1, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1653(2, xPos, yPos);
-
-		L01c9:
+			if (this.oParent.GameState.TerrainMultipliers[this.oCPU.AX.Word].Multi1 < -1)
+			{
+				// Instruction address 0x0000:0x01c1, size: 5
+				this.oParent.Segment_2aea.F0_2aea_1653(2, xPos, yPos);
+			}
+		
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;

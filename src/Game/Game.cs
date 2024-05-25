@@ -988,6 +988,7 @@ namespace OpenCiv1
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x60, 0xc, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x98, 20, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x282, 456, CPUMemoryFlagsEnum.AccessNotAllowed));
+			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x44a, 144, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x4da, 1584, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb9a, 1380, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x112a, 952, CPUMemoryFlagsEnum.AccessNotAllowed));
@@ -1094,23 +1095,21 @@ namespace OpenCiv1
 			/*this.oCPU.ES.Word = 0x3b01; // segment
 			StreamWriter writer = new StreamWriter("Data.cs");
 			writer.Write("{");
-			for (int i = 0; i < 24; i++)
+			for (int i = 0; i < 12; i++)
 			{
 				if (i > 0)
 					writer.WriteLine(", ");
 
-				ushort dataPtr = (ushort)(0x282 + (i * 19));
+				ushort dataPtr = (ushort)(0x44a + (i * 12));
 
-				writer.Write($"new TerrainDefinition(" +
-					$"{i}, "+
-					$"\"{this.oCPU.ReadString(this.oCPU.ES.Word, (ushort)(dataPtr))}\", " +
-					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 12))}, " +
-					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 13))}, " +
-					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 14))}, " +
-					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 15))}, " +
-					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 16))}, " +
-					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 17))}, " +
-					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 18))}" +
+				writer.Write($"new TerrainMulti(" +
+					$"{i}, " +
+					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 0))}, " +
+					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 2))}, " +
+					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 4))}, " +
+					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 6))}, " +
+					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 8))}, " +
+					$"{this.oCPU.ReadInt8(this.oCPU.ES.Word, (ushort)(dataPtr + 10))}" +
 					$")");
 			}
 			writer.Write("}");

@@ -3370,22 +3370,19 @@ namespace OpenCiv1
 		L1fdf:
 			// Instruction address 0x25fb:0x1fe6, size: 5
 			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Monarchy);
-			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE)
+
+			if (this.oCPU.AX.Word == 0)
 			{
-				this.oCPU.SI.Word = 0x5;
+				this.oCPU.SI.Word = (ushort)this.oParent.GameState.TerrainMultipliers[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42))].Multi5;
 			}
 			else
 			{
-				this.oCPU.SI.Word = 0x4;
+				this.oCPU.SI.Word = (ushort)this.oParent.GameState.TerrainMultipliers[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42))].Multi6;
 			}
 		
-			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42)));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0x44a)), 0x0);
-			if (this.oCPU.Flags.NE) goto L2014;
+			if (this.oCPU.SI.Word != 0)
+				goto L2014;
+
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x5);
 			if (this.oCPU.Flags.E) goto L2014;
 			goto L213b;
@@ -3597,28 +3594,21 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e)));
 
-			this.oCPU.CX.Word = 0xc;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x25fb:0x21ea, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Monarchy);
-			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE)
+			if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Monarchy) == 0)
 			{
-				this.oCPU.BX.Word = 0x5;
+				this.oCPU.BX.Word = (ushort)this.oParent.GameState.TerrainMultipliers[this.oCPU.SI.Word].Multi5;
 			}
 			else
 			{
-				this.oCPU.BX.Word = 0x4;
+				this.oCPU.BX.Word = (ushort)this.oParent.GameState.TerrainMultipliers[this.oCPU.SI.Word].Multi6;
 			}
-		
-			this.oCPU.BX.Word = this.oCPU.SHLWord(this.oCPU.BX.Word, 0x1);
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0x44a)), 0x0);
-			if (this.oCPU.Flags.NE) goto L220a;
-			goto L22a3;
+					
+			if (this.oCPU.BX.Word == 0)
+				goto L22a3;
 
-		L220a:
 			// Instruction address 0x25fb:0x2210, size: 5
 			this.oParent.Segment_1403.F0_1403_3f68(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e)));
