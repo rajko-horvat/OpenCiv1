@@ -13,19 +13,21 @@ namespace OpenCiv1
 		public string Name = ""; // (24 bytes)
 		public int Price = 0;
 		public int Maintenance = 0;
-		public TechnologyEnum RequiredTechnology = 0;
+		public TechnologyEnum RequiresTechnology = TechnologyEnum.None;
+		public TechnologyEnum ObsoletesAfterTechnology = TechnologyEnum.None;
 
 		public BuildingDefinition()
 		{ }
 
-		public BuildingDefinition(int id, string name, int price, int maintenance, TechnologyEnum requiredTechnology)
+		public BuildingDefinition(int id, string name, int price, int maintenance, TechnologyEnum requiresTechnology, TechnologyEnum obsoletesAfterTechnology)
 		{
 			this.ID = id;
 
 			this.Name = name;
 			this.Price = price;
 			this.Maintenance = maintenance;
-			this.RequiredTechnology = requiredTechnology;
+			this.RequiresTechnology = requiresTechnology;
+			this.ObsoletesAfterTechnology = obsoletesAfterTechnology;
 		}
 	}
 }

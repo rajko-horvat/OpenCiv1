@@ -12,6 +12,8 @@ namespace OpenCiv1
 {
 	public partial class Game
 	{
+		private static bool enableLog = false;
+
 		private CPU oCPU;
 
 		#region Segment definitions
@@ -70,9 +72,9 @@ namespace OpenCiv1
 
 		public Game()
 		{
-			this.oLog = new LogWrapper($"{CPU.AssemblyPath}Log.txt");
-			this.oInterruptLog = new LogWrapper($"{CPU.AssemblyPath}InterruptLog.txt");
-			this.oGoToLog = new LogWrapper($"{CPU.AssemblyPath}GoToLog.txt");
+			this.oLog = new LogWrapper($"{CPU.AssemblyPath}Log.txt", enableLog);
+			this.oInterruptLog = new LogWrapper($"{CPU.AssemblyPath}InterruptLog.txt", enableLog);
+			this.oGoToLog = new LogWrapper($"{CPU.AssemblyPath}GoToLog.txt", enableLog);
 
 			this.oCPU = new CPU(this, this.oLog);
 
@@ -991,6 +993,7 @@ namespace OpenCiv1
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x44a, 144, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x4da, 1584, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0xb9a, 1380, CPUMemoryFlagsEnum.AccessNotAllowed));
+			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x10fe, 44, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x112a, 952, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x14e2, 928, CPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x1882, 96, CPUMemoryFlagsEnum.AccessNotAllowed));

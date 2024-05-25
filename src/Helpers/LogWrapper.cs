@@ -7,14 +7,15 @@ namespace OpenCiv1
 {
 	public class LogWrapper
 	{
-		private StreamWriter oLog;
+		private StreamWriter? oLog = null;
 		private int iLogTabLevel = 0;
 		private CPU? oCPU = null;
 		private Stack<ushort> aStack = new Stack<ushort>();
 
-		public LogWrapper(string path)
+		public LogWrapper(string path, bool enableLog)
 		{
-			this.oLog = new StreamWriter(path);
+			if (enableLog)
+				this.oLog = new StreamWriter(path);
 		}
 
 		public CPU? CPU
@@ -115,7 +116,8 @@ namespace OpenCiv1
 
 		private void WriteTabs(int level)
 		{
-			this.oLog.Write($"{new string('\t', level)}");
+			if (this.oLog != null)
+				this.oLog.Write($"{new string('\t', level)}");
 		}
 	}
 }

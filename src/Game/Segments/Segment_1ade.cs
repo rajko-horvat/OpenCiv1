@@ -682,7 +682,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x1ade:0x06be, size: 3
 			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, 
-				(int)this.oParent.GameState.BuildingDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].RequiredTechnology);
+				(int)this.oParent.GameState.BuildingDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].RequiresTechnology);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L069f;
@@ -729,7 +729,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L074e;
 	
 			// Instruction address 0x1ade:0x0741, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, (int)this.oParent.GameState.BuildingDefinitions[5].RequiredTechnology);
+			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, (int)this.oParent.GameState.BuildingDefinitions[5].RequiresTechnology);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L074e;
@@ -746,7 +746,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0779;
 	
 			// Instruction address 0x1ade:0x076c, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, (int)this.oParent.GameState.BuildingDefinitions[6].RequiredTechnology);
+			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, (int)this.oParent.GameState.BuildingDefinitions[6].RequiresTechnology);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L0779;
@@ -833,7 +833,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x1ade:0x0846, size: 3
 			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID,
-				(int)this.oParent.GameState.BuildingDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].RequiredTechnology);
+				(int)this.oParent.GameState.BuildingDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].RequiresTechnology);
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L08cf;
@@ -2660,7 +2660,7 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			if ((int)this.oParent.GameState.BuildingDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18))].RequiredTechnology != this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)))
+			if ((int)this.oParent.GameState.BuildingDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18))].RequiresTechnology != this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)))
 				goto L1af1;
 
 			// Instruction address 0x1ade:0x1ad6, size: 5
@@ -2995,7 +2995,7 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			if ((int)this.oParent.GameState.BuildingDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].RequiredTechnology != technologyID)
+			if ((int)this.oParent.GameState.BuildingDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].RequiresTechnology != technologyID)
 				goto L1eaf;
 
 			// Instruction address 0x1ade:0x1e97, size: 5
@@ -3196,23 +3196,14 @@ namespace OpenCiv1
 			if (technologyID != 0x22 && technologyID != 0x25)
 				goto L2174;
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x0);
-
-		L20ed:
-			this.oCPU.AX.Word = 0x1c;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-
-			if (this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].StatusFlag != 0xff &&
-				this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].PlayerID == playerID)
+			for (int i = 0; i < 128; i++)
 			{
-				this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].BuildingFlags0 &= 0xfffd;
+				if (this.oParent.GameState.Cities[i].StatusFlag != 0xff &&
+					this.oParent.GameState.Cities[i].PlayerID == playerID)
+				{
+					this.oParent.GameState.Cities[i].BuildingFlags0 &= 0xfffd;
+				}
 			}
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 
-				this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x80);
-			if (this.oCPU.Flags.L) goto L20ed;
 
 			if (playerID != this.oParent.GameState.HumanPlayerID)
 				goto L2174;
@@ -3245,46 +3236,30 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x21a1, size: 5
 			this.oParent.Segment_1866.F0_1866_250e_AddReplayData(5, (byte)playerID, (byte)technologyID);
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x1);
+			for (int i = 1; i < 22; i++)
+			{
+				if (this.oParent.GameState.Cities[this.oParent.GameState.WonderCityID[i]].PlayerID != -1 &&
+					this.oParent.GameState.BuildingDefinitions[24 + i].ObsoletesAfterTechnology == (TechnologyEnum)technologyID)
+				{
+					if (this.oParent.GameState.Cities[this.oParent.GameState.WonderCityID[i]].PlayerID == this.oParent.GameState.HumanPlayerID)
+					{
+						// Instruction address 0x1ade:0x21de, size: 5
+						this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.TechnologyDefinitions[technologyID].Name);
 
-		L21ae:
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
-			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
-			this.oCPU.AX.Word = (ushort)technologyID;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x10fe)), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L2228;
-			this.oCPU.AX.Word = 0x1c;
-			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.GameState.WonderCityID[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))]);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
+						// Instruction address 0x1ade:0x21ee, size: 5
+						this.oParent.MSCAPI.strcat(0xba06, " cancels\nthe effect of\n");
 
-			// !!! Illegal memory access, this.oParent.GameState.WonderCityID[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))] == -1
-			if (this.oParent.GameState.WonderCityID[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))] == -1 ||
-				this.oParent.GameState.Cities[this.oParent.GameState.WonderCityID[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))]].PlayerID !=
-				this.oParent.GameState.HumanPlayerID)
-				goto L2228;
+						// Instruction address 0x1ade:0x2204, size: 5
+						this.oParent.MSCAPI.strcat(0xba06,
+							this.oParent.GameState.BuildingDefinitions[24 + i].Name);
 
-			// Instruction address 0x1ade:0x21de, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.GameState.TechnologyDefinitions[technologyID].Name);
+						// Instruction address 0x1ade:0x2214, size: 5
+						this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-			// Instruction address 0x1ade:0x21ee, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, " cancels\nthe effect of\n");
-
-			// Instruction address 0x1ade:0x2204, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 
-				this.oParent.GameState.BuildingDefinitions[24 + this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Name);
-
-			// Instruction address 0x1ade:0x2214, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, ".\n");
-
-			this.oParent.Overlay_21.F21_0000_0000(-1);
-
-		L2228:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 
-				this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
-
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x15);
-			if (this.oCPU.Flags.G) goto L2234;
-			goto L21ae;
+						this.oParent.Overlay_21.F21_0000_0000(-1);
+					}
+				}
+			}
 
 		L2234:
 			this.oCPU.AX.Word = (ushort)this.oParent.GameState.WonderCityID[5];
@@ -3305,29 +3280,25 @@ namespace OpenCiv1
 			this.oParent.Segment_1d12.F0_1d12_6c97(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 5);
 			
 			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L22af;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x1);
+			if (this.oCPU.Flags.E)
+				goto L22af;
 
-		L227b:
-			// Instruction address 0x1ade:0x2282, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), technologyID);
-			this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE)
+			int iCount = 0;
+
+			for (int i = 1; i < 8; i++)
 			{
-				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4),
-					this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))));
+				// Instruction address 0x1ade:0x2282, size: 3
+				if (F0_1ade_22b5_PlayerHasTechnology((short)i, technologyID) != 0)
+				{
+					iCount++;
+				}
 			}
-		
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 
-				this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x8);
-			if (this.oCPU.Flags.L) goto L227b;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), 0x2);
-			if (this.oCPU.Flags.L) goto L22af;
 
-			// Instruction address 0x1ade:0x22a9, size: 3
-			F0_1ade_1d2e(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), technologyID, -2);
+			if (iCount >= 2)
+			{
+				// Instruction address 0x1ade:0x22a9, size: 3
+				F0_1ade_1d2e(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), technologyID, -2);
+			}
 
 		L22af:
 			this.oCPU.SI.Word = this.oCPU.PopWord();

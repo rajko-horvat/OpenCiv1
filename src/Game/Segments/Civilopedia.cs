@@ -1177,7 +1177,7 @@ namespace OpenCiv1
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			if ((int)this.oParent.GameState.BuildingDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e))].RequiredTechnology != id)
+			if ((int)this.oParent.GameState.BuildingDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e))].RequiresTechnology != id)
 				goto L0e23;
 
 			// Instruction address 0x0000:0x0e4a, size: 5
@@ -1257,7 +1257,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0f5e, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, 
-				this.oParent.GameState.TechnologyDefinitions[(int)this.oParent.GameState.BuildingDefinitions[id].RequiredTechnology].Name);
+				this.oParent.GameState.TechnologyDefinitions[(int)this.oParent.GameState.BuildingDefinitions[id].RequiresTechnology].Name);
 
 			// Instruction address 0x0000:0x0f75, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 12, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
