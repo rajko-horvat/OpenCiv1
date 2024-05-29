@@ -840,13 +840,13 @@ namespace OpenCiv1
 
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0));
 			this.oCPU.SI.Word = this.oCPU.SHLWord(this.oCPU.SI.Word, 0x1);
-			this.oCPU.CMPWord((ushort)this.oParent.GameState.WonderCityID[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0)) - 0x18], 0xffff);
-			if (this.oCPU.Flags.NE) goto L08cf;
-			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x10ce)), 0x7f);
-			if (this.oCPU.Flags.E) goto L0886;
+			
+			if (this.oParent.GameState.WonderCityID[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0)) - 24] != -1)
+				goto L08cf;
 
-			this.oCPU.TESTByte((byte)this.oParent.GameState.TechnologyFirstDiscoveredBy[this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x10ce))], 0x7);
-			if (this.oCPU.Flags.E) goto L0886;
+			if (this.oParent.GameState.BuildingDefinitions[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0)) - 24].ObsoletesAfterTechnology == TechnologyEnum.None ||
+				(this.oParent.GameState.TechnologyFirstDiscoveredBy[(int)this.oParent.GameState.BuildingDefinitions[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0)) - 24].ObsoletesAfterTechnology] & 7) == 0)
+				goto L0886;
 
 			// Instruction address 0x1ade:0x087e, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "*");
@@ -3238,7 +3238,7 @@ namespace OpenCiv1
 
 			for (int i = 1; i < 22; i++)
 			{
-				if (this.oParent.GameState.Cities[this.oParent.GameState.WonderCityID[i]].PlayerID != -1 &&
+				if (this.oParent.GameState.WonderCityID[i] != -1 &&
 					this.oParent.GameState.BuildingDefinitions[24 + i].ObsoletesAfterTechnology == (TechnologyEnum)technologyID)
 				{
 					if (this.oParent.GameState.Cities[this.oParent.GameState.WonderCityID[i]].PlayerID == this.oParent.GameState.HumanPlayerID)

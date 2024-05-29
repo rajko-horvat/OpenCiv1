@@ -373,7 +373,7 @@ namespace OpenCiv1
 			new BuildingDefinition(31, "Great Wall", 30, 0, TechnologyEnum.Masonry, TechnologyEnum.Gunpowder),
 			new BuildingDefinition(32, "Magellan's Expedition", 40, 0, TechnologyEnum.Navigation, TechnologyEnum.None),
 			new BuildingDefinition(33, "Michelangelo's Chapel", 30, 0, TechnologyEnum.Religion, TechnologyEnum.Communism),
-			new BuildingDefinition(34, "Copernicus' Observatory", 30, 0, TechnologyEnum.Astronomy, TechnologyEnum.None), // !!! By manual it expires after the development of Automobile
+			new BuildingDefinition(34, "Copernicus' Observatory", 30, 0, TechnologyEnum.Astronomy, TechnologyEnum.Automobile), // !!! By manual it should obsolete after the development of Automobile
 			new BuildingDefinition(35, "Shakespeare's Theatre", 40, 0, TechnologyEnum.Medicine, TechnologyEnum.Electronics),
 			new BuildingDefinition(36, "Isaac Newton's College", 40, 0, TechnologyEnum.TheoryOfGravity, TechnologyEnum.NuclearFission),
 			new BuildingDefinition(37, "J.S.Bach's Cathedral", 40, 0, TechnologyEnum.Religion, TechnologyEnum.None),
