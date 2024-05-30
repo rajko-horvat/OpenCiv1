@@ -420,7 +420,7 @@ namespace OpenCiv1
 
 			for (int i = 0; i < this.Cities.Length; i++)
 			{
-				this.Cities[i] = new City();
+				this.Cities[i] = new City(i);
 			}
 
 			for (int i = 0; i < this.CityPositions.Length; i++)

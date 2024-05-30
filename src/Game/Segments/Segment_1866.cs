@@ -2912,12 +2912,12 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1866:0x19a9, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0289(
+			this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
 				this.oParent.GameState.Players[playerID].Units[unitID].Position.X,
+				this.oParent.GameState.Players[playerID].Units[unitID].Position.Y,
 				// !!! Added if city doesn't exist at that location
 				(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)) >= 0 && this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)) < 128) ?
 					this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].Position.X : -1,
-				this.oParent.GameState.Players[playerID].Units[unitID].Position.Y,
 				// !!! Added if city doesn't exist at that location
 				(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)) >= 0 && this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)) < 128) ?
 					this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].Position.Y : -1);

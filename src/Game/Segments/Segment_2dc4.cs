@@ -131,10 +131,10 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x2dc4:0x0142, size: 3
-			F0_2dc4_0289(
-				xPos, 
+			F0_2dc4_0289_GetShortestDistance(
+				xPos,
+				yPos,
 				this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.X,
-				yPos, 
 				this.oParent.GameState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
@@ -195,9 +195,9 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ADDWord(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
 			// Instruction address 0x2dc4:0x01b2, size: 3
-			F0_2dc4_0289(
-				xPos, this.oParent.GameState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.X,
-				yPos, this.oParent.GameState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.Y);
+			F0_2dc4_0289_GetShortestDistance(
+				xPos, yPos,
+				this.oParent.GameState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.X, this.oParent.GameState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
@@ -246,31 +246,50 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// Combines the X and Y positions
+		/// ?
 		/// </summary>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
+		/// <param name="xPos1"></param>
+		/// <param name="yPos1"></param>
 		/// <returns></returns>
-		public int F0_2dc4_0208_CombinePosition(int xPos, int yPos)
+		public int F0_2dc4_0289_GetShortestDistance(int xPos, int yPos, int xPos1, int yPos1)
+		{
+			// function body
+			return F0_2dc4_0208_GetShortestDistance(xPos - xPos1, yPos - yPos1);
+		}
+
+		/// <summary>
+		/// Combines the X and Y positions
+		/// </summary>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <returns></returns>
+		public int F0_2dc4_0208_GetShortestDistance(int width, int height)
 		{
 			// function body			
-			xPos = Math.Abs(xPos);
-			yPos = Math.Abs(yPos);
+			width = Math.Abs(width);
+			height = Math.Abs(height);
 
-			if (xPos > yPos)
+			// take into account either map direction from median
+			if (width > 40)
 			{
+				width = 80 - width;
+			}
 
-				yPos = (short)((yPos / 2) + xPos);
-				this.oCPU.AX.Word = (ushort)((short)yPos);
+			if (width > height)
+			{
+				height = (height / 2) + width;
+				this.oCPU.AX.Word = (ushort)((short)height);
 
-				return yPos;
+				return height;
 			}
 			else
 			{
-				xPos = (short)((xPos / 2) + yPos);
-				this.oCPU.AX.Word = (ushort)((short)xPos);
+				width = (width / 2) + height;
+				this.oCPU.AX.Word = (ushort)((short)width);
 
-				return xPos;
+				return width;
 			}
 		}
 
@@ -306,30 +325,6 @@ namespace OpenCiv1
 			this.oParent.Log.ExitBlock("F0_2dc4_0243");
 
 			return this.oCPU.AX.Word;
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="xPos1"></param>
-		/// <param name="yPos"></param>
-		/// <param name="yPos1"></param>
-		/// <returns></returns>
-		public int F0_2dc4_0289(int xPos, int xPos1, int yPos, int yPos1)
-		{
-			// function body
-			int iXPosTemp = Math.Abs(xPos - xPos1);
-
-			if (iXPosTemp > 40)
-			{
-				iXPosTemp = 0x50 - iXPosTemp;
-			}
-		
-			int iYPposTemp = Math.Abs(yPos - yPos1);
-			
-			// Instruction address 0x2dc4:0x02c6, size: 3
-			return F0_2dc4_0208_CombinePosition(iXPosTemp, iYPposTemp);
 		}
 
 		/// <summary>

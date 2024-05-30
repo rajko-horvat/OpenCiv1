@@ -7,11 +7,11 @@ namespace OpenCiv1
 	{
 		#region Global variables
 		public GPoint[] CityOffsets = new GPoint[] { 
-			new GPoint(0, -1), new GPoint(1, 0), new GPoint(0, 1), 
-			new GPoint(-1, 0), new GPoint(1, -1), new GPoint(1, 1), new GPoint(-1, 1), new GPoint(-1, -1), 
-			new GPoint(0, -2), new GPoint(2, 0), new GPoint(0, 2), new GPoint(-2, 0), new GPoint(-1, -2), 
-			new GPoint(1, -2), new GPoint(2, -1), new GPoint(2, 1), new GPoint(1, 2), new GPoint(-1, 2), 
-			new GPoint(-2, 1), new GPoint(-2, -1), new GPoint(0, 0) };
+			new GPoint(0, -1), new GPoint(1, 0), new GPoint(0, 1), new GPoint(-1, 0), 
+			new GPoint(1, -1), new GPoint(1, 1), new GPoint(-1, 1), new GPoint(-1, -1), 
+			new GPoint(0, -2), new GPoint(2, 0), new GPoint(0, 2), new GPoint(-2, 0), 
+			new GPoint(-1, -2), new GPoint(1, -2), new GPoint(2, -1), new GPoint(2, 1), new GPoint(1, 2), new GPoint(-1, 2), new GPoint(-2, 1), new GPoint(-2, -1), 
+			new GPoint(0, 0) };
 
 		public GPoint[] MoveOffsets = new GPoint[] {
 			new GPoint(0, 0), new GPoint(0, -1), new GPoint(1, -1),

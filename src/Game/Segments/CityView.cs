@@ -75,7 +75,7 @@ namespace OpenCiv1
 				else
 				{
 					// Instruction address 0x0000:0x0195, size: 5
-					int iCombinedPosition = this.oParent.Segment_2dc4.F0_2dc4_0208_CombinePosition((short)(iXPos1 - 9), (short)(iYPos1 - 10));
+					int iCombinedPosition = this.oParent.Segment_2dc4.F0_2dc4_0208_GetShortestDistance((short)(iXPos1 - 9), (short)(iYPos1 - 10));
 
 					aCityLayout[iXPos1, iYPos1] = Math.Min(Math.Max(((iTechnologyCount - iCombinedPosition) / 3) - oRNG.Next(2), iTechnologyCount / 6),
 						Math.Min((oCity.ActualSize / 4) + 6, 9));

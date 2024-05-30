@@ -998,7 +998,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < this.oParent.GameState.Cities.Length; i++)
 				{
-					this.oParent.GameState.Cities[i] = City.FromStream(reader);
+					this.oParent.GameState.Cities[i] = City.FromStream(i, reader);
 				}
 
 				for (int i = 0; i < 28; i++)

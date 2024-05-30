@@ -681,10 +681,10 @@ namespace OpenCiv1
 					if (this.oCPU.Flags.NE) goto L08cf;
 
 					// Instruction address 0x2e31:0x08b0, size: 5
-					this.oParent.Segment_2dc4.F0_2dc4_0289(
+					this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
 						this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition.X,
-						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)) * 4 + 1,
 						this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition.Y,
+						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)) * 4 + 1,
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34)) * 4 + 1);
 
 					this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), this.oCPU.AX.Word);
@@ -754,10 +754,10 @@ namespace OpenCiv1
 					this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), this.oCPU.AX.Word);
 
 					// Instruction address 0x2e31:0x0976, size: 5
-					this.oParent.Segment_2dc4.F0_2dc4_0289(
+					this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
 						this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition.X,
-						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)) * 4 + 1,
 						this.oParent.GameState.Players[playerID].Units[unitID].GoToPosition.Y,
+						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)) * 4 + 1,
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34)) * 4 + 1);
 
 					goto L08cc;
@@ -970,7 +970,7 @@ namespace OpenCiv1
 			this.oCPU.DI.Word <<= 2;
 
 			// Instruction address 0x2e31:0x0b43, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0208_CombinePosition(
+			this.oParent.Segment_2dc4.F0_2dc4_0208_GetShortestDistance(
 				xPos - (this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)) * 4) - 1,
 				yPos - (this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)) * 4) - 1);
 
@@ -1533,10 +1533,10 @@ namespace OpenCiv1
 
 		L1055:
 			// Instruction address 0x2e31:0x1063, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0289(
+			this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
 				this.Var_6590_XPos,
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
 				this.Var_6592_YPos,
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)), this.oCPU.AX.Word));
@@ -1571,10 +1571,10 @@ namespace OpenCiv1
 
 		L10af:
 			// Instruction address 0x2e31:0x10bd, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0289(
+			this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
 				this.Var_6590_XPos,
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
 				this.Var_6592_YPos,
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a), this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a)), this.oCPU.AX.Word));

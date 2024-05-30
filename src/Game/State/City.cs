@@ -5,6 +5,8 @@ namespace OpenCiv1
 {
 	public class City
 	{
+		public int ID = -1;
+
 		public ushort BuildingFlags0 = 0;
 		public ushort BuildingFlags1 = 0;
 		public GPoint Position = new GPoint(0, 0);
@@ -23,8 +25,10 @@ namespace OpenCiv1
 		public sbyte[] TradeCityIDs = new sbyte[3];
 		public sbyte[] Unknown = new sbyte[2];
 
-		public City()
+		public City(int id)
 		{
+			this.ID = id;
+
 			for (int i = 0; i < this.TradeCityIDs.Length; i++)
 				this.TradeCityIDs[i] = 0;
 
@@ -32,9 +36,9 @@ namespace OpenCiv1
 				this.Unknown[i] = 0;
 		}
 
-		public static City FromStream(Stream stream)
+		public static City FromStream(int id, Stream stream)
 		{
-			City city = new City();
+			City city = new City(id);
 
 			city.BuildingFlags0 = GameLoadAndSave.ReadUInt16(stream);
 			city.BuildingFlags1 = GameLoadAndSave.ReadUInt16(stream);
