@@ -18,9 +18,8 @@ namespace OpenCiv1
 		public short PlayerID = 0;
 		public short FoodCount = 0;
 		public short ShieldsCount = 0;
-		public ushort WorkerFlags0 = 0;
-		public ushort WorkerFlags1 = 0;
-		public ushort WorkerFlags2 = 0;
+		public uint WorkerFlags = 0;
+		public ushort SpecialWorkerFlags = 0;
 		public byte NameID = 0;
 		public sbyte[] TradeCityIDs = new sbyte[3];
 		public sbyte[] Unknown = new sbyte[2];
@@ -52,9 +51,8 @@ namespace OpenCiv1
 			city.PlayerID = (sbyte)GameLoadAndSave.ReadUInt8(stream);
 			city.FoodCount = GameLoadAndSave.ReadInt16(stream);
 			city.ShieldsCount = GameLoadAndSave.ReadInt16(stream);
-			city.WorkerFlags0 = GameLoadAndSave.ReadUInt16(stream);
-			city.WorkerFlags1 = GameLoadAndSave.ReadUInt16(stream);
-			city.WorkerFlags2 = GameLoadAndSave.ReadUInt16(stream);
+			city.WorkerFlags = GameLoadAndSave.ReadUInt32(stream);
+			city.SpecialWorkerFlags = GameLoadAndSave.ReadUInt16(stream);
 			city.NameID = GameLoadAndSave.ReadUInt8(stream);
 
 			for (int i = 0; i < city.TradeCityIDs.Length; i++)
@@ -80,9 +78,8 @@ namespace OpenCiv1
 			stream.WriteByte((byte)((short)this.PlayerID));
 			GameLoadAndSave.WriteInt16(stream, this.FoodCount);
 			GameLoadAndSave.WriteInt16(stream, this.ShieldsCount);
-			GameLoadAndSave.WriteUInt16(stream, this.WorkerFlags0);
-			GameLoadAndSave.WriteUInt16(stream, this.WorkerFlags1);
-			GameLoadAndSave.WriteUInt16(stream, this.WorkerFlags2);
+			GameLoadAndSave.WriteUInt32(stream, this.WorkerFlags);
+			GameLoadAndSave.WriteUInt16(stream, this.SpecialWorkerFlags);
 			stream.WriteByte(this.NameID);
 
 			for (int i = 0; i < this.TradeCityIDs.Length; i++)

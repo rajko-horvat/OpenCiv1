@@ -1252,7 +1252,7 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Reads a UInt16 from a Stream
 		/// </summary>
 		/// <param name="reader"></param>
 		/// <returns></returns>
@@ -1264,6 +1264,26 @@ namespace OpenCiv1
 			if (byte0 >= 0 && byte1 >= 0)
 			{
 				return (ushort)(byte0 | (byte1 << 8));
+			}
+
+			return 0;
+		}
+
+		/// <summary>
+		/// Reads a UInt32 from a Stream
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <returns></returns>
+		public static uint ReadUInt32(Stream reader)
+		{
+			int byte0 = reader.ReadByte();
+			int byte1 = reader.ReadByte();
+			int byte2 = reader.ReadByte();
+			int byte3 = reader.ReadByte();
+
+			if (byte0 >= 0 && byte1 >= 0 && byte2 >= 0 && byte3 >= 0)
+			{
+				return (uint)(byte0 | (byte1 << 8) | (byte2 << 16) | (byte3 << 24));
 			}
 
 			return 0;
@@ -1819,7 +1839,20 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Writes an UInt32 to a Stream
+		/// </summary>
+		/// <param name="writer"></param>
+		/// <param name="value"></param>
+		public static void WriteUInt32(Stream writer, uint value)
+		{
+			writer.WriteByte((byte)(value & 0xff));
+			writer.WriteByte((byte)((value & 0xff00) >> 8));
+			writer.WriteByte((byte)((value & 0xff0000) >> 16));
+			writer.WriteByte((byte)((value & 0xff000000) >> 24));
+		}
+
+		/// <summary>
+		/// Writes an Int16 to a Stream
 		/// </summary>
 		/// <param name="writer"></param>
 		/// <param name="value"></param>
