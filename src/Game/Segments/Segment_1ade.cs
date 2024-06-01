@@ -966,7 +966,7 @@ namespace OpenCiv1
 
 		L09bf:
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oParent.Var_e3c6);
-			this.oCPU.CX.Word = this.oParent.Var_70da_Arr[0];
+			this.oCPU.CX.Word = (ushort)((short)this.oParent.Var_70da_Arr[0]);
 			this.oCPU.CX.Word = this.oCPU.SUBWord(this.oCPU.CX.Word, this.oCPU.AX.Word);
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
@@ -1210,8 +1210,8 @@ namespace OpenCiv1
 			goto L0ed5;
 
 		L0c40:
-			this.oCPU.CMPWord(this.oParent.Var_70da_Arr[1], 0x3);
-			if (this.oCPU.Flags.L) goto L0c4c;
+			if (this.oParent.Var_70da_Arr[1] < 3)
+				goto L0c4c;
 
 		L0c47:
 			this.oCPU.AX.Word = 0x4;
@@ -1222,7 +1222,7 @@ namespace OpenCiv1
 			goto L0bf4;
 
 		L0c51:
-			this.oCPU.AX.Word = this.oParent.Var_70da_Arr[1];
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70da_Arr[1]);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
 			this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, 0x1);
@@ -1230,14 +1230,14 @@ namespace OpenCiv1
 			goto L0bf2;
 
 		L0c5e:
-			this.oCPU.AX.Word = this.oParent.Var_70da_Arr[1];
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70da_Arr[1]);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.Word = 0x5;
 			this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
 			goto L0bef;
 
 		L0c69:
-			this.oCPU.AX.Word = this.oParent.Var_70da_Arr[1];
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70da_Arr[1]);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.AX.Word = this.oCPU.XORWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
@@ -1248,7 +1248,7 @@ namespace OpenCiv1
 			goto L0bef;
 
 		L0c7d:
-			this.oCPU.AX.Word = this.oParent.Var_70da_Arr[2];
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70da_Arr[2]);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
 			this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, 0x1);
@@ -1267,7 +1267,7 @@ namespace OpenCiv1
 			goto L0ed5;
 
 		L0ca9:
-			this.oCPU.AX.Word = this.oParent.Var_70da_Arr[2];
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70da_Arr[2]);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.Word = 0x3;
 			this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
@@ -1277,7 +1277,7 @@ namespace OpenCiv1
 			goto L0bf2;
 
 		L0cb8:
-			this.oCPU.AX.Word = this.oParent.Var_70da_Arr[2];
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70da_Arr[2]);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.AX.Word = this.oCPU.XORWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
@@ -1362,7 +1362,7 @@ namespace OpenCiv1
 			this.oCPU.CMPByte((byte)this.oParent.GameState.Cities[cityID].TradeCityIDs[2], 0xff);
 			if (this.oCPU.Flags.NE) goto L0da7;
 
-			this.oCPU.AX.Word = this.oParent.Var_70da_Arr[2];
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70da_Arr[2]);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
 			this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, 0x1);
@@ -1924,8 +1924,9 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L11fb;
 
 			this.oCPU.AX.Word = this.oParent.Var_deb8;
-			this.oCPU.CMPWord(this.oParent.Var_70da_Arr[1], this.oCPU.AX.Word);
-			if (this.oCPU.Flags.LE) goto L1202;
+
+			if (this.oParent.Var_70da_Arr[1] <= (short)this.oParent.Var_deb8)
+				goto L1202;
 
 		L11fb:
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6ed4), 0x0);
@@ -2216,9 +2217,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x2);
 			
 			// Instruction address 0x1ade:0x150b, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				(short)this.oParent.Var_70da_Arr[1] - (short)this.oParent.Var_d2f6,
-				1, 99);
+			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.Var_70da_Arr[1] - (short)this.oParent.Var_d2f6, 1, 99);
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1ade:0x152d, size: 5

@@ -782,16 +782,13 @@ namespace OpenCiv1
 
 		L11c0:
 			// Instruction address 0x0000:0x11d7, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				(short)this.oParent.Var_70e2,
-				0, this.oParent.GameState.Cities[cityID].ActualSize);
+			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.Var_70e2, 0, this.oParent.GameState.Cities[cityID].ActualSize);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x1214, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				(short)this.oParent.Var_70e4, 
-				0, this.oParent.GameState.Cities[cityID].ActualSize);
+			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.Var_70e4, 0, this.oParent.GameState.Cities[cityID].ActualSize);
+
 			goto L1214;
 
 		L11ef:
