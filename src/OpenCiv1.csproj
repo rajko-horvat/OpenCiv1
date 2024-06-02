@@ -70,6 +70,8 @@
   <ItemGroup>
     <None Remove="..\LICENSE" />
     <None Remove="..\README.md" />
+	<None Remove="..\.github\code_of_conduct.md" />
+	<None Remove="..\.github\CONTRIBUTING.md" />
   </ItemGroup>
 
   <ItemGroup>
@@ -78,6 +80,12 @@
     </Content>
     <Content Include="..\README.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\.github\code_of_conduct.md">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\.github\CONTRIBUTING.md">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 	

@@ -753,10 +753,7 @@ namespace OpenCiv1
 				local_50 = city.ActualSize + 1;
 
 			L0e7a:
-				if (local_50 == (short)this.oParent.Var_e8b8)
-					goto L1292;
-
-				if (local_50 == 0)
+				if (local_50 == (short)this.oParent.Var_e8b8 || local_50 == 0)
 					goto L1292;
 
 			L0e91:
@@ -964,144 +961,80 @@ namespace OpenCiv1
 				local_f8 = 0;
 				this.oParent.Var_6c98 = 1;
 
-				this.oCPU.TESTWord(city.BuildingFlags0, 0x4000);
-				if (this.oCPU.Flags.NE) goto L137b;
-				goto L1381;
+				if ((city.BuildingFlags0 & 0x4000) != 0)
+				{
+					local_f8 = 2;
+				}
 
-			L137b:
-				local_f8 = 2;
+				if ((city.BuildingFlags0 & 0x8000) != 0)
+				{
+					local_f8 = 4;
+				}
 
-			L1381:
-				this.oCPU.TESTWord(city.BuildingFlags0, 0x8000);
-				if (this.oCPU.Flags.NE) goto L1394;
-				goto L139a;
+				if ((city.BuildingFlags1 & 0x4) != 0)
+				{
+					local_ac = 2;
+				}
 
-			L1394:
-				local_f8 = 4;
+				if ((city.BuildingFlags1 & 0x8) != 0)
+				{
+					this.oParent.Var_6c98 = 2;
+					local_ac = 2;
+				}
 
-			L139a:
-				this.oCPU.TESTWord(city.BuildingFlags1, 0x4);
-				if (this.oCPU.Flags.NE) goto L13ad;
-				goto L13b3;
+				if ((city.BuildingFlags1 & 0x10) != 0)
+				{
+					this.oParent.Var_6c98 = 2;
+					local_ac = 2;
+				}
 
-			L13ad:
-				local_ac = 2;
-
-			L13b3:
-				this.oCPU.TESTWord(city.BuildingFlags1, 0x8);
-				if (this.oCPU.Flags.NE) goto L13c6;
-				goto L13d2;
-
-			L13c6:
-				this.oParent.Var_6c98 = 2;
-				local_ac = 2;
-
-			L13d2:
-				this.oCPU.TESTWord(city.BuildingFlags1, 0x10);
-				if (this.oCPU.Flags.NE) goto L13e5;
-				goto L13f1;
-
-			L13e5:
-				this.oParent.Var_6c98 = 2;
-				local_ac = 2;
-
-			L13f1:
 				// Instruction address 0x1d12:0x13f9, size: 5
-				F0_1d12_6c97(this.Var_6548_PlayerID, 15);
+				if (F0_1d12_6c97(this.Var_6548_PlayerID, 15) != 0)
+				{
+					// Instruction address 0x1d12:0x1428, size: 5
+					this.oParent.Segment_2aea.F0_2aea_1942(
+						this.oParent.GameState.Cities[this.oParent.GameState.WonderCityID[15]].Position.X,
+						this.oParent.GameState.Cities[this.oParent.GameState.WonderCityID[15]].Position.Y);
 
-				this.oCPU.CMPWord(this.oCPU.AX.Word, 0x0);
-				if (this.oCPU.Flags.NE) goto L1409;
-				goto L145f;
+					local_10c = (short)this.oCPU.AX.Word;
 
-			L1409:
-				// Instruction address 0x1d12:0x1428, size: 5
-				this.oParent.Segment_2aea.F0_2aea_1942(
-					this.oParent.GameState.Cities[this.oParent.GameState.WonderCityID[15]].Position.X,
-					this.oParent.GameState.Cities[this.oParent.GameState.WonderCityID[15]].Position.Y);
+					// Instruction address 0x1d12:0x1442, size: 5
+					this.oParent.Segment_2aea.F0_2aea_1942(city.Position.X, city.Position.Y);
 
-				local_10c = (short)this.oCPU.AX.Word;
+					if ((short)this.oCPU.AX.Word == local_10c)
+					{
+						this.oParent.Var_6c98 = 2;
+						local_ac = 2;
+					}
+				}
 
-				// Instruction address 0x1d12:0x1442, size: 5
-				this.oParent.Segment_2aea.F0_2aea_1942(city.Position.X, city.Position.Y);
+				if ((city.BuildingFlags1 & 0x2) != 0)
+				{
+					this.oParent.Var_6c98 = 3;
+				}
 
-				if ((short)this.oCPU.AX.Word != local_10c)
-					goto L145f;
-
-				this.oParent.Var_6c98 = 2;
-				local_ac = 2;
-
-			L145f:
-				this.oCPU.TESTWord(city.BuildingFlags1, 0x2);
-				if (this.oCPU.Flags.NE) goto L1472;
-				goto L1478;
-
-			L1472:
-				this.oParent.Var_6c98 = 3;
-
-			L1478:
 				// Instruction address 0x1d12:0x1484, size: 5
 				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(local_ac, 0, local_f8);
-
 				local_ac = (short)this.oCPU.AX.Word;
 
 				local_10a = this.oParent.Var_70da_Arr[1];
-
 				local_a = this.oParent.Var_70da_Arr[2];
 
-				this.oCPU.AX.Word = (ushort)((short)local_ac);
-				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)((short)this.oParent.Var_70da_Arr[1]));
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.XORWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.CX.Word = 0x2;
-				this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.AX.Word = this.oCPU.XORWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.CX.Word = this.oCPU.AX.Word;
+				this.oParent.Var_70da_Arr[1] += ((local_f8 * this.oParent.Var_70da_Arr[1]) / 4) + ((local_ac * this.oParent.Var_70da_Arr[1]) / 4);
 
-				this.oCPU.AX.Word = (ushort)((short)local_f8);
-				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)((short)this.oParent.Var_70da_Arr[1]));
-				this.oCPU.BX.Word = this.oCPU.CX.Word;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.XORWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.CX.Word = 0x2;
-				this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.AX.Word = this.oCPU.XORWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, this.oCPU.BX.Word);
+				if (flag != 0)
+					goto L2673;
 
-				this.oParent.Var_70da_Arr[1] += (short)this.oCPU.AX.Word;
-
-				this.oCPU.AX.Word = (ushort)flag;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.DX.Word = this.oCPU.ORWord(this.oCPU.DX.Word, this.oCPU.AX.Word);
-				if (this.oCPU.Flags.E) goto L14de;
-				goto L2673;
-
-			L14de:
-				this.oCPU.AX.Low = (byte)city.ActualSize;
-				this.oCPU.CBW(this.oCPU.AX);
-				this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 0x1);
-				this.oCPU.CX.Word = this.oCPU.AX.Word;
-				this.oCPU.AX.Word = (ushort)((short)local_48);
-				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oParent.Var_e3c6);
-				this.oCPU.DX.Word = (ushort)((short)this.oParent.Var_70da_Arr[0]);
-				this.oCPU.DX.Word = this.oCPU.SUBWord(this.oCPU.DX.Word, this.oCPU.AX.Word);
-				this.oCPU.DX.Word = this.oCPU.SUBWord(this.oCPU.DX.Word, this.oCPU.CX.Word);
-				city.FoodCount += (short)this.oCPU.DX.Word;
+				city.FoodCount += (short)(this.oParent.Var_70da_Arr[0] - (local_48 * (short)this.oParent.Var_e3c6) - (city.ActualSize * 2));
 
 				local_e8 = this.oParent.Var_70da_Arr[1];
 				local_e8 -= (short)this.oParent.Var_d2f6;
 
-				this.oCPU.TESTByte(city.StatusFlag, 0x1);
-				if (this.oCPU.Flags.NE) goto L1522;
-				goto L1528;
+				if ((city.StatusFlag & 0x1) != 0)
+				{
+					local_e8 = 0;
+				}
 
-			L1522:
-				local_e8 = 0;
-
-			L1528:
 				city.ShieldsCount += (short)local_e8;
 
 				if (city.CurrentProductionID < 0)
@@ -1110,16 +1043,9 @@ namespace OpenCiv1
 				if ((this.oParent.GameState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) > city.ShieldsCount)
 					goto L220f;
 
-				this.oCPU.CMPByte((byte)city.CurrentProductionID, 0x0);
-				if (this.oCPU.Flags.E) goto L157c;
-				goto L159b;
+				if (city.CurrentProductionID != 0 || city.ActualSize != 1)
+					goto L159b;
 
-			L157c:
-				this.oCPU.CMPByte((byte)city.ActualSize, 0x1);
-				if (this.oCPU.Flags.E) goto L158e;
-				goto L159b;
-
-			L158e:
 				if (this.oParent.GameState.DifficultyLevel == 0)
 					goto L2307;
 
@@ -1128,41 +1054,26 @@ namespace OpenCiv1
 
 				local_ba = -1;
 
-				if (this.Var_6548_PlayerID == this.oParent.GameState.HumanPlayerID)
-					goto L15da;
+				if (this.Var_6548_PlayerID == this.oParent.GameState.HumanPlayerID || city.CurrentProductionID != 0x1a)
+				{
+					// Instruction address 0x1d12:0x15fa, size: 5
+					this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
+					local_ba = (short)this.oCPU.AX.Word;
+				}
 
-				this.oCPU.CMPByte((byte)city.CurrentProductionID, 0x1a);
-				if (this.oCPU.Flags.NE) goto L15da;
-				goto L1606;
+				if ((this.oParent.GameState.TechnologyFirstDiscoveredBy[city.CurrentProductionID] & 0x8) == 0)
+				{
+					// Instruction address 0x1d12:0x1640, size: 5
+					this.oParent.Segment_1866.F0_1866_250e_AddReplayData(6, (byte)((sbyte)this.Var_6548_PlayerID), (byte)city.CurrentProductionID);
 
-			L15da:
-				// Instruction address 0x1d12:0x15fa, size: 5
-				this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
-				local_ba = (short)this.oCPU.AX.Word;
+					this.oParent.GameState.TechnologyFirstDiscoveredBy[city.CurrentProductionID] |= 8;
+				}
 
-			L1606:
-				this.oCPU.TESTByte((byte)this.oParent.GameState.TechnologyFirstDiscoveredBy[city.CurrentProductionID], 0x8);
-				if (this.oCPU.Flags.E) goto L1626;
-				goto L1664;
-
-			L1626:
-				// Instruction address 0x1d12:0x1640, size: 5
-				this.oParent.Segment_1866.F0_1866_250e_AddReplayData(6, (byte)((sbyte)this.Var_6548_PlayerID), (byte)city.CurrentProductionID);
-
-				this.oParent.GameState.TechnologyFirstDiscoveredBy[city.CurrentProductionID] |= 8;
-
-			L1664:
-				this.oCPU.TESTWord(city.BuildingFlags0, 0x2);
-				if (this.oCPU.Flags.NE) goto L1676;
-				goto L1697;
-
-			L1676:
-				if (local_ba == -1)
-					goto L1697;
-
-				this.oParent.GameState.Players[this.Var_6548_PlayerID].Units[local_ba].Status |= 0x20;
-
-			L1697:
+				if ((city.BuildingFlags0 & 0x2) != 0 && local_ba != -1)
+				{
+					this.oParent.GameState.Players[this.Var_6548_PlayerID].Units[local_ba].Status |= 0x20;
+				}
+			
 				if (local_ba == -1)
 					goto L174b;
 
