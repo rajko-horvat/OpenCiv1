@@ -3316,9 +3316,8 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public ushort F0_1ade_22b5_PlayerHasTechnology(short playerID, int technologyID)
 		{
-			return (ushort)((technologyID >= 0 &&
-				(technologyID >= 71 || playerID == 0 ||
-				(this.oParent.GameState.Players[playerID].DiscoveredTechnologyFlags[technologyID >> 4] & (1 << (technologyID & 0xf))) == 0)) ? 0 : 1);
+			return (ushort)((technologyID == -1 || (technologyID >= 0 && (technologyID >= 71 || playerID == 0 ||
+				(this.oParent.GameState.Players[playerID].DiscoveredTechnologyFlags[technologyID >> 4] & (1 << (technologyID & 0xf))) == 0))) ? 0 : 1);
 		}
 
 		/// <summary>
