@@ -7,11 +7,11 @@ namespace OpenCiv1
 {
 	public class MSCAPI
 	{
-		private Game oParent;
+		private CivGame oParent;
 		private CPU oCPU;
 		private RandomMT19937 oRNG = new RandomMT19937();
 
-		public MSCAPI(Game parent)
+		public MSCAPI(CivGame parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;

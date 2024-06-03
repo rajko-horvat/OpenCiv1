@@ -18,7 +18,7 @@ namespace OpenCiv1.UI
 	{
 		private bool bClosing = false;
 
-		private Game oGame;
+		private CivGame oGame;
 		private DispatcherTimer oTimer;
 		private Thread oGameThread;
 		private Exception? oGameException = null;
@@ -57,7 +57,7 @@ namespace OpenCiv1.UI
 #endif
 
 			// Initialize Game game state
-			this.oGame = new Game();
+			this.oGame = new CivGame();
 
 			// Main Windows events
 			this.Closing += this.MainWindow_Closing;

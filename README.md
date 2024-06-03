@@ -55,6 +55,12 @@ Keyboard shortcuts:
 
 ## How to Contribute
 <p>Anyone can contribute to this repository in accordance with these <a href="https://github.com/rajko-horvat/OpenCiv1/.github/CONTRIBUTING.md">Contributing rules</a></p>
+<p>Currently, you can contribute to this repository in one of the following ways:</p>
+<ul>
+<li>By testing the game functionality and submitting Issues,</li>
+<li>By translating the part(s) of the code from pseudo assembly language to native C# language,</li>
+<li>By designing parts of a 'Default' Visual appearance (SVG would be the best), Music or effects (MIDI/SoundFonts would be the best).</li>
+</ul>
 
 ## Help needed
 <p>All contributions are welcome.</p>
