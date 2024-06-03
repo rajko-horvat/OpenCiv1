@@ -53,6 +53,9 @@ Keyboard shortcuts:
 <li>Alt + 3 - Show / Hide Screen 3</li>
 </ul></p>
 
+## How to Contribute
+<p>Anyone can contribute to this repository in accordance with these <a href="https://github.com/rajko-horvat/OpenCiv1/.github/CONTRIBUTING.md">Contributing rules</a></p>
+
 ## Help needed
 <p>All contributions are welcome.</p>
 For this stage of code rewrite, the programmings skills needed are:
