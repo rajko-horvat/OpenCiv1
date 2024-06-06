@@ -222,32 +222,28 @@ namespace OpenCiv1
 				{
 					// Instruction address 0x1d12:0x035e, size: 5
 					this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Industrialization);
-					this.oCPU.CMPWord(this.oCPU.AX.Word, 0x0);
-					if (this.oCPU.Flags.NE)
+					if (this.oCPU.AX.Word != 0)
 					{
 						this.oParent.Var_b882++;
 					}
 
 					// Instruction address 0x1d12:0x037a, size: 5
 					this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Automobile);
-					this.oCPU.CMPWord(this.oCPU.AX.Word, 0x0);
-					if (this.oCPU.Flags.NE)
+					if (this.oCPU.AX.Word != 0)
 					{
 						this.oParent.Var_b882++;
 					}
 
 					// Instruction address 0x1d12:0x0396, size: 5
 					this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.MassProduction);
-					this.oCPU.CMPWord(this.oCPU.AX.Word, 0x0);
-					if (this.oCPU.Flags.NE)
+					if (this.oCPU.AX.Word != 0)
 					{
 						this.oParent.Var_b882++;
 					}
 
 					// Instruction address 0x1d12:0x03b2, size: 5
 					this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Plastics);
-					this.oCPU.CMPWord(this.oCPU.AX.Word, 0x0);
-					if (this.oCPU.Flags.NE)
+					if (this.oCPU.AX.Word != 0)
 					{
 						this.oParent.Var_b882++;
 					}
@@ -1417,405 +1413,235 @@ namespace OpenCiv1
 				this.oParent.Overlay_18.F18_0000_0d4f(this.Var_6548_PlayerID, (short)(local_e8 - 22));
 				local_c8 = (short)this.oCPU.AX.Word;
 
-				if (local_c8 == 0 || local_e8 >= 24)
-					goto L1f2f;
-
-				city.ShieldsCount += (short)(this.oParent.CivState.BuildingDefinitions[local_e8].Price * local_4a);
-
-				if (city.CurrentProductionID <= -22 && city.CurrentProductionID >= -24)
+				if (local_c8 != 0 && local_e8 < 24)
 				{
-					city.CurrentProductionID = (sbyte)((-local_e8) - 1);
+					city.ShieldsCount += (short)(this.oParent.CivState.BuildingDefinitions[local_e8].Price * local_4a);
+
+					if (city.CurrentProductionID <= -22 && city.CurrentProductionID >= -24)
+					{
+						city.CurrentProductionID = (sbyte)((-local_e8) - 1);
+					}
+
+					local_c8--;
 				}
 
-				local_c8--;
+				if ((this.oParent.CivState.SpaceshipFlags & (1 << this.Var_6548_PlayerID)) != 0)
+					goto L1ffa;
 
-			L1f2f:
-				this.oCPU.AX.Word = 0x1;
-				this.oCPU.CX.Low = (byte)this.Var_6548_PlayerID;
-				this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
+				if (this.oParent.CivState.AISpaceshipSuccessRate < 40)
+					goto L1ffa;
 
-				this.oCPU.TESTWord(this.oCPU.AX.Word, (ushort)this.oParent.CivState.SpaceshipFlags);
-				if (this.oCPU.Flags.E) goto L1f41;
-				goto L1ffa;
-
-			L1f41:
-				if (this.oParent.CivState.AISpaceshipSuccessRate >= 40) goto L1f4b;
-				goto L1ffa;
-
-			L1f4b:
 				if (local_c8 != 0)
 					goto L1feb;
 
 				// Instruction address 0x1d12:0x1f5d, size: 5
 				this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, (int)TechnologyEnum.SpaceFlight);
-				this.oCPU.CMPWord(this.oCPU.AX.Word, 0x0);
-				if (this.oCPU.Flags.NE)
-					goto L1f6d;
+				if (this.oCPU.AX.Word == 0)
+					goto L2010;
 
-				goto L1ff7;
+				if (this.oParent.CivState.AISpaceshipSuccessRate > 75)
+					goto L1feb;
 
-			L1f6d:
-				if (this.oParent.CivState.AISpaceshipSuccessRate <= 75) goto L1f77;
-				goto L1feb;
+				if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Ranking > this.oParent.CivState.Players[this.Var_6548_PlayerID].Ranking)
+					goto L1feb;
 
-			L1f77:
-				if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Ranking >
-					this.oParent.CivState.Players[this.Var_6548_PlayerID].Ranking) goto L1feb;
+				if ((this.oParent.CivState.SpaceshipFlags & (1 << this.oParent.CivState.HumanPlayerID)) == 0)
+					goto L1fc5;
 
-				this.oCPU.AX.Word = 0x1;
-				this.oCPU.CX.Low = (byte)(this.oParent.CivState.HumanPlayerID & 0xff);
-				this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.TESTWord(this.oCPU.AX.Word, (ushort)this.oParent.CivState.SpaceshipFlags);
-				if (this.oCPU.Flags.E) goto L1fc5;
+				if ((this.oParent.CivState.Players[this.Var_6548_PlayerID].SpaceshipETAYear - this.oParent.CivState.Year) <= 
+					(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].SpaceshipETAYear - this.oParent.CivState.Year))
+					goto L1feb;
 
-				this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].SpaceshipETAYear;
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, (ushort)this.oParent.CivState.Year);
-				this.oCPU.CX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].SpaceshipETAYear;
-				this.oCPU.CX.Word = this.oCPU.SUBWord(this.oCPU.CX.Word, (ushort)this.oParent.CivState.Year);
-				this.oCPU.CMPWord(this.oCPU.AX.Word, this.oCPU.CX.Word);
-				if (this.oCPU.Flags.LE) goto L1feb;
+				L1fc5:
+				if ((this.oParent.CivState.SpaceshipFlags & (1 << (this.oParent.CivState.HumanPlayerID + 8))) == 0 ||
+					this.oParent.CivState.Players[this.oParent.CivState.ActiveCivilizations].Coins <= 1000)
+					goto L2010;
 
-			L1fc5:
-				this.oCPU.AX.Word = 0x1;
-				this.oCPU.CX.Low = (byte)(this.oParent.CivState.HumanPlayerID & 0xff);
-				this.oCPU.CX.Low = this.oCPU.ADDByte(this.oCPU.CX.Low, 0x8);
-				this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.TESTWord(this.oCPU.AX.Word, (ushort)this.oParent.CivState.SpaceshipFlags);
-				if (this.oCPU.Flags.E) goto L1ff7;
-				if (this.oParent.CivState.Players[this.oParent.CivState.ActiveCivilizations].Coins <= 1000) goto L1ff7;
-
-				L1feb:
+			L1feb:
 				this.oParent.Overlay_18.F18_0000_15c3(this.Var_6548_PlayerID);
 
-			L1ff7:
 				goto L2010;
 
 			L1ffa:
-				if (local_c8 == 0)
-					goto L2010;
-
-				this.oParent.Overlay_18.F18_0000_15c3(this.Var_6548_PlayerID);
+				if (local_c8 != 0)
+				{
+					this.oParent.Overlay_18.F18_0000_15c3(this.Var_6548_PlayerID);
+				}
 
 			L2010:
-				if (local_e8 != 1)
-					goto L212c;
+				if (local_e8 == 1)
+				{
+					for (int i = 0; i < 128; i++)
+					{
+						if (this.oParent.CivState.Cities[i].PlayerID == this.Var_6548_PlayerID)
+						{
+							this.oParent.CivState.Cities[i].BuildingFlags &= 0xfffffffe;
+						}
+					}
 
-				local_4c = 0;
+					if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID ||
+						(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Diplomacy[this.Var_6548_PlayerID] & 0x40) != 0)
+					{
+						this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
-				goto L2025;
+						if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
+						{
+							// Instruction address 0x1d12:0x2097, size: 5
+							this.oParent.MSCAPI.strcpy(0xba06, "Diplomats report:\n");
 
-			L2022:
-				local_4c++;
+							this.oParent.Var_2f9e_Unknown = 0x1;
+						}
 
-			L2025:
-				if (local_4c >= 128)
-					goto L205a;
+						// Instruction address 0x1d12:0x20b3, size: 5
+						this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.Players[this.Var_6548_PlayerID].Nationality);
 
-				if (this.oParent.CivState.Cities[local_4c].PlayerID != this.Var_6548_PlayerID)
-					goto L2057;
+						// Instruction address 0x1d12:0x20c3, size: 5
+						this.oParent.MSCAPI.strcat(0xba06, " capital\nmoved to ");
 
-				this.oParent.CivState.Cities[local_4c].BuildingFlags0 &= 0xfffe;
-				this.oParent.CivState.Cities[local_4c].BuildingFlags1 &= 0xffff;
+						// Instruction address 0x1d12:0x20ce, size: 5
+						this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 
-			L2057:
-				goto L2022;
+						// Instruction address 0x1d12:0x20de, size: 5
+						this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-			L205a:
-				if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID)
-					goto L207e;
+						this.oParent.Var_2f9e_Unknown = 0x5;
 
-				if ((this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Diplomacy[this.Var_6548_PlayerID] & 0x40) == 0)
-					goto L212c;
+						// Instruction address 0x1d12:0x20f8, size: 5
+						this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
 
-				L207e:
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+						this.oParent.CivState.Players[this.Var_6548_PlayerID].XStart = (short)city.Position.X;
 
-				if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID)
-					goto L20a5;
+						city.BuildingFlags |= 1;
+					}
+				}
 
-				// Instruction address 0x1d12:0x2097, size: 5
-				this.oParent.MSCAPI.strcpy(0xba06, "Diplomats report:\n");
+				if (local_e8 == 38)
+				{
+					// Instruction address 0x1d12:0x2136, size: 5
+					this.oParent.Segment_11a8.F0_11a8_0280();
 
-				this.oParent.Var_2f9e_Unknown = 0x1;
+					// Instruction address 0x1d12:0x2143, size: 5
+					this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
 
-			L20a5:
-				// Instruction address 0x1d12:0x20b3, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.Players[this.Var_6548_PlayerID].Nationality);
+					// Instruction address 0x1d12:0x2153, size: 5
+					this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
 
-				// Instruction address 0x1d12:0x20c3, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, " capital\nmoved to ");
+					// Instruction address 0x1d12:0x215b, size: 5
+					this.oParent.Segment_11a8.F0_11a8_0294();
+				}
 
-				// Instruction address 0x1d12:0x20ce, size: 5
-				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+				if (local_e8 == 43 && this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID)
+				{
+					for (int i = 0; i < 128; i++)
+					{
+						if (this.oParent.CivState.Cities[i].StatusFlag != 0xff && this.oParent.CivState.Cities[i].PlayerID != this.Var_6548_PlayerID)
+						{
+							this.oParent.CivState.Cities[i].VisibleSize = this.oParent.CivState.Cities[i].ActualSize;
 
-				// Instruction address 0x1d12:0x20de, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, ".\n");
+							this.oParent.CivState.MapVisibility[this.oParent.CivState.Cities[i].Position.X,
+								this.oParent.CivState.Cities[i].Position.Y] |= (ushort)(1 << this.Var_6548_PlayerID);
 
-				this.oParent.Var_2f9e_Unknown = 0x5;
-
-				// Instruction address 0x1d12:0x20f8, size: 5
-				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
-
-				this.oParent.CivState.Players[this.Var_6548_PlayerID].XStart = (short)city.Position.X;
-
-				city.BuildingFlags0 |= 1;
-				city.BuildingFlags1 |= 0;
-
-			L212c:
-				if (local_e8 != 38)
-					goto L2160;
-
-				// Instruction address 0x1d12:0x2136, size: 5
-				this.oParent.Segment_11a8.F0_11a8_0280();
-
-				// Instruction address 0x1d12:0x2143, size: 5
-				this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
-
-				// Instruction address 0x1d12:0x2153, size: 5
-				this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
-
-				// Instruction address 0x1d12:0x215b, size: 5
-				this.oParent.Segment_11a8.F0_11a8_0294();
-
-			L2160:
-				if (local_e8 != 43)
-					goto L220f;
-
-				if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
-					goto L220f;
-
-				local_4c = 0;
-
-				goto L2181;
-
-			L217e:
-				local_4c++;
-
-			L2181:
-				if (local_4c >= 128)
-					goto L220f;
-
-				this.oCPU.CMPByte(this.oParent.CivState.Cities[local_4c].StatusFlag, 0xff);
-				if (this.oCPU.Flags.NE) goto L219d;
-				goto L220c;
-
-			L219d:
-				if (this.oParent.CivState.Cities[local_4c].PlayerID == this.Var_6548_PlayerID)
-					goto L220c;
-
-				this.oCPU.AX.Low = (byte)this.oParent.CivState.Cities[local_4c].ActualSize;
-				this.oParent.CivState.Cities[local_4c].VisibleSize = (sbyte)this.oCPU.AX.Low;
-
-				this.oParent.CivState.MapVisibility[this.oParent.CivState.Cities[local_4c].Position.X,
-					this.oParent.CivState.Cities[local_4c].Position.Y] |= (ushort)(1 << this.Var_6548_PlayerID);
-
-				// Instruction address 0x1d12:0x2204, size: 5
-				this.oParent.Segment_2aea.F0_2aea_1601(
-					this.oParent.CivState.Cities[local_4c].Position.X,
-					this.oParent.CivState.Cities[local_4c].Position.Y);
-
-			L220c:
-				goto L217e;
+							// Instruction address 0x1d12:0x2204, size: 5
+							this.oParent.Segment_2aea.F0_2aea_1601(
+								this.oParent.CivState.Cities[i].Position.X, this.oParent.CivState.Cities[i].Position.Y);
+						}
+					}
+				}
 
 			L220f:
-				if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
-					goto L2307;
+				if ((this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID && (city.StatusFlag & 0x10) != 0) &&
+					(city.ShieldsCount == 0 || (city.CurrentProductionID < 0 && local_e8 == -1)))
+				{
+					// Instruction address 0x1d12:0x2262, size: 5
+					this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
+					local_e8 = (short)this.oCPU.AX.Word;
 
-				this.oCPU.TESTByte(city.StatusFlag, 0x10);
-				if (this.oCPU.Flags.NE) goto L222d;
-				goto L2307;
+					this.oParent.Var_aa_Rectangle.FontID = 2;
 
-			L222d:
-				this.oCPU.CMPWord((ushort)city.ShieldsCount, 0x0);
-				if (this.oCPU.Flags.NE) goto L223f;
-				goto L225b;
+					if (local_e8 == 99)
+					{
+						city.StatusFlag &= 0xef;
+					}
+					else
+					{
+						this.oParent.Var_b1e8 = 0;
 
-			L223f:
-				this.oCPU.CMPByte((byte)city.CurrentProductionID, 0x0);
-				if (this.oCPU.Flags.L) goto L2251;
-				goto L2307;
+						if (city.CurrentProductionID >= 0)
+						{
+							this.oParent.CivState.Players[this.Var_6548_PlayerID].UnitsInProduction[city.CurrentProductionID]--;
+						}
 
-			L2251:
-				if (local_e8 != -1)
-					goto L2307;
+						city.CurrentProductionID = (sbyte)local_e8;
 
-			L225b:
-				// Instruction address 0x1d12:0x2262, size: 5
-				this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
-
-				local_e8 = (short)this.oCPU.AX.Word;
-
-				this.oParent.Var_aa_Rectangle.FontID = 2;
-
-				if (local_e8 == 99)
-					goto L22fa;
-
-				this.oParent.Var_b1e8 = 0;
-
-				this.oCPU.CMPByte((byte)city.CurrentProductionID, 0x0);
-				if (this.oCPU.Flags.GE) goto L2299;
-				goto L22b7;
-
-			L2299:
-				this.oParent.CivState.Players[this.Var_6548_PlayerID].UnitsInProduction[city.CurrentProductionID]--;
-
-			L22b7:
-				city.CurrentProductionID = (sbyte)local_e8;
-
-				this.oCPU.CMPByte((byte)city.CurrentProductionID, 0x0);
-				if (this.oCPU.Flags.GE) goto L22d9;
-				goto L22f7;
-
-			L22d9:
-				this.oParent.CivState.Players[this.Var_6548_PlayerID].UnitsInProduction[city.CurrentProductionID]++;
-
-			L22f7:
-				goto L2307;
-
-			L22fa:
-				city.StatusFlag &= 0xef;
-
+						if (city.CurrentProductionID >= 0)
+						{
+							this.oParent.CivState.Players[this.Var_6548_PlayerID].UnitsInProduction[city.CurrentProductionID]++;
+						}
+					}
+				}
+				
 			L2307:
-				this.oCPU.AX.Word = 0x1;
-				this.oCPU.CX.Low = (byte)this.Var_6548_PlayerID;
-				this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.TESTWord(this.oCPU.AX.Word, (ushort)this.oParent.CivState.PlayerFlags);
-				if (this.oCPU.Flags.E) goto L2319;
-				goto L2673;
+				if ((this.oParent.CivState.PlayerFlags & (1 << this.Var_6548_PlayerID)) != 0)
+					goto L2673;
 
-			L2319:
-				this.oCPU.TESTByte(city.StatusFlag, 0x10);
-				if (this.oCPU.Flags.NE) goto L232b;
-				goto L2336;
-
-			L232b:
-				// Instruction address 0x1d12:0x232e, size: 5
-				this.oParent.Segment_25fb.F0_25fb_34b6(cityID);
-
-			L2336:
+				if ((city.StatusFlag & 0x10) != 0)
+				{
+					// Instruction address 0x1d12:0x232e, size: 5
+					this.oParent.Segment_25fb.F0_25fb_34b6(cityID);
+				}
+			
 				local_cc = 0;
 
 				// Instruction address 0x1d12:0x2344, size: 5
 				this.oParent.Segment_2aea.F0_2aea_1942(local_d8, local_e4);
+				// !!! Possible overflow
+				local_104 = this.oParent.CivState.Players[this.oCPU.AX.Word].Continents[this.Var_6548_PlayerID].Strategy;
 
-				// ??? Needs further investigation why this happens
-				if (this.oCPU.AX.Word >= this.oParent.CivState.Players.Length)
+				if ((local_104 == 1 || local_104 == 2 || local_104 == 5) && local_e8 != 0 && city.CurrentProductionID >= 0 &&
+					this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].UnitCategory == local_104)
 				{
-					this.oCPU.AX.Word = 0;
+					local_cc = this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 64;
 				}
-				else
-				{
-					this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oCPU.AX.Word].Continents[this.Var_6548_PlayerID].Strategy;
-				}
+				
+				if ((this.oParent.CivState.SpaceshipFlags & (1 << (this.oParent.CivState.HumanPlayerID + 8))) == 0 || 
+					(-city.CurrentProductionID) < 0x16 || (-city.CurrentProductionID) > 0x18)
+					goto L2432;
 
-				local_104 = (short)this.oCPU.AX.Word;
-
-				if (local_104 == 1)
-					goto L237e;
-
-				if (local_104 == 2)
-					goto L237e;
-
-				if (local_104 != 5)
-					goto L23d3;
-
-			L237e:
-				if (local_e8 != 0 && city.CurrentProductionID >= 0)
-				{
-					if (this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].UnitCategory == local_104)
-					{
-						local_cc = this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 64;
-					}
-				}
-
-			L23d3:
-				this.oCPU.AX.Word = 0x1;
-				this.oCPU.CX.Low = (byte)(this.oParent.CivState.HumanPlayerID & 0xff);
-				this.oCPU.CX.Low = this.oCPU.ADDByte(this.oCPU.CX.Low, 0x8);
-				this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.TESTWord(this.oCPU.AX.Word, (ushort)this.oParent.CivState.SpaceshipFlags);
-				if (this.oCPU.Flags.NE) goto L23e8;
-				goto L2432;
-
-			L23e8:
-				this.oCPU.AX.Low = (byte)city.CurrentProductionID;
-				this.oCPU.CBW(this.oCPU.AX);
-				this.oCPU.AX.Word = this.oCPU.NEGWord(this.oCPU.AX.Word);
-				this.oCPU.CMPWord(this.oCPU.AX.Word, 0x16);
-				if (this.oCPU.Flags.GE) goto L23ff;
-				goto L2432;
-
-			L23ff:
-				this.oCPU.AX.Low = (byte)city.CurrentProductionID;
-				this.oCPU.CBW(this.oCPU.AX);
-				this.oCPU.AX.Word = this.oCPU.NEGWord(this.oCPU.AX.Word);
-				this.oCPU.CMPWord(this.oCPU.AX.Word, 0x18);
-				if (this.oCPU.Flags.LE) goto L2416;
-				goto L2432;
-
-			L2416:
-				this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.XORWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.CX.Word = 0x7;
-				this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.AX.Word = this.oCPU.XORWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				local_cc = (short)this.oCPU.AX.Word;
+				local_cc = this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 128;
 
 			L2432:
-				this.oCPU.TESTByte(city.StatusFlag, 0x1);
-				if (this.oCPU.Flags.NE) goto L2444;
-				goto L24b3;
+				if ((city.StatusFlag & 0x1) == 0)
+					goto L24b3;
 
-			L2444:
-				this.oCPU.CMPByte((byte)city.CurrentProductionID, 0x0);
-				if (this.oCPU.Flags.L) goto L2456;
-				goto L24b3;
+				if (city.CurrentProductionID >= 0)
+					goto L24b3;
 
-			L2456:
-				this.oCPU.CMPWord((ushort)city.ShieldsCount, 0x0);
-				if (this.oCPU.Flags.NE) goto L2468;
-				goto L24b3;
+				if (city.ShieldsCount == 0)
+					goto L24b3;
 
-			L2468:
 				// Instruction address 0x1d12:0x24a7, size: 5
 				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 					(this.oParent.CivState.BuildingDefinitions[-city.CurrentProductionID].Price * local_4a) - city.ShieldsCount,
 					0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 8);
-
 				local_cc = (short)this.oCPU.AX.Word;
 
 			L24b3:
 				// Instruction address 0x1d12:0x24bb, size: 5
 				this.oParent.Segment_2aea.F0_2aea_14e0(local_d8, local_e4);
+				if ((short)this.oCPU.AX.Word == -1)
+					goto L24db;
 
-				this.oCPU.AX.Word = this.oCPU.INCWord(this.oCPU.AX.Word);
-				if (this.oCPU.Flags.NE) goto L24c9;
-				goto L24db;
-
-			L24c9:
-				this.oCPU.TESTByte(city.StatusFlag, 0x10);
-				if (this.oCPU.Flags.NE) goto L24db;
-				goto L253c;
+				if ((city.StatusFlag & 0x10) == 0)
+					goto L253c;
 
 			L24db:
-				this.oCPU.CMPByte((byte)city.CurrentProductionID, 0x0);
-				if (this.oCPU.Flags.GE) goto L24ed;
-				goto L253c;
+				if (city.CurrentProductionID < 0 || city.ShieldsCount == 0)
+					goto L253c;
 
-			L24ed:
-				this.oCPU.CMPWord((ushort)city.ShieldsCount, 0x0);
-				if (this.oCPU.Flags.NE) goto L24ff;
-				goto L253c;
-
-			L24ff:
 				// Instruction address 0x1d12:0x2530, size: 5
 				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 					(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
 					0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 3);
-
 				local_cc = (short)this.oCPU.AX.Word;
 
 			L253c:

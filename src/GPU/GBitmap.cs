@@ -451,7 +451,7 @@ namespace OpenCiv1.GPU
 						{
 							byte color = (byte)((fontCh.Bitmap[j][k] != 0) ? frontColor : backColor);
 
-							if (fontCh.Bitmap[j][k] != 0 ) //|| backColor != 0)
+							if (fontCh.Bitmap[j][k] != 0 && iPixelAddress1 + k < this.aPixels.Length) //|| backColor != 0)
 							{
 								switch (writeMode)
 								{
