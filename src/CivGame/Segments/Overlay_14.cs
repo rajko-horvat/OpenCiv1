@@ -683,22 +683,20 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, "\\/");
 
 			// Instruction address 0x0000:0x0904, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 
-				this.oParent.MSCAPI.itoa((short)this.oParent.Var_e17a, 10));
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.MSCAPI.itoa(this.oParent.Var_e17a, 10));
 
 			// Instruction address 0x0000:0x0914, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "$/");
 
 			// Instruction address 0x0000:0x0935, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, 
-				this.oParent.MSCAPI.itoa((short)this.oParent.Var_70e6, 10));
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.MSCAPI.itoa(this.oParent.Var_70e6, 10));
 
 			// Instruction address 0x0000:0x0945, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "~");
 
-			this.oCPU.AX.Word = this.oParent.Var_e17a;
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_e17a);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), this.oCPU.AX.Word));
-			this.oCPU.AX.Word = this.oParent.Var_70e6;
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70e6);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.ADDWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), this.oCPU.AX.Word));
 
 		L0959:

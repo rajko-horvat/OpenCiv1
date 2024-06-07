@@ -74,13 +74,13 @@ namespace OpenCiv1
 		public int[] Var_70da_Arr = new int[4];
 		public int Var_70e2 = 0;
 		public int Var_70e4 = 0;
-		public ushort Var_70e6 = 0;
+		public int Var_70e6 = 0;
 		public ushort Var_8078 = 0;
 		public ushort Var_b1e8 = 0;
 		public ushort Var_b882 = 0;
 		public ushort Var_b2ba = 0;
 		public ushort Var_d2de = 0;
-		public ushort Var_d2e0 = 0;
+		public int Var_d2e0 = 0;
 		public ushort Var_d2f6 = 0;
 		public short Var_d4cc_XPos = 0;
 		public short Var_d75e_YPos = 0;
@@ -91,7 +91,7 @@ namespace OpenCiv1
 		public ushort Var_db3e = 0;
 		public ushort Var_db42 = 0;
 		public ushort Var_deb8 = 0;
-		public ushort Var_e17a = 0;
+		public int Var_e17a = 0;
 		public ushort Var_e3c2 = 0;
 		public ushort Var_e3c6 = 0;
 		public ushort Var_e8b8 = 0;

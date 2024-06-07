@@ -1165,7 +1165,7 @@ namespace OpenCiv1
 			goto L0ed5;
 
 		L0bea:
-			this.oCPU.AX.Word = this.oParent.Var_d2e0;
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_d2e0);
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 0x1);
 
 		L0bef:

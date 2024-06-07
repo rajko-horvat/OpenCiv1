@@ -1018,745 +1018,674 @@ namespace OpenCiv1
 
 				this.oParent.Var_70da_Arr[1] += ((local_f8 * this.oParent.Var_70da_Arr[1]) / 4) + ((local_ac * this.oParent.Var_70da_Arr[1]) / 4);
 
-				if (flag != 0)
-					goto L2673;
-
-				city.FoodCount += (short)(this.oParent.Var_70da_Arr[0] - (local_48 * (short)this.oParent.Var_e3c6) - (city.ActualSize * 2));
-
-				local_e8 = this.oParent.Var_70da_Arr[1];
-				local_e8 -= (short)this.oParent.Var_d2f6;
-
-				if ((city.StatusFlag & 0x1) != 0)
+				if (flag == 0)
 				{
-					local_e8 = 0;
-				}
+					city.FoodCount += (short)(this.oParent.Var_70da_Arr[0] - (local_48 * (short)this.oParent.Var_e3c6) - (city.ActualSize * 2));
 
-				city.ShieldsCount += (short)local_e8;
+					local_e8 = this.oParent.Var_70da_Arr[1];
+					local_e8 -= (short)this.oParent.Var_d2f6;
 
-				if (city.CurrentProductionID < 0)
-					goto L1b63;
-
-				if ((this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) > city.ShieldsCount)
-					goto L220f;
-
-				if (city.CurrentProductionID != 0 || city.ActualSize != 1)
-					goto L159b;
-
-				if (this.oParent.CivState.DifficultyLevel == 0)
-					goto L2307;
-
-			L159b:
-				city.ShieldsCount -= (short)(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a);
-
-				local_ba = -1;
-
-				if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID || city.CurrentProductionID != 0x1a)
-				{
-					// Instruction address 0x1d12:0x15fa, size: 5
-					this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
-					local_ba = (short)this.oCPU.AX.Word;
-				}
-
-				if ((this.oParent.CivState.TechnologyFirstDiscoveredBy[city.CurrentProductionID] & 0x8) == 0)
-				{
-					// Instruction address 0x1d12:0x1640, size: 5
-					this.oParent.Segment_1866.F0_1866_250e_AddReplayData(6, (byte)((sbyte)this.Var_6548_PlayerID), (byte)city.CurrentProductionID);
-
-					this.oParent.CivState.TechnologyFirstDiscoveredBy[city.CurrentProductionID] |= 8;
-				}
-
-				if ((city.BuildingFlags0 & 0x2) != 0 && local_ba != -1)
-				{
-					this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_ba].Status |= 0x20;
-				}
-			
-				if (local_ba == -1 || city.CurrentProductionID != 0)
-					goto L174b;
-
-				if (city.ActualSize > 1)
-					goto L16d5;
-
-				if (this.oParent.CivState.Players[this.Var_6548_PlayerID].CityCount <= 1)
-					goto L174b;
-
-			L16d5:
-				city.ActualSize--;
-				if (city.ActualSize != 0)
-					goto L174b;
-
-				// Instruction address 0x1d12:0x16ff, size: 5
-				this.oParent.Segment_1ade.F0_1ade_018e(cityID, city.Position.X, city.Position.Y);
-
-				// Instruction address 0x1d12:0x1727, size: 5
-				this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
-				local_ba = (short)this.oCPU.AX.Word;
-
-				this.oParent.StartGameMenu.F5_0000_0e6c(this.Var_6548_PlayerID, 0);
-
-				// Instruction address 0x1d12:0x1743, size: 5
-				this.oParent.Segment_11a8.F0_11a8_0250();
-
-				goto L6927;
-
-			L174b:
-				if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID || local_ba == -1)
-					goto L1ab6;
-
-				if (city.CurrentProductionID == 0x1b)
-				{
-					local_108 = -1;
-					local_c8 = -1;
-
-					for (int i = 0; i < 128; i++)
+					if ((city.StatusFlag & 0x1) != 0)
 					{
-						if (this.oParent.CivState.Cities[i].PlayerID != this.Var_6548_PlayerID && this.oParent.CivState.Cities[i].StatusFlag != 0xff &&
-							this.oParent.CivState.Cities[i].PlayerID != this.oParent.CivState.HumanPlayerID && this.oParent.CivState.Cities[i].BaseTrade > local_c8)
-						{
-							local_c8 = this.oParent.CivState.Cities[i].BaseTrade;
-							local_108 = i;
-						}
+						local_e8 = 0;
 					}
 
-					// Instruction address 0x1d12:0x180e, size: 5
-					this.oParent.Segment_2459.F0_2459_0948(this.Var_6548_PlayerID, (short)local_ba, (short)local_108);
-				}
+					city.ShieldsCount += (short)local_e8;
 
-				if (city.CurrentProductionID == 0x1a)
-				{
-					local_108 = -1;
-					local_c8 = 32767;
-					local_106 = 0;
+					if (city.CurrentProductionID < 0)
+						goto L1b63;
 
-					for (int i = 0; i < 128; i++)
+					if ((this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) > city.ShieldsCount)
+						goto L220f;
+
+					if (city.CurrentProductionID != 0 || city.ActualSize != 1)
+						goto L159b;
+
+					if (this.oParent.CivState.DifficultyLevel == 0)
+						goto L2307;
+
+				L159b:
+					city.ShieldsCount -= (short)(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a);
+
+					local_ba = -1;
+
+					if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID || city.CurrentProductionID != 0x1a)
 					{
-						if (this.oParent.CivState.Cities[i].PlayerID != this.oParent.CivState.HumanPlayerID || this.oParent.CivState.Cities[i].StatusFlag != 0xff)
+						// Instruction address 0x1d12:0x15fa, size: 5
+						this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
+						local_ba = (short)this.oCPU.AX.Word;
+					}
+
+					if ((this.oParent.CivState.TechnologyFirstDiscoveredBy[city.CurrentProductionID] & 0x8) == 0)
+					{
+						// Instruction address 0x1d12:0x1640, size: 5
+						this.oParent.Segment_1866.F0_1866_250e_AddReplayData(6, (byte)((sbyte)this.Var_6548_PlayerID), (byte)city.CurrentProductionID);
+
+						this.oParent.CivState.TechnologyFirstDiscoveredBy[city.CurrentProductionID] |= 8;
+					}
+
+					if ((city.BuildingFlags0 & 0x2) != 0 && local_ba != -1)
+					{
+						this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_ba].Status |= 0x20;
+					}
+
+					if (local_ba == -1 || city.CurrentProductionID != 0)
+						goto L174b;
+
+					if (city.ActualSize > 1)
+						goto L16d5;
+
+					if (this.oParent.CivState.Players[this.Var_6548_PlayerID].CityCount <= 1)
+						goto L174b;
+
+					L16d5:
+					city.ActualSize--;
+					if (city.ActualSize != 0)
+						goto L174b;
+
+					// Instruction address 0x1d12:0x16ff, size: 5
+					this.oParent.Segment_1ade.F0_1ade_018e(cityID, city.Position.X, city.Position.Y);
+
+					// Instruction address 0x1d12:0x1727, size: 5
+					this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
+					local_ba = (short)this.oCPU.AX.Word;
+
+					this.oParent.StartGameMenu.F5_0000_0e6c(this.Var_6548_PlayerID, 0);
+
+					// Instruction address 0x1d12:0x1743, size: 5
+					this.oParent.Segment_11a8.F0_11a8_0250();
+
+					goto L6927;
+
+				L174b:
+					if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID || local_ba == -1)
+						goto L1ab6;
+
+					if (city.CurrentProductionID == 0x1b)
+					{
+						local_108 = -1;
+						local_c8 = -1;
+
+						for (int i = 0; i < 128; i++)
 						{
-							// Instruction address 0x1d12:0x1898, size: 5
-							this.oParent.Segment_2dc4.F0_2dc4_0177(this.Var_6548_PlayerID, (short)local_ba,
-								this.oParent.CivState.Cities[i].Position.X,
-								this.oParent.CivState.Cities[i].Position.Y);
-							local_e8 = (short)this.oCPU.AX.Word;
-
-							this.oParent.Var_6c9a = (ushort)((short)Math.Abs((short)this.oParent.Var_6c9a - 3));
-
-							if ((this.oParent.CivState.Cities[i].StatusFlag & 0x20) != 0)
+							if (this.oParent.CivState.Cities[i].PlayerID != this.Var_6548_PlayerID && this.oParent.CivState.Cities[i].StatusFlag != 0xff &&
+								this.oParent.CivState.Cities[i].PlayerID != this.oParent.CivState.HumanPlayerID && this.oParent.CivState.Cities[i].BaseTrade > local_c8)
 							{
-								this.oParent.Var_6c9a = 3;
+								local_c8 = this.oParent.CivState.Cities[i].BaseTrade;
+								local_108 = i;
 							}
+						}
 
-							if (local_c8 > (short)this.oParent.Var_6c9a ||
-								(local_c8 == (short)this.oParent.Var_6c9a && this.oParent.MSCAPI.RNG.Next(++local_106) == 0))
+						// Instruction address 0x1d12:0x180e, size: 5
+						this.oParent.Segment_2459.F0_2459_0948(this.Var_6548_PlayerID, (short)local_ba, (short)local_108);
+					}
+
+					if (city.CurrentProductionID == 0x1a)
+					{
+						local_108 = -1;
+						local_c8 = 32767;
+						local_106 = 0;
+
+						for (int i = 0; i < 128; i++)
+						{
+							if (this.oParent.CivState.Cities[i].PlayerID != this.oParent.CivState.HumanPlayerID || this.oParent.CivState.Cities[i].StatusFlag != 0xff)
 							{
-								// Instruction address 0x1d12:0x191e, size: 5
-								this.oParent.Segment_2aea.F0_2aea_134a(
-									this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
-									this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y);
+								// Instruction address 0x1d12:0x1898, size: 5
+								this.oParent.Segment_2dc4.F0_2dc4_0177(this.Var_6548_PlayerID, (short)local_ba,
+									this.oParent.CivState.Cities[i].Position.X,
+									this.oParent.CivState.Cities[i].Position.Y);
+								local_e8 = (short)this.oCPU.AX.Word;
 
-								if ((short)this.oCPU.AX.Word != 10)
+								this.oParent.Var_6c9a = (ushort)((short)Math.Abs((short)this.oParent.Var_6c9a - 3));
+
+								if ((this.oParent.CivState.Cities[i].StatusFlag & 0x20) != 0)
 								{
-									// Instruction address 0x1d12:0x1956, size: 5
-									this.oParent.Segment_2aea.F0_2aea_1942(
+									this.oParent.Var_6c9a = 3;
+								}
+
+								if (local_c8 > (short)this.oParent.Var_6c9a ||
+									(local_c8 == (short)this.oParent.Var_6c9a && this.oParent.MSCAPI.RNG.Next(++local_106) == 0))
+								{
+									// Instruction address 0x1d12:0x191e, size: 5
+									this.oParent.Segment_2aea.F0_2aea_134a(
 										this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
 										this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y);
 
-									local_10c = (short)this.oCPU.AX.Word;
-
-									// Instruction address 0x1d12:0x1970, size: 5
-									this.oParent.Segment_2aea.F0_2aea_1942(
-										this.oParent.CivState.Cities[i].Position.X,
-										this.oParent.CivState.Cities[i].Position.Y);
-
-									if ((short)this.oCPU.AX.Word == local_10c)
+									if ((short)this.oCPU.AX.Word != 10)
 									{
-										if (local_c8 != (short)this.oParent.Var_6c9a)
-										{
-											local_c8 = (short)this.oParent.Var_6c9a;
-										}
-										else
-										{
-											local_106 = 1;
-										}
+										// Instruction address 0x1d12:0x1956, size: 5
+										this.oParent.Segment_2aea.F0_2aea_1942(
+											this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
+											this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y);
 
-										local_108 = local_e8;
-										local_b0 = i;
+										local_10c = (short)this.oCPU.AX.Word;
+
+										// Instruction address 0x1d12:0x1970, size: 5
+										this.oParent.Segment_2aea.F0_2aea_1942(
+											this.oParent.CivState.Cities[i].Position.X,
+											this.oParent.CivState.Cities[i].Position.Y);
+
+										if ((short)this.oCPU.AX.Word == local_10c)
+										{
+											if (local_c8 != (short)this.oParent.Var_6c9a)
+											{
+												local_c8 = (short)this.oParent.Var_6c9a;
+											}
+											else
+											{
+												local_106 = 1;
+											}
+
+											local_108 = local_e8;
+											local_b0 = i;
+										}
 									}
 								}
 							}
 						}
-					}
 
-					if (local_c8 > 3 || (this.oParent.CivState.Players[this.Var_6548_PlayerID].Diplomacy[this.oParent.CivState.HumanPlayerID] & 2) != 0)
-					{
-						city.ShieldsCount += (short)(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a);
-					}
-					else
-					{
-						// Instruction address 0x1d12:0x19f9, size: 5
-						this.oParent.Segment_1866.F0_1866_0cf5(
-							this.Var_6548_PlayerID,
-							0x1a,
-							this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].Position.X,
-							this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].Position.Y);
-						local_ba = (short)this.oCPU.AX.Word;
-
-						if (local_ba != -1)
+						if (local_c8 > 3 || (this.oParent.CivState.Players[this.Var_6548_PlayerID].Diplomacy[this.oParent.CivState.HumanPlayerID] & 2) != 0)
 						{
-							this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_ba].GoToPosition.X =
-								this.oParent.CivState.Cities[local_b0].Position.X;
+							city.ShieldsCount += (short)(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a);
+						}
+						else
+						{
+							// Instruction address 0x1d12:0x19f9, size: 5
+							this.oParent.Segment_1866.F0_1866_0cf5(
+								this.Var_6548_PlayerID,
+								0x1a,
+								this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].Position.X,
+								this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].Position.Y);
+							local_ba = (short)this.oCPU.AX.Word;
 
-							this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_ba].GoToPosition.Y =
-								this.oParent.CivState.Cities[local_b0].Position.Y;
+							if (local_ba != -1)
+							{
+								this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_ba].GoToPosition.X =
+									this.oParent.CivState.Cities[local_b0].Position.X;
+
+								this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_ba].GoToPosition.Y =
+									this.oParent.CivState.Cities[local_b0].Position.Y;
+							}
 						}
 					}
-				}
 
-				if (city.CurrentProductionID == 0x19 && this.oParent.CivState.Players[this.Var_6548_PlayerID].ActiveUnits[25] == 1)
-				{
-					this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ContactPlayerCountdown = -1;
-				}
+					if (city.CurrentProductionID == 0x19 && this.oParent.CivState.Players[this.Var_6548_PlayerID].ActiveUnits[25] == 1)
+					{
+						this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ContactPlayerCountdown = -1;
+					}
 
-				// Instruction address 0x1d12:0x1aab, size: 5
-				this.oParent.Segment_25fb.F0_25fb_34b6(cityID);
+					// Instruction address 0x1d12:0x1aab, size: 5
+					this.oParent.Segment_25fb.F0_25fb_34b6(cityID);
 
-				goto L220f;
-
-			L1ab6:
-				city.ShieldsCount = 0;
-
-				if (local_ba == -1)
 					goto L220f;
 
-				if (city.CurrentProductionID == 0)
-					goto L1af2;
+				L1ab6:
+					city.ShieldsCount = 0;
 
-				if (city.CurrentProductionID < 0x1a)
-					goto L220f;
+					if (local_ba == -1)
+						goto L220f;
 
-			L1af2:
-				this.oParent.Var_b1e8 = 1;
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+					if (city.CurrentProductionID == 0)
+						goto L1af2;
 
-				// Instruction address 0x1d12:0x1b00, size: 5
-				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+					if (city.CurrentProductionID < 0x1a)
+						goto L220f;
 
-				// Instruction address 0x1d12:0x1b10, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, " builds ");
+					L1af2:
+					this.oParent.Var_b1e8 = 1;
+					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
-				// Instruction address 0x1d12:0x1b2e, size: 5
-				this.oParent.MSCAPI.strcat(0xba06,
-					this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Name);
-
-				// Instruction address 0x1d12:0x1b3e, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, ".\n");
-
-				this.oParent.Var_2f9e_Unknown = 0x3;
-
-				// Instruction address 0x1d12:0x1b58, size: 5
-				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
-
-				goto L220f;
-
-			L1b63:
-				if ((this.oParent.CivState.BuildingDefinitions[-city.CurrentProductionID].Price * local_4a) > city.ShieldsCount)
-					goto L220f;
-
-				local_e8 = -city.CurrentProductionID;
-
-				if (local_e8 <= 24)
-					goto L1beb;
-
-				if (this.oParent.CivState.WonderCityID[local_e8 - 24] != -1)
-					goto L1be2;
-
-				this.oParent.CivState.WonderCityID[local_e8 - 24] = cityID;
-
-				// Instruction address 0x1d12:0x1bd7, size: 5
-				this.oParent.Segment_1866.F0_1866_250e_AddReplayData(10, (byte)((sbyte)this.Var_6548_PlayerID), (byte)((sbyte)(local_e8 - 24)));
-
-				goto L1c1d;
-
-			L1be2:
-				local_e8 = -1;
-
-				goto L1c1d;
-
-			L1beb:
-				if ((city.BuildingFlags & (1 << (local_e8 - 1))) != 0)
-				{
-					local_e8 = -1;
-				}
-
-			L1c1d:
-				if (local_e8 == -1)
-					goto L220f;
-
-				if (local_e8 == 41)
-				{
-					// Instruction address 0x1d12:0x1c39, size: 5
-					this.oParent.MSCAPI.strcpy(0xba06, "Sensors report a\nNUCLEAR WEAPONS test\nnear ");
-
-					// Instruction address 0x1d12:0x1c44, size: 5
+					// Instruction address 0x1d12:0x1b00, size: 5
 					this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 
-					// Instruction address 0x1d12:0x1c54, size: 5
-					this.oParent.MSCAPI.strcat(0xba06, "!\n");
+					// Instruction address 0x1d12:0x1b10, size: 5
+					this.oParent.MSCAPI.strcat(0xba06, " builds ");
 
-					// Instruction address 0x1d12:0x1c60, size: 5
-					this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x24, 0);
+					// Instruction address 0x1d12:0x1b2e, size: 5
+					this.oParent.MSCAPI.strcat(0xba06,
+						this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Name);
 
-					this.oParent.Overlay_21.F21_0000_0000(-1);
+					// Instruction address 0x1d12:0x1b3e, size: 5
+					this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-					// Instruction address 0x1d12:0x1c78, size: 5
-					this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
-				}
+					this.oParent.Var_2f9e_Unknown = 0x3;
 
-				if (local_e8 < 22)
-				{
-					city.BuildingFlags |= (uint)(1 << (local_e8 - 1));
-				}
+					// Instruction address 0x1d12:0x1b58, size: 5
+					this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
 
-				city.ShieldsCount -= (short)(this.oParent.CivState.BuildingDefinitions[-city.CurrentProductionID].Price * local_4a);
+					goto L220f;
 
-				if (((1 << this.Var_6548_PlayerID) & (ushort)this.oParent.CivState.PlayerFlags) != 0)
-					goto L1cec;
+				L1b63:
+					if ((this.oParent.CivState.BuildingDefinitions[-city.CurrentProductionID].Price * local_4a) > city.ShieldsCount)
+						goto L220f;
 
-				if (local_e8 <= 24)
-					goto L1dfc;
+					local_e8 = -city.CurrentProductionID;
 
-			L1cec:
-				if (((1 << this.Var_6548_PlayerID) & this.oParent.CivState.PlayerFlags) == 0)
-				{
-					this.oParent.CivState.MapVisibility[city.Position.X, city.Position.Y] = 0xffff;
-				}
-				else
-				{
-					this.oParent.Var_b1e8 = 1;
-				}				
+					if (local_e8 <= 24)
+						goto L1beb;
 
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+					if (this.oParent.CivState.WonderCityID[local_e8 - 24] != -1)
+						goto L1be2;
 
-				// Instruction address 0x1d12:0x1d31, size: 5
-				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+					this.oParent.CivState.WonderCityID[local_e8 - 24] = cityID;
 
-				// Instruction address 0x1d12:0x1d41, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, " builds\n");
+					// Instruction address 0x1d12:0x1bd7, size: 5
+					this.oParent.Segment_1866.F0_1866_250e_AddReplayData(10, (byte)((sbyte)this.Var_6548_PlayerID), (byte)((sbyte)(local_e8 - 24)));
 
-				// Instruction address 0x1d12:0x1d58, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.BuildingDefinitions[local_e8].Name);
+					goto L1c1d;
 
-				// Instruction address 0x1d12:0x1d68, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, ".\n");
+				L1be2:
+					local_e8 = -1;
 
-				if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
-					goto L1de0;
+					goto L1c1d;
 
-				if ((this.oParent.CivState.GameSettingFlags & 0x8) == 0)
-					goto L1de0;
-
-				if (local_e8 <= 21)
-					goto L1d9a;
-
-				if (local_e8 <= 24)
-					goto L1de0;
-
-			L1d9a:
-				if ((city.StatusFlag & 0x10) != 0 || local_e8 == 1)
-					goto L1de0;
-
-				// Instruction address 0x1d12:0x1dbe, size: 5
-				this.oParent.Segment_11a8.F0_11a8_02a4(1, 0);
-				if (this.oCPU.AX.Word == 0)
-					goto L1de0;
-
-				this.oParent.CityView.F19_0000_0000(cityID, (short)local_e8);
-
-				goto L1deb;
-
-			L1de0:
-				this.oParent.Overlay_21.F21_0000_0000(cityID);
-
-			L1deb:
-				city.ShieldsCount = 0;
-
-				goto L1e60;
-
-			L1dfc:
-				if (local_e8 == 1)
-				{
-					city.CurrentProductionID = -2;
-				}
-
-				// Instruction address 0x1d12:0x1e1a, size: 5
-				this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
-				city.CurrentProductionID = (sbyte)((short)this.oCPU.AX.Word);
-
-				if (city.CurrentProductionID >= 0)
-				{
-					this.oParent.CivState.Players[this.Var_6548_PlayerID].UnitsInProduction[city.CurrentProductionID]++;
-				}
-
-			L1e60:
-				if (local_e8 < 22 || local_e8 > 24)
-					goto L2010;
-
-				if (((1 << this.Var_6548_PlayerID) & (ushort)this.oParent.CivState.SpaceshipFlags) != 0)
-					goto L2010;
-
-				if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
-					goto L1ea9;
-
-				this.oParent.Overlay_18.F18_0000_0f83(this.Var_6548_PlayerID, (ushort)((short)(local_e8 - 22)));
-
-				goto L2010;
-
-			L1ea9:
-				this.oParent.Overlay_18.F18_0000_0d4f(this.Var_6548_PlayerID, (short)(local_e8 - 22));
-				local_c8 = (short)this.oCPU.AX.Word;
-
-				if (local_c8 != 0 && local_e8 < 24)
-				{
-					city.ShieldsCount += (short)(this.oParent.CivState.BuildingDefinitions[local_e8].Price * local_4a);
-
-					if (city.CurrentProductionID <= -22 && city.CurrentProductionID >= -24)
+				L1beb:
+					if ((city.BuildingFlags & (1 << (local_e8 - 1))) != 0)
 					{
-						city.CurrentProductionID = (sbyte)((-local_e8) - 1);
+						local_e8 = -1;
 					}
 
-					local_c8--;
-				}
+				L1c1d:
+					if (local_e8 == -1)
+						goto L220f;
 
-				if ((this.oParent.CivState.SpaceshipFlags & (1 << this.Var_6548_PlayerID)) != 0)
-					goto L1ffa;
-
-				if (this.oParent.CivState.AISpaceshipSuccessRate < 40)
-					goto L1ffa;
-
-				if (local_c8 != 0)
-					goto L1feb;
-
-				// Instruction address 0x1d12:0x1f5d, size: 5
-				this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, (int)TechnologyEnum.SpaceFlight);
-				if (this.oCPU.AX.Word == 0)
-					goto L2010;
-
-				if (this.oParent.CivState.AISpaceshipSuccessRate > 75)
-					goto L1feb;
-
-				if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Ranking > this.oParent.CivState.Players[this.Var_6548_PlayerID].Ranking)
-					goto L1feb;
-
-				if ((this.oParent.CivState.SpaceshipFlags & (1 << this.oParent.CivState.HumanPlayerID)) == 0)
-					goto L1fc5;
-
-				if ((this.oParent.CivState.Players[this.Var_6548_PlayerID].SpaceshipETAYear - this.oParent.CivState.Year) <= 
-					(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].SpaceshipETAYear - this.oParent.CivState.Year))
-					goto L1feb;
-
-				L1fc5:
-				if ((this.oParent.CivState.SpaceshipFlags & (1 << (this.oParent.CivState.HumanPlayerID + 8))) == 0 ||
-					this.oParent.CivState.Players[this.oParent.CivState.ActiveCivilizations].Coins <= 1000)
-					goto L2010;
-
-			L1feb:
-				this.oParent.Overlay_18.F18_0000_15c3(this.Var_6548_PlayerID);
-
-				goto L2010;
-
-			L1ffa:
-				if (local_c8 != 0)
-				{
-					this.oParent.Overlay_18.F18_0000_15c3(this.Var_6548_PlayerID);
-				}
-
-			L2010:
-				if (local_e8 == 1)
-				{
-					for (int i = 0; i < 128; i++)
+					if (local_e8 == 41)
 					{
-						if (this.oParent.CivState.Cities[i].PlayerID == this.Var_6548_PlayerID)
-						{
-							this.oParent.CivState.Cities[i].BuildingFlags &= 0xfffffffe;
-						}
-					}
+						// Instruction address 0x1d12:0x1c39, size: 5
+						this.oParent.MSCAPI.strcpy(0xba06, "Sensors report a\nNUCLEAR WEAPONS test\nnear ");
 
-					if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID ||
-						(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Diplomacy[this.Var_6548_PlayerID] & 0x40) != 0)
-					{
-						this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
-
-						if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
-						{
-							// Instruction address 0x1d12:0x2097, size: 5
-							this.oParent.MSCAPI.strcpy(0xba06, "Diplomats report:\n");
-
-							this.oParent.Var_2f9e_Unknown = 0x1;
-						}
-
-						// Instruction address 0x1d12:0x20b3, size: 5
-						this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.Players[this.Var_6548_PlayerID].Nationality);
-
-						// Instruction address 0x1d12:0x20c3, size: 5
-						this.oParent.MSCAPI.strcat(0xba06, " capital\nmoved to ");
-
-						// Instruction address 0x1d12:0x20ce, size: 5
+						// Instruction address 0x1d12:0x1c44, size: 5
 						this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 
-						// Instruction address 0x1d12:0x20de, size: 5
-						this.oParent.MSCAPI.strcat(0xba06, ".\n");
+						// Instruction address 0x1d12:0x1c54, size: 5
+						this.oParent.MSCAPI.strcat(0xba06, "!\n");
 
-						this.oParent.Var_2f9e_Unknown = 0x5;
+						// Instruction address 0x1d12:0x1c60, size: 5
+						this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x24, 0);
 
-						// Instruction address 0x1d12:0x20f8, size: 5
-						this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
+						this.oParent.Overlay_21.F21_0000_0000(-1);
 
-						this.oParent.CivState.Players[this.Var_6548_PlayerID].XStart = (short)city.Position.X;
-
-						city.BuildingFlags |= 1;
+						// Instruction address 0x1d12:0x1c78, size: 5
+						this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 					}
-				}
 
-				if (local_e8 == 38)
-				{
-					// Instruction address 0x1d12:0x2136, size: 5
-					this.oParent.Segment_11a8.F0_11a8_0280();
-
-					// Instruction address 0x1d12:0x2143, size: 5
-					this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
-
-					// Instruction address 0x1d12:0x2153, size: 5
-					this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
-
-					// Instruction address 0x1d12:0x215b, size: 5
-					this.oParent.Segment_11a8.F0_11a8_0294();
-				}
-
-				if (local_e8 == 43 && this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID)
-				{
-					for (int i = 0; i < 128; i++)
+					if (local_e8 < 22)
 					{
-						if (this.oParent.CivState.Cities[i].StatusFlag != 0xff && this.oParent.CivState.Cities[i].PlayerID != this.Var_6548_PlayerID)
-						{
-							this.oParent.CivState.Cities[i].VisibleSize = this.oParent.CivState.Cities[i].ActualSize;
-
-							this.oParent.CivState.MapVisibility[this.oParent.CivState.Cities[i].Position.X,
-								this.oParent.CivState.Cities[i].Position.Y] |= (ushort)(1 << this.Var_6548_PlayerID);
-
-							// Instruction address 0x1d12:0x2204, size: 5
-							this.oParent.Segment_2aea.F0_2aea_1601(
-								this.oParent.CivState.Cities[i].Position.X, this.oParent.CivState.Cities[i].Position.Y);
-						}
+						city.BuildingFlags |= (uint)(1 << (local_e8 - 1));
 					}
-				}
 
-			L220f:
-				if ((this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID && (city.StatusFlag & 0x10) != 0) &&
-					(city.ShieldsCount == 0 || (city.CurrentProductionID < 0 && local_e8 == -1)))
-				{
-					// Instruction address 0x1d12:0x2262, size: 5
-					this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
-					local_e8 = (short)this.oCPU.AX.Word;
+					city.ShieldsCount -= (short)(this.oParent.CivState.BuildingDefinitions[-city.CurrentProductionID].Price * local_4a);
 
-					this.oParent.Var_aa_Rectangle.FontID = 2;
+					if (((1 << this.Var_6548_PlayerID) & (ushort)this.oParent.CivState.PlayerFlags) != 0)
+						goto L1cec;
 
-					if (local_e8 == 99)
+					if (local_e8 <= 24)
+						goto L1dfc;
+
+				L1cec:
+					if (((1 << this.Var_6548_PlayerID) & this.oParent.CivState.PlayerFlags) == 0)
 					{
-						city.StatusFlag &= 0xef;
+						this.oParent.CivState.MapVisibility[city.Position.X, city.Position.Y] = 0xffff;
 					}
 					else
 					{
-						this.oParent.Var_b1e8 = 0;
+						this.oParent.Var_b1e8 = 1;
+					}
 
-						if (city.CurrentProductionID >= 0)
+					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+
+					// Instruction address 0x1d12:0x1d31, size: 5
+					this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+
+					// Instruction address 0x1d12:0x1d41, size: 5
+					this.oParent.MSCAPI.strcat(0xba06, " builds\n");
+
+					// Instruction address 0x1d12:0x1d58, size: 5
+					this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.BuildingDefinitions[local_e8].Name);
+
+					// Instruction address 0x1d12:0x1d68, size: 5
+					this.oParent.MSCAPI.strcat(0xba06, ".\n");
+
+					if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
+						goto L1de0;
+
+					if ((this.oParent.CivState.GameSettingFlags & 0x8) == 0)
+						goto L1de0;
+
+					if (local_e8 <= 21)
+						goto L1d9a;
+
+					if (local_e8 <= 24)
+						goto L1de0;
+
+					L1d9a:
+					if ((city.StatusFlag & 0x10) != 0 || local_e8 == 1)
+						goto L1de0;
+
+					// Instruction address 0x1d12:0x1dbe, size: 5
+					this.oParent.Segment_11a8.F0_11a8_02a4(1, 0);
+					if (this.oCPU.AX.Word == 0)
+						goto L1de0;
+
+					this.oParent.CityView.F19_0000_0000(cityID, (short)local_e8);
+
+					goto L1deb;
+
+				L1de0:
+					this.oParent.Overlay_21.F21_0000_0000(cityID);
+
+				L1deb:
+					city.ShieldsCount = 0;
+
+					goto L1e60;
+
+				L1dfc:
+					if (local_e8 == 1)
+					{
+						city.CurrentProductionID = -2;
+					}
+
+					// Instruction address 0x1d12:0x1e1a, size: 5
+					this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
+					city.CurrentProductionID = (sbyte)((short)this.oCPU.AX.Word);
+
+					if (city.CurrentProductionID >= 0)
+					{
+						this.oParent.CivState.Players[this.Var_6548_PlayerID].UnitsInProduction[city.CurrentProductionID]++;
+					}
+
+				L1e60:
+					if (local_e8 < 22 || local_e8 > 24)
+						goto L2010;
+
+					if (((1 << this.Var_6548_PlayerID) & (ushort)this.oParent.CivState.SpaceshipFlags) != 0)
+						goto L2010;
+
+					if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
+						goto L1ea9;
+
+					this.oParent.Overlay_18.F18_0000_0f83(this.Var_6548_PlayerID, (ushort)((short)(local_e8 - 22)));
+
+					goto L2010;
+
+				L1ea9:
+					this.oParent.Overlay_18.F18_0000_0d4f(this.Var_6548_PlayerID, (short)(local_e8 - 22));
+					local_c8 = (short)this.oCPU.AX.Word;
+
+					if (local_c8 != 0 && local_e8 < 24)
+					{
+						city.ShieldsCount += (short)(this.oParent.CivState.BuildingDefinitions[local_e8].Price * local_4a);
+
+						if (city.CurrentProductionID <= -22 && city.CurrentProductionID >= -24)
 						{
-							this.oParent.CivState.Players[this.Var_6548_PlayerID].UnitsInProduction[city.CurrentProductionID]--;
+							city.CurrentProductionID = (sbyte)((-local_e8) - 1);
 						}
 
-						city.CurrentProductionID = (sbyte)local_e8;
+						local_c8--;
+					}
 
-						if (city.CurrentProductionID >= 0)
+					if ((this.oParent.CivState.SpaceshipFlags & (1 << this.Var_6548_PlayerID)) != 0)
+						goto L1ffa;
+
+					if (this.oParent.CivState.AISpaceshipSuccessRate < 40)
+						goto L1ffa;
+
+					if (local_c8 != 0)
+						goto L1feb;
+
+					// Instruction address 0x1d12:0x1f5d, size: 5
+					this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, (int)TechnologyEnum.SpaceFlight);
+					if (this.oCPU.AX.Word == 0)
+						goto L2010;
+
+					if (this.oParent.CivState.AISpaceshipSuccessRate > 75)
+						goto L1feb;
+
+					if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Ranking > this.oParent.CivState.Players[this.Var_6548_PlayerID].Ranking)
+						goto L1feb;
+
+					if ((this.oParent.CivState.SpaceshipFlags & (1 << this.oParent.CivState.HumanPlayerID)) == 0)
+						goto L1fc5;
+
+					if ((this.oParent.CivState.Players[this.Var_6548_PlayerID].SpaceshipETAYear - this.oParent.CivState.Year) <=
+						(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].SpaceshipETAYear - this.oParent.CivState.Year))
+						goto L1feb;
+
+				L1fc5:
+					if ((this.oParent.CivState.SpaceshipFlags & (1 << (this.oParent.CivState.HumanPlayerID + 8))) == 0 ||
+						this.oParent.CivState.Players[this.oParent.CivState.ActiveCivilizations].Coins <= 1000)
+						goto L2010;
+
+				L1feb:
+					this.oParent.Overlay_18.F18_0000_15c3(this.Var_6548_PlayerID);
+
+					goto L2010;
+
+				L1ffa:
+					if (local_c8 != 0)
+					{
+						this.oParent.Overlay_18.F18_0000_15c3(this.Var_6548_PlayerID);
+					}
+
+				L2010:
+					if (local_e8 == 1)
+					{
+						for (int i = 0; i < 128; i++)
 						{
-							this.oParent.CivState.Players[this.Var_6548_PlayerID].UnitsInProduction[city.CurrentProductionID]++;
+							if (this.oParent.CivState.Cities[i].PlayerID == this.Var_6548_PlayerID)
+							{
+								this.oParent.CivState.Cities[i].BuildingFlags &= 0xfffffffe;
+							}
+						}
+
+						if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID ||
+							(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Diplomacy[this.Var_6548_PlayerID] & 0x40) != 0)
+						{
+							this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+
+							if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
+							{
+								// Instruction address 0x1d12:0x2097, size: 5
+								this.oParent.MSCAPI.strcpy(0xba06, "Diplomats report:\n");
+
+								this.oParent.Var_2f9e_Unknown = 0x1;
+							}
+
+							// Instruction address 0x1d12:0x20b3, size: 5
+							this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.Players[this.Var_6548_PlayerID].Nationality);
+
+							// Instruction address 0x1d12:0x20c3, size: 5
+							this.oParent.MSCAPI.strcat(0xba06, " capital\nmoved to ");
+
+							// Instruction address 0x1d12:0x20ce, size: 5
+							this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+
+							// Instruction address 0x1d12:0x20de, size: 5
+							this.oParent.MSCAPI.strcat(0xba06, ".\n");
+
+							this.oParent.Var_2f9e_Unknown = 0x5;
+
+							// Instruction address 0x1d12:0x20f8, size: 5
+							this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
+
+							this.oParent.CivState.Players[this.Var_6548_PlayerID].XStart = (short)city.Position.X;
+
+							city.BuildingFlags |= 1;
 						}
 					}
-				}
-				
-			L2307:
-				if ((this.oParent.CivState.PlayerFlags & (1 << this.Var_6548_PlayerID)) != 0)
-					goto L2673;
 
-				if ((city.StatusFlag & 0x10) != 0)
+					if (local_e8 == 38)
+					{
+						// Instruction address 0x1d12:0x2136, size: 5
+						this.oParent.Segment_11a8.F0_11a8_0280();
+
+						// Instruction address 0x1d12:0x2143, size: 5
+						this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
+
+						// Instruction address 0x1d12:0x2153, size: 5
+						this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
+
+						// Instruction address 0x1d12:0x215b, size: 5
+						this.oParent.Segment_11a8.F0_11a8_0294();
+					}
+
+					if (local_e8 == 43 && this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID)
+					{
+						for (int i = 0; i < 128; i++)
+						{
+							if (this.oParent.CivState.Cities[i].StatusFlag != 0xff && this.oParent.CivState.Cities[i].PlayerID != this.Var_6548_PlayerID)
+							{
+								this.oParent.CivState.Cities[i].VisibleSize = this.oParent.CivState.Cities[i].ActualSize;
+
+								this.oParent.CivState.MapVisibility[this.oParent.CivState.Cities[i].Position.X,
+									this.oParent.CivState.Cities[i].Position.Y] |= (ushort)(1 << this.Var_6548_PlayerID);
+
+								// Instruction address 0x1d12:0x2204, size: 5
+								this.oParent.Segment_2aea.F0_2aea_1601(
+									this.oParent.CivState.Cities[i].Position.X, this.oParent.CivState.Cities[i].Position.Y);
+							}
+						}
+					}
+
+				L220f:
+					if ((this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID && (city.StatusFlag & 0x10) != 0) &&
+						(city.ShieldsCount == 0 || (city.CurrentProductionID < 0 && local_e8 == -1)))
+					{
+						// Instruction address 0x1d12:0x2262, size: 5
+						this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
+						local_e8 = (short)this.oCPU.AX.Word;
+
+						this.oParent.Var_aa_Rectangle.FontID = 2;
+
+						if (local_e8 == 99)
+						{
+							city.StatusFlag &= 0xef;
+						}
+						else
+						{
+							this.oParent.Var_b1e8 = 0;
+
+							if (city.CurrentProductionID >= 0)
+							{
+								this.oParent.CivState.Players[this.Var_6548_PlayerID].UnitsInProduction[city.CurrentProductionID]--;
+							}
+
+							city.CurrentProductionID = (sbyte)local_e8;
+
+							if (city.CurrentProductionID >= 0)
+							{
+								this.oParent.CivState.Players[this.Var_6548_PlayerID].UnitsInProduction[city.CurrentProductionID]++;
+							}
+						}
+					}
+
+				L2307:
+					if ((this.oParent.CivState.PlayerFlags & (1 << this.Var_6548_PlayerID)) == 0)
+					{
+						if ((city.StatusFlag & 0x10) != 0)
+						{
+							// Instruction address 0x1d12:0x232e, size: 5
+							this.oParent.Segment_25fb.F0_25fb_34b6(cityID);
+						}
+
+						local_cc = 0;
+
+						// Instruction address 0x1d12:0x2344, size: 5
+						this.oParent.Segment_2aea.F0_2aea_1942(local_d8, local_e4);
+						// !!! Possible overflow
+						local_104 = this.oParent.CivState.Players[this.oCPU.AX.Word].Continents[this.Var_6548_PlayerID].Strategy;
+
+						if ((local_104 == 1 || local_104 == 2 || local_104 == 5) && local_e8 != 0 && city.CurrentProductionID >= 0 &&
+							this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].UnitCategory == local_104)
+						{
+							local_cc = this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 64;
+						}
+
+						if ((this.oParent.CivState.SpaceshipFlags & (1 << (this.oParent.CivState.HumanPlayerID + 8))) != 0 &&
+							(-city.CurrentProductionID) >= 0x16 && (-city.CurrentProductionID) <= 0x18)
+						{
+							local_cc = this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 128;
+						}
+
+						if ((city.StatusFlag & 0x1) != 0 && city.CurrentProductionID < 0 && city.ShieldsCount != 0)
+						{
+							// Instruction address 0x1d12:0x24a7, size: 5
+							this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
+								(this.oParent.CivState.BuildingDefinitions[-city.CurrentProductionID].Price * local_4a) - city.ShieldsCount,
+								0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 8);
+							local_cc = (short)this.oCPU.AX.Word;
+						}
+
+						// Instruction address 0x1d12:0x24bb, size: 5
+						this.oParent.Segment_2aea.F0_2aea_14e0(local_d8, local_e4);
+						if (((short)this.oCPU.AX.Word == -1 || (city.StatusFlag & 0x10) != 0) && city.CurrentProductionID >= 0 && city.ShieldsCount != 0)
+						{
+							// Instruction address 0x1d12:0x2530, size: 5
+							this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
+								(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
+								0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 3);
+							local_cc = (short)this.oCPU.AX.Word;
+						}
+
+						if (city.CurrentProductionID == -1 && city.ShieldsCount != 0)
+						{
+							// Instruction address 0x1d12:0x2591, size: 5
+							this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
+								(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
+								0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 3);
+							local_cc = (short)this.oCPU.AX.Word;
+						}
+
+						if (city.StatusFlag == 0x19 && this.oParent.CivState.Players[this.Var_6548_PlayerID].ActiveUnits[25] == 0 && city.ShieldsCount != 0)
+						{
+							// Instruction address 0x1d12:0x260d, size: 5
+							this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
+								(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
+								0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 4);
+							local_cc = (short)this.oCPU.AX.Word;
+						}
+
+						if (this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins > 2000)
+						{
+							local_cc += this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 512;
+						}
+
+						city.ShieldsCount += (short)local_cc;
+						this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins -= (short)(local_cc * 2);
+						city.StatusFlag &= 0xef;
+					}
+				}
+
+				if (flag == 1)
 				{
-					// Instruction address 0x1d12:0x232e, size: 5
-					this.oParent.Segment_25fb.F0_25fb_34b6(cityID);
+					// Instruction address 0x1d12:0x2697, size: 5
+					F0_1d12_70cb_FillRectangleWithPattern(2, 67, 124, 104);
+
+					// Instruction address 0x1d12:0x26af, size: 5
+					F0_1d12_70cb_FillRectangleWithPattern(95, 106, 227, 197);
+
+					// Instruction address 0x1d12:0x26cf, size: 5
+					F0_1d12_71bf(95, 106, 128, 114, 0x25ea, 9);
+
+					// Instruction address 0x1d12:0x26ef, size: 5
+					F0_1d12_71bf(129, 106, 160, 114, 0x25ef, 9);
+
+					// Instruction address 0x1d12:0x270f, size: 5
+					F0_1d12_71bf(161, 106, 193, 114, 0x25f5, 9);
+
+					// Instruction address 0x1d12:0x272f, size: 5
+					F0_1d12_71bf(194, 106, 226, 114, 0x25f9, 9);
+
+					// Instruction address 0x1d12:0x275a, size: 5
+					this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, (33 * this.Var_2496) + 96, 107, 32, 7, 9, 15);
+
+					if (this.Var_2496 == 2)
+					{
+						// Instruction address 0x1d12:0x2768, size: 5
+						F0_1d12_72b7();
+					}
 				}
 			
-				local_cc = 0;
-
-				// Instruction address 0x1d12:0x2344, size: 5
-				this.oParent.Segment_2aea.F0_2aea_1942(local_d8, local_e4);
-				// !!! Possible overflow
-				local_104 = this.oParent.CivState.Players[this.oCPU.AX.Word].Continents[this.Var_6548_PlayerID].Strategy;
-
-				if ((local_104 == 1 || local_104 == 2 || local_104 == 5) && local_e8 != 0 && city.CurrentProductionID >= 0 &&
-					this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].UnitCategory == local_104)
-				{
-					local_cc = this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 64;
-				}
-				
-				if ((this.oParent.CivState.SpaceshipFlags & (1 << (this.oParent.CivState.HumanPlayerID + 8))) == 0 || 
-					(-city.CurrentProductionID) < 0x16 || (-city.CurrentProductionID) > 0x18)
-					goto L2432;
-
-				local_cc = this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 128;
-
-			L2432:
-				if ((city.StatusFlag & 0x1) == 0)
-					goto L24b3;
-
-				if (city.CurrentProductionID >= 0)
-					goto L24b3;
-
-				if (city.ShieldsCount == 0)
-					goto L24b3;
-
-				// Instruction address 0x1d12:0x24a7, size: 5
-				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-					(this.oParent.CivState.BuildingDefinitions[-city.CurrentProductionID].Price * local_4a) - city.ShieldsCount,
-					0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 8);
-				local_cc = (short)this.oCPU.AX.Word;
-
-			L24b3:
-				// Instruction address 0x1d12:0x24bb, size: 5
-				this.oParent.Segment_2aea.F0_2aea_14e0(local_d8, local_e4);
-				if ((short)this.oCPU.AX.Word == -1)
-					goto L24db;
-
-				if ((city.StatusFlag & 0x10) == 0)
-					goto L253c;
-
-			L24db:
-				if (city.CurrentProductionID < 0 || city.ShieldsCount == 0)
-					goto L253c;
-
-				// Instruction address 0x1d12:0x2530, size: 5
-				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-					(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
-					0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 3);
-				local_cc = (short)this.oCPU.AX.Word;
-
-			L253c:
-				this.oCPU.CMPByte((byte)city.CurrentProductionID, 0xff);
-				if (this.oCPU.Flags.E) goto L254e;
-				goto L259d;
-
-			L254e:
-				this.oCPU.CMPWord((ushort)city.ShieldsCount, 0x0);
-				if (this.oCPU.Flags.NE) goto L2560;
-				goto L259d;
-
-			L2560:
-				// Instruction address 0x1d12:0x2591, size: 5
-				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-					(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
-					0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 3);
-
-				local_cc = (short)this.oCPU.AX.Word;
-
-			L259d:
-				this.oCPU.CMPByte(city.StatusFlag, 0x19);
-				if (this.oCPU.Flags.E) goto L25af;
-				goto L2619;
-
-			L25af:
-				if (this.oParent.CivState.Players[this.Var_6548_PlayerID].ActiveUnits[25] != 0)
-					goto L2619;
-
-				this.oCPU.CMPWord((ushort)city.ShieldsCount, 0x0);
-				if (this.oCPU.Flags.NE) goto L25d4;
-				goto L2619;
-
-			L25d4:
-				// Instruction address 0x1d12:0x260d, size: 5
-				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-					(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
-					0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 4);
-
-				local_cc = (short)this.oCPU.AX.Word;
-
-			L2619:
-				this.oCPU.CMPWord((ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins, 0x7d0);
-				if (this.oCPU.Flags.G) goto L262a;
-				goto L2646;
-
-			L262a:
-				this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.XORWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.CX.Word = 0x9;
-				this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.AX.Word = this.oCPU.XORWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				local_cc += (short)this.oCPU.AX.Word;
-
-			L2646:
-				city.ShieldsCount += (short)local_cc;
-				
-				this.oCPU.AX.Word = (ushort)((short)local_cc);
-				this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 0x1);
-
-				this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins -= (short)(local_cc * 2);
-				city.StatusFlag &= 0xef;
-
-			L2673:
-				this.oCPU.AX.Word = (ushort)flag;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.CMPWord(this.oCPU.AX.Word, 0x1);
-				if (this.oCPU.Flags.E) goto L267f;
-				goto L277e;
-
-			L267f:
-				this.oCPU.CMPWord(this.oCPU.DX.Word, 0x0);
-				if (this.oCPU.Flags.E) goto L2687;
-				goto L277e;
-
-			L2687:
-				// Instruction address 0x1d12:0x2697, size: 5
-				F0_1d12_70cb_FillRectangleWithPattern(2, 67, 124, 104);
-
-				// Instruction address 0x1d12:0x26af, size: 5
-				F0_1d12_70cb_FillRectangleWithPattern(95, 106, 227, 197);
-
-				// Instruction address 0x1d12:0x26cf, size: 5
-				F0_1d12_71bf(95, 106, 128, 114, 0x25ea, 9);
-
-				// Instruction address 0x1d12:0x26ef, size: 5
-				F0_1d12_71bf(129, 106, 160, 114, 0x25ef, 9);
-
-				// Instruction address 0x1d12:0x270f, size: 5
-				F0_1d12_71bf(161, 106, 193, 114, 0x25f5, 9);
-
-				// Instruction address 0x1d12:0x272f, size: 5
-				F0_1d12_71bf(194, 106, 226, 114, 0x25f9, 9);
-
-				// Instruction address 0x1d12:0x275a, size: 5
-				this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-					(33 * this.Var_2496) + 96, 107, 32, 7, 9, 15);
-
-				this.oCPU.AX.Word = Var_2496;
-				goto L2773;
-
-			L2768:
-				// Instruction address 0x1d12:0x2768, size: 5
-				F0_1d12_72b7();
-				goto L277e;
-
-			L2773:
-				this.oCPU.CMPWord(this.oCPU.AX.Word, 0x2);
-				if (this.oCPU.Flags.NE) goto L277e;
-				goto L2768;
-
-			L277e:
 				local_d8 = city.Position.X;
 				local_e4 = city.Position.Y;
 
@@ -1767,109 +1696,39 @@ namespace OpenCiv1
 					this.Var_6b30 = 10;
 				}
 
-				this.oCPU.AX.Word = 0x14;
-				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX,
-					(ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType);
-				this.oCPU.CX.Word = this.oCPU.AX.Word;
-				this.oCPU.CX.Word = this.oCPU.ADDWord(this.oCPU.CX.Word, 0x50);
-				this.oCPU.BX.Word = 0x3;
-				this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70da_Arr[2]);
-				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.Var_6b30);
-				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.BX.Word);
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-				this.oParent.Var_d2e0 = this.oCPU.AX.Word;
+				this.oParent.Var_d2e0 = ((this.oParent.Var_70da_Arr[2] * (short)this.Var_6b30) * 3) /
+					((this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType * 20) + 80);
 
-				this.oCPU.TESTWord(city.BuildingFlags0, 0x40);
-				if (this.oCPU.Flags.E) goto L27f4;
-				goto L2806;
-
-			L27f4:
-				this.oCPU.TESTWord(city.BuildingFlags0, 0x1);
-				if (this.oCPU.Flags.NE) goto L2806;
-				goto L2812;
-
-			L2806:
-				this.oCPU.CX.Word = 0x2;
-				this.oCPU.AX.Word = this.oParent.Var_d2e0;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-				this.oParent.Var_d2e0 = this.oCPU.AX.Word;
-
-			L2812:
+				if ((city.BuildingFlags0 & 0x40) != 0 || (city.BuildingFlags0 & 0x1) != 0)
+				{
+					this.oParent.Var_d2e0 /= 2;
+				}
+			
 				if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType == 5)
 				{
-					this.oParent.Var_d2e0 = 0x0;
+					this.oParent.Var_d2e0 = 0;
 				}
 
-				city.BaseTrade = (sbyte)(this.oParent.Var_70da_Arr[2] - (short)this.oParent.Var_d2e0);
-				local_bc = 0;
+				city.BaseTrade = (sbyte)(this.oParent.Var_70da_Arr[2] - this.oParent.Var_d2e0);
 
-				goto L2848;
+				for (int i = 0; i < 3; i++)
+				{
+					local_4c = city.TradeCityIDs[i];
 
-			L2844:
-				local_bc++;
+					if (local_4c != -1)
+					{
+						if (this.oParent.CivState.Cities[local_4c].PlayerID == this.Var_6548_PlayerID)
+						{
+							this.oParent.Var_70da_Arr[2] += (this.oParent.CivState.Cities[local_4c].BaseTrade + this.oParent.Var_70da_Arr[2] + 4) / 16;
+						}
+						else
+						{
+							this.oParent.Var_70da_Arr[2] += (this.oParent.CivState.Cities[local_4c].BaseTrade + this.oParent.Var_70da_Arr[2] + 4) / 8;
+						}
+					}
+				}
 
-			L2848:
-				if (local_bc >= 3)
-					goto L28d9;
-
-				this.oCPU.AX.Low = (byte)city.TradeCityIDs[local_bc];
-				this.oCPU.AX.High = 0;
-				local_4c = city.TradeCityIDs[local_bc];
-
-				if (local_4c == -1)
-					goto L28d6;
-
-				if (this.oParent.CivState.Cities[local_4c].PlayerID == this.Var_6548_PlayerID)
-					goto L28b0;
-
-				this.oCPU.AX.Low = (byte)this.oParent.CivState.Cities[local_4c].BaseTrade;
-				this.oCPU.CBW(this.oCPU.AX);
-				this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, (ushort)((short)this.oParent.Var_70da_Arr[2]));
-				this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x4);
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.XORWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.CX.Word = 0x3;
-				this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.AX.Word = this.oCPU.XORWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-
-				this.oParent.Var_70da_Arr[2] += (short)this.oCPU.AX.Word;
-
-				goto L28d6;
-
-			L28b0:
-				this.oCPU.AX.Low = (byte)this.oParent.CivState.Cities[local_4c].BaseTrade;
-				this.oCPU.CBW(this.oCPU.AX);
-				this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, (ushort)((short)this.oParent.Var_70da_Arr[2]));
-				this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x4);
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.XORWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.CX.Word = 0x4;
-				this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.AX.Word = this.oCPU.XORWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-
-				this.oParent.Var_70da_Arr[2] += (short)this.oCPU.AX.Word;
-
-			L28d6:
-				goto L2844;
-
-			L28d9:
-				this.oCPU.AX.Word = 0x14;
-				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX,
-					(ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType);
-				this.oCPU.CX.Word = this.oCPU.AX.Word;
-				this.oCPU.CX.Word = this.oCPU.ADDWord(this.oCPU.CX.Word, 0x50);
-				this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70da_Arr[2]);
-				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.Var_6b30);
-				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, 3);
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-				this.oParent.Var_d2e0 = this.oCPU.AX.Word;
+				this.oParent.Var_d2e0 = ((this.oParent.Var_70da_Arr[2] * (short)this.Var_6b30) * 3) / ((this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType * 20) + 80);
 
 				if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType == 5)
 				{
@@ -1878,210 +1737,137 @@ namespace OpenCiv1
 
 				if ((city.BuildingFlags0 & 0x40) != 0)
 				{
-					this.oCPU.CX.Word = 0x2;
-					this.oCPU.AX.Word = this.oParent.Var_d2e0;
-					this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-					this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-					this.oParent.Var_d2e0 = this.oCPU.AX.Word;
+					this.oParent.Var_d2e0 /= 2;
 				}
 
 				// Instruction address 0x1d12:0x2960, size: 5
 				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 					((-(this.oParent.CivState.Players[this.Var_6548_PlayerID].ScienceTaxRate +
 						this.oParent.CivState.Players[this.Var_6548_PlayerID].TaxRate - 10) *
-						(this.oParent.Var_70da_Arr[2] - (short)this.oParent.Var_d2e0)) + 5) / 10,
+						(this.oParent.Var_70da_Arr[2] - this.oParent.Var_d2e0)) + 5) / 10,
 					0, this.oParent.Var_70da_Arr[2]);
-
 				this.oParent.Var_70da_Arr[3] = (short)this.oCPU.AX.Word;
 
 				// Instruction address 0x1d12:0x2999, size: 5
 				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-					((this.oParent.CivState.Players[this.Var_6548_PlayerID].TaxRate * (this.oParent.Var_70da_Arr[2] - (short)this.oParent.Var_d2e0)) + 5) / 10,
-					0, this.oParent.Var_70da_Arr[2] - this.oParent.Var_70da_Arr[3] - (short)this.oParent.Var_d2e0);
+					((this.oParent.CivState.Players[this.Var_6548_PlayerID].TaxRate * (this.oParent.Var_70da_Arr[2] - this.oParent.Var_d2e0)) + 5) / 10,
+					0, this.oParent.Var_70da_Arr[2] - this.oParent.Var_70da_Arr[3] - this.oParent.Var_d2e0);
+				this.oParent.Var_e17a = (short)this.oCPU.AX.Word;
 
-				this.oParent.Var_e17a = this.oCPU.AX.Word;
-				this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70da_Arr[2]);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, ((ushort)(short)this.oParent.Var_70da_Arr[3]));
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oParent.Var_e17a);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oParent.Var_d2e0);
-				this.oParent.Var_70e6 = this.oCPU.AX.Word;
+				this.oParent.Var_70e6 = this.oParent.Var_70da_Arr[2] - this.oParent.Var_70da_Arr[3] - this.oParent.Var_e17a - this.oParent.Var_d2e0;
 
 				// Instruction address 0x1d12:0x29ba, size: 5
 				F0_1d12_6dcc(1);
-
-				this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 0x1);
-				this.oParent.Var_e17a += this.oCPU.AX.Word;
+				this.oParent.Var_e17a += (short)this.oCPU.AX.Word * 2;
 
 				// Instruction address 0x1d12:0x29cc, size: 5
 				F0_1d12_6dcc(2);
-
-				this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 0x1);
-				this.oParent.Var_70e6 += this.oCPU.AX.Word;
+				this.oParent.Var_70e6 += (short)this.oCPU.AX.Word * 2;
 
 				// Instruction address 0x1d12:0x29de, size: 5
 				F0_1d12_6dcc(3);
+				this.oParent.Var_70da_Arr[3] += (short)this.oCPU.AX.Word * 2;
 
-				this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 0x1);
-				this.oParent.Var_70da_Arr[3] += (short)this.oCPU.AX.Word;
+				if ((city.BuildingFlags0 & 0x10) != 0)
+				{
+					this.oParent.Var_70da_Arr[3] += this.oParent.Var_70da_Arr[3] / 2;
+					this.oParent.Var_e17a += this.oParent.Var_e17a / 2;
+				}
 
-				this.oCPU.TESTWord(city.BuildingFlags0, 0x10);
-				if (this.oCPU.Flags.NE) goto L29fe;
-				goto L2a16;
+				if ((city.BuildingFlags0 & 0x200) != 0)
+				{
+					this.oParent.Var_70da_Arr[3] += this.oParent.Var_70da_Arr[3] / 2;
+					this.oParent.Var_e17a += this.oParent.Var_e17a / 2;
+				}
+			
+				local_e8 = this.oParent.Var_70e6;
 
-			L29fe:
-				this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70da_Arr[3]);
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, 0x1);
-				this.oParent.Var_70da_Arr[3] += (short)this.oCPU.AX.Word;
+				if ((city.BuildingFlags0 & 0x20) != 0)
+				{
+					local_e8 += this.oParent.Var_70e6 / 2;
 
-				this.oCPU.AX.Word = this.oParent.Var_e17a;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, 0x1);
-				this.oParent.Var_e17a += this.oCPU.AX.Word;
+					// Instruction address 0x1d12:0x2a6e, size: 5
+					F0_1d12_6c97(this.Var_6548_PlayerID, 0xc);
+					if (this.oCPU.AX.Word != 0)
+					{
+						local_e8 += this.oParent.Var_70e6 / 3;
+					}
+				}
 
-			L2a16:
-				this.oCPU.TESTWord(city.BuildingFlags0, 0x200);
-				if (this.oCPU.Flags.NE) goto L2a29;
-				goto L2a41;
+				if ((city.BuildingFlags0 & 0x800) != 0)
+				{
+					local_e8 += this.oParent.Var_70e6 / 2;
 
-			L2a29:
-				this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70da_Arr[3]);
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, 0x1);
-				this.oParent.Var_70da_Arr[3] += (short)this.oCPU.AX.Word;
+					// Instruction address 0x1d12:0x2ab2, size: 5
+					F0_1d12_6c97(this.Var_6548_PlayerID, 0xc);
+					if (this.oCPU.AX.Word != 0)
+					{
+						local_e8 += this.oParent.Var_70e6 / 3;
+					}
+				}
 
-				this.oCPU.AX.Word = this.oParent.Var_e17a;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, 0x1);
-				this.oParent.Var_e17a += this.oCPU.AX.Word;
-
-			L2a41:
-				local_e8 = (short)this.oParent.Var_70e6;
-
-				this.oCPU.TESTWord(city.BuildingFlags0, 0x20);
-				if (this.oCPU.Flags.NE) goto L2a5a;
-				goto L2a8b;
-
-			L2a5a:
-				this.oCPU.AX.Word = this.oParent.Var_70e6;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, 0x1);
-				local_e8 += (short)this.oCPU.AX.Word;
-
-				// Instruction address 0x1d12:0x2a6e, size: 5
-				F0_1d12_6c97(this.Var_6548_PlayerID, 0xc);
-
-				this.oCPU.CMPWord(this.oCPU.AX.Word, 0x0);
-				if (this.oCPU.Flags.NE) goto L2a7e;
-				goto L2a8b;
-
-			L2a7e:
-				this.oCPU.AX.Word = this.oParent.Var_70e6;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.CX.Word = 0x3;
-				this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-				local_e8 += (short)this.oCPU.AX.Word;
-
-			L2a8b:
-				this.oCPU.TESTWord(city.BuildingFlags0, 0x800);
-				if (this.oCPU.Flags.NE) goto L2a9e;
-				goto L2acf;
-
-			L2a9e:
-				this.oCPU.AX.Word = this.oParent.Var_70e6;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, 0x1);
-				local_e8 += (short)this.oCPU.AX.Word;
-
-				// Instruction address 0x1d12:0x2ab2, size: 5
-				F0_1d12_6c97(this.Var_6548_PlayerID, 0xc);
-
-				this.oCPU.CMPWord(this.oCPU.AX.Word, 0x0);
-				if (this.oCPU.Flags.NE) goto L2ac2;
-				goto L2acf;
-
-			L2ac2:
-				this.oCPU.AX.Word = this.oParent.Var_70e6;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.CX.Word = 0x3;
-				this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-				local_e8+= (short)this.oCPU.AX.Word;
-
-			L2acf:
 				// Instruction address 0x1d12:0x2ad3, size: 5
 				F0_1d12_6cf3(10);
-
-				this.oCPU.CMPWord(this.oCPU.AX.Word, (ushort)cityID);
-				if (this.oCPU.Flags.E) goto L2ae3;
-				goto L2aeb;
-
-			L2ae3:
-				local_e8 += local_e8;
-
-			L2aeb:
-				this.oParent.Var_70e6 = (ushort)((short)local_e8);
+				if ((short)this.oCPU.AX.Word == cityID)
+				{
+					local_e8 += local_e8;
+				}
+			
+				this.oParent.Var_70e6 = local_e8;
 				this.oParent.Var_70e2 = 0;
 
-				if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
-					goto L2b79;
+				if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID)
+				{
+					this.oCPU.AX.Word = (ushort)oParent.CivState.DifficultyLevel;
+					this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 0x1);
+					this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, 0xe);
+					this.oCPU.AX.Word = this.oCPU.NEGWord(this.oCPU.AX.Word);
+					local_e8 = (short)this.oCPU.AX.Word;
 
-				this.oCPU.AX.Word = (ushort)oParent.CivState.DifficultyLevel;
-				this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 0x1);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, 0xe);
-				this.oCPU.AX.Word = this.oCPU.NEGWord(this.oCPU.AX.Word);
-				local_e8 = (short)this.oCPU.AX.Word;
+					this.oCPU.AX.Word = (ushort)((short)local_e8);
+					this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
+					this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
+					this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, 0x1);
+					this.oCPU.CX.Word = this.oCPU.AX.Word;
 
-				this.oCPU.AX.Word = (ushort)((short)local_e8);
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, 0x1);
-				this.oCPU.CX.Word = this.oCPU.AX.Word;
+					this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType;
+					this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
+					this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
+					this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, 0x1);
+					this.oCPU.AX.Word = this.oCPU.INCWord(this.oCPU.AX.Word);
+					this.oCPU.AX.Word = this.oCPU.INCWord(this.oCPU.AX.Word);
+					this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
+					local_e8 = (short)this.oCPU.AX.Word;
 
-				this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SARWord(this.oCPU.AX.Word, 0x1);
-				this.oCPU.AX.Word = this.oCPU.INCWord(this.oCPU.AX.Word);
-				this.oCPU.AX.Word = this.oCPU.INCWord(this.oCPU.AX.Word);
-				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-				local_e8 = (short)this.oCPU.AX.Word;
+					this.oCPU.AX.Low = (byte)city.ActualSize;
+					this.oCPU.CBW(this.oCPU.AX);
+					this.oCPU.CX.Word = (ushort)((short)local_e8);
+					this.oCPU.DX.Word = this.oCPU.AX.Word;
+					this.oCPU.AX.Word = (ushort)cityID;
+					this.oCPU.BX.Word = this.oCPU.DX.Word;
+					this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
+					this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
+					this.oCPU.AX.Word = this.oCPU.DX.Word;
+					this.oCPU.AX.Word += (ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].CityCount;
+					this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, (ushort)((short)local_e8));
+					this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
+					this.oCPU.CX.Word = (ushort)((short)local_e8);
+					this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
+					this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, this.oCPU.BX.Word);
+					this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, (ushort)this.oParent.CivState.DifficultyLevel);
+					this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, 0x6);
+					this.oParent.Var_70e4 = (short)this.oCPU.AX.Word;
+					local_a8 = (short)this.oCPU.AX.Word;
+				}
+				else
+				{
+					this.oCPU.AX.Low = (byte)city.ActualSize;
+					this.oCPU.CBW(this.oCPU.AX);
+					this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, 0x3);
+					this.oParent.Var_70e4 = (short)this.oCPU.AX.Word;
+					local_a8 = (short)this.oCPU.AX.Word;
+				}
 
-				this.oCPU.AX.Low = (byte)city.ActualSize;
-				this.oCPU.CBW(this.oCPU.AX);
-				this.oCPU.CX.Word = (ushort)((short)local_e8);
-				this.oCPU.DX.Word = this.oCPU.AX.Word;
-				this.oCPU.AX.Word = (ushort)cityID;
-				this.oCPU.BX.Word = this.oCPU.DX.Word;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-				this.oCPU.AX.Word = this.oCPU.DX.Word;
-				this.oCPU.AX.Word += (ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].CityCount;
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, (ushort)((short)local_e8));
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.CX.Word = (ushort)((short)local_e8);
-				this.oCPU.IDIVWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-				this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, this.oCPU.BX.Word);
-				this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, (ushort)this.oParent.CivState.DifficultyLevel);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, 0x6);
-				this.oParent.Var_70e4 = (short)this.oCPU.AX.Word;
-				local_a8 = (short)this.oCPU.AX.Word;
-
-				goto L2b90;
-
-			L2b79:
-				this.oCPU.AX.Low = (byte)city.ActualSize;
-				this.oCPU.CBW(this.oCPU.AX);
-				this.oCPU.AX.Word = this.oCPU.SUBWord(this.oCPU.AX.Word, 0x3);
-				this.oParent.Var_70e4 = (short)this.oCPU.AX.Word;
-				local_a8 = (short)this.oCPU.AX.Word;
-
-			L2b90:
 				this.Var_6542 = 0;
 
 				this.oCPU.AX.Low = (byte)city.ActualSize;
@@ -3552,7 +3338,7 @@ namespace OpenCiv1
 				if (local_bc != 2)
 					goto L424e;
 
-				if ((this.oParent.Var_70da_Arr[2] - (short)this.oParent.Var_d2e0) == local_ea)
+				if ((this.oParent.Var_70da_Arr[2] - this.oParent.Var_d2e0) == local_ea)
 				{
 					local_d8 += 2;
 				}
@@ -3573,8 +3359,7 @@ namespace OpenCiv1
 
 				// Instruction address 0x1d12:0x42a6, size: 5
 				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-					224 / (this.oParent.Var_70da_Arr[3] + (short)this.oParent.Var_70e6 + (short)this.oParent.Var_e17a + (short)this.oParent.Var_d2e0 + 2),
-					1, 16);
+					224 / (this.oParent.Var_70da_Arr[3] + this.oParent.Var_70e6 + this.oParent.Var_e17a + this.oParent.Var_d2e0 + 2), 1, 16);
 
 				local_e8 = (short)this.oCPU.AX.Word;
 				local_ea = 0;
@@ -3614,10 +3399,8 @@ namespace OpenCiv1
 			L4314:
 				local_ea++;
 
-			L4318:
-				this.oCPU.AX.Word = this.oParent.Var_e17a;
-				
-				if (local_ea >= (short)this.oParent.Var_e17a)
+			L4318:				
+				if (local_ea >= this.oParent.Var_e17a)
 					goto L434d;
 
 				// Instruction address 0x1d12:0x433a, size: 5
@@ -3631,8 +3414,7 @@ namespace OpenCiv1
 				goto L4314;
 
 			L434d:
-				this.oCPU.CMPWord(this.oParent.Var_e17a, 0x0);
-				if (this.oCPU.Flags.NE) goto L4357;
+				if (this.oParent.Var_e17a != 0) goto L4357;
 				goto L435c;
 
 			L4357:
@@ -3647,7 +3429,7 @@ namespace OpenCiv1
 				local_ea++;
 
 			L4369:				
-				if (local_ea >= (short)this.oParent.Var_70e6)
+				if (local_ea >= this.oParent.Var_70e6)
 					goto L439e;
 
 				// Instruction address 0x1d12:0x438b, size: 5
@@ -3761,8 +3543,8 @@ namespace OpenCiv1
 
 				// Instruction address 0x1d12:0x4598, size: 5
 				this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-					((this.oParent.Var_70da_Arr[2] - (short)this.oParent.Var_d2e0) * local_e8) + 6,
-					local_fc + 16, (local_e8 * (short)this.oParent.Var_d2e0) + 2,
+					((this.oParent.Var_70da_Arr[2] - this.oParent.Var_d2e0) * local_e8) + 6,
+					local_fc + 16, (local_e8 * this.oParent.Var_d2e0) + 2,
 					8, 15, 0);
 
 			L45a0:
@@ -5681,8 +5463,7 @@ namespace OpenCiv1
 				goto L606c;
 
 			L605f:
-				this.oCPU.AX.Word = this.oParent.Var_e17a;
-				this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins += (short)this.oCPU.AX.Word;
+				this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins += (short)this.oParent.Var_e17a;
 
 			L606c:
 				if (this.oParent.Var_70e4 != 0)
@@ -5850,7 +5631,6 @@ namespace OpenCiv1
 				city.StatusFlag &= 0xbf;
 
 			L62d8:
-				this.oCPU.AX.Word = this.oParent.Var_70e6;
 				local_e8 = (short)this.oParent.Var_70e6;
 
 				if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)

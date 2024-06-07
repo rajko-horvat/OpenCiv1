@@ -23,19 +23,16 @@
 <li>Visual C++ 2015-2019 redistributable (on some Windows machines)</li>
 </ul>
 
-## How to install release version of OpenCiv1
-<p>The files from the Release should be copied directly into installed and working DOS Civilization game directory.</p>
+## How to run the release version of OpenCiv1
+<p>The files from the Release should be copied directly into installed and working DOS Civilization game directory. The game can be run by running the OpenCiv1 executable.</p>
 
 ## How to compile the code (.NET 8 SDK required)
-If you want to compile the code, it is assumed that:
+If you want to Debug (or Compile) the code with Visual Studio 2022 Community Edition, it is assumed that:
 <ul>
-<li>You are using Visual Studio 2022 (or equivalent).</li>
-<li>For debugging you have installed DOS Civilization game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Linux (uppercase files!).
+<li>For debugging purposes you have installed DOS Civilization game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Linux (uppercase files!).
 It is where its home directory resides (Images, palettes, text and save games are loaded/saved there, for now).</li>
-<li>For Release mode it is expected that OpenCiv1 and it's dependencies (for simlicity) are put directly into directory with resource files, 
-for example: 'c:\Dos\Civ1\', '~/Dos/Civ1/' or any other path.</li>
 </ul>
-Compile with CLI method:
+You can also compile with CLI method:
 <ul>
 <li>git clone https://github.com/rajko-horvat/OpenCiv1 (To clone a specific branch use: git clone -b [branch] https://github.com/rajko-horvat/OpenCiv1)</li>
 <li>cd OpenCiv1</li>
@@ -44,7 +41,7 @@ Compile with CLI method:
 
 ## Current status
 <p><b>The game is in working state</b>, but you have to legally own the Original game (the .txt, .pic and .pal files have to be present).<br/><br/>
-Keyboard shortcuts:
+Additional keyboard shortcuts:
 <ul>
 <li>Alt + D - Enable / Disable the <b>Debug mode (Shift-56)</b></li>
 <li>Alt + P - Pause / Resume game</li>
@@ -53,21 +50,14 @@ Keyboard shortcuts:
 <li>Alt + 3 - Show / Hide Screen 3</li>
 </ul></p>
 
-## How to Contribute
+## How to Contribute (Help needed)
 <p>Anyone can contribute to this repository in accordance with these <a href="https://github.com/rajko-horvat/OpenCiv1/.github/CONTRIBUTING.md">Contributing rules</a></p>
 Currently, you can contribute to this repository in one of the following ways:
 <ul>
 <li>By testing the game functionality and submitting Issues,</li>
-<li>By translating the part(s) of the code from pseudo assembly language to native C# language,</li>
-<li>By designing parts of a 'Default' Visual appearance (SVG would be the best), Music or effects (MIDI/SoundFonts would be the best).</li>
-</ul>
-
-## Help needed
-For this stage of code rewrite, the programmings skills needed are:
-<ul>
-<li>Moderate knowledge of assembly language,</li>
-<li>Knowledge of C# language.</li>
-<li>For details see: https://github.com/rajko-horvat/OpenCiv1/wiki/Introduction-to-code-translating</li>
+<li>By translating the part(s) of the code from pseudo assembly language to native C# language (for details see <a href="https://github.com/rajko-horvat/OpenCiv1/wiki/Introduction-to-code-translating">Introduction to code translating</a>),</li>
+<li>By designing parts of a 'Default' Visual and Audio theme (which must preserve original Game appearance and feel as much as possible, SVG and MIDI/SoundFonts would be the best),</li>
+<li>By designing parts of a 'Custom' Visual and Audio theme(s) (SVG and MIDI/SoundFonts would be the best).</li>
 </ul>
 
 ## Project milestones
@@ -99,7 +89,7 @@ For this stage of code rewrite, the programmings skills needed are:
 <li>Overall look and feel of the original game.</li>
 </ul>
 
-## Screenshots of the OpenCiv1 game
+## Current screenshots of the OpenCiv1 game
 <p align="center">
 <img src="src/Resources/Screenshots/Screenshot1.png" alt="Screenshot 1" width="400" />
 <img src="src/Resources/Screenshots/Screenshot2.png" alt="Screenshot 2" width="400" />
