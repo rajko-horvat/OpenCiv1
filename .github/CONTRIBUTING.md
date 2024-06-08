@@ -7,7 +7,7 @@
 <li>The contributed material must be released under the same license as this repository (MIT license), or a compatible one,</li>
 <li>Contributed code changes and 'Default' behaviour theme must preserve Original Game behaviour and design as much as possible, 
 	except for purposes of additional functionality (which follows the spirit of the original Game) or bug fixes (There can be additional custom Behaviour themes),</li>
-<li>The 'Default' Visual and Audio theme must preserve the 'Original Game appearance and feel' as much as possible (There can be additional custom Visual and Audio themes),</li>
+<li>The 'Default' Visual and Audio theme must preserve the 'Original Game appearance and feel' as much as possible (There can be additional custom Visual and Audio themes).</li>
 </ul>
 
 <p>For the current stage of code rewrite, the programmings skills needed are:</p>

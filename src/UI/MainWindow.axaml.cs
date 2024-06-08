@@ -568,12 +568,12 @@ namespace OpenCiv1.UI
 #if !DEBUG
 			catch (Exception ex)
 			{
-				if (this.oGame != null && this.oGame.Log != null)
+				if (this.oCivGame != null && this.oCivGame.Log != null)
 				{
-					this.oGame.Log.WriteLine("");
-					this.oGame.Log.WriteLine($"Exception message: {ex.Message}");
-					this.oGame.Log.WriteLine($"Exception source: {ex.Source}");
-					this.oGame.Log.WriteLine($"Exception stack trace: {ex.StackTrace}");
+					this.oCivGame.Log.WriteLine("");
+					this.oCivGame.Log.WriteLine($"Exception message: {ex.Message}");
+					this.oCivGame.Log.WriteLine($"Exception source: {ex.Source}");
+					this.oCivGame.Log.WriteLine($"Exception stack trace: {ex.StackTrace}");
 				}
 
 				// Show exceptions on UI Thread
