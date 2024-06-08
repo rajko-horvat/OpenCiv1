@@ -42,7 +42,12 @@ namespace OpenCiv1
 		{
 			// function body
 			if (minValue > maxValue)
-				throw new Exception("Minimum value is greater than maximum value");
+			{
+				// do nothing, just return minimum value
+				this.oParent.Log.WriteLine($"CheckValueRange({value}, {minValue}, {maxValue}), Minimum value is greater than maximum value.");
+				return minValue;
+				//throw new Exception("Minimum value is greater than maximum value");
+			}
 
 			int iRetVal = Math.Min(Math.Max(value, minValue), maxValue);
 			this.oCPU.AX.Word = (ushort)((short)iRetVal);
