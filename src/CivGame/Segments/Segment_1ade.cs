@@ -3316,8 +3316,17 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public ushort F0_1ade_22b5_PlayerHasTechnology(short playerID, int technologyID)
 		{
-			return (ushort)((technologyID == -1 || (technologyID >= 0 && (technologyID >= 71 || playerID == 0 ||
-				(this.oParent.CivState.Players[playerID].DiscoveredTechnologyFlags[technologyID >> 4] & (1 << (technologyID & 0xf))) == 0))) ? 0 : 1);
+			// Everyone has TechnologyEnum.None (-1) technology,
+			// PlayerID == 0 (Barbarians can't have any technology)
+			// TechnologyID can be in the range [0-70]
+			// DiscoveredTechnologyFlags holds the bit if technology is discovered
+
+			return (ushort)((technologyID == -1 ||
+				(playerID != 0 && (technologyID >= 0 && technologyID < 71) &&
+					(this.oParent.CivState.Players[playerID].DiscoveredTechnologyFlags[technologyID >> 4] & (1 << (technologyID & 0xf))) != 0)) ? 1 : 0);
+
+			//return (ushort)((technologyID == -1 || (technologyID >= 0 && (technologyID >= 71 || playerID == 0 ||
+			//	(this.oParent.CivState.Players[playerID].DiscoveredTechnologyFlags[technologyID >> 4] & (1 << (technologyID & 0xf))) == 0))) ? 0 : 1);
 		}
 
 		/// <summary>
