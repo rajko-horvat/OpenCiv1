@@ -1741,7 +1741,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1d12.F0_1d12_6ed4(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
 				(short)(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)) - 3),
-				this.oParent.Var_e8b8, 124);
+				(ushort)((short)this.oParent.Var_e8b8), 124);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), 0xd4);
 

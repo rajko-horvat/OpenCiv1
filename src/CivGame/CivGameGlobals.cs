@@ -94,7 +94,7 @@ namespace OpenCiv1
 		public int Var_e17a = 0;
 		public ushort Var_e3c2 = 0;
 		public ushort Var_e3c6 = 0;
-		public ushort Var_e8b8 = 0;
+		public int Var_e8b8 = 0;
 		#endregion
 	}
 }
