@@ -5317,6 +5317,9 @@ namespace OpenCiv1
 			goto L44fd;
 
 		L40ca:
+			if (this.oParent.CivState.Players[playerID].Units[unitID].TypeID == -1)
+				goto L44fd;
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 0x63);
 
 			// Instruction address 0x1403:0x40dc, size: 5

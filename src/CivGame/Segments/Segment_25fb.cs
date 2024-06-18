@@ -872,8 +872,8 @@ namespace OpenCiv1
 			this.oCPU.AX.Low = this.oCPU.ADDByte(this.oCPU.AX.Low, (byte)(this.oParent.CivState.TurnCount & 0xff));
 			this.oCPU.TESTByte(this.oCPU.AX.Low, 0x7);
 			if (this.oCPU.Flags.NE) goto L08c1;
-			this.oCPU.CMPWord(this.oParent.Var_e3c2, 0x0);
-			if (this.oCPU.Flags.G) goto L08b2;
+			
+			if (this.oParent.Var_e3c2 > 0) goto L08b2;
 
 			// Instruction address 0x25fb:0x085e, size: 5
 			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.TheRepublic);
@@ -881,8 +881,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E)
 				goto L0876;
 
-			this.oCPU.CMPWord(this.oParent.Var_db42, 0x0);
-			if (this.oCPU.Flags.L) goto L0876;
+			if (this.oParent.Var_db42 < 0) goto L0876;
 
 			// Instruction address 0x25fb:0x08b9, size: 5
 			this.oParent.Segment_2517.F0_2517_04a1(playerID, 4);

@@ -1923,9 +1923,7 @@ namespace OpenCiv1
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x13c)), 0x0);
 			if (this.oCPU.Flags.NE) goto L11fb;
 
-			this.oCPU.AX.Word = this.oParent.Var_deb8;
-
-			if (this.oParent.Var_70da_Arr[1] <= (short)this.oParent.Var_deb8)
+			if (this.oParent.Var_70da_Arr[1] <= this.oParent.Var_deb8)
 				goto L1202;
 
 		L11fb:
@@ -2217,7 +2215,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x2);
 			
 			// Instruction address 0x1ade:0x150b, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.Var_70da_Arr[1] - (short)this.oParent.Var_d2f6, 1, 99);
+			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.Var_70da_Arr[1] - this.oParent.Var_d2f6, 1, 99);
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1ade:0x152d, size: 5
