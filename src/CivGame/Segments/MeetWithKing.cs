@@ -2370,8 +2370,8 @@ namespace OpenCiv1
 				this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
 				this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-				if (this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].PlayerID ==
-					this.oParent.CivState.HumanPlayerID && (short)this.oParent.Var_6c9a <= 2)
+				if (this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].PlayerID == this.oParent.CivState.HumanPlayerID && 
+					this.oParent.Var_6c9a <= 2)
 				{
 					// Instruction address 0x0000:0x1b1c, size: 5
 					this.oParent.Segment_1866.F0_1866_0f10(playerID,

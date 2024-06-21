@@ -82,12 +82,12 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Coins;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd760, this.oCPU.AX.Word);
-			this.oParent.Var_6b92 = this.oCPU.AX.Word;
-			this.oParent.CivState.MaximumTechnologyCount = (short)this.oCPU.AX.Word;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xde20, this.oCPU.AX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);
+
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd760, 0);
+			this.oParent.Var_6b92 = 0;
+			this.oParent.CivState.MaximumTechnologyCount = 0;
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xde20, 0);
+			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0);
 
 		L00c2:
 			this.oCPU.AX.Word = 0x1;
@@ -425,7 +425,7 @@ namespace OpenCiv1
 				this.oParent.CivState.MaximumTechnologyCount - (this.oParent.CivState.TurnCount / 9),
 				0, 6);
 
-			this.oParent.Var_d2de = this.oCPU.AX.Word;
+			this.oParent.Var_d2de = (short)this.oCPU.AX.Word;
 
 		L048f:
 			// Instruction address 0x1238:0x0493, size: 5
@@ -1413,6 +1413,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.INCWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
 			this.oCPU.CMPWord(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x8);
 			if (this.oCPU.Flags.L) goto L0f16;
+			
 			this.oParent.Var_8078 = 0;
 
 			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Ranking != 7 ||
@@ -1595,7 +1596,7 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = (ushort)oParent.CivState.DifficultyLevel;
 			this.oCPU.AX.Word = this.oCPU.SHLWord(this.oCPU.AX.Word, 0x1);
-			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, this.oParent.Var_d2de);
+			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, (ushort)((short)this.oParent.Var_d2de));
 			this.oCPU.AX.Word = this.oCPU.ADDWord(this.oCPU.AX.Word, 0x6);
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].DiscoveredTechnologyCount);
 			this.oCPU.IMULWord(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);

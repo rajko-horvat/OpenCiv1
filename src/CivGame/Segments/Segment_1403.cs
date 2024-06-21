@@ -1355,8 +1355,8 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.AX.Word);
-			this.oCPU.CMPWord(this.oParent.Var_6c9a, 0x0);
-			if (this.oCPU.Flags.E) goto L10d6;
+			
+			if (this.oParent.Var_6c9a == 0) goto L10d6;
 			goto L10f0;
 
 		L10d6:

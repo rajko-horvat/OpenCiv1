@@ -1014,188 +1014,102 @@ namespace OpenCiv1
 		/// Get navigation key
 		/// </summary>
 		/// <returns></returns>
-		public ushort F0_2d05_0ac9_GetNavigationKey()
+		public int F0_2d05_0ac9_GetNavigationKey()
 		{
 			this.oCPU.Log.EnterBlock("F0_2d05_0ac9_GetNavigationKey()");
 
 			// function body
-			this.oCPU.PushWord(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUBWord(this.oCPU.SP.Word, 0x2);
 
 			// Instruction address 0x2d05:0x0acf, size: 5
-			this.oParent.MSCAPI.getch();
+			int iKey = this.oParent.MSCAPI.getch();
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4b34); // Shift + Left
-			if (this.oCPU.Flags.NE) goto L0adf;
-			goto L0b6b;
+			switch (iKey)
+			{
+				case 0:
+					break;
 
-		L0adf:
-			if (this.oCPU.Flags.LE) goto L0ae4;
-			goto L0ba2;
+				case 0x4800: // Up
+				case 0x487e: // Another code for Up
+					iKey = 0x4800; // Up
+					break;
 
-		L0ae4:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4800); // Up
-			if (this.oCPU.Flags.E) goto L0b05;
-			if (this.oCPU.Flags.LE) goto L0aee;
-			goto L0b79;
+				case 0x4d00: // Right
+				case 0xf400: // Another code for Right
+					iKey = 0x4d00; // Right
+					break;
 
-		L0aee:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0xf400); // Another code for Right
-			if (this.oCPU.Flags.E) goto L0b17;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4700); // Home
-			if (this.oCPU.Flags.E) goto L0b3a;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4737); // shift + Home
-			if (this.oCPU.Flags.E) goto L0b72;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x475c); // Another code for Home
-			if (this.oCPU.Flags.E) goto L0b3a;
-			goto L0b92;
+				case 0x5000: // Down
+				case 0x5060: // Another code for Down
+					iKey = 0x5000; // Down
+					break;
 
-		L0b05:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x4800); // Up
+				case 0x4b00: // Left
+				case 0x4b7c: // Another code for Left
+					iKey = 0x4b00; // Left
+					break;
 
-		L0b0a:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
-			goto L0bf6;
+				case 0x4838: // Shift + Up
+					iKey = 0x4838; // Shift + Up
+					break;
 
-		L0b10:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x4900); // Page Up
-			goto L0b0a;
+				case 0x4d36: // Shift + Right
+				case 0x4d46: // Another code for Shift + Right
+					iKey = 0x4d36; // Shift + Right
+					break;
 
-		L0b17:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x4d00); // Right
-			goto L0b0a;
+				case 0x5032: // Shift + Down
+					iKey = 0x5032; // Shift + Down
+					break;
 
-		L0b1e:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x5100); // Page Down
-			goto L0b0a;
+				case 0x4b34: // Shift + Left
+				case 0x4b43: // Another code for Shift + Left
+					iKey = 0x4b34; // Shift + Left
+					break;
 
-		L0b25:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x5000); // Down
-			goto L0b0a;
+				case 0x4700: // Home
+				case 0x475c: // Another code for Home
+					iKey = 0x4700; // Home
+					break;
 
-		L0b2c:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x4f00); // End
-			goto L0b0a;
+				case 0x4f00: // End
+					iKey = 0x4f00; // End
+					break;
 
-		L0b33:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x4b00); // Left
-			goto L0b0a;
+				case 0x4737: // shift + Home
+					iKey = 0x4737; // Shift + Home
+					break;
 
-		L0b3a:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x4700); // Home
-			goto L0b0a;
+				case 0x4f31: // Shift + End
+					iKey = 0x4f31; // Shift + End
+					break;
 
-		L0b41:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x4838); // Shift + Up
-			goto L0b0a;
+				case 0x4900: // Page Up
+					iKey = 0x4900; // Page Up
+					break;
 
-		L0b48:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x4939); // Shift + Page Up
-			goto L0b0a;
+				case 0x5100: // Page Down
+					iKey = 0x5100; // Page Down
+					break;
 
-		L0b4f:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x4d36); // Shift + Right
-			goto L0b0a;
+				case 0x4939: // Shift + Page Up
+					iKey = 0x4939; // Shift + Page Up
+					break;
 
-		L0b56:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x5133); // Shift + Page Down
-			goto L0b0a;
+				case 0x5133: // Shift + Page Down
+					iKey = 0x5133; // Shift + Page Down
+					break;
 
-		L0b5d:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x5032); // Shift + Down
-			goto L0b0a;
+				default:
+					iKey &= 0xff;
+					break;
+			}
 
-		L0b64:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x4f31); // Shift + End
-			goto L0b0a;
+			this.oCPU.AX.Word = (ushort)((short)iKey);
 
-		L0b6b:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x4b34); // Shift + Left
-			goto L0b0a;
-
-		L0b72:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x4737); // Shift + Home
-			goto L0b0a;
-
-		L0b79:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4838); // Shift + Up
-			if (this.oCPU.Flags.E) goto L0b41;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x487e); // Another code for Up
-			if (this.oCPU.Flags.E) goto L0b05;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4900); // Page Up
-			if (this.oCPU.Flags.E) goto L0b10;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4939); // Shift + Page Up
-			if (this.oCPU.Flags.E) goto L0b48;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4b00); // Left
-			if (this.oCPU.Flags.E) goto L0b33;
-
-		L0b92:
-			this.oCPU.CMPByte(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x0);
-			if (this.oCPU.Flags.NE) goto L0b9b;
-			goto L0b0a;
-
-		L0b9b:
-			this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1), 0x0);
-			goto L0b0a;
-
-		L0ba2:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4f00); // End
-			if (this.oCPU.Flags.E) goto L0b2c;
-			if (this.oCPU.Flags.G) goto L0bca;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4b43); // Another code for Shift + Left
-			if (this.oCPU.Flags.E) goto L0b6b;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4b7c);  // Another code for Left
-			if (this.oCPU.Flags.NE) goto L0bb6;
-			goto L0b33;
-
-		L0bb6:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4d00); // Right
-			if (this.oCPU.Flags.NE) goto L0bbe;
-			goto L0b17;
-
-		L0bbe:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4d36); // Shift + Right
-			if (this.oCPU.Flags.E) goto L0b4f;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4d46);  // Another code for Shift + Right
-			if (this.oCPU.Flags.E) goto L0b4f;
-			goto L0b92;
-
-		L0bca:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x4f31); // Shift + End
-			if (this.oCPU.Flags.E) goto L0b64;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x5000); // Down
-			if (this.oCPU.Flags.NE) goto L0bd7;
-			goto L0b25;
-
-		L0bd7:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x5032); // Shift + Down
-			if (this.oCPU.Flags.E) goto L0b5d;
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x5060);  // Another code for Down
-			if (this.oCPU.Flags.NE) goto L0be4;
-			goto L0b25;
-
-		L0be4:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x5100); // Page Down
-			if (this.oCPU.Flags.NE) goto L0bec;
-			goto L0b1e;
-
-		L0bec:
-			this.oCPU.CMPWord(this.oCPU.AX.Word, 0x5133); // Shift + Page Down
-			if (this.oCPU.Flags.NE) goto L0bf4;
-			goto L0b56;
-
-		L0bf4:
-			goto L0b92;
-
-		L0bf6:
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.PopWord();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2d05_0ac9_GetNavigationKey");
 
-			return this.oCPU.AX.Word;
+			return iKey;
 		}
 	}
 }
