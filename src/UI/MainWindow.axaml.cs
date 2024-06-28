@@ -8,7 +8,6 @@ using Avalonia.Threading;
 using IRB.Collections.Generic;
 using IRB.VirtualCPU;
 using OpenCiv1.GPU;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using ThreadState = System.Threading.ThreadState;
 

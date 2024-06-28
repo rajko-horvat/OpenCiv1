@@ -8,33 +8,33 @@ using OpenCiv1.GPU;
 
 namespace IRB.VirtualCPU
 {
-	public class CPU
+	public class VCPU
 	{
 		// state
 		private bool bPause = false;
 
 		// flags
-		private CPUFlags oFlags = new CPUFlags();
+		private VCPUFlags oFlags = new VCPUFlags();
 
 		// registers
-		private CPURegister oAX = new CPURegister();
-		private CPURegister oBX = new CPURegister();
-		private CPURegister oCX = new CPURegister();
-		private CPURegister oDX = new CPURegister();
-		private CPURegister oBP = new CPURegister();
-		private CPURegister oSP = new CPURegister();
-		private CPURegister oSI = new CPURegister();
-		private CPURegister oDI = new CPURegister();
-		private CPURegister oDS = new CPURegister();
-		private CPURegister oES = new CPURegister();
-		private CPURegister oSS = new CPURegister();
-		private CPURegister oCS = new CPURegister();
+		private VCPURegister oAX = new VCPURegister();
+		private VCPURegister oBX = new VCPURegister();
+		private VCPURegister oCX = new VCPURegister();
+		private VCPURegister oDX = new VCPURegister();
+		private VCPURegister oBP = new VCPURegister();
+		private VCPURegister oSP = new VCPURegister();
+		private VCPURegister oSI = new VCPURegister();
+		private VCPURegister oDI = new VCPURegister();
+		private VCPURegister oDS = new VCPURegister();
+		private VCPURegister oES = new VCPURegister();
+		private VCPURegister oSS = new VCPURegister();
+		private VCPURegister oCS = new VCPURegister();
 
 		// temporary registers
-		private CPURegister oTemp = new CPURegister();
+		private VCPURegister oTemp = new VCPURegister();
 
 		// memory
-		private CPUMemory oMemory;
+		private VCPUMemory oMemory;
 
 		// Timer(s)
 		private bool bEnableInterrupt = true;
@@ -67,11 +67,11 @@ namespace IRB.VirtualCPU
 		public static string AssemblyPath;
 		public static string DefaultCIVPath;
 
-		static CPU()
+		static VCPU()
 		{
 			// We need this because of different paths between Debug and Release versions
 			// The Release executable is intended to be put directly into DOS Cilization game directory
-			// Also, for Debug there are different platforms and paths
+			// For Debug there are different paths on different platforms
 			string? assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			AssemblyPath = (!string.IsNullOrEmpty(assemblyPath)) ? assemblyPath + Path.DirectorySeparatorChar : "";
 
@@ -90,11 +90,11 @@ namespace IRB.VirtualCPU
 #endif
 		}
 
-		public CPU(OpenCiv1.CivGame parent, LogWrapper log)
+		public VCPU(OpenCiv1.CivGame parent, LogWrapper log)
 		{
 			this.oParent = parent;
 			this.oLog = log;
-			this.oMemory = new CPUMemory(this);
+			this.oMemory = new VCPUMemory(this);
 			this.oTimer = new Timer(oTimer_Tick, null, 10, 10);
 
 			for (int i = 0; i < this.aFileHandles.Length; i++)
@@ -203,16 +203,16 @@ namespace IRB.VirtualCPU
 						this.oLog.WriteLine($"Mouse buttons changed from {this.oOldMouseButtons} to {this.oMouseButtons}");
 					}*/
 
-					this.PushWord(this.oAX.Word);
-					this.PushWord(this.oCX.Word);
-					this.PushWord(this.oDX.Word);
-					this.PushWord(this.oBX.Word);
-					this.PushWord(this.oBP.Word);
-					this.PushWord(this.oSI.Word);
-					this.PushWord(this.oDI.Word);
-					this.PushWord(this.oDS.Word);
-					this.PushWord(this.oES.Word);
-					this.PushF();
+					this.PUSH_UInt16(this.oAX.Word);
+					this.PUSH_UInt16(this.oCX.Word);
+					this.PUSH_UInt16(this.oDX.Word);
+					this.PUSH_UInt16(this.oBX.Word);
+					this.PUSH_UInt16(this.oBP.Word);
+					this.PUSH_UInt16(this.oSI.Word);
+					this.PUSH_UInt16(this.oDI.Word);
+					this.PUSH_UInt16(this.oDS.Word);
+					this.PUSH_UInt16(this.oES.Word);
+					this.PUSHF_UInt16();
 
 					this.oAX.Word = 0;
 					if (this.oOldMouseLocation != this.oMouseLocation)
@@ -250,16 +250,16 @@ namespace IRB.VirtualCPU
 
 					this.oParent.Segment_1000.F0_1000_17db_MouseEvent();
 
-					this.PopF();
-					this.oES.Word = this.PopWord();
-					this.oDS.Word = this.PopWord();
-					this.oDI.Word = this.PopWord();
-					this.oSI.Word = this.PopWord();
-					this.oBP.Word = this.PopWord();
-					this.oBX.Word = this.PopWord();
-					this.oDX.Word = this.PopWord();
-					this.oCX.Word = this.PopWord();
-					this.oAX.Word = this.PopWord();
+					this.POPF_UInt16();
+					this.oES.Word = this.POP_UInt16();
+					this.oDS.Word = this.POP_UInt16();
+					this.oDI.Word = this.POP_UInt16();
+					this.oSI.Word = this.POP_UInt16();
+					this.oBP.Word = this.POP_UInt16();
+					this.oBX.Word = this.POP_UInt16();
+					this.oDX.Word = this.POP_UInt16();
+					this.oCX.Word = this.POP_UInt16();
+					this.oAX.Word = this.POP_UInt16();
 				}
 
 				/*LogWrapper oLogTemp = this.oLog;
@@ -278,85 +278,85 @@ namespace IRB.VirtualCPU
 		#endregion
 
 		#region Flags & registers
-		public CPUFlags Flags
+		public VCPUFlags Flags
 		{
 			get { return this.oFlags; }
 		}
 
-		public CPURegister AX
+		public VCPURegister AX
 		{
 			get { return this.oAX; }
 		}
 
-		public CPURegister BX
+		public VCPURegister BX
 		{
 			get { return this.oBX; }
 		}
 
-		public CPURegister CX
+		public VCPURegister CX
 		{
 			get { return this.oCX; }
 		}
 
-		public CPURegister DX
+		public VCPURegister DX
 		{
 			get { return this.oDX; }
 		}
 
-		public CPURegister BP
+		public VCPURegister BP
 		{
 			get { return this.oBP; }
 		}
 
-		public CPURegister SP
+		public VCPURegister SP
 		{
 			get { return this.oSP; }
 		}
 
-		public CPURegister SI
+		public VCPURegister SI
 		{
 			get { return this.oSI; }
 		}
 
-		public CPURegister DI
+		public VCPURegister DI
 		{
 			get { return this.oDI; }
 		}
 
-		public CPURegister DS
+		public VCPURegister DS
 		{
 			get { return this.oDS; }
 		}
 
-		public CPURegister ES
+		public VCPURegister ES
 		{
 			get { return this.oES; }
 		}
 
-		public CPURegister SS
+		public VCPURegister SS
 		{
 			get { return this.oSS; }
 		}
 
-		public CPURegister CS
+		public VCPURegister CS
 		{
 			get { return this.oCS; }
 		}
 
-		public CPURegister Temp
+		public VCPURegister Temp
 		{
 			get { return this.oTemp; }
 		}
 		#endregion
 
-		#region Helper functions
-		public void DWordToWords(CPURegister regLow, CPURegister regHigh, uint value)
+		#region Conversion functions
+		public void UInt32ToTwoUInt16(VCPURegister regLow, VCPURegister regHigh, uint value)
 		{
 			regLow.Word = (ushort)(value & 0xffff);
 			regHigh.Word = (ushort)((value & 0xffff0000) >> 16);
 		}
 
-		public uint WordsToDWord(ushort lowValue, ushort highValue)
+		public uint TwoUInt16ToUInt32(ushort lowValue, ushort highValue)
 		{
 			return ((uint)highValue << 16) | (uint)lowValue;
 		}
@@ -404,7 +404,7 @@ namespace IRB.VirtualCPU
 		#endregion
 
 		#region Memory
-		public CPUMemory Memory
+		public VCPUMemory Memory
 		{
 			get { return this.oMemory; }
 		}
@@ -500,7 +500,7 @@ namespace IRB.VirtualCPU
 		#region String instructions
 		public string ReadString(ushort segment, ushort offset)
 		{
-			return ReadString(CPU.ToLinearAddress(segment, offset));
+			return ReadString(VCPU.ToLinearAddress(segment, offset));
 		}
 
 		public string ReadString(uint address)
@@ -566,26 +566,25 @@ namespace IRB.VirtualCPU
 		#endregion
 
 		#region CPU stack
-		public void PushAWord(CPURegister regAX, CPURegister regCX, CPURegister regDX, CPURegister regBX,
-			CPURegister regSI, CPURegister regDI)
+		public void PUSHA_UInt16()
 		{
 			ushort uiTemp = this.oSP.Word;
-			this.PushWord(regAX.Word);
-			this.PushWord(regCX.Word);
-			this.PushWord(regDX.Word);
-			this.PushWord(regBX.Word);
-			this.PushWord(uiTemp);
-			this.PushWord(this.oBP.Word);
-			this.PushWord(regSI.Word);
-			this.PushWord(regDI.Word);
+			this.PUSH_UInt16(this.oAX.Word);
+			this.PUSH_UInt16(this.oCX.Word);
+			this.PUSH_UInt16(this.oDX.Word);
+			this.PUSH_UInt16(this.oBX.Word);
+			this.PUSH_UInt16(uiTemp);
+			this.PUSH_UInt16(this.oBP.Word);
+			this.PUSH_UInt16(this.oSI.Word);
+			this.PUSH_UInt16(this.oDI.Word);
 		}
 
-		public void PushF()
+		public void PUSHF_UInt16()
 		{
-			PushWord(this.oFlags.Value);
+			PUSH_UInt16(this.oFlags.Value);
 		}
 
-		public void PushWord(ushort value)
+		public void PUSH_UInt16(ushort value)
 		{
 			if ((int)this.oSP.Word - 2 < 0)
 			{
@@ -598,7 +597,7 @@ namespace IRB.VirtualCPU
 			this.oMemory.WriteUInt8(this.oSS.Word, this.oSP.Word, (byte)(value & 0xff));
 		}
 
-		public void PushDWord(uint value)
+		public void PUSH_UInt32(uint value)
 		{
 			if ((int)this.oSP.Word - 4 < 0)
 			{
@@ -615,25 +614,24 @@ namespace IRB.VirtualCPU
 			this.oMemory.WriteUInt8(this.oSS.Word, this.oSP.Word, (byte)(value & 0xff));
 		}
 
-		public void PopAWord(CPURegister regAX, CPURegister regCX, CPURegister regDX, CPURegister regBX,
-			CPURegister regSI, CPURegister regDI)
+		public void POPA_UInt16()
 		{
-			regDI.Word = this.PopWord();
-			regSI.Word = this.PopWord();
-			this.oBP.Word = this.PopWord();
-			this.PopWord();
-			regBX.Word = this.PopWord();
-			regDX.Word = this.PopWord();
-			regCX.Word = this.PopWord();
-			regAX.Word = this.PopWord();
+			this.oDI.Word = this.POP_UInt16();
+			this.oSI.Word = this.POP_UInt16();
+			this.oBP.Word = this.POP_UInt16();
+			this.POP_UInt16();
+			this.oBX.Word = this.POP_UInt16();
+			this.oDX.Word = this.POP_UInt16();
+			this.oCX.Word = this.POP_UInt16();
+			this.oAX.Word = this.POP_UInt16();
 		}
 
-		public void PopF()
+		public void POPF_UInt16()
 		{
-			this.oFlags.Value = PopWord();
+			this.oFlags.Value = POP_UInt16();
 		}
 
-		public ushort PopWord()
+		public ushort POP_UInt16()
 		{
 			if ((int)this.oSP.Word + 2 >= 0x10000)
 			{
@@ -645,7 +643,7 @@ namespace IRB.VirtualCPU
 				((ushort)this.oMemory.ReadUInt8(this.oSS.Word, this.oSP.Word++) << 8));
 		}
 
-		public uint PopDWord()
+		public uint POP_UInt32()
 		{
 			if ((int)this.oSP.Word + 4 >= 0x10000)
 			{
@@ -661,7 +659,7 @@ namespace IRB.VirtualCPU
 		#endregion
 
 		#region CPU instructions
-		public byte ADCByte(byte value1, byte value2)
+		public byte ADC_UInt8(byte value1, byte value2)
 		{
 			byte bCFlag = (byte)((this.oFlags.C) ? 1 : 0);
 			byte res = (byte)(value1 + value2 + bCFlag);
@@ -674,7 +672,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort ADCWord(ushort value1, ushort value2)
+		public ushort ADC_UInt16(ushort value1, ushort value2)
 		{
 			ushort bCFlag = (ushort)((this.oFlags.C) ? 1 : 0);
 			ushort res = (ushort)(value1 + value2 + bCFlag);
@@ -687,7 +685,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public byte ADDByte(byte value1, byte value2)
+		public byte ADD_UInt8(byte value1, byte value2)
 		{
 			byte res = (byte)(value1 + value2);
 			// Modifies flags: AF CF OF PF SF ZF
@@ -699,7 +697,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort ADDWord(ushort value1, ushort value2)
+		public ushort ADD_UInt16(ushort value1, ushort value2)
 		{
 			ushort res = (ushort)(value1 + value2);
 			// Modifies flags: AF CF OF PF SF ZF
@@ -711,7 +709,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public byte ANDByte(byte value1, byte value2)
+		public byte AND_UInt8(byte value1, byte value2)
 		{
 			byte res = (byte)(value1 & value2);
 			// Modifies flags: CF OF PF SF ZF (AF undefined)
@@ -723,7 +721,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort ANDWord(ushort value1, ushort value2)
+		public ushort AND_UInt16(ushort value1, ushort value2)
 		{
 			ushort res = (ushort)(value1 & value2);
 			// Modifies flags: CF OF PF SF ZF (AF undefined)
@@ -735,7 +733,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public void CMPByte(byte value1, byte value2)
+		public void CMP_UInt8(byte value1, byte value2)
 		{
 			byte res = (byte)(value1 - value2);
 			// Modifies flags: AF CF OF PF SF ZF
@@ -745,7 +743,7 @@ namespace IRB.VirtualCPU
 			this.oFlags.Z = (res == 0);
 		}
 
-		public void CMPWord(ushort value1, ushort value2)
+		public void CMP_UInt16(ushort value1, ushort value2)
 		{
 			ushort res = (ushort)(value1 - value2);
 			// Modifies flags: AF CF OF PF SF ZF
@@ -755,9 +753,9 @@ namespace IRB.VirtualCPU
 			this.oFlags.Z = (res == 0);
 		}
 
-		public void CMPSByte(CPURegister regES, CPURegister regDI, CPURegister sReg, CPURegister regSI)
+		public void CMPS_UInt8(VCPURegister regES, VCPURegister regDI, VCPURegister sReg, VCPURegister regSI)
 		{
-			CMPByte(this.oMemory.ReadUInt8(regES.Word, regDI.Word), this.oMemory.ReadUInt8(sReg.Word, regSI.Word));
+			CMP_UInt8(this.oMemory.ReadUInt8(regES.Word, regDI.Word), this.oMemory.ReadUInt8(sReg.Word, regSI.Word));
 
 			if (this.oFlags.D)
 			{
@@ -771,11 +769,11 @@ namespace IRB.VirtualCPU
 			}
 		}
 
-		public void REPECMPSByte(CPURegister regES, CPURegister regDI, CPURegister sReg, CPURegister regSI)
+		public void REPE_CMPS_UInt8(VCPURegister regES, VCPURegister regDI, VCPURegister sReg, VCPURegister regSI)
 		{
 			while (this.oCX.Word != 0)
 			{
-				CMPSByte(regES, regDI, sReg, regSI);
+				CMPS_UInt8(regES, regDI, sReg, regSI);
 				this.oCX.Word--;
 
 				if (this.oFlags.Z)
@@ -783,7 +781,7 @@ namespace IRB.VirtualCPU
 			}
 		}
 
-		public void CBW(CPURegister regAX)
+		public void CBW(VCPURegister regAX)
 		{
 			if ((regAX.Low & 0x80) != 0)
 				regAX.High = 0xff;
@@ -791,7 +789,7 @@ namespace IRB.VirtualCPU
 				regAX.High = 0;
 		}
 
-		public void CWD(CPURegister regAX, CPURegister regDX)
+		public void CWD(VCPURegister regAX, VCPURegister regDX)
 		{
 			if ((regAX.Word & 0x8000) != 0)
 				regDX.Word = 0xffff;
@@ -799,7 +797,7 @@ namespace IRB.VirtualCPU
 				regDX.Word = 0;
 		}
 
-		public void DAS()
+		public void DAS_UInt8()
 		{
 			byte osigned = (byte)(this.oAX.Low & 0x80);
 			if (((this.oAX.Low & 0x0f) > 9))
@@ -832,7 +830,7 @@ namespace IRB.VirtualCPU
 			this.oFlags.Z = this.oAX.Low == 0;
 		}
 
-		public byte DECByte(byte value1)
+		public byte DEC_UInt8(byte value1)
 		{
 			byte res = (byte)(value1 - 1);
 			// Modifies flags: AF OF PF SF ZF
@@ -843,7 +841,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort DECWord(ushort value1)
+		public ushort DEC_UInt16(ushort value1)
 		{
 			ushort res = (ushort)(value1 - 1);
 			// Modifies flags: AF OF PF SF ZF
@@ -854,7 +852,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public void DIVWord(CPURegister regAX, CPURegister regDX, ushort value)
+		public void DIV_UInt16(VCPURegister regAX, VCPURegister regDX, ushort value)
 		{
 			if (value == 0)
 				throw new Exception("Division by zero");
@@ -868,7 +866,7 @@ namespace IRB.VirtualCPU
 			regAX.Word = quo16;
 		}
 
-		public void IDIVByte(CPURegister regAX, byte value)
+		public void IDIV_UInt8(VCPURegister regAX, byte value)
 		{
 			if (value == 0)
 				throw new Exception("Division by zero");
@@ -883,7 +881,7 @@ namespace IRB.VirtualCPU
 			regAX.Low = (byte)quo8;
 		}
 
-		public void IDIVWord(CPURegister regAX, CPURegister regDX, ushort value)
+		public void IDIV_UInt16(VCPURegister regAX, VCPURegister regDX, ushort value)
 		{
 			if (value == 0)
 				throw new Exception("Division by zero");
@@ -898,7 +896,7 @@ namespace IRB.VirtualCPU
 			regAX.Word = (ushort)quo16;
 		}
 
-		public void IMULByte(CPURegister regAX, byte value1)
+		public void IMUL_UInt8(VCPURegister regAX, byte value1)
 		{
 			ushort res = (ushort)((short)((sbyte)regAX.Low) * (short)((sbyte)value1));
 			regAX.Word = res;
@@ -915,7 +913,7 @@ namespace IRB.VirtualCPU
 			}
 		}
 
-		public void IMULWord(CPURegister regAX, CPURegister regDX, ushort value1)
+		public void IMUL_UInt16(VCPURegister regAX, VCPURegister regDX, ushort value1)
 		{
 			uint res = (uint)((int)((short)regAX.Word) * (int)((short)value1));
 			regAX.Word = (ushort)(res & 0xffff);
@@ -933,7 +931,7 @@ namespace IRB.VirtualCPU
 			}
 		}
 
-		public ushort IMUL1Word(ushort value1, ushort value2)
+		public ushort IMUL1_UInt16(ushort value1, ushort value2)
 		{
 			uint res = (uint)((uint)value1 * (uint)value2);
 
@@ -951,7 +949,7 @@ namespace IRB.VirtualCPU
 			return (ushort)(res & 0xffff);
 		}
 
-		public byte INCByte(byte value1)
+		public byte INC_UInt8(byte value1)
 		{
 			byte res = (byte)(value1 + 1);
 			// Modifies flags: AF OF PF SF ZF
@@ -962,7 +960,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort INCWord(ushort value1)
+		public ushort INC_UInt16(ushort value1)
 		{
 			ushort res = (ushort)(value1 + 1);
 			// Modifies flags: AF OF PF SF ZF
@@ -973,7 +971,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public bool Loop(CPURegister regCX)
+		public bool Loop(VCPURegister regCX)
 		{
 			regCX.Word--;
 
@@ -983,7 +981,7 @@ namespace IRB.VirtualCPU
 		/// <summary>
 		/// LODS - Load String (Byte, Word or Double) from DS:SI
 		/// </summary>
-		public void LODSByte()
+		public void LODS_UInt8()
 		{
 			this.oAX.Low = oMemory.ReadUInt8(this.oDS.Word, this.oSI.Word);
 
@@ -1001,7 +999,7 @@ namespace IRB.VirtualCPU
 		/// <summary>
 		/// LODS - Load String (Byte, Word or Double) from DS:SI
 		/// </summary>
-		public void LODSWord()
+		public void LODS_UInt16()
 		{
 			this.oAX.Word = oMemory.ReadUInt16(this.oDS.Word, this.oSI.Word);
 
@@ -1016,7 +1014,7 @@ namespace IRB.VirtualCPU
 			}
 		}
 
-		public ushort MOVSXWord(ushort value1)
+		public ushort MOVSX_UInt16(ushort value1)
 		{
 			value1 &= 0xff;
 			if ((value1 & 0x80) != 0)
@@ -1025,7 +1023,7 @@ namespace IRB.VirtualCPU
 			return value1;
 		}
 
-		public uint MOVSXDWord(uint value1)
+		public uint MOVSX_UInt32(uint value1)
 		{
 			value1 &= 0xffff;
 			if ((value1 & 0x8000) != 0)
@@ -1034,12 +1032,12 @@ namespace IRB.VirtualCPU
 			return value1;
 		}
 
-		public ushort MOVZXWord(ushort value1)
+		public ushort MOVZX_UInt16(ushort value1)
 		{
 			return (ushort)(value1 & 0xff);
 		}
 
-		public uint MOVZXDWord(uint value1)
+		public uint MOVZX_UInt32(uint value1)
 		{
 			return value1 & 0xffff;
 		}
@@ -1047,10 +1045,9 @@ namespace IRB.VirtualCPU
 		/// <summary>
 		/// MOVS - Move String (Byte or Word) ES:DI = DS:SI
 		/// </summary>
-		public void MOVSByte(CPURegister sReg, CPURegister regSI, CPURegister regES, CPURegister regDI)
+		public void MOVS_UInt8(VCPURegister sReg, VCPURegister regSI, VCPURegister regES, VCPURegister regDI)
 		{
-			byte res = oMemory.ReadUInt8(sReg.Word, regSI.Word);
-			oMemory.WriteUInt8(regES.Word, regDI.Word, res);
+			oMemory.WriteUInt8(regES.Word, regDI.Word, oMemory.ReadUInt8(sReg.Word, regSI.Word));
 			// Modifies flags: None
 			if (this.oFlags.D)
 			{
@@ -1067,11 +1064,11 @@ namespace IRB.VirtualCPU
 		/// <summary>
 		/// MOVS - Move String (Byte or Word) ES:DI = DS:SI
 		/// </summary>
-		public void REPEMOVSByte(CPURegister sReg, CPURegister regSI, CPURegister regES, CPURegister regDI, CPURegister regCX)
+		public void REPE_MOVS_UInt8(VCPURegister sReg, VCPURegister regSI, VCPURegister regES, VCPURegister regDI, VCPURegister regCX)
 		{
 			while (regCX.Word != 0)
 			{
-				MOVSByte(sReg, regSI, regES, regDI);
+				MOVS_UInt8(sReg, regSI, regES, regDI);
 
 				regCX.Word--;
 			}
@@ -1080,7 +1077,7 @@ namespace IRB.VirtualCPU
 		/// <summary>
 		/// MOVS - Move String (Byte or Word) ES:DI = DS:SI
 		/// </summary>
-		public void MOVSWord(CPURegister sReg, CPURegister regSI, CPURegister regES, CPURegister regDI)
+		public void MOVS_UInt16(VCPURegister sReg, VCPURegister regSI, VCPURegister regES, VCPURegister regDI)
 		{
 			oMemory.WriteUInt16(regES.Word, regDI.Word, oMemory.ReadUInt16(sReg.Word, regSI.Word));
 			// Modifies flags: None
@@ -1099,17 +1096,17 @@ namespace IRB.VirtualCPU
 		/// <summary>
 		/// MOVS - Move String (Byte or Word) ES:DI = DS:SI
 		/// </summary>
-		public void REPEMOVSWord(CPURegister sReg, CPURegister regSI, CPURegister regES, CPURegister regDI, CPURegister regCX)
+		public void REPE_MOVS_UInt16(VCPURegister sReg, VCPURegister regSI, VCPURegister regES, VCPURegister regDI, VCPURegister regCX)
 		{
 			while (regCX.Word != 0)
 			{
-				MOVSWord(sReg, regSI, regES, regDI);
+				MOVS_UInt16(sReg, regSI, regES, regDI);
 
 				regCX.Word--;
 			}
 		}
 
-		public void MULByte(CPURegister regAX, byte value)
+		public void MUL_UInt8(VCPURegister regAX, byte value)
 		{
 			regAX.Word = (ushort)((ushort)regAX.Low * (ushort)value);
 			oFlags.Z = regAX.Low == 0;
@@ -1125,7 +1122,7 @@ namespace IRB.VirtualCPU
 			}
 		}
 
-		public void MULWord(CPURegister regDX, CPURegister regAX, ushort value)
+		public void MUL_UInt16(VCPURegister regDX, VCPURegister regAX, ushort value)
 		{
 			uint tempu = (uint)regAX.Word * (uint)value;
 			regAX.Word = (ushort)(tempu & 0xfffful);
@@ -1143,7 +1140,7 @@ namespace IRB.VirtualCPU
 			}
 		}
 
-		public byte NEGByte(byte value1)
+		public byte NEG_UInt8(byte value1)
 		{
 			byte res = (byte)(((ushort)0x100 - (ushort)value1) & 0xff);
 
@@ -1155,7 +1152,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort NEGWord(ushort value1)
+		public ushort NEG_UInt16(ushort value1)
 		{
 			ushort res = (ushort)(((uint)0x10000 - (uint)value1) & 0xffff);
 
@@ -1167,7 +1164,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public byte NOTByte(byte value1)
+		public byte NOT_UInt8(byte value1)
 		{
 			byte res = (byte)(~value1);
 			// Modifies flags: None
@@ -1175,7 +1172,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort NOTWord(ushort value1)
+		public ushort NOT_UInt16(ushort value1)
 		{
 			ushort res = (ushort)(~value1);
 			// Modifies flags: None
@@ -1183,7 +1180,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public byte ORByte(byte value1, byte value2)
+		public byte OR_UInt8(byte value1, byte value2)
 		{
 			byte res = (byte)(value1 | value2);
 			// Modifies flags: CF OF PF SF ZF (AF undefined)
@@ -1195,7 +1192,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort ORWord(ushort value1, ushort value2)
+		public ushort OR_UInt16(ushort value1, ushort value2)
 		{
 			ushort res = (ushort)(value1 | value2);
 			// Modifies flags: CF OF PF SF ZF (AF undefined)
@@ -1207,7 +1204,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public byte RCLByte(byte value1, byte value2)
+		public byte RCL_UInt8(byte value1, byte value2)
 		{
 			if ((value2 % 9) == 0) return value1;
 			value2 %= 9;
@@ -1221,7 +1218,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort RCLWord(ushort value1, byte value2)
+		public ushort RCL_UInt16(ushort value1, byte value2)
 		{
 			if ((value2 % 17) == 0) return value1;
 			value2 %= 17;
@@ -1235,7 +1232,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public byte RCRByte(byte value1, byte value2)
+		public byte RCR_UInt8(byte value1, byte value2)
 		{
 			if ((value2 % 9) == 0) return value1;
 			value2 %= 9;
@@ -1250,7 +1247,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort RCRWord(ushort value1, ushort value2)
+		public ushort RCR_UInt16(ushort value1, ushort value2)
 		{
 			if ((value2 % 17) == 0) return value1;
 			value2 %= 17;
@@ -1265,7 +1262,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public byte ROLByte(byte value1, byte value2)
+		public byte ROL_UInt8(byte value1, byte value2)
 		{
 			if ((value2 & 0x7) == 0)
 			{
@@ -1284,7 +1281,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort ROLWord(ushort value1, byte value2)
+		public ushort ROL_UInt16(ushort value1, byte value2)
 		{
 			if ((value2 & 0xf) == 0)
 			{
@@ -1303,7 +1300,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public byte RORByte(byte value1, byte value2)
+		public byte ROR_UInt8(byte value1, byte value2)
 		{
 			if ((value2 & 0x7) == 0)
 			{
@@ -1322,7 +1319,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort RORWord(ushort value1, byte value2)
+		public ushort ROR_UInt16(ushort value1, byte value2)
 		{
 			if ((value2 & 0xf) == 0)
 			{
@@ -1341,7 +1338,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public byte SARByte(byte value1, byte value2)
+		public byte SAR_UInt8(byte value1, byte value2)
 		{
 			byte res;
 
@@ -1365,7 +1362,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort SARWord(ushort value1, byte value2)
+		public ushort SAR_UInt16(ushort value1, byte value2)
 		{
 			ushort res;
 
@@ -1389,7 +1386,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public byte SBBByte(byte value1, byte value2)
+		public byte SBB_UInt8(byte value1, byte value2)
 		{
 			byte bCFlag = (byte)((this.oFlags.C) ? 1 : 0);
 			byte res = (byte)(value1 - (value2 + bCFlag));
@@ -1403,7 +1400,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort SBBWord(ushort value1, ushort value2)
+		public ushort SBB_UInt16(ushort value1, ushort value2)
 		{
 			ushort bCFlag = (ushort)((this.oFlags.C) ? 1 : 0);
 			ushort res = (ushort)(value1 - (value2 + bCFlag));
@@ -1417,9 +1414,9 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public void SCASByte()
+		public void SCAS_UInt8()
 		{
-			CMPByte(this.oAX.Low, oMemory.ReadUInt8(this.oES.Word, this.oDI.Word));
+			CMP_UInt8(this.oAX.Low, oMemory.ReadUInt8(this.oES.Word, this.oDI.Word));
 			if (this.oFlags.D)
 			{
 				this.oDI.Word--;
@@ -1430,11 +1427,11 @@ namespace IRB.VirtualCPU
 			}
 		}
 
-		public void REPNESCASByte()
+		public void REPNE_SCAS_UInt8()
 		{
 			while (this.oCX.Word != 0)
 			{
-				CMPByte(this.oAX.Low, oMemory.ReadUInt8(this.oES.Word, this.oDI.Word));
+				CMP_UInt8(this.oAX.Low, oMemory.ReadUInt8(this.oES.Word, this.oDI.Word));
 				if (this.oFlags.D)
 				{
 					this.oDI.Word--;
@@ -1450,7 +1447,7 @@ namespace IRB.VirtualCPU
 			}
 		}
 
-		public byte SHLByte(byte value1, byte value2)
+		public byte SHL_UInt8(byte value1, byte value2)
 		{
 			if (value2 == 0)
 				return value1;
@@ -1465,7 +1462,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort SHLWord(ushort value1, byte value2)
+		public ushort SHL_UInt16(ushort value1, byte value2)
 		{
 			if (value2 == 0)
 				return value1;
@@ -1480,7 +1477,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort SHLD1Word(ushort value1, ushort value2, byte value3)
+		public ushort SHLD1_UInt16(ushort value1, ushort value2, byte value3)
 		{
 			if (value3 == 0)
 				return value1;
@@ -1495,7 +1492,7 @@ namespace IRB.VirtualCPU
 			return (ushort)(res & 0xffff);
 		}
 
-		public byte SHRByte(byte value1, byte value2)
+		public byte SHR_UInt8(byte value1, byte value2)
 		{
 			if (value2 == 0)
 				return value1;
@@ -1510,7 +1507,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort SHRWord(ushort value1, byte value2)
+		public ushort SHR_UInt16(ushort value1, byte value2)
 		{
 			if (value2 == 0)
 				return value1;
@@ -1528,7 +1525,7 @@ namespace IRB.VirtualCPU
 		/// <summary>
 		/// STOS - Store String (Byte, Word or Doubleword) to ES:DI
 		/// </summary>
-		public void STOSByte()
+		public void STOS_UInt8()
 		{
 			oMemory.WriteUInt8(this.oES.Word, this.oDI.Word, this.oAX.Low);
 			// Modifies flags: None
@@ -1545,11 +1542,11 @@ namespace IRB.VirtualCPU
 		/// <summary>
 		/// STOS - Store String (Byte, Word or Doubleword) to ES:DI
 		/// </summary>
-		public void REPESTOSByte()
+		public void REPE_STOS_UInt8()
 		{
 			while (this.oCX.Word != 0)
 			{
-				STOSByte();
+				STOS_UInt8();
 				this.oCX.Word--;
 			}
 		}
@@ -1557,7 +1554,7 @@ namespace IRB.VirtualCPU
 		/// <summary>
 		/// STOS - Store String (Byte, Word or Doubleword) to ES:DI
 		/// </summary>
-		public void STOSWord()
+		public void STOS_UInt16()
 		{
 			oMemory.WriteUInt16(this.oES.Word, this.oDI.Word, this.oAX.Word);
 			// Modifies flags: None
@@ -1574,16 +1571,16 @@ namespace IRB.VirtualCPU
 		/// <summary>
 		/// STOS - Store String (Byte, Word or Doubleword) to ES:DI
 		/// </summary>
-		public void REPESTOSWord()
+		public void REPE_STOS_UInt16()
 		{
 			while (this.oCX.Word != 0)
 			{
-				STOSWord();
+				STOS_UInt16();
 				this.oCX.Word--;
 			}
 		}
 
-		public byte SUBByte(byte value1, byte value2)
+		public byte SUB_UInt8(byte value1, byte value2)
 		{
 			byte res = (byte)(value1 - value2);
 			// Modifies flags: AF CF OF PF SF ZF
@@ -1595,7 +1592,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort SUBWord(ushort value1, ushort value2)
+		public ushort SUB_UInt16(ushort value1, ushort value2)
 		{
 			ushort res = (ushort)(value1 - value2);
 			// Modifies flags: AF CF OF PF SF ZF
@@ -1607,7 +1604,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public void TESTByte(byte value1, byte value2)
+		public void TEST_UInt8(byte value1, byte value2)
 		{
 			byte res = (byte)(value1 & value2);
 			// Modifies flags: CF OF PF SF ZF (AF undefined)
@@ -1617,7 +1614,7 @@ namespace IRB.VirtualCPU
 			this.oFlags.Z = (res == 0);
 		}
 
-		public void TESTWord(ushort value1, ushort value2)
+		public void TEST_UInt16(ushort value1, ushort value2)
 		{
 			ushort res = (ushort)(value1 & value2);
 			// Modifies flags: CF OF PF SF ZF (AF undefined)
@@ -1627,12 +1624,12 @@ namespace IRB.VirtualCPU
 			this.oFlags.Z = (res == 0);
 		}
 
-		public void XLAT(CPURegister regAX, CPURegister sReg, CPURegister regBX)
+		public byte XLAT_UInt8(VCPURegister sReg)
 		{
-			regAX.Low = this.oMemory.ReadUInt8(sReg.Word, (ushort)(regBX.Word + regAX.Low));
+			return this.oMemory.ReadUInt8(sReg.Word, (ushort)(this.oBX.Word + this.oAX.Low));
 		}
 
-		public byte XORByte(byte value1, byte value2)
+		public byte XOR_UInt8(byte value1, byte value2)
 		{
 			byte res = (byte)(value1 ^ value2);
 			// Modifies flags: CF OF PF SF ZF (AF undefined)
@@ -1644,7 +1641,7 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public ushort XORWord(ushort value1, ushort value2)
+		public ushort XOR_UInt16(ushort value1, ushort value2)
 		{
 			ushort res = (ushort)(value1 ^ value2);
 			// Modifies flags: CF OF PF SF ZF (AF undefined)
@@ -1658,7 +1655,7 @@ namespace IRB.VirtualCPU
 		#endregion
 
 		#region IO instructions
-		public byte INByte(ushort port)
+		public byte IN_UInt8(ushort port)
 		{
 			switch (port)
 			{
@@ -1699,12 +1696,12 @@ namespace IRB.VirtualCPU
 			return 0;
 		}
 
-		public void OUTByte(byte port, byte value)
+		public void OUT_UInt8(byte port, byte value)
 		{
-			this.OUTByte((ushort)port, value);
+			this.OUT_UInt8((ushort)port, value);
 		}
 
-		public void OUTByte(ushort port, byte value)
+		public void OUT_UInt8(ushort port, byte value)
 		{
 			//this.oLog.WriteLine($"Output to port 0x{port:x4}, byte value 0x{value:x2}");
 
@@ -1788,17 +1785,17 @@ namespace IRB.VirtualCPU
 			}
 		}
 
-		public void OUTWord(ushort port, ushort value)
+		public void OUT_UInt16(ushort port, ushort value)
 		{
-			OUTByte(port, (byte)(value & 0xff));
-			OUTByte((ushort)(port + 1), (byte)((value & 0xff00) >> 8));
+			OUT_UInt8(port, (byte)(value & 0xff));
+			OUT_UInt8((ushort)(port + 1), (byte)((value & 0xff00) >> 8));
 		}
 
-		public void REPEOUTSByte(CPURegister regSeg, CPURegister regSI, CPURegister regCX)
+		public void REPE_OUTS_UInt8(VCPURegister regSeg, VCPURegister regSI, VCPURegister regCX)
 		{
 			while (this.oCX.Word != 0)
 			{
-				OUTByte(this.oDX.Word, this.oMemory.ReadUInt8(regSeg.Word, regSI.Word));
+				OUT_UInt8(this.oDX.Word, this.oMemory.ReadUInt8(regSeg.Word, regSI.Word));
 				this.oCX.Word--;
 			}
 		}
@@ -2119,8 +2116,8 @@ namespace IRB.VirtualCPU
 		{
 			if (this.oAX.Low == 3)
 			{
-				string sName = MSCAPI.GetDOSFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper());
-				string sPath = $"{CPU.DefaultCIVPath}{sName}";
+				string sName = MSCAPI.GetDOSFileName(this.ReadString(VCPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper());
+				string sPath = $"{VCPU.DefaultCIVPath}{sName}";
 				ushort usSegment = ReadUInt16(this.oES.Word, this.oBX.Word);
 				ushort usRelocationSegment = ReadUInt16(this.oES.Word, (ushort)(this.oBX.Word + 2));
 
@@ -2263,7 +2260,7 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		private void DOSPrintString()
 		{
-			string sTemp = this.ReadDosString(CPU.ToLinearAddress(this.oDS.Word, this.oDX.Word));
+			string sTemp = this.ReadDosString(VCPU.ToLinearAddress(this.oDS.Word, this.oDX.Word));
 			if (sTemp.Length > 0)
 			{
 				Console.Write(sTemp);
@@ -2274,8 +2271,8 @@ namespace IRB.VirtualCPU
 		private void DOSCreateFileUsingHandle()
 		{
 			// open file
-			string sName = MSCAPI.GetDOSFileName(this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper());
-			string sPath = $"{CPU.DefaultCIVPath}{sName}";
+			string sName = MSCAPI.GetDOSFileName(this.ReadString(VCPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper());
+			string sPath = $"{VCPU.DefaultCIVPath}{sName}";
 			FileAccess access = FileAccess.ReadWrite;
 
 			/*switch (this.oCX.Low & 0x7)
@@ -2323,7 +2320,7 @@ namespace IRB.VirtualCPU
 			{
 				FileStreamItem fileItem = this.aOpenFiles.GetValueByKey((short)this.oBX.Word);
 				ushort length = this.oCX.Word;
-				uint address = CPU.ToLinearAddress(this.oDS.Word, this.oDX.Word);
+				uint address = VCPU.ToLinearAddress(this.oDS.Word, this.oDX.Word);
 
 				for (int i = 0; i < length; i++)
 				{
@@ -2379,8 +2376,8 @@ namespace IRB.VirtualCPU
 		private void DOSOpenFileUsingHandle()
 		{
 			// open file
-			string sName = this.ReadString(CPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper();
-			string sPath = $"{CPU.DefaultCIVPath}{sName}";
+			string sName = this.ReadString(VCPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper();
+			string sPath = $"{VCPU.DefaultCIVPath}{sName}";
 			FileAccess access = FileAccess.Read;
 
 			switch (this.oAX.Low & 0x7)
@@ -2502,8 +2499,8 @@ namespace IRB.VirtualCPU
 			{
 				this.oLog.WriteLine($"Wrong drive number {this.oDX.Low}");
 			}
-			string sTemp = CPU.DefaultCIVPath.Substring(3).ToUpper();
-			this.WriteString(CPU.ToLinearAddress(this.oDS.Word, this.oSI.Word), sTemp, sTemp.Length);
+			string sTemp = VCPU.DefaultCIVPath.Substring(3).ToUpper();
+			this.WriteString(VCPU.ToLinearAddress(this.oDS.Word, this.oSI.Word), sTemp, sTemp.Length);
 			this.oFlags.C = false;
 		}
 
@@ -2578,10 +2575,10 @@ namespace IRB.VirtualCPU
 		void DOSParseAFilenameForFCB()
 		{
 			DOS_FCB fcb = new DOS_FCB(this.oMemory, this.oES.Word, this.oDI.Word);
-			string sFilename = MSCAPI.GetDOSFileName(this.ReadString(CPU.ToLinearAddress(this.oDS.Word, this.oSI.Word)).ToUpper());
+			string sFilename = MSCAPI.GetDOSFileName(this.ReadString(VCPU.ToLinearAddress(this.oDS.Word, this.oSI.Word)).ToUpper());
 			string sName = Path.GetFileNameWithoutExtension(sFilename);
 			string sExtension = Path.GetExtension(sFilename).Substring(1);
-			string sPath = $"{CPU.DefaultCIVPath}{sFilename}";
+			string sPath = $"{VCPU.DefaultCIVPath}{sFilename}";
 
 			if (File.Exists(sPath))
 			{
@@ -2603,7 +2600,7 @@ namespace IRB.VirtualCPU
 		{
 			DOS_FCB fcb = new DOS_FCB(this.oMemory, this.oDS.Word, this.oDX.Word);
 			string sFileName = fcb.GetName();
-			string sPath = $"{CPU.DefaultCIVPath}{sFileName.ToUpper()}";
+			string sPath = $"{VCPU.DefaultCIVPath}{sFileName.ToUpper()}";
 
 			if (File.Exists(sPath))
 			{
@@ -2666,7 +2663,7 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		private void DOSSetFileTransferArea()
 		{
-			this.uiDOSDTA = CPU.ToLinearAddress(this.oDS.Word, this.oDX.Word);
+			this.uiDOSDTA = VCPU.ToLinearAddress(this.oDS.Word, this.oDX.Word);
 		}
 
 		/// <summary>
@@ -2911,7 +2908,7 @@ namespace IRB.VirtualCPU
 		{
 			private bool extended;
 			private uint pt;
-			private CPUMemory oMemory;
+			private VCPUMemory oMemory;
 
 			// struct sFCB
 			private byte drive;         // Drive number 0=default, 1=A, etc.
@@ -2960,14 +2957,14 @@ namespace IRB.VirtualCPU
 			// 		the file, starting with zero; high bit omitted if
 			// 		record length is 64 bytes
 
-			public DOS_FCB(CPUMemory mem, ushort seg, ushort off) :
+			public DOS_FCB(VCPUMemory mem, ushort seg, ushort off) :
 				this(mem, seg, off, true)
 			{ }
 
-			public DOS_FCB(CPUMemory mem, ushort seg, ushort off, bool allow_extended)
+			public DOS_FCB(VCPUMemory mem, ushort seg, ushort off, bool allow_extended)
 			{
 				this.oMemory = mem;
-				this.pt = CPU.ToLinearAddress(seg, off);
+				this.pt = VCPU.ToLinearAddress(seg, off);
 				this.extended = false;
 				this.filename = "";
 				this.ext = "";

@@ -9,7 +9,7 @@ namespace OpenCiv1
 	{
 		private StreamWriter? oLog = null;
 		private int iLogTabLevel = 0;
-		private CPU? oCPU = null;
+		private VCPU? oCPU = null;
 		private Stack<ushort> aStack = new Stack<ushort>();
 
 		public LogWrapper(string path, bool enableLog)
@@ -18,7 +18,7 @@ namespace OpenCiv1
 				this.oLog = new StreamWriter(path);
 		}
 
-		public CPU? CPU
+		public VCPU? CPU
 		{
 			get { return this.oCPU; }
 			set { this.oCPU = value; }

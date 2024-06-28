@@ -9,7 +9,7 @@ namespace OpenCiv1.GPU
 	public class GDriver
 	{
 		private CivGame oParent;
-		private CPU oCPU;
+		private VCPU oCPU;
 
 		public object GLock = new object();
 		private BDictionary<int, GBitmap> aScreens = new BDictionary<int, GBitmap>();
@@ -39,7 +39,7 @@ namespace OpenCiv1.GPU
 		}
 
 		#region Properties
-		public CPU CPU
+		public VCPU CPU
 		{
 			get { return this.oCPU; }
 		}
@@ -337,7 +337,7 @@ namespace OpenCiv1.GPU
 		public ushort LoadIcon(string filename)
 		{
 			byte[] aTemp;
-			GBitmap? bitmap = GBitmap.FromPICFile($"{CPU.DefaultCIVPath}{filename.ToUpper()}", out aTemp);
+			GBitmap? bitmap = GBitmap.FromPICFile($"{VCPU.DefaultCIVPath}{filename.ToUpper()}", out aTemp);
 
 			if (bitmap != null)
 			{

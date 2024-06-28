@@ -1,13 +1,13 @@
 ﻿namespace IRB.VirtualCPU
 {
-	public class CPURegister
+	public class VCPURegister
 	{
 		private uint uiValue = 0;
 
-		public CPURegister()
+		public VCPURegister()
 		{ }
 
-		public CPURegister(uint value)
+		public VCPURegister(uint value)
 		{
 			this.uiValue = value;
 		}

@@ -1,6 +1,6 @@
 ﻿namespace IRB.VirtualCPU
 {
-	public class CPUFlags
+	public class VCPUFlags
 	{
 		private ushort usValue = 0x2;
 

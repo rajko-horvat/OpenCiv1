@@ -3,7 +3,7 @@
 namespace IRB.VirtualCPU
 {
 	[Flags]
-	public enum CPUMemoryFlagsEnum
+	public enum VCPUMemoryFlagsEnum
 	{
 		None = 0,
 		Write = 1,
@@ -14,35 +14,35 @@ namespace IRB.VirtualCPU
 		AccessNotAllowed = 16
 	}
 
-	public class CPUMemoryRegion
+	public class VCPUMemoryRegion
 	{
 		private uint uiStart;
 		private uint uiSize;
-		private CPUMemoryFlagsEnum eAccessFlags;
+		private VCPUMemoryFlagsEnum eAccessFlags;
 
-		public CPUMemoryRegion(ushort segment, ushort offset, uint size)
-			: this(CPU.ToLinearAddress(segment, offset), size, CPUMemoryFlagsEnum.ReadWrite)
+		public VCPUMemoryRegion(ushort segment, ushort offset, uint size)
+			: this(VCPU.ToLinearAddress(segment, offset), size, VCPUMemoryFlagsEnum.ReadWrite)
 		{
 		}
 
-		public CPUMemoryRegion(ushort segment, ushort offset, uint size, CPUMemoryFlagsEnum access)
-			: this(CPU.ToLinearAddress(segment, offset), size, access)
+		public VCPUMemoryRegion(ushort segment, ushort offset, uint size, VCPUMemoryFlagsEnum access)
+			: this(VCPU.ToLinearAddress(segment, offset), size, access)
 		{
 		}
 
-		public CPUMemoryRegion(uint start, uint size)
-			: this(start, size, CPUMemoryFlagsEnum.ReadWrite)
+		public VCPUMemoryRegion(uint start, uint size)
+			: this(start, size, VCPUMemoryFlagsEnum.ReadWrite)
 		{
 		}
 
-		public CPUMemoryRegion(uint start, uint size, CPUMemoryFlagsEnum access)
+		public VCPUMemoryRegion(uint start, uint size, VCPUMemoryFlagsEnum access)
 		{
 			this.uiStart = start;
 			this.uiSize = size;
 			this.eAccessFlags = access;
 		}
 
-		public CPUMemoryFlagsEnum AccessFlags
+		public VCPUMemoryFlagsEnum AccessFlags
 		{
 			get { return eAccessFlags; }
 			set { eAccessFlags = value; }
@@ -86,12 +86,12 @@ namespace IRB.VirtualCPU
 
 		public bool CheckBounds(ushort segment, ushort offset)
 		{
-			return this.CheckBounds(CPU.ToLinearAddress(segment, offset), 1);
+			return this.CheckBounds(VCPU.ToLinearAddress(segment, offset), 1);
 		}
 
 		public bool CheckBounds(ushort segment, ushort offset, uint size)
 		{
-			return this.CheckBounds(CPU.ToLinearAddress(segment, offset), size);
+			return this.CheckBounds(VCPU.ToLinearAddress(segment, offset), size);
 		}
 
 		public bool CheckBounds(uint address)
@@ -111,7 +111,7 @@ namespace IRB.VirtualCPU
 
 		public bool CheckOverlap(ushort segment, ushort offset, uint size)
 		{
-			return this.CheckOverlap(CPU.ToLinearAddress(segment, offset), size);
+			return this.CheckOverlap(VCPU.ToLinearAddress(segment, offset), size);
 		}
 
 		public bool CheckOverlap(uint address, uint size)
@@ -126,7 +126,7 @@ namespace IRB.VirtualCPU
 
 		public uint MapAddress(ushort segment, ushort offset)
 		{
-			return this.MapAddress(CPU.ToLinearAddress(segment, offset));
+			return this.MapAddress(VCPU.ToLinearAddress(segment, offset));
 		}
 
 		public uint MapAddress(uint address)

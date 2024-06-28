@@ -5,7 +5,7 @@ namespace OpenCiv1
 	public class Segment_1182
 	{
 		private CivGame oParent;
-		private CPU oCPU;
+		private VCPU oCPU;
 
 		public Segment_1182(CivGame parent)
 		{
@@ -22,7 +22,7 @@ namespace OpenCiv1
 		/// <param name="frontColor"></param>
 		public void F0_1182_002a_DrawString(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
-			string text = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
 			F0_1182_002a_DrawString(text, xPos, yPos, frontColor);
 		}
@@ -56,7 +56,7 @@ namespace OpenCiv1
 		/// <param name="frontColor"></param>
 		public void F0_1182_005c_DrawStringToScreen0(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
-			string text = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
 			F0_1182_005c_DrawStringToScreen0(text, xPos, yPos, frontColor);
 		}
@@ -112,7 +112,7 @@ namespace OpenCiv1
 		/// <param name="frontColor"></param>
 		public void F0_1182_00b3_DrawCenteredStringToScreen0(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
-			string text = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
 			F0_1182_00b3_DrawCenteredStringToScreen0(text, xPos, yPos, frontColor);
 		}
@@ -144,7 +144,7 @@ namespace OpenCiv1
 		/// <param name="frontColor"></param>
 		public void F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
-			string text = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
 			F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(text, xPos, yPos, frontColor);
 		}
@@ -175,7 +175,7 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public int F0_1182_00ef_GetStringWidth(ushort stringPtr)
 		{
-			string text = this.oCPU.ReadString(CPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
 			return F0_1182_00ef_GetStringWidth(text);
 		}

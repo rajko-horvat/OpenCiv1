@@ -5,7 +5,7 @@ namespace OpenCiv1
 	public class NSound
 	{
 		private CivGame oParent;
-		private CPU oCPU;
+		private VCPU oCPU;
 		private ushort usBufferPosition = 0;
 
 		public NSound(CivGame parent)

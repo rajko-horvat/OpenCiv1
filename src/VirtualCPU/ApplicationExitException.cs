@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OpenCiv1
+namespace IRB.VirtualCPU
 {
 	public class ApplicationExitException : Exception
 	{

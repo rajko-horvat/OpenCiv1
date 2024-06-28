@@ -2,26 +2,26 @@
 
 namespace IRB.VirtualCPU
 {
-	public class CPUMemory
+	public class VCPUMemory
 	{
 		private static uint uiMinFreeAddress = 0x0;
 		private static uint uiMaxFreeAddress = 0x9ffff;
 		private static uint uiMemorySize = 0xa0000;
 
 		private byte[] aMemory = new byte[uiMemorySize];
-		private List<CPUMemoryRegion> aMemoryRegions = new List<CPUMemoryRegion>();
+		private List<VCPUMemoryRegion> aMemoryRegions = new List<VCPUMemoryRegion>();
 
-		private CPUMemoryRegion oGPURegion = new CPUMemoryRegion((ushort)0xa000, 0, 0x10000);
-		private CPU oCPU;
+		private VCPUMemoryRegion oGPURegion = new VCPUMemoryRegion((ushort)0xa000, 0, 0x10000);
+		private VCPU oCPU;
 
-		public CPUMemory(CPU cpu)
+		public VCPUMemory(VCPU cpu)
 		{
 			this.oCPU = cpu;
-			this.aMemoryRegions.Add(new CPUMemoryRegion(0, uiMaxFreeAddress, CPUMemoryFlagsEnum.ReadWrite | 
-				CPUMemoryFlagsEnum.ReadWarning | CPUMemoryFlagsEnum.WriteWarning));
+			this.aMemoryRegions.Add(new VCPUMemoryRegion(0, uiMaxFreeAddress, VCPUMemoryFlagsEnum.ReadWrite | 
+				VCPUMemoryFlagsEnum.ReadWarning | VCPUMemoryFlagsEnum.WriteWarning));
 		}
 
-		public CPU Parent
+		public VCPU Parent
 		{
 			get { return this.oCPU; }
 		}
@@ -31,12 +31,12 @@ namespace IRB.VirtualCPU
 			get { return this.aMemory; }
 		}
 
-		public CPUMemoryRegion FreeMemory
+		public VCPUMemoryRegion FreeMemory
 		{
 			get { return this.aMemoryRegions[0]; }
 		}
 
-		public List<CPUMemoryRegion> MemoryRegions
+		public List<VCPUMemoryRegion> MemoryRegions
 		{
 			get
 			{
@@ -45,7 +45,7 @@ namespace IRB.VirtualCPU
 		}
 
 		#region Check Flag
-		public bool CheckFlag(uint address, uint size, CPUMemoryFlagsEnum flag)
+		public bool CheckFlag(uint address, uint size, VCPUMemoryFlagsEnum flag)
 		{
 			uint uiCount = 0;
 
@@ -79,7 +79,7 @@ namespace IRB.VirtualCPU
 		#region 8 Bit
 		public sbyte ReadInt8(ushort segment, ushort offset)
 		{
-			return (sbyte)this.ReadUInt8(CPU.ToLinearAddress(segment, offset));
+			return (sbyte)this.ReadUInt8(VCPU.ToLinearAddress(segment, offset));
 		}
 
 		public sbyte ReadInt8(uint address)
@@ -89,12 +89,12 @@ namespace IRB.VirtualCPU
 
 		public byte ReadUInt8(ushort segment, ushort offset)
 		{
-			return this.ReadUInt8(CPU.ToLinearAddress(segment, offset));
+			return this.ReadUInt8(VCPU.ToLinearAddress(segment, offset));
 		}
 
 		public byte ReadUInt8(uint address)
 		{
-			if (!this.CheckFlag(address, 1, CPUMemoryFlagsEnum.Read) || this.CheckFlag(address, 1, CPUMemoryFlagsEnum.AccessNotAllowed))
+			if (!this.CheckFlag(address, 1, VCPUMemoryFlagsEnum.Read) || this.CheckFlag(address, 1, VCPUMemoryFlagsEnum.AccessNotAllowed))
 			{
 				this.oCPU.Log.WriteLine($"// Attempt to read byte from protected area at 0x{address:x8}");
 				return 0;
@@ -104,7 +104,7 @@ namespace IRB.VirtualCPU
 			{
 				if (this.aMemoryRegions[i].CheckBounds(address, 1))
 				{
-					if ((this.aMemoryRegions[i].AccessFlags & CPUMemoryFlagsEnum.ReadWarning) == CPUMemoryFlagsEnum.ReadWarning)
+					if ((this.aMemoryRegions[i].AccessFlags & VCPUMemoryFlagsEnum.ReadWarning) == VCPUMemoryFlagsEnum.ReadWarning)
 						this.oCPU.Log.WriteLine($"// Warning: Read byte at 0x{address:x8}");
 
 					return this.aMemory[address];
@@ -125,7 +125,7 @@ namespace IRB.VirtualCPU
 		#region 16 bit
 		public short ReadInt16(ushort segment, ushort offset)
 		{
-			return (short)this.ReadUInt16(CPU.ToLinearAddress(segment, offset));
+			return (short)this.ReadUInt16(VCPU.ToLinearAddress(segment, offset));
 		}
 
 		public short ReadInt16(uint address)
@@ -135,12 +135,12 @@ namespace IRB.VirtualCPU
 
 		public ushort ReadUInt16(ushort segment, ushort offset)
 		{
-			return this.ReadUInt16(CPU.ToLinearAddress(segment, offset));
+			return this.ReadUInt16(VCPU.ToLinearAddress(segment, offset));
 		}
 
 		public ushort ReadUInt16(uint address)
 		{
-			if (!this.CheckFlag(address, 2, CPUMemoryFlagsEnum.Read) || this.CheckFlag(address, 2, CPUMemoryFlagsEnum.AccessNotAllowed))
+			if (!this.CheckFlag(address, 2, VCPUMemoryFlagsEnum.Read) || this.CheckFlag(address, 2, VCPUMemoryFlagsEnum.AccessNotAllowed))
 			{
 				this.oCPU.Log.WriteLine($"// Attempt to read word from protected area at 0x{address:x8}");
 				return 0;
@@ -150,7 +150,7 @@ namespace IRB.VirtualCPU
 			{
 				if (this.aMemoryRegions[i].CheckBounds(address, 2))
 				{
-					if ((this.aMemoryRegions[i].AccessFlags & CPUMemoryFlagsEnum.ReadWarning) == CPUMemoryFlagsEnum.ReadWarning)
+					if ((this.aMemoryRegions[i].AccessFlags & VCPUMemoryFlagsEnum.ReadWarning) == VCPUMemoryFlagsEnum.ReadWarning)
 						this.oCPU.Log.WriteLine($"// Warning: Read word at 0x{address:x8}");
 
 					uint uiLocation = address;
@@ -174,7 +174,7 @@ namespace IRB.VirtualCPU
 		#region 32 bit
 		public int ReadInt32(ushort segment, ushort offset)
 		{
-			return (int)this.ReadUInt32(CPU.ToLinearAddress(segment, offset));
+			return (int)this.ReadUInt32(VCPU.ToLinearAddress(segment, offset));
 		}
 
 		public int ReadInt32(uint address)
@@ -184,12 +184,12 @@ namespace IRB.VirtualCPU
 
 		public uint ReadUInt32(ushort segment, ushort offset)
 		{
-			return this.ReadUInt32(CPU.ToLinearAddress(segment, offset));
+			return this.ReadUInt32(VCPU.ToLinearAddress(segment, offset));
 		}
 
 		public uint ReadUInt32(uint address)
 		{
-			if (!this.CheckFlag(address, 4, CPUMemoryFlagsEnum.Read) || this.CheckFlag(address, 4, CPUMemoryFlagsEnum.AccessNotAllowed))
+			if (!this.CheckFlag(address, 4, VCPUMemoryFlagsEnum.Read) || this.CheckFlag(address, 4, VCPUMemoryFlagsEnum.AccessNotAllowed))
 			{
 				this.oCPU.Log.WriteLine($"// Attempt to read dword from protected area at 0x{address:x8}");
 				return 0;
@@ -199,7 +199,7 @@ namespace IRB.VirtualCPU
 			{
 				if (this.aMemoryRegions[i].CheckBounds(address, 4))
 				{
-					if ((this.aMemoryRegions[i].AccessFlags & CPUMemoryFlagsEnum.ReadWarning) == CPUMemoryFlagsEnum.ReadWarning)
+					if ((this.aMemoryRegions[i].AccessFlags & VCPUMemoryFlagsEnum.ReadWarning) == VCPUMemoryFlagsEnum.ReadWarning)
 						this.oCPU.Log.WriteLine($"// Warning: Read dword at 0x{address:x8}");
 
 					uint uiLocation = address;
@@ -227,7 +227,7 @@ namespace IRB.VirtualCPU
 		#region 8 bit
 		public void WriteInt8(ushort segment, ushort offset, sbyte value)
 		{
-			this.WriteUInt8(CPU.ToLinearAddress(segment, offset), (byte)value);
+			this.WriteUInt8(VCPU.ToLinearAddress(segment, offset), (byte)value);
 		}
 
 		public void WriteInt8(uint address, sbyte value)
@@ -240,7 +240,7 @@ namespace IRB.VirtualCPU
 			if (value < SByte.MinValue || value > SByte.MaxValue)
 				throw new Exception($"Value {value} out of range for Int8");
 
-			this.WriteUInt8(CPU.ToLinearAddress(segment, offset), (byte)((sbyte)value));
+			this.WriteUInt8(VCPU.ToLinearAddress(segment, offset), (byte)((sbyte)value));
 		}
 
 		public void WriteInt8(uint address, int value)
@@ -256,7 +256,7 @@ namespace IRB.VirtualCPU
 			if (value < 0 || value > Byte.MaxValue)
 				throw new Exception($"Value {value} out of range for UInt8");
 
-			this.WriteUInt8(CPU.ToLinearAddress(segment, offset), (byte)value);
+			this.WriteUInt8(VCPU.ToLinearAddress(segment, offset), (byte)value);
 		}
 
 		public void WriteUInt8(uint address, int value)
@@ -269,12 +269,12 @@ namespace IRB.VirtualCPU
 
 		public void WriteUInt8(ushort segment, ushort offset, byte value)
 		{
-			this.WriteUInt8(CPU.ToLinearAddress(segment, offset), value);
+			this.WriteUInt8(VCPU.ToLinearAddress(segment, offset), value);
 		}
 
 		public void WriteUInt8(uint address, byte value)
 		{
-			if (!this.CheckFlag(address, 1, CPUMemoryFlagsEnum.Write) || this.CheckFlag(address, 1, CPUMemoryFlagsEnum.AccessNotAllowed))
+			if (!this.CheckFlag(address, 1, VCPUMemoryFlagsEnum.Write) || this.CheckFlag(address, 1, VCPUMemoryFlagsEnum.AccessNotAllowed))
 			{
 				this.oCPU.Log.WriteLine($"// Attempt to write to protected area at 0x{address:x8}");
 				return;
@@ -285,7 +285,7 @@ namespace IRB.VirtualCPU
 			{
 				if (this.aMemoryRegions[i].CheckBounds(address, 1))
 				{
-					if ((this.aMemoryRegions[i].AccessFlags & CPUMemoryFlagsEnum.WriteWarning) == CPUMemoryFlagsEnum.WriteWarning)
+					if ((this.aMemoryRegions[i].AccessFlags & VCPUMemoryFlagsEnum.WriteWarning) == VCPUMemoryFlagsEnum.WriteWarning)
 						this.oCPU.Log.WriteLine($"// Warning: Write byte at 0x{address:x8}");
 
 					this.aMemory[address] = value;
@@ -308,7 +308,7 @@ namespace IRB.VirtualCPU
 		#region 16 bit
 		public void WriteInt16(ushort segment, ushort offset, short value)
 		{
-			this.WriteUInt16(CPU.ToLinearAddress(segment, offset), (ushort)value);
+			this.WriteUInt16(VCPU.ToLinearAddress(segment, offset), (ushort)value);
 		}
 
 		public void WriteInt16(uint address, short value)
@@ -321,7 +321,7 @@ namespace IRB.VirtualCPU
 			if (value < Int16.MinValue || value > Int16.MaxValue)
 				throw new Exception($"Value {value} out of range for Int16");
 
-			this.WriteUInt16(CPU.ToLinearAddress(segment, offset), (ushort)((short)value));
+			this.WriteUInt16(VCPU.ToLinearAddress(segment, offset), (ushort)((short)value));
 		}
 
 		public void WriteInt16(uint address, int value)
@@ -337,7 +337,7 @@ namespace IRB.VirtualCPU
 			if (value < 0 || value > UInt16.MaxValue)
 				throw new Exception($"Value {value} out of range for UInt16");
 
-			this.WriteUInt16(CPU.ToLinearAddress(segment, offset), (ushort)value);
+			this.WriteUInt16(VCPU.ToLinearAddress(segment, offset), (ushort)value);
 		}
 
 		public void WriteUInt16(uint address, int value)
@@ -350,12 +350,12 @@ namespace IRB.VirtualCPU
 
 		public void WriteUInt16(ushort segment, ushort offset, ushort value)
 		{
-			this.WriteUInt16(CPU.ToLinearAddress(segment, offset), value);
+			this.WriteUInt16(VCPU.ToLinearAddress(segment, offset), value);
 		}
 
 		public void WriteUInt16(uint address, ushort value)
 		{
-			if (!this.CheckFlag(address, 2, CPUMemoryFlagsEnum.Write) || this.CheckFlag(address, 2, CPUMemoryFlagsEnum.AccessNotAllowed))
+			if (!this.CheckFlag(address, 2, VCPUMemoryFlagsEnum.Write) || this.CheckFlag(address, 2, VCPUMemoryFlagsEnum.AccessNotAllowed))
 			{
 				this.oCPU.Log.WriteLine($"// Attempt to write to protected area at 0x{address:x8}");
 				return;
@@ -366,7 +366,7 @@ namespace IRB.VirtualCPU
 			{
 				if (this.aMemoryRegions[i].CheckBounds(address, 2))
 				{
-					if ((this.aMemoryRegions[i].AccessFlags & CPUMemoryFlagsEnum.WriteWarning) == CPUMemoryFlagsEnum.WriteWarning)
+					if ((this.aMemoryRegions[i].AccessFlags & VCPUMemoryFlagsEnum.WriteWarning) == VCPUMemoryFlagsEnum.WriteWarning)
 						this.oCPU.Log.WriteLine($"// Warning: Write word at 0x{address:x8}");
 
 					uint uiLocation = address;
@@ -392,7 +392,7 @@ namespace IRB.VirtualCPU
 		#region 32 bit
 		public void WriteInt32(ushort segment, ushort offset, int value)
 		{
-			this.WriteUInt32(CPU.ToLinearAddress(segment, offset), (uint)value);
+			this.WriteUInt32(VCPU.ToLinearAddress(segment, offset), (uint)value);
 		}
 
 		public void WriteInt32(uint address, int value)
@@ -402,12 +402,12 @@ namespace IRB.VirtualCPU
 
 		public void WriteUInt32(ushort segment, ushort offset, uint value)
 		{
-			this.WriteUInt32(CPU.ToLinearAddress(segment, offset), value);
+			this.WriteUInt32(VCPU.ToLinearAddress(segment, offset), value);
 		}
 
 		public void WriteUInt32(uint address, uint value)
 		{
-			if (!this.CheckFlag(address, 4, CPUMemoryFlagsEnum.Write) || this.CheckFlag(address, 4, CPUMemoryFlagsEnum.AccessNotAllowed))
+			if (!this.CheckFlag(address, 4, VCPUMemoryFlagsEnum.Write) || this.CheckFlag(address, 4, VCPUMemoryFlagsEnum.AccessNotAllowed))
 			{
 				this.oCPU.Log.WriteLine($"// Attempt to write to protected area at 0x{address:x8}");
 				return;
@@ -418,7 +418,7 @@ namespace IRB.VirtualCPU
 			{
 				if (this.aMemoryRegions[i].CheckBounds(address, 4))
 				{
-					if ((this.aMemoryRegions[i].AccessFlags & CPUMemoryFlagsEnum.WriteWarning) == CPUMemoryFlagsEnum.WriteWarning)
+					if ((this.aMemoryRegions[i].AccessFlags & VCPUMemoryFlagsEnum.WriteWarning) == VCPUMemoryFlagsEnum.WriteWarning)
 						this.oCPU.Log.WriteLine($"// Warning: Write dword at 0x{address:x8}");
 
 					uint uiLocation = address;
@@ -446,7 +446,7 @@ namespace IRB.VirtualCPU
 		#region Memory block instructions
 		public void WriteBlock(ushort segment, ushort offset, byte[] srcData, int pos, int length)
 		{
-			WriteBlock(CPU.ToLinearAddress(segment, offset), srcData, pos, length);
+			WriteBlock(VCPU.ToLinearAddress(segment, offset), srcData, pos, length);
 		}
 
 		public void WriteBlock(uint address, byte[] srcData, int pos, int length)
@@ -462,10 +462,10 @@ namespace IRB.VirtualCPU
 		#region Memory allocation
 		public bool AllocateMemoryBlock(uint address, uint size)
 		{
-			return AllocateMemoryBlock(address, size, CPUMemoryFlagsEnum.ReadWrite | CPUMemoryFlagsEnum.WriteWarning);
+			return AllocateMemoryBlock(address, size, VCPUMemoryFlagsEnum.ReadWrite | VCPUMemoryFlagsEnum.WriteWarning);
 		}
 
-		public bool AllocateMemoryBlock(uint address, uint size, CPUMemoryFlagsEnum flags)
+		public bool AllocateMemoryBlock(uint address, uint size, VCPUMemoryFlagsEnum flags)
 		{
 			for (int i = 1; i < this.aMemoryRegions.Count; i++)
 			{
@@ -475,7 +475,7 @@ namespace IRB.VirtualCPU
 				}
 			}
 
-			this.aMemoryRegions.Add(new CPUMemoryRegion(address, size, flags));
+			this.aMemoryRegions.Add(new VCPUMemoryRegion(address, size, flags));
 
 			AdjustFreeMemoryRange();
 
@@ -484,7 +484,7 @@ namespace IRB.VirtualCPU
 
 		public bool AllocateMemoryBlock(ushort segmentCount, out ushort startSegment)
 		{
-			uint uiSize = CPU.ToLinearAddress(segmentCount, 0);
+			uint uiSize = VCPU.ToLinearAddress(segmentCount, 0);
 
 			// Just allocate next available block, don't search between blocks for now
 			// Is there enough room for allocation?
@@ -496,7 +496,7 @@ namespace IRB.VirtualCPU
 
 			// allocate block
 			startSegment = (ushort)((this.aMemoryRegions[0].Start >> 4) & 0xffff);
-			this.aMemoryRegions.Add(new CPUMemoryRegion(this.aMemoryRegions[0].Start, uiSize, CPUMemoryFlagsEnum.ReadWrite | CPUMemoryFlagsEnum.WriteWarning));
+			this.aMemoryRegions.Add(new VCPUMemoryRegion(this.aMemoryRegions[0].Start, uiSize, VCPUMemoryFlagsEnum.ReadWrite | VCPUMemoryFlagsEnum.WriteWarning));
 
 			AdjustFreeMemoryRange();
 
@@ -505,8 +505,8 @@ namespace IRB.VirtualCPU
 
 		public bool ResizeMemoryBlock(ushort blockSegment, ushort segmentCount)
 		{
-			return ResizeMemoryBlock(CPU.ToLinearAddress(blockSegment, 0),
-				CPU.ToLinearAddress(segmentCount, 0));
+			return ResizeMemoryBlock(VCPU.ToLinearAddress(blockSegment, 0),
+				VCPU.ToLinearAddress(segmentCount, 0));
 		}
 
 		public bool ResizeMemoryBlock(uint address, uint size)
@@ -536,7 +536,7 @@ namespace IRB.VirtualCPU
 
 		public bool FreeMemoryBlock(ushort segment)
 		{
-			uint uiAddress = CPU.ToLinearAddress(segment, 0);
+			uint uiAddress = VCPU.ToLinearAddress(segment, 0);
 
 			for (int i = 1; i < this.aMemoryRegions.Count; i++)
 			{
@@ -553,7 +553,7 @@ namespace IRB.VirtualCPU
 
 		private void AdjustFreeMemoryRange()
 		{
-			CPUMemoryRegion oFree = this.aMemoryRegions[0];
+			VCPUMemoryRegion oFree = this.aMemoryRegions[0];
 			oFree.Start = uiMinFreeAddress;
 
 			// adjust free memory

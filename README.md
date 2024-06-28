@@ -17,16 +17,37 @@
 
 <p>The part of the game assembly code is emulated with Virtual CPU, and the rest of the code has been rewritten from scratch until all of the code is replaced with new copyright free code. The other resources (like graphics, music and text) will also be completely replaced with copyright free resources before publishing the complete game.</p>
 
+## Frequently asked questions
+<b>Q:</b> Why did you use C#, instead of C in which the original game is written?</br>
+<b>A:</b> I have chosen C# becase it's platform independent, secure, flexible, managed, popular, modern and API rich language.
+
+<p></p>
+
+<b>Q:</b> Why does the OpenCiv1 differs, in some aspects, from the original Civilization game?</br>
+<b>A:</b> There are numerous reasons:
+<ul>
+<li>Simply replicating all of the functionality to skip the DosBox emulation to be able to run the game natively is not a good enough reason (for me) to start a project of this magnitude.</li>
+<li>Copying the game Code, Functionality, Graphics and Audio would be considered a Copyright volation and that is prohibited by current Copyright laws.</li>
+<li>To make the OpenCiv1 available to anyone who wishes to play the game, and that means Copyright free Code, Graphics and Audio.</li>
+<li>To add additional functionalities (features) to the game (like online gaming, scalable HQ Grahics, HQ Audio, plugins, etc.).</li>
+<li>To make OpenCiv1 popular, appealing and easy to play (to the older public, as well as to the younger public), as was original Civilization game popular back in the day.</li>
+</ul>
+
+<p></p>
+
+<b>Q:</b> Does that mean that the OpenCiv1 will be completely different from Civilization game, like, for example FreeCiv?</br>
+<b>A:</b> Absolutely not, the goal is to keep as much of the original rules, Visual and Audio appearance and functionalities as possible.
+
 ## Dependencies
 <ul>
-<li>.NET 8</li>
+<li>.NET Core 8</li>
 <li>Visual C++ 2015-2019 redistributable (on some Windows machines)</li>
 </ul>
 
 ## How to run the release version of OpenCiv1
 <p>The files from the Release should be copied directly into installed and working DOS Civilization game directory. The game can be run by running the OpenCiv1 executable.</p>
 
-## How to compile the code (.NET 8 SDK required)
+## How to compile the code (.NET Core 8 SDK required)
 If you want to Debug (or Compile) the code with Visual Studio 2022 Community Edition, it is assumed that:
 <ul>
 <li>For debugging purposes you have installed DOS Civilization game at 'c:\Dos\Civ1\', or at '~/Dos/Civ1/' if you are using Linux (uppercase files!).
