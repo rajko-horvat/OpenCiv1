@@ -6,37 +6,39 @@
 <img src="src/Resources/Screenshots/Windows.png" alt="Windows OS" width="260" />
 <img src="src/Resources/Screenshots/Linux.png" alt="Linux OS" width="260" />
 <img src="src/Resources/Screenshots/MacOSX.png" alt="MacOSX OS" width="260" /></p>
-<li>The game logic is <b>Based on original DOS Civilization game version 475.05</b> disassembly.</li>
+<li>The game logic is <b>Based on original DOS Civilization 1 game version 475.05</b> disassembly.</li>
 <li>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform and the bugs that have never been fixed are hindering the popularity of the game.</li>
 <li>The news, discussions about this project and release news are published regularly on <a href="https://forums.civfanatics.com/threads/rewrite-of-civilization-1-source-code-openciv1-project.682623/" target="_blank">Civilization Fanatics Forum page</a></li>
 </ul>
 
+## Current status
+<p><b>The game is in working state</b>, but you have to legally own the Original game (the .txt, .pic and .pal files have to be present).</p>
+
 ## Copyright considerations
 <p><b>The available code is not a full working copy of the game.</b> <b>To run OpenCiv1 you are legally required to own your own copy of the DOS Civilization game.</b> 
-<b>This is the reason that not a single file from the original game is included in this GitHub repository as they are copyrighted.</b></p>
+<b>This is the reason that not a single file from the original Civilization 1 game is included in this GitHub repository as they are copyrighted.</b></p>
 
 <p>The part of the game assembly code is emulated with Virtual CPU, and the rest of the code has been rewritten from scratch until all of the code is replaced with new copyright free code. The other resources (like graphics, music and text) will also be completely replaced with copyright free resources before publishing the complete game.</p>
 
 ## Frequently asked questions
-<b>Q:</b> Why did you use C#, instead of C in which the original game is written?</br>
-<b>A:</b> I have chosen C# becase it's platform independent, secure, flexible, managed, popular, modern and API rich language.
+<p><b>Q:</b> Why did you use C#, instead of C in which the original game is written?</br>
+<b>A:</b> I have chosen C# becase it's platform independent, secure, flexible, managed, popular, modern and API rich language.</p>
 
-<p></p>
-
-<b>Q:</b> Why does the OpenCiv1 differs, in some aspects, from the original Civilization game?</br>
+<p><b>Q:</b> Why does the OpenCiv1 differs, in some aspects, from the original Civilization 1 game?</br>
 <b>A:</b> There are numerous reasons:
 <ul>
 <li>Simply replicating all of the functionality to skip the DosBox emulation to be able to run the game natively is not a good enough reason (for me) to start a project of this magnitude.</li>
 <li>Copying the game Code, Functionality, Graphics and Audio would be considered a Copyright volation and that is prohibited by current Copyright laws.</li>
 <li>To make the OpenCiv1 available to anyone who wishes to play the game, and that means Copyright free Code, Graphics and Audio.</li>
 <li>To add additional functionalities (features) to the game (like online gaming, scalable HQ Grahics, HQ Audio, plugins, etc.).</li>
-<li>To make OpenCiv1 popular, appealing and easy to play (to the older public, as well as to the younger public), as was original Civilization game popular back in the day.</li>
-</ul>
+<li>To make OpenCiv1 platform independent, popular, appealing and easy to play (to the older, as well as to the younger public), as was original Civilization 1 game popular back in the day.</li>
+</ul></p>
 
-<p></p>
+<p><b>Q:</b> Does that mean that the OpenCiv1 will be completely different from original Civilization 1 game, like, for example FreeCiv?</br>
+<b>A:</b> Absolutely not, the goal is to keep all of the original rules and functionalities, as well as much as possible of the original Visual and Audio appearance.</p>
 
-<b>Q:</b> Does that mean that the OpenCiv1 will be completely different from Civilization game, like, for example FreeCiv?</br>
-<b>A:</b> Absolutely not, the goal is to keep as much of the original rules, Visual and Audio appearance and functionalities as possible.
+<p><b>Q:</b> You know that Civilization 7 will be published soon, doesn't that make First Civilization in the series obsolete?</br>
+<b>A:</b> Based on some stats, many people think that the first Civilization offers as much fun as the other sequels do.</p>
 
 ## Dependencies
 <ul>
@@ -60,16 +62,14 @@ You can also compile with CLI method:
 <li>dotnet build -c Release</li>
 </ul>
 
-## Current status
-<p><b>The game is in working state</b>, but you have to legally own the Original game (the .txt, .pic and .pal files have to be present).<br/><br/>
-Additional keyboard shortcuts:
+## Additional keyboard shortcuts
 <ul>
 <li>Alt + D - Enable / Disable the <b>Debug mode (Shift-56)</b></li>
 <li>Alt + P - Pause / Resume game</li>
 <li>Alt + 1 - Show / Hide Screen 1</li>
 <li>Alt + 2 - Show / Hide Screen 2</li>
 <li>Alt + 3 - Show / Hide Screen 3</li>
-</ul></p>
+</ul>
 
 ## How to Contribute (Help needed)
 <p>Anyone can contribute to this repository in accordance with these <a href="https://github.com/rajko-horvat/OpenCiv1/.github/CONTRIBUTING.md">Contributing rules</a></p>
@@ -94,9 +94,9 @@ Currently, you can contribute to this repository in one of the following ways:
 ### Planned milestones for a second stage
 <b>What will change in the new version:</b>
 <ul>
-<li>Porting to HTML5 platform (Web interface, online gaming),</li>
-<li>Graphics (the new graphics will be as close as possible to the spirit of the original version),</li>
-<li>Music/Sounds (the new music/sounds will be as close as possible to the spirit of the original version),</li>
+<li>Porting to Razor platform (Web interface, online gaming),</li>
+<li>HQ Graphics (the new graphics will be as close as possible to the spirit of the original version),</li>
+<li>HQ Audio (the new Audio will be as close as possible to the spirit of the original version),</li>
 <li>Some text where appropriate,</li>
 <li>Design (Map zoom functionality, some small updates, also some dialogs will be slightly different),</li>
 <li>Multilanguage capability,</li>

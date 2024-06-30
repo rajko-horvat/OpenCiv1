@@ -2111,58 +2111,55 @@ namespace OpenCiv1
 										local_f6 + 8, local_fc + 12,
 										this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((0x9 << 1) + 0xd4ce)));
 								}
+								if (this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID == 0)
+								{
+									// Instruction address 0x1d12:0x36f4, size: 5
+									this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+										local_f6, local_fc + 12,
+										this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((0x8 << 1) + 0xd4ce)));
+
+									if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType >= 2)
+									{
+										// Instruction address 0x1d12:0x371f, size: 5
+										this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+											local_f6 + 2, local_fc + 12,
+											this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((0x8 << 1) + 0xd4ce)));
+									}
+								}
 								else
 								{
-									if (this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID == 0)
-									{
-										// Instruction address 0x1d12:0x36f4, size: 5
-										this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-											local_f6, local_fc + 12,
-											this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((0x8 << 1) + 0xd4ce)));
+									// Instruction address 0x1d12:0x3732, size: 5
+									F0_1d12_6c97(this.Var_6548_PlayerID, 16);
 
-										if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType >= 2)
-										{
-											// Instruction address 0x1d12:0x371f, size: 5
-											this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-												local_f6 + 2, local_fc + 12,
-												this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((0x8 << 1) + 0xd4ce)));
-										}
+									this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x1);
+									this.oCPU.CX.Word = this.oCPU.SBB_UInt16(this.oCPU.CX.Word, this.oCPU.CX.Word);
+									this.oCPU.CX.Word = this.oCPU.NEG_UInt16(this.oCPU.CX.Word);
+									local_e8 = (short)this.oCPU.CX.Word;
+
+									if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType == 5)
+									{
+										local_e8++;
 									}
-									else
+
+									if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType >= 4)
 									{
-										// Instruction address 0x1d12:0x3732, size: 5
-										F0_1d12_6c97(this.Var_6548_PlayerID, 16);
-
-										this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x1);
-										this.oCPU.CX.Word = this.oCPU.SBB_UInt16(this.oCPU.CX.Word, this.oCPU.CX.Word);
-										this.oCPU.CX.Word = this.oCPU.NEG_UInt16(this.oCPU.CX.Word);
-										local_e8 = (short)this.oCPU.CX.Word;
-
-										if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType == 5)
+										if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].AttackStrength != 0 &&
+											local_e8 != 0 &&
+											(this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].TerrainCategory == 1 ||
+												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].Position.X != city.Position.X ||
+												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].Position.Y != city.Position.Y))
 										{
-											local_e8++;
-										}
+											// Instruction address 0x1d12:0x381d, size: 5
+											this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+												local_f6, local_fc + 12,
+												this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((0xd << 1) + 0xd4ce)));
 
-										if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType >= 4)
-										{
-											if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].AttackStrength != 0 &&
-												local_e8 != 0 &&
-												(this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].TerrainCategory == 1 ||
-													this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].Position.X != city.Position.X ||
-													this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].Position.Y != city.Position.Y))
+											if (local_e8 > 1)
 											{
-												// Instruction address 0x1d12:0x381d, size: 5
+												// Instruction address 0x1d12:0x3842, size: 5
 												this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-													local_f6, local_fc + 12,
+													local_f6 + 2, local_fc + 12,
 													this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((0xd << 1) + 0xd4ce)));
-
-												if (local_e8 > 1)
-												{
-													// Instruction address 0x1d12:0x3842, size: 5
-													this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-														local_f6 + 2, local_fc + 12,
-														this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((0xd << 1) + 0xd4ce)));
-												}
 											}
 										}
 									}
@@ -2416,7 +2413,7 @@ namespace OpenCiv1
 					// Instruction address 0x1d12:0x3f7b, size: 5
 					if (city.ActualSize != 0)
 					{
-						this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(80 / city.ActualSize, 1, 8);
+						local_e8 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(80 / city.ActualSize, 1, 8);
 					}
 					else
 					{
