@@ -25,8 +25,7 @@
 <b>A:</b> I have chosen C# becase it's platform independent, secure, flexible, managed, popular, modern and API rich language.</p>
 
 <p><b>Q:</b> Why does the OpenCiv1 differs, in some aspects, from the original Civilization 1 game?</br>
-<b>A:</b> There are numerous reasons:
-<ul>
+<b>A:</b> There are numerous reasons:<ul>
 <li>Simply replicating all of the functionality to skip the DosBox emulation to be able to run the game natively is not a good enough reason (for me) to start a project of this magnitude.</li>
 <li>Copying the game Code, Functionality, Graphics and Audio would be considered a Copyright volation and that is prohibited by current Copyright laws.</li>
 <li>To make the OpenCiv1 available to anyone who wishes to play the game, and that means Copyright free Code, Graphics and Audio.</li>
@@ -37,7 +36,7 @@
 <p><b>Q:</b> Does that mean that the OpenCiv1 will be completely different from original Civilization 1 game, like, for example FreeCiv?</br>
 <b>A:</b> Absolutely not, the goal is to keep all of the original rules and functionalities, as well as much as possible of the original Visual and Audio appearance.</p>
 
-<p><b>Q:</b> You know that Civilization 7 will be published soon, doesn't that make First Civilization in the series obsolete?</br>
+<p><b>Q:</b> You know that Civilization 7 will be published soon, doesn't that make First Civilization game in the series obsolete?</br>
 <b>A:</b> Based on some stats, many people think that the first Civilization offers as much fun as the other sequels do.</p>
 
 ## Dependencies
