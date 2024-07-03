@@ -166,13 +166,11 @@ namespace OpenCiv1
 					if (this.oParent.CivState.Cities[i].StatusFlag != 0xff && i != city.ID)
 					{
 						// Instruction address 0x1d12:0x01a2, size: 5
-						this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
+						local_b0 = this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
 							city.Position.X,
 							city.Position.Y,
 							this.oParent.CivState.Cities[i].Position.X,
 							this.oParent.CivState.Cities[i].Position.Y);
-
-						local_b0 = (short)this.oCPU.AX.Word;
 
 						if (this.oParent.CivState.Cities[i].PlayerID == city.PlayerID &&
 							(this.oParent.CivState.Cities[i].BuildingFlags & 0x1) != 0 && local_b0 < this.Var_6b30)
@@ -218,29 +216,25 @@ namespace OpenCiv1
 				if ((city.BuildingFlags0 & 0x1000) == 0)
 				{
 					// Instruction address 0x1d12:0x035e, size: 5
-					this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Industrialization);
-					if (this.oCPU.AX.Word != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Industrialization) != 0)
 					{
 						this.oParent.Var_b882++;
 					}
 
 					// Instruction address 0x1d12:0x037a, size: 5
-					this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Automobile);
-					if (this.oCPU.AX.Word != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Automobile) != 0)
 					{
 						this.oParent.Var_b882++;
 					}
 
 					// Instruction address 0x1d12:0x0396, size: 5
-					this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.MassProduction);
-					if (this.oCPU.AX.Word != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.MassProduction) != 0)
 					{
 						this.oParent.Var_b882++;
 					}
 
 					// Instruction address 0x1d12:0x03b2, size: 5
-					this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Plastics);
-					if (this.oCPU.AX.Word != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Plastics) != 0)
 					{
 						this.oParent.Var_b882++;
 					}
@@ -336,8 +330,7 @@ namespace OpenCiv1
 							(this.oParent.CivState.MapVisibility[local_c6, local_d2] & (1 << this.Var_6548_PlayerID)) != 0)
 						{
 							// Instruction address 0x1d12:0x0664, size: 5
-							this.oParent.Segment_2aea.F0_2aea_14e0(local_c6, local_d2);
-							local_e8 = (short)this.oCPU.AX.Word;
+							local_e8 = (short)this.oParent.Segment_2aea.F0_2aea_14e0(local_c6, local_d2);
 
 							if (local_e8 != -1 && local_e8 != this.Var_6548_PlayerID)
 							{
@@ -414,6 +407,7 @@ namespace OpenCiv1
 						else
 						{
 							city.ActualSize--;
+
 							if (city.ActualSize <= 0)
 							{
 								// Instruction address 0x1d12:0x0843, size: 5
@@ -553,13 +547,11 @@ namespace OpenCiv1
 					}
 
 					// Instruction address 0x1d12:0x0bf4, size: 5
-					this.oParent.Segment_2aea.F0_2aea_14e0(local_c6, local_d2);
-					local_e8 = (short)this.oCPU.AX.Word;
+					local_e8 = (short)this.oParent.Segment_2aea.F0_2aea_14e0(local_c6, local_d2);
 
 					if (local_e8 != -1 && local_e8 != this.Var_6548_PlayerID)
 					{
 						Arr_a6[this.oParent.CityOffsets[i].X + 2, this.oParent.CityOffsets[i].Y + 2] = 1;
-
 						Arr_3e[i] = 1;
 
 						if (local_e8 == this.oParent.CivState.HumanPlayerID)
@@ -671,18 +663,15 @@ namespace OpenCiv1
 							local_d2 = city.Position.Y + this.oParent.CityOffsets[i].Y;
 
 							// Instruction address 0x1d12:0x0f9e, size: 5
-							F0_1d12_6abc(local_c6, local_d2, 0);
-							local_cc = (short)this.oCPU.AX.Word;
+							local_cc = (short)F0_1d12_6abc(local_c6, local_d2, 0);
 
 							// Instruction address 0x1d12:0x0fb6, size: 5
-							F0_1d12_6abc(local_c6, local_d2, 1);
-							local_d4 = (short)this.oCPU.AX.Word * 2;
+							local_d4 = (short)F0_1d12_6abc(local_c6, local_d2, 1) * 2;
 
 							if (local_50 != 1 || this.oParent.Var_70da_Arr[1] != 0 || local_d4 != 0)
 							{
 								// Instruction address 0x1d12:0x0ff0, size: 5
-								F0_1d12_6abc(local_c6, local_d2, 2);
-								local_d4 += (short)this.oCPU.AX.Word;
+								local_d4 += (short)F0_1d12_6abc(local_c6, local_d2, 2);
 
 								if (local_cc > local_ce || (local_cc == local_ce && local_d4 > local_d6))
 								{
@@ -726,24 +715,21 @@ namespace OpenCiv1
 							local_d2 = city.Position.Y + this.oParent.CityOffsets[i].Y;
 
 							// Instruction address 0x1d12:0x1173, size: 5
-							F0_1d12_6abc(local_c6, local_d2, 0);
-							local_4 = (short)this.oCPU.AX.Word;
+							local_4 = (short)F0_1d12_6abc(local_c6, local_d2, 0);
 
 							// Instruction address 0x1d12:0x1151, size: 5
 							local_d4 = local_4 * (16 / this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 								this.oParent.Var_70da_Arr[0] - (city.ActualSize * 2) - (local_48 * this.oParent.Var_e3c6), 1, 99));
 
 							// Instruction address 0x1d12:0x1190, size: 5
-							F0_1d12_6abc(local_c6, local_d2, 1);
-							local_c = (short)this.oCPU.AX.Word;
+							local_c = (short)F0_1d12_6abc(local_c6, local_d2, 1);
 
 							// Instruction address 0x1d12:0x11af, size: 5
 							local_d4 += ((city.ActualSize * 3) / this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 								this.oParent.Var_70da_Arr[1] - this.oParent.Var_d2f6, 1, 99)) * local_c;
 
 							// Instruction address 0x1d12:0x11dc, size: 5
-							F0_1d12_6abc(local_c6, local_d2, 2);
-							local_46 = (short)this.oCPU.AX.Word;
+							local_46 = (short)F0_1d12_6abc(local_c6, local_d2, 2);
 
 							// Instruction address 0x1d12:0x11f7, size: 5
 							local_d4 += ((city.ActualSize * 2) / this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.Var_70da_Arr[2], 1, 99)) * local_46;
@@ -830,16 +816,12 @@ namespace OpenCiv1
 				if (F0_1d12_6c97(this.Var_6548_PlayerID, 15) != 0)
 				{
 					// Instruction address 0x1d12:0x1428, size: 5
-					this.oParent.Segment_2aea.F0_2aea_1942(
+					local_10c = (short)this.oParent.Segment_2aea.F0_2aea_1942(
 						this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[15]].Position.X,
 						this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[15]].Position.Y);
 
-					local_10c = (short)this.oCPU.AX.Word;
-
 					// Instruction address 0x1d12:0x1442, size: 5
-					this.oParent.Segment_2aea.F0_2aea_1942(city.Position.X, city.Position.Y);
-
-					if ((short)this.oCPU.AX.Word == local_10c)
+					if ((short)this.oParent.Segment_2aea.F0_2aea_1942(city.Position.X, city.Position.Y) == local_10c)
 					{
 						this.oParent.Var_6c98 = 2;
 						local_ac = 2;
@@ -852,9 +834,7 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x1d12:0x1484, size: 5
-				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(local_ac, 0, local_f8);
-				local_ac = (short)this.oCPU.AX.Word;
-
+				local_ac = (short)this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(local_ac, 0, local_f8);
 				local_10a = this.oParent.Var_70da_Arr[1];
 				local_a = this.oParent.Var_70da_Arr[2];
 
@@ -874,516 +854,458 @@ namespace OpenCiv1
 
 					city.ShieldsCount += (short)local_e8;
 
-					if (city.CurrentProductionID < 0)
-						goto L1b63;
-
-					if ((this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) > city.ShieldsCount)
-						goto L220f;
-
-					if (city.CurrentProductionID != 0 || city.ActualSize != 1 || this.oParent.CivState.DifficultyLevel != 0)
-						goto L159b;
-					goto L2307;
-
-				L159b:
-					city.ShieldsCount -= (short)(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a);
-
-					local_ba = -1;
-
-					if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID || city.CurrentProductionID != 0x1a)
+					if (city.CurrentProductionID >= 0)
 					{
-						// Instruction address 0x1d12:0x15fa, size: 5
-						this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
-						local_ba = (short)this.oCPU.AX.Word;
-					}
-
-					if ((this.oParent.CivState.TechnologyFirstDiscoveredBy[city.CurrentProductionID] & 0x8) == 0)
-					{
-						// Instruction address 0x1d12:0x1640, size: 5
-						this.oParent.Segment_1866.F0_1866_250e_AddReplayData(6, (byte)((sbyte)this.Var_6548_PlayerID), (byte)city.CurrentProductionID);
-
-						this.oParent.CivState.TechnologyFirstDiscoveredBy[city.CurrentProductionID] |= 8;
-					}
-
-					if ((city.BuildingFlags0 & 0x2) != 0 && local_ba != -1)
-					{
-						this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_ba].Status |= 0x20;
-					}
-
-					if (local_ba != -1 && city.CurrentProductionID == 0 && (city.ActualSize > 1 || this.oParent.CivState.Players[this.Var_6548_PlayerID].CityCount > 1))
-					{
-						city.ActualSize--;
-						if (city.ActualSize == 0)
+						if ((this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) <= city.ShieldsCount)
 						{
-							// Instruction address 0x1d12:0x16ff, size: 5
-							this.oParent.Segment_1ade.F0_1ade_018e(cityID, city.Position.X, city.Position.Y);
-
-							// Instruction address 0x1d12:0x1727, size: 5
-							this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
-
-							this.oParent.StartGameMenu.F5_0000_0e6c(this.Var_6548_PlayerID, 0);
-
-							// Instruction address 0x1d12:0x1743, size: 5
-							this.oParent.Segment_11a8.F0_11a8_0250();
-
-							goto L6927;
-						}
-					}
-
-					if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID || local_ba == -1)
-						goto L1ab6;
-
-					if (city.CurrentProductionID == 27)
-					{
-						local_108 = -1;
-						local_c8 = -1;
-
-						for (int i = 0; i < 128; i++)
-						{
-							if (this.oParent.CivState.Cities[i].PlayerID != this.Var_6548_PlayerID && this.oParent.CivState.Cities[i].StatusFlag != 0xff &&
-								this.oParent.CivState.Cities[i].PlayerID != this.oParent.CivState.HumanPlayerID && this.oParent.CivState.Cities[i].BaseTrade > local_c8)
+							if (city.CurrentProductionID == 0 && city.ActualSize == 1 && this.oParent.CivState.DifficultyLevel == 0)
 							{
-								local_c8 = this.oParent.CivState.Cities[i].BaseTrade;
-								local_108 = i;
+								goto L2307;
 							}
-						}
-
-						// Instruction address 0x1d12:0x180e, size: 5
-						this.oParent.Segment_2459.F0_2459_0948(this.Var_6548_PlayerID, (short)local_ba, (short)local_108);
-					}
-
-					if (city.CurrentProductionID == 26)
-					{
-						local_108 = -1;
-						local_c8 = 32767;
-						local_106 = 0;
-
-						for (int i = 0; i < 128; i++)
-						{
-							if (this.oParent.CivState.Cities[i].PlayerID != this.oParent.CivState.HumanPlayerID || this.oParent.CivState.Cities[i].StatusFlag != 0xff)
+							else
 							{
-								// Instruction address 0x1d12:0x1898, size: 5
-								this.oParent.Segment_2dc4.F0_2dc4_0177(this.Var_6548_PlayerID, (short)local_ba,
-									this.oParent.CivState.Cities[i].Position.X,
-									this.oParent.CivState.Cities[i].Position.Y);
-								local_e8 = (short)this.oCPU.AX.Word;
+								city.ShieldsCount -= (short)(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a);
 
-								this.oParent.Var_6c9a = Math.Abs(this.oParent.Var_6c9a - 3);
+								local_ba = -1;
 
-								if ((this.oParent.CivState.Cities[i].StatusFlag & 0x20) != 0)
+								if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID || city.CurrentProductionID != 0x1a)
 								{
-									this.oParent.Var_6c9a = 3;
+									// Instruction address 0x1d12:0x15fa, size: 5
+									local_ba = (short)this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
 								}
 
-								if (local_c8 > this.oParent.Var_6c9a ||	(local_c8 == this.oParent.Var_6c9a && this.oParent.MSCAPI.RNG.Next(++local_106) == 0))
+								if ((this.oParent.CivState.TechnologyFirstDiscoveredBy[city.CurrentProductionID] & 0x8) == 0)
 								{
-									// Instruction address 0x1d12:0x191e, size: 5
-									this.oParent.Segment_2aea.F0_2aea_134a(
-										this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
-										this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y);
+									// Instruction address 0x1d12:0x1640, size: 5
+									this.oParent.Segment_1866.F0_1866_250e_AddReplayData(6, (byte)((sbyte)this.Var_6548_PlayerID), (byte)city.CurrentProductionID);
 
-									if ((short)this.oCPU.AX.Word != 10)
+									this.oParent.CivState.TechnologyFirstDiscoveredBy[city.CurrentProductionID] |= 8;
+								}
+
+								if ((city.BuildingFlags0 & 0x2) != 0 && local_ba != -1)
+								{
+									this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_ba].Status |= 0x20;
+								}
+
+								if (local_ba != -1 && city.CurrentProductionID == 0 && (city.ActualSize > 1 || this.oParent.CivState.Players[this.Var_6548_PlayerID].CityCount > 1))
+								{
+									city.ActualSize--;
+
+									if (city.ActualSize == 0)
 									{
-										// Instruction address 0x1d12:0x1956, size: 5
-										this.oParent.Segment_2aea.F0_2aea_1942(
-											this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
-											this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y);
+										// Instruction address 0x1d12:0x16ff, size: 5
+										this.oParent.Segment_1ade.F0_1ade_018e(cityID, city.Position.X, city.Position.Y);
 
-										local_10c = (short)this.oCPU.AX.Word;
+										// Instruction address 0x1d12:0x1727, size: 5
+										this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
 
-										// Instruction address 0x1d12:0x1970, size: 5
-										this.oParent.Segment_2aea.F0_2aea_1942(
-											this.oParent.CivState.Cities[i].Position.X,
-											this.oParent.CivState.Cities[i].Position.Y);
+										this.oParent.StartGameMenu.F5_0000_0e6c(this.Var_6548_PlayerID, 0);
 
-										if ((short)this.oCPU.AX.Word == local_10c)
+										// Instruction address 0x1d12:0x1743, size: 5
+										this.oParent.Segment_11a8.F0_11a8_0250();
+
+										goto L6927;
+									}
+								}
+
+								if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID && local_ba != -1)
+								{
+									if (city.CurrentProductionID == 27)
+									{
+										local_108 = -1;
+										local_c8 = -1;
+
+										for (int i = 0; i < 128; i++)
 										{
-											if (local_c8 != this.oParent.Var_6c9a)
+											if (this.oParent.CivState.Cities[i].PlayerID != this.Var_6548_PlayerID && this.oParent.CivState.Cities[i].StatusFlag != 0xff &&
+												this.oParent.CivState.Cities[i].PlayerID != this.oParent.CivState.HumanPlayerID && this.oParent.CivState.Cities[i].BaseTrade > local_c8)
 											{
-												local_c8 = this.oParent.Var_6c9a;
+												local_c8 = this.oParent.CivState.Cities[i].BaseTrade;
+												local_108 = i;
 											}
-											else
+										}
+
+										// Instruction address 0x1d12:0x180e, size: 5
+										this.oParent.Segment_2459.F0_2459_0948(this.Var_6548_PlayerID, (short)local_ba, (short)local_108);
+									}
+
+									if (city.CurrentProductionID == 26)
+									{
+										local_108 = -1;
+										local_c8 = 32767;
+										local_106 = 0;
+
+										for (int i = 0; i < 128; i++)
+										{
+											if (this.oParent.CivState.Cities[i].PlayerID != this.oParent.CivState.HumanPlayerID || this.oParent.CivState.Cities[i].StatusFlag != 0xff)
 											{
-												local_106 = 1;
+												// Instruction address 0x1d12:0x1898, size: 5
+												local_e8 = (short)this.oParent.Segment_2dc4.F0_2dc4_0177(this.Var_6548_PlayerID, (short)local_ba,
+													this.oParent.CivState.Cities[i].Position.X,
+													this.oParent.CivState.Cities[i].Position.Y);
+
+												this.oParent.Var_6c9a = Math.Abs(this.oParent.Var_6c9a - 3);
+
+												if ((this.oParent.CivState.Cities[i].StatusFlag & 0x20) != 0)
+												{
+													this.oParent.Var_6c9a = 3;
+												}
+
+												if (local_c8 > this.oParent.Var_6c9a || (local_c8 == this.oParent.Var_6c9a && this.oParent.MSCAPI.RNG.Next(++local_106) == 0))
+												{
+													// Instruction address 0x1d12:0x191e, size: 5
+													this.oParent.Segment_2aea.F0_2aea_134a(
+														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
+														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y);
+
+													if ((short)this.oCPU.AX.Word != 10)
+													{
+														// Instruction address 0x1d12:0x1956, size: 5
+														local_10c = (short)this.oParent.Segment_2aea.F0_2aea_1942(
+															this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
+															this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y);
+
+														// Instruction address 0x1d12:0x1970, size: 5
+														this.oParent.Segment_2aea.F0_2aea_1942(
+															this.oParent.CivState.Cities[i].Position.X,
+															this.oParent.CivState.Cities[i].Position.Y);
+
+														if ((short)this.oCPU.AX.Word == local_10c)
+														{
+															if (local_c8 != this.oParent.Var_6c9a)
+															{
+																local_c8 = this.oParent.Var_6c9a;
+															}
+															else
+															{
+																local_106 = 1;
+															}
+
+															local_108 = local_e8;
+															local_b0 = i;
+														}
+													}
+												}
+											}
+										}
+
+										if (local_c8 > 3 || (this.oParent.CivState.Players[this.Var_6548_PlayerID].Diplomacy[this.oParent.CivState.HumanPlayerID] & 2) != 0)
+										{
+											city.ShieldsCount += (short)(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a);
+										}
+										else
+										{
+											// Instruction address 0x1d12:0x19f9, size: 5
+											local_ba = (short)this.oParent.Segment_1866.F0_1866_0cf5(
+												this.Var_6548_PlayerID,
+												0x1a,
+												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].Position.X,
+												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].Position.Y);
+
+											if (local_ba != -1)
+											{
+												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_ba].GoToPosition.X = this.oParent.CivState.Cities[local_b0].Position.X;
+												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_ba].GoToPosition.Y = this.oParent.CivState.Cities[local_b0].Position.Y;
+											}
+										}
+									}
+
+									if (city.CurrentProductionID == 25 && this.oParent.CivState.Players[this.Var_6548_PlayerID].ActiveUnits[25] == 1)
+									{
+										this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ContactPlayerCountdown = -1;
+									}
+
+									// Instruction address 0x1d12:0x1aab, size: 5
+									this.oParent.Segment_25fb.F0_25fb_34b6(cityID);
+								}
+								else
+								{
+									city.ShieldsCount = 0;
+
+									if (local_ba != -1 && (city.CurrentProductionID == 0 || city.CurrentProductionID >= 26))
+									{
+										this.oParent.Var_b1e8 = 1;
+										this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+
+										// Instruction address 0x1d12:0x1b00, size: 5
+										this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+
+										// Instruction address 0x1d12:0x1b10, size: 5
+										this.oParent.MSCAPI.strcat(0xba06, " builds ");
+
+										// Instruction address 0x1d12:0x1b2e, size: 5
+										this.oParent.MSCAPI.strcat(0xba06,
+											this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Name);
+
+										// Instruction address 0x1d12:0x1b3e, size: 5
+										this.oParent.MSCAPI.strcat(0xba06, ".\n");
+
+										this.oParent.Var_2f9e_Unknown = 0x3;
+
+										// Instruction address 0x1d12:0x1b58, size: 5
+										this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
+									}
+								}
+							}
+						}
+					}
+					else
+					{
+						if ((this.oParent.CivState.BuildingDefinitions[-city.CurrentProductionID].Price * local_4a) <= city.ShieldsCount)
+						{
+							local_e8 = -city.CurrentProductionID;
+
+							if (local_e8 > 24)
+							{
+								if (this.oParent.CivState.WonderCityID[local_e8 - 24] == -1)
+								{
+									this.oParent.CivState.WonderCityID[local_e8 - 24] = cityID;
+
+									// Instruction address 0x1d12:0x1bd7, size: 5
+									this.oParent.Segment_1866.F0_1866_250e_AddReplayData(10, (byte)((sbyte)this.Var_6548_PlayerID), (byte)((sbyte)(local_e8 - 24)));
+								}
+								else
+								{
+									local_e8 = -1;
+								}
+							}
+							else if ((city.BuildingFlags & (1 << (local_e8 - 1))) != 0)
+							{
+								local_e8 = -1;
+							}
+
+							if (local_e8 != -1)
+							{
+								if (local_e8 == 41)
+								{
+									// Instruction address 0x1d12:0x1c39, size: 5
+									this.oParent.MSCAPI.strcpy(0xba06, "Sensors report a\nNUCLEAR WEAPONS test\nnear ");
+
+									// Instruction address 0x1d12:0x1c44, size: 5
+									this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+
+									// Instruction address 0x1d12:0x1c54, size: 5
+									this.oParent.MSCAPI.strcat(0xba06, "!\n");
+
+									// Instruction address 0x1d12:0x1c60, size: 5
+									this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x24, 0);
+
+									this.oParent.Overlay_21.F21_0000_0000(-1);
+
+									// Instruction address 0x1d12:0x1c78, size: 5
+									this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
+								}
+
+								if (local_e8 < 22)
+								{
+									city.BuildingFlags |= (uint)(1 << (local_e8 - 1));
+								}
+
+								city.ShieldsCount -= (short)(this.oParent.CivState.BuildingDefinitions[-city.CurrentProductionID].Price * local_4a);
+
+								if ((this.oParent.CivState.PlayerFlags & (1 << this.Var_6548_PlayerID)) != 0 || local_e8 > 24)
+								{
+									if ((this.oParent.CivState.PlayerFlags & (1 << this.Var_6548_PlayerID)) == 0)
+									{
+										this.oParent.CivState.MapVisibility[city.Position.X, city.Position.Y] = 0xffff;
+									}
+									else
+									{
+										this.oParent.Var_b1e8 = 1;
+									}
+
+									this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+
+									// Instruction address 0x1d12:0x1d31, size: 5
+									this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+
+									// Instruction address 0x1d12:0x1d41, size: 5
+									this.oParent.MSCAPI.strcat(0xba06, " builds\n");
+
+									// Instruction address 0x1d12:0x1d58, size: 5
+									this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.BuildingDefinitions[local_e8].Name);
+
+									// Instruction address 0x1d12:0x1d68, size: 5
+									this.oParent.MSCAPI.strcat(0xba06, ".\n");
+
+									// Instruction address 0x1d12:0x1dbe, size: 5
+									if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID && (this.oParent.CivState.GameSettingFlags & 0x8) != 0 && (local_e8 <= 21 || local_e8 > 24) &&
+										(city.StatusFlag & 0x10) == 0 && local_e8 != 1 && this.oParent.Segment_11a8.F0_11a8_02a4(1, 0) != 0)
+									{
+										this.oParent.CityView.F19_0000_0000(cityID, (short)local_e8);
+									}
+									else
+									{
+										this.oParent.Overlay_21.F21_0000_0000(cityID);
+									}
+
+									city.ShieldsCount = 0;
+								}
+								else
+								{
+									if (local_e8 == 1)
+									{
+										city.CurrentProductionID = -2;
+									}
+
+									// Instruction address 0x1d12:0x1e1a, size: 5
+									city.CurrentProductionID = (sbyte)((short)this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID));
+
+									if (city.CurrentProductionID >= 0)
+									{
+										this.oParent.CivState.Players[this.Var_6548_PlayerID].UnitsInProduction[city.CurrentProductionID]++;
+									}
+								}
+
+								if (local_e8 >= 22 && local_e8 <= 24 && ((1 << this.Var_6548_PlayerID) & (ushort)this.oParent.CivState.SpaceshipFlags) == 0)
+								{
+									if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID)
+									{
+										this.oParent.Overlay_18.F18_0000_0f83(this.Var_6548_PlayerID, (ushort)((short)(local_e8 - 22)));
+									}
+									else
+									{
+										local_c8 = (short)this.oParent.Overlay_18.F18_0000_0d4f(this.Var_6548_PlayerID, (short)(local_e8 - 22));
+
+										if (local_c8 != 0 && local_e8 < 24)
+										{
+											city.ShieldsCount += (short)(this.oParent.CivState.BuildingDefinitions[local_e8].Price * local_4a);
+
+											if (city.CurrentProductionID <= -22 && city.CurrentProductionID >= -24)
+											{
+												city.CurrentProductionID = (sbyte)((-local_e8) - 1);
 											}
 
-											local_108 = local_e8;
-											local_b0 = i;
+											local_c8--;
+										}
+
+										if ((this.oParent.CivState.SpaceshipFlags & (1 << this.Var_6548_PlayerID)) == 0 && this.oParent.CivState.AISpaceshipSuccessRate >= 40)
+										{
+											if (local_c8 == 0)
+												goto L1feb;
+
+											// Instruction address 0x1d12:0x1f5d, size: 5
+											if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, (int)TechnologyEnum.SpaceFlight) == 0)
+												goto L2010;
+
+											if (this.oParent.CivState.AISpaceshipSuccessRate > 75)
+												goto L1feb;
+
+											if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Ranking > this.oParent.CivState.Players[this.Var_6548_PlayerID].Ranking)
+												goto L1feb;
+
+											if ((this.oParent.CivState.SpaceshipFlags & (1 << this.oParent.CivState.HumanPlayerID)) == 0)
+												goto L1fc5;
+
+											if ((this.oParent.CivState.Players[this.Var_6548_PlayerID].SpaceshipETAYear - this.oParent.CivState.Year) <=
+												(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].SpaceshipETAYear - this.oParent.CivState.Year))
+												goto L1feb;
+
+										L1fc5:
+											if ((this.oParent.CivState.SpaceshipFlags & (1 << (this.oParent.CivState.HumanPlayerID + 8))) == 0 ||
+												this.oParent.CivState.Players[this.oParent.CivState.ActiveCivilizations].Coins <= 1000)
+												goto L2010;
+
+										L1feb:
+											this.oParent.Overlay_18.F18_0000_15c3(this.Var_6548_PlayerID);
+
+											goto L2010;
+										}
+										else if (local_c8 != 0)
+										{
+											this.oParent.Overlay_18.F18_0000_15c3(this.Var_6548_PlayerID);
+										}
+									}
+								}
+
+							L2010:
+								if (local_e8 == 1)
+								{
+									for (int i = 0; i < 128; i++)
+									{
+										if (this.oParent.CivState.Cities[i].PlayerID == this.Var_6548_PlayerID)
+										{
+											this.oParent.CivState.Cities[i].BuildingFlags &= 0xfffffffe;
+										}
+									}
+
+									if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID ||
+										(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Diplomacy[this.Var_6548_PlayerID] & 0x40) != 0)
+									{
+										this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+
+										if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
+										{
+											// Instruction address 0x1d12:0x2097, size: 5
+											this.oParent.MSCAPI.strcpy(0xba06, "Diplomats report:\n");
+
+											this.oParent.Var_2f9e_Unknown = 0x1;
+										}
+
+										// Instruction address 0x1d12:0x20b3, size: 5
+										this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.Players[this.Var_6548_PlayerID].Nationality);
+
+										// Instruction address 0x1d12:0x20c3, size: 5
+										this.oParent.MSCAPI.strcat(0xba06, " capital\nmoved to ");
+
+										// Instruction address 0x1d12:0x20ce, size: 5
+										this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+
+										// Instruction address 0x1d12:0x20de, size: 5
+										this.oParent.MSCAPI.strcat(0xba06, ".\n");
+
+										this.oParent.Var_2f9e_Unknown = 0x5;
+
+										// Instruction address 0x1d12:0x20f8, size: 5
+										this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
+
+										this.oParent.CivState.Players[this.Var_6548_PlayerID].XStart = (short)city.Position.X;
+
+										city.BuildingFlags |= 1;
+									}
+								}
+
+								if (local_e8 == 38)
+								{
+									// Instruction address 0x1d12:0x2136, size: 5
+									this.oParent.Segment_11a8.F0_11a8_0280();
+
+									// Instruction address 0x1d12:0x2143, size: 5
+									this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
+
+									// Instruction address 0x1d12:0x2153, size: 5
+									this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
+
+									// Instruction address 0x1d12:0x215b, size: 5
+									this.oParent.Segment_11a8.F0_11a8_0294();
+								}
+
+								if (local_e8 == 43 && this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID)
+								{
+									for (int i = 0; i < 128; i++)
+									{
+										if (this.oParent.CivState.Cities[i].StatusFlag != 0xff && this.oParent.CivState.Cities[i].PlayerID != this.Var_6548_PlayerID)
+										{
+											this.oParent.CivState.Cities[i].VisibleSize = this.oParent.CivState.Cities[i].ActualSize;
+
+											this.oParent.CivState.MapVisibility[this.oParent.CivState.Cities[i].Position.X,
+												this.oParent.CivState.Cities[i].Position.Y] |= (ushort)(1 << this.Var_6548_PlayerID);
+
+											// Instruction address 0x1d12:0x2204, size: 5
+											this.oParent.Segment_2aea.F0_2aea_1601(
+												this.oParent.CivState.Cities[i].Position.X, this.oParent.CivState.Cities[i].Position.Y);
 										}
 									}
 								}
 							}
 						}
-
-						if (local_c8 > 3 || (this.oParent.CivState.Players[this.Var_6548_PlayerID].Diplomacy[this.oParent.CivState.HumanPlayerID] & 2) != 0)
-						{
-							city.ShieldsCount += (short)(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a);
-						}
-						else
-						{
-							// Instruction address 0x1d12:0x19f9, size: 5
-							this.oParent.Segment_1866.F0_1866_0cf5(
-								this.Var_6548_PlayerID,
-								0x1a,
-								this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].Position.X,
-								this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].Position.Y);
-							local_ba = (short)this.oCPU.AX.Word;
-
-							if (local_ba != -1)
-							{
-								this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_ba].GoToPosition.X =
-									this.oParent.CivState.Cities[local_b0].Position.X;
-
-								this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_ba].GoToPosition.Y =
-									this.oParent.CivState.Cities[local_b0].Position.Y;
-							}
-						}
 					}
 
-					if (city.CurrentProductionID == 25 && this.oParent.CivState.Players[this.Var_6548_PlayerID].ActiveUnits[25] == 1)
-					{
-						this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ContactPlayerCountdown = -1;
-					}
-
-					// Instruction address 0x1d12:0x1aab, size: 5
-					this.oParent.Segment_25fb.F0_25fb_34b6(cityID);
-
-					goto L220f;
-
-				L1ab6:
-					city.ShieldsCount = 0;
-
-					if (local_ba == -1)
-						goto L220f;
-
-					if (city.CurrentProductionID == 0)
-						goto L1af2;
-
-					if (city.CurrentProductionID < 0x1a)
-						goto L220f;
-
-				L1af2:
-					this.oParent.Var_b1e8 = 1;
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
-
-					// Instruction address 0x1d12:0x1b00, size: 5
-					this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
-
-					// Instruction address 0x1d12:0x1b10, size: 5
-					this.oParent.MSCAPI.strcat(0xba06, " builds ");
-
-					// Instruction address 0x1d12:0x1b2e, size: 5
-					this.oParent.MSCAPI.strcat(0xba06,
-						this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Name);
-
-					// Instruction address 0x1d12:0x1b3e, size: 5
-					this.oParent.MSCAPI.strcat(0xba06, ".\n");
-
-					this.oParent.Var_2f9e_Unknown = 0x3;
-
-					// Instruction address 0x1d12:0x1b58, size: 5
-					this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
-
-					goto L220f;
-
-				L1b63:
-					if ((this.oParent.CivState.BuildingDefinitions[-city.CurrentProductionID].Price * local_4a) > city.ShieldsCount)
-						goto L220f;
-
-					local_e8 = -city.CurrentProductionID;
-
-					if (local_e8 <= 24)
-						goto L1beb;
-
-					if (this.oParent.CivState.WonderCityID[local_e8 - 24] != -1)
-						goto L1be2;
-
-					this.oParent.CivState.WonderCityID[local_e8 - 24] = cityID;
-
-					// Instruction address 0x1d12:0x1bd7, size: 5
-					this.oParent.Segment_1866.F0_1866_250e_AddReplayData(10, (byte)((sbyte)this.Var_6548_PlayerID), (byte)((sbyte)(local_e8 - 24)));
-
-					goto L1c1d;
-
-				L1be2:
-					local_e8 = -1;
-
-					goto L1c1d;
-
-				L1beb:
-					if ((city.BuildingFlags & (1 << (local_e8 - 1))) != 0)
-					{
-						local_e8 = -1;
-					}
-
-				L1c1d:
-					if (local_e8 == -1)
-						goto L220f;
-
-					if (local_e8 == 41)
-					{
-						// Instruction address 0x1d12:0x1c39, size: 5
-						this.oParent.MSCAPI.strcpy(0xba06, "Sensors report a\nNUCLEAR WEAPONS test\nnear ");
-
-						// Instruction address 0x1d12:0x1c44, size: 5
-						this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
-
-						// Instruction address 0x1d12:0x1c54, size: 5
-						this.oParent.MSCAPI.strcat(0xba06, "!\n");
-
-						// Instruction address 0x1d12:0x1c60, size: 5
-						this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x24, 0);
-
-						this.oParent.Overlay_21.F21_0000_0000(-1);
-
-						// Instruction address 0x1d12:0x1c78, size: 5
-						this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
-					}
-
-					if (local_e8 < 22)
-					{
-						city.BuildingFlags |= (uint)(1 << (local_e8 - 1));
-					}
-
-					city.ShieldsCount -= (short)(this.oParent.CivState.BuildingDefinitions[-city.CurrentProductionID].Price * local_4a);
-
-					if (((1 << this.Var_6548_PlayerID) & (ushort)this.oParent.CivState.PlayerFlags) != 0)
-						goto L1cec;
-
-					if (local_e8 <= 24)
-						goto L1dfc;
-
-				L1cec:
-					if (((1 << this.Var_6548_PlayerID) & this.oParent.CivState.PlayerFlags) == 0)
-					{
-						this.oParent.CivState.MapVisibility[city.Position.X, city.Position.Y] = 0xffff;
-					}
-					else
-					{
-						this.oParent.Var_b1e8 = 1;
-					}
-
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
-
-					// Instruction address 0x1d12:0x1d31, size: 5
-					this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
-
-					// Instruction address 0x1d12:0x1d41, size: 5
-					this.oParent.MSCAPI.strcat(0xba06, " builds\n");
-
-					// Instruction address 0x1d12:0x1d58, size: 5
-					this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.BuildingDefinitions[local_e8].Name);
-
-					// Instruction address 0x1d12:0x1d68, size: 5
-					this.oParent.MSCAPI.strcat(0xba06, ".\n");
-
-					if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
-						goto L1de0;
-
-					if ((this.oParent.CivState.GameSettingFlags & 0x8) == 0)
-						goto L1de0;
-
-					if (local_e8 <= 21)
-						goto L1d9a;
-
-					if (local_e8 <= 24)
-						goto L1de0;
-
-				L1d9a:
-					if ((city.StatusFlag & 0x10) != 0 || local_e8 == 1)
-						goto L1de0;
-
-					// Instruction address 0x1d12:0x1dbe, size: 5
-					this.oParent.Segment_11a8.F0_11a8_02a4(1, 0);
-					if (this.oCPU.AX.Word == 0)
-						goto L1de0;
-
-					this.oParent.CityView.F19_0000_0000(cityID, (short)local_e8);
-
-					goto L1deb;
-
-				L1de0:
-					this.oParent.Overlay_21.F21_0000_0000(cityID);
-
-				L1deb:
-					city.ShieldsCount = 0;
-
-					goto L1e60;
-
-				L1dfc:
-					if (local_e8 == 1)
-					{
-						city.CurrentProductionID = -2;
-					}
-
-					// Instruction address 0x1d12:0x1e1a, size: 5
-					this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
-					city.CurrentProductionID = (sbyte)((short)this.oCPU.AX.Word);
-
-					if (city.CurrentProductionID >= 0)
-					{
-						this.oParent.CivState.Players[this.Var_6548_PlayerID].UnitsInProduction[city.CurrentProductionID]++;
-					}
-
-				L1e60:
-					if (local_e8 < 22 || local_e8 > 24)
-						goto L2010;
-
-					if (((1 << this.Var_6548_PlayerID) & (ushort)this.oParent.CivState.SpaceshipFlags) != 0)
-						goto L2010;
-
-					if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
-						goto L1ea9;
-
-					this.oParent.Overlay_18.F18_0000_0f83(this.Var_6548_PlayerID, (ushort)((short)(local_e8 - 22)));
-
-					goto L2010;
-
-				L1ea9:
-					this.oParent.Overlay_18.F18_0000_0d4f(this.Var_6548_PlayerID, (short)(local_e8 - 22));
-					local_c8 = (short)this.oCPU.AX.Word;
-
-					if (local_c8 != 0 && local_e8 < 24)
-					{
-						city.ShieldsCount += (short)(this.oParent.CivState.BuildingDefinitions[local_e8].Price * local_4a);
-
-						if (city.CurrentProductionID <= -22 && city.CurrentProductionID >= -24)
-						{
-							city.CurrentProductionID = (sbyte)((-local_e8) - 1);
-						}
-
-						local_c8--;
-					}
-
-					if ((this.oParent.CivState.SpaceshipFlags & (1 << this.Var_6548_PlayerID)) != 0)
-						goto L1ffa;
-
-					if (this.oParent.CivState.AISpaceshipSuccessRate < 40)
-						goto L1ffa;
-
-					if (local_c8 != 0)
-						goto L1feb;
-
-					// Instruction address 0x1d12:0x1f5d, size: 5
-					this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, (int)TechnologyEnum.SpaceFlight);
-					if (this.oCPU.AX.Word == 0)
-						goto L2010;
-
-					if (this.oParent.CivState.AISpaceshipSuccessRate > 75)
-						goto L1feb;
-
-					if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Ranking > this.oParent.CivState.Players[this.Var_6548_PlayerID].Ranking)
-						goto L1feb;
-
-					if ((this.oParent.CivState.SpaceshipFlags & (1 << this.oParent.CivState.HumanPlayerID)) == 0)
-						goto L1fc5;
-
-					if ((this.oParent.CivState.Players[this.Var_6548_PlayerID].SpaceshipETAYear - this.oParent.CivState.Year) <=
-						(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].SpaceshipETAYear - this.oParent.CivState.Year))
-						goto L1feb;
-
-				L1fc5:
-					if ((this.oParent.CivState.SpaceshipFlags & (1 << (this.oParent.CivState.HumanPlayerID + 8))) == 0 ||
-						this.oParent.CivState.Players[this.oParent.CivState.ActiveCivilizations].Coins <= 1000)
-						goto L2010;
-
-				L1feb:
-					this.oParent.Overlay_18.F18_0000_15c3(this.Var_6548_PlayerID);
-
-					goto L2010;
-
-				L1ffa:
-					if (local_c8 != 0)
-					{
-						this.oParent.Overlay_18.F18_0000_15c3(this.Var_6548_PlayerID);
-					}
-
-				L2010:
-					if (local_e8 == 1)
-					{
-						for (int i = 0; i < 128; i++)
-						{
-							if (this.oParent.CivState.Cities[i].PlayerID == this.Var_6548_PlayerID)
-							{
-								this.oParent.CivState.Cities[i].BuildingFlags &= 0xfffffffe;
-							}
-						}
-
-						if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID ||
-							(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Diplomacy[this.Var_6548_PlayerID] & 0x40) != 0)
-						{
-							this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
-
-							if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
-							{
-								// Instruction address 0x1d12:0x2097, size: 5
-								this.oParent.MSCAPI.strcpy(0xba06, "Diplomats report:\n");
-
-								this.oParent.Var_2f9e_Unknown = 0x1;
-							}
-
-							// Instruction address 0x1d12:0x20b3, size: 5
-							this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.Players[this.Var_6548_PlayerID].Nationality);
-
-							// Instruction address 0x1d12:0x20c3, size: 5
-							this.oParent.MSCAPI.strcat(0xba06, " capital\nmoved to ");
-
-							// Instruction address 0x1d12:0x20ce, size: 5
-							this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
-
-							// Instruction address 0x1d12:0x20de, size: 5
-							this.oParent.MSCAPI.strcat(0xba06, ".\n");
-
-							this.oParent.Var_2f9e_Unknown = 0x5;
-
-							// Instruction address 0x1d12:0x20f8, size: 5
-							this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
-
-							this.oParent.CivState.Players[this.Var_6548_PlayerID].XStart = (short)city.Position.X;
-
-							city.BuildingFlags |= 1;
-						}
-					}
-
-					if (local_e8 == 38)
-					{
-						// Instruction address 0x1d12:0x2136, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0280();
-
-						// Instruction address 0x1d12:0x2143, size: 5
-						this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
-
-						// Instruction address 0x1d12:0x2153, size: 5
-						this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
-
-						// Instruction address 0x1d12:0x215b, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0294();
-					}
-
-					if (local_e8 == 43 && this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID)
-					{
-						for (int i = 0; i < 128; i++)
-						{
-							if (this.oParent.CivState.Cities[i].StatusFlag != 0xff && this.oParent.CivState.Cities[i].PlayerID != this.Var_6548_PlayerID)
-							{
-								this.oParent.CivState.Cities[i].VisibleSize = this.oParent.CivState.Cities[i].ActualSize;
-
-								this.oParent.CivState.MapVisibility[this.oParent.CivState.Cities[i].Position.X,
-									this.oParent.CivState.Cities[i].Position.Y] |= (ushort)(1 << this.Var_6548_PlayerID);
-
-								// Instruction address 0x1d12:0x2204, size: 5
-								this.oParent.Segment_2aea.F0_2aea_1601(
-									this.oParent.CivState.Cities[i].Position.X, this.oParent.CivState.Cities[i].Position.Y);
-							}
-						}
-					}
-
-				L220f:
 					if ((this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID && (city.StatusFlag & 0x10) != 0) &&
 						(city.ShieldsCount == 0 || (city.CurrentProductionID < 0 && local_e8 == -1)))
 					{
 						// Instruction address 0x1d12:0x2262, size: 5
-						this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
-						local_e8 = (short)this.oCPU.AX.Word;
+						local_e8 = (short)this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
 
 						this.oParent.Var_aa_Rectangle.FontID = 2;
 
@@ -1421,10 +1343,8 @@ namespace OpenCiv1
 						local_cc = 0;
 
 						// Instruction address 0x1d12:0x2344, size: 5
-						this.oParent.Segment_2aea.F0_2aea_1942(local_d8, local_e4);
-						// !!! Possible overflow
-						this.oCPU.AX.Word &= 0x7; // !!! Added to prevent owerflow, need to investigate why this happens
-						local_104 = this.oParent.CivState.Players[this.oCPU.AX.Word].Continents[this.Var_6548_PlayerID].Strategy;
+						// !!! Added & 0x7 to prevent owerflow, need to investigate why this happens
+						local_104 = this.oParent.CivState.Players[this.oParent.Segment_2aea.F0_2aea_1942(local_d8, local_e4) & 0x7].Continents[this.Var_6548_PlayerID].Strategy;
 
 						if ((local_104 == 1 || local_104 == 2 || local_104 == 5) && local_e8 != 0 && city.CurrentProductionID >= 0 &&
 							this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].UnitCategory == local_104)
@@ -1441,10 +1361,9 @@ namespace OpenCiv1
 						if ((city.StatusFlag & 0x1) != 0 && city.CurrentProductionID < 0 && city.ShieldsCount != 0)
 						{
 							// Instruction address 0x1d12:0x24a7, size: 5
-							this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
+							local_cc = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 								(this.oParent.CivState.BuildingDefinitions[-city.CurrentProductionID].Price * local_4a) - city.ShieldsCount,
 								0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 8);
-							local_cc = (short)this.oCPU.AX.Word;
 						}
 
 						// Instruction address 0x1d12:0x24bb, size: 5
@@ -1452,28 +1371,25 @@ namespace OpenCiv1
 						if (((short)this.oCPU.AX.Word == -1 || (city.StatusFlag & 0x10) != 0) && city.CurrentProductionID >= 0 && city.ShieldsCount != 0)
 						{
 							// Instruction address 0x1d12:0x2530, size: 5
-							this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
+							local_cc = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 								(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
 								0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 3);
-							local_cc = (short)this.oCPU.AX.Word;
 						}
 
 						if (city.CurrentProductionID == -1 && city.ShieldsCount != 0)
 						{
 							// Instruction address 0x1d12:0x2591, size: 5
-							this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
+							local_cc = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 								(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
 								0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 3);
-							local_cc = (short)this.oCPU.AX.Word;
 						}
 
 						if (city.StatusFlag == 0x19 && this.oParent.CivState.Players[this.Var_6548_PlayerID].ActiveUnits[25] == 0 && city.ShieldsCount != 0)
 						{
 							// Instruction address 0x1d12:0x260d, size: 5
-							this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
+							local_cc = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 								(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
 								0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 4);
-							local_cc = (short)this.oCPU.AX.Word;
 						}
 
 						if (this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins > 2000)
@@ -1527,8 +1443,7 @@ namespace OpenCiv1
 					this.Var_6b30 = 10;
 				}
 
-				this.oParent.Var_d2e0 = ((this.oParent.Var_70da_Arr[2] * this.Var_6b30) * 3) /
-					((this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType * 20) + 80);
+				this.oParent.Var_d2e0 = ((this.oParent.Var_70da_Arr[2] * this.Var_6b30) * 3) / ((this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType * 20) + 80);
 
 				if ((city.BuildingFlags0 & 0x40) != 0 || (city.BuildingFlags0 & 0x1) != 0)
 				{
@@ -1572,33 +1487,28 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x1d12:0x2960, size: 5
-				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
+				this.oParent.Var_70da_Arr[3] = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 					((-(this.oParent.CivState.Players[this.Var_6548_PlayerID].ScienceTaxRate +
 						this.oParent.CivState.Players[this.Var_6548_PlayerID].TaxRate - 10) *
 						(this.oParent.Var_70da_Arr[2] - this.oParent.Var_d2e0)) + 5) / 10,
 					0, this.oParent.Var_70da_Arr[2]);
-				this.oParent.Var_70da_Arr[3] = (short)this.oCPU.AX.Word;
 
 				// !!! Minimum value is greater than maximum value, why?
 				// Instruction address 0x1d12:0x2999, size: 5
-				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
+				this.oParent.Var_e17a = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 					((this.oParent.CivState.Players[this.Var_6548_PlayerID].TaxRate * (this.oParent.Var_70da_Arr[2] - this.oParent.Var_d2e0)) + 5) / 10,
 					0, this.oParent.Var_70da_Arr[2] - this.oParent.Var_70da_Arr[3] - this.oParent.Var_d2e0);
-				this.oParent.Var_e17a = (short)this.oCPU.AX.Word;
 
 				this.oParent.Var_70e6 = this.oParent.Var_70da_Arr[2] - this.oParent.Var_70da_Arr[3] - this.oParent.Var_e17a - this.oParent.Var_d2e0;
 
 				// Instruction address 0x1d12:0x29ba, size: 5
-				F0_1d12_6dcc(1);
-				this.oParent.Var_e17a += (short)this.oCPU.AX.Word * 2;
+				this.oParent.Var_e17a += (short)F0_1d12_6dcc(1) * 2;
 
 				// Instruction address 0x1d12:0x29cc, size: 5
-				F0_1d12_6dcc(2);
-				this.oParent.Var_70e6 += (short)this.oCPU.AX.Word * 2;
+				this.oParent.Var_70e6 += (short)F0_1d12_6dcc(2) * 2;
 
 				// Instruction address 0x1d12:0x29de, size: 5
-				F0_1d12_6dcc(3);
-				this.oParent.Var_70da_Arr[3] += (short)this.oCPU.AX.Word * 2;
+				this.oParent.Var_70da_Arr[3] += (short)F0_1d12_6dcc(3) * 2;
 
 				if ((city.BuildingFlags0 & 0x10) != 0)
 				{
@@ -1619,8 +1529,7 @@ namespace OpenCiv1
 					local_e8 += this.oParent.Var_70e6 / 2;
 
 					// Instruction address 0x1d12:0x2a6e, size: 5
-					F0_1d12_6c97(this.Var_6548_PlayerID, 0xc);
-					if (this.oCPU.AX.Word != 0)
+					if (F0_1d12_6c97(this.Var_6548_PlayerID, 0xc) != 0)
 					{
 						local_e8 += this.oParent.Var_70e6 / 3;
 					}
@@ -1631,16 +1540,14 @@ namespace OpenCiv1
 					local_e8 += this.oParent.Var_70e6 / 2;
 
 					// Instruction address 0x1d12:0x2ab2, size: 5
-					F0_1d12_6c97(this.Var_6548_PlayerID, 0xc);
-					if (this.oCPU.AX.Word != 0)
+					if (F0_1d12_6c97(this.Var_6548_PlayerID, 0xc) != 0)
 					{
 						local_e8 += this.oParent.Var_70e6 / 3;
 					}
 				}
 
 				// Instruction address 0x1d12:0x2ad3, size: 5
-				F0_1d12_6cf3(10);
-				if ((short)this.oCPU.AX.Word == cityID)
+				if ((short)F0_1d12_6cf3(10) == cityID)
 				{
 					local_e8 += local_e8;
 				}
@@ -1722,14 +1629,12 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x1d12:0x2d27, size: 5
-				this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Religion);
-				if (this.oCPU.AX.Word != 0)
+				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Religion) != 0)
 				{
 					if ((city.BuildingFlags0 & 0x400) != 0)
 					{
 						// Instruction address 0x1d12:0x2d52, size: 5
-						F0_1d12_6c97(this.Var_6548_PlayerID, 9);
-						if (this.oCPU.AX.Word != 0)
+						if (F0_1d12_6c97(this.Var_6548_PlayerID, 9) != 0)
 						{
 							this.oParent.Var_70e4 -= 6;
 						}
@@ -1751,28 +1656,24 @@ namespace OpenCiv1
 				if ((city.BuildingFlags0 & 0x8) != 0)
 				{
 					// Instruction address 0x1d12:0x2dd6, size: 5
-					this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Mysticism);
-					if (this.oCPU.AX.Word != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Mysticism) != 0)
 					{
 						this.oParent.Var_70e4 -= 2;
 					}
 					else
 					{
 						// Instruction address 0x1d12:0x2df6, size: 5
-						this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.CeremonialBurial);
-						if (this.oCPU.AX.Word != 0)
+						if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.CeremonialBurial) != 0)
 						{
 							this.oParent.Var_70e4--;
 						}
 					}
 				
 					// Instruction address 0x1d12:0x2e12, size: 5
-					F0_1d12_6c97(this.Var_6548_PlayerID, 6);
-					if (this.oCPU.AX.Word != 0)
+					if (F0_1d12_6c97(this.Var_6548_PlayerID, 6) != 0)
 					{
 						// Instruction address 0x1d12:0x2e2a, size: 5
-						this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Mysticism);
-						if (this.oCPU.AX.Word != 0)
+						if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Mysticism) != 0)
 						{
 							this.oParent.Var_70e4 -= 2;
 						}
@@ -1813,9 +1714,8 @@ namespace OpenCiv1
 					local_e6 = 0;
 
 					// Instruction address 0x1d12:0x2f1a, size: 5
-					this.oParent.Segment_2aea.F0_2aea_1458(local_d8, local_e4);
-					local_e8 = (short)this.oCPU.AX.Word;
-					local_ba = (short)this.oCPU.AX.Word;
+					local_e8 = (short)this.oParent.Segment_2aea.F0_2aea_1458(local_d8, local_e4);
+					local_ba = local_e8;
 
 					while (local_ba != -1)
 					{
@@ -1861,17 +1761,14 @@ namespace OpenCiv1
 					{
 						local_e6 = 3;
 					}
-				
-					// Instruction address 0x1d12:0x3079, size: 5
-					this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(local_e6, 0, this.oParent.Var_70e4);
 
-					this.oParent.Var_70e4 -= (short)this.oCPU.AX.Word;
+					// Instruction address 0x1d12:0x3079, size: 5
+					this.oParent.Var_70e4 -= this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(local_e6, 0, this.oParent.Var_70e4);
 				}
 				else
 				{
 					// Instruction address 0x1d12:0x3090, size: 5
-					F0_1d12_6c97(this.Var_6548_PlayerID, 16);
-					local_e8 = ((short)this.oCPU.AX.Word < 1) ? 1 : 0;
+					local_e8 = ((short)F0_1d12_6c97(this.Var_6548_PlayerID, 16) < 1) ? 1 : 0;
 
 					if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType == 5)
 					{
@@ -1914,29 +1811,25 @@ namespace OpenCiv1
 				local_e8 = this.oParent.Var_70e2 - this.oParent.Var_70e4;
 
 				// Instruction address 0x1d12:0x319e, size: 5
-				F0_1d12_6c97(this.Var_6548_PlayerID, 2);
-				if (this.oCPU.AX.Word != 0)
+				if (F0_1d12_6c97(this.Var_6548_PlayerID, 2) != 0)
 				{
 					this.oParent.Var_70e2++;
 				}
 			
 				// Instruction address 0x1d12:0x31ba, size: 5
-				F0_1d12_6c97(this.Var_6548_PlayerID, 0x15);
-				if (this.oCPU.AX.Word != 0)
+				if (F0_1d12_6c97(this.Var_6548_PlayerID, 0x15) != 0)
 				{
 					this.oParent.Var_70e2++;
 				}
 			
 				// Instruction address 0x1d12:0x31d2, size: 5
-				F0_1d12_6cf3(11);
-				if ((short)this.oCPU.AX.Word == cityID)
+				if ((short)F0_1d12_6cf3(11) == cityID)
 				{
 					this.oParent.Var_70e4 = 0;
 				}
 			
 				// Instruction address 0x1d12:0x31f0, size: 5
-				F0_1d12_6c97(this.Var_6548_PlayerID, 0xd);
-				if (this.oCPU.AX.Word != 0)
+				if (F0_1d12_6c97(this.Var_6548_PlayerID, 0xd) != 0)
 				{
 					// Instruction address 0x1d12:0x3229, size: 5
 					// Instruction address 0x1d12:0x3217, size: 5
@@ -2034,12 +1927,11 @@ namespace OpenCiv1
 										this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[j].TypeID < 26)
 									{
 										// Instruction address 0x1d12:0x3513, size: 5
-										this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
+										local_b2 = this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
 											city.Position.X,
 											city.Position.Y,
 											this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[j].Position.X,
 											this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[j].Position.Y);
-										local_b2 = (short)this.oCPU.AX.Word;
 
 										if (local_b2 > local_c8)
 										{
@@ -2129,12 +2021,7 @@ namespace OpenCiv1
 								else
 								{
 									// Instruction address 0x1d12:0x3732, size: 5
-									F0_1d12_6c97(this.Var_6548_PlayerID, 16);
-
-									this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x1);
-									this.oCPU.CX.Word = this.oCPU.SBB_UInt16(this.oCPU.CX.Word, this.oCPU.CX.Word);
-									this.oCPU.CX.Word = this.oCPU.NEG_UInt16(this.oCPU.CX.Word);
-									local_e8 = (short)this.oCPU.CX.Word;
+									local_e8 = ((short)F0_1d12_6c97(this.Var_6548_PlayerID, 16) < 1) ? 1 : 0;
 
 									if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType == 5)
 									{
@@ -2194,8 +2081,7 @@ namespace OpenCiv1
 						}
 					}
 
-					if (flag == 1 &&
-						local_4e < 18 && this.Var_2496 == 0 &&
+					if (flag == 1 && local_4e < 18 && this.Var_2496 == 0 &&
 						this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID != -1 &&
 						this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].Position.X == local_d8 &&
 						this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].Position.Y == local_e4)
@@ -2310,12 +2196,10 @@ namespace OpenCiv1
 
 								// Instruction address 0x1d12:0x3bfb, size: 5
 								this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-									309, local_e4 + 1, 
-									this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((0xb << 1) + 0xd4ce)));
+									309, local_e4 + 1, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((0xb << 1) + 0xd4ce)));
 
 								// Instruction address 0x1d12:0x3c12, size: 5
-								this.oParent.MSCAPI.strcpy(0xba06,
-									this.oParent.CivState.BuildingDefinitions[i + 1].Name);
+								this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.BuildingDefinitions[i + 1].Name);
 
 								// Instruction address 0x1d12:0x3c22, size: 5
 								this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, 56);
@@ -2431,7 +2315,7 @@ namespace OpenCiv1
 					// Instruction address 0x1d12:0x3ffc, size: 5
 					F0_1d12_710d_FillRectangleWithPattern(3, 115, (city.ActualSize * local_e8) + 9, (local_4a * local_fc) + 2);
 
-					if ((city.BuildingFlags0 & 0x4) != 0)
+					if ((city.BuildingFlags & 0x4) != 0)
 					{
 						// Instruction address 0x1d12:0x403b, size: 5
 						this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 5, 155, (city.ActualSize * local_e8) + 9, 155, 1);
@@ -2795,28 +2679,23 @@ namespace OpenCiv1
 						// Instruction address 0x1d12:0x4a86, size: 5
 						this.oParent.Segment_11a8.F0_11a8_0268();
 
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x2);
-						if (this.oCPU.Flags.E) goto L4a95;
+						if (this.oParent.Var_db3a == 2) goto L4a95;
 						goto L4abf;
 
 					L4a95:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0xe6);
-						if (this.oCPU.Flags.GE) goto L4aa0;
+						if (this.oParent.Var_db3c >= 230) goto L4aa0;
 						goto L4abf;
 
 					L4aa0:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0x10e);
-						if (this.oCPU.Flags.L) goto L4aab;
+						if (this.oParent.Var_db3c < 270) goto L4aab;
 						goto L4abf;
 
 					L4aab:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0x6a);
-						if (this.oCPU.Flags.GE) goto L4ab5;
+						if (this.oParent.Var_db3e >= 106) goto L4ab5;
 						goto L4abf;
 
 					L4ab5:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0x74);
-						if (this.oCPU.Flags.G) goto L4abf;
+						if (this.oParent.Var_db3e > 116) goto L4abf;
 						goto L4ac9;
 
 					L4abf:
@@ -2832,8 +2711,7 @@ namespace OpenCiv1
 
 					L4ae8:
 						// Instruction address 0x1d12:0x4aef, size: 5
-						this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
-						local_102 = (short)this.oCPU.AX.Word;
+						local_102 = (short)this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
 
 						this.oParent.Var_aa_Rectangle.FontID = 2;
 
