@@ -11,14 +11,24 @@
 <li>The news, discussions about this project and release news are published regularly on <a href="https://forums.civfanatics.com/threads/rewrite-of-civilization-1-source-code-openciv1-project.682623/" target="_blank">Civilization Fanatics Forum page</a></li>
 </ul>
 
-## Current status
-<p><b>The game is in working state</b>, but you have to legally own the Original game (the .txt, .pic and .pal files have to be present).</p>
-
 ## Copyright considerations
 <p><b>The available code is not a full working copy of the game.</b> <b>To run OpenCiv1 you are legally required to own your own copy of the DOS Civilization game.</b> 
 <b>This is the reason that not a single file from the original Civilization 1 game is included in this GitHub repository as they are copyrighted.</b></p>
+<p>The part of the game assembly code is emulated with Virtual CPU, and the rest of the code has been rewritten from scratch until all of the code is replaced with new copyright free code. 
+The other resources (like graphics, music and text) will also be completely replaced with copyright free resources before publishing the complete game.</p>
 
-<p>The part of the game assembly code is emulated with Virtual CPU, and the rest of the code has been rewritten from scratch until all of the code is replaced with new copyright free code. The other resources (like graphics, music and text) will also be completely replaced with copyright free resources before publishing the complete game.</p>
+## Current status
+<p><b>The game is in working state</b>, but you have to legally own the Original game (the .txt, .pic and .pal files have to be present).</p>
+
+## How to Contribute to this project
+<p>Anyone can contribute to this repository in accordance with these <a href="https://github.com/rajko-horvat/OpenCiv1/blob/master/.github/CONTRIBUTING.md">Contributing guidelines</a></p>
+Currently, you can contribute to this repository in one of the following ways:
+<ul>
+<li>By testing the game functionality and submitting Issues,</li>
+<li>By translating the part(s) of the code from pseudo assembly language to native C# language (for details see <a href="https://github.com/rajko-horvat/OpenCiv1/wiki/Introduction-to-code-translating">Introduction to code translating</a>),</li>
+<li>By designing parts of a 'Default' Visual and Audio theme (which must preserve original Game appearance and feel as much as possible, SVG and MIDI/SoundFonts would be the best),</li>
+<li>By designing parts of a 'Custom' Visual and Audio theme(s) (SVG and MIDI/SoundFonts would be the best).</li>
+</ul>
 
 ## Frequently asked questions
 <p><b>Q:</b> Why did you use C#, instead of C in which the original game is written?</p>
@@ -26,7 +36,8 @@
 
 ***
 <p><b>Q:</b> Why does the OpenCiv1 differs, in some aspects, from the original Civilization 1 game?</p>
-<b>A:</b> There are numerous reasons:<ul>
+<b>A:</b> There are numerous reasons:
+<ul>
 <li>Simply replicating all of the functionality to skip the DosBox emulation to be able to run the game natively is not a good enough reason (for me) to start a project of this magnitude.</li>
 <li>Copying the game Code, Functionality, Graphics and Audio would be considered a Copyright volation and that is prohibited by current Copyright laws.</li>
 <li>To make the OpenCiv1 available to anyone who wishes to play the game, and that means Copyright free Code, Graphics and Audio.</li>
@@ -41,6 +52,17 @@
 ***
 <p><b>Q:</b> You know that Civilization 7 will be published soon, doesn't that make First Civilization game in the series completely obsolete?</p>
 <b>A:</b> Based on some stats, many people think that the first Civilization offers as much fun as the other sequels do.
+
+***
+<p><b>Q:</b> Are there any additional keyboard shorcuts (apart from the default ones)?</p>
+<b>A:</b> Yes, these are additional keyboard shorcuts that you can use during the game:
+<ul>
+<li>Alt + D - Enable / Disable the <b>Debug mode (previously, Shift-56)</b></li>
+<li>Alt + P - Pause / Resume game</li>
+<li>Alt + 1 - Show / Hide Screen 1</li>
+<li>Alt + 2 - Show / Hide Screen 2</li>
+<li>Alt + 3 - Show / Hide Screen 3</li>
+</ul>
 
 ## Dependencies
 <ul>
@@ -62,25 +84,6 @@ You can also compile with CLI method:
 <li>git clone https://github.com/rajko-horvat/OpenCiv1 (To clone a specific branch use: git clone -b [branch] https://github.com/rajko-horvat/OpenCiv1)</li>
 <li>cd OpenCiv1</li>
 <li>dotnet build -c Release</li>
-</ul>
-
-## Additional keyboard shortcuts
-<ul>
-<li>Alt + D - Enable / Disable the <b>Debug mode (Shift-56)</b></li>
-<li>Alt + P - Pause / Resume game</li>
-<li>Alt + 1 - Show / Hide Screen 1</li>
-<li>Alt + 2 - Show / Hide Screen 2</li>
-<li>Alt + 3 - Show / Hide Screen 3</li>
-</ul>
-
-## How to Contribute to this project
-<p>Anyone can contribute to this repository in accordance with these <a href="https://github.com/rajko-horvat/OpenCiv1/blob/master/.github/CONTRIBUTING.md">Contributing guidelines</a></p>
-Currently, you can contribute to this repository in one of the following ways:
-<ul>
-<li>By testing the game functionality and submitting Issues,</li>
-<li>By translating the part(s) of the code from pseudo assembly language to native C# language (for details see <a href="https://github.com/rajko-horvat/OpenCiv1/wiki/Introduction-to-code-translating">Introduction to code translating</a>),</li>
-<li>By designing parts of a 'Default' Visual and Audio theme (which must preserve original Game appearance and feel as much as possible, SVG and MIDI/SoundFonts would be the best),</li>
-<li>By designing parts of a 'Custom' Visual and Audio theme(s) (SVG and MIDI/SoundFonts would be the best).</li>
 </ul>
 
 ## Project milestones

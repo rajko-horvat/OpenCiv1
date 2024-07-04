@@ -25,7 +25,7 @@ namespace OpenCiv1
 		private Segment_2459 oSegment_2459;
 		private Segment_25fb oSegment_25fb;
 		private Segment_1ade oSegment_1ade;
-		private Segment_1d12 oSegment_1d12;
+		private CityWorker oCityWorker;
 		private Segment_29f3 oSegment_29f3;
 		private Segment_2517 oSegment_2517;
 		private Segment_2c84 oSegment_2c84;
@@ -97,7 +97,7 @@ namespace OpenCiv1
 			this.oSegment_2459 = new Segment_2459(this);
 			this.oSegment_25fb = new Segment_25fb(this);
 			this.oSegment_1ade = new Segment_1ade(this);
-			this.oSegment_1d12 = new Segment_1d12(this);
+			this.oCityWorker = new CityWorker(this);
 			this.oSegment_29f3 = new Segment_29f3(this);
 			this.oSegment_2517 = new Segment_2517(this);
 			this.oSegment_2c84 = new Segment_2c84(this);
@@ -1235,9 +1235,9 @@ namespace OpenCiv1
 			get { return this.oSegment_1ade; }
 		}
 
-		public Segment_1d12 Segment_1d12
+		public CityWorker CityWorker
 		{
-			get { return this.oSegment_1d12; }
+			get { return this.oCityWorker; }
 		}
 
 		public Segment_29f3 Segment_29f3

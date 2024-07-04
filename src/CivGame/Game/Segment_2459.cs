@@ -516,7 +516,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L05a6;
 
 			// Instruction address 0x2459:0x0597, size: 5
-			this.oParent.Segment_1d12.F0_1d12_0045(cityID, 1);
+			this.oParent.CityWorker.F0_1d12_0045_ProcessCityState(cityID, 1);
 
 			// Instruction address 0x2459:0x059f, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();

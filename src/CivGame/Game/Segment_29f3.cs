@@ -1502,7 +1502,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0f02;
 
 			// Instruction address 0x29f3:0x0efa, size: 5
-			this.oParent.Segment_1d12.F0_1d12_6d33(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
+			this.oParent.CityWorker.F0_1d12_6d33(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 
 		L0f02:

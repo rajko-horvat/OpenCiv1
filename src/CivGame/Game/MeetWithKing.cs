@@ -355,13 +355,13 @@ namespace OpenCiv1
 
 		L035c:
 			// Instruction address 0x0000:0x0364, size: 5
-			this.oParent.Segment_1d12.F0_1d12_6c97(this.oParent.CivState.HumanPlayerID, 7);
+			this.oParent.CityWorker.F0_1d12_6c97(this.oParent.CivState.HumanPlayerID, 7);
 			
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L0384;
 
 			// Instruction address 0x0000:0x0378, size: 5
-			this.oParent.Segment_1d12.F0_1d12_6c97(this.oParent.CivState.HumanPlayerID, 0x12);
+			this.oParent.CityWorker.F0_1d12_6c97(this.oParent.CivState.HumanPlayerID, 0x12);
 			
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0397;

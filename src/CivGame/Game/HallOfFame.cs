@@ -862,7 +862,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0a09;
 
 			// Instruction address 0x0000:0x0a29, size: 5
-			this.oParent.Segment_1d12.F0_1d12_0045(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), -1);
+			this.oParent.CityWorker.F0_1d12_0045_ProcessCityState(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), -1);
 
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
@@ -963,12 +963,12 @@ namespace OpenCiv1
 				(byte)this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(((this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].PlayerID) << 1) + 0x1946)));
 
 			// Instruction address 0x0000:0x0b9d, size: 5
-			this.oParent.Segment_1d12.F0_1d12_0045(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), -1);
+			this.oParent.CityWorker.F0_1d12_0045_ProcessCityState(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), -1);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x30);
 
 			// Instruction address 0x0000:0x0bc0, size: 5
-			this.oParent.Segment_1d12.F0_1d12_6ed4(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)),
+			this.oParent.CityWorker.F0_1d12_6ed4(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)),
 				48, (short)(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) + 10),
 				(ushort)((short)this.oParent.Var_e8b8), 160);
 
@@ -989,7 +989,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L0c1a;
 
 			// Instruction address 0x0000:0x0c12, size: 5
-			this.oParent.Segment_1d12.F0_1d12_7045((short)(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)) + 24),
+			this.oParent.CityWorker.F0_1d12_7045((short)(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)) + 24),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				(short)(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) + 12));
 

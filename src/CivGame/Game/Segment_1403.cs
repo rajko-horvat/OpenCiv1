@@ -37,7 +37,7 @@ namespace OpenCiv1
 			{
 				this.oParent.CivState.PlayerFlags = (short)(1 << this.oParent.CivState.HumanPlayerID);
 
-				if (this.oParent.CivState.TurnCount == 20 || this.oParent.CivState.TurnCount != 60)
+				if (this.oParent.CivState.TurnCount == 20 || this.oParent.CivState.TurnCount == 60)
 				{
 					this.oParent.Help.F4_0000_02d3(0x1e60);
 				}
@@ -76,7 +76,7 @@ namespace OpenCiv1
 				goto L0125;
 
 			// Instruction address 0x1403:0x00e9, size: 5
-			this.oParent.Segment_1d12.F0_1d12_6c97(playerID, 4);
+			this.oParent.CityWorker.F0_1d12_6c97(playerID, 4);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x0);
 			if (this.oCPU.Flags.E) goto L00f9;
@@ -84,7 +84,7 @@ namespace OpenCiv1
 
 		L00f9:
 			// Instruction address 0x1403:0x0100, size: 5
-			this.oParent.Segment_1d12.F0_1d12_6c97(playerID, 8);
+			this.oParent.CityWorker.F0_1d12_6c97(playerID, 8);
 			
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x0);
 			if (this.oCPU.Flags.NE) goto L0110;

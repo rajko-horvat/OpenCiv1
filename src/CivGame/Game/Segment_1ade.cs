@@ -59,7 +59,7 @@ namespace OpenCiv1
 
 		L004a:
 			// Instruction address 0x1ade:0x0051, size: 5
-			this.oParent.Segment_1d12.F0_1d12_0045(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0);
+			this.oParent.CityWorker.F0_1d12_0045_ProcessCityState(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L0070;
@@ -82,7 +82,7 @@ namespace OpenCiv1
 			if (this.oParent.Var_b1e8 == 0) goto L0024;
 
 			// Instruction address 0x1ade:0x0093, size: 5
-			this.oParent.Segment_1d12.F0_1d12_0045(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 1);
+			this.oParent.CityWorker.F0_1d12_0045_ProcessCityState(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 1);
 
 			// Instruction address 0x1ade:0x009b, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
@@ -437,7 +437,7 @@ namespace OpenCiv1
 			this.oParent.Var_6b64 = 0;
 
 			// Instruction address 0x1ade:0x0403, size: 5
-			this.oParent.Segment_1d12.F0_1d12_0045(cityID, 1);
+			this.oParent.CityWorker.F0_1d12_0045_ProcessCityState(cityID, 1);
 
 			if (this.oParent.Var_6b64 == 0) goto L0419;
 
@@ -479,7 +479,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 
 			// Instruction address 0x1ade:0x043f, size: 5
-			this.oParent.Segment_1d12.F0_1d12_0045(cityID, -1);
+			this.oParent.CityWorker.F0_1d12_0045_ProcessCityState(cityID, -1);
 
 		L0447:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 0x1);
@@ -612,7 +612,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x0);
 
 			// Instruction address 0x1ade:0x0617, size: 5
-			this.oParent.Segment_1d12.F0_1d12_6c97(playerID, 15);
+			this.oParent.CityWorker.F0_1d12_6c97(playerID, 15);
 			
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L066b;
@@ -3272,7 +3272,7 @@ namespace OpenCiv1
 				goto L22af;
 
 			// Instruction address 0x1ade:0x2265, size: 5
-			this.oParent.Segment_1d12.F0_1d12_6c97(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 5);
+			this.oParent.CityWorker.F0_1d12_6c97(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 5);
 			
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)

@@ -3501,7 +3501,7 @@ namespace OpenCiv1
 				goto L213b;
 
 			// Instruction address 0x25fb:0x211c, size: 5
-			this.oParent.Segment_1d12.F0_1d12_6abc(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)),
+			this.oParent.CityWorker.F0_1d12_6abc(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x36)), 1);
 
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
