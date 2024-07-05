@@ -55,7 +55,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="cityID"></param>
 		/// <param name="flag"></param>
-		public void F0_1d12_0045_ProcessCityState(short cityID, short flag)
+		public ushort F0_1d12_0045_ProcessCityState(short cityID, short flag)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1d12_0045({cityID}, {flag})");
 
@@ -125,6 +125,7 @@ namespace OpenCiv1
 			int local_10a = 0;
 			int local_10c;
 
+			this.oCPU.AX.Word = 0;
 			City city = this.oParent.CivState.Cities[cityID];
 
 			if (city.StatusFlag != 0xff)
@@ -3007,8 +3008,7 @@ namespace OpenCiv1
 						goto L532e;
 
 					L5218:
-						this.oCPU.TEST_UInt8(city.StatusFlag, 0x80);
-						if (this.oCPU.Flags.E) goto L522a;
+						if ((city.StatusFlag & 0x80) == 0) goto L522a;
 						goto L532e;
 
 					L522a:
@@ -3030,77 +3030,55 @@ namespace OpenCiv1
 						this.oParent.Segment_1000.F0_1182_0134_WaitTimer(10);
 
 						// Instruction address 0x1d12:0x52a8, size: 5
-						this.oParent.MSCAPI.kbhit();
-
-						this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x0);
-						if (this.oCPU.Flags.NE) goto L52b5;
+						if (this.oParent.MSCAPI.kbhit() != 0) goto L52b5;
 						goto L5230;
 
 					L52b5:
 						// Instruction address 0x1d12:0x52b5, size: 5
-						this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey();
-
-						local_fc = (short)this.oCPU.AX.Word;
-
+						local_fc = this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey();
 						goto L52e0;
 
 					L52c5:
 						local_ea = local_106 + 1;
-
 						goto L52f3;
 
 					L52d1:
 						local_ea = local_106 - 1;
-
 						goto L52f3;
 
 					L52e0:
-						this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x4800);
-						if (this.oCPU.Flags.NE) goto L52e8;
+						if (local_fc != 0x4800) goto L52e8;
 						goto L52d1;
 
 					L52e8:
-						this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x5000);
-						if (this.oCPU.Flags.NE) goto L52f3;
+						if (local_fc != 0x5000) goto L52f3;
 						goto L52c5;
 
 					L52f3:
 						// Instruction address 0x1d12:0x5301, size: 5
-						this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(local_ea, 0, local_b4 - 1);
+						local_106 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(local_ea, 0, local_b4 - 1);
 
-						local_106 = (short)this.oCPU.AX.Word;
+						if (local_fc == '\n') goto L5740;
 
-						if (local_fc == 0xd)
-							goto L5740;
+						if (local_fc == ' ') goto L5740;
 
-						if (local_fc == 0x20)
-							goto L5740;
+						if (local_fc != 0x1b) goto L5230;
 
-						if (local_fc != 0x1b)
-							goto L5230;
-
-						L532e:
-						if (local_f0 < (int)'1' || local_f0 > (int)'9')
+					L532e:
+						if (local_f0 < '1' || local_f0 > '9')
 							goto L53c8;
 
-						this.oCPU.AX.Word = (ushort)((short)local_f0);
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x31);
-						local_ea = (short)this.oCPU.AX.Word;
-
-						this.oCPU.AX.Word = (ushort)((short)local_8);
+						local_ea = local_f0 - 49;
 
 						if (local_ea >= local_8)
 							goto L045f;
 
-						this.oCPU.CMP_UInt8((byte)city.ActualSize, 0x5);
-						if (this.oCPU.Flags.GE) goto L536b;
+						if (city.ActualSize >= 5) goto L536b;
 						goto L53ad;
 
 					L536b:
 						// Instruction address 0x1d12:0x536f, size: 5
-						F0_1d12_6da1_GetSpecialWorkerFlags(local_ea);
-
-						local_e8 = (short)this.oCPU.AX.Word;
+						local_e8 = (short)F0_1d12_6da1_GetSpecialWorkerFlags(local_ea);
 
 						if (local_e8 >= 3)
 							goto L539a;
@@ -3125,7 +3103,6 @@ namespace OpenCiv1
 
 					L53b5:
 						this.oParent.Var_70da_Arr[1] = local_10a;
-						this.oCPU.AX.Word = (ushort)((short)local_a);
 						this.oParent.Var_70da_Arr[2] = local_a;
 
 						goto L12c2;
@@ -3137,8 +3114,6 @@ namespace OpenCiv1
 					L53d2:
 						if (local_b8 != 0)
 							goto L53ed;
-
-						this.oCPU.AX.Word = 0x0;
 
 						local_be = 0;
 						local_b6 = 0;
@@ -3168,10 +3143,7 @@ namespace OpenCiv1
 						this.oParent.Var_6b64 = 1;
 
 						// Instruction address 0x1d12:0x54a7, size: 5
-						this.oParent.MSCAPI.kbhit();
-
-						this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x0);
-						if (this.oCPU.Flags.NE) goto L54b4;
+						if (this.oParent.MSCAPI.kbhit() != 0) goto L54b4;
 						goto L53ed;
 
 					L54b4:
@@ -3179,9 +3151,7 @@ namespace OpenCiv1
 						local_fc = local_be;
 
 						// Instruction address 0x1d12:0x54c4, size: 5
-						this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey();
-
-						local_e8 = (short)this.oCPU.AX.Word;
+						local_e8 = this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey();
 
 						goto L551f;
 
@@ -3230,47 +3200,39 @@ namespace OpenCiv1
 						goto L556a;
 
 					L551f:
-						this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x4b00);
-						if (this.oCPU.Flags.NE) goto L5527;
+						if (local_e8 != 0x4b00) goto L5527;
 						goto L550a;
 
 					L5527:
-						if (this.oCPU.Flags.LE) goto L552c;
+						if (local_e8 <= 0x4b00) goto L552c;
 						goto L5547;
 
 					L552c:
-						this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x4700);
-						if (this.oCPU.Flags.NE) goto L5534;
+						if (local_e8 != 0x4700) goto L5534;
 						goto L5511;
 
 					L5534:
-						this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x4800);
-						if (this.oCPU.Flags.NE) goto L553c;
+						if (local_e8 != 0x4800) goto L553c;
 						goto L54d4;
 
 					L553c:
-						this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x4900);
-						if (this.oCPU.Flags.NE) goto L556a;
+						if (local_e8 != 0x4900) goto L556a;
 						goto L54db;
 
 					L5547:
-						this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x4d00);
-						if (this.oCPU.Flags.NE) goto L554f;
+						if (local_e8 != 0x4d00) goto L554f;
 						goto L54e6;
 
 					L554f:
-						this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x4f00);
-						if (this.oCPU.Flags.NE) goto L5557;
+						if (local_e8 != 0x4f00) goto L5557;
 						goto L54ff;
 
 					L5557:
-						this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x5000);
-						if (this.oCPU.Flags.NE) goto L555f;
+						if (local_e8 != 0x5000) goto L555f;
 						goto L54f8;
 
 					L555f:
-						this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x5100);
-						if (this.oCPU.Flags.NE) goto L556a;
+						if (local_e8 != 0x5100) goto L556a;
 						goto L54ed;
 
 					L556a:
@@ -3281,19 +3243,7 @@ namespace OpenCiv1
 						goto L55f5;
 
 					L55b6:
-						this.oCPU.AX.Word = (ushort)((short)city.Position.X);
-						this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, (ushort)((short)local_b6));
-
-						this.oCPU.BX.Word = (ushort)((short)city.Position.Y);
-						this.oCPU.BX.Word = this.oCPU.ADD_UInt16(this.oCPU.BX.Word, (ushort)((short)local_be));
-
-						this.oCPU.AX.Word = this.oParent.CivState.MapVisibility[this.oCPU.AX.Word, this.oCPU.BX.Word];
-
-						this.oCPU.DX.Word = 0x1;
-						this.oCPU.CX.Low = (byte)(this.oParent.CivState.HumanPlayerID & 0xff);
-						this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-						this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						if (this.oCPU.Flags.E) goto L55f5;
+						if ((this.oParent.CivState.MapVisibility[city.Position.X + local_b6, city.Position.Y + local_be] & (1 << this.oParent.CivState.HumanPlayerID)) == 0) goto L55f5;
 						goto L5605;
 
 					L55f5:
@@ -3309,9 +3259,6 @@ namespace OpenCiv1
 
 						L5619:
 						local_f6 = local_b6;
-
-						this.oCPU.AX.Word = (ushort)((short)local_be);
-
 						local_fc = local_be;
 
 						goto L5aa6;
@@ -3335,7 +3282,6 @@ namespace OpenCiv1
 						local_ca ^= 1;
 						local_da = local_fe;
 						this.oParent.Var_70da_Arr[1] = local_10a;
-						this.oCPU.AX.Word = (ushort)((short)local_a);
 						this.oParent.Var_70da_Arr[2] = local_a;
 
 						goto L12c2;
@@ -3345,23 +3291,19 @@ namespace OpenCiv1
 						goto L56a6;
 
 					L567b:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x1);
-						if (this.oCPU.Flags.E) goto L5685;
+						if (this.oParent.Var_db3a == 1) goto L5685;
 						goto L56c8;
 
 					L5685:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0xe7);
-						if (this.oCPU.Flags.GE) goto L5690;
+						if (this.oParent.Var_db3c >= 231) goto L5690;
 						goto L56c8;
 
 					L5690:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0xbe);
-						if (this.oCPU.Flags.G) goto L569b;
+						if (this.oParent.Var_db3e > 190) goto L569b;
 						goto L56c8;
 
 					L569b:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0x10e);
-						if (this.oCPU.Flags.L) goto L56a6;
+						if (this.oParent.Var_db3c < 270) goto L56a6;
 						goto L56c8;
 
 					L56a6:
@@ -3377,23 +3319,19 @@ namespace OpenCiv1
 						goto L045f;
 
 					L56c8:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x1);
-						if (this.oCPU.Flags.E) goto L56d2;
+						if (this.oParent.Var_db3a == 1) goto L56d2;
 						goto L5cc2;
 
 					L56d2:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0x120);
-						if (this.oCPU.Flags.GE) goto L56dd;
+						if (this.oParent.Var_db3c >= 288) goto L56dd;
 						goto L5719;
 
 					L56dd:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0x60);
-						if (this.oCPU.Flags.L) goto L56e7;
+						if (this.oParent.Var_db3e < 96) goto L56e7;
 						goto L5719;
 
 					L56e7:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0x58);
-						if (this.oCPU.Flags.G) goto L56f1;
+						if (this.oParent.Var_db3e > 88) goto L56f1;
 						goto L5719;
 
 					L56f1:
@@ -3403,34 +3341,22 @@ namespace OpenCiv1
 						local_ca ^= 1;
 						local_da = local_fe;
 						this.oParent.Var_70da_Arr[1] = local_10a;
-						this.oCPU.AX.Word = (ushort)((short)local_a);
 						this.oParent.Var_70da_Arr[2] = local_a;
 
 						goto L12c2;
 
 					L5719:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0x12c);
-						if (this.oCPU.Flags.GE) goto L5724;
+						if (this.oParent.Var_db3c >= 300) goto L5724;
 						goto L58ac;
 
 					L5724:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0x5e);
-						if (this.oCPU.Flags.L) goto L572e;
+						if (this.oParent.Var_db3e < 94) goto L572e;
 						goto L58ac;
 
 					L572e:
-						this.oCPU.AX.Word = this.oParent.Var_db3e;
-						this.oCPU.AX.Word = this.oCPU.DEC_UInt16(this.oCPU.AX.Word);
-						this.oCPU.AX.Word = this.oCPU.DEC_UInt16(this.oCPU.AX.Word);
-						this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-						this.oCPU.CX.Word = 0x6;
-						this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)((short)local_40));
-						local_106 = (short)this.oCPU.AX.Word;
+						local_106 = ((this.oParent.Var_db3e - 2) / 6) - local_40;
 
 					L5740:
-						this.oCPU.AX.Word = (ushort)((short)local_da);
-
 						local_bc = local_da;
 
 						goto L574f;
@@ -3442,30 +3368,16 @@ namespace OpenCiv1
 						if (local_bc >= 24)
 							goto L58ac;
 
-						this.oCPU.AX.Word = 0x1;
-						this.oCPU.DX.Word = 0x0;
-						this.oCPU.CX.Word = (ushort)((short)local_bc);
-						this.oCPU.UInt32ToTwoUInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.TwoUInt16ToUInt32(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
-
-						this.oCPU.CX.Word = this.oCPU.AX.Word;
-						this.oCPU.BX.Word = this.oCPU.DX.Word;
-
-						this.oCPU.CX.Word = this.oCPU.AND_UInt16(this.oCPU.CX.Word, city.BuildingFlags0);
-						this.oCPU.BX.Word = this.oCPU.AND_UInt16(this.oCPU.BX.Word, city.BuildingFlags1);
-
-						this.oCPU.BX.Word = this.oCPU.OR_UInt16(this.oCPU.BX.Word, this.oCPU.CX.Word);
-						if (this.oCPU.Flags.NE) goto L5783;
+						if ((city.BuildingFlags & (1 << local_bc)) != 0) goto L5783;
 						goto L574b;
 
 					L5783:
-						this.oCPU.AX.Word = (ushort)((short)local_106);
 						local_106--;
 
-						if (this.oCPU.AX.Word != 0)
+						if (local_106 != -1)
 							goto L574b;
 
-						this.oCPU.TEST_UInt8(city.StatusFlag, 0x80);
-						if (this.oCPU.Flags.E) goto L57a5;
+						if ((city.StatusFlag & 0x80) == 0) goto L57a5;
 						goto L574b;
 
 					L57a5:
@@ -3493,34 +3405,14 @@ namespace OpenCiv1
 						this.oParent.Segment_11a8.F0_11a8_0250();
 
 						// Instruction address 0x1d12:0x5834, size: 5
-						this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 128, 80, 1);
-
-						this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x1);
-						if (this.oCPU.Flags.E) goto L5844;
+						if (this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 128, 80, 1) == 1) goto L5844;
 						goto L58a1;
 
 					L5844:
-						this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins +=
-							(short)(10 * this.oParent.CivState.BuildingDefinitions[local_bc + 1].Price);
-
-						this.oCPU.AX.Word = 0x1;
-						this.oCPU.DX.Word = 0x0;
-						this.oCPU.CX.Word = (ushort)((short)local_bc);
-						this.oCPU.UInt32ToTwoUInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.TwoUInt16ToUInt32(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
-
-						this.oCPU.CX.Word = this.oCPU.AX.Word;
-						this.oCPU.BX.Word = this.oCPU.DX.Word;
-
-						uint uiTemp = (uint)((long)city.BuildingFlags0 | ((long)city.BuildingFlags1 << 16));
-						uint uiTemp1 = (uint)((long)this.oCPU.CX.Word | ((long)this.oCPU.BX.Word << 16));
-						uiTemp -= uiTemp1;
-						city.BuildingFlags0 = (ushort)(uiTemp & 0xffff);
-						city.BuildingFlags1 = (ushort)((uiTemp & 0xffff0000) >> 16);
-
+						this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins += (short)(10 * this.oParent.CivState.BuildingDefinitions[local_bc + 1].Price);
+						city.BuildingFlags |= (uint)(1 << local_bc);
+						city.BuildingFlags ^= (uint)(1 << local_bc);
 						city.StatusFlag |= 0x80;
-
-						this.oCPU.AX.Word = (ushort)((short)local_bc);
-						this.oCPU.AX.Word = this.oCPU.INC_UInt16(this.oCPU.AX.Word);
 
 						if (local_bc + 1 != 8)
 							goto L58a1;
@@ -3534,42 +3426,30 @@ namespace OpenCiv1
 						goto L045f;
 
 					L58ac:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0xc8);
-						if (this.oCPU.Flags.L) goto L58b7;
+						if (this.oParent.Var_db3c < 200) goto L58b7;
 						goto L596b;
 
 					L58b7:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0x14);
-						if (this.oCPU.Flags.L) goto L58c1;
+						if (this.oParent.Var_db3e < 20) goto L58c1;
 						goto L596b;
 
 					L58c1:
-						this.oCPU.CMP_UInt8((byte)city.ActualSize, 0x5);
-						if (this.oCPU.Flags.GE) goto L58d3;
+						if (city.ActualSize >= 5) goto L58d3;
 						goto L5953;
 
 					L58d3:
-						this.oCPU.AX.Word = this.oParent.Var_db3c;
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x10);
-						this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-						this.oCPU.CX.Word = (ushort)((short)local_f4);
-						this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-						local_ea = (short)this.oCPU.AX.Word;
-
+						local_ea = (this.oParent.Var_db3c - 16) / local_f4;
 						local_ea -= city.ActualSize - local_50;
 
 						if (local_ea < 0)
 							goto L045f;
 
-						this.oCPU.AX.Word = (ushort)((short)local_8);
 
 						if (local_ea >= local_8)
 							goto L045f;
 
 						// Instruction address 0x1d12:0x5915, size: 5
-						F0_1d12_6da1_GetSpecialWorkerFlags(local_ea);
-
-						local_e8 = (short)this.oCPU.AX.Word;
+						local_e8 = (short)F0_1d12_6da1_GetSpecialWorkerFlags(local_ea);
 
 						if (local_e8 >= 3)
 							goto L5940;
@@ -3594,53 +3474,24 @@ namespace OpenCiv1
 
 					L595b:
 						this.oParent.Var_70da_Arr[1] = local_10a;
-						this.oCPU.AX.Word = (ushort)((short)local_a);
 						this.oParent.Var_70da_Arr[2] = local_a;
 
 						goto L12c2;
 
 					L596b:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0x64);
-						if (this.oCPU.Flags.GE) goto L5975;
+						if (this.oParent.Var_db3c >= 100) goto L5975;
 						goto L5a60;
 
 					L5975:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0x2580);
-						if (this.oCPU.Flags.L) goto L5980;
+						if (this.oParent.Var_db3c < 9600) goto L5980;
 						goto L5a60;
 
 					L5980:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0x74);
-						if (this.oCPU.Flags.GE) goto L598a;
+						if (this.oParent.Var_db3e >= 116) goto L598a;
 						goto L5a60;
 
 					L598a:
-						this.oCPU.AX.Word = this.oParent.Var_db3e;
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x74);
-						this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-						this.oCPU.AX.Word = this.oCPU.XOR_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.CX.Word = 0x4;
-						this.oCPU.AX.Word = this.oCPU.SAR_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-						this.oCPU.AX.Word = this.oCPU.XOR_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.CX.Word = 0x6;
-						this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-						this.oCPU.CX.Word = this.oCPU.AX.Word;
-						this.oCPU.AX.Word = this.oParent.Var_db3c;
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x64);
-						this.oCPU.BX.Word = this.oCPU.CX.Word;
-						this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-						this.oCPU.AX.Word = this.oCPU.XOR_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.CX.Word = 0x4;
-						this.oCPU.AX.Word = this.oCPU.SAR_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-						this.oCPU.AX.Word = this.oCPU.XOR_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.BX.Word = this.oCPU.ADD_UInt16(this.oCPU.BX.Word, this.oCPU.AX.Word);
-						local_106 = (short)this.oCPU.BX.Word;
-
-						this.oCPU.AX.Word = (ushort)((short)local_4e);
+						local_106 = (((this.oParent.Var_db3e - 116) / 16) * 6) + ((this.oParent.Var_db3c - 100) / 16);
 
 						if (local_106 >= local_4e)
 							goto L5a60;
@@ -3656,45 +3507,21 @@ namespace OpenCiv1
 						this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[Arr_74[local_106]].GoToPosition.X = -1;
 
 						this.oParent.Var_70da_Arr[1] = local_10a;
-						this.oCPU.AX.Word = (ushort)((short)local_a);
 						this.oParent.Var_70da_Arr[2] = local_a;
 
 						goto L12c2;
 
 					L5a60:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0x18);
-						if (this.oCPU.Flags.GE) goto L5a6a;
+						if (this.oParent.Var_db3e >= 24) goto L5a6a;
 						goto L5cc2;
 
 					L5a6a:
-						this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0x68);
-						if (this.oCPU.Flags.L) goto L5a74;
+						if (this.oParent.Var_db3e < 104) goto L5a74;
 						goto L5cc2;
 
 					L5a74:
-						this.oCPU.AX.Word = this.oParent.Var_db3c;
-						this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-						this.oCPU.AX.Word = this.oCPU.XOR_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.CX.Word = 0x4;
-						this.oCPU.AX.Word = this.oCPU.SAR_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-						this.oCPU.AX.Word = this.oCPU.XOR_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0xa);
-						local_f6 = (short)this.oCPU.AX.Word;
-
-						this.oCPU.AX.Word = this.oParent.Var_db3e;
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x18);
-						this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-						this.oCPU.AX.Word = this.oCPU.XOR_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.CX.Word = 0x4;
-						this.oCPU.AX.Word = this.oCPU.SAR_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-						this.oCPU.AX.Word = this.oCPU.XOR_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						this.oCPU.AX.Word = this.oCPU.DEC_UInt16(this.oCPU.AX.Word);
-						this.oCPU.AX.Word = this.oCPU.DEC_UInt16(this.oCPU.AX.Word);
-						local_fc = (short)this.oCPU.AX.Word;
+						local_f6 = (this.oParent.Var_db3c / 16) - 10;
+						local_fc = ((this.oParent.Var_db3e - 24) / 16) - 2;
 
 					L5aa6:
 						// Instruction address 0x1d12:0x5aae, size: 5
@@ -3706,22 +3533,12 @@ namespace OpenCiv1
 						if (local_ea >= 20)
 							goto L045f;
 
-						this.oCPU.AX.Word = (ushort)((short)(city.Position.X + this.oParent.CityOffsets[local_ea].X));
-
-						this.oCPU.BX.Word = (ushort)((short)(city.Position.Y + this.oParent.CityOffsets[local_ea].Y));
-
-						this.oCPU.AX.Word = this.oParent.CivState.MapVisibility[this.oCPU.AX.Word, this.oCPU.BX.Word];
-
-						this.oCPU.DX.Word = 0x1;
-						this.oCPU.CX.Low = (byte)this.Var_6548_PlayerID;
-						this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-						this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-						if (this.oCPU.Flags.NE) goto L5b13;
+						if ((this.oParent.CivState.MapVisibility[city.Position.X + this.oParent.CityOffsets[local_ea].X, city.Position.Y + this.oParent.CityOffsets[local_ea].Y] &
+							(1 << this.Var_6548_PlayerID)) != 0) goto L5b13;
 						goto L045f;
 
 					L5b13:
 						this.oParent.Var_70da_Arr[1] = local_10a;
-						this.oCPU.AX.Word = (ushort)((short)local_a);
 						this.oParent.Var_70da_Arr[2] = local_a;
 
 						if ((city.WorkerFlags & (1 << local_ea)) != 0)
@@ -3730,7 +3547,7 @@ namespace OpenCiv1
 						if (Arr_a6[this.oParent.CityOffsets[local_ea].X + 2, this.oParent.CityOffsets[local_ea].Y + 2] != 0)
 							goto L12c2;
 
-						L5b6e:
+					L5b6e:
 						city.WorkerFlags ^= (uint)(1 << local_ea);
 
 						if ((city.WorkerFlags & (1 << local_ea)) == 0)
@@ -3762,12 +3579,10 @@ namespace OpenCiv1
 							goto L5c45;
 
 						// Instruction address 0x1d12:0x5c28, size: 5
-						F0_1d12_6abc(
+						local_cc = (short)F0_1d12_6abc(
 							city.Position.X + this.oParent.CityOffsets[local_ea].X,
 							city.Position.Y + this.oParent.CityOffsets[local_ea].Y,
 							(ushort)((short)local_bc));
-
-						local_cc = (short)this.oCPU.AX.Word;
 
 						this.oParent.Var_70da_Arr[local_bc] -= local_cc;
 
@@ -3798,27 +3613,18 @@ namespace OpenCiv1
 					this.oParent.Var_d75e_YPos = (short)local_d0;
 				}
 
-				this.oCPU.AX.Word = (ushort)flag;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.DX.Word = this.oCPU.OR_UInt16(this.oCPU.DX.Word, this.oCPU.AX.Word);
-				if (this.oCPU.Flags.NE)
+				if (flag != 0)
 					goto L68cc;
 
 				if (this.Var_6548_PlayerID == 0)
 					goto L62d8;
 
-				this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70e2);
-				this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)((short)this.oParent.Var_70e4));
-				local_e8 = (short)this.oCPU.AX.Word;
+				local_e8 = this.oParent.Var_70e2 - this.oParent.Var_70e4;
 
 				if (local_e8 >= 0)
 					goto L5f3f;
 
-				this.oCPU.AX.Word = 0x1;
-				this.oCPU.CX.Low = (byte)this.Var_6548_PlayerID;
-				this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.PlayerFlags);
-				if (this.oCPU.Flags.E)
+				if ((this.oParent.CivState.PlayerFlags & (1 << this.Var_6548_PlayerID)) == 0)
 					goto L5df3;
 
 				// Instruction address 0x1d12:0x5d14, size: 5
@@ -3833,13 +3639,11 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x5d3b, size: 5
 				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x24, 0);
 
-				this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x8);
-				if (this.oCPU.Flags.NE) goto L5d4d;
+				if ((this.oParent.CivState.GameSettingFlags & 0x8) != 0) goto L5d4d;
 				goto L5d9f;
 
 			L5d4d:
-				this.oCPU.TEST_UInt8(city.StatusFlag, 0x1);
-				if (this.oCPU.Flags.E) goto L5d5f;
+				if ((city.StatusFlag & 0x1) == 0) goto L5d5f;
 				goto L5d9f;
 
 			L5d5f:
@@ -3870,37 +3674,30 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x5dbd, size: 5
 				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 
-				this.oCPU.TEST_UInt8(city.StatusFlag, 0x1);
-				if (this.oCPU.Flags.E) goto L5dd7;
+				if ((city.StatusFlag & 0x1) == 0) goto L5dd7;
 				goto L5df3;
 
 			L5dd7:
 				this.oParent.Var_b1e8 = 1;
 
-				this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x1);
-				if (this.oCPU.Flags.NE) goto L5de7;
+				if ((this.oParent.CivState.GameSettingFlags & 0x1) != 0) goto L5de7;
 				goto L5df3;
 
 			L5de7:
 				this.oParent.Help.F4_0000_02d3(0x2708);
 
 			L5df3:
-				this.oCPU.TEST_UInt8(city.StatusFlag, 0x1);
-				if (this.oCPU.Flags.E) goto L5e05;
+				if ((city.StatusFlag & 0x1) == 0) goto L5e05;
 				goto L5eb4;
 
 			L5e05:
 				city.StatusFlag |= 1;
-				this.oCPU.AX.Word = 0x1;
-				this.oCPU.CX.Low = (byte)this.Var_6548_PlayerID;
-				this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.PlayerFlags);
-				if (this.oCPU.Flags.E) goto L5e24;
+
+				if ((this.oParent.CivState.PlayerFlags & (1 << this.Var_6548_PlayerID)) == 0) goto L5e24;
 				goto L5ea1;
 
 			L5e24:
-				this.oCPU.CMP_UInt8((byte)city.CurrentProductionID, 0x0);
-				if (this.oCPU.Flags.GE) goto L5e36;
+				if (city.CurrentProductionID >= 0) goto L5e36;
 				goto L5e54;
 
 			L5e36:
@@ -3908,14 +3705,9 @@ namespace OpenCiv1
 
 			L5e54:
 				// Instruction address 0x1d12:0x5e5b, size: 5
-				this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
+				city.CurrentProductionID = (sbyte)((short)this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID));
 
-				this.oCPU.CX.Word = this.oCPU.AX.Word;
-
-				city.CurrentProductionID = (sbyte)this.oCPU.CX.Low;
-
-				this.oCPU.CMP_UInt8((byte)city.CurrentProductionID, 0x0);
-				if (this.oCPU.Flags.GE) goto L5e83;
+				if (city.CurrentProductionID >= 0) goto L5e83;
 				goto L5ea1;
 
 			L5e83:
@@ -3963,17 +3755,13 @@ namespace OpenCiv1
 				if (local_e8 < 0)
 					goto L604f;
 
-				this.oCPU.TEST_UInt8(city.StatusFlag, 0x1);
-				if (this.oCPU.Flags.NE) goto L5f5b;
+				if ((city.StatusFlag & 0x1) != 0) goto L5f5b;
 				goto L604f;
 
 			L5f5b:
 				city.StatusFlag &= 0xfe;
-				this.oCPU.AX.Word = 0x1;
-				this.oCPU.CX.Low = (byte)this.Var_6548_PlayerID;
-				this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.PlayerFlags);
-				if (this.oCPU.Flags.NE) goto L5f7a;
+
+				if ((this.oParent.CivState.PlayerFlags & (1 << this.Var_6548_PlayerID)) != 0) goto L5f7a;
 				goto L5fc2;
 
 			L5f7a:
@@ -3994,8 +3782,7 @@ namespace OpenCiv1
 				goto L603f;
 
 			L5fc2:
-				this.oCPU.CMP_UInt8((byte)city.CurrentProductionID, 0x0);
-				if (this.oCPU.Flags.GE) goto L5fd4;
+				if (city.CurrentProductionID >= 0) goto L5fd4;
 				goto L5ff2;
 
 			L5fd4:
@@ -4003,14 +3790,9 @@ namespace OpenCiv1
 
 			L5ff2:
 				// Instruction address 0x1d12:0x5ff9, size: 5
-				this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
+				city.CurrentProductionID = (sbyte)((short)this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID));
 
-				this.oCPU.CX.Word = this.oCPU.AX.Word;
-
-				city.CurrentProductionID = (sbyte)this.oCPU.CX.Low;
-
-				this.oCPU.CMP_UInt8((byte)city.CurrentProductionID, 0x0);
-				if (this.oCPU.Flags.GE) goto L6021;
+				if (city.CurrentProductionID >= 0) goto L6021;
 				goto L603f;
 
 			L6021:
@@ -4031,35 +3813,22 @@ namespace OpenCiv1
 				if (this.oParent.Var_70e4 != 0)
 					goto L6213;
 
-				this.oCPU.CMP_UInt8((byte)city.ActualSize, 0x2);
-				if (this.oCPU.Flags.G) goto L6088;
+				if (city.ActualSize > 2) goto L6088;
 				goto L6213;
 
 			L6088:
-				this.oCPU.AX.Low = (byte)city.ActualSize;
-				this.oCPU.CBW(this.oCPU.AX);
-				this.oCPU.AX.Word = this.oCPU.INC_UInt16(this.oCPU.AX.Word);
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SAR_UInt16(this.oCPU.AX.Word, 0x1);
-				
-				if ((short)this.oCPU.AX.Word > this.oParent.Var_70e2)
+				if (((city.ActualSize + 1) / 2) > this.oParent.Var_70e2)
 					goto L6213;
 
 				if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType != 0) goto L60b4;
 				goto L6213;
 
 			L60b4:
-				this.oCPU.TEST_UInt8(city.StatusFlag, 0x40);
-				if (this.oCPU.Flags.E) goto L60c6;
+				if ((city.StatusFlag & 0x40) == 0) goto L60c6;
 				goto L61ac;
 
 			L60c6:
-				this.oCPU.AX.Word = 0x1;
-				this.oCPU.CX.Low = (byte)this.Var_6548_PlayerID;
-				this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.PlayerFlags);
-				if (this.oCPU.Flags.NE) goto L60d8;
+				if ((this.oParent.CivState.PlayerFlags & (1 << this.Var_6548_PlayerID)) != 0) goto L60d8;
 				goto L619c;
 
 			L60d8:
@@ -4116,25 +3885,15 @@ namespace OpenCiv1
 				goto L6210;
 
 			L61bc:
-				this.oCPU.AX.Low = (byte)city.ActualSize;
-				this.oCPU.CBW(this.oCPU.AX);
-				this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, 0x1);
-				this.oCPU.CX.Word = this.oCPU.AX.Word;
-				this.oCPU.AX.Word = (ushort)((short)local_48);
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)this.oParent.Var_e3c6));
-				this.oCPU.CX.Word = this.oCPU.ADD_UInt16(this.oCPU.CX.Word, this.oCPU.AX.Word);
-				this.oCPU.CMP_UInt16(this.oCPU.CX.Word, (ushort)((short)this.oParent.Var_70da_Arr[0]));
-				if (this.oCPU.Flags.L) goto L61df;
+				if (((city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6)) < this.oParent.Var_70da_Arr[0]) goto L61df;
 				goto L6210;
 
 			L61df:
-				this.oCPU.CMP_UInt8((byte)city.ActualSize, 0xa);
-				if (this.oCPU.Flags.GE) goto L61f1;
+				if (city.ActualSize >= 10) goto L61f1;
 				goto L6204;
 
 			L61f1:
-				this.oCPU.TEST_UInt16(city.BuildingFlags0, 0x100);
-				if (this.oCPU.Flags.NE) goto L6204;
+				if ((city.BuildingFlags & 0x100) != 0) goto L6204;
 				goto L6210;
 
 			L6204:
@@ -4147,16 +3906,11 @@ namespace OpenCiv1
 				if (local_e8 < 0)
 					goto L62d8;
 
-				this.oCPU.TEST_UInt8(city.StatusFlag, 0x40);
-				if (this.oCPU.Flags.NE) goto L622f;
+				if ((city.StatusFlag & 0x40) != 0) goto L622f;
 				goto L62d8;
 
 			L622f:
-				this.oCPU.AX.Word = 0x1;
-				this.oCPU.CX.Low = (byte)this.Var_6548_PlayerID;
-				this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.PlayerFlags);
-				if (this.oCPU.Flags.NE) goto L6241;
+				if ((this.oParent.CivState.PlayerFlags & (1 << this.Var_6548_PlayerID)) != 0) goto L6241;
 				goto L62cb;
 
 			L6241:
@@ -4203,10 +3957,8 @@ namespace OpenCiv1
 
 			L62f5:
 				// Instruction address 0x1d12:0x62fd, size: 5
-				this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID,
-					this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID);
-				this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x0);
-				if (this.oCPU.Flags.E)
+				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID,
+					this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID) == 0)
 					goto L630d;
 
 				goto L6327;
@@ -4221,8 +3973,8 @@ namespace OpenCiv1
 
 			L6327:
 				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID = -1;
-				this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.DebugFlags & 0xff), 0x8);
-				if (this.oCPU.Flags.NE) goto L6337;
+
+				if ((this.oParent.CivState.DebugFlags & 0x8) != 0) goto L6337;
 				goto L6351;
 
 			L6337:
@@ -4256,43 +4008,29 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x1d12:0x63c2, size: 5
-				F0_1d12_6c97(this.Var_6548_PlayerID, 0x14);
-
-				this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x0);
-				if (this.oCPU.Flags.NE) goto L63d2;
+				if (F0_1d12_6c97(this.Var_6548_PlayerID, 0x14) != 0) goto L63d2;
 				goto L63e5;
 
 			L63d2:
 				this.oParent.CivState.Players[this.Var_6548_PlayerID].ResearchProgress += (short)(local_e8 / 2);
 
 			L63e5:
-				if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID)
-					goto L63fb;
+				if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
+				{
+					local_f4 = 14 - this.oParent.CivState.DifficultyLevel;
+				}
+				else
+				{
+					local_f4 = (this.oParent.CivState.DifficultyLevel * 2) + 6;
+				}
 
-				this.oCPU.AX.Word = 0xe;
-				this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.DifficultyLevel);
-				goto L6403;
-
-			L63fb:
-				this.oCPU.AX.Word = (ushort)this.oParent.CivState.DifficultyLevel;
-				this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, 0x1);
-				this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x6);
-
-			L6403:
-				local_f4 = (short)this.oCPU.AX.Word;
 				local_f4 += this.oParent.Var_d2de;
 
 				if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
 					goto L6441;
 
-				this.oCPU.AX.Word = 0xb;
-				this.oCPU.AX.Word -= (ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].DiscoveredTechnologyCount;
-
 				if ((11 - this.oParent.CivState.Players[this.Var_6548_PlayerID].DiscoveredTechnologyCount) <= local_f4)
 					goto L6441;
-
-				this.oCPU.AX.Word = 0xb;
-				this.oCPU.AX.Word -= (ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].DiscoveredTechnologyCount;
 
 				local_f4 = 11 - this.oParent.CivState.Players[this.Var_6548_PlayerID].DiscoveredTechnologyCount;
 
@@ -4304,29 +4042,14 @@ namespace OpenCiv1
 				goto L64b8;
 
 			L6457:
-				if (this.oParent.CivState.Year < 0)
-				{
-					this.oCPU.CX.Word = 0x1;
-				}
-				else
-				{
-					this.oCPU.CX.Word = 0x2;
-				}
-
-				this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].ResearchProgress;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-				this.oCPU.CX.Word = this.oCPU.AX.Word;
-				this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].DiscoveredTechnologyCount;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)local_f4));
-				this.oCPU.CMP_UInt16(this.oCPU.CX.Word, this.oCPU.AX.Word);
-				if (this.oCPU.Flags.G) goto L6488;
+				if ((this.oParent.CivState.Players[this.Var_6548_PlayerID].ResearchProgress / ((this.oParent.CivState.Year < 0) ? 1 : 2)) >
+					(this.oParent.CivState.Players[this.Var_6548_PlayerID].DiscoveredTechnologyCount * local_f4)) goto L6488;
 				goto L64b8;
 
 			L6488:
 				this.oParent.CivState.Players[this.Var_6548_PlayerID].ResearchProgress = 0;
-				this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.DebugFlags & 0xff), 0x8);
-				if (this.oCPU.Flags.NE) goto L649e;
+
+				if ((this.oParent.CivState.DebugFlags & 0x8) != 0) goto L649e;
 				goto L64b8;
 
 			L649e:
@@ -4340,81 +4063,38 @@ namespace OpenCiv1
 				this.oParent.Segment_11a8.F0_11a8_0294();
 
 			L64b8:
-				this.oCPU.AX.Low = (byte)city.ActualSize;
-				this.oCPU.CBW(this.oCPU.AX);
-				this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, (ushort)((short)this.oParent.Var_70e2));
-				this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)((short)this.oParent.Var_70e4));
-				this.oParent.CivState.Players[this.Var_6548_PlayerID].Score += (short)this.oCPU.AX.Word;
+				this.oParent.CivState.Players[this.Var_6548_PlayerID].Score +=
+					(short)((city.ActualSize + this.oParent.Var_70e2) - this.oParent.Var_70e4);
 
 				if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
 					goto L68cc;
 
-				this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70da_Arr[1]);
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.CX.Word = (ushort)((short)this.oParent.Var_6c98);
-				this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x14);
-				local_e0 = (short)this.oCPU.AX.Word;
-
-				this.oCPU.AX.Low = (byte)city.ActualSize;
-				this.oCPU.CBW(this.oCPU.AX);
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)this.oParent.Var_b882));
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.XOR_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.CX.Word = 0x2;
-				this.oCPU.AX.Word = this.oCPU.SAR_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.AX.Word = this.oCPU.XOR_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				local_e0 += (short)this.oCPU.AX.Word;
-
-				this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.Var_6548_PlayerID].DiscoveredTechnologyCount;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.CivState.DifficultyLevel);
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SAR_UInt16(this.oCPU.AX.Word, 0x1);
-				this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x100);
-				this.oCPU.AX.Word = this.oCPU.NEG_UInt16(this.oCPU.AX.Word);
+				local_e0 = (this.oParent.Var_70da_Arr[1] / this.oParent.Var_6c98) - 20;
+				local_e0 += (city.ActualSize * this.oParent.Var_b882) / 4;
 
 				// Instruction address 0x1d12:0x6530, size: 5
-				this.oCPU.AX.Word = (ushort)this.oParent.MSCAPI.RNG.Next(this.oCPU.AX.Word);
-
-				this.oCPU.CX.Word = (ushort)((short)local_e0);
-				this.oCPU.CX.Word = this.oCPU.SHL_UInt16(this.oCPU.CX.Word, 0x1);
-				this.oCPU.CMP_UInt16(this.oCPU.CX.Word, this.oCPU.AX.Word);
-				if (this.oCPU.Flags.G) goto L6545;
+				if ((local_e0 * 2) >
+					this.oParent.MSCAPI.RNG.Next(-(((this.oParent.CivState.Players[this.Var_6548_PlayerID].DiscoveredTechnologyCount * this.oParent.CivState.DifficultyLevel) / 2) - 256))) goto L6545;
 				goto L6640;
 
 			L6545:
 				// Instruction address 0x1d12:0x6549, size: 5
-				this.oCPU.AX.Word = (ushort)this.oParent.MSCAPI.RNG.Next(20);
-
-				local_e8 = (short)this.oCPU.AX.Word;
-
+				local_e8 = this.oParent.MSCAPI.RNG.Next(20);
 				local_c6 = this.oParent.CityOffsets[local_e8].X + local_d8;
 				local_d2 = this.oParent.CityOffsets[local_e8].Y + local_e4;
 
 				// Instruction address 0x1d12:0x6581, size: 5
-				this.oParent.Segment_2aea.F0_2aea_1585(local_c6, local_d2);
-
-				this.oCPU.TEST_UInt8(this.oCPU.AX.Low, 0x40);
-				if (this.oCPU.Flags.E) goto L6590;
+				if ((this.oParent.Segment_2aea.F0_2aea_1585(local_c6, local_d2) & 0x40) == 0) goto L6590;
 				goto L6640;
 
 			L6590:
 				// Instruction address 0x1d12:0x6598, size: 5
-				this.oParent.Segment_2aea.F0_2aea_134a(local_c6, local_d2);
-
-				this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-				if (this.oCPU.Flags.NE) goto L65a8;
+				if (this.oParent.Segment_2aea.F0_2aea_134a(local_c6, local_d2) != 10) goto L65a8;
 				goto L6640;
 
 			L65a8:
 				// Instruction address 0x1d12:0x65b0, size: 5
-				this.oParent.Segment_2aea.F0_2aea_1585(local_c6, local_d2);
-
-				this.oCPU.TEST_UInt8(this.oCPU.AX.Low, 0x1);
-				if (this.oCPU.Flags.E) goto L65bf;
+				if ((this.oParent.Segment_2aea.F0_2aea_1585(local_c6, local_d2) & 0x1) == 0) goto L65bf;
 				goto L6640;
 
 			L65bf:
@@ -4442,28 +4122,21 @@ namespace OpenCiv1
 				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 64);
 
 			L6640:
-				this.oCPU.TEST_UInt8(city.StatusFlag, 0x1);
-				if (this.oCPU.Flags.NE) goto L6652;
+				if ((city.StatusFlag & 0x1) != 0) goto L6652;
 				goto L672d;
 
 			L6652:
-				this.oCPU.TEST_UInt16(city.BuildingFlags1, 0x10);
-				if (this.oCPU.Flags.NE) goto L6665;
+				if ((city.BuildingFlags & 0x100000) != 0) goto L6665;
 				goto L672d;
 
 			L6665:
 				// Instruction address 0x1d12:0x6669, size: 5
-				this.oCPU.AX.Word = (ushort)this.oParent.MSCAPI.RNG.Next(3);
-
-				this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x0);
-				if (this.oCPU.Flags.E) goto L6679;
+				if (this.oParent.MSCAPI.RNG.Next(3) == 0) goto L6679;
 				goto L672d;
 
 			L6679:
 				// Instruction address 0x1d12:0x6681, size: 5
-				this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.FusionPower);
-				this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x0);
-				if (this.oCPU.Flags.E)
+				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.FusionPower) == 0)
 					goto L6691;
 
 				goto L672d;
@@ -4477,8 +4150,7 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x66c5, size: 5
 				this.oParent.Segment_29f3.F0_29f3_0ec3(local_d8, local_e4);
 
-				city.BuildingFlags0 &= 0xffff;
-				city.BuildingFlags1 &= 0xffef;
+				city.BuildingFlags &= 0xffefffff;
 
 				// Instruction address 0x1d12:0x66e3, size: 5
 				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x24, 0);
@@ -4508,19 +4180,7 @@ namespace OpenCiv1
 				if (local_bc >= 24)
 					goto L68cc;
 
-				this.oCPU.AX.Word = 0x1;
-				this.oCPU.DX.Word = 0x0;
-				this.oCPU.CX.Word = (ushort)((short)local_bc);
-				this.oCPU.UInt32ToTwoUInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.TwoUInt16ToUInt32(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
-
-				this.oCPU.CX.Word = this.oCPU.AX.Word;
-				this.oCPU.BX.Word = this.oCPU.DX.Word;
-
-				this.oCPU.CX.Word = this.oCPU.AND_UInt16(this.oCPU.CX.Word, city.BuildingFlags0);
-				this.oCPU.BX.Word = this.oCPU.AND_UInt16(this.oCPU.BX.Word, city.BuildingFlags1);
-
-				this.oCPU.BX.Word = this.oCPU.OR_UInt16(this.oCPU.BX.Word, this.oCPU.CX.Word);
-				if (this.oCPU.Flags.NE) goto L676e;
+				if ((city.BuildingFlags & (1 << local_bc)) != 0) goto L676e;
 				goto L6736;
 
 			L676e:
@@ -4547,9 +4207,7 @@ namespace OpenCiv1
 
 			L67c7:
 				// Instruction address 0x1d12:0x67cf, size: 5
-				this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Gunpowder);
-				this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x0);
-				if (this.oCPU.Flags.NE)
+				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Gunpowder) != 0)
 					goto L67df;
 
 				goto L67e9;
@@ -4559,9 +4217,7 @@ namespace OpenCiv1
 
 			L67e9:
 				// Instruction address 0x1d12:0x67f1, size: 5
-				this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Combustion);
-				this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x0);
-				if (this.oCPU.Flags.NE)
+				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Combustion) != 0)
 					goto L6801;
 
 				goto L680b;
@@ -4575,18 +4231,10 @@ namespace OpenCiv1
 
 			L681b:
 				this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins = 0;
-				this.oCPU.AX.Word = 0x1;
-				this.oCPU.DX.Word = 0x0;
-				this.oCPU.CX.Word = (ushort)((short)local_bc);
-				this.oCPU.UInt32ToTwoUInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.TwoUInt16ToUInt32(this.oCPU.AX.Word, this.oCPU.DX.Word) << this.oCPU.CX.Low);
+				
+				city.BuildingFlags &= ~((uint)(1 << local_bc));
+				
 
-				this.oCPU.AX.Word = this.oCPU.NOT_UInt16(this.oCPU.AX.Word);
-				this.oCPU.DX.Word = this.oCPU.NOT_UInt16(this.oCPU.DX.Word);
-				this.oCPU.CX.Word = this.oCPU.AX.Word;
-				this.oCPU.BX.Word = this.oCPU.DX.Word;
-
-				city.BuildingFlags0 &= this.oCPU.CX.Word;
-				city.BuildingFlags1 &= this.oCPU.BX.Word;
 				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 				// Instruction address 0x1d12:0x6856, size: 5
@@ -4596,8 +4244,7 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.strcat(0xba06, "\ncan't maintain\n");
 
 				// Instruction address 0x1d12:0x687d, size: 5
-				this.oParent.MSCAPI.strcat(0xba06,
-					this.oParent.CivState.BuildingDefinitions[local_bc + 1].Name);
+				this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.BuildingDefinitions[local_bc + 1].Name);
 
 				// Instruction address 0x1d12:0x688d, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, ".\n");
@@ -4613,19 +4260,13 @@ namespace OpenCiv1
 				goto L6736;
 
 			L68cc:
-				this.oCPU.TEST_UInt8(city.StatusFlag, 0x4);
-				if (this.oCPU.Flags.NE) goto L68de;
+				if ((city.StatusFlag & 0x4) != 0) goto L68de;
 				goto L690f;
 
 			L68de:
 				// ??? this playerID reference needs to be checked!
 				// Instruction address 0x1d12:0x68f4, size: 5
-				this.oParent.Segment_1866.F0_1866_18d0(city.PlayerID,
-					city.Position.X,
-					city.Position.Y);
-
-				this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x0);
-				if (this.oCPU.Flags.E) goto L6904;
+				if (this.oParent.Segment_1866.F0_1866_18d0(city.PlayerID, city.Position.X, city.Position.Y) == 0) goto L6904;
 				goto L690f;
 
 			L6904:
@@ -4638,13 +4279,15 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x6918, size: 5
 				this.oParent.Segment_11a8.F0_11a8_0250();
 
-				this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_70e2);
-				this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)((short)this.oParent.Var_70e4));
+				// !!! Do we really need to return a value?
+				this.oCPU.AX.Word = (ushort)((short)(this.oParent.Var_70e2 - this.oParent.Var_70e4));
 			}
 
 		L6927:
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1d12_0045");
+
+			return this.oCPU.AX.Word;
 		}
 
 		/// <summary>
