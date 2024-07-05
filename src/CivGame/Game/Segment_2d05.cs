@@ -1100,7 +1100,7 @@ namespace OpenCiv1
 					break;
 
 				default:
-					iKey &= 0xff;
+					//iKey &= 0xff;
 					break;
 			}
 
