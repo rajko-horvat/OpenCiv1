@@ -59,7 +59,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0066;
 
 			// Instruction address 0x2517:0x005a, size: 5
-			this.oParent.CityWorker.F0_1d12_6c97(playerID, 1);
+			this.oParent.CityWorker.F0_1d12_6c97_PlayerHasWonder(playerID, (int)WonderEnum.Pyramids);
 			
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0088;
@@ -492,7 +492,7 @@ namespace OpenCiv1
 
 		L04e3:
 			// Instruction address 0x2517:0x04ea, size: 5
-			this.oParent.CityWorker.F0_1d12_6c97(playerID, 1);
+			this.oParent.CityWorker.F0_1d12_6c97_PlayerHasWonder(playerID, (int)WonderEnum.Pyramids);
 			
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L055a;
@@ -847,7 +847,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L087e;
 
 			// Instruction address 0x2517:0x0863, size: 5
-			this.oParent.CityWorker.F0_1d12_6c97(playerID2, 7);
+			this.oParent.CityWorker.F0_1d12_6c97_PlayerHasWonder(playerID2, (int)WonderEnum.GreatWall);
 			
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L087e;
@@ -863,7 +863,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L08b1;
 
 			// Instruction address 0x2517:0x0896, size: 5
-			this.oParent.CityWorker.F0_1d12_6c97(playerID1, 7);
+			this.oParent.CityWorker.F0_1d12_6c97_PlayerHasWonder(playerID1, (int)WonderEnum.GreatWall);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L08b1;
@@ -1407,7 +1407,7 @@ namespace OpenCiv1
 			{
 				if (this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].StatusFlag != 0xff &&
 					this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].PlayerID == playerID &&
-					(this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].BuildingFlags0 & 0x1) != 0)
+					(this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].ImprovementFlags0 & 0x1) != 0)
 				{
 					// Instruction address 0x2517:0x0dda, size: 5
 					this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(

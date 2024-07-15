@@ -968,9 +968,9 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x30);
 
 			// Instruction address 0x0000:0x0bc0, size: 5
-			this.oParent.CityWorker.F0_1d12_6ed4(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)),
-				48, (short)(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) + 10),
-				(ushort)((short)this.oParent.Var_e8b8), 160);
+			this.oParent.CityWorker.F0_1d12_6ed4_DrawResources(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)),
+				48, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) + 10,
+				this.oParent.Var_e8b8, 160);
 
 			// Instruction address 0x0000:0x0bd9, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(

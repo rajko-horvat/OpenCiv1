@@ -41,7 +41,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0043;
 			if (this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].PlayerID !=
 				this.oParent.CivState.HumanPlayerID) goto L0043;
-			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].BuildingFlags0, 0x1);
+			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].ImprovementFlags0, 0x1);
 			if (this.oCPU.Flags.NE) goto L003d;
 			
 			if (cityID != -1)

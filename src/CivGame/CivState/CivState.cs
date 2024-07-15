@@ -29,7 +29,7 @@ namespace OpenCiv1
 
 		// Nations
 		private NationDefinition[] aNations = new NationDefinition[] {
-			new NationDefinition(0, "", "", "", 0, 0, 0, 36, 36,
+			new NationDefinition(0, "Attila", "", "Barbarian", 0, 0, 0, 36, 36,
 				new string[] {"Mecca", "Naples", "Sidon", "Tyre", "Tarsus", "Issus", "Cunaxa", "Cremona", "Cannae", "Capua",
 					"Turin", "Genoa", "Utica", "Crete", "Damascus", "Verona" }),
 			new NationDefinition(1, "Caesar", "", "Roman", 0, 1, 1, 24, 10, 
@@ -338,53 +338,56 @@ namespace OpenCiv1
 			new UnitDefinition(UnitEnum.Diplomat, "Diplomat", TechnologyEnum.NewFutureTechnology, 0, 2, 0, 0, 0, 3, 0, 0, 6, TechnologyEnum.Writing),	// 26
 			new UnitDefinition(UnitEnum.Caravan, "Caravan", TechnologyEnum.NewFutureTechnology, 0, 1, 0, 0, 1, 5, 0, 0, 6, TechnologyEnum.Trade)}; // 27
 
-		private BuildingDefinition[] aBuildingDefinitions = new BuildingDefinition[]{
-			new BuildingDefinition(0, "NONE", 8, 0, TechnologyEnum.None, TechnologyEnum.None),
-			new BuildingDefinition(1, "Palace", 20, 5, TechnologyEnum.Masonry, TechnologyEnum.None),
-			new BuildingDefinition(2, "Barracks", 4, 0, TechnologyEnum.None, TechnologyEnum.None),
-			new BuildingDefinition(3, "Granary", 6, 1, TechnologyEnum.Pottery, TechnologyEnum.None),
-			new BuildingDefinition(4, "Temple", 4, 1, TechnologyEnum.CeremonialBurial, TechnologyEnum.None),
-			new BuildingDefinition(5, "MarketPlace", 8, 1, TechnologyEnum.Currency, TechnologyEnum.None),
-			new BuildingDefinition(6, "Library", 8, 1, TechnologyEnum.Writing, TechnologyEnum.None),
-			new BuildingDefinition(7, "Courthouse", 8, 1, TechnologyEnum.CodeOfLaws, TechnologyEnum.None),
-			new BuildingDefinition(8, "City Walls", 12, 2, TechnologyEnum.Masonry, TechnologyEnum.None),
-			new BuildingDefinition(9, "Aqueduct", 12, 2, TechnologyEnum.Construction, TechnologyEnum.None),
-			new BuildingDefinition(10, "Bank", 12, 3, TechnologyEnum.Banking, TechnologyEnum.None),
-			new BuildingDefinition(11, "Cathedral", 16, 3, TechnologyEnum.Religion, TechnologyEnum.None),
-			new BuildingDefinition(12, "University", 16, 3, TechnologyEnum.University, TechnologyEnum.None),
-			new BuildingDefinition(13, "Mass Transit", 16, 4, TechnologyEnum.MassProduction, TechnologyEnum.None),
-			new BuildingDefinition(14, "Colosseum", 10, 4, TechnologyEnum.Construction, TechnologyEnum.None),
-			new BuildingDefinition(15, "Factory", 20, 4, TechnologyEnum.Industrialization, TechnologyEnum.None),
-			new BuildingDefinition(16, "Mfg. Plant", 32, 6, TechnologyEnum.Robotics, TechnologyEnum.None),
-			new BuildingDefinition(17, "SDI Defense", 20, 4, TechnologyEnum.Superconductor, TechnologyEnum.None),
-			new BuildingDefinition(18, "Recycling Cntr.", 20, 2, TechnologyEnum.Recycling, TechnologyEnum.None),
-			new BuildingDefinition(19, "Power Plant", 16, 4, TechnologyEnum.Refining, TechnologyEnum.None),
-			new BuildingDefinition(20, "Hydro Plant", 24, 4, TechnologyEnum.Electronics, TechnologyEnum.None),
-			new BuildingDefinition(21, "Nuclear Plant", 16, 2, TechnologyEnum.NuclearPower, TechnologyEnum.None),
-			new BuildingDefinition(22, "SS Structural", 8, 0, TechnologyEnum.SpaceFlight, TechnologyEnum.None),
-			new BuildingDefinition(23, "SS Component", 16, 0, TechnologyEnum.Plastics, TechnologyEnum.None),
-			new BuildingDefinition(24, "SS Module", 32, 0, TechnologyEnum.Robotics, TechnologyEnum.None),
-			new BuildingDefinition(25, "Pyramids", 30, 0, TechnologyEnum.Masonry, TechnologyEnum.Communism),
-			new BuildingDefinition(26, "Hanging Gardens", 30, 0, TechnologyEnum.Pottery, TechnologyEnum.Invention),
-			new BuildingDefinition(27, "Colossus", 20, 0, TechnologyEnum.BronzeWorking, TechnologyEnum.Electricity),
-			new BuildingDefinition(28, "Lighthouse", 20, 0, TechnologyEnum.Mapmaking, TechnologyEnum.Magnetism),
-			new BuildingDefinition(29, "Great Library", 30, 0, TechnologyEnum.Literacy, TechnologyEnum.University),
-			new BuildingDefinition(30, "Oracle", 30, 0, TechnologyEnum.Mysticism, TechnologyEnum.Religion),
-			new BuildingDefinition(31, "Great Wall", 30, 0, TechnologyEnum.Masonry, TechnologyEnum.Gunpowder),
-			new BuildingDefinition(32, "Magellan's Expedition", 40, 0, TechnologyEnum.Navigation, TechnologyEnum.None),
-			new BuildingDefinition(33, "Michelangelo's Chapel", 30, 0, TechnologyEnum.Religion, TechnologyEnum.Communism),
-			new BuildingDefinition(34, "Copernicus' Observatory", 30, 0, TechnologyEnum.Astronomy, TechnologyEnum.Automobile), // !!! By manual it should obsolete after the development of Automobile
-			new BuildingDefinition(35, "Shakespeare's Theatre", 40, 0, TechnologyEnum.Medicine, TechnologyEnum.Electronics),
-			new BuildingDefinition(36, "Isaac Newton's College", 40, 0, TechnologyEnum.TheoryOfGravity, TechnologyEnum.NuclearFission),
-			new BuildingDefinition(37, "J.S.Bach's Cathedral", 40, 0, TechnologyEnum.Religion, TechnologyEnum.None),
-			new BuildingDefinition(38, "Darwin's Voyage", 30, 0, TechnologyEnum.Railroad, TechnologyEnum.None),
-			new BuildingDefinition(39, "Hoover Dam", 60, 0, TechnologyEnum.Electronics, TechnologyEnum.None),
-			new BuildingDefinition(40, "Women's Suffrage", 60, 0, TechnologyEnum.Industrialization, TechnologyEnum.None),
-			new BuildingDefinition(41, "Manhattan Project", 60, 0, TechnologyEnum.NuclearFission, TechnologyEnum.None),
-			new BuildingDefinition(42, "United Nations", 60, 0, TechnologyEnum.Communism, TechnologyEnum.None),
-			new BuildingDefinition(43, "Apollo Program", 60, 0, TechnologyEnum.SpaceFlight, TechnologyEnum.None),
-			new BuildingDefinition(44, "SETI Program", 60, 0, TechnologyEnum.Computers, TechnologyEnum.None),
-			new BuildingDefinition(45, "Cure for Cancer", 60, 0, TechnologyEnum.GeneticEngineering, TechnologyEnum.None) };
+		private ImprovementDefinition[] aImprovementDefinitions = new ImprovementDefinition[] {
+			new ImprovementDefinition(0, "NONE", 8, 0, TechnologyEnum.None, TechnologyEnum.None),
+			new ImprovementDefinition(1, "Palace", 20, 5, TechnologyEnum.Masonry, TechnologyEnum.None),
+			new ImprovementDefinition(2, "Barracks", 4, 0, TechnologyEnum.None, TechnologyEnum.None),
+			new ImprovementDefinition(3, "Granary", 6, 1, TechnologyEnum.Pottery, TechnologyEnum.None),
+			new ImprovementDefinition(4, "Temple", 4, 1, TechnologyEnum.CeremonialBurial, TechnologyEnum.None),
+			new ImprovementDefinition(5, "MarketPlace", 8, 1, TechnologyEnum.Currency, TechnologyEnum.None),
+			new ImprovementDefinition(6, "Library", 8, 1, TechnologyEnum.Writing, TechnologyEnum.None),
+			new ImprovementDefinition(7, "Courthouse", 8, 1, TechnologyEnum.CodeOfLaws, TechnologyEnum.None),
+			new ImprovementDefinition(8, "City Walls", 12, 2, TechnologyEnum.Masonry, TechnologyEnum.None),
+			new ImprovementDefinition(9, "Aqueduct", 12, 2, TechnologyEnum.Construction, TechnologyEnum.None),
+			new ImprovementDefinition(10, "Bank", 12, 3, TechnologyEnum.Banking, TechnologyEnum.None),
+			new ImprovementDefinition(11, "Cathedral", 16, 3, TechnologyEnum.Religion, TechnologyEnum.None),
+			new ImprovementDefinition(12, "University", 16, 3, TechnologyEnum.University, TechnologyEnum.None),
+			new ImprovementDefinition(13, "Mass Transit", 16, 4, TechnologyEnum.MassProduction, TechnologyEnum.None),
+			new ImprovementDefinition(14, "Colosseum", 10, 4, TechnologyEnum.Construction, TechnologyEnum.None),
+			new ImprovementDefinition(15, "Factory", 20, 4, TechnologyEnum.Industrialization, TechnologyEnum.None),
+			new ImprovementDefinition(16, "Mfg. Plant", 32, 6, TechnologyEnum.Robotics, TechnologyEnum.None),
+			new ImprovementDefinition(17, "SDI Defense", 20, 4, TechnologyEnum.Superconductor, TechnologyEnum.None),
+			new ImprovementDefinition(18, "Recycling Cntr.", 20, 2, TechnologyEnum.Recycling, TechnologyEnum.None),
+			new ImprovementDefinition(19, "Power Plant", 16, 4, TechnologyEnum.Refining, TechnologyEnum.None),
+			new ImprovementDefinition(20, "Hydro Plant", 24, 4, TechnologyEnum.Electronics, TechnologyEnum.None),
+			new ImprovementDefinition(21, "Nuclear Plant", 16, 2, TechnologyEnum.NuclearPower, TechnologyEnum.None),
+			new ImprovementDefinition(22, "SS Structural", 8, 0, TechnologyEnum.SpaceFlight, TechnologyEnum.None),
+			new ImprovementDefinition(23, "SS Component", 16, 0, TechnologyEnum.Plastics, TechnologyEnum.None),
+			new ImprovementDefinition(24, "SS Module", 32, 0, TechnologyEnum.Robotics, TechnologyEnum.None) };
+
+		private ImprovementDefinition[] aWonderDefinitions = new ImprovementDefinition[] {
+			new ImprovementDefinition(0, "NONE", 8, 0, TechnologyEnum.None, TechnologyEnum.None),
+			new ImprovementDefinition(1, "Pyramids", 30, 0, TechnologyEnum.Masonry, TechnologyEnum.Communism),
+			new ImprovementDefinition(2, "Hanging Gardens", 30, 0, TechnologyEnum.Pottery, TechnologyEnum.Invention),
+			new ImprovementDefinition(3, "Colossus", 20, 0, TechnologyEnum.BronzeWorking, TechnologyEnum.Electricity),
+			new ImprovementDefinition(4, "Lighthouse", 20, 0, TechnologyEnum.Mapmaking, TechnologyEnum.Magnetism),
+			new ImprovementDefinition(5, "Great Library", 30, 0, TechnologyEnum.Literacy, TechnologyEnum.University),
+			new ImprovementDefinition(6, "Oracle", 30, 0, TechnologyEnum.Mysticism, TechnologyEnum.Religion),
+			new ImprovementDefinition(7, "Great Wall", 30, 0, TechnologyEnum.Masonry, TechnologyEnum.Gunpowder),
+			new ImprovementDefinition(8, "Magellan's Expedition", 40, 0, TechnologyEnum.Navigation, TechnologyEnum.None),
+			new ImprovementDefinition(9, "Michelangelo's Chapel", 30, 0, TechnologyEnum.Religion, TechnologyEnum.Communism),
+			new ImprovementDefinition(10, "Copernicus' Observatory", 30, 0, TechnologyEnum.Astronomy, TechnologyEnum.Automobile), // !!! By manual it should obsolete after the development of Automobile
+			new ImprovementDefinition(11, "Shakespeare's Theatre", 40, 0, TechnologyEnum.Medicine, TechnologyEnum.Electronics),
+			new ImprovementDefinition(12, "Isaac Newton's College", 40, 0, TechnologyEnum.TheoryOfGravity, TechnologyEnum.NuclearFission),
+			new ImprovementDefinition(13, "J.S.Bach's Cathedral", 40, 0, TechnologyEnum.Religion, TechnologyEnum.None),
+			new ImprovementDefinition(14, "Darwin's Voyage", 30, 0, TechnologyEnum.Railroad, TechnologyEnum.None),
+			new ImprovementDefinition(15, "Hoover Dam", 60, 0, TechnologyEnum.Electronics, TechnologyEnum.None),
+			new ImprovementDefinition(16, "Women's Suffrage", 60, 0, TechnologyEnum.Industrialization, TechnologyEnum.None),
+			new ImprovementDefinition(17, "Manhattan Project", 60, 0, TechnologyEnum.NuclearFission, TechnologyEnum.None),
+			new ImprovementDefinition(18, "United Nations", 60, 0, TechnologyEnum.Communism, TechnologyEnum.None),
+			new ImprovementDefinition(19, "Apollo Program", 60, 0, TechnologyEnum.SpaceFlight, TechnologyEnum.None),
+			new ImprovementDefinition(20, "SETI Program", 60, 0, TechnologyEnum.Computers, TechnologyEnum.None),
+			new ImprovementDefinition(21, "Cure for Cancer", 60, 0, TechnologyEnum.GeneticEngineering, TechnologyEnum.None) };
 
 		public CivState()
 		{
@@ -480,9 +483,26 @@ namespace OpenCiv1
 			get => this.aUnitDefinitions;
 		}
 
-		public BuildingDefinition[] BuildingDefinitions
+		/// <summary>
+		/// Returns the Improvement or Wonder, depending on the index (0 - 24 are city improvements, 25 - are world Wonders)
+		/// </summary>
+		/// <param name="index"></param>
+		/// <returns></returns>
+		public ImprovementDefinition ImprovementDefinitions(int index)
 		{
-			get => this.aBuildingDefinitions;
+			if (index < 25)
+			{
+				return this.aImprovementDefinitions[index];
+			}
+			else
+			{
+				return this.aWonderDefinitions[index - 24];
+			}
+		}
+
+		public ImprovementDefinition[] WonderDefinitions
+		{
+			get => this.aWonderDefinitions;
 		}
 
 		public TechnologyDefinition[] TechnologyDefinitions

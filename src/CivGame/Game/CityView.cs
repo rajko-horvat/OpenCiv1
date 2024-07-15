@@ -29,9 +29,9 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x186);
 
-			City oCity = this.oParent.CivState.Cities[cityID];
+			City city = this.oParent.CivState.Cities[cityID];
 
-			int iTechnologyCount = this.oParent.CivState.Players[oCity.PlayerID].DiscoveredTechnologyCount >> 1;
+			int iTechnologyCount = this.oParent.CivState.Players[city.PlayerID].DiscoveredTechnologyCount >> 1;
 			int[,] aCityLayout = new int[19, 12];
 			int iXPos1, iYPos1, iXPos2, iYPos2, i8;
 			int iValue;
@@ -61,7 +61,7 @@ namespace OpenCiv1
 			iXPos1 = 9;
 			iYPos1 = 11;
 
-			for (int i = 0, j = 0; (oCity.ActualSize << 3) > i; i++)
+			for (int i = 0, j = 0; (city.ActualSize << 3) > i; i++)
 			{
 				if (aCityLayout[iXPos1, iYPos1] != -1)
 				{
@@ -78,9 +78,9 @@ namespace OpenCiv1
 					int iCombinedPosition = this.oParent.Segment_2dc4.F0_2dc4_0208_GetShortestDistance((short)(iXPos1 - 9), (short)(iYPos1 - 10));
 
 					aCityLayout[iXPos1, iYPos1] = Math.Min(Math.Max(((iTechnologyCount - iCombinedPosition) / 3) - oRNG.Next(2), iTechnologyCount / 6),
-						Math.Min((oCity.ActualSize / 4) + 6, 9));
+						Math.Min((city.ActualSize / 4) + 6, 9));
 
-					if ((iCombinedPosition * iCombinedPosition) > ((int)oCity.ActualSize << 3))
+					if ((iCombinedPosition * iCombinedPosition) > ((int)city.ActualSize << 3))
 					{
 						iXPos1 = 9;
 						iYPos1 = 11;
@@ -195,67 +195,65 @@ namespace OpenCiv1
 				}
 			}
 
-			for (int i = 23; i > 0; i--)
+			ImprovementEnum[] improvements = Enum.GetValues<ImprovementEnum>();
+
+			for (int i = 0; i < improvements.Length; i++)
 			{
-				while (i > 0 && (((1 << i) & this.oCPU.TwoUInt16ToUInt32(oCity.BuildingFlags0, oCity.BuildingFlags1)) == 0 ||
-					i == 7 || i == 8 || i == 12 || i == 18 || i == 19))
+				if (improvements[i] != ImprovementEnum.CityWalls && improvements[i] != ImprovementEnum.Aqueduct &&
+					improvements[i] != ImprovementEnum.MassTransit && improvements[i] != ImprovementEnum.PowerPlant &&
+					improvements[i] != ImprovementEnum.HydroPlant && city.HasImprovement(improvements[i]))
 				{
-					i--;
-				}
+					int j;
 
-				if (i < 1)
-					break;
-
-				int j = 0;
-
-				for (; j < 500; j++)
-				{
-					iXPos1 = oRNG.Next(16) + 1;
-					iYPos1 = oRNG.Next(10) + 1;
-
-					int iFlags = 0;
-
-					if (aCityLayout[iXPos1 - 1, iYPos1 + 1] >= 0 || aCityLayout[iXPos1, iYPos1] >= 0 ||
-						aCityLayout[iXPos1, iYPos1 + 1] >= 0 || aCityLayout[iXPos1 + 1, iYPos1] >= 0 ||
-						aCityLayout[iXPos1 + 1, iYPos1 + 1] >= 0 ||
-						j > 350)
+					for (j = 0; j < 500; j++)
 					{
-						iFlags |= 1;
-					}
+						iXPos1 = oRNG.Next(16) + 1;
+						iYPos1 = oRNG.Next(10) + 1;
 
-					if (aCityLayout[iXPos1 - 1, iYPos1 + 1] >= 15 || aCityLayout[iXPos1, iYPos1] >= 15 ||
-						aCityLayout[iXPos1, iYPos1 + 1] >= 15 || aCityLayout[iXPos1 + 1, iYPos1] >= 15 ||
-						aCityLayout[iXPos1 + 1, iYPos1 + 1] >= 15 ||
-						aCityLayout[iXPos1 - 1, iYPos1 + 1] == -2 || aCityLayout[iXPos1, iYPos1] == -2 ||
-						aCityLayout[iXPos1, iYPos1 + 1] == -2 || aCityLayout[iXPos1 + 1, iYPos1] == -2 ||
-						aCityLayout[iXPos1 + 1, iYPos1 + 1] == -2)
-					{
-						iFlags |= 2;
-					}
+						int iFlags = 0;
 
-					if (iFlags == 1)
-						break;
-				}
-
-				if (j < 500)
-				{
-					aCityLayout[iXPos1 - 1, iYPos1 + 1] = 15;
-					aCityLayout[iXPos1, iYPos1] = i + 15;
-					aCityLayout[iXPos1, iYPos1 + 1] = 15;
-					aCityLayout[iXPos1 + 1, iYPos1] = 15;
-					aCityLayout[iXPos1 + 1, iYPos1 + 1] = 15;
-
-					if (iYPos1 < 7)
-					{
-						if ((aCityLayout[iXPos1 + 1, iYPos1 + 2] & 7) == 0)
+						if (aCityLayout[iXPos1 - 1, iYPos1 + 1] >= 0 || aCityLayout[iXPos1, iYPos1] >= 0 ||
+							aCityLayout[iXPos1, iYPos1 + 1] >= 0 || aCityLayout[iXPos1 + 1, iYPos1] >= 0 ||
+							aCityLayout[iXPos1 + 1, iYPos1 + 1] >= 0 ||
+							j > 350)
 						{
-							aCityLayout[iXPos1 + 1, iYPos1 + 2] = -1;
+							iFlags |= 1;
+						}
+
+						if (aCityLayout[iXPos1 - 1, iYPos1 + 1] >= 15 || aCityLayout[iXPos1, iYPos1] >= 15 ||
+							aCityLayout[iXPos1, iYPos1 + 1] >= 15 || aCityLayout[iXPos1 + 1, iYPos1] >= 15 ||
+							aCityLayout[iXPos1 + 1, iYPos1 + 1] >= 15 ||
+							aCityLayout[iXPos1 - 1, iYPos1 + 1] == -2 || aCityLayout[iXPos1, iYPos1] == -2 ||
+							aCityLayout[iXPos1, iYPos1 + 1] == -2 || aCityLayout[iXPos1 + 1, iYPos1] == -2 ||
+							aCityLayout[iXPos1 + 1, iYPos1 + 1] == -2)
+						{
+							iFlags |= 2;
+						}
+
+						if (iFlags == 1)
+							break;
+					}
+
+					if (j < 500)
+					{
+						aCityLayout[iXPos1 - 1, iYPos1 + 1] = 15;
+						aCityLayout[iXPos1, iYPos1] = 14 + (int)improvements[i];
+						aCityLayout[iXPos1, iYPos1 + 1] = 15;
+						aCityLayout[iXPos1 + 1, iYPos1] = 15;
+						aCityLayout[iXPos1 + 1, iYPos1 + 1] = 15;
+
+						if (iYPos1 < 7)
+						{
+							if ((aCityLayout[iXPos1 + 1, iYPos1 + 2] & 7) == 0)
+							{
+								aCityLayout[iXPos1 + 1, iYPos1 + 2] = -1;
+							}
 						}
 					}
 				}
 			}
 
-			if ((oCity.BuildingFlags1 & 8) != 0)
+			if (city.HasImprovement(ImprovementEnum.HydroPlant))
 			{
 				aCityLayout[17, 7] = 34;
 				aCityLayout[17, 8] = 15;
@@ -263,7 +261,7 @@ namespace OpenCiv1
 				aCityLayout[18, 8] = 15;
 			}
 
-			if ((oCity.BuildingFlags0 & 0x100) != 0)
+			if (city.HasImprovement(ImprovementEnum.Aqueduct))
 			{
 				aCityLayout[0, i8 - 1] = 23;
 				aCityLayout[0, i8] = 15;
@@ -279,7 +277,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x08f0, size: 5
 			this.oParent.Segment_11a8.F0_11a8_02a4(1, 1);
 
-			F19_0000_137f((ushort)param2, oCity.PlayerID, cityID);
+			F19_0000_137f((ushort)param2, city.PlayerID, cityID);
 
 			int i3 = 0;
 
@@ -315,7 +313,7 @@ namespace OpenCiv1
 					}
 				}
 
-				if ((oCity.BuildingFlags1 & 0x4) != 0 && param2 != 19)
+				if (city.HasImprovement(ImprovementEnum.PowerPlant) && param2 != 19)
 				{
 					for (int i = (cityID == this.oParent.CivState.WonderCityID[7]) ? 69 : 0; i < 310; i += 45)
 					{
@@ -435,7 +433,7 @@ namespace OpenCiv1
 					}
 				}
 				
-				if ((oCity.BuildingFlags0 & 0x80) != 0 && param2 != 8)
+				if (city.HasImprovement(ImprovementEnum.CityWalls) && param2 != 8)
 				{
 					for (int i = 0; i < 320; i += 43)
 					{
@@ -454,7 +452,7 @@ namespace OpenCiv1
 						142, 108, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x81ae));
 				}
 
-				if ((oCity.BuildingFlags0 & 0x1000) != 0 && param2 != 13)
+				if (city.HasImprovement(ImprovementEnum.MassTransit) && param2 != 13)
 				{
 					for (int i = 0; i < 310; i += 46)
 					{
@@ -1067,8 +1065,8 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.DX.Word;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.CX.Word = this.oCPU.AND_UInt16(this.oCPU.CX.Word, this.oParent.CivState.Cities[cityID].BuildingFlags0);
-			this.oCPU.BX.Word = this.oCPU.AND_UInt16(this.oCPU.BX.Word, this.oParent.CivState.Cities[cityID].BuildingFlags1);
+			this.oCPU.CX.Word = this.oCPU.AND_UInt16(this.oCPU.CX.Word, this.oParent.CivState.Cities[cityID].ImprovementFlags0);
+			this.oCPU.BX.Word = this.oCPU.AND_UInt16(this.oCPU.BX.Word, this.oParent.CivState.Cities[cityID].ImprovementFlags1);
 			this.oCPU.BX.Word = this.oCPU.OR_UInt16(this.oCPU.BX.Word, this.oCPU.CX.Word);
 			if (this.oCPU.Flags.NE) goto L14fb;
 

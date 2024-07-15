@@ -9,6 +9,7 @@
 <li>The game logic is <b>Based on original DOS Civilization 1 game version 475.05</b> disassembly.</li>
 <li>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform and the bugs that have never been fixed are hindering the popularity of the game.</li>
 <li>The news, discussions about this project and release news are published regularly on <a href="https://forums.civfanatics.com/threads/rewrite-of-civilization-1-source-code-openciv1-project.682623/" target="_blank">Civilization Fanatics Forum page</a></li>
+<li>For contact purposes openciv1@yahoo.com public email address can be used.</li>
 </ul>
 
 ## Copyright considerations
@@ -57,7 +58,7 @@ Currently, you can contribute to this repository in one of the following ways:
 <p><b>Q:</b> Are there any additional keyboard shorcuts (apart from the default ones)?</p>
 <b>A:</b> Yes, these are additional keyboard shorcuts that you can use during the game:
 <ul>
-<li>Alt + D - Enable / Disable the <b>Debug mode (previously, Shift-56)</b></li>
+<li>Alt + D - Enable / Disable the <b>Debug mode<7b> (previously, Shift-56)</li>
 <li>Alt + P - Pause / Resume game</li>
 <li>Alt + 1 - Show / Hide Screen 1</li>
 <li>Alt + 2 - Show / Hide Screen 2</li>

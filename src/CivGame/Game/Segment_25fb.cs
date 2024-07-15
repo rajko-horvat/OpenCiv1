@@ -462,7 +462,7 @@ namespace OpenCiv1
 			goto L0397;
 
 		L048d:
-			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x54))].BuildingFlags0, 0x80);
+			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x54))].ImprovementFlags0, 0x80);
 			if (this.oCPU.Flags.NE) goto L0497;
 			goto L024c;
 
@@ -1813,7 +1813,7 @@ namespace OpenCiv1
 			goto L1083;
 
 		L1123:
-			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].BuildingFlags1, 0x1);
+			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].ImprovementFlags1, 0x1);
 			if (this.oCPU.Flags.E) goto L112e;
 			goto L1083;
 
@@ -2260,7 +2260,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34))].BuildingFlags0, 0x1);
+			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34))].ImprovementFlags0, 0x1);
 			if (this.oCPU.Flags.E) goto L1579;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
 			goto L1582;
@@ -3501,8 +3501,9 @@ namespace OpenCiv1
 				goto L213b;
 
 			// Instruction address 0x25fb:0x211c, size: 5
-			this.oParent.CityWorker.F0_1d12_6abc(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x36)), 1);
+			// !!! this call was using uninitialized playerID and cityID from CityWorker class, it now makes sense to use referenced player and unit ID
+			this.oParent.CityWorker.F0_1d12_6abc_GetCityResourceCount(playerID, this.oParent.CivState.Players[playerID].Units[unitID].HomeCityID, 
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)), this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x36)), 1);
 
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 			this.oCPU.TEST_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a)), 0x8);

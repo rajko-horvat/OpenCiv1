@@ -56,7 +56,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[cityID].BuildingFlags0, 0x1);
+			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[cityID].ImprovementFlags0, 0x1);
 			if (this.oCPU.Flags.NE) goto L005c;
 			this.oCPU.CMP_UInt8((byte)this.oParent.CivState.Cities[cityID].CurrentProductionID, 0xff);
 			if (this.oCPU.Flags.NE) goto L00c5;
@@ -69,7 +69,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[cityID].BuildingFlags0, 0x1);
+			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[cityID].ImprovementFlags0, 0x1);
 			if (this.oCPU.Flags.E) goto L00c5;
 			this.oCPU.DI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12));
 			this.oCPU.DI.Word = this.oCPU.SHL_UInt16(this.oCPU.DI.Word, 0x1);
@@ -105,7 +105,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[cityID].BuildingFlags0, 0x1);
+			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[cityID].ImprovementFlags0, 0x1);
 			if (this.oCPU.Flags.E) goto L00de;
 
 			// Instruction address 0x2459:0x00d8, size: 3
@@ -175,7 +175,7 @@ namespace OpenCiv1
 
 			this.oParent.CivState.Cities[cityID].ShieldsCount = 0;
 			this.oParent.CivState.Cities[cityID].StatusFlag &= 0xae;
-			this.oParent.CivState.Cities[cityID].BuildingFlags0 &= 0xfbb6;
+			this.oParent.CivState.Cities[cityID].ImprovementFlags0 &= 0xfbb6;
 
 			this.oCPU.CMP_UInt16(flag, 0x0);
 			if (this.oCPU.Flags.NE) goto L01a8;
@@ -187,8 +187,8 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0xaaaa;
 			this.oCPU.AX.Word = this.oCPU.SHR_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.DX.Word = 0;
-			this.oParent.CivState.Cities[cityID].BuildingFlags0 &= this.oCPU.AX.Word;
-			this.oParent.CivState.Cities[cityID].BuildingFlags1 &= this.oCPU.DX.Word;
+			this.oParent.CivState.Cities[cityID].ImprovementFlags0 &= this.oCPU.AX.Word;
+			this.oParent.CivState.Cities[cityID].ImprovementFlags1 &= this.oCPU.DX.Word;
 
 		L01a8:
 			if (flag == 0)

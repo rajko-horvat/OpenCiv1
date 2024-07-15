@@ -91,7 +91,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[cityID].BuildingFlags0, 0x1);
+			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[cityID].ImprovementFlags0, 0x1);
 			if (this.oCPU.Flags.E) goto L00be;
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xb276, this.oCPU.OR_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0xb276), 0x10));
 
@@ -322,8 +322,8 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = this.oParent.CivState.Cities[cityID].BuildingFlags0;
-			this.oCPU.DX.Word = this.oParent.CivState.Cities[cityID].BuildingFlags1;
+			this.oCPU.AX.Word = this.oParent.CivState.Cities[cityID].ImprovementFlags0;
+			this.oCPU.DX.Word = this.oParent.CivState.Cities[cityID].ImprovementFlags1;
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.BX.Word = this.oCPU.CX.Word;
@@ -347,12 +347,12 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.AX.Word = this.oCPU.NOT_UInt16(this.oCPU.AX.Word);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-			this.oParent.CivState.Cities[cityID].BuildingFlags0 &= this.oCPU.AX.Word;
-			this.oParent.CivState.Cities[cityID].BuildingFlags1 &= this.oCPU.DX.Word;
+			this.oParent.CivState.Cities[cityID].ImprovementFlags0 &= this.oCPU.AX.Word;
+			this.oParent.CivState.Cities[cityID].ImprovementFlags1 &= this.oCPU.DX.Word;
 
 			// Instruction address 0x0000:0x0370, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06,
-				this.oParent.CivState.BuildingDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 1].Name);
+				this.oParent.CivState.ImprovementDefinitions(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 1).Name);
 
 			// Instruction address 0x0000:0x0380, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " destroyed\n");
@@ -384,7 +384,7 @@ namespace OpenCiv1
 
 		L03c9:
 			// Instruction address 0x0000:0x03e5, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.BuildingDefinitions[-this.oParent.CivState.Cities[cityID].CurrentProductionID].Name);
+			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.ImprovementDefinitions(-this.oParent.CivState.Cities[cityID].CurrentProductionID).Name);
 
 		L03e0:
 			// Instruction address 0x0000:0x03f5, size: 5

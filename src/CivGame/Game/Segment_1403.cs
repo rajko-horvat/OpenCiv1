@@ -76,7 +76,7 @@ namespace OpenCiv1
 				goto L0125;
 
 			// Instruction address 0x1403:0x00e9, size: 5
-			this.oParent.CityWorker.F0_1d12_6c97(playerID, 4);
+			this.oParent.CityWorker.F0_1d12_6c97_PlayerHasWonder(playerID, (int)WonderEnum.Lighthouse);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x0);
 			if (this.oCPU.Flags.E) goto L00f9;
@@ -84,7 +84,7 @@ namespace OpenCiv1
 
 		L00f9:
 			// Instruction address 0x1403:0x0100, size: 5
-			this.oParent.CityWorker.F0_1d12_6c97(playerID, 8);
+			this.oParent.CityWorker.F0_1d12_6c97_PlayerHasWonder(playerID, (int)WonderEnum.MagellansExpedition);
 			
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x0);
 			if (this.oCPU.Flags.NE) goto L0110;
@@ -2873,7 +2873,7 @@ namespace OpenCiv1
 			if (this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].TypeID == -1)
 				goto L255b;
 
-			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))].BuildingFlags0, 0x80);
+			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))].ImprovementFlags0, 0x80);
 			if (this.oCPU.Flags.E) goto L2530;
 			goto L255b;
 

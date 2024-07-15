@@ -6,26 +6,26 @@ using System.Threading.Tasks;
 
 namespace OpenCiv1
 {
-	public class BuildingDefinition
+	public class ImprovementDefinition
 	{
 		public int ID = -1;
+
 		// Total size: 30 bytes
 		public string Name = ""; // (24 bytes)
 		public int Price = 0;
-		public int Maintenance = 0;
+		public int MaintenanceCost = 0;
 		public TechnologyEnum RequiresTechnology = TechnologyEnum.None;
 		public TechnologyEnum ObsoletesAfterTechnology = TechnologyEnum.None;
 
-		public BuildingDefinition()
+		public ImprovementDefinition()
 		{ }
 
-		public BuildingDefinition(int id, string name, int price, int maintenance, TechnologyEnum requiresTechnology, TechnologyEnum obsoletesAfterTechnology)
+		public ImprovementDefinition(int id, string name, int price, int maintenanceCost, TechnologyEnum requiresTechnology, TechnologyEnum obsoletesAfterTechnology)
 		{
 			this.ID = id;
-
 			this.Name = name;
 			this.Price = price;
-			this.Maintenance = maintenance;
+			this.MaintenanceCost = maintenanceCost;
 			this.RequiresTechnology = requiresTechnology;
 			this.ObsoletesAfterTechnology = obsoletesAfterTechnology;
 		}

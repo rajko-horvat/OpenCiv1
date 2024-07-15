@@ -518,7 +518,7 @@ namespace OpenCiv1
 		L05ad:
 			// Instruction address 0x0000:0x0405, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.CivState.BuildingDefinitions[24 + this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].Name);
+				this.oParent.CivState.WonderDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].Name);
 
 			goto L040d;
 
