@@ -393,7 +393,7 @@ namespace OpenCiv1
 								// Instruction address 0x1d12:0x0843, size: 5
 								this.oParent.Segment_1ade.F0_1ade_018e(cityID, city.Position.X, city.Position.Y);
 
-								this.oParent.StartGameMenu.F5_0000_0e6c(this.Var_6548_PlayerID, 0);
+								this.oParent.StartGameMenu.F5_0000_0e6c_CheckPlayerEndGame(this.Var_6548_PlayerID, 0);
 
 								// Instruction address 0x1d12:0x085b, size: 5
 								this.oParent.Segment_11a8.F0_11a8_0250();
@@ -490,7 +490,7 @@ namespace OpenCiv1
 
 							if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].AttackStrength != 0)
 							{
-								if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].TerrainCategory == 1)
+								if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].MovementType == UnitMovementTypeEnum.Sea)
 								{
 									this.Var_6546++;
 								}
@@ -835,7 +835,7 @@ namespace OpenCiv1
 
 					if (city.CurrentProductionID >= 0)
 					{
-						if ((this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) <= city.ShieldsCount)
+						if ((this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Price * local_4a) <= city.ShieldsCount)
 						{
 							if (city.CurrentProductionID == 0 && city.ActualSize == 1 && this.oParent.CivState.DifficultyLevel == 0)
 							{
@@ -843,7 +843,7 @@ namespace OpenCiv1
 							}
 							else
 							{
-								city.ShieldsCount -= (short)(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a);
+								city.ShieldsCount -= (short)(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Price * local_4a);
 
 								local_ba = -1;
 
@@ -878,7 +878,7 @@ namespace OpenCiv1
 										// Instruction address 0x1d12:0x1727, size: 5
 										this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
 
-										this.oParent.StartGameMenu.F5_0000_0e6c(this.Var_6548_PlayerID, 0);
+										this.oParent.StartGameMenu.F5_0000_0e6c_CheckPlayerEndGame(this.Var_6548_PlayerID, 0);
 
 										// Instruction address 0x1d12:0x1743, size: 5
 										this.oParent.Segment_11a8.F0_11a8_0250();
@@ -967,7 +967,7 @@ namespace OpenCiv1
 
 										if (local_c8 > 3 || (this.oParent.CivState.Players[this.Var_6548_PlayerID].Diplomacy[this.oParent.CivState.HumanPlayerID] & 2) != 0)
 										{
-											city.ShieldsCount += (short)(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a);
+											city.ShieldsCount += (short)(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Price * local_4a);
 										}
 										else
 										{
@@ -1350,7 +1350,7 @@ namespace OpenCiv1
 						{
 							// Instruction address 0x1d12:0x2530, size: 5
 							local_cc = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-								(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
+								(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Price * local_4a) - city.ShieldsCount,
 								0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 3);
 						}
 
@@ -1358,7 +1358,7 @@ namespace OpenCiv1
 						{
 							// Instruction address 0x1d12:0x2591, size: 5
 							local_cc = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-								(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
+								(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Price * local_4a) - city.ShieldsCount,
 								0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 3);
 						}
 
@@ -1366,7 +1366,7 @@ namespace OpenCiv1
 						{
 							// Instruction address 0x1d12:0x260d, size: 5
 							local_cc = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-								(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
+								(this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Price * local_4a) - city.ShieldsCount,
 								0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 4);
 						}
 
@@ -1929,7 +1929,7 @@ namespace OpenCiv1
 										this.oParent.Var_db42 = -999; // 0xfc19
 									}
 									else if (local_c8 > 0 &&
-										this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].TypeID].TerrainCategory == 0 &&
+										this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].TypeID].MovementType == UnitMovementTypeEnum.Land &&
 										this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].TypeID != 0)
 									{
 										// Instruction address 0x1d12:0x35c9, size: 5
@@ -2011,7 +2011,7 @@ namespace OpenCiv1
 									{
 										if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].AttackStrength != 0 &&
 											local_e8 != 0 &&
-											(this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].TerrainCategory == 1 ||
+											(this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].MovementType == UnitMovementTypeEnum.Sea ||
 												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].Position.X != city.Position.X ||
 												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].Position.Y != city.Position.Y))
 										{
@@ -2215,7 +2215,7 @@ namespace OpenCiv1
 
 					if (city.CurrentProductionID >= 0)
 					{
-						local_de = this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost;
+						local_de = this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Price;
 					}
 					else
 					{
@@ -2728,7 +2728,7 @@ namespace OpenCiv1
 					L4bf7:
 						if (city.CurrentProductionID >= 0)
 						{
-							local_106 = this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Cost;
+							local_106 = this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].Price;
 
 							// Instruction address 0x1d12:0x4c3d, size: 5
 							local_e8 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange((10 * local_106) - city.ShieldsCount, 0, 999);
@@ -4729,7 +4729,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_1d12_6dfe({cityID}, {size})");
 
 			// function body
-			while (this.Var_6542 >= 0 && this.oParent.Var_70e4 < this.Var_6542)
+			while (this.Var_6542 > 0 && this.oParent.Var_70e4 < this.Var_6542)
 			{
 				this.Var_6542--;
 				this.oParent.Var_70e4++;
@@ -4743,7 +4743,7 @@ namespace OpenCiv1
 			// Instruction address 0x1d12:0x6ebb, size: 5
 			while ((this.oParent.Var_70e2 + this.oParent.Var_70e4) > this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.CivState.Cities[cityID].ActualSize - size, 0, 99))
 			{
-				if (this.Var_6542 != 0)
+				if (this.Var_6542 > 0)
 				{
 					this.Var_6542--;
 				}

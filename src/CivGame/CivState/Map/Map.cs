@@ -3,7 +3,7 @@ using OpenCiv1.GPU;
 using System;
 using System.Xml.Serialization;
 
-namespace OpenCiv1.GameMap
+namespace OpenCiv1
 {
 	[Serializable]
 	public class Map : IList<MapCell>
@@ -58,13 +58,63 @@ namespace OpenCiv1.GameMap
 				for (int i = 0; i < 80; i++)
 				{
 					MapCell cell = new MapCell(i, j);
-					cell.TerrainType = (TerrainTypeEnum)bitmap.GetPixel(i, j);
+
+					cell.Layer1 = bitmap.GetPixel(i, j);
+					cell.Layer2 = bitmap.GetPixel(i + 80, j);
+
+					cell.Layer3 = bitmap.GetPixel(i, j + 50);
+					cell.Layer4 = bitmap.GetPixel(i + 80, j + 50);
+
+					cell.Layer5 = bitmap.GetPixel(i, j + 100);
+					cell.Layer6 = bitmap.GetPixel(i + 80, j + 100);
+
+					cell.Layer7 = bitmap.GetPixel(i, j + 150);
+					cell.Layer8 = bitmap.GetPixel(i + 80, j + 150);
+
+					cell.Layer9 = bitmap.GetPixel(i + 160, j);
+					cell.Layer10 = bitmap.GetPixel(i + 240, j);
 
 					map.Add(cell);
 				}
 			}
 
 			return map;
+		}
+
+		public GBitmap ToBitmap()
+		{
+			int width = this.oSize.Width;
+			int height = this.oSize.Height;
+			GBitmap bitmap = new GBitmap(width * 4, height * 4);
+
+
+			for (int j = 0; j < height; j++)
+			{
+				for (int i = 0; i < width; i++)
+				{
+					MapCell? cell = this[i, j];
+
+					if (cell != null)
+					{
+						bitmap.SetPixel(i, j, (byte)(cell.Layer1 & 0xff));
+						bitmap.SetPixel(i + width, j, (byte)(cell.Layer2 & 0xff));
+
+						bitmap.SetPixel(i, j + height, (byte)(cell.Layer3 & 0xff));
+						bitmap.SetPixel(i + width, j + height, (byte)(cell.Layer4 & 0xff));
+
+						bitmap.SetPixel(i, j + height * 2, (byte)(cell.Layer5 & 0xff));
+						bitmap.SetPixel(i + width, j + height * 2, (byte)(cell.Layer6 & 0xff));
+
+						bitmap.SetPixel(i, j + height * 3, (byte)(cell.Layer7 & 0xff));
+						bitmap.SetPixel(i + width, j + height * 3, (byte)(cell.Layer8 & 0xff));
+
+						bitmap.SetPixel(i + width * 2, j, (byte)(cell.Layer9 & 0xff));
+						bitmap.SetPixel(i + width * 3, j, (byte)(cell.Layer10 & 0xff));
+					}
+				}
+			}
+
+			return bitmap;
 		}
 
 		[XmlIgnore]

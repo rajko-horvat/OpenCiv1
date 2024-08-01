@@ -58,7 +58,7 @@ Currently, you can contribute to this repository in one of the following ways:
 <p><b>Q:</b> Are there any additional keyboard shorcuts (apart from the default ones)?</p>
 <b>A:</b> Yes, these are additional keyboard shorcuts that you can use during the game:
 <ul>
-<li>Alt + D - Enable / Disable the <b>Debug mode<7b> (previously, Shift-56)</li>
+<li>Alt + D - Enable / Disable the <b>Debug mode</b> (previously, Shift-56)</li>
 <li>Alt + P - Pause / Resume game</li>
 <li>Alt + 1 - Show / Hide Screen 1</li>
 <li>Alt + 2 - Show / Hide Screen 2</li>

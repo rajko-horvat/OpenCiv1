@@ -762,6 +762,15 @@ namespace OpenCiv1
 				if (!this.oParent.Graphics.Screens.GetValueByKey(2).LoadPIC($"{VCPU.DefaultCIVPath}{filename}.MAP", 0, 0, out temp))
 					throw new Exception($"Can't read Map file '{filename}.MAP'");
 
+				try
+				{
+					this.oParent.CivState.Map = Map.FromPIC($"{VCPU.DefaultCIVPath}{filename}.MAP");
+				}
+				catch
+				{
+					throw new Exception($"Can't read Map file '{filename}.MAP'");
+				}
+
 				// read sve file
 				FileStream reader = new FileStream($"{VCPU.DefaultCIVPath}{filename}.SVE", FileMode.Open);
 				this.oParent.CivState.TurnCount = ReadInt16(reader);
@@ -1109,9 +1118,12 @@ namespace OpenCiv1
 				this.oParent.CivState.GlobalWarmingCount = ReadInt16(reader);
 				this.oParent.CivState.GameSettingFlags = ReadInt16(reader);
 
-				for (int i = 0; i < 260; i++)
+				for (int i = 0; i < 20; i++)
 				{
-					this.oParent.CivState.LandPathfinding[i] = ReadUInt8(reader);
+					for (int j = 0; j < 13; j++)
+					{
+						this.oParent.CivState.LandPathfinding[i, j] = ReadUInt8(reader);
+					}
 				}
 
 				this.oParent.CivState.MaximumTechnologyCount = ReadInt16(reader);
@@ -1704,9 +1716,12 @@ namespace OpenCiv1
 				WriteInt16(writer, this.oParent.CivState.GlobalWarmingCount);
 				WriteInt16(writer, this.oParent.CivState.GameSettingFlags);
 
-				for (int i = 0; i < 260; i++)
+				for (int i = 0; i < 20; i++)
 				{
-					writer.WriteByte(this.oParent.CivState.LandPathfinding[i]);
+					for (int j = 0; j < 13; j++)
+					{
+						writer.WriteByte(this.oParent.CivState.LandPathfinding[i, j]);
+					}
 				}
 
 				WriteInt16(writer, this.oParent.CivState.MaximumTechnologyCount);

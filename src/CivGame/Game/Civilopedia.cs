@@ -1125,7 +1125,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e))].RequiredTechnology == (TechnologyEnum)id)
+			if (this.oParent.CivState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e))].RequiresTechnology == (TechnologyEnum)id)
 			{
 				// Instruction address 0x0000:0x0da3, size: 5
 				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
@@ -1300,7 +1300,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x1054, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, 
-				this.oParent.CivState.TechnologyDefinitions[(int)this.oParent.CivState.UnitDefinitions[id].RequiredTechnology].Name);
+				this.oParent.CivState.TechnologyDefinitions[(int)this.oParent.CivState.UnitDefinitions[id].RequiresTechnology].Name);
 
 			this.oCPU.CMP_UInt16(id, 0x19);
 			if (this.oCPU.Flags.NE) goto L1072;
@@ -1324,7 +1324,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x10c2, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(10 * this.oParent.CivState.UnitDefinitions[id].Cost, 10));
+				this.oParent.MSCAPI.itoa(10 * this.oParent.CivState.UnitDefinitions[id].Price, 10));
 
 			// Instruction address 0x0000:0x10d2, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " resources.");

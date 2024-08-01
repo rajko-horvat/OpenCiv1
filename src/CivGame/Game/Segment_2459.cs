@@ -549,7 +549,7 @@ namespace OpenCiv1
 			this.oParent.CivState.Players[playerID].UnitsInProduction[this.oParent.CivState.Cities[cityID].CurrentProductionID]++;
 
 		L05da:
-			this.oParent.StartGameMenu.F5_0000_0e6c(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), playerID);
+			this.oParent.StartGameMenu.F5_0000_0e6c_CheckPlayerEndGame(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), playerID);
 
 			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
 			this.oCPU.DI.Word = this.oCPU.POP_UInt16();

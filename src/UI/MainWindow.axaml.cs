@@ -55,7 +55,9 @@ namespace OpenCiv1.UI
 				"Warning", MessageBoxIcon.Warning, MessageBoxButtons.OK);
 #endif
 
-			// Initialize Game game state
+			Thread.CurrentThread.Name = "OpenCiv1 main thread";
+
+			// Initialize game state
 			this.oCivGame = new CivGame();
 
 			// Main Windows events
@@ -65,7 +67,7 @@ namespace OpenCiv1.UI
 			this.PointerPressed += this.MainWindow_PointerPressed;
 			this.PointerReleased += this.MainWindow_PointerReleased;
 
-			// Initialize Widnows refresh timer
+			// Initialize Window refresh timer
 			this.oTimer = new DispatcherTimer(DispatcherPriority.Normal);
 			this.oTimer.Interval = TimeSpan.FromMilliseconds(20);
 			this.oTimer.Tick += this.Timer_Tick;
@@ -73,6 +75,7 @@ namespace OpenCiv1.UI
 
 			// Initialize game thread where we have all the fun ;)
 			this.oGameThread = new Thread(new ThreadStart(GameThread));
+			this.oGameThread.Name = "OpenCiv1 game thread";
 			this.oGameThread.Start();
 		}
 
@@ -90,7 +93,24 @@ namespace OpenCiv1.UI
 					else
 					{
 						MessageBox.Show(this, "There was an error in the OpenCiv1 game engine, " +
-							"the details about the error should are in the Log.txt file.", "Game engine error", MessageBoxIcon.Error, MessageBoxButtons.OK);
+							"the details about the error will be in the Exception.log file.", "Game engine error", MessageBoxIcon.Error, MessageBoxButtons.OK);
+
+						try
+						{
+							StreamWriter writer = new StreamWriter($"{VCPU.AssemblyPath}Exception.log", true);
+
+							writer.WriteLine("---------------------------");
+							writer.WriteLine($"Mesage: {ex.Message}");
+							writer.WriteLine($"Source: {ex.Source}");
+							writer.WriteLine($"Stack trace: {ex.StackTrace}");
+
+							writer.Close();
+						}
+						catch (Exception ex1)
+						{
+							MessageBox.Show(this, $"Could not write the Exception.log file. The exception (when trying to open a file) was: {ex1.Message}",
+								"Game engine error", MessageBoxIcon.Error, MessageBoxButtons.OK);
+						}
 					}
 				}
 
@@ -567,14 +587,6 @@ namespace OpenCiv1.UI
 #if !DEBUG
 			catch (Exception ex)
 			{
-				if (this.oCivGame != null && this.oCivGame.Log != null)
-				{
-					this.oCivGame.Log.WriteLine("");
-					this.oCivGame.Log.WriteLine($"Exception message: {ex.Message}");
-					this.oCivGame.Log.WriteLine($"Exception source: {ex.Source}");
-					this.oCivGame.Log.WriteLine($"Exception stack trace: {ex.StackTrace}");
-				}
-
 				// Show exceptions on UI Thread
 				this.oGameException = ex;
 			}

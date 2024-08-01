@@ -64,6 +64,25 @@ namespace OpenCiv1
 		// !!! This should not be used at all as screen 3 doesn't exist
 		public CRectangle Var_19fc_Rectangle = new CRectangle(3, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 
+		public int[] Array_2ba6 = new int[] {
+			-1,	// Water
+			10,	// Coast
+			3,	// Forest
+			8,	// Swamp
+			-1,	// Undefined4
+			-1,	// Undefined5
+			1,	// Plains
+			6,	// Tundra
+			-1,	// Undefined8
+			11,	// River
+			2,	// Grassland
+			9,	// Jungle
+			4,	// Hills
+			5,	// Mountains
+			0,	// Desert
+			7	// Arctic
+		};
+
 		public ushort Var_2f9e_Unknown = 0xffff;
 
 		// 0x652e - after this offset the default values are set to 0

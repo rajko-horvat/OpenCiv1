@@ -1,6 +1,6 @@
 ## How to contribute to this project
 
-Anyone can contribute to this repository in accordance with these rules:
+Anyone can contribute to this repository in accordance with these guidelines:
 <ul>
 <li>All communication between contributors must be conducted in accordance with this repository 
 	<a href="https://github.com/rajko-horvat/OpenCiv1/blob/master/.github/code_of_conduct.md">Code Of Conduct</a>,</li>

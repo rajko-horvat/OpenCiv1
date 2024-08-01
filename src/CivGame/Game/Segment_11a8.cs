@@ -486,7 +486,7 @@ namespace OpenCiv1
 			// Intro...
 			this.oCPU.Log.EnterBlock("// Intro start");
 
-			this.oParent.GameInitAndIntro.F7_0000_0012_GameIntro();
+			this.oParent.GameInitAndIntro.F7_0000_0012_GenerateMap();
 
 			this.oCPU.Log.ExitBlock("// Intro end");
 
@@ -650,7 +650,7 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76a, 0x1);
 
-			this.oParent.GameInitAndIntro.F7_0000_0012_GameIntro();
+			this.oParent.GameInitAndIntro.F7_0000_0012_GenerateMap();
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
