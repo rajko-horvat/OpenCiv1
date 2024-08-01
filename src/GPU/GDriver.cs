@@ -198,7 +198,7 @@ namespace OpenCiv1.GPU
 		#endregion
 
 		#region Drawing functions
-		public void F0_VGA_06b7_DrawScreenToMainScreen(int screenID)
+		public void F0_VGA_06b7_DrawScreenToMainScreenWithEffect(int screenID)
 		{
 			// function body
 			// this is either random fade in image, or a scrolling from right to left
@@ -206,11 +206,67 @@ namespace OpenCiv1.GPU
 			{
 				if (this.aScreens.ContainsKey(screenID))
 				{
+					RandomMT19937 oRNG = new RandomMT19937();
+					GBitmap screen0 = this.aScreens.GetValueByKey(0);
+					GBitmap newScreen = this.aScreens.GetValueByKey(screenID);
+					bool[,] aPixels = new bool[newScreen.Width, newScreen.Height];
+
+					for (int i = 0; i < newScreen.Width; i++)
+					{
+						for (int j = 0; j < newScreen.Height; j++)
+						{
+							aPixels[i, j] = false;
+						}
+					}
+
+					int iCount = 0;
+					int iPixelCount = newScreen.Width * newScreen.Height;
+
+					while (iCount < iPixelCount)
+					{
+						// draw it in batches, because of the slow timer
+						lock (this.GLock)
+						{
+							for (int k = 0; k < 80 && iCount < iPixelCount; k++)
+							{
+								int xPos = oRNG.Next(newScreen.Width);
+								int yPos = oRNG.Next(newScreen.Height);
+
+								while (aPixels[xPos, yPos])
+								{
+									xPos = oRNG.Next(newScreen.Width);
+									yPos = oRNG.Next(newScreen.Height);
+								}
+
+								aPixels[xPos, yPos] = true;
+								iCount++;
+								screen0.SetPixel(xPos, yPos, newScreen.GetPixel(xPos, yPos));
+							}
+						}
+
+						Thread.Sleep(1);
+					}
+				}
+				else
+				{
+					throw new Exception($"The screen {screenID} is not allocated");
+				}
+			}
+		}
+
+		public void F0_VGA_06b7_DrawScreenToMainScreen(int screenID)
+		{
+			// function body
+			if (screenID != 0)
+			{
+				if (this.aScreens.ContainsKey(screenID))
+				{
+					GBitmap screen0 = this.aScreens.GetValueByKey(0);
+					GBitmap newScreen = this.aScreens.GetValueByKey(screenID);
+
 					lock (this.GLock)
 					{
-						GBitmap screen0 = this.aScreens.GetValueByKey(0);
-
-						screen0.DrawImage(this.aScreens.GetValueByKey(screenID));
+						screen0.DrawImage(newScreen);
 					}
 				}
 				else

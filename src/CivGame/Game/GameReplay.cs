@@ -1770,7 +1770,7 @@ namespace OpenCiv1
 				this.oParent.CivState.Nations[this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].NationalityID].LongTune, 3);
 
 			// Instruction address 0x0000:0x1518, size: 5
-			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreen(1);
+			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(1);
 
 			// Instruction address 0x0000:0x1538, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);

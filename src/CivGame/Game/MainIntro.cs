@@ -979,7 +979,7 @@ namespace OpenCiv1
 				0, 64, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4e)));
 
 			// Instruction address 0x0000:0x0b8b, size: 5
-			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreen(1);
+			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(1);
 
 			// Instruction address 0x0000:0x0bab, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);

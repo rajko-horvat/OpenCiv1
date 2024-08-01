@@ -20,7 +20,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F7_0000_0012_GenerateMap()
 		{
-			this.oCPU.Log.EnterBlock("F7_0000_0012_GameIntro()");
+			this.oCPU.Log.EnterBlock("F7_0000_0012_GenerateMap()");
 
 			// function body
 			// Instruction address 0x0000:0x0024, size: 5
@@ -44,7 +44,7 @@ namespace OpenCiv1
 
 				do
 				{
-					F7_0000_08be();
+					F7_0000_08be_TransferCloudToMap();
 
 					F7_0000_17cf();
 				}
@@ -381,7 +381,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x058e, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 160, 0, 160, 200, 0);
 
-			F7_0000_0a33();
+			F7_0000_0a33_FinishMapConstruction();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x67fc, 0x1);
 
@@ -407,7 +407,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19e8_Rectangle, 0, 0);
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F7_0000_0012_GameIntro");
+			this.oCPU.Log.ExitBlock("F7_0000_0012_GenerateMap");
 		}
 
 		/// <summary>
@@ -552,88 +552,36 @@ namespace OpenCiv1
 		/// <summary>
 		/// ?
 		/// </summary>
-		public void F7_0000_08be()
+		public void F7_0000_08be_TransferCloudToMap()
 		{
-			this.oCPU.Log.EnterBlock("F7_0000_08be()");
+			this.oCPU.Log.EnterBlock("F7_0000_08be_TransferCloudToMap()");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x6);
-
 			// Instruction address 0x0000:0x08da, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 160, 0, 80, 50, 0);
 
 			// Instruction address 0x0000:0x08e6, size: 5
-			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(72));
-
-			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x4);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-
 			// Instruction address 0x0000:0x08f8, size: 5
-			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(34));
+			F7_0000_0988_GenerateCloud(this.oParent.MSCAPI.RNG.Next(72) + 4, this.oParent.MSCAPI.RNG.Next(34) + 8);
 
-			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x8);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x0);
+			for (int i = 0; i < 80; i++)
+			{
+				for (int j = 0; j < 50; j++)
+				{
+					// Instruction address 0x0000:0x093f, size: 5
+					if (this.oParent.Graphics.F0_VGA_038c_GetPixel(1, i + 160, j) != 0)
+					{
+						// Instruction address 0x0000:0x0956, size: 5
+						// Instruction address 0x0000:0x0966, size: 5
+						this.oParent.Segment_1000.F0_1000_104f_SetPixel(1, i, j, (ushort)(this.oParent.Graphics.F0_VGA_038c_GetPixel(1, i, j) + 1));
 
-		L090b:
-			F7_0000_0988_GenerateCloud(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
+						this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x67fe, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x67fe)));
+					}
+				}
+			}
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x1);
-			if (this.oCPU.Flags.L) goto L090b;
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x0);
-			goto L0977;
-
-		L0928:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))));
-
-		L092b:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), 0x32);
-			if (this.oCPU.Flags.GE) goto L0974;
-			
-			// Instruction address 0x0000:0x093f, size: 5
-			this.oParent.Graphics.F0_VGA_038c_GetPixel(1,
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)) + 160,
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
-
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L0928;
-
-			// Instruction address 0x0000:0x0956, size: 5
-			this.oParent.Graphics.F0_VGA_038c_GetPixel(1,
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
-
-			// Instruction address 0x0000:0x0966, size: 5
-			this.oParent.Segment_1000.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
-				(ushort)(this.oCPU.AX.Word + 1));
-
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x67fe, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x67fe)));
-			goto L0928;
-
-		L0974:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))));
-
-		L0977:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x50);
-			if (this.oCPU.Flags.GE) goto L0984;
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0x0);
-			goto L092b;
-
-		L0984:
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F7_0000_08be");
+			this.oCPU.Log.ExitBlock("F7_0000_08be_TransferCloudToMap");
 		}
 
 		/// <summary>
@@ -641,7 +589,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		public void F7_0000_0988_GenerateCloud(short xPos, short yPos)
+		public void F7_0000_0988_GenerateCloud(int xPos, int yPos)
 		{
 			this.oCPU.Log.EnterBlock($"F7_0000_0988_GenerateCloud({xPos}, {yPos})");
 
@@ -654,13 +602,6 @@ namespace OpenCiv1
 				this.oParent.Segment_1000.F0_1000_104f_SetPixel(1, xPos + 160, yPos, 15);
 				this.oParent.Segment_1000.F0_1000_104f_SetPixel(1, xPos + 161, yPos, 15);
 				this.oParent.Segment_1000.F0_1000_104f_SetPixel(1, xPos + 160, yPos + 1, 15);
-
-				// star shaped sloud
-				/*this.oParent.Segment_1000.F0_1000_104f_SetPixel(1, xPos + 159, yPos, 15);
-				this.oParent.Segment_1000.F0_1000_104f_SetPixel(1, xPos + 160, yPos, 15);
-				this.oParent.Segment_1000.F0_1000_104f_SetPixel(1, xPos + 161, yPos, 15);
-				this.oParent.Segment_1000.F0_1000_104f_SetPixel(1, xPos + 160, yPos + 1, 15);
-				this.oParent.Segment_1000.F0_1000_104f_SetPixel(1, xPos + 160, yPos - 1, 15);*/
 
 				switch (this.oParent.MSCAPI.RNG.Next(4))
 				{
@@ -687,7 +628,7 @@ namespace OpenCiv1
 
 				iCloudSize--;
 
-			} while (iCloudSize > 0 && xPos > 2 && xPos < 77 && yPos > 2 && yPos < 46);
+			} while (iCloudSize > 0 && xPos > 2 && xPos < 77 && yPos > 2 && yPos < 47);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F7_0000_0988_GenerateCloud");
@@ -696,163 +637,131 @@ namespace OpenCiv1
 		/// <summary>
 		/// ?
 		/// </summary>
-		public void F7_0000_0a33()
+		public void F7_0000_0a33_FinishMapConstruction()
 		{
-			this.oCPU.Log.EnterBlock("F7_0000_0a33()");
+			this.oCPU.Log.EnterBlock("F7_0000_0a33_FinishMapConstruction()");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0xd4);
-			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
+			int local_2;
+			int local_4;
+			int local_6;
+			int local_8;
+			int[] local_20 = new int[12];
+			int local_22;
+			int local_24;
+			int[] local_a4 = new int[64];
+			int local_a8;
+			int local_aa;
+			int local_ac;
+			int local_ae;
+			int[] local_d0 = new int[17];
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 0x0);
+			local_24 = 0;
 
 		L0a41:
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24));
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
+			local_20[local_24] = 0;
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0x20), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0xc);
-			if (this.oCPU.Flags.L) goto L0a41;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), 0x0);
+			local_24++;
+
+			if (local_24 < 12) goto L0a41;
+
+			local_8 = 0;
+
 			goto L0de2;
 
 		L0a5c:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8))));
+			local_a8++;
 
 		L0a60:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8)), 0x32);
-			if (this.oCPU.Flags.GE) goto L0a7f;
+			if (local_a8 >= 50) goto L0a7f;
 
-			this.oParent.CivState.MapVisibility[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)),
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8))] = 0;
+			this.oParent.CivState.MapVisibility[local_24, local_a8] = 0;
 			goto L0a5c;
 
 		L0a7f:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24))));
+			local_24++;
 
 		L0a82:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0x50);
-			if (this.oCPU.Flags.GE) goto L0a90;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8), 0x0);
+			if (local_24 >= 80) goto L0a90;
+
+			local_a8 = 0;
+
 			goto L0a60;
 
 		L0a90:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xae), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8), 0x0);
+			local_ae = 0;
+			local_a8 = 0;
+
 			goto L0c46;
 
 		L0a9f:
-			this.oCPU.AX.Word = 0;
-
-		L0aa1:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 0x1);
-			this.oCPU.CX.Word = this.oCPU.SBB_UInt16(this.oCPU.CX.Word, this.oCPU.CX.Word);
-			this.oCPU.CX.Word = this.oCPU.NEG_UInt16(this.oCPU.CX.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Word);
-			if (this.oCPU.Flags.E) goto L0ab0;
+			if (local_8 >= 1) goto L0ab0;
 			goto L0bfc;
 
 		L0ab0:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8)), 0x0);
-			if (this.oCPU.Flags.G) goto L0aba;
+			if (local_a8 > 0) goto L0aba;
+
 			goto L0b9a;
 
 		L0aba:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0x0);
-			if (this.oCPU.Flags.E) goto L0ac5;
-			this.oCPU.AX.Word = 0xffff;
-			goto L0ac7;
-
-		L0ac5:
-			this.oCPU.AX.Word = 0;
-
-		L0ac7:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xac), this.oCPU.AX.Word);
-			goto L0b8b;
-
-		L0ace:
-			this.oCPU.AX.Word = 0;
-
-		L0ad0:
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xac)));
-			if (this.oCPU.Flags.GE) goto L0ad9;
-			goto L0b9a;
-
-		L0ad9:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24));
-			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xac)));
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8));
-			if (this.oCPU.BX.Word > 0)
+			if (local_24 != 0)
 			{
-				this.oCPU.BX.Word--;
+				local_ac = -1;
 			}
 			else
 			{
-				this.oCPU.AX.Word--;
-				this.oCPU.BX.Word = 49;
+				local_ac = 0;
 			}
-			this.oCPU.AX.Word = this.oParent.CivState.MapVisibility[this.oCPU.AX.Word, this.oCPU.BX.Word];
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xd0), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L0b00;
+
+			goto L0b8b;
+
+		L0ace:
+			if (local_ac <= 0) goto L0ad9;
+			goto L0b9a;
+
+		L0ad9:
+			if (local_a8 > 0)
+			{
+				local_d0[0] = this.oParent.CivState.MapVisibility[local_24 + local_ac, local_a8 - 1];
+			}
+			else
+			{
+				local_d0[0] = this.oParent.CivState.MapVisibility[local_24 + local_ac - 1, 49];
+			}
+
+			if (local_d0[0] != 0) goto L0b00;
+
 			goto L0b87;
 
 		L0b00:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)), 0xffff);
-			if (this.oCPU.Flags.E) goto L0b7c;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L0b7c;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0x0);
+			if (local_22 == -1) goto L0b7c;
+			if (local_22 == local_d0[0]) goto L0b7c;
+
+			local_4 = 0;
+
 			goto L0b6c;
 
 		L0b12:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))));
+			local_2++;
 
 		L0b15:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x50);
-			if (this.oCPU.Flags.GE) goto L0b69;
-			
-			this.oCPU.AX.Word = this.oParent.CivState.MapVisibility[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))];
+			if (local_2 >= 80) goto L0b69;
 
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)));
-			if (this.oCPU.Flags.NE) goto L0b45;
+			if (this.oParent.CivState.MapVisibility[local_2, local_4] != local_22) goto L0b45;
 
-			this.oParent.CivState.MapVisibility[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))] = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xd0));
+			this.oParent.CivState.MapVisibility[local_2, local_4] = (ushort)((short)local_d0[0]);
 
 		L0b45:
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8));
-			this.oCPU.CX.Low = 0x7;
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, this.oCPU.CX.Low);
-
-			this.oCPU.DI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22));
-			this.oCPU.DI.Word = this.oCPU.SHL_UInt16(this.oCPU.DI.Word, 0x1);
-			this.oCPU.DI.Word = this.oCPU.ADD_UInt16(this.oCPU.DI.Word, this.oCPU.SI.Word);
-
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xd0));
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
-
-			switch (this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)))
+			switch (local_8)
 			{
 				case 0:
-					this.oParent.CivState.Continents[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xd0))].Size +=
-						this.oParent.CivState.Continents[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))].Size;
-
-					this.oParent.CivState.Continents[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))].Size = 0;
+					this.oParent.CivState.Continents[local_d0[0]].Size += this.oParent.CivState.Continents[local_22].Size;
+					this.oParent.CivState.Continents[local_22].Size = 0;
 					break;
 
 				case 1:
-					this.oParent.CivState.Oceans[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xd0))].Size +=
-						this.oParent.CivState.Oceans[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))].Size;
-
-					this.oParent.CivState.Oceans[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))].Size = 0;
+					this.oParent.CivState.Oceans[local_d0[0]].Size += this.oParent.CivState.Oceans[local_22].Size;
+					this.oParent.CivState.Oceans[local_22].Size = 0;
 					break;
 
 				default:
@@ -862,64 +771,52 @@ namespace OpenCiv1
 			goto L0b12;
 
 		L0b69:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))));
+			local_4++;
 
 		L0b6c:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.G) goto L0b7c;
+			if (local_4 > local_a8) goto L0b7c;
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x0);
+			local_2 = 0;
+
 			goto L0b15;
 
 		L0b7c:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xd0));
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22), this.oCPU.AX.Word);
+			local_22 = local_d0[0];
 
 			F7_0000_17cf();
 
 		L0b87:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xac), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xac))));
+			local_ac++;
 
 		L0b8b:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0x4f);
-			if (this.oCPU.Flags.L) goto L0b94;
+			if (local_24 < 79) goto L0b94;
+
 			goto L0ace;
 
 		L0b94:
-			this.oCPU.AX.Word = 0x1;
-			goto L0ad0;
+			if (local_ac <= 1) goto L0ad9;
+			goto L0b9a;
 
 		L0b9a:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)), 0xffff);
-			if (this.oCPU.Flags.NE) goto L0bcb;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x0);
-			if (this.oCPU.Flags.NE) goto L0bc4;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xae), 0x0);
+			if (local_22 != -1) goto L0bcb;
+
+			if (local_6 != 0) goto L0bc4;
+
+			local_ae = 0;
 
 		L0bac:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xae),
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xae))));
+			local_ae++;
 
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8));
-			this.oCPU.CX.Low = 0x7;
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, this.oCPU.CX.Low);
-
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xae));
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
-
-			switch (this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)))
+			switch (local_8)
 			{
 				case 0:
-					if (this.oParent.CivState.Continents[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xae))].Size != 0)
+					if (this.oParent.CivState.Continents[local_ae].Size != 0)
 						goto L0bac;
 
 					break;
 
 				case 1:
-					if (this.oParent.CivState.Oceans[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xae))].Size != 0)
+					if (this.oParent.CivState.Oceans[local_ae].Size != 0)
 						goto L0bac;
 
 					break;
@@ -929,176 +826,121 @@ namespace OpenCiv1
 			}
 
 		L0bc4:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xae));
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22), this.oCPU.AX.Word);
+			local_22 = local_ae;
 
 		L0bcb:
-			this.oParent.CivState.MapVisibility[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)),
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8))] = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22));
+			this.oParent.CivState.MapVisibility[local_24, local_a8] = (ushort)((short)local_22);
 
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8));
-			this.oCPU.CX.Low = 0x7;
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, this.oCPU.CX.Low);
-
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22));
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
-
-			switch (this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)))
+			switch (local_8)
 			{
 				case 0:
-					this.oParent.CivState.Continents[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))].Size++;
+					this.oParent.CivState.Continents[local_22].Size++;
 					break;
 
 				case 1:
-					this.oParent.CivState.Oceans[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))].Size++;
+					this.oParent.CivState.Oceans[local_22].Size++;
 					break;
 
 				default:
 					throw new IndexOutOfRangeException("Continent selector out of range");
 			}
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x1);
+			local_6 = 1;
 
 			goto L0c06;
 
 		L0bfc:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22), 0xffff);
+			local_6 = 0;
+			local_22 = -1;
 
 		L0c06:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24))));
+			local_24++;
 
 		L0c09:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0x50);
-			if (this.oCPU.Flags.GE) goto L0c3e;
+			if (local_24 >= 80) goto L0c3e;
 
-			F7_0000_176d(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8)));
-			
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xaa), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 0x0);
-			if (this.oCPU.Flags.NE) goto L0c2e;
+			local_aa = (short)F7_0000_176d(local_24, local_a8);
 
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
+			if (local_8 != 0) goto L0c2e;
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0x20), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0x20))));
+			local_20[local_aa]++;
 
 		L0c2e:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xaa)), 0xa);
-			if (this.oCPU.Flags.NE) goto L0c38;
+			if (local_aa != 10) goto L0c38;
+
 			goto L0a9f;
 
 		L0c38:
-			this.oCPU.AX.Word = 0x1;
-			goto L0aa1;
+			if (local_8 < 1) goto L0ab0;
+			goto L0bfc;
+
 
 		L0c3e:
 			F7_0000_17cf();
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8))));
+			local_a8++;
 
 		L0c46:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8)), 0x32);
-			if (this.oCPU.Flags.GE) goto L0c5e;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22), 0xffff);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 0x0);
+			if (local_a8 >= 50) goto L0c5e;
+
+			local_22 = -1;
+			local_6 = 0;
+			local_24 = 0;
+
 			goto L0c09;
 
 		L0c5e:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 0x0);
+			local_24 = 0;
 
 		L0c63:
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24));
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
+			local_d0[local_24 + 1] = 0;
+			local_24++;
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0xce), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0x10);
-			if (this.oCPU.Flags.L) goto L0c63;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa4), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 0x1);
+			if (local_24 < 16) goto L0c63;
+
+			local_a4[0] = 0;
+			local_24 = 1;
+
 			goto L0cc9;
 
 		L0c84:
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xac));
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
-			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.BP.Word);
+			local_a4[local_d0[local_ac]] = local_ac;
+			local_d0[local_ac + 1] = local_d0[local_ac];
 
-			this.oCPU.DI.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word - 0xd0));
-			this.oCPU.DI.Word = this.oCPU.SHL_UInt16(this.oCPU.DI.Word, 0x1);
-
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xac));
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.DI.Word - 0xa4), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word - 0xd0));
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word - 0xce), this.oCPU.AX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xac), this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xac))));
+			local_ac--;
 
 		L0ca6:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xac)), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.G) goto L0c84;
+			if (local_ac > local_a8) goto L0c84;
 
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24));
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0xa4), this.oCPU.AX.Word);
-
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8));
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
-
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24));
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0xce), this.oCPU.AX.Word);
+			local_a4[local_24] = local_a8;
+			local_d0[local_a8 + 1] = local_24;
 
 		L0cc6:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24))));
+			local_24++;
 
 		L0cc9:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0x40);
-			if (this.oCPU.Flags.GE) goto L0d17;
+			if (local_24 >= 64) goto L0d17;
 
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24));
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
+			local_a4[local_24] = 15;
+			local_a8 = 1;
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0xa4), 0xf);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8), 0x1);
 			goto L0ce6;
 
 		L0ce2:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8))));
+			local_a8++;
 
 		L0ce6:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8)), 0xf);
-			if (this.oCPU.Flags.GE) goto L0cc6;
-			
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8));
-			this.oCPU.CX.Low = 0x7;
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, this.oCPU.CX.Low);
+			if (local_a8 >= 15) goto L0cc6;
 
-			this.oCPU.DI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8));
-			this.oCPU.DI.Word = this.oCPU.SHL_UInt16(this.oCPU.DI.Word, 0x1);
-
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.DI.Word - 0xce));
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
-
-			switch (this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)))
+			switch (local_8)
 			{
 				case 0:
-					if (this.oParent.CivState.Continents[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.DI.Word - 0xce))].Size >=
-						this.oParent.CivState.Continents[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24))].Size)
+					if (this.oParent.CivState.Continents[local_d0[local_a8 + 1]].Size >= this.oParent.CivState.Continents[local_24].Size)
 						goto L0ce2;
-
 					break;
 
 				case 1:
-					if (this.oParent.CivState.Oceans[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.DI.Word - 0xce))].Size >=
-						this.oParent.CivState.Oceans[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24))].Size)
+					if (this.oParent.CivState.Oceans[local_d0[local_a8 + 1]].Size >= this.oParent.CivState.Oceans[local_24].Size)
 						goto L0ce2;
 					break;
 
@@ -1106,123 +948,84 @@ namespace OpenCiv1
 					throw new IndexOutOfRangeException("Continent selector out of range");
 			}
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xac), 0xf);
+			local_ac = 15;
 			goto L0ca6;
 
 		L0d17:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa4), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 0x0);
+			local_a4[0] = 0;
+			local_24 = 0;
+
 			goto L0d74;
 
 		L0d24:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8))));
+			local_a8++;
 
 		L0d28:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8)), 0x32);
-			if (this.oCPU.Flags.GE) goto L0d71;
+			if (local_a8 >= 50) goto L0d71;
 
-			this.oCPU.AX.Word = this.oParent.CivState.MapVisibility[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)),
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8))];
-
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
-
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0xa4));
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa6), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L0d24;
-
-			// Instruction address 0x0000:0x0d67, size: 5
-			this.oParent.Segment_1000.F0_1000_104f_SetPixel(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8)) + 50,
-				this.oCPU.AX.Word);
+			if (local_a4[this.oParent.CivState.MapVisibility[local_24, local_a8]] != 0)
+			{
+				// Instruction address 0x0000:0x0d67, size: 5
+				this.oParent.Segment_1000.F0_1000_104f_SetPixel(local_24, local_a8 + 50, (ushort)((short)local_a4[this.oParent.CivState.MapVisibility[local_24, local_a8]]));
+			}
 
 			goto L0d24;
 
 		L0d71:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24))));
+			local_24++;
 
 		L0d74:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0x50);
-			if (this.oCPU.Flags.GE) goto L0d82;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa8), 0x0);
+			if (local_24 >= 80) goto L0d82;
+
+			local_a8 = 0;
+
 			goto L0d28;
 
 		L0d82:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 0x1);
+			local_24 = 1;
 
 		L0d87:
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24));
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
-			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.BP.Word);
-			this.oCPU.SI.Word = this.oCPU.SUB_UInt16(this.oCPU.SI.Word, 0xce);
-
-			this.oCPU.DI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8));
-			this.oCPU.CX.Low = 0x7;
-			this.oCPU.DI.Word = this.oCPU.SHL_UInt16(this.oCPU.DI.Word, this.oCPU.CX.Low);
-
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, this.oCPU.SI.Word);
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
-
-			switch (this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)))
+			switch (local_8)
 			{
 				case 0:
-					this.oCPU.WriteInt16(this.oCPU.DS.Word, this.oCPU.SI.Word, this.oParent.CivState.Continents[this.oCPU.ReadInt16(this.oCPU.DS.Word, this.oCPU.SI.Word)].Size);
+					local_d0[local_24 + 1] = this.oParent.CivState.Continents[local_d0[local_24 + 1]].Size;
 					break;
 
 				case 1:
-					this.oCPU.WriteInt16(this.oCPU.DS.Word, this.oCPU.SI.Word, this.oParent.CivState.Oceans[this.oCPU.ReadInt16(this.oCPU.DS.Word, this.oCPU.SI.Word)].Size);
+					local_d0[local_24 + 1] = this.oParent.CivState.Oceans[local_d0[local_24 + 1]].Size;
 					break;
 
 				default:
 					throw new IndexOutOfRangeException("Continent selector out of range");
 			}
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24))));
+			local_24++;
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0xf);
-			if (this.oCPU.Flags.L)
+			if (local_24 < 15)
 				goto L0d87;
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 0x1);
+			local_24 = 1;
 
 		L0db1:
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24));
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
-
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8));
-			this.oCPU.CX.Low = 0x7;
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, this.oCPU.CX.Low);
-
-			switch (this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)))
+			switch (local_8)
 			{
 				case 0:
-					this.oParent.CivState.Continents[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24))].Size =
-						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0xce));
+					this.oParent.CivState.Continents[local_24].Size = (short)local_d0[local_24 + 1];
 					break;
 
 				case 1:
-					this.oParent.CivState.Oceans[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24))].Size =
-						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0xce));
+					this.oParent.CivState.Oceans[local_24].Size = (short)local_d0[local_24 + 1];
 					break;
 
 				default:
 					throw new IndexOutOfRangeException("Continent selector out of range");
 			}
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24))));
+			local_24++;
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0xf);
-			if (this.oCPU.Flags.L) goto L0db1;
+			if (local_24 < 15) goto L0db1;
 
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8));
-			this.oCPU.CX.Low = 0x7;
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, this.oCPU.CX.Low);
-
-			switch (this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)))
+			switch (local_8)
 			{
 				case 0:
 					this.oParent.CivState.Continents[0].Size = 0;
@@ -1238,13 +1041,12 @@ namespace OpenCiv1
 					throw new IndexOutOfRangeException("Continent selector out of range");
 			}
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8),
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))));
+			local_8++;
 
 		L0de2:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 0x2);
-			if (this.oCPU.Flags.GE) goto L0df0;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 0x0);
+			if (local_8 >= 2) goto L0df0;
+
+			local_24 = 0;
 			goto L0a82;
 
 		L0df0:
@@ -1261,39 +1063,31 @@ namespace OpenCiv1
 
 			F7_0000_0f0a();
 
+			// draw polar caps
+
 			// Instruction address 0x0000:0x0e49, size: 5
 			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 0, 0, 79, 0, 15);
 
 			// Instruction address 0x0000:0x0e68, size: 5
 			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 0, 49, 79, 49, 15);
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), 0x0);
+			for (int i = 0; i < 20; i++)
+			{
+				// Instruction address 0x0000:0x0e8d, size: 5
+				this.oParent.Segment_1000.F0_1000_104f_SetPixel(this.oParent.MSCAPI.RNG.Next(80), 0, 7);
 
-		L0e75:
-			// Instruction address 0x0000:0x0e8d, size: 5
-			this.oParent.Segment_1000.F0_1000_104f_SetPixel(this.oParent.MSCAPI.RNG.Next(80), 0, 7);
+				// Instruction address 0x0000:0x0eae, size: 5
+				this.oParent.Segment_1000.F0_1000_104f_SetPixel(this.oParent.MSCAPI.RNG.Next(80), 1, 7);
 
-			// Instruction address 0x0000:0x0eae, size: 5
-			this.oParent.Segment_1000.F0_1000_104f_SetPixel(this.oParent.MSCAPI.RNG.Next(80), 1, 7);
+				// Instruction address 0x0000:0x0ecf, size: 5
+				this.oParent.Segment_1000.F0_1000_104f_SetPixel(this.oParent.MSCAPI.RNG.Next(80), 48, 7);
 
-			// Instruction address 0x0000:0x0ecf, size: 5
-			this.oParent.Segment_1000.F0_1000_104f_SetPixel(this.oParent.MSCAPI.RNG.Next(80), 48, 7);
+				// Instruction address 0x0000:0x0ef0, size: 5
+				this.oParent.Segment_1000.F0_1000_104f_SetPixel(this.oParent.MSCAPI.RNG.Next(80), 49, 7);
+			}
 
-			// Instruction address 0x0000:0x0ef0, size: 5
-			this.oParent.Segment_1000.F0_1000_104f_SetPixel(this.oParent.MSCAPI.RNG.Next(80), 49, 7);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0x14);
-			if (this.oCPU.Flags.GE) goto L0f04;
-			goto L0e75;
-
-		L0f04:
-			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.DI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F7_0000_0a33");
+			this.oCPU.Log.ExitBlock("F7_0000_0a33_FinishMapConstruction");
 		}
 
 		/// <summary>
@@ -2405,7 +2199,7 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <returns></returns>
-		public ushort F7_0000_176d(short xPos, short yPos)
+		public ushort F7_0000_176d(int xPos, int yPos)
 		{
 			this.oCPU.Log.EnterBlock($"F7_0000_176d({xPos}, {yPos})");
 

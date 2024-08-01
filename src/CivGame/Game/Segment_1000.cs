@@ -490,7 +490,7 @@ namespace OpenCiv1
 
 			// function body
 			//this.oParent.Graphics.F0_VGA_063c(screenID);
-			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreen(screenID);
+			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(screenID);
 
 			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
 			{

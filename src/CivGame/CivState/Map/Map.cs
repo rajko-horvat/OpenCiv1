@@ -387,6 +387,21 @@ namespace OpenCiv1
 		{
 			get
 			{
+				if (x < 0)
+				{
+					x = Math.Abs(x) % this.oSize.Width;
+
+					if (x > 0)
+					{
+						x = this.oSize.Width - x;
+					}
+				}
+
+				if (x >= this.oSize.Width)
+				{
+					x %= this.oSize.Width;
+				}
+
 				if (x < 0 || x >= this.oSize.Width)
 				{
 					throw new ArgumentOutOfRangeException("x");

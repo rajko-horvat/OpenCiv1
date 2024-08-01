@@ -625,7 +625,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
 			// Instruction address 0x0000:0x0780, size: 5
-			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreen(1);
+			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(1);
 
 			// Instruction address 0x0000:0x0788, size: 5
 			this.oParent.Segment_1403.F0_1403_4545();

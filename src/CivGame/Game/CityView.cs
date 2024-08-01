@@ -504,7 +504,7 @@ namespace OpenCiv1
 					this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x2c, 0);
 
 					// Instruction address 0x0000:0x0e3c, size: 5
-					this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreen(1);
+					this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(1);
 				}
 				else
 				{
