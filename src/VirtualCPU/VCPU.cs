@@ -164,6 +164,12 @@ namespace IRB.VirtualCPU
 		}
 
 		#region Interrupts and events
+		public void PauseCPU()
+		{
+			this.bPause = true;
+			this.DoEvents();
+		}
+
 		public void STI()
 		{
 			this.bEnableInterrupt = true;
