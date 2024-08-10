@@ -617,7 +617,7 @@ namespace OpenCiv1
 
 			L0b4e:
 				// Instruction address 0x0000:0x0b54, size: 5
-				if ((short)this.oParent.Segment_2aea.F0_2aea_134a(local_8, local_a) != 10) goto L0b64;
+				if ((short)this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_8, local_a) != 10) goto L0b64;
 				goto L0a5e;
 
 			L0b64:
@@ -629,7 +629,7 @@ namespace OpenCiv1
 				goto L0a5e;
 
 			L0ba2:
-				if (this.oParent.CivState.Continents[(short)this.oParent.Segment_2aea.F0_2aea_1942(local_8, local_a)].BuildSiteCount < 
+				if (this.oParent.CivState.Continents[(short)this.oParent.Segment_2aea.F0_2aea_1942_GetContinentID(local_8, local_a)].BuildSiteCount < 
 					-(((this.oParent.CivState.TurnCount / 16) + (local_34 / 64)) - 32))
 					goto L0a5e;
 
@@ -637,19 +637,19 @@ namespace OpenCiv1
 					goto L0bf7;
 
 				// Instruction address 0x0000:0x0be2, size: 5
-				if (local_32[(short)this.oParent.Segment_2aea.F0_2aea_1942(local_8, local_a)] == 0) goto L0bf7;
+				if (local_32[(short)this.oParent.Segment_2aea.F0_2aea_1942_GetContinentID(local_8, local_a)] == 0) goto L0bf7;
 				goto L0a5e;
 
 			L0bf7:
 				// Instruction address 0x0000:0x0c03, size: 5
 				// Instruction address 0x0000:0x0c0c, size: 5
-				if (this.oParent.Segment_2aea.F0_2aea_1894(this.oParent.Segment_2aea.F0_2aea_134a(local_8, local_a), local_8, local_a) == 0) goto L0c1b;
+				if (this.oParent.Segment_2aea.F0_2aea_1894(this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_8, local_a), local_8, local_a) == 0) goto L0c1b;
 				goto L0a5e;
 
 			L0c1b:
 				if (this.oParent.CivState.TurnCount != 0) goto L0c49;
 				
-				if (this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd76a) == 0) goto L0c49;
+				if (this.oParent.Var_d76a == 0) goto L0c49;
 
 				local_8 = this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(this.oParent.CivState.Players[playerID].NationalityID * 2 + 0x35da));
 				local_a = this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(this.oParent.CivState.Players[playerID].NationalityID * 2 + 0x35db));
@@ -901,7 +901,7 @@ namespace OpenCiv1
 				this.oCPU.DI.Word = this.oCPU.SUB_UInt16(this.oCPU.DI.Word, 0x5a);
 
 				// Instruction address 0x0000:0x103d, size: 5
-				this.oParent.Segment_2aea.F0_2aea_1942(
+				this.oParent.Segment_2aea.F0_2aea_1942_GetContinentID(
 					this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].Position.X,
 					this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].Position.Y);
 
@@ -968,7 +968,7 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.ADD_UInt16(this.oCPU.DI.Word, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x10ee, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a(
+			this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].Position.X + 
 					direction.X,
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].Position.Y + 
@@ -1133,14 +1133,14 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.ADD_UInt16(this.oCPU.DI.Word, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x1274, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1942(
+			this.oParent.Segment_2aea.F0_2aea_1942_GetContinentID(
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48))].Units[0].Position.X,
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48))].Units[0].Position.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x5e), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x128b, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1942(
+			this.oParent.Segment_2aea.F0_2aea_1942_GetContinentID(
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].Position.X,
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].Position.Y);
 

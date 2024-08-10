@@ -988,14 +988,14 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.AX.Word);
 
 			// Instruction address 0x2459:0x09c4, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1942(
+			this.oParent.Segment_2aea.F0_2aea_1942_GetContinentID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), this.oCPU.AX.Word);
 
 			// Instruction address 0x2459:0x09db, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1942(
+			this.oParent.Segment_2aea.F0_2aea_1942_GetContinentID(
 				this.oParent.CivState.Cities[cityID].Position.X,
 				this.oParent.CivState.Cities[cityID].Position.Y);
 

@@ -40,7 +40,7 @@ namespace OpenCiv1
 			if (this.oTimer == null)
 			{
 				this.oCPU.EnableTimer = true;
-				this.oTimer = new Timer(F0_1000_01a7_Timer, null, 10, 10);
+				this.oTimer = new Timer(F0_1000_01a7_Timer, null, 12, 12);
 			}
 
 			// Far return

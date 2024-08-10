@@ -288,7 +288,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c), this.oCPU.AX.Word);
 
 			// Instruction address 0x2c84:0x0232, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a(
+			this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26)));
 
@@ -387,8 +387,7 @@ namespace OpenCiv1
 
 				// Instruction address 0x2c84:0x035d, size: 5
 				this.oParent.MSCAPI.strcat(0xba06,
-					this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.DS.Word,
-						(ushort)(0x2ba6 + this.oParent.CivState.TerrainMultipliers[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2a))].Multi1 * 2))].Name);
+					this.oParent.CivState.Terrains[this.oParent.Array_2ba6[this.oParent.CivState.TerrainMultipliers[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2a))].Multi1]].Name);
 			}
 
 		L0365:
@@ -438,7 +437,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x2c84:0x03dc, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, 
-				this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x2ba6))].Name);
+				this.oParent.CivState.Terrains[this.oParent.Array_2ba6[this.oParent.CivState.TerrainMultipliers[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2a))].Multi3]].Name);
 
 		L03e4:
 			this.oCPU.AX.Word = 0xc;

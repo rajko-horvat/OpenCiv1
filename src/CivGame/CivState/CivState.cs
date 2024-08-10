@@ -278,7 +278,7 @@ namespace OpenCiv1
 		public byte[] ReplayData = new byte[4096];
 
 		// Unused GoTo data
-		public byte[,] LandPathfinding = new byte[20, 13];
+		public byte[,] LandPathFind = new byte[20, 13];
 
 		// Spaceship
 		public short SpaceshipFlags = 0;
@@ -457,7 +457,7 @@ namespace OpenCiv1
 			{
 				for (int j = 0; j < 13; j++)
 				{
-					this.LandPathfinding[i, j] = 0;
+					this.LandPathFind[i, j] = 0;
 				}
 			}
 		}

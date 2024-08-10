@@ -263,7 +263,7 @@ namespace OpenCiv1
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 2;
 
-			this.oParent.GameInitAndIntro.F7_0000_1440(0);
+			this.oParent.GameInitAndIntro.F7_0000_1440_InitAuxPathFind(0);
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
@@ -1122,7 +1122,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 13; j++)
 					{
-						this.oParent.CivState.LandPathfinding[i, j] = ReadUInt8(reader);
+						this.oParent.CivState.LandPathFind[i, j] = ReadUInt8(reader);
 					}
 				}
 
@@ -1720,7 +1720,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 13; j++)
 					{
-						writer.WriteByte(this.oParent.CivState.LandPathfinding[i, j]);
+						writer.WriteByte(this.oParent.CivState.LandPathFind[i, j]);
 					}
 				}
 

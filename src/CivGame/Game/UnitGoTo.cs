@@ -16,7 +16,7 @@ namespace OpenCiv1
 		private int Var_6794 = 0;
 		private int Var_6796 = 0;
 		private int Var_6798 = 0;
-		public int[,] Var_7f38 = new int[20, 13];
+		public int[,] Var_7f38_AuxPathfinding = new int[20, 13];
 		private int[,] Var_b780 = new int[16, 16];
 		private int[,] Var_d816 = new int[20, 13];
 
@@ -35,11 +35,11 @@ namespace OpenCiv1
 				this.Var_6694[i] = 0;
 			}
 
-			for (int i = 0; i < this.Var_7f38.GetLength(0); i++)
+			for (int i = 0; i < this.Var_7f38_AuxPathfinding.GetLength(0); i++)
 			{
-				for (int j = 0; j < this.Var_7f38.GetLength(1); j++)
+				for (int j = 0; j < this.Var_7f38_AuxPathfinding.GetLength(1); j++)
 				{
-					this.Var_7f38[i, j] = 0;
+					this.Var_7f38_AuxPathfinding[i, j] = 0;
 				}
 			}
 
@@ -227,7 +227,7 @@ namespace OpenCiv1
 						if (playerID != this.oParent.CivState.HumanPlayerID || local_16 <= local_a)
 						{
 							// Instruction address 0x2e31:0x03b7, size: 5
-							local_1a = (short)this.oParent.Segment_2aea.F0_2aea_134a(local_10, local_12);
+							local_1a = (short)this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_10, local_12);
 
 							// Instruction address 0x2e31:0x03c8, size: 5
 							local_22 = (short)this.oParent.Segment_2aea.F0_2aea_14e0(local_10, local_12);
@@ -427,11 +427,11 @@ namespace OpenCiv1
 
 				if (local_16 != 0)
 				{
-					local_10 = this.Var_7f38[local_14, local_2c];
+					local_10 = this.Var_7f38_AuxPathfinding[local_14, local_2c];
 				}
 				else
 				{
-					local_10 = this.oParent.CivState.LandPathfinding[local_14, local_2c];
+					local_10 = this.oParent.CivState.LandPathFind[local_14, local_2c];
 				}
 
 				local_2e = 1;
@@ -489,11 +489,11 @@ namespace OpenCiv1
 
 				if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Air)
 				{
-					local_10 = this.Var_7f38[local_36, local_3a];
+					local_10 = this.Var_7f38_AuxPathfinding[local_36, local_3a];
 				}
 				else
 				{
-					local_10 = this.oParent.CivState.LandPathfinding[local_36, local_3a];
+					local_10 = this.oParent.CivState.LandPathFind[local_36, local_3a];
 				}
 
 				local_2e = 1;
@@ -570,7 +570,7 @@ namespace OpenCiv1
 				this.Var_6592_YPos = ((local_3a + direction.Y) * 4) + 1;
 
 				// Instruction address 0x2e31:0x09ba, size: 5
-				if (this.oParent.Segment_2aea.F0_2aea_134a(this.Var_6590_XPos, this.Var_6592_YPos) == 10)
+				if (this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(this.Var_6590_XPos, this.Var_6592_YPos) == 10)
 				{
 					this.oCPU.AX.Word = 0x1;
 				}
@@ -584,7 +584,7 @@ namespace OpenCiv1
 				this.Var_6590_XPos++;
 
 				// Instruction address 0x2e31:0x09df, size: 5
-				if (this.oParent.Segment_2aea.F0_2aea_134a(this.Var_6590_XPos, this.Var_6592_YPos) == 10)
+				if (this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(this.Var_6590_XPos, this.Var_6592_YPos) == 10)
 				{
 					this.oCPU.AX.Word = 0x1;
 				}
@@ -641,14 +641,14 @@ namespace OpenCiv1
 
 			if (flag != 0)
 			{
-				if (this.Var_7f38[local_12, local_14] != 0)
+				if (this.Var_7f38_AuxPathfinding[local_12, local_14] != 0)
 				{
 					local_e = 0;
 				}
 			}
 			else
 			{
-				if (this.oParent.CivState.LandPathfinding[local_12, local_14] != 0)
+				if (this.oParent.CivState.LandPathFind[local_12, local_14] != 0)
 				{
 					local_e = 0;
 				}
@@ -665,7 +665,7 @@ namespace OpenCiv1
 					local_a = local_12 + direction.X;
 					local_c = local_14 + direction.Y;
 
-					if ((flag != 0 && this.Var_7f38[local_a, local_c] != 0) || (flag == 0 && this.oParent.CivState.LandPathfinding[local_a, local_c] != 0))
+					if ((flag != 0 && this.Var_7f38_AuxPathfinding[local_a, local_c] != 0) || (flag == 0 && this.oParent.CivState.LandPathFind[local_a, local_c] != 0))
 					{
 						// Instruction address 0x2e31:0x0b43, size: 5
 						local_4 = this.oParent.Segment_2dc4.F0_2dc4_0208_GetShortestDistance(xPos - (local_a * 4) - 1, yPos - (local_c * 4) - 1);
@@ -675,10 +675,10 @@ namespace OpenCiv1
 							local_2 = local_a * 4 + 1;
 							local_8 = local_c * 4 + 1;
 
-							if ((flag == ((this.oParent.Segment_2aea.F0_2aea_134a(local_2, local_8) == 10) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2, local_8, xPos, yPos, flag, 18) != -1) ||
-								(flag == ((this.oParent.Segment_2aea.F0_2aea_134a(local_2 + 1, local_8) == 10) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2 + 1, local_8, xPos, yPos, flag, 18) != -1) ||
-								(flag == ((this.oParent.Segment_2aea.F0_2aea_134a(local_2 + 1, local_8 + 1) == 10) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2 + 1, local_8 + 1, xPos, yPos, flag, 18) != -1) ||
-								(flag == ((this.oParent.Segment_2aea.F0_2aea_134a(local_2, local_8 + 1) == 10) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2, local_8 + 1, xPos, yPos, flag, 18) != -1))
+							if ((flag == ((this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_2, local_8) == 10) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2, local_8, xPos, yPos, flag, 18) != -1) ||
+								(flag == ((this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_2 + 1, local_8) == 10) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2 + 1, local_8, xPos, yPos, flag, 18) != -1) ||
+								(flag == ((this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_2 + 1, local_8 + 1) == 10) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2 + 1, local_8 + 1, xPos, yPos, flag, 18) != -1) ||
+								(flag == ((this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_2, local_8 + 1) == 10) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2, local_8 + 1, xPos, yPos, flag, 18) != -1))
 							{
 								local_6 = local_4;
 								local_e = i;
@@ -880,7 +880,7 @@ namespace OpenCiv1
 			if (this.oParent.Segment_2aea.F0_2aea_1326_CheckMapBounds(local_c, local_44) == 0) goto L0de7;
 
 			// Instruction address 0x2e31:0x0e57, size: 5
-			local_3e = (short)this.oParent.Segment_2aea.F0_2aea_134a(local_c, local_44);
+			local_3e = (short)this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_c, local_44);
 
 			if (local_3e == 10) goto L0e6a;
 			goto L0dc8;
@@ -960,7 +960,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x2e31:0x0f95, size: 5
 			if (((this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Air) ? 0 : 1) ==
-				((this.oParent.Segment_2aea.F0_2aea_134a(local_c, local_44) != 10) ? 0 : 1))
+				((this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_c, local_44) != 10) ? 0 : 1))
 				goto L0fec;
 
 			// Instruction address 0x2e31:0x0fdd, size: 5

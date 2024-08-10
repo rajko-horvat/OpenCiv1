@@ -94,6 +94,10 @@ namespace OpenCiv1
 		public int Var_70e2 = 0;
 		public int Var_70e4 = 0;
 		public int Var_70e6 = 0;
+		public int Var_7ef6_MapLandMass = 0;
+		public int Var_7ef8_MapTemperature = 0;
+		public int Var_7efa_MapClimate = 0;
+		public int Var_7efc_MapAge = 0;
 		public int Var_8078 = 0;
 		public int Var_b1e8 = 0;
 		public int Var_b882 = 0;
@@ -105,6 +109,7 @@ namespace OpenCiv1
 		public short Var_d75e_YPos = 0;
 		public ushort Var_d762 = 0;
 		public ushort Var_d768 = 0;
+		public int Var_d76a = 0;
 		public ushort Var_db3a = 0;
 		public ushort Var_db3c = 0;
 		public ushort Var_db3e = 0;
