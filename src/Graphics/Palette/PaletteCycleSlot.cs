@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenCiv1
+namespace OpenCiv1.Graphics
 {
 	public class PaletteCycleSlot
 	{

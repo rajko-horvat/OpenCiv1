@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace OpenCiv1.GPU
+namespace OpenCiv1.Graphics
 {
 	/// <summary>Represents a location and size of an object in a two-dimensional plane</summary>
 	[Serializable]

@@ -4,7 +4,7 @@ using IRB.VirtualCPU;
 using IRB.Collections.Generic;
 using Avalonia.Media;
 
-namespace OpenCiv1.GPU
+namespace OpenCiv1.Graphics
 {
 	public class GDriver
 	{
@@ -410,7 +410,7 @@ namespace OpenCiv1.GPU
 			return this.oCPU.AX.Word;
 		}
 
-		public ushort F0_VGA_038c_GetPixel(int screenID, int xPos, int yPos)
+		public byte F0_VGA_038c_GetPixel(int screenID, int xPos, int yPos)
 		{
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
@@ -425,7 +425,12 @@ namespace OpenCiv1.GPU
 				throw new Exception($"The screen {screenID} is not allocated");
 			}
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.Low;
+		}
+
+		public void F0_VGA_0550_SetPixel(int screenID, int xPos, int yPos, byte frontColor)
+		{
+			F0_VGA_0550_SetPixel(screenID, xPos, yPos, frontColor, 0);
 		}
 
 		public void F0_VGA_0550_SetPixel(int screenID, int xPos, int yPos, byte frontColor, byte pixelMode)

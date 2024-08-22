@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection.Metadata.Ecma335;
 using IRB.Collections.Generic;
-using OpenCiv1.GPU;
+using OpenCiv1.Graphics;
 
 namespace OpenCiv1
 {

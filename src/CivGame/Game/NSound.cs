@@ -6,12 +6,17 @@ namespace OpenCiv1
 	{
 		private CivGame oParent;
 		private VCPU oCPU;
+		private CivStateData oGameData;
+		private CivStaticData oStaticGameData;
+
 		private ushort usBufferPosition = 0;
 
 		public NSound(CivGame parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
+			this.oGameData = parent.GameData;
+			this.oStaticGameData = parent.StaticGameData;
 		}
 
 		/// <summary>

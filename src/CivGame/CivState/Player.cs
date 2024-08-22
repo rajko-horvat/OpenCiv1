@@ -20,10 +20,14 @@ namespace OpenCiv1
 		public short LandCount = 0;
 
 		public ushort[] Diplomacy = new ushort[8];
-		public PlayerContinent[] Continents = new PlayerContinent[16];
 		public short Ranking = 0;
 		public short CumulativeEpicRanking = 0;
 		public short Score = 0;
+
+		public PlayerContinent[] Continents = new PlayerContinent[16];
+
+		// Strategic locations
+		public StrategicLocation[] StrategicLocations = new StrategicLocation[16];
 
 		// Technology
 		public short ScienceTaxRate = 0;
@@ -42,9 +46,6 @@ namespace OpenCiv1
 		public Unit[] Units = new Unit[129];
 		public short[] UnitsInProduction = new short[28];
 		public short[] LostUnits = new short[28];
-
-		// Strategic locations
-		public StrategicLocation[] StrategicLocations = new StrategicLocation[16];
 
 		// Spaceship
 		public sbyte[] SpaceshipData = new sbyte[180];

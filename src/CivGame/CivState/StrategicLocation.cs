@@ -1,5 +1,5 @@
 ﻿using System;
-using OpenCiv1.GPU;
+using OpenCiv1.Graphics;
 
 namespace OpenCiv1
 {

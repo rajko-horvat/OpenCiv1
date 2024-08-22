@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OpenCiv1.GPU
+namespace OpenCiv1.Graphics
 {
 	[Serializable]
 	public class GFontChar

@@ -19,7 +19,7 @@ namespace OpenCiv1
 		Arctic = 7,
 		Swamp = 8,
 		Jungle = 9,
-		Ocean = 10,
+		Water = 10,
 		River = 11
 	}
 }

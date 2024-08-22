@@ -4,7 +4,7 @@ using System.Text;
 using OpenCiv1;
 using IRB.Collections.Generic;
 using IRB.VirtualCPU.MZ;
-using OpenCiv1.GPU;
+using OpenCiv1.Graphics;
 
 namespace IRB.VirtualCPU
 {

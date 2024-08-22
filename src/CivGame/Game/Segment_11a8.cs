@@ -7,11 +7,15 @@ namespace OpenCiv1
 	{
 		private CivGame oParent;
 		private VCPU oCPU;
+		private CivStateData oGameData;
+		private CivStaticData oStaticGameData;
 
 		public Segment_11a8(CivGame parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
+			this.oGameData = parent.GameData;
+			this.oStaticGameData = parent.StaticGameData;
 		}
 
 		/// <summary>
@@ -130,7 +134,7 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6b32), 0x1);
 			if (this.oCPU.Flags.NE) goto L016f;
 
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].XStart;
+			this.oCPU.AX.Word = (ushort)this.oGameData.Players[this.oGameData.HumanPlayerID].XStart;
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x7);
 			this.oParent.Var_d4cc_XPos = (short)this.oCPU.AX.Word;
 
@@ -410,7 +414,7 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x6);
 
-			this.oParent.Var_d76a = 0;
+			this.oParent.Var_d76a_IsEarthMap = false;
 			goto L04bb;
 
 		L0494:
@@ -483,6 +487,19 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("// Intro start");
 
 			this.oParent.GameInitAndIntro.F7_0000_0012_GenerateMap();
+
+			// intialize Player.MapGroup array
+			int iGroupLength = this.oGameData.Map.Groups.Count;
+			for (int i = 0; i < this.oGameData.Players.Length; i++)
+			{
+				Player player = this.oGameData.Players[i];
+				player.Continents = new PlayerContinent[iGroupLength];
+
+				for (int j = 0; j < iGroupLength; j++)
+				{
+					player.Continents[j] = new PlayerContinent();
+				}
+			}
 
 			this.oCPU.Log.ExitBlock("// Intro end");
 
@@ -645,9 +662,22 @@ namespace OpenCiv1
 			// Instruction address 0x11a8:0x0796, size: 3
 			F0_11a8_0268();
 
-			this.oParent.Var_d76a = 1;
+			this.oParent.Var_d76a_IsEarthMap = true;
 
 			this.oParent.GameInitAndIntro.F7_0000_0012_GenerateMap();
+
+			// intialize Player.MapGroup array
+			iGroupLength = this.oGameData.Map.Groups.Count;
+			for (int i = 0; i < this.oGameData.Players.Length; i++)
+			{
+				Player player = this.oGameData.Players[i];
+				player.Continents = new PlayerContinent[iGroupLength];
+
+				for (int j = 0; j < iGroupLength; j++)
+				{
+					player.Continents[j] = new PlayerContinent();
+				}
+			}
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
@@ -744,7 +774,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_1697(0, 0, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd4dc));
 
 		L0899:
-			if (this.oParent.CivState.TurnCount != 0) goto L08c5;
+			if (this.oGameData.TurnCount != 0) goto L08c5;
 
 			// Instruction address 0x11a8:0x08a8, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x1c16, 1);

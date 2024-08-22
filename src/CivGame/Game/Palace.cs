@@ -7,11 +7,15 @@ namespace OpenCiv1
 	{
 		private CivGame oParent;
 		private VCPU oCPU;
+		private CivStateData oGameData;
+		private CivStaticData oStaticGameData;
 
 		public Palace(CivGame parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
+			this.oGameData = parent.GameData;
+			this.oStaticGameData = parent.StaticGameData;
 		}
 
 		/// <summary>
@@ -56,7 +60,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0091, size: 5
 			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(
-				this.oParent.CivState.Nations[this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].NationalityID].LongTune, 3);
+				this.oStaticGameData.Nations[this.oGameData.Players[this.oGameData.HumanPlayerID].NationalityID].LongTune, 3);
 
 			// Instruction address 0x0000:0x009d, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4ae6, 1);
@@ -85,14 +89,14 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108)) + 2] >= 4)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108)) + 2] >= 4)
 				goto L01bc;
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108)) + 1] > 0 ||
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108)) + 3] > 0)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108)) + 1] > 0 ||
+				this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108)) + 3] > 0)
 				goto L016a;
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108)) + 2] < 0)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108)) + 2] < 0)
 				goto L01bc;
 
 		L016a:
@@ -125,7 +129,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[10 + this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108)) + 1] >= 3)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[10 + this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x108)) + 1] >= 3)
 				goto L0217;
 
 			// Instruction address 0x0000:0x01e2, size: 5
@@ -191,7 +195,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 2] >= 4)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 2] >= 4)
 				goto L0231;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)), 0x9);
@@ -200,7 +204,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 2] >= 3)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 2] >= 3)
 				goto L0231;
 
 		L0289:
@@ -243,10 +247,10 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 3] > 0)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 3] > 0)
 				goto L0307;
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 2] != -1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 2] != -1)
 				goto L0307;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e))));
@@ -260,8 +264,8 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 1] > 0 ||
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 2] != -1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 1] > 0 ||
+				this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 2] != -1)
 				goto L030e;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e), this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e))));
@@ -279,7 +283,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0347, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 2] + 1,
+				this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 2] + 1,
 				1, 4);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x110), this.oCPU.AX.Word);
@@ -350,7 +354,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 1] == -1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 1] == -1)
 				goto L0472;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)), 0x1);
@@ -368,7 +372,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 3] == -1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 3] == -1)
 				goto L0499;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)), 0x7);
@@ -612,10 +616,10 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 2] =
+			this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e)) + 2] =
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x110));
 
-			this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e))] =
+			this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10e))] =
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10a));
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 1;
@@ -691,7 +695,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 
-			this.oCPU.SI.Word = (ushort)((short)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 2]);
+			this.oCPU.SI.Word = (ushort)((short)this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 2]);
 			this.oCPU.CMP_UInt16(this.oCPU.SI.Word, 0xffff);
 			if (this.oCPU.Flags.NE)
 			{
@@ -714,7 +718,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xb25f), 0xff);
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0xb25e), 0xff);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 2] != -1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 2] != -1)
 			{
 				F17_0000_0cfe(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)), 1);
 			}
@@ -741,12 +745,12 @@ namespace OpenCiv1
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x4b89, 0);
 
 		L089a:
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[12] > 0)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[12] > 0)
 			{
 				// Instruction address 0x0000:0x08b6, size: 5
 				this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), "cbacks0.pic");
 
-				this.oCPU.AX.Low = (byte)((sbyte)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[12]);
+				this.oCPU.AX.Low = (byte)((sbyte)this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[12]);
 				this.oCPU.AX.Low = this.oCPU.ADD_UInt8(this.oCPU.AX.Low, 0x30);
 				this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Low);
 
@@ -756,13 +760,13 @@ namespace OpenCiv1
 		
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), 0x10);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[4] == -1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[4] == -1)
 			{
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c),
 					this.oCPU.SUB_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)), 0x18));
 			}
 		
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[4] == 1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[4] == 1)
 			{
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), 
 					this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c))));
@@ -783,7 +787,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 2] == -1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 2] == -1)
 				goto L0906;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22), 0x1);
@@ -805,7 +809,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))] != 1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))] != 1)
 				goto L0957;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)), 0x3);
@@ -841,8 +845,8 @@ namespace OpenCiv1
 				this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12));
 				this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-				if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))] ==
-					this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))])
+				if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))] ==
+					this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))])
 				{
 					F17_0000_0e2f(
 						this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e)),
@@ -862,8 +866,8 @@ namespace OpenCiv1
 				this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18));
 				this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-				if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))] ==
-					this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18))])
+				if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))] ==
+					this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18))])
 				{
 					F17_0000_0e2f(
 						this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e)),
@@ -897,7 +901,7 @@ namespace OpenCiv1
 			goto L0af9;
 
 		L0a3e:
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[4] == 1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[4] == 1)
 			{
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c),
 					this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c))));
@@ -913,7 +917,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x4b2c);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)), this.oCPU.AX.Word));
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[4] == 1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[4] == 1)
 			{
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), 
 					this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c))));
@@ -939,19 +943,19 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))] != 1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))] != 1)
 				goto L0ac9;
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 1] <=
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 2])
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 1] <=
+				this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 2])
 				goto L0ac9;
 
 			F17_0000_0e2f(
 				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e)),
 				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)),
 				(short)(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)) - 3),
-				(ushort)((short)(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 1] -
-					this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 2] +
+				(ushort)((short)(this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 1] -
+					this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 2] +
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)) + 1)),
 				1);
 
@@ -965,7 +969,7 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e)),
 				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)),
 				(short)(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)) -
-					((this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))] == 1) ? 3 : 2)),
+					((this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22))] == 1) ? 3 : 2)),
 				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)),
 				1);
 
@@ -989,11 +993,11 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 2] == -1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 2] == -1)
 				goto L0afe;
 
 			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e),
-				(short)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 2]);
+				(short)this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 2]);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26), 0x2);
 
@@ -1002,7 +1006,7 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26), 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 1] == -1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 1] == -1)
 				goto L0b3b;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)), 0x1);
@@ -1020,7 +1024,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 3] == -1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)) + 3] == -1)
 				goto L0b5d;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)), 0x7);
@@ -1057,16 +1061,16 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))] == 1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))] == 1)
 			{
 				if (this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)) != 3)
 				{
 					F17_0000_0e2f(
-						(ushort)((short)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)) + 2]),
+						(ushort)((short)this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)) + 2]),
 						this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)),
 						(short)((this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)) * 48) - 36),
-						(ushort)((short)(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)) + 3] -
-							this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)) + 2] +
+						(ushort)((short)(this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)) + 3] -
+							this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)) + 2] +
 							this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)))),
 						0);
 				}
@@ -1075,16 +1079,16 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0bc8, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6828), 0x4b9f);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[11] == 0  &&
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[13] == 0)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[11] == 0  &&
+				this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[13] == 0)
 				goto L0c94;
 
 			// Instruction address 0x0000:0x0bee, size: 5
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), "cbrush0.pic");
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[11] != 0)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[11] != 0)
 			{
-				this.oCPU.AX.Low = (byte)((sbyte)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[11]);
+				this.oCPU.AX.Low = (byte)((sbyte)this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[11]);
 				this.oCPU.AX.Low = this.oCPU.SHL_UInt8(this.oCPU.AX.Low, 0x1);
 				this.oCPU.AX.Low = this.oCPU.ADD_UInt8(this.oCPU.AX.Low, 0x2e);
 				this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Low);
@@ -1097,13 +1101,13 @@ namespace OpenCiv1
 				// Instruction address 0x0000:0x0c2e, size: 5
 				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
 					0,
-					((this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[11] <= 1) ? 105 : 94),
+					((this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[11] <= 1) ? 105 : 94),
 					this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2a)));
 			}
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[13] != 0)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[13] != 0)
 			{
-				this.oCPU.AX.Low = (byte)((sbyte)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[13]);
+				this.oCPU.AX.Low = (byte)((sbyte)this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[13]);
 				this.oCPU.AX.Low = this.oCPU.SHL_UInt8(this.oCPU.AX.Low, 0x1);
 				this.oCPU.AX.Low = this.oCPU.ADD_UInt8(this.oCPU.AX.Low, 0x2f);
 				this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Low);
@@ -1115,11 +1119,11 @@ namespace OpenCiv1
 
 				// Instruction address 0x0000:0x0c6f, size: 5
 				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-					184, ((this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[13] <= 1) ? 105 : 94),
+					184, ((this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[13] <= 1) ? 105 : 94),
 					this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)));
 			}
 		
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[11] != 0)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[11] != 0)
 			{
 				this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2a));
 			}
@@ -1182,7 +1186,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
 			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4),
-				(short)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[param1 + 2]);
+				(short)this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[param1 + 2]);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x2);
 
 			this.oCPU.CMP_UInt16(param1, 0x4);
@@ -1190,7 +1194,7 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[param1 + 1] == -1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[param1 + 1] == -1)
 				goto L0d2e;
 
 			if (param1 != 1)
@@ -1208,7 +1212,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = param1;
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[param1 + 3] == -1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[param1 + 3] == -1)
 				goto L0d50;
 
 			this.oCPU.CMP_UInt16(param1, 0x7);
@@ -1258,12 +1262,12 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = param1;
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[param1 + 1] >
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[param1 + 2] ||
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[param1 + 1] >
+				this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[param1 + 2] ||
 				param1 == 5)
 				goto L0dbb;
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[param1] != -1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[param1] != -1)
 				goto L0dc7;
 
 		L0dbb:
@@ -1299,8 +1303,8 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = param1;
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[param1 + 1] >
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[param1 + 2])
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[param1 + 1] >
+				this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[param1 + 2])
 				goto L0e0a;
 
 			this.oCPU.CMP_UInt16(param1, 0x5);
@@ -1353,10 +1357,10 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
 			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2),
-				(short)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[param2 + 2]);
+				(short)this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[param2 + 2]);
 
 			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4),
-				(short)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[param2]);
+				(short)this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[param2]);
 
 			this.oCPU.BX.Word = flag;
 			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0xb25e));
@@ -1483,7 +1487,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))] != 1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))] != 1)
 				goto L0f73;
 
 		L0f67:
@@ -1512,7 +1516,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))] != 1)
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))] != 1)
 				goto L0fb7;
 
 		L0fab:
@@ -1544,7 +1548,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)) + 2] ==
+			if (this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)) + 2] ==
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a)))
 				goto L0ffc;
 
@@ -1556,7 +1560,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 
 			this.oCPU.SI.Word = 
-				(ushort)((short)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))]);
+				(ushort)((short)this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))]);
 			this.oCPU.AX.Word = this.oCPU.SI.Word;
 
 			this.oCPU.AX.Word = this.oCPU.AND_UInt16(this.oCPU.AX.Word, 0x1);

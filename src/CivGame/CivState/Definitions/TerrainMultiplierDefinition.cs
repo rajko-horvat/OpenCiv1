@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OpenCiv1
 {
-	public class TerrainMultiplier
+	public class TerrainMultiplierDefinition
 	{
 		int ID;
 
@@ -18,7 +18,7 @@ namespace OpenCiv1
 		public short Multi5;
 		public short Multi6;
 
-		public TerrainMultiplier(int id, short multi1, short multi2, short multi3, short multi4, short multi5, short multi6)
+		public TerrainMultiplierDefinition(int id, short multi1, short multi2, short multi3, short multi4, short multi5, short multi6)
 		{
 			this.ID = id;
 			this.Multi1 = multi1;

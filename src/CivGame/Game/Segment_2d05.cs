@@ -6,11 +6,15 @@ namespace OpenCiv1
 	{
 		private CivGame oParent;
 		private VCPU oCPU;
+		private CivStateData oGameData;
+		private CivStaticData oStaticGameData;
 
 		public Segment_2d05(CivGame parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
+			this.oGameData = parent.GameData;
+			this.oStaticGameData = parent.StaticGameData;
 		}
 
 		/// <summary>
@@ -90,9 +94,7 @@ namespace OpenCiv1
 			if ((yPos & 1) != 0 && yPos != 139)
 			{
 				// Instruction address 0x2d05:0x00e1, size: 5
-				this.oParent.Graphics.F0_VGA_038c_GetPixel(0, xPos, yPos);
-
-				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Word);
+				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oParent.Graphics.F0_VGA_038c_GetPixel(0, xPos, yPos));
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), 0xffff);
 			}
 
@@ -376,8 +378,8 @@ namespace OpenCiv1
 			goto L01d4;
 
 		L039a:
-			this.oParent.CivState.GameSettingFlags ^= 0x10;
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x10);
+			this.oGameData.GameSettingFlags ^= 0x10;
+			this.oCPU.TEST_UInt8((byte)(this.oGameData.GameSettingFlags & 0xff), 0x10);
 			if (this.oCPU.Flags.E) goto L03a9;
 			goto L0217;
 

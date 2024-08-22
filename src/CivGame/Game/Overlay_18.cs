@@ -6,11 +6,15 @@ namespace OpenCiv1
 	{
 		private CivGame oParent;
 		private VCPU oCPU;
+		private CivStateData oGameData;
+		private CivStaticData oStaticGameData;
 
 		public Overlay_18(CivGame parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
+			this.oGameData = parent.GameData;
+			this.oStaticGameData = parent.StaticGameData;
 		}
 
 		/// <summary>
@@ -158,7 +162,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x01bc, size: 5
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x10), "back0a.pal");
 
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].GovernmentType;
+			this.oCPU.AX.Word = (ushort)this.oGameData.Players[this.oGameData.HumanPlayerID].GovernmentType;
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
 			this.oCPU.AX.Word = this.oCPU.SAR_UInt16(this.oCPU.AX.Word, 0x1);
@@ -166,7 +170,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Low);
 
 			// Instruction address 0x0000:0x01e0, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, (int)TechnologyEnum.Invention);
+			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oGameData.HumanPlayerID, (int)TechnologyEnum.Invention);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 			{
@@ -221,10 +225,10 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0261, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.HumanPlayerID;
+			this.oCPU.AX.Word = (ushort)this.oGameData.HumanPlayerID;
 			this.oCPU.CMP_UInt16((ushort)playerID, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0275;
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x20);
+			this.oCPU.TEST_UInt8((byte)(this.oGameData.GameSettingFlags & 0xff), 0x20);
 			if (this.oCPU.Flags.E) goto L027a;
 
 		L0275:
@@ -251,7 +255,7 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1946)));
 
 			// Instruction address 0x0000:0x02ca, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.Players[playerID].Nationality);
+			this.oParent.MSCAPI.strcpy(0xba06, this.oGameData.Players[playerID].Nationality);
 
 			// Instruction address 0x0000:0x02da, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " SpaceShip: X.S.S. ");
@@ -262,12 +266,12 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x02f9, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.Players[playerID].Name);
+			this.oParent.MSCAPI.strcat(0xba06, this.oGameData.Players[playerID].Name);
 
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14));
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xb9ff),
-				(byte)this.oParent.CivState.Players[playerID].Nationality[0]);
+				(byte)this.oGameData.Players[playerID].Nationality[0]);
 
 			// Instruction address 0x0000:0x031d, size: 5
 			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 1, 0);
@@ -293,10 +297,10 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 
-				this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))].XPos);
+				this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))].XPos);
 
 			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10),
-				this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))].YPos);
+				this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))].YPos);
 
 			this.oCPU.AX.Word = 0xb4;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
@@ -307,13 +311,13 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ADD_UInt16(this.oCPU.BX.Word, this.oCPU.AX.Word);
 			this.oCPU.BX.Word = this.oCPU.ADD_UInt16(this.oCPU.BX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)));
 
-			int iPos = (12 * this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))].XPos) +
-				this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))].YPos;
+			int iPos = (12 * this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))].XPos) +
+				this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))].YPos;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8),
-				(ushort)((short)this.oParent.CivState.Players[playerID].SpaceshipData[iPos]));
+				(ushort)((short)this.oGameData.Players[playerID].SpaceshipData[iPos]));
 
-			if (this.oParent.CivState.Players[playerID].SpaceshipData[iPos] == -1)
+			if (this.oGameData.Players[playerID].SpaceshipData[iPos] == -1)
 				goto L04b0;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x0);
@@ -430,7 +434,7 @@ namespace OpenCiv1
 			goto L04c9;
 
 		L04b0:
-			if (this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))].BitmapID < 3)
+			if (this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))].BitmapID < 3)
 			{
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), 0x0);
 			}
@@ -439,7 +443,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), 
 				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))));
 
-			if (this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))].XPos != -1)
+			if (this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe))].XPos != -1)
 				goto L0343;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x0);
@@ -777,7 +781,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = (byte)playerID;
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.SpaceshipFlags);
+			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.SpaceshipFlags);
 			if (this.oCPU.Flags.E) goto L0a7e;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x0);
 			if (this.oCPU.Flags.NE) goto L0a4f;
@@ -785,7 +789,7 @@ namespace OpenCiv1
 
 		L0a4f:
 			// Instruction address 0x0000:0x0a70, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(((this.oParent.CivState.Players[playerID].SpaceshipETAYear < oParent.CivState.Year) ? "Landed!" : "Launched!"),
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(((this.oGameData.Players[playerID].SpaceshipETAYear < oParent.GameData.Year) ? "Landed!" : "Launched!"),
 				242,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
 				0);
@@ -799,9 +803,9 @@ namespace OpenCiv1
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.Word = 0xa;
 			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.Year);
-			this.oParent.CivState.Players[playerID].SpaceshipETAYear = (short)this.oCPU.AX.Word;
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.HumanPlayerID;
+			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.Year);
+			this.oGameData.Players[playerID].SpaceshipETAYear = (short)this.oCPU.AX.Word;
+			this.oCPU.AX.Word = (ushort)this.oGameData.HumanPlayerID;
 			this.oCPU.CMP_UInt16((ushort)playerID, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L0ada;
 			
@@ -842,7 +846,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = (byte)playerID;
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.SpaceshipFlags);
+			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.SpaceshipFlags);
 			if (this.oCPU.Flags.E) goto L0b14;
 			this.oCPU.AX.Word = 0x2;
 			goto L0b17;
@@ -881,7 +885,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16), this.oCPU.AX.Word);
 
 		L0b4f:
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.HumanPlayerID;
+			this.oCPU.AX.Word = (ushort)this.oGameData.HumanPlayerID;
 			this.oCPU.CMP_UInt16((ushort)playerID, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0b5a;
 			goto L0bfc;
@@ -908,9 +912,9 @@ namespace OpenCiv1
 
 		L0b89:
 			this.oCPU.AX.Word = 0x1;
-			this.oCPU.CX.Low = (byte)(this.oParent.CivState.HumanPlayerID & 0xff);
+			this.oCPU.CX.Low = (byte)(this.oGameData.HumanPlayerID & 0xff);
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.SpaceshipFlags);
+			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.SpaceshipFlags);
 			if (this.oCPU.Flags.NE) goto L0bfc;
 
 			// Instruction address 0x0000:0x0ba0, size: 5
@@ -929,11 +933,11 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x1);
 			if (this.oCPU.Flags.NE) goto L0bfc;
 
-			F18_0000_15c3(this.oParent.CivState.HumanPlayerID);
+			F18_0000_15c3(this.oGameData.HumanPlayerID);
 
 		L0bfc:
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeae);
-			this.oParent.CivState.Players[playerID].SpaceshipPopulation = (short)this.oCPU.AX.Word;
+			this.oGameData.Players[playerID].SpaceshipPopulation = (short)this.oCPU.AX.Word;
 
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc));
 
@@ -960,7 +964,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F18_0000_0c11_GetSpaceShipData({playerID}, {xPos}, {yPos})");
 
 			// function body
-			sbyte sdata = this.oParent.CivState.Players[playerID].SpaceshipData[(12 * xPos) + yPos];
+			sbyte sdata = this.oGameData.Players[playerID].SpaceshipData[(12 * xPos) + yPos];
 
 			if (sdata == -1 || sdata >= 0x3)
 			{
@@ -1104,20 +1108,20 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 			this.oCPU.AX.Word = 0;
-			this.oParent.CivState.AISpaceshipSuccessRate = (short)this.oCPU.AX.Word;
+			this.oGameData.AISpaceshipSuccessRate = (short)this.oCPU.AX.Word;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0x1);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x3e7);
 			this.oCPU.CMP_UInt16((ushort)param2, 0x2);
 			if (this.oCPU.Flags.E) goto L0d9b;
-			this.oCPU.SI.Word = (ushort)this.oParent.CivState.Players[playerID].SpaceshipETAYear;
+			this.oCPU.SI.Word = (ushort)this.oGameData.Players[playerID].SpaceshipETAYear;
 			this.oCPU.CMP_UInt16(this.oCPU.SI.Word, 0xffff);
 			if (this.oCPU.Flags.E) goto L0da0;
 			this.oCPU.AX.Word = this.oCPU.SI.Word;
-			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.Year);
+			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.Year);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xf);
 			if (this.oCPU.Flags.GE) goto L0da0;
-			this.oCPU.DI.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].SpaceshipETAYear;
+			this.oCPU.DI.Word = (ushort)this.oGameData.Players[this.oGameData.HumanPlayerID].SpaceshipETAYear;
 			this.oCPU.CMP_UInt16(this.oCPU.SI.Word, this.oCPU.DI.Word);
 			if (this.oCPU.Flags.L) goto L0d9b;
 			this.oCPU.CMP_UInt16(this.oCPU.DI.Word, 0xffff);
@@ -1131,10 +1135,10 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			int iPos = (12 * this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].XPos) +
-				this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].YPos;
+			int iPos = (12 * this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].XPos) +
+				this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].YPos;
 
-			if (this.oParent.CivState.Players[playerID].SpaceshipData[iPos] != -1)
+			if (this.oGameData.Players[playerID].SpaceshipData[iPos] != -1)
 				goto L0e1a;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x3e7);
@@ -1145,7 +1149,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x3);
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].BitmapID >= (short)this.oCPU.CX.Word)
+			if (this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].BitmapID >= (short)this.oCPU.CX.Word)
 			{
 				this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
@@ -1156,7 +1160,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			
-			this.oCPU.AX.Word = (ushort)((short)this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].BitmapID);
+			this.oCPU.AX.Word = (ushort)((short)this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].BitmapID);
 			this.oCPU.CX.Low = 0x3;
 			this.oCPU.IDIV_UInt8(this.oCPU.AX, this.oCPU.CX.Low);
 			this.oCPU.CBW(this.oCPU.AX);
@@ -1173,7 +1177,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].XPos == -1)
+			if (this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].XPos == -1)
 				goto L0e68;
 
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
@@ -1205,7 +1209,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].XPos != -1)
+			if (this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].XPos != -1)
 				goto L0e89;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x3e7);
@@ -1226,7 +1230,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].XPos != -1)
+			if (this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].XPos != -1)
 				goto L0eb6;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x3e7);
@@ -1240,7 +1244,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
 			// Instruction address 0x0000:0x0ede, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.Players[playerID].Nation);
+			this.oParent.MSCAPI.strcpy(0xba06, this.oGameData.Players[playerID].Nation);
 
 			// Instruction address 0x0000:0x0eee, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " build space ship.\n");
@@ -1256,20 +1260,20 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0f17, size: 5
 			this.oParent.Segment_1403.F0_1403_4545();
 
-			iPos = (12 * this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].XPos) +
-				this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].YPos;
+			iPos = (12 * this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].XPos) +
+				this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].YPos;
 
-			this.oParent.CivState.Players[playerID].SpaceshipData[iPos] =
-				this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].BitmapID;
+			this.oGameData.Players[playerID].SpaceshipData[iPos] =
+				this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].BitmapID;
 
 			F18_0000_0259(playerID, -1, 0);
 
-			this.oParent.CivState.AISpaceshipSuccessRate = (short)this.oCPU.AX.Word;
+			this.oGameData.AISpaceshipSuccessRate = (short)this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = (byte)playerID;
 			this.oCPU.CX.Low = this.oCPU.ADD_UInt8(this.oCPU.CX.Low, 0x8);
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oParent.CivState.SpaceshipFlags |= (short)this.oCPU.AX.Word;
+			this.oGameData.SpaceshipFlags |= (short)this.oCPU.AX.Word;
 
 			// Instruction address 0x0000:0x0f71, size: 5
 			this.oParent.Segment_1403.F0_1403_4545();
@@ -1378,7 +1382,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].BitmapID >= 3)
+			if (this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].BitmapID >= 3)
 				goto L1075;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)), 0x63);
@@ -1397,13 +1401,13 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			int iPos = (12 * this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].XPos) +
-				this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].YPos;
+			int iPos = (12 * this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].XPos) +
+				this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].YPos;
 			
-			if (this.oParent.CivState.Players[playerID].SpaceshipData[iPos] == -1)
+			if (this.oGameData.Players[playerID].SpaceshipData[iPos] == -1)
 				goto L1055;
 
-			if (this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].BitmapID < 3)
+			if (this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].BitmapID < 3)
 				goto L1075;
 
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc));
@@ -1420,13 +1424,13 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			iPos = (12 * this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].XPos) +
-				this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].YPos;
+			iPos = (12 * this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].XPos) +
+				this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].YPos;
 
-			if (this.oParent.CivState.Players[playerID].SpaceshipData[iPos] == -1)
+			if (this.oGameData.Players[playerID].SpaceshipData[iPos] == -1)
 				goto L1117;
 
-			if (this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].BitmapID < 3)
+			if (this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].BitmapID < 3)
 				goto L1137;
 
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc));
@@ -1438,7 +1442,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].BitmapID >= 3)
+			if (this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].BitmapID >= 3)
 				goto L1137;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x63);
@@ -1478,17 +1482,17 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			iPos = (12 * this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].XPos) +
-				this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].YPos;
+			iPos = (12 * this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].XPos) +
+				this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].YPos;
 			
-			if (this.oParent.CivState.Players[playerID].SpaceshipData[iPos] != -1)
+			if (this.oGameData.Players[playerID].SpaceshipData[iPos] != -1)
 				goto L11b6;
 
 			this.oCPU.AX.Word = 0x3;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].BitmapID == this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)))
+			if (this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].BitmapID == this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)))
 				goto L11cf;
 
 		L11b6:
@@ -1499,7 +1503,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].XPos != -1)
+			if (this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].XPos != -1)
 				goto L116e;
 
 		L11cf:
@@ -1510,11 +1514,11 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			iPos = (12 * this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].XPos) +
-				this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].YPos;
+			iPos = (12 * this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].XPos) +
+				this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].YPos;
 
-			this.oParent.CivState.Players[playerID].SpaceshipData[iPos] =
-				this.oParent.CivState.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].BitmapID;
+			this.oGameData.Players[playerID].SpaceshipData[iPos] =
+				this.oGameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].BitmapID;
 
 			goto L1278;
 
@@ -1553,7 +1557,7 @@ namespace OpenCiv1
 			this.oCPU.CX.Low = (byte)playerID;
 			this.oCPU.CX.Low = this.oCPU.ADD_UInt8(this.oCPU.CX.Low, 0x8);
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.SpaceshipFlags);
+			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.SpaceshipFlags);
 			if (this.oCPU.Flags.NE) goto L12c2;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0x1);
 
@@ -1562,10 +1566,10 @@ namespace OpenCiv1
 			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
 			this.oCPU.CX.Low = this.oCPU.ADD_UInt8(this.oCPU.CX.Low, 0x8);
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.SpaceshipFlags);
+			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.SpaceshipFlags);
 			if (this.oCPU.Flags.NE)
 			{
-				this.oParent.CivState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].ContactPlayerCountdown = 0;
+				this.oGameData.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].ContactPlayerCountdown = 0;
 			}
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4),
@@ -1576,7 +1580,7 @@ namespace OpenCiv1
 			this.oCPU.CX.Low = (byte)playerID;
 			this.oCPU.CX.Low = this.oCPU.ADD_UInt8(this.oCPU.CX.Low, 0x8);
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oParent.CivState.SpaceshipFlags |= (short)this.oCPU.AX.Word;
+			this.oGameData.SpaceshipFlags |= (short)this.oCPU.AX.Word;
 
 		L12c2:
 			// Instruction address 0x0000:0x12c2, size: 5
@@ -1584,7 +1588,7 @@ namespace OpenCiv1
 
 			F18_0000_0259(playerID, -1, 1);
 			
-			this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].SpaceshipSuccessRate = (short)this.oCPU.AX.Word;
+			this.oGameData.Players[this.oGameData.HumanPlayerID].SpaceshipSuccessRate = (short)this.oCPU.AX.Word;
 
 		L12de:
 			// Instruction address 0x0000:0x12de, size: 5
@@ -1610,7 +1614,7 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x4);
-			this.oCPU.TEST_UInt16((ushort)this.oParent.CivState.SpaceshipFlags, 0xfe00);
+			this.oCPU.TEST_UInt16((ushort)this.oGameData.SpaceshipFlags, 0xfe00);
 			if (this.oCPU.Flags.NE) goto L1538;
 			goto L15bf;
 
@@ -1622,7 +1626,7 @@ namespace OpenCiv1
 
 		L154d:
 			// Instruction address 0x0000:0x155a, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Nationality);
+			this.oParent.MSCAPI.strcat(0xba06, this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Nationality);
 
 			// Instruction address 0x0000:0x156a, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\n ");
@@ -1630,7 +1634,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))));
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), 0x8);
 			if (this.oCPU.Flags.L) goto L154d;
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.SpaceshipFlags;
+			this.oCPU.AX.Word = (ushort)this.oGameData.SpaceshipFlags;
 			this.oCPU.CX.Low = 0x9;
 			this.oCPU.AX.Word = this.oCPU.SAR_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.AX.Low = this.oCPU.XOR_UInt8(this.oCPU.AX.Low, 0xff);
@@ -1672,7 +1676,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = (byte)playerID;
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oParent.CivState.SpaceshipFlags |= (short)this.oCPU.AX.Word;
+			this.oGameData.SpaceshipFlags |= (short)this.oCPU.AX.Word;
 
 			// Instruction address 0x0000:0x15d3, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
@@ -1686,7 +1690,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = (ushort)playerID;
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 			// Instruction address 0x0000:0x1605, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.Players[playerID].Nation);
+			this.oParent.MSCAPI.strcpy(0xba06, this.oGameData.Players[playerID].Nation);
 
 			// Instruction address 0x0000:0x1615, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " LAUNCH space ship!");
@@ -1699,7 +1703,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x165e, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(this.oParent.CivState.Players[playerID].SpaceshipETAYear, 10));
+				this.oParent.MSCAPI.itoa(this.oGameData.Players[playerID].SpaceshipETAYear, 10));
 
 			// Instruction address 0x0000:0x166e, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ".\n");
@@ -1707,9 +1711,9 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1686, size: 5
 			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 100, 15);
 
-			this.oParent.CivState.Players[playerID].SpaceshipLaunchYear = oParent.CivState.Year;
+			this.oGameData.Players[playerID].SpaceshipLaunchYear = oParent.GameData.Year;
 
-			if (playerID == this.oParent.CivState.HumanPlayerID)
+			if (playerID == this.oGameData.HumanPlayerID)
 				goto L16a1;
 
 			F18_0000_0000();
@@ -1726,7 +1730,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x16bd, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 			
-			if (playerID == this.oParent.CivState.HumanPlayerID) goto L16ce;
+			if (playerID == this.oGameData.HumanPlayerID) goto L16ce;
 
 			F18_0000_016d();
 

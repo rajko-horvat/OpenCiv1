@@ -3,7 +3,7 @@ using Avalonia.Media;
 using IRB.Collections.Generic;
 using OpenCiv1.Compression;
 
-namespace OpenCiv1.GPU
+namespace OpenCiv1.Graphics
 {
 	public class GBitmap
 	{

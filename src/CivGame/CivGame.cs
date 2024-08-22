@@ -1,5 +1,5 @@
 ﻿using IRB.VirtualCPU;
-using OpenCiv1.GPU;
+using OpenCiv1.Graphics;
 
 namespace OpenCiv1
 {
@@ -61,7 +61,8 @@ namespace OpenCiv1
 
 		private ushort usStartSegment = 0x1000;
 
-		private CivState oCivState;
+		private CivStateData oGameData;
+		private CivStaticData oStaticGameData;
 
 		public CivGame()
 		{
@@ -75,7 +76,8 @@ namespace OpenCiv1
 			this.oInterruptLog.CPU = this.oCPU;
 			this.oGoToLog.CPU = this.oCPU;
 
-			this.oCivState = new CivState();
+			this.oGameData = new CivStateData();
+			this.oStaticGameData = new CivStaticData();
 
 			#region Initialize Segments
 			this.oMSCAPI = new MSCAPI(this);
@@ -1120,13 +1122,13 @@ namespace OpenCiv1
 
 		public static void LogUnit(CivGame game, LogWrapper log, int playerID, int unitID, int humanPlayerID)
 		{
-			if (playerID >= game.CivState.Players.Length || unitID >= game.CivState.Players[playerID].Units.Length)
+			if (playerID >= game.GameData.Players.Length || unitID >= game.GameData.Players[playerID].Units.Length)
 			{
 				log.WriteLine($"// Illegal indexes, PlayerID: {playerID}{((playerID == humanPlayerID) ? " (Human player)" : "")}, UnitID: {unitID}");
 			}
 			else
 			{
-				Unit unit = game.CivState.Players[playerID].Units[unitID];
+				Unit unit = game.GameData.Players[playerID].Units[unitID];
 
 				log.WriteLine($"// Player[{playerID}{((playerID == humanPlayerID) ? " (Human player)" : "")}].Unit[{unitID}] = {{TypeID: {unit.TypeID}, Status: {unit.Status}, Position: {unit.Position}, GoTo: {unit.GoToPosition}}}");
 			}
@@ -1137,9 +1139,14 @@ namespace OpenCiv1
 			get { return this.oCPU; }
 		}
 
-		public CivState CivState
+		public CivStateData GameData
 		{
-			get { return this.oCivState; }
+			get { return this.oGameData; }
+		}
+
+		public CivStaticData StaticGameData
+		{
+			get { return this.oStaticGameData; }
 		}
 
 		#region Logs

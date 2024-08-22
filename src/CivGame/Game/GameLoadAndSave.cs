@@ -7,11 +7,15 @@ namespace OpenCiv1
 	{
 		private CivGame oParent;
 		private VCPU oCPU;
+		private CivStateData oGameData;
+		private CivStaticData oStaticGameData;
 
 		public GameLoadAndSave(CivGame parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
+			this.oGameData = parent.GameData;
+			this.oStaticGameData = parent.StaticGameData;
 		}
 
 		/// <summary>
@@ -263,7 +267,7 @@ namespace OpenCiv1
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 2;
 
-			this.oParent.GameInitAndIntro.F7_0000_1440_InitAuxPathFind(0);
+			this.oParent.GameInitAndIntro.F7_0000_1440_InitAuxPathFind(false);
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
@@ -289,7 +293,7 @@ namespace OpenCiv1
 		L0356:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdf60, this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3484, 0xfffd);
-			this.oParent.CivState.SpaceshipFlags &= 0x7ffe;
+			this.oGameData.SpaceshipFlags &= 0x7ffe;
 			goto L02f4;
 
 		L0366:
@@ -463,7 +467,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0522, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\n ");
 
-			this.oCPU.BX.Word = (ushort)this.oParent.CivState.DifficultyLevel;
+			this.oCPU.BX.Word = (ushort)this.oGameData.DifficultyLevel;
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x0538, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x33a2)));
@@ -472,13 +476,13 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, " ");
 
 			// Instruction address 0x0000:0x055e, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Name);
+			this.oParent.MSCAPI.strcat(0xba06, this.oGameData.Players[this.oGameData.HumanPlayerID].Name);
 
 			// Instruction address 0x0000:0x056e, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\n ");
 
 			// Instruction address 0x0000:0x0584, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Nation);
+			this.oParent.MSCAPI.strcat(0xba06, this.oGameData.Players[this.oGameData.HumanPlayerID].Nation);
 
 			// Instruction address 0x0000:0x0594, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "/");
@@ -764,7 +768,15 @@ namespace OpenCiv1
 
 				try
 				{
-					this.oParent.CivState.Map = Map.FromPIC($"{VCPU.DefaultCIVPath}{filename}.MAP");
+					this.oGameData.Map = Map.FromPIC($"{VCPU.DefaultCIVPath}{filename}.MAP");
+					
+					/*for (int i = 0; i < this.oGameData.Map.Size.Height; i++)
+					{
+						for (int j = 0; j < this.oGameData.Map.Size.Width; j++)
+						{
+							this.oGameData.Map[j, i].Layer8_VisibleTerrainImprovements2 |= 0x8;
+						}
+					}*/
 				}
 				catch
 				{
@@ -773,14 +785,14 @@ namespace OpenCiv1
 
 				// read sve file
 				FileStream reader = new FileStream($"{VCPU.DefaultCIVPath}{filename}.SVE", FileMode.Open);
-				this.oParent.CivState.TurnCount = ReadInt16(reader);
-				this.oParent.CivState.HumanPlayerID = ReadInt16(reader);
-				this.oParent.CivState.PlayerFlags = ReadInt16(reader);
-				this.oParent.CivState.RandomSeed = ReadUInt16(reader);
-				this.oParent.CivState.Year = ReadInt16(reader);
-				this.oParent.CivState.DifficultyLevel = ReadInt16(reader);
-				this.oParent.CivState.ActiveCivilizations = ReadInt16(reader);
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID = ReadInt16(reader);
+				this.oGameData.TurnCount = ReadInt16(reader);
+				this.oGameData.HumanPlayerID = ReadInt16(reader);
+				this.oGameData.PlayerFlags = ReadInt16(reader);
+				this.oGameData.RandomSeed = ReadUInt16(reader);
+				this.oGameData.Year = ReadInt16(reader);
+				this.oGameData.DifficultyLevel = ReadInt16(reader);
+				this.oGameData.ActiveCivilizations = ReadInt16(reader);
+				this.oGameData.Players[this.oGameData.HumanPlayerID].CurrentResearchID = ReadInt16(reader);
 
 				for (int i = 0; i < 8; i++)
 				{
@@ -796,7 +808,7 @@ namespace OpenCiv1
 						sTemp = sTemp.Substring(0, iPosition);
 					}
 
-					this.oParent.CivState.Players[i].Name = sTemp;
+					this.oGameData.Players[i].Name = sTemp;
 				}
 
 				for (int i = 0; i < 8; i++)
@@ -813,7 +825,7 @@ namespace OpenCiv1
 						sTemp = sTemp.Substring(0, iPosition);
 					}
 
-					this.oParent.CivState.Players[i].Nation = sTemp;
+					this.oGameData.Players[i].Nation = sTemp;
 				}
 
 				for (int i = 0; i < 8; i++)
@@ -830,58 +842,58 @@ namespace OpenCiv1
 						sTemp = sTemp.Substring(0, iPosition);
 					}
 
-					this.oParent.CivState.Players[i].Nationality = sTemp;
+					this.oGameData.Players[i].Nationality = sTemp;
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].Coins = ReadInt16(reader);
+					this.oGameData.Players[i].Coins = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].ResearchProgress = ReadInt16(reader);
+					this.oGameData.Players[i].ResearchProgress = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.CivState.Players[i].ActiveUnits.Length; j++)
+					for (int j = 0; j < this.oGameData.Players[i].ActiveUnits.Length; j++)
 					{
-						this.oParent.CivState.Players[i].ActiveUnits[j] = ReadInt16(reader);
+						this.oGameData.Players[i].ActiveUnits[j] = ReadInt16(reader);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.CivState.Players[i].UnitsInProduction.Length; j++)
+					for (int j = 0; j < this.oGameData.Players[i].UnitsInProduction.Length; j++)
 					{
-						this.oParent.CivState.Players[i].UnitsInProduction[j] = ReadInt16(reader);
+						this.oGameData.Players[i].UnitsInProduction[j] = ReadInt16(reader);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].DiscoveredTechnologyCount = ReadInt16(reader);
+					this.oGameData.Players[i].DiscoveredTechnologyCount = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 5; j++)
 					{
-						this.oParent.CivState.Players[i].DiscoveredTechnologyFlags[j] = ReadUInt16(reader);
+						this.oGameData.Players[i].DiscoveredTechnologyFlags[j] = ReadUInt16(reader);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].GovernmentType = ReadInt16(reader);
+					this.oGameData.Players[i].GovernmentType = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.CivState.Players[i].Continents.Length; j++)
+					for (int j = 0; j < this.oGameData.Players[i].Continents.Length; j++)
 					{
-						this.oParent.CivState.Players[i].Continents[j].Strategy = ReadInt16(reader);
+						this.oGameData.Players[i].Continents[j].Strategy = ReadInt16(reader);
 					}
 				}
 
@@ -889,75 +901,75 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 8; j++)
 					{
-						this.oParent.CivState.Players[i].Diplomacy[j] = ReadUInt16(reader);
+						this.oGameData.Players[i].Diplomacy[j] = ReadUInt16(reader);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].CityCount = ReadInt16(reader);
+					this.oGameData.Players[i].CityCount = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].UnitCount = ReadInt16(reader);
+					this.oGameData.Players[i].UnitCount = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].LandCount = ReadInt16(reader);
+					this.oGameData.Players[i].LandCount = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].SettlerCount = ReadInt16(reader);
+					this.oGameData.Players[i].SettlerCount = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].TotalCitySize = ReadInt16(reader);
+					this.oGameData.Players[i].TotalCitySize = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].MilitaryPower = ReadInt16(reader);
+					this.oGameData.Players[i].MilitaryPower = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].Ranking = ReadInt16(reader);
+					this.oGameData.Players[i].Ranking = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].TaxRate = ReadInt16(reader);
+					this.oGameData.Players[i].TaxRate = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].Score = ReadInt16(reader);
+					this.oGameData.Players[i].Score = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].ContactPlayerCountdown = ReadInt16(reader);
+					this.oGameData.Players[i].ContactPlayerCountdown = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].XStart = ReadInt16(reader);
+					this.oGameData.Players[i].XStart = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].NationalityID = ReadInt16(reader);
+					this.oGameData.Players[i].NationalityID = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						this.oParent.CivState.Players[i].Continents[j].Attack = ReadInt16(reader);
+						this.oGameData.Players[i].Continents[j].Attack = ReadInt16(reader);
 					}
 				}
 
@@ -965,58 +977,58 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						this.oParent.CivState.Players[i].Continents[j].Defense = ReadInt16(reader);
+						this.oGameData.Players[i].Continents[j].Defense = ReadInt16(reader);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.CivState.Players[i].Continents.Length; j++)
+					for (int j = 0; j < this.oGameData.Players[i].Continents.Length; j++)
 					{
-						this.oParent.CivState.Players[i].Continents[j].CityCount = ReadInt16(reader);
+						this.oGameData.Players[i].Continents[j].CityCount = ReadInt16(reader);
 					}
 				}
 
 				for (int i = 0; i < 64; i++)
 				{
-					this.oParent.CivState.Continents[i].Size = ReadInt16(reader);
+					this.oGameData.Continents[i].Size = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 64; i++)
 				{
-					this.oParent.CivState.Oceans[i].Size = ReadInt16(reader);
+					this.oGameData.Oceans[i].Size = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 16; i++)
 				{
-					this.oParent.CivState.Continents[i].BuildSiteCount = ReadInt16(reader);
+					this.oGameData.Continents[i].BuildSiteCount = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 1200; i++)
 				{
-					this.oParent.CivState.ScoreGraphData[i] = ReadUInt8(reader);
+					this.oGameData.ScoreGraphData[i] = ReadUInt8(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.PeaceGraphData.Length; i++)
+				for (int i = 0; i < this.oGameData.PeaceGraphData.Length; i++)
 				{
-					this.oParent.CivState.PeaceGraphData[i] = ReadUInt8(reader);
+					this.oGameData.PeaceGraphData[i] = ReadUInt8(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Cities.Length; i++)
+				for (int i = 0; i < this.oGameData.Cities.Length; i++)
 				{
-					this.oParent.CivState.Cities[i] = City.FromStream(i, reader);
+					this.oGameData.Cities[i] = City.FromStream(i, reader);
 				}
 
 				for (int i = 0; i < 28; i++)
 				{
-					this.oParent.CivState.UnitDefinitions[i] = UnitDefinition.FromStream(reader);
+					this.oStaticGameData.UnitDefinitions[i] = UnitDefinition.FromStream(reader);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 128; j++)
 					{
-						this.oParent.CivState.Players[i].Units[j] = Unit.FromStream(reader);
+						this.oGameData.Players[i].Units[j] = Unit.FromStream(reader);
 					}
 				}
 
@@ -1024,7 +1036,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 50; j++)
 					{
-						this.oParent.CivState.MapVisibility[i, j] = (ushort)((short)((sbyte)ReadUInt8(reader)));
+						this.oGameData.Map[i, j].Visibility = ReadUInt8(reader);
 					}
 				}
 
@@ -1032,7 +1044,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						this.oParent.CivState.Players[i].StrategicLocations[j].Active = (sbyte)ReadUInt8(reader);
+						this.oGameData.Players[i].StrategicLocations[j].Active = (sbyte)ReadUInt8(reader);
 					}
 				}
 
@@ -1040,7 +1052,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						this.oParent.CivState.Players[i].StrategicLocations[j].Policy = ReadUInt8(reader);
+						this.oGameData.Players[i].StrategicLocations[j].Policy = ReadUInt8(reader);
 					}
 				}
 
@@ -1048,7 +1060,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						this.oParent.CivState.Players[i].StrategicLocations[j].Position.X = (sbyte)ReadUInt8(reader);
+						this.oGameData.Players[i].StrategicLocations[j].Position.X = (sbyte)ReadUInt8(reader);
 					}
 				}
 
@@ -1056,24 +1068,24 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						this.oParent.CivState.Players[i].StrategicLocations[j].Position.Y = (sbyte)ReadUInt8(reader);
+						this.oGameData.Players[i].StrategicLocations[j].Position.Y = (sbyte)ReadUInt8(reader);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.TechnologyFirstDiscoveredBy.Length; i++)
+				for (int i = 0; i < this.oGameData.TechnologyFirstDiscoveredBy.Length; i++)
 				{
-					this.oParent.CivState.TechnologyFirstDiscoveredBy[i] = ReadInt16(reader);
+					this.oGameData.TechnologyFirstDiscoveredBy[i] = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 8; j++)
 					{
-						this.oParent.CivState.Players[i].UnitsDestroyed[j] = ReadInt16(reader);
+						this.oGameData.Players[i].UnitsDestroyed[j] = ReadInt16(reader);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.CityNames.Length; i++)
+				for (int i = 0; i < this.oGameData.CityNames.Length; i++)
 				{
 					char[] acCityName = new char[13];
 
@@ -1081,65 +1093,65 @@ namespace OpenCiv1
 					{
 						acCityName[j] = (char)GameLoadAndSave.ReadUInt8(reader);
 					}
-					this.oParent.CivState.CityNames[i] = new string(acCityName);
+					this.oGameData.CityNames[i] = new string(acCityName);
 				}
 
-				this.oParent.CivState.ReplayDataLength = ReadInt16(reader);
+				this.oGameData.ReplayDataLength = ReadInt16(reader);
 
-				for (int i = 0; i < this.oParent.CivState.ReplayData.Length; i++)
+				for (int i = 0; i < this.oGameData.ReplayData.Length; i++)
 				{
-					this.oParent.CivState.ReplayData[i] = ReadUInt8(reader);
+					this.oGameData.ReplayData[i] = ReadUInt8(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.WonderCityID.Length; i++)
+				for (int i = 0; i < this.oGameData.WonderCityID.Length; i++)
 				{
-					this.oParent.CivState.WonderCityID[i] = ReadInt16(reader);
+					this.oGameData.WonderCityID[i] = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.CivState.Players[i].LostUnits.Length; j++)
+					for (int j = 0; j < this.oGameData.Players[i].LostUnits.Length; j++)
 					{
-						this.oParent.CivState.Players[i].LostUnits[j] = ReadInt16(reader);
+						this.oGameData.Players[i].LostUnits[j] = ReadInt16(reader);
 
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.CivState.Players[i].TechnologyAcquiredFrom.Length; j++)
+					for (int j = 0; j < this.oGameData.Players[i].TechnologyAcquiredFrom.Length; j++)
 					{
-						this.oParent.CivState.Players[i].TechnologyAcquiredFrom[j] = (sbyte)ReadUInt8(reader);
+						this.oGameData.Players[i].TechnologyAcquiredFrom[j] = (sbyte)ReadUInt8(reader);
 					}
 				}
 
-				this.oParent.CivState.PollutedSquareCount = ReadInt16(reader);
-				this.oParent.CivState.PollutionEffectLevel = ReadInt16(reader);
-				this.oParent.CivState.GlobalWarmingCount = ReadInt16(reader);
-				this.oParent.CivState.GameSettingFlags = ReadInt16(reader);
+				this.oGameData.PollutedSquareCount = ReadInt16(reader);
+				this.oGameData.PollutionEffectLevel = ReadInt16(reader);
+				this.oGameData.GlobalWarmingCount = ReadInt16(reader);
+				this.oGameData.GameSettingFlags = ReadInt16(reader);
 
 				for (int i = 0; i < 20; i++)
 				{
 					for (int j = 0; j < 13; j++)
 					{
-						this.oParent.CivState.LandPathFind[i, j] = ReadUInt8(reader);
+						this.oGameData.PathFind[i, j] = ReadUInt8(reader);
 					}
 				}
 
-				this.oParent.CivState.MaximumTechnologyCount = ReadInt16(reader);
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].FutureTechnologyCount = ReadInt16(reader);
-				this.oParent.CivState.DebugFlags = ReadInt16(reader);
+				this.oGameData.MaximumTechnologyCount = ReadInt16(reader);
+				this.oGameData.Players[this.oGameData.HumanPlayerID].FutureTechnologyCount = ReadInt16(reader);
+				this.oGameData.DebugFlags = ReadInt16(reader);
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].ScienceTaxRate = ReadInt16(reader);
+					this.oGameData.Players[i].ScienceTaxRate = ReadInt16(reader);
 				}
 				
-				this.oParent.CivState.NextAnthologyTurn = ReadInt16(reader);
+				this.oGameData.NextAnthologyTurn = ReadInt16(reader);
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].CumulativeEpicRanking = ReadInt16(reader);
+					this.oGameData.Players[i].CumulativeEpicRanking = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 8; i++)
@@ -1149,54 +1161,54 @@ namespace OpenCiv1
 
 					for (int j = 0; j < 180; j++)
 					{
-						this.oParent.CivState.Players[i].SpaceshipData[j] = (sbyte)buffer[j];
+						this.oGameData.Players[i].SpaceshipData[j] = (sbyte)buffer[j];
 					}
 				}
 
-				this.oParent.CivState.SpaceshipFlags = ReadInt16(reader);
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].SpaceshipSuccessRate = ReadInt16(reader);
-				this.oParent.CivState.AISpaceshipSuccessRate = ReadInt16(reader);
+				this.oGameData.SpaceshipFlags = ReadInt16(reader);
+				this.oGameData.Players[this.oGameData.HumanPlayerID].SpaceshipSuccessRate = ReadInt16(reader);
+				this.oGameData.AISpaceshipSuccessRate = ReadInt16(reader);
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].SpaceshipETAYear = ReadInt16(reader);
+					this.oGameData.Players[i].SpaceshipETAYear = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 12; i++)
 				{
-					this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[i + 2] = ReadInt16(reader);
+					this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[i + 2] = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 12; i++)
 				{
-					this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[i] = ReadInt16(reader);
+					this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[i] = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.CityPositions.Length; i++)
+				for (int i = 0; i < this.oGameData.CityNameFlags.Length; i++)
 				{
-					this.oParent.CivState.CityPositions[i].X = (sbyte)ReadUInt8(reader);
+					this.oGameData.CityNameFlags[i].X = (sbyte)ReadUInt8(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.CityPositions.Length; i++)
+				for (int i = 0; i < this.oGameData.CityNameFlags.Length; i++)
 				{
-					this.oParent.CivState.CityPositions[i].Y = (sbyte)ReadUInt8(reader);
+					this.oGameData.CityNameFlags[i].Y = (sbyte)ReadUInt8(reader);
 				}
 
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceLevel = ReadInt16(reader);
-				this.oParent.CivState.PeaceTurnCount = ReadInt16(reader);
-				this.oParent.CivState.AIOpponentCount = ReadInt16(reader);
+				this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceLevel = ReadInt16(reader);
+				this.oGameData.PeaceTurnCount = ReadInt16(reader);
+				this.oGameData.AIOpponentCount = ReadInt16(reader);
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].SpaceshipPopulation = ReadInt16(reader);
+					this.oGameData.Players[i].SpaceshipPopulation = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					this.oParent.CivState.Players[i].SpaceshipLaunchYear = ReadInt16(reader);
+					this.oGameData.Players[i].SpaceshipLaunchYear = ReadInt16(reader);
 				}
 
-				this.oParent.CivState.PlayerIdentityFlags = ReadInt16(reader);
+				this.oGameData.PlayerIdentityFlags = ReadInt16(reader);
 
 				reader.Close();
 
@@ -1373,18 +1385,18 @@ namespace OpenCiv1
 
 				// write sve file
 				FileStream writer = new FileStream($"{VCPU.DefaultCIVPath}{filename}.SVE", FileMode.Create);
-				WriteInt16(writer, this.oParent.CivState.TurnCount);
-				WriteInt16(writer, this.oParent.CivState.HumanPlayerID);
-				WriteInt16(writer, this.oParent.CivState.PlayerFlags);
-				WriteUInt16(writer, this.oParent.CivState.RandomSeed);
-				WriteInt16(writer, this.oParent.CivState.Year);
-				WriteInt16(writer, this.oParent.CivState.DifficultyLevel);
-				WriteInt16(writer, this.oParent.CivState.ActiveCivilizations);
-				WriteInt16(writer, this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID);
+				WriteInt16(writer, this.oGameData.TurnCount);
+				WriteInt16(writer, this.oGameData.HumanPlayerID);
+				WriteInt16(writer, this.oGameData.PlayerFlags);
+				WriteUInt16(writer, this.oGameData.RandomSeed);
+				WriteInt16(writer, this.oGameData.Year);
+				WriteInt16(writer, this.oGameData.DifficultyLevel);
+				WriteInt16(writer, this.oGameData.ActiveCivilizations);
+				WriteInt16(writer, this.oGameData.Players[this.oGameData.HumanPlayerID].CurrentResearchID);
 
 				for (int i = 0; i < 8; i++)
 				{
-					string sTemp = this.oParent.CivState.Players[i].Name;
+					string sTemp = this.oGameData.Players[i].Name;
 
 					for (int j = 0; j < 13; j++)
 					{
@@ -1402,7 +1414,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < 8; i++)
 				{
-					string sTemp = this.oParent.CivState.Players[i].Nation;
+					string sTemp = this.oGameData.Players[i].Nation;
 
 					for (int j = 0; j < 11; j++)
 					{
@@ -1420,7 +1432,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < 8; i++)
 				{
-					string sTemp = this.oParent.CivState.Players[i].Nationality;
+					string sTemp = this.oGameData.Players[i].Nationality;
 
 					for (int j = 0; j < 10; j++)
 					{
@@ -1436,55 +1448,55 @@ namespace OpenCiv1
 					writer.WriteByte(0);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].Coins);
+					WriteInt16(writer, this.oGameData.Players[i].Coins);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].ResearchProgress);
+					WriteInt16(writer, this.oGameData.Players[i].ResearchProgress);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.CivState.Players[i].ActiveUnits.Length; j++)
+					for (int j = 0; j < this.oGameData.Players[i].ActiveUnits.Length; j++)
 					{
-						WriteInt16(writer, this.oParent.CivState.Players[i].ActiveUnits[j]);
+						WriteInt16(writer, this.oGameData.Players[i].ActiveUnits[j]);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.CivState.Players[i].UnitsInProduction.Length; j++)
+					for (int j = 0; j < this.oGameData.Players[i].UnitsInProduction.Length; j++)
 					{
-						WriteInt16(writer, this.oParent.CivState.Players[i].UnitsInProduction[j]);
+						WriteInt16(writer, this.oGameData.Players[i].UnitsInProduction[j]);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].DiscoveredTechnologyCount);
+					WriteInt16(writer, this.oGameData.Players[i].DiscoveredTechnologyCount);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 5; j++)
 					{
-						WriteUInt16(writer, this.oParent.CivState.Players[i].DiscoveredTechnologyFlags[j]);
+						WriteUInt16(writer, this.oGameData.Players[i].DiscoveredTechnologyFlags[j]);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].GovernmentType);
+					WriteInt16(writer, this.oGameData.Players[i].GovernmentType);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.CivState.Players[i].Continents.Length; j++)
+					for (int j = 0; j < this.oGameData.Players[i].Continents.Length; j++)
 					{
-						WriteInt16(writer, this.oParent.CivState.Players[i].Continents[j].Strategy);
+						WriteInt16(writer, this.oGameData.Players[i].Continents[j].Strategy);
 					}
 				}
 
@@ -1492,75 +1504,75 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 8; j++)
 					{
-						WriteUInt16(writer, this.oParent.CivState.Players[i].Diplomacy[j]);
+						WriteUInt16(writer, this.oGameData.Players[i].Diplomacy[j]);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].CityCount);
+					WriteInt16(writer, this.oGameData.Players[i].CityCount);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].UnitCount);
+					WriteInt16(writer, this.oGameData.Players[i].UnitCount);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].LandCount);
+					WriteInt16(writer, this.oGameData.Players[i].LandCount);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].SettlerCount);
+					WriteInt16(writer, this.oGameData.Players[i].SettlerCount);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].TotalCitySize);
+					WriteInt16(writer, this.oGameData.Players[i].TotalCitySize);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].MilitaryPower);
+					WriteInt16(writer, this.oGameData.Players[i].MilitaryPower);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].Ranking);
+					WriteInt16(writer, this.oGameData.Players[i].Ranking);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].TaxRate);
+					WriteInt16(writer, this.oGameData.Players[i].TaxRate);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].Score);
+					WriteInt16(writer, this.oGameData.Players[i].Score);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].ContactPlayerCountdown);
+					WriteInt16(writer, this.oGameData.Players[i].ContactPlayerCountdown);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].XStart);
+					WriteInt16(writer, this.oGameData.Players[i].XStart);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].NationalityID);
+					WriteInt16(writer, this.oGameData.Players[i].NationalityID);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						WriteInt16(writer, this.oParent.CivState.Players[i].Continents[j].Attack);
+						WriteInt16(writer, this.oGameData.Players[i].Continents[j].Attack);
 					}
 				}
 
@@ -1568,7 +1580,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						WriteInt16(writer, this.oParent.CivState.Players[i].Continents[j].Defense);
+						WriteInt16(writer, this.oGameData.Players[i].Continents[j].Defense);
 					}
 				}
 				
@@ -1576,50 +1588,50 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						WriteInt16(writer, this.oParent.CivState.Players[i].Continents[j].CityCount);
+						WriteInt16(writer, this.oGameData.Players[i].Continents[j].CityCount);
 					}
 				}
 
 				for (int i = 0; i < 64; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Continents[i].Size);
+					WriteInt16(writer, this.oGameData.Continents[i].Size);
 				}
 
 				for (int i = 0; i < 64; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Oceans[i].Size);
+					WriteInt16(writer, this.oGameData.Oceans[i].Size);
 				}
 
 				for (int i = 0; i < 16; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Continents[i].BuildSiteCount);
+					WriteInt16(writer, this.oGameData.Continents[i].BuildSiteCount);
 				}
 
 				for (int i = 0; i < 1200; i++)
 				{
-					writer.WriteByte(this.oParent.CivState.ScoreGraphData[i]);
+					writer.WriteByte(this.oGameData.ScoreGraphData[i]);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.PeaceGraphData.Length; i++)
+				for (int i = 0; i < this.oGameData.PeaceGraphData.Length; i++)
 				{
-					writer.WriteByte(this.oParent.CivState.PeaceGraphData[i]);
+					writer.WriteByte(this.oGameData.PeaceGraphData[i]);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Cities.Length; i++)
+				for (int i = 0; i < this.oGameData.Cities.Length; i++)
 				{
-					this.oParent.CivState.Cities[i].ToStream(writer);
+					this.oGameData.Cities[i].ToStream(writer);
 				}
 
 				for (int i = 0; i < 28; i++)
 				{
-					this.oParent.CivState.UnitDefinitions[i].ToStream(writer);
+					this.oStaticGameData.UnitDefinitions[i].ToStream(writer);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 128; j++)
 					{
-						this.oParent.CivState.Players[i].Units[j].ToStream(writer);
+						this.oGameData.Players[i].Units[j].ToStream(writer);
 					}
 				}
 
@@ -1627,7 +1639,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 50; j++)
 					{
-						writer.WriteByte((byte)((sbyte)((short)this.oParent.CivState.MapVisibility[i, j])));
+						writer.WriteByte((byte)(this.oGameData.Map[i, j].Visibility & 0xff));
 					}
 				}
 
@@ -1635,7 +1647,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						writer.WriteByte((byte)this.oParent.CivState.Players[i].StrategicLocations[j].Active);
+						writer.WriteByte((byte)this.oGameData.Players[i].StrategicLocations[j].Active);
 					}
 				}
 
@@ -1643,7 +1655,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						writer.WriteByte(this.oParent.CivState.Players[i].StrategicLocations[j].Policy);
+						writer.WriteByte(this.oGameData.Players[i].StrategicLocations[j].Policy);
 					}
 				}
 
@@ -1651,7 +1663,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						writer.WriteByte((byte)this.oParent.CivState.Players[i].StrategicLocations[j].Position.X);
+						writer.WriteByte((byte)this.oGameData.Players[i].StrategicLocations[j].Position.X);
 					}
 				}
 
@@ -1659,85 +1671,85 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						writer.WriteByte((byte)this.oParent.CivState.Players[i].StrategicLocations[j].Position.Y);
+						writer.WriteByte((byte)this.oGameData.Players[i].StrategicLocations[j].Position.Y);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.TechnologyFirstDiscoveredBy.Length; i++)
+				for (int i = 0; i < this.oGameData.TechnologyFirstDiscoveredBy.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.TechnologyFirstDiscoveredBy[i]);
+					WriteInt16(writer, this.oGameData.TechnologyFirstDiscoveredBy[i]);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 8; j++)
 					{
-						WriteInt16(writer, this.oParent.CivState.Players[i].UnitsDestroyed[j]);
+						WriteInt16(writer, this.oGameData.Players[i].UnitsDestroyed[j]);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.CityNames.Length; i++)
+				for (int i = 0; i < this.oGameData.CityNames.Length; i++)
 				{
 					for (int j = 0; j < 13; j++)
 					{
-						writer.WriteByte((byte)this.oParent.CivState.CityNames[i][j]);
+						writer.WriteByte((byte)this.oGameData.CityNames[i][j]);
 					}
 				}
 
-				WriteInt16(writer, this.oParent.CivState.ReplayDataLength);
-				for (int i = 0; i < this.oParent.CivState.ReplayData.Length; i++)
+				WriteInt16(writer, this.oGameData.ReplayDataLength);
+				for (int i = 0; i < this.oGameData.ReplayData.Length; i++)
 				{
-					writer.WriteByte(this.oParent.CivState.ReplayData[i]);
+					writer.WriteByte(this.oGameData.ReplayData[i]);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.WonderCityID.Length; i++)
+				for (int i = 0; i < this.oGameData.WonderCityID.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.WonderCityID[i]);
+					WriteInt16(writer, this.oGameData.WonderCityID[i]);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.CivState.Players[i].LostUnits.Length; j++)
+					for (int j = 0; j < this.oGameData.Players[i].LostUnits.Length; j++)
 					{
-						WriteInt16(writer, this.oParent.CivState.Players[i].LostUnits[j]);
+						WriteInt16(writer, this.oGameData.Players[i].LostUnits[j]);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.CivState.Players[i].TechnologyAcquiredFrom.Length; j++)
+					for (int j = 0; j < this.oGameData.Players[i].TechnologyAcquiredFrom.Length; j++)
 					{
-						writer.WriteByte((byte)((sbyte)this.oParent.CivState.Players[i].TechnologyAcquiredFrom[j]));
+						writer.WriteByte((byte)((sbyte)this.oGameData.Players[i].TechnologyAcquiredFrom[j]));
 					}
 				}
 
-				WriteInt16(writer, this.oParent.CivState.PollutedSquareCount);
-				WriteInt16(writer, this.oParent.CivState.PollutionEffectLevel);
-				WriteInt16(writer, this.oParent.CivState.GlobalWarmingCount);
-				WriteInt16(writer, this.oParent.CivState.GameSettingFlags);
+				WriteInt16(writer, this.oGameData.PollutedSquareCount);
+				WriteInt16(writer, this.oGameData.PollutionEffectLevel);
+				WriteInt16(writer, this.oGameData.GlobalWarmingCount);
+				WriteInt16(writer, this.oGameData.GameSettingFlags);
 
 				for (int i = 0; i < 20; i++)
 				{
 					for (int j = 0; j < 13; j++)
 					{
-						writer.WriteByte(this.oParent.CivState.LandPathFind[i, j]);
+						writer.WriteByte(this.oGameData.PathFind[i, j]);
 					}
 				}
 
-				WriteInt16(writer, this.oParent.CivState.MaximumTechnologyCount);
-				WriteInt16(writer, this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].FutureTechnologyCount);
-				WriteInt16(writer, this.oParent.CivState.DebugFlags);
+				WriteInt16(writer, this.oGameData.MaximumTechnologyCount);
+				WriteInt16(writer, this.oGameData.Players[this.oGameData.HumanPlayerID].FutureTechnologyCount);
+				WriteInt16(writer, this.oGameData.DebugFlags);
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].ScienceTaxRate);
+					WriteInt16(writer, this.oGameData.Players[i].ScienceTaxRate);
 				}
 				
-				WriteInt16(writer, this.oParent.CivState.NextAnthologyTurn);
+				WriteInt16(writer, this.oGameData.NextAnthologyTurn);
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].CumulativeEpicRanking);
+					WriteInt16(writer, this.oGameData.Players[i].CumulativeEpicRanking);
 				}
 
 				for (int i = 0; i < 8; i++)
@@ -1746,55 +1758,55 @@ namespace OpenCiv1
 
 					for (int j = 0; j < 180; j++)
 					{
-						buffer[j] = (byte)this.oParent.CivState.Players[i].SpaceshipData[j];
+						buffer[j] = (byte)this.oGameData.Players[i].SpaceshipData[j];
 					}
 
 					writer.Write(buffer, 0, 180);
 				}
 
-				WriteInt16(writer, this.oParent.CivState.SpaceshipFlags);
-				WriteInt16(writer, this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].SpaceshipSuccessRate);
-				WriteInt16(writer, this.oParent.CivState.AISpaceshipSuccessRate);
+				WriteInt16(writer, this.oGameData.SpaceshipFlags);
+				WriteInt16(writer, this.oGameData.Players[this.oGameData.HumanPlayerID].SpaceshipSuccessRate);
+				WriteInt16(writer, this.oGameData.AISpaceshipSuccessRate);
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].SpaceshipETAYear);
+					WriteInt16(writer, this.oGameData.Players[i].SpaceshipETAYear);
 				}
 
 				for (int i = 0; i < 12; i++)
 				{
-					WriteInt16(writer, (short)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData1[i + 2]);
+					WriteInt16(writer, (short)this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData1[i + 2]);
 				}
 
 				for (int i = 0; i < 12; i++)
 				{
-					WriteInt16(writer, (short)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceData2[i]);
+					WriteInt16(writer, (short)this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceData2[i]);
 				}
 
 				for (int i = 0; i < 256; i++)
 				{
-					writer.WriteByte((byte)((sbyte)this.oParent.CivState.CityPositions[i].X));
+					writer.WriteByte((byte)((sbyte)this.oGameData.CityNameFlags[i].X));
 				}
 				for (int i = 0; i < 256; i++)
 				{
-					writer.WriteByte((byte)((sbyte)this.oParent.CivState.CityPositions[i].Y));
+					writer.WriteByte((byte)((sbyte)this.oGameData.CityNameFlags[i].Y));
 				}
 
-				WriteInt16(writer, this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceLevel);
-				WriteInt16(writer, this.oParent.CivState.PeaceTurnCount);
-				WriteInt16(writer, this.oParent.CivState.AIOpponentCount);
+				WriteInt16(writer, this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceLevel);
+				WriteInt16(writer, this.oGameData.PeaceTurnCount);
+				WriteInt16(writer, this.oGameData.AIOpponentCount);
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].SpaceshipPopulation);
+					WriteInt16(writer, this.oGameData.Players[i].SpaceshipPopulation);
 				}
 
-				for (int i = 0; i < this.oParent.CivState.Players.Length; i++)
+				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.CivState.Players[i].SpaceshipLaunchYear);
+					WriteInt16(writer, this.oGameData.Players[i].SpaceshipLaunchYear);
 				}
 
-				WriteInt16(writer, this.oParent.CivState.PlayerIdentityFlags);
+				WriteInt16(writer, this.oGameData.PlayerIdentityFlags);
 
 				writer.Close();
 

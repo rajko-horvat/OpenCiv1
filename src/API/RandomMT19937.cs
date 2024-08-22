@@ -1,7 +1,7 @@
 using System;
 
 /* 
-   MT19937, with initialization improved 2002/1/26.
+   Marsenne Twister (MT19937), with initialization improved 2002/1/26.
    Coded by Takuji Nishimura and Makoto Matsumoto.
 
    Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
@@ -66,15 +66,13 @@ public class RandomMT19937
 	private uint[] mag01 = new uint[] { 0x0U, MATRIX_A }; // mag01[x] = x * MATRIX_A  for x=0,1
 
 	// Methods
-	public RandomMT19937()
-		: this((uint)Environment.TickCount)
-	{
-	}
+	public RandomMT19937() : this(Environment.TickCount)
+	{ }
 
 	// initializes aMatrix[N] with a seed
-	public RandomMT19937(uint seed)
+	public RandomMT19937(int seed)
 	{
-		aMatrix[0] = seed & 0xffffffffU; // for >32 bit machines
+		aMatrix[0] = (uint)seed & 0xffffffffU; // for >32 bit machines
 
 		// generate N words at one time
 		for (iMatrixIndex = 1; iMatrixIndex < N; iMatrixIndex++)

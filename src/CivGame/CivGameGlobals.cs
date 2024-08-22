@@ -1,4 +1,4 @@
-﻿using OpenCiv1.GPU;
+﻿using OpenCiv1.Graphics;
 using System;
 
 namespace OpenCiv1
@@ -6,32 +6,6 @@ namespace OpenCiv1
 	partial class CivGame
 	{
 		#region Global variables
-		public GPoint[] CityOffsets = new GPoint[] { 
-			new GPoint(0, -1), new GPoint(1, 0), new GPoint(0, 1), new GPoint(-1, 0), 
-			new GPoint(1, -1), new GPoint(1, 1), new GPoint(-1, 1), new GPoint(-1, -1), 
-			new GPoint(0, -2), new GPoint(2, 0), new GPoint(0, 2), new GPoint(-2, 0), 
-			new GPoint(-1, -2), new GPoint(1, -2), new GPoint(2, -1), new GPoint(2, 1), new GPoint(1, 2), new GPoint(-1, 2), new GPoint(-2, 1), new GPoint(-2, -1), 
-			new GPoint(0, 0) };
-
-		public GPoint[] MoveOffsets = new GPoint[] {
-			new GPoint(0, 0), new GPoint(0, -1), new GPoint(1, -1),
-			new GPoint(1, 0), new GPoint(1, 1), new GPoint(0, 1), 
-			new GPoint(-1, 1), new GPoint(-1, 0), new GPoint(-1, -1), 
-			new GPoint(0, -2), new GPoint(1, -2), new GPoint(2, -1), 
-			new GPoint(2, 0), new GPoint(2, 1), new GPoint(1, 2), 
-			new GPoint(0, 2), new GPoint(-1, 2), new GPoint(-2, 1), 
-			new GPoint(-2, 0), new GPoint(-2, -1), new GPoint(-1, -2), 
-			new GPoint(2, 2), new GPoint(2, -2), new GPoint(-2, -2), 
-			new GPoint(-2, 2), new GPoint(0, -3), new GPoint(1, -3), 
-			new GPoint(2, -3), new GPoint(3, -2), new GPoint(3, -1), 
-			new GPoint(3, 0), new GPoint(3, 1), new GPoint(3, 2), 
-			new GPoint(2, 3), new GPoint(1, 3), new GPoint(0, 3), 
-			new GPoint(-1, 3), new GPoint(-2, 3), new GPoint(-3, 2), 
-			new GPoint(-3, 1), new GPoint(-3, 0), new GPoint(-3, -1), 
-			new GPoint(-3, -2), new GPoint(-2, -3), new GPoint(-1, -3),
-			new GPoint(3, 3), new GPoint(3, -3), new GPoint(-3, 3), 
-			new GPoint(-3, -3)};
-
 		public int Var_42 = 0; // ushort
 		public int Var_44 = 0; // ushort
 		public int Var_46 = 0; // ushort
@@ -65,22 +39,22 @@ namespace OpenCiv1
 		public CRectangle Var_19fc_Rectangle = new CRectangle(3, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 
 		public int[] Array_2ba6 = new int[] {
-			-1,	// Water
-			10,	// Coast
-			3,	// Forest
-			8,	// Swamp
-			-1,	// Undefined4
-			-1,	// Undefined5
-			1,	// Plains
-			6,	// Tundra
-			-1,	// Undefined8
-			11,	// River
-			2,	// Grassland
-			9,	// Jungle
-			4,	// Hills
-			5,	// Mountains
-			0,	// Desert
-			7	// Arctic
+			-1,	// Water = 0
+			10,	// Coast = 1
+			3,	// Forest = 2
+			8,	// Swamp = 3
+			-1,	// Undefined4 = 4
+			-1,	// Undefined5 = 5
+			1,	// Plains = 6
+			6,	// Tundra = 7
+			-1,	// Undefined8 = 8
+			11,	// River = 9
+			2,	// Grassland = 10
+			9,	// Jungle = 11
+			4,	// Hills = 12
+			5,	// Mountains = 13
+			0,	// Desert = 14
+			7	// Arctic = 15
 		};
 
 		public ushort Var_2f9e_Unknown = 0xffff;
@@ -109,7 +83,7 @@ namespace OpenCiv1
 		public short Var_d75e_YPos = 0;
 		public ushort Var_d762 = 0;
 		public ushort Var_d768 = 0;
-		public int Var_d76a = 0;
+		public bool Var_d76a_IsEarthMap = false;
 		public ushort Var_db3a = 0;
 		public ushort Var_db3c = 0;
 		public ushort Var_db3e = 0;

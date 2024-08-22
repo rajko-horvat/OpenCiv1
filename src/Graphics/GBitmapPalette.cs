@@ -1,7 +1,7 @@
 ﻿using Avalonia.Media;
 using System;
 
-namespace OpenCiv1.GPU
+namespace OpenCiv1.Graphics
 {
 	public class GBitmapPalette
 	{

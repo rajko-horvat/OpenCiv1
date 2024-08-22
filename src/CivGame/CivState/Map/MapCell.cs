@@ -1,25 +1,30 @@
-﻿using OpenCiv1.GPU;
+﻿using OpenCiv1.Graphics;
+using System.Xml.Serialization;
 
 namespace OpenCiv1
 {
-	public class MapCell
+	[Serializable]
+	public class MapCell : IEquatable<MapCell>
 	{
+		public static readonly MapCell Empty = new MapCell(-1, -1);
+
 		private Map? oParent = null;
 
 		private GPoint oPosition = new GPoint(-1);
 
-		public int Visibility = 0;
+		public int Layer1_Terrain = 1; // TerrainType
+		public bool HasSpecialResource = false;
+		public int Layer2_PlayerOwnership = 0;
+		public int Layer3_GroupID = -1; // GroupID
+		public int Layer4_BuildSites = 0;
+		public int Layer5_TerrainImprovements1 = 0;
+		public int Layer6_VisibleTerrainImprovements1 = 0; // 1 - City?, 2 - Irrigation, 4 - Mine, 8 - Roads
+		public int Layer7_TerrainImprovements2 = 0;
+		public int Layer8_VisibleTerrainImprovements2 = 0; // 1 - Railroads, 2 - City Walls, 4 - Pollution, 8 - ?
+		public int Layer9_ActiveUnits = 0;
+		public int Layer10_MiniMap = 0;
 
-		public int Layer1 = 0;
-		public int Layer2 = 0;
-		public int Layer3 = 0;
-		public int Layer4 = 0;
-		public int Layer5 = 0;
-		public int Layer6 = 0;
-		public int Layer7 = 0;
-		public int Layer8 = 0;
-		public int Layer9 = 0;
-		public int Layer10 = 0;
+		public int Visibility = 0;
 
 		public MapCell()
 		{ }
@@ -32,11 +37,13 @@ namespace OpenCiv1
 			this.oPosition = position;
 		}
 
+		[XmlIgnore]
 		public Map? Parent
 		{
 			get => this.oParent;
 		}
 
+		[XmlIgnore]
 		internal Map? ParentInternal
 		{
 			get => this.oParent;
@@ -57,11 +64,42 @@ namespace OpenCiv1
 			}
 		}
 
+		[XmlIgnore]
+		public int X
+		{
+			get => this.oPosition.X;
+			set
+			{
+				if (this.oParent != null)
+				{
+					throw new InvalidOperationException("Cell position can't be changed once it's a part of the Map");
+				}
+
+				this.oPosition.X = value;
+			}
+		}
+
+		[XmlIgnore]
+		public int Y
+		{
+			get => this.oPosition.Y;
+			set
+			{
+				if (this.oParent != null)
+				{
+					throw new InvalidOperationException("Cell position can't be changed once it's a part of the Map");
+				}
+
+				this.oPosition.Y = value;
+			}
+		}
+
+		[XmlIgnore]
 		public TerrainTypeEnum TerrainType
 		{
 			get
 			{
-				switch (this.Layer1)
+				switch (this.Layer1_Terrain)
 				{
 					case 0:
 					case 4:
@@ -70,7 +108,7 @@ namespace OpenCiv1
 						return TerrainTypeEnum.Undefined;
 
 					case 1:
-						return TerrainTypeEnum.Ocean;
+						return TerrainTypeEnum.Water;
 
 					case 2:
 						return TerrainTypeEnum.Forest;
@@ -111,24 +149,58 @@ namespace OpenCiv1
 			}
 		}
 
-		public MapCell Clone()
+		[XmlIgnore]
+		public MapGroupTypeEnum GroupType
 		{
-			MapCell cell = new MapCell();
+			get
+			{
+				switch (this.Layer1_Terrain)
+				{
+					case 1:
+						return MapGroupTypeEnum.Water;
 
-			cell.oPosition = this.oPosition;
-			cell.Visibility = this.Visibility;
-			cell.Layer1 = this.Layer1;
-			cell.Layer2 = this.Layer2;
-			cell.Layer3 = this.Layer3;
-			cell.Layer4 = this.Layer4;
-			cell.Layer5 = this.Layer5;
-			cell.Layer6 = this.Layer6;
-			cell.Layer7 = this.Layer7;
-			cell.Layer8 = this.Layer8;
-			cell.Layer9 = this.Layer9;
-			cell.Layer10 = this.Layer10;
+					default:
+						return MapGroupTypeEnum.Land;
+				}
+			}
+		}
 
-			return cell;
+		/*[XmlIgnore]
+		public bool HasSpecialResources
+		{
+			get
+			{
+				GPoint pos = this.oPosition;
+
+				if (this.oParent == null || pos.Y < 2 || pos.Y > this.oParent.Size.Height - 3 ||
+					(((pos.X & 3) * 4) + (pos.Y & 3)) != ((((pos.X / 4) * 13) + ((pos.Y / 4) * 11) + this.oParent.Seed) & 0xf))
+				{
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+			}
+		}*/
+
+		public bool Equals(MapCell? other)
+		{
+			if (other != null)
+			{
+				if (this.oParent == other.Parent && this.Position.Equals(other.Position) &&
+					this.Layer1_Terrain.Equals(other.Layer1_Terrain) && this.Layer2_PlayerOwnership.Equals(other.Layer2_PlayerOwnership) &&
+					this.Layer3_GroupID.Equals(other.Layer3_GroupID) && this.Layer4_BuildSites.Equals(other.Layer4_BuildSites) &&
+					this.Layer5_TerrainImprovements1.Equals(other.Layer5_TerrainImprovements1) && this.Layer6_VisibleTerrainImprovements1.Equals(other.Layer6_VisibleTerrainImprovements1) &&
+					this.Layer7_TerrainImprovements2.Equals(other.Layer7_TerrainImprovements2) && this.Layer8_VisibleTerrainImprovements2.Equals(other.Layer8_VisibleTerrainImprovements2) &&
+					this.Layer9_ActiveUnits.Equals(other.Layer9_ActiveUnits) && this.Layer10_MiniMap.Equals(other.Layer10_MiniMap) &&
+					this.Visibility.Equals(other.Visibility))
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 	}
 }
