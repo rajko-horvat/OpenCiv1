@@ -712,8 +712,7 @@ namespace OpenCiv1
 
 
 		L0694:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806), 0x0);
-			if (this.oCPU.Flags.E) goto L06a9;
+			if (this.oParent.Var_d806 == 0) goto L06a9;
 
 			this.oParent.Overlay_13.F13_0000_0554();
 

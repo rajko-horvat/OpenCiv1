@@ -381,7 +381,7 @@ namespace OpenCiv1
 			// Instruction address 0x11a8:0x03b7, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 15);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x1ae0, 0x1);
+			this.oParent.Var_1ae0 = 1;
 
 			// Instruction address 0x11a8:0x03c6, size: 3
 			F0_11a8_0250();

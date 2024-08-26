@@ -964,7 +964,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0b8e, size: 5
 			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) + 3,
-				(byte)this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(((this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].PlayerID) << 1) + 0x1946)));
+				(byte)this.oParent.Array_1946[this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].PlayerID]);
 
 			// Instruction address 0x0000:0x0b9d, size: 5
 			this.oParent.CityWorker.F0_1d12_0045_ProcessCityState(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), -1);
@@ -1012,7 +1012,8 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0c4b, size: 5
 			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(8, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
-				303, 25, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1946)));
+				303, 25, 
+				this.oParent.Array_1946[this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].PlayerID]);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), 0x20));

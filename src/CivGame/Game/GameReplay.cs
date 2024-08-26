@@ -1106,8 +1106,8 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.ES.Word, (ushort)(this.oCPU.BX.Word + 0x0));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x0b84, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos * 4, (yPos * 4) + 4, 4, 4, 
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1946)));
+			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos * 4, (yPos * 4) + 4, 4, 4,
+				this.oParent.Array_1946[this.oCPU.BX.Word / 2]);
 			goto L0b8c;
 
 		L0c16:

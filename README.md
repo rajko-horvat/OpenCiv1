@@ -47,6 +47,12 @@ Currently, you can contribute to this repository in one of the following ways:
 </ul>
 
 ***
+<p><b>Q:</b> Will OpenCiv1 source code be indentical to the Original Civilization 1 game source code?</p>
+<p><b>A:</b> No. The OpenCiv1 source code does not contain any original Civilization 1 source code. 
+The rewritten code performs the same function (as the original code does), but the code is completely different and under MIT license. 
+The Microprose and its successors never released the original source code which remains protected under copyright laws to this day.</p>
+
+***
 <p><b>Q:</b> Does that mean that the OpenCiv1 will be completely different from original Civilization 1 game, like, for example FreeCiv?</p>
 <b>A:</b> Absolutely not, the goal is to keep all of the original rules and functionalities, as well as much as possible of the original Visual and Audio appearance.
 

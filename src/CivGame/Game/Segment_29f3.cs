@@ -460,8 +460,8 @@ namespace OpenCiv1
 			
 			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.SI.Word);
 			if (this.oCPU.Flags.NE) goto L03b4;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806), 0x0);
-			if (this.oCPU.Flags.NE) goto L03b4;
+			
+			if (this.oParent.Var_d806 != 0) goto L03b4;
 			goto L0721;
 
 		L03b4:

@@ -1114,6 +1114,19 @@ namespace OpenCiv1
 			writer.Close();
 			this.oCPU.ES.Word = this.oCPU.SS.Word;//*/
 
+			/*StreamWriter writer = new StreamWriter("Data.cs");
+			writer.Write("{");
+			for (int i = 0; i < 8; i++)
+			{
+				if (i > 0)
+					writer.Write(", ");
+
+				writer.Write(this.oCPU.ReadInt16(0x3b01, (ushort)(0x1946 + i * 2)));
+			}
+			writer.Write("}");
+			writer.Close();
+			this.oCPU.ES.Word = this.oCPU.SS.Word;//*/
+
 			// Call our 'short Main()' function
 			this.Segment_11a8.F0_11a8_0008_Main();
 

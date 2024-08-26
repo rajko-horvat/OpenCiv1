@@ -668,7 +668,7 @@ namespace OpenCiv1
 			L0bf7:
 				// Instruction address 0x0000:0x0c03, size: 5
 				// Instruction address 0x0000:0x0c0c, size: 5
-				if (this.oParent.Segment_2aea.F0_2aea_1894((ushort)((short)this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_8, local_a)), local_8, local_a) == 0) goto L0c1b;
+				if (this.oParent.Segment_2aea.F0_2aea_1894(local_8, local_a, this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_8, local_a)) == 0) goto L0c1b;
 				goto L0a5e;
 
 			L0c1b:
@@ -1771,7 +1771,8 @@ namespace OpenCiv1
 
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1946)), 0xf);
+
+			this.oCPU.CMP_UInt16(this.oParent.Array_1946[this.oCPU.BX.Word/2], 0xf);
 			if (this.oCPU.Flags.NE) goto L1a69;
 			// Instruction address 0x0000:0x1a61, size: 5
 			this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_19d4_Rectangle, 0, 128, 320, 32, 15, 11);
@@ -1779,7 +1780,8 @@ namespace OpenCiv1
 		L1a69:
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1946)), 0x7);
+
+			this.oCPU.CMP_UInt16(this.oParent.Array_1946[this.oCPU.BX.Word / 2], 0x7);
 			if (this.oCPU.Flags.NE) goto L1a98;
 			// Instruction address 0x0000:0x1a90, size: 5
 			this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_19d4_Rectangle, 0, 128, 320, 32, 7, 3);
@@ -1787,9 +1789,10 @@ namespace OpenCiv1
 		L1a98:
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
 			this.oCPU.SI.Word <<= 1;
+
 			// Instruction address 0x0000:0x1ab8, size: 5
 			this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_19d4_Rectangle, 0, 128, 320, 32, 10,
-				(byte)this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.SI.Word + 0x1946)));
+				(byte)this.oParent.Array_1946[this.oCPU.SI.Word / 2]);
 
 			// Instruction address 0x0000:0x1adb, size: 5
 			this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_19d4_Rectangle, 0, 128, 320, 32, 2,

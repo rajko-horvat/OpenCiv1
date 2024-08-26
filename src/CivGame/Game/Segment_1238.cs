@@ -1546,8 +1546,8 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x110c, size: 3
 			F0_1238_14a3(this.oGameData.HumanPlayerID, this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceLevel, 8, 58);
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806), 0x0);
-			if (this.oCPU.Flags.E) goto L115d;
+			if (this.oParent.Var_d806 == 0) goto L115d;
+
 			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
 			this.oCPU.PUSH_UInt16(0x111e); // stack management - push return offset
 			// Instruction address 0x1238:0x1119, size: 5

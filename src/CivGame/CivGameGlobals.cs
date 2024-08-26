@@ -32,11 +32,14 @@ namespace OpenCiv1
 		public ushort Var_6c = 0; // ushort
 
 		public CRectangle Var_aa_Rectangle = new CRectangle(0, 0, 0, 319, 199, 0x1, 15, 0, 4, 0, 0);
+		public ushort[] Array_1946 = new ushort[] { 12, 15, 10, 9, 14, 11, 13, 7 };
 		public CRectangle Var_19d4_Rectangle = new CRectangle(1, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 		public CRectangle Var_19e8_Rectangle = new CRectangle(2, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 
 		// !!! This should not be used at all as screen 3 doesn't exist
 		public CRectangle Var_19fc_Rectangle = new CRectangle(3, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
+
+		public int Var_1ae0 = 0;
 
 		public int[] Array_2ba6 = new int[] {
 			-1,	// Water = 0
@@ -64,10 +67,12 @@ namespace OpenCiv1
 		public int Var_6b92 = 0;
 		public int Var_6c98 = 0;
 		public int Var_6c9a = 0;
+		public int Var_6ed6 = 0;
 		public int[] Var_70da_Arr = new int[4];
 		public int Var_70e2 = 0;
 		public int Var_70e4 = 0;
 		public int Var_70e6 = 0;
+		public int Var_70ea = 0;
 		public int Var_7ef6_MapLandMass = 0;
 		public int Var_7ef8_MapTemperature = 0;
 		public int Var_7efa_MapClimate = 0;
@@ -76,6 +81,7 @@ namespace OpenCiv1
 		public int Var_b1e8 = 0;
 		public int Var_b882 = 0;
 		public ushort Var_b2ba = 0;
+		public int Var_d20a = 0;
 		public int Var_d2de = 0;
 		public int Var_d2e0 = 0;
 		public int Var_d2f6 = 0;
@@ -84,6 +90,7 @@ namespace OpenCiv1
 		public ushort Var_d762 = 0;
 		public ushort Var_d768 = 0;
 		public bool Var_d76a_IsEarthMap = false;
+		public int Var_d806 = 0;
 		public ushort Var_db3a = 0;
 		public ushort Var_db3c = 0;
 		public ushort Var_db3e = 0;
