@@ -956,8 +956,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0aa4, size: 5
 			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-				216, 48,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((id << 1) + 0xd58e)));
+				216, 48, this.oParent.Array_d4ce[96 + id]);
 			goto L07e2;
 
 		L0aac:
@@ -1134,9 +1133,8 @@ namespace OpenCiv1
 				// Instruction address 0x0000:0x0da3, size: 5
 				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
 					40, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)) - 4,
-					this.oCPU.ReadUInt16(this.oCPU.DS.Word,
-						(ushort)((((this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e)) +
-						(this.oGameData.HumanPlayerID << 5)) + 0x40) << 1) + 0xd4ce)));
+					this.oParent.Array_d4ce[(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e)) +
+						(this.oGameData.HumanPlayerID << 5)) + 64]);
 
 				// Instruction address 0x0000:0x0db5, size: 5
 				this.oParent.MSCAPI.strcpy(0xba06, this.oStaticGameData.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e))].Name);

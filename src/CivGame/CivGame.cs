@@ -19,7 +19,7 @@ namespace OpenCiv1
 		private Segment_1182 oSegment_1182;
 		private ImageTools oImageTools;
 		private Segment_2f4d oSegment_2f4d;
-		private Segment_2aea oSegment_2aea;
+		private MapManagement oCivMap;
 		private Segment_1866 oSegment_1866;
 		private UnitGoTo oUnitGoTo;
 		private Segment_2459 oSegment_2459;
@@ -93,7 +93,7 @@ namespace OpenCiv1
 			this.oSegment_1182 = new Segment_1182(this);
 			this.oImageTools = new ImageTools(this);
 			this.oSegment_2f4d = new Segment_2f4d(this);
-			this.oSegment_2aea = new Segment_2aea(this);
+			this.oCivMap = new MapManagement(this);
 			this.oSegment_1866 = new Segment_1866(this);
 			this.oUnitGoTo = new UnitGoTo(this);
 			this.oSegment_2459 = new Segment_2459(this);
@@ -1036,6 +1036,7 @@ namespace OpenCiv1
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xb220, 2, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xb222, 0x18, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xb23a, 2, VCPUMemoryFlagsEnum.AccessNotAllowed));
+			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xb278, 2, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xb2ba, 2, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xb3be, 0x1c0, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xd2de, 2, VCPUMemoryFlagsEnum.AccessNotAllowed));
@@ -1043,6 +1044,7 @@ namespace OpenCiv1
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xd2f4, 2, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xd2f8, 0x10, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xd308, 0x1c0, VCPUMemoryFlagsEnum.AccessNotAllowed));
+			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xd4ce, 0x280, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xd762, 2, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xd76e, 0x80, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xd7ee, 2, VCPUMemoryFlagsEnum.AccessNotAllowed));
@@ -1225,9 +1227,9 @@ namespace OpenCiv1
 			get { return this.oSegment_2f4d; }
 		}
 
-		public Segment_2aea Segment_2aea
+		public MapManagement MapManagement
 		{
-			get { return this.oSegment_2aea; }
+			get { return this.oCivMap; }
 		}
 
 		public Segment_1866 Segment_1866

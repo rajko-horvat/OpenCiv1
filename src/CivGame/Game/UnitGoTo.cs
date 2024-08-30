@@ -188,8 +188,8 @@ namespace OpenCiv1
 				else
 				{
 					// Instruction address 0x2e31:0x02c8, size: 5
-					local_c = (short)this.oParent.Segment_2aea.F0_2aea_1585_GetImprovements(
-						this.oGameData.Players[playerID].Units[unitID].Position.X, this.oGameData.Players[playerID].Units[unitID].Position.Y) + 8;
+					local_c = this.oParent.MapManagement.F0_2aea_1585_GetImprovements(
+						this.oGameData.Players[playerID].Units[unitID].Position.X, this.oGameData.Players[playerID].Units[unitID].Position.Y) & 0x8;
 
 					// Instruction address 0x2e31:0x02e5, size: 5
 					local_1c = (short)this.oParent.Segment_1866.F0_1866_1725(playerID,
@@ -231,10 +231,10 @@ namespace OpenCiv1
 						if (playerID != this.oGameData.HumanPlayerID || local_16 <= local_a)
 						{
 							// Instruction address 0x2e31:0x03b7, size: 5
-							local_1a = (short)this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_10, local_12);
+							local_1a = (short)this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(local_10, local_12);
 
 							// Instruction address 0x2e31:0x03c8, size: 5
-							local_22 = (short)this.oParent.Segment_2aea.F0_2aea_14e0(local_10, local_12);
+							local_22 = (short)this.oParent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(local_10, local_12);
 
 							// Instruction address 0x2e31:0x042a, size: 5
 							// Instruction address 0x2e31:0x045b, size: 5
@@ -243,14 +243,14 @@ namespace OpenCiv1
 								((((this.oStaticGameData.UnitDefinitions[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Air) ? 0 : 1) == (local_1a != 10 ? 0 : 1) &&
 								(local_1c == 0 || (short)this.oParent.Segment_1866.F0_1866_1725(playerID, local_10, local_12) == 0)) ||
 								(this.oStaticGameData.UnitDefinitions[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Sea))) ||
-								((this.oParent.Segment_2aea.F0_2aea_1585_GetImprovements(local_10, local_12) & 0x1) != 0 &&
-								(short)this.oParent.Segment_2aea.F0_2aea_1369(local_10, local_12) == playerID))
+								((this.oParent.MapManagement.F0_2aea_1585_GetImprovements(local_10, local_12) & 0x1) != 0 &&
+								(short)this.oParent.MapManagement.F0_2aea_1369_GetCellUnitPlayerID(local_10, local_12) == playerID))
 							{
 								// Instruction address 0x2e31:0x048c, size: 5
-								if (local_1a != 10 || this.oParent.Segment_2aea.F0_2aea_195d_GetGroupSize(local_10, local_12) >= 5)
+								if (local_1a != 10 || this.oParent.MapManagement.F0_2aea_195d_GetGroupSize(local_10, local_12) >= 5)
 								{
 									// Instruction address 0x2e31:0x04a8, size: 5
-									if (local_c == 0 || (this.oParent.Segment_2aea.F0_2aea_1585_GetImprovements(local_10, local_12) & 0x8) == 0)
+									if (local_c == 0 || (this.oParent.MapManagement.F0_2aea_1585_GetImprovements(local_10, local_12) & 0x8) == 0)
 									{
 										// !!! Illegal memory access
 										if (this.oStaticGameData.UnitDefinitions[this.oGameData.Players[playerID].Units[unitID].TypeID].MoveCount > 1)
@@ -425,7 +425,7 @@ namespace OpenCiv1
 			L0738:
 				// Illegal memory access, local_14 == -1
 				local_a = this.Var_d816[local_14, local_2c];
-				
+
 				local_4++;
 				local_4 %= 256;
 
@@ -460,7 +460,7 @@ namespace OpenCiv1
 				local_34 = direction.Y + local_2c;
 
 				if (this.Var_d816[local_30, local_34] != 0) goto L07f8;
-				
+
 				this.Var_d816[local_30, local_34] = local_a + 1;
 				this.Var_6594[local_2] = local_30;
 				this.Var_6694[local_2] = local_34;
@@ -514,7 +514,7 @@ namespace OpenCiv1
 					local_30 * 4 + 1, local_34 * 4 + 1);
 
 				if (local_12 >= local_a) goto L08cf;
-				
+
 				local_e = local_2e;
 				local_a = local_12;
 
@@ -543,10 +543,10 @@ namespace OpenCiv1
 				{
 					local_30 = 19;
 				}
-			
+
 				local_6 = this.Var_d816[local_30, local_34];
 
-				if (local_6==0) goto L08cf;
+				if (local_6 == 0) goto L08cf;
 
 				if (local_6 < local_8) goto L093b;
 
@@ -565,41 +565,44 @@ namespace OpenCiv1
 				goto L08cf;
 
 			L0981:
-				if (local_e == -1) goto L09fc;
-
-				direction = this.oStaticGameData.MoveOffsets[local_e];
-
-				// Instruction address 0x2e31:0x099d, size: 3
-				this.Var_6590_XPos = F0_2e31_119b_AdjustXPosition(((local_36 + direction.X) * 4) + 1);
-				this.Var_6592_YPos = ((local_3a + direction.Y) * 4) + 1;
-
-				// Instruction address 0x2e31:0x09ba, size: 5
-				if (this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(this.Var_6590_XPos, this.Var_6592_YPos) == TerrainTypeEnum.Water)
+				if (local_e != -1)
 				{
-					this.oCPU.AX.Word = 0x1;
+					direction = this.oStaticGameData.MoveOffsets[local_e];
+
+					// Instruction address 0x2e31:0x099d, size: 3
+					this.Var_6590_XPos = this.oGameData.Map.AdjustXPosition(((local_36 + direction.X) * 4) + 1);
+					this.Var_6592_YPos = ((local_3a + direction.Y) * 4) + 1;
+
+					// Instruction address 0x2e31:0x09ba, size: 5
+					if (this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(this.Var_6590_XPos, this.Var_6592_YPos) == TerrainTypeEnum.Water)
+					{
+						this.oCPU.AX.Word = 0x1;
+					}
+					else
+					{
+						this.oCPU.AX.Word = 0;
+					}
+
+					if (this.oCPU.AX.Word != local_16)
+					{
+						this.Var_6590_XPos++;
+
+						// Instruction address 0x2e31:0x09df, size: 5
+						if (this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(this.Var_6590_XPos, this.Var_6592_YPos) == TerrainTypeEnum.Water)
+						{
+							this.oCPU.AX.Word = 0x1;
+						}
+						else
+						{
+							this.oCPU.AX.Word = 0;
+						}
+
+						if (this.oCPU.AX.Word != local_16)
+						{
+							this.Var_6592_YPos++;
+						}
+					}
 				}
-				else
-				{
-					this.oCPU.AX.Word = 0;
-				}
-
-				if (this.oCPU.AX.Word == local_16) goto L09fc;
-
-				this.Var_6590_XPos++;
-
-				// Instruction address 0x2e31:0x09df, size: 5
-				if (this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(this.Var_6590_XPos, this.Var_6592_YPos) == TerrainTypeEnum.Water)
-				{
-					this.oCPU.AX.Word = 0x1;
-				}
-				else
-				{
-					this.oCPU.AX.Word = 0;
-				}
-
-				if (this.oCPU.AX.Word == local_16) goto L09fc;
-
-				this.Var_6592_YPos++;
 
 			L09fc:
 				if (this.Var_6590_XPos == -1)
@@ -679,10 +682,10 @@ namespace OpenCiv1
 							local_2 = local_a * 4 + 1;
 							local_8 = local_c * 4 + 1;
 
-							if ((flag == ((this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_2, local_8) == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2, local_8, xPos, yPos, flag, 18) != -1) ||
-								(flag == ((this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_2 + 1, local_8) == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2 + 1, local_8, xPos, yPos, flag, 18) != -1) ||
-								(flag == ((this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_2 + 1, local_8 + 1) == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2 + 1, local_8 + 1, xPos, yPos, flag, 18) != -1) ||
-								(flag == ((this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_2, local_8 + 1) == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2, local_8 + 1, xPos, yPos, flag, 18) != -1))
+							if ((flag == ((this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(local_2, local_8) == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2, local_8, xPos, yPos, flag, 18) != -1) ||
+								(flag == ((this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(local_2 + 1, local_8) == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2 + 1, local_8, xPos, yPos, flag, 18) != -1) ||
+								(flag == ((this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(local_2 + 1, local_8 + 1) == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2 + 1, local_8 + 1, xPos, yPos, flag, 18) != -1) ||
+								(flag == ((this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(local_2, local_8 + 1) == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2, local_8 + 1, xPos, yPos, flag, 18) != -1))
 							{
 								local_6 = local_4;
 								local_e = i;
@@ -763,7 +766,7 @@ namespace OpenCiv1
 			if (this.Var_b780[local_46 - local_20, local_4a - local_3a] != 0)
 				goto L0d8b;
 
-		L0c89:
+			L0c89:
 			this.Var_6796 = this.Var_6590_XPos;
 			this.Var_6798 = this.Var_6592_YPos;
 
@@ -818,7 +821,7 @@ namespace OpenCiv1
 			if (local_e > this.Var_6794) goto L0d7c;
 
 			// Instruction address 0x2e31:0x0d63, size: 3
-			if (F0_2e31_119b_AdjustXPosition(local_1c) != local_46) goto L0da8;
+			if (this.oGameData.Map.AdjustXPosition(local_1c) != local_46) goto L0da8;
 
 			if (local_36 != local_4a) goto L0da8;
 			this.Var_6794 = local_e;
@@ -845,7 +848,7 @@ namespace OpenCiv1
 		L0da8:
 			// Instruction address 0x2e31:0x0daf, size: 3
 			// Instruction address 0x2e31:0x0db6, size: 5
-			local_8 = this.oParent.Segment_2aea.F0_2aea_1570(F0_2e31_119b_AdjustXPosition(local_1c), local_36);
+			local_8 = this.oParent.MapManagement.F0_2aea_1570_CellHasRoads(local_1c, local_36);
 			local_3c = 1;
 
 			goto L0dea;
@@ -856,7 +859,7 @@ namespace OpenCiv1
 
 		L0dd2:
 			// Instruction address 0x2e31:0x0dd8, size: 5
-			if ((this.oParent.Segment_2aea.F0_2aea_1585_GetImprovements(local_c, local_44) & 0x1) == 0) goto L0de7;
+			if ((this.oParent.MapManagement.F0_2aea_1585_GetImprovements(local_c, local_44) & 0x1) == 0) goto L0de7;
 			goto L0e70;
 
 		L0de7:
@@ -873,7 +876,7 @@ namespace OpenCiv1
 			if (Math.Abs(local_40 - this.Var_6590_XPos) >= 8) goto L0de7;
 
 			// Instruction address 0x2e31:0x0e15, size: 3
-			local_c = F0_2e31_119b_AdjustXPosition(local_40);
+			local_c = this.oGameData.Map.AdjustXPosition(local_40);
 
 			local_44 = direction.Y + local_36;
 
@@ -881,10 +884,10 @@ namespace OpenCiv1
 			if (Math.Abs(local_44 - this.Var_6592_YPos) >= 8) goto L0de7;
 
 			// Instruction address 0x2e31:0x0e45, size: 5
-			if (this.oParent.Segment_2aea.F0_2aea_1326_CheckMapBounds(local_c, local_44) == 0) goto L0de7;
+			if (this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(local_c, local_44) == 0) goto L0de7;
 
 			// Instruction address 0x2e31:0x0e57, size: 5
-			local_3e = (short)this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_c, local_44);
+			local_3e = (short)this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(local_c, local_44);
 
 			if (local_3e == 10) goto L0e6a;
 			goto L0dc8;
@@ -894,7 +897,7 @@ namespace OpenCiv1
 
 		L0e70:
 			// Instruction address 0x2e31:0x0e7c, size: 5
-			if (local_8 != 0 && this.oParent.Segment_2aea.F0_2aea_1570(local_c, local_44) != 0)
+			if (local_8 != 0 && this.oParent.MapManagement.F0_2aea_1570_CellHasRoads(local_c, local_44) != 0)
 			{
 				local_1a = local_e + 1;
 			}
@@ -932,7 +935,7 @@ namespace OpenCiv1
 			// Instruction address 0x2e31:0x0f19, size: 5
 			if (Math.Abs(local_40 - this.Var_6590_XPos) < 8) goto L0f61;
 
-		L0f26:
+			L0f26:
 			local_3c++;
 
 		L0f29:
@@ -955,7 +958,7 @@ namespace OpenCiv1
 
 		L0f61:
 			// Instruction address 0x2e31:0x0f65, size: 3
-			local_c = F0_2e31_119b_AdjustXPosition(local_40);
+			local_c = this.oGameData.Map.AdjustXPosition(local_40);
 
 			local_44 = direction.Y + local_4a;
 
@@ -964,11 +967,11 @@ namespace OpenCiv1
 
 			// Instruction address 0x2e31:0x0f95, size: 5
 			if (((this.oStaticGameData.UnitDefinitions[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Air) ? 0 : 1) ==
-				((this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(local_c, local_44) != TerrainTypeEnum.Water) ? 0 : 1))
+				((this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(local_c, local_44) != TerrainTypeEnum.Water) ? 0 : 1))
 				goto L0fec;
 
 			// Instruction address 0x2e31:0x0fdd, size: 5
-			if ((this.oParent.Segment_2aea.F0_2aea_1585_GetImprovements(local_c, local_44) & 0x1) != 0) goto L0fec;
+			if ((this.oParent.MapManagement.F0_2aea_1585_GetImprovements(local_c, local_44) & 0x1) != 0) goto L0fec;
 
 			goto L0f26;
 
@@ -983,7 +986,7 @@ namespace OpenCiv1
 					local_16 = local_3c;
 
 					// Instruction address 0x2e31:0x1025, size: 5
-					local_12 = (short)this.oParent.Segment_2aea.F0_2aea_1458(local_c, local_44);
+					local_12 = (short)this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(local_c, local_44);
 
 					if (local_12 != -1)
 					{
@@ -1002,7 +1005,7 @@ namespace OpenCiv1
 				if (local_6 == local_a)
 				{
 					// Instruction address 0x2e31:0x107f, size: 5
-					local_12 = (short)this.oParent.Segment_2aea.F0_2aea_1458(local_c, local_44);
+					local_12 = (short)this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(local_c, local_44);
 
 					if (local_12 != -1)
 					{
@@ -1102,29 +1105,6 @@ namespace OpenCiv1
 			this.oParent.GoToLog.ExitBlock("F0_2e31_111c_CreateBarbarianUnit", this.oCPU.AX.Word);
 
 			return (short)this.oCPU.AX.Word;
-		}
-
-		/// <summary>
-		/// Wrap X position
-		/// </summary>
-		/// <param name="xPos"></param>
-		/// <returns></returns>
-		public int F0_2e31_119b_AdjustXPosition(int xPos)
-		{
-			// function body
-			while (xPos < 0)
-			{
-				xPos += 80;
-			}
-
-			while (xPos >= 80)
-			{
-				xPos -= 80;
-			}
-
-			this.oCPU.AX.Word = (ushort)((short)xPos);
-
-			return xPos;
 		}
 	}
 }

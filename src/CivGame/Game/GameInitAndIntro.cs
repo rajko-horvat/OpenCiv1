@@ -38,11 +38,13 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F7_0000_0012_GenerateMap()");
 
 			// function body
+			F7_0000_17cf_AdvanceEvolutionAnimation();
+
 			this.oGameData.Map.Parent = this.oParent; // ensure that our map has proper parents assigned
-			this.oGameData.Map.Seed = 12345;
+			this.oGameData.Map.Seed = 12345; // For debugging we want a repeatable map
 			this.oGameData.Map.GenerateNewMap();
 
-			RandomMT19937 rng = new RandomMT19937(12345);
+			/*RandomMT19937 rng = new RandomMT19937(12345);
 
 			// Instruction address 0x0000:0x0024, size: 5
 			this.oParent.Segment_11a8.F0_11a8_02a4(7, 1);
@@ -791,9 +793,9 @@ namespace OpenCiv1
 						throw new IndexOutOfRangeException("Continent selector out of range");
 				}
 			}
-			#endregion
+			#endregion*/
 
-			F7_0000_17cf_AdvanceEvolutionAnimation();
+			/*F7_0000_17cf_AdvanceEvolutionAnimation();
 
 			// Instruction address 0x0000:0x0e0c, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19e8_Rectangle, 0, 0);
@@ -804,9 +806,9 @@ namespace OpenCiv1
 
 			F7_0000_17cf_AdvanceEvolutionAnimation();
 
-			F7_0000_0f0a_ProcessBuildSites();
+			F7_0000_0f0a_ProcessBuildSites();*/
 
-			#region Render polar caps
+			/*#region Render polar caps
 			// Instruction address 0x0000:0x0e49, size: 5
 			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 0, 0, 79, 0, 15);
 
@@ -827,9 +829,9 @@ namespace OpenCiv1
 				// Instruction address 0x0000:0x0ef0, size: 5
 				this.oParent.Graphics.F0_VGA_0550_SetPixel(1, rng.Next(80), 49, 7);
 			}
-			#endregion
+			#endregion*/
 
-			StreamWriter writer = new StreamWriter("Map.log");
+			/*StreamWriter writer = new StreamWriter("Map.log");
 			for (int i = 0; i < 50; i++)
 			{
 				writer.Write("[");
@@ -872,18 +874,14 @@ namespace OpenCiv1
 			}
 			writer.WriteLine("]");
 
-			writer.Close();
-
-			Map map = new Map(80, 50, 12345);
-
-			map.GenerateNewMap();
+			writer.Close();*/
 
 			this.Var_67fc = 1;
 
 			while (F7_0000_17cf_AdvanceEvolutionAnimation() != 0) ;
 
 			// check generated map
-			for (int i = 0; i < 80; i++)
+			/*for (int i = 0; i < 80; i++)
 			{
 				for (int j = 0; j < 50; j++)
 				{
@@ -894,12 +892,12 @@ namespace OpenCiv1
 						throw new Exception("Unknown terrain type generated");
 					}
 				}
-			}
+			}*/
 
-			this.oParent.Var_aa_Rectangle.FontID = 1;
+			//this.oParent.Var_aa_Rectangle.FontID = 1;
 
 			// Instruction address 0x0000:0x05c6, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19e8_Rectangle, 0, 0);
+			//this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19e8_Rectangle, 0, 0);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F7_0000_0012_GenerateMap");
@@ -1058,7 +1056,7 @@ namespace OpenCiv1
 							}
 
 							// Instruction address 0x0000:0x1081, size: 5
-							if (this.oParent.Segment_2aea.F0_2aea_1836_HasSpecialResource(xPos, yPos))
+							if (this.oParent.MapManagement.F0_2aea_1836_HasSpecialResource(xPos, yPos))
 							{
 								terrainType += 12;
 							}
@@ -1325,25 +1323,25 @@ namespace OpenCiv1
 									int local_6 = 4;
 
 									// Instruction address 0x0000:0x15fe, size: 5
-									if (F7_0000_176d_GetMapTerrainType_Screen1(xPos1, yPos1) != 10 || this.oParent.Segment_2aea.F0_2aea_1326_CheckMapBounds(xPos1, yPos1) == 0)
+									if (F7_0000_176d_GetMapTerrainType_Screen1(xPos1, yPos1) != 10 || this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(xPos1, yPos1) == 0)
 									{
 										local_6--;
 									}
 
 									// Instruction address 0x0000:0x1625, size: 5
-									if (F7_0000_176d_GetMapTerrainType_Screen1(xPos1 + 1, yPos1) != 10 || this.oParent.Segment_2aea.F0_2aea_1326_CheckMapBounds(xPos1 + 1, yPos1) == 0)
+									if (F7_0000_176d_GetMapTerrainType_Screen1(xPos1 + 1, yPos1) != 10 || this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(xPos1 + 1, yPos1) == 0)
 									{
 										local_6--;
 									}
 
 									// Instruction address 0x0000:0x164c, size: 5
-									if (F7_0000_176d_GetMapTerrainType_Screen1(xPos1, yPos1 + 1) != 10 || this.oParent.Segment_2aea.F0_2aea_1326_CheckMapBounds(xPos1, yPos1 + 1) == 0)
+									if (F7_0000_176d_GetMapTerrainType_Screen1(xPos1, yPos1 + 1) != 10 || this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(xPos1, yPos1 + 1) == 0)
 									{
 										local_6--;
 									}
 
 									// Instruction address 0x0000:0x1673, size: 5
-									if (F7_0000_176d_GetMapTerrainType_Screen1(xPos1 + 1, yPos1 + 1) != 10 || this.oParent.Segment_2aea.F0_2aea_1326_CheckMapBounds(xPos1 + 1, yPos1 + 1) == 0)
+									if (F7_0000_176d_GetMapTerrainType_Screen1(xPos1 + 1, yPos1 + 1) != 10 || this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(xPos1 + 1, yPos1 + 1) == 0)
 									{
 										local_6--;
 									}
@@ -1702,7 +1700,7 @@ namespace OpenCiv1
 				for (int j = 0; j < 50; j++)
 				{
 					// Instruction address 0x0000:0x1cbe, size: 5
-					int local_8 = (short)this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(i, j);
+					int local_8 = (short)this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(i, j);
 
 					if (local_8 <= 3)
 					{
@@ -1713,7 +1711,7 @@ namespace OpenCiv1
 							GPoint direction = this.oStaticGameData.MoveOffsets[k];
 
 							// Instruction address 0x0000:0x1ced, size: 5
-							if (this.oParent.Segment_2aea.F0_2aea_134a_GetMapLayer1_TerrainType(i + direction.X, j + direction.Y) == TerrainTypeEnum.Water)
+							if (this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(i + direction.X, j + direction.Y) == TerrainTypeEnum.Water)
 							{
 								local_a++;
 							}
@@ -1735,7 +1733,7 @@ namespace OpenCiv1
 							}
 
 							// Instruction address 0x0000:0x1c2a, size: 5
-							this.oParent.Segment_2aea.F0_2aea_16ee_RemoveImprovement(i, j, 6, 0);
+							this.oParent.MapManagement.F0_2aea_16ee_RemoveImprovement(i, j, 6, 0);
 						}
 						else
 						{
@@ -1759,7 +1757,7 @@ namespace OpenCiv1
 						if ((this.oGameData.Map[i, j].Visibility & (1 << this.oGameData.HumanPlayerID)) != 0)
 						{
 							// Instruction address 0x0000:0x1ca4, size: 5
-							this.oParent.Segment_2aea.F0_2aea_11d4(i, j);
+							this.oParent.MapManagement.F0_2aea_11d4(i, j);
 						}
 					}
 				}

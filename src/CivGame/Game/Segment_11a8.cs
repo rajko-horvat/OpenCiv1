@@ -771,7 +771,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0899;
 
 			// Instruction address 0x11a8:0x0891, size: 5
-			this.oParent.Segment_1000.F0_1000_1697(0, 0, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd4dc));
+			this.oParent.Segment_1000.F0_1000_1697(0, 0, this.oParent.Array_d4ce[7]);
 
 		L0899:
 			if (this.oGameData.TurnCount != 0) goto L08c5;

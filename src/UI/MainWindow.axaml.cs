@@ -189,34 +189,42 @@ namespace OpenCiv1.UI
 							break;
 
 						case Key.Down:
+						case Key.NumPad2:
 							this.oCivGame.CPU.Keys.Enqueue(0x5000);
 							break;
 
 						case Key.Left:
+						case Key.NumPad4:
 							this.oCivGame.CPU.Keys.Enqueue(0x4b00);
 							break;
 
 						case Key.Right:
+						case Key.NumPad6:
 							this.oCivGame.CPU.Keys.Enqueue(0x4d00);
 							break;
 
 						case Key.Up:
+						case Key.NumPad8:
 							this.oCivGame.CPU.Keys.Enqueue(0x4800);
 							break;
 
 						case Key.Home:
+						case Key.NumPad7:
 							this.oCivGame.CPU.Keys.Enqueue(0x4700);
 							break;
 
 						case Key.End:
+						case Key.NumPad1:
 							this.oCivGame.CPU.Keys.Enqueue(0x4f00);
 							break;
 
 						case Key.PageUp:
+						case Key.NumPad9:
 							this.oCivGame.CPU.Keys.Enqueue(0x4900);
 							break;
 
 						case Key.PageDown:
+						case Key.NumPad3:
 							this.oCivGame.CPU.Keys.Enqueue(0x5100);
 							break;
 
