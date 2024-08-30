@@ -32,7 +32,7 @@ Currently, you can contribute to this repository in one of the following ways:
 </ul>
 
 ## Frequently asked questions
-<p><b>Q:</b> Why did you use C#, instead of C in which the original game is written?</p>
+<p><b>Q:</b> Why did you use C#, instead of C and x86 assembly in which the original game is written?</p>
 <b>A:</b> I have chosen C# becase it's platform independent, secure, flexible, managed, popular, modern and API rich language.
 
 ***
@@ -47,6 +47,12 @@ Currently, you can contribute to this repository in one of the following ways:
 </ul>
 
 ***
+<p><b>Q:</b> Will OpenCiv1 source code be indentical to the Original Civilization 1 game source code?</p>
+<p><b>A:</b> No. The OpenCiv1 source code does not contain any original Civilization 1 source code. 
+The rewritten code performs the same function (as the original code does), but the code is completely different and under MIT license. 
+The Microprose and its successors never released the original source code which remains protected under copyright laws to this day.</p>
+
+***
 <p><b>Q:</b> Does that mean that the OpenCiv1 will be completely different from original Civilization 1 game, like, for example FreeCiv?</p>
 <b>A:</b> Absolutely not, the goal is to keep all of the original rules and functionalities, as well as much as possible of the original Visual and Audio appearance.
 
@@ -55,14 +61,15 @@ Currently, you can contribute to this repository in one of the following ways:
 <b>A:</b> Based on some stats, many people think that the first Civilization offers as much fun as the other sequels do.
 
 ***
-<p><b>Q:</b> Are there any additional keyboard shorcuts (apart from the default ones)?</p>
+<p><b>Q:</b> Are there any additional or different keyboard shorcuts (apart from the default ones)?</p>
 <b>A:</b> Yes, these are additional keyboard shorcuts that you can use during the game:
 <ul>
-<li>Alt + D - Enable / Disable the <b>Debug mode<7b> (previously, Shift-56)</li>
+<li>Alt + D - Enable / Disable the <b>Debug mode</b> (previously, Shift-56)</li>
 <li>Alt + P - Pause / Resume game</li>
 <li>Alt + 1 - Show / Hide Screen 1</li>
 <li>Alt + 2 - Show / Hide Screen 2</li>
 <li>Alt + 3 - Show / Hide Screen 3</li>
+<li>You can't scroll the map with Shift + NumPad keys, instead use Shift + Navigation Keys (Up, Down, Left, Right, Home, End, PageUp and PageDown)</li>
 </ul>
 
 ## Dependencies
@@ -84,7 +91,7 @@ You can also compile with CLI method:
 <ul>
 <li>git clone https://github.com/rajko-horvat/OpenCiv1 (To clone a specific branch use: git clone -b [branch] https://github.com/rajko-horvat/OpenCiv1)</li>
 <li>cd OpenCiv1</li>
-<li>dotnet build -c Release</li>
+<li>dotnet build -c Debug</li>
 </ul>
 
 ## Project milestones
