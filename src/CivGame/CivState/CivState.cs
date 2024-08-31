@@ -509,5 +509,10 @@ namespace OpenCiv1
 		{
 			get => this.aTechnologyDefinitions;
 		}
+
+		public NationDefinition GetNation(int nationalityID)
+		{
+			return this.Nations[Math.Max(0, nationalityID)];
+		}
 	}
 }
