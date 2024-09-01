@@ -19,9 +19,9 @@ namespace OpenCiv1
 		public short Ideology;
 		public short ShortTune;
 		public short LongTune;
-		public string[] Cities;
+		public string[] CityNames;
 
-		public NationDefinition(int id, string leader, string nation, string nationality, short mood, short policy, short ideology, short shortTune, short longTune, string[] cities)
+		public NationDefinition(int id, string leader, string nation, string nationality, short mood, short policy, short ideology, short shortTune, short longTune, string[] cityNames)
 		{
 			this.ID = id;
 			this.Leader = leader;
@@ -32,7 +32,7 @@ namespace OpenCiv1
 			this.Ideology = ideology; // -1 = Militaristic, 0 = Neutral, 1 = Civilized
 			this.ShortTune = shortTune;
 			this.LongTune = longTune;
-			this.Cities = cities;
+			this.CityNames = cityNames;
 		}
 	}
 }

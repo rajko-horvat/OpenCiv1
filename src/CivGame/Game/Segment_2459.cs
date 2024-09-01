@@ -971,11 +971,11 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x2459:0x098e, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
+			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Map.GetDistance(
 				this.oGameData.Cities[cityID].Position.X,
 				this.oGameData.Cities[cityID].Position.Y,
 				this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Position.X,
-				this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Position.Y);
+				this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Position.Y));
 
 			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0xa);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);

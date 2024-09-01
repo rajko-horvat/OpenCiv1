@@ -611,7 +611,7 @@ namespace OpenCiv1
 				else
 				{
 					// Instruction address 0x0000:0x0abf, size: 5
-					local_4 = this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(local_8, local_a,
+					local_4 = this.oGameData.Map.GetDistance(local_8, local_a,
 						this.oGameData.Cities[local_6].Position.X,
 						this.oGameData.Cities[local_6].Position.Y);
 				}
@@ -621,7 +621,7 @@ namespace OpenCiv1
 					for (int i = 1; i < playerID; i++)
 					{
 						// Instruction address 0x0000:0x0af2, size: 5
-						local_12 = this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(local_8, local_a,
+						local_12 = this.oGameData.Map.GetDistance(local_8, local_a,
 							this.oGameData.Players[i].Units[0].Position.X,
 							this.oGameData.Players[i].Units[0].Position.Y);
 
@@ -767,9 +767,8 @@ namespace OpenCiv1
 					if (this.oGameData.Players[0].Units[i].TypeID != -1)
 					{
 						// Instruction address 0x0000:0x0e05, size: 5
-						if (this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(local_8, local_a,
-							this.oGameData.Players[0].Units[i].Position.X,
-							this.oGameData.Players[0].Units[i].Position.Y) < 9)
+						if (this.oGameData.Map.GetDistance(local_8, local_a, 
+							this.oGameData.Players[0].Units[i].Position.X, this.oGameData.Players[0].Units[i].Position.Y) < 9)
 						{
 							// Instruction address 0x0000:0x0e18, size: 5
 							this.oParent.Segment_1866.F0_1866_0f10(0, (short)i);
@@ -1175,11 +1174,11 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L12c7;
 
 			// Instruction address 0x0000:0x12ae, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
+			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Map.GetDistance(
 				this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].Position.X,
 				this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].Position.Y,
 				this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48))].Units[0].Position.X,
-				this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48))].Units[0].Position.Y);
+				this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48))].Units[0].Position.Y));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa));

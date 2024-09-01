@@ -140,11 +140,11 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x2dc4:0x0142, size: 3
-			F0_2dc4_0289_GetShortestDistance(
+			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Map.GetDistance(
 				xPos,
 				yPos,
 				this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.X,
-				this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.Y);
+				this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.Y));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
@@ -203,9 +203,10 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
 			// Instruction address 0x2dc4:0x01b2, size: 3
-			F0_2dc4_0289_GetShortestDistance(
+			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Map.GetDistance(
 				xPos, yPos,
-				this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.X, this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.Y);
+				this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.X, 
+				this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.Y));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
@@ -250,54 +251,6 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("F0_2dc4_0177");
 
 			return this.oCPU.AX.Word;
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		/// <param name="xPos1"></param>
-		/// <param name="yPos1"></param>
-		/// <returns></returns>
-		public int F0_2dc4_0289_GetShortestDistance(int xPos, int yPos, int xPos1, int yPos1)
-		{
-			// function body
-			return F0_2dc4_0208_GetShortestDistance(xPos - xPos1, yPos - yPos1);
-		}
-
-		/// <summary>
-		/// Combines the X and Y positions
-		/// </summary>
-		/// <param name="width"></param>
-		/// <param name="height"></param>
-		/// <returns></returns>
-		public int F0_2dc4_0208_GetShortestDistance(int width, int height)
-		{
-			// function body			
-			width = Math.Abs(width);
-			height = Math.Abs(height);
-
-			// take into account either map direction from median
-			if (width > 40)
-			{
-				width = 80 - width;
-			}
-
-			if (width > height)
-			{
-				height = (height / 2) + width;
-				this.oCPU.AX.Word = (ushort)((short)height);
-
-				return height;
-			}
-			else
-			{
-				width = (width / 2) + height;
-				this.oCPU.AX.Word = (ushort)((short)width);
-
-				return width;
-			}
 		}
 
 		/// <summary>

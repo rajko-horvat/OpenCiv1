@@ -26,7 +26,10 @@ The other resources (like graphics, music and text) will also be completely repl
 Currently, you can contribute to this repository in one of the following ways:
 <ul>
 <li>By testing the game functionality and submitting Issues,</li>
-<li>By translating the part(s) of the code from pseudo assembly language to native C# language (for details see <a href="https://github.com/rajko-horvat/OpenCiv1/wiki/Introduction-to-code-translating">Introduction to code translating</a>),</li>
+<li>By translating disassembly to a new native C# code (for details see <a href="https://github.com/rajko-horvat/OpenCiv1/wiki/Introduction-to-code-translating">Introduction to code translating</a>).
+The current focus is on translating disassembly to a new native C# code, and fixing the parts of the code that are the most buggy.</li>
+<li>By documenting the rules of the game from the game manual. After transition from disassembly to native C# is complete, 
+the game code should be checked, compared and fixed to comply with the rules specified in the game manual.</li>
 <li>By designing parts of a 'Default' Visual and Audio theme (which must preserve original Game appearance and feel as much as possible, SVG and MIDI/SoundFonts would be the best),</li>
 <li>By designing parts of a 'Custom' Visual and Audio theme(s) (SVG and MIDI/SoundFonts would be the best).</li>
 </ul>
@@ -47,7 +50,7 @@ Currently, you can contribute to this repository in one of the following ways:
 </ul>
 
 ***
-<p><b>Q:</b> Will OpenCiv1 source code be indentical to the Original Civilization 1 game source code?</p>
+<p><b>Q:</b> Will OpenCiv1 source code be identical to the Original Civilization 1 game source code?</p>
 <p><b>A:</b> No. The OpenCiv1 source code does not contain any original Civilization 1 source code. 
 The rewritten code performs the same function (as the original code does), but the code is completely different and under MIT license. 
 The Microprose and its successors never released the original source code which remains protected under copyright laws to this day.</p>

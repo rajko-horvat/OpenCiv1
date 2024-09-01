@@ -963,9 +963,10 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0ab6;
 
 			// Instruction address 0x0000:0x0a97, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
+			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Map.GetDistance(
 				xPos, yPos,
-				this.oCPU.ReadInt16(this.oCPU.ES.Word, (ushort)(this.oCPU.SI.Word + 0x100)), this.oCPU.ReadInt16(this.oCPU.ES.Word, (ushort)(this.oCPU.SI.Word + 0x200)));
+				this.oCPU.ReadInt16(this.oCPU.ES.Word, (ushort)(this.oCPU.SI.Word + 0x100)), 
+				this.oCPU.ReadInt16(this.oCPU.ES.Word, (ushort)(this.oCPU.SI.Word + 0x200))));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6812);

@@ -110,6 +110,11 @@ namespace OpenCiv1.Graphics
 		/// <param name="right">The GSize class on the right side of the subtraction operator</param>
 		public static GSize Subtract(GSize left, GSize right) => new GSize(left.Width - right.Width, left.Height - right.Height);
 
+		/// <summary>Returns new GSize class containing absolute width and height</summary>
+		/// <returns>A GSize class containing absolute size</returns>
+		/// <param name="pt">The GSize class to convert to absolute value</param>
+		public static GSize Abs(GSize pt) => new GSize(Math.Abs(pt.width), Math.Abs(pt.height));
+
 		/// <summary>Tests to see whether the specified object is a GSize class with the same dimensions as this GSize class</summary>
 		/// <returns>true if <paramref name="obj" /> is a GSize and has the same width and height as this GSize; otherwise, false</returns>
 		/// <param name="obj">The <see cref="T:System.Object" /> to test</param>

@@ -508,7 +508,7 @@ namespace OpenCiv1
 				if (local_6 != local_8) goto L08cf;
 
 				// Instruction address 0x2e31:0x08b0, size: 5
-				local_12 = this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
+				local_12 = this.oGameData.Map.GetDistance(
 					this.oGameData.Players[playerID].Units[unitID].GoToPosition.X,
 					this.oGameData.Players[playerID].Units[unitID].GoToPosition.Y,
 					local_30 * 4 + 1, local_34 * 4 + 1);
@@ -557,7 +557,7 @@ namespace OpenCiv1
 				local_e = local_2e;
 
 				// Instruction address 0x2e31:0x0976, size: 5
-				local_a = this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
+				local_a = this.oGameData.Map.GetDistance(
 					this.oGameData.Players[playerID].Units[unitID].GoToPosition.X,
 					this.oGameData.Players[playerID].Units[unitID].GoToPosition.Y,
 					local_30 * 4 + 1, local_34 * 4 + 1);
@@ -675,7 +675,7 @@ namespace OpenCiv1
 					if ((flag != 0 && this.Var_7f38_AuxPathFind[local_a, local_c] != 0) || (flag == 0 && this.oGameData.PathFind[local_a, local_c] != 0))
 					{
 						// Instruction address 0x2e31:0x0b43, size: 5
-						local_4 = this.oParent.Segment_2dc4.F0_2dc4_0208_GetShortestDistance(xPos - (local_a * 4) - 1, yPos - (local_c * 4) - 1);
+						local_4 = this.oGameData.Map.GetDistance(xPos - (local_a * 4) - 1, yPos - (local_c * 4) - 1);
 
 						if (local_4 < local_6)
 						{
@@ -999,7 +999,7 @@ namespace OpenCiv1
 					}
 
 					// Instruction address 0x2e31:0x1063, size: 5
-					local_e += this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(this.Var_6590_XPos, this.Var_6592_YPos, local_c, local_44);
+					local_e += this.oGameData.Map.GetDistance(this.Var_6590_XPos, this.Var_6592_YPos, local_c, local_44);
 				}
 
 				if (local_6 == local_a)
@@ -1018,7 +1018,7 @@ namespace OpenCiv1
 					}
 
 					// Instruction address 0x2e31:0x10bd, size: 5
-					local_1a += this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(this.Var_6590_XPos, this.Var_6592_YPos, local_c, local_44);
+					local_1a += this.oGameData.Map.GetDistance(this.Var_6590_XPos, this.Var_6592_YPos, local_c, local_44);
 
 					if (local_1a < local_e)
 					{

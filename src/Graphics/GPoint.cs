@@ -150,9 +150,9 @@ namespace OpenCiv1.Graphics
 			this.Offset(pt.X, pt.Y);
 		}
 
-		/// <summary>Returns new GPoint class containing absoulte X and Y coordinates</summary>
+		/// <summary>Returns new GPoint class containing absolute X and Y coordinates</summary>
 		/// <returns>A GPoint class containing absolute coordinates</returns>
-		/// <param name="pt">The GPoint class to contert to absolute coordinates</param>
+		/// <param name="pt">The GPoint class to convert to absolute coordinates</param>
 		public static GPoint Abs(GPoint pt) => new GPoint(Math.Abs(pt.X), Math.Abs(pt.Y));
 
 		/// <summary>Specifies whether this GPoint contains the same coordinates as the specified <see cref="T:System.Object" /></summary>

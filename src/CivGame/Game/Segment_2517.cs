@@ -1414,11 +1414,11 @@ namespace OpenCiv1
 					(this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].ImprovementFlags0 & 0x1) != 0)
 				{
 					// Instruction address 0x2517:0x0dda, size: 5
-					this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
+					this.oCPU.AX.Word = (ushort)((short)this.oGameData.Map.GetDistance(
 						this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Position.X,
 						this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Position.Y,
 						xPos,
-						yPos);
+						yPos));
 
 					this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 					this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));

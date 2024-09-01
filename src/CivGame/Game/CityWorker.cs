@@ -150,7 +150,7 @@ namespace OpenCiv1
 					if (this.oGameData.Cities[i].StatusFlag != 0xff && i != city.ID)
 					{
 						// Instruction address 0x1d12:0x01a2, size: 5
-						local_b0 = this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
+						local_b0 = this.oGameData.Map.GetDistance(
 							city.Position.X,
 							city.Position.Y,
 							this.oGameData.Cities[i].Position.X,
@@ -1366,7 +1366,7 @@ namespace OpenCiv1
 								0, this.oGameData.Players[this.Var_6548_PlayerID].Coins / 3);
 						}
 
-						if (city.StatusFlag == 0x19 && this.oGameData.Players[this.Var_6548_PlayerID].ActiveUnits[25] == 0 && city.ShieldsCount != 0)
+						if (city.CurrentProductionID >= 0 && city.StatusFlag == 0x19 && this.oGameData.Players[this.Var_6548_PlayerID].ActiveUnits[25] == 0 && city.ShieldsCount != 0)
 						{
 							// Instruction address 0x1d12:0x260d, size: 5
 							local_cc = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
@@ -1907,7 +1907,7 @@ namespace OpenCiv1
 										this.oGameData.Players[this.Var_6548_PlayerID].Units[j].TypeID < 26)
 									{
 										// Instruction address 0x1d12:0x3513, size: 5
-										local_b2 = this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
+										local_b2 = this.oGameData.Map.GetDistance(
 											city.Position.X,
 											city.Position.Y,
 											this.oGameData.Players[this.Var_6548_PlayerID].Units[j].Position.X,

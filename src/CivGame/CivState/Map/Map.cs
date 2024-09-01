@@ -596,10 +596,10 @@ namespace OpenCiv1
 
 				for (int i = 0; i < iTotalMapCellCount / 200; i++)
 				{
-					this.Cells[rng.Next(80), 0].Layer1_Terrain = 7;
-					this.Cells[rng.Next(80), 1].Layer1_Terrain = 7;
-					this.Cells[rng.Next(80), 48].Layer1_Terrain = 7;
-					this.Cells[rng.Next(80), 49].Layer1_Terrain = 7;
+					this.Cells[rng.Next(this.oSize.Width), 0].Layer1_Terrain = 7;
+					this.Cells[rng.Next(this.oSize.Width), 1].Layer1_Terrain = 7;
+					this.Cells[rng.Next(this.oSize.Width), this.oSize.Height - 2].Layer1_Terrain = 7;
+					this.Cells[rng.Next(this.oSize.Width), this.oSize.Height - 1].Layer1_Terrain = 7;
 				}
 				#endregion
 
@@ -614,17 +614,13 @@ namespace OpenCiv1
 				#endregion
 
 				#region Stage 7 - Determine Map groups (Sea, Land and Polar caps)
-				for (int i = 0; i < 80; i++)
+				for (int i = 0; i < this.oSize.Width; i++)
 				{
-					for (int j = 0; j < 50; j++)
+					for (int j = 0; j < this.oSize.Height; j++)
 					{
 						FloodFillGroup(i, j);
 					}
 				}
-
-				// Set polar caps
-				this.aGroups[this.Cells[0, 0].Layer3_GroupID].GroupType = MapGroupTypeEnum.PolarCap;
-				this.aGroups[this.Cells[0, this.oSize.Height - 1].Layer3_GroupID].GroupType = MapGroupTypeEnum.PolarCap;
 				#endregion
 
 				#region Stage 8 - Determine land cell worth for city build sites
@@ -830,9 +826,15 @@ namespace OpenCiv1
 				iGroupID = this.aGroups.Count; // this will be our new group ID
 				int iCellCount = 0;
 				Queue<GPoint> queue = new Queue<GPoint>();
-				MapGroupTypeEnum groupType = this.Cells[x, y].GroupType; // Get the starting cell Group type
-				MapGroup group = new MapGroup(iGroupID, groupType);
+				MapGroupTypeEnum groupType = this.Cells[x, y].GroupType; // Get the cell Group type
 
+				// Detect polar caps. The polar caps are one or two cells at the TopLeft and BottomLeft of the Map
+				if (groupType == MapGroupTypeEnum.Land && x == 0 && (y == 0 || y == 1 || y == this.oSize.Height - 2 || y == this.oSize.Height - 1))
+				{
+					groupType = MapGroupTypeEnum.PolarCap;
+				}
+
+				MapGroup group = new MapGroup(iGroupID, groupType);
 
 				this.Cells[x, y].Layer3_GroupID = iGroupID; // Set the starting cell to our GroupID
 				iCellCount++; // Increment the group cell count
@@ -940,6 +942,58 @@ namespace OpenCiv1
 			}
 
 			return x;
+		}
+
+		/// <summary>
+		/// Calculate the shortest map distance (number of moves) between two points in a two dimensional space (Chebyshev distance)
+		/// </summary>
+		/// <param name="xPos">The position of the start X coordinate</param>
+		/// <param name="yPos">The position of the start Y coordinate</param>
+		/// <param name="xPos1">The position of the destination X coordinate</param>
+		/// <param name="yPos1">The position of the destination Y coordinate</param>
+		/// <returns>The shortest distance (number of moves in a two dimensional space)</returns>
+		public int GetDistance(int xPos, int yPos, int xPos1, int yPos1)
+		{
+			return GetDistance(new GPoint(xPos, yPos), new GPoint(xPos1, yPos1));
+		}
+
+		/// <summary>
+		/// Calculate the shortest map distance (number of moves) between two points in a two dimensional space (Chebyshev distance)
+		/// </summary>
+		/// <param name="pt1">The position of the start point</param>
+		/// <param name="pt2">The position of the destination point</param>
+		/// <returns>The shortest distance (number of moves in a two dimensional space)</returns>
+		public int GetDistance(GPoint pt1, GPoint pt2)
+		{
+			return GetDistance(new GSize(pt2 - pt1));
+		}
+
+		/// <summary>
+		/// Calculate the shortest map distance (number of moves) between two points in a two dimensional space (Chebyshev distance)
+		/// </summary>
+		/// <param name="width">The width (number of cells between two points in X coordinate)</param>
+		/// <param name="height">The width (number of cells between two points in Y coordinate)</param>
+		/// <returns>The shortest distance (number of moves in a two dimensional space)</returns>
+		public int GetDistance(int width, int height)
+		{
+			return GetDistance(new GSize(width, height));
+		}
+
+		/// <summary>
+		/// Calculate the shortest map distance (number of moves) between two points in a two dimensional space (Chebyshev distance)
+		/// </summary>
+		/// <param name="size">The size (number of cells between two points 2d space)</param>
+		/// <returns>The shortest distance (number of moves in a two dimensional space)</returns>
+		public int GetDistance(GSize size)
+		{
+			size = GSize.Abs(size);
+
+			if (size.Width >= this.iXMedian)
+			{
+				size.Width = this.oSize.Width - size.Width;
+			}
+
+			return Math.Max(size.Width, size.Height);
 		}
 
 		public static Map FromPIC(string path)
