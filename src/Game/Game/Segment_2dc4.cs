@@ -1,6 +1,7 @@
 using System;
 using IRB.VirtualCPU;
 using OpenCiv1.Graphics;
+using Tmds.DBus.Protocol;
 
 namespace OpenCiv1
 {
@@ -388,38 +389,30 @@ namespace OpenCiv1
 		public void F0_2dc4_03ce_FillRectangleWithPattern(int xPos, int yPos, int width, int height)
 		{
 			// function body
-			if (this.oParent.Var_d762 != 0)
-			{
-				int iYPosTemp = yPos;
-				int iHeightTemp = height;
+			int iYPosTemp = yPos;
+			int iHeightTemp = height;
 
-				while (iHeightTemp > 0)
+			while (iHeightTemp > 0)
+			{
+				int iCellHeight = Math.Min(iHeightTemp, 16);
+				int iXPosTemp = xPos;
+				int iWidthTemp = width;
+
+				while (iWidthTemp > 0)
 				{
-					int iCellHeight = Math.Min(iHeightTemp, 16);
-					int iXPosTemp = xPos;
-					int iWidthTemp = width;
+					int iCellWidth = Math.Min(iWidthTemp, 32);
 
-					while (iWidthTemp > 0)
-					{
-						int iCellWidth = Math.Min(iWidthTemp, 32);
+					// Instruction address 0x2dc4:0x0435, size: 5
+					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+						288, 120, iCellWidth, iCellHeight, this.oParent.Var_aa_Rectangle, iXPosTemp, iYPosTemp);
 
-						// Instruction address 0x2dc4:0x0435, size: 5
-						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 
-							288, 120, iCellWidth, iCellHeight, this.oParent.Var_aa_Rectangle, iXPosTemp, iYPosTemp);
-
-						iXPosTemp += iCellWidth;
-						iWidthTemp -= iCellWidth;
-					}
-
-					iYPosTemp += iCellHeight;
-					iHeightTemp -= iCellHeight;
+					iXPosTemp += iCellWidth;
+					iWidthTemp -= iCellWidth;
 				}
+
+				iYPosTemp += iCellHeight;
+				iHeightTemp -= iCellHeight;
 			}
-			else
-			{
-				// Instruction address 0x2dc4:0x0471, size: 5
-				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos, yPos, width, height, 7);
-			}		
 		}
 
 		/// <summary>
@@ -435,8 +428,6 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x2);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
-			if (this.oCPU.Flags.E) goto L04d8;
 
 			// Instruction address 0x2dc4:0x0492, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, filenamePtr, 0xbdee);
@@ -459,7 +450,6 @@ namespace OpenCiv1
 			// Instruction address 0x2dc4:0x04d2, size: 3
 			this.oParent.Graphics.SetPaletteColor(0x2d, GBitmap.Color18ToColor(0x33, 0x27, 0x19));
 
-		L04d8:
 			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
@@ -470,20 +460,19 @@ namespace OpenCiv1
 		/// <summary>
 		/// Free resource, show Memory error dialog if error happens
 		/// </summary>
-		/// <param name="param1"></param>
+		/// <param name="bitmapID"></param>
 		/// <param name="stringPtr"></param>
-		public void F0_2dc4_0523_FreeResource(ushort param1, ushort stringPtr)
+		public void F0_2dc4_0523_FreeResource(int bitmapID, ushort stringPtr)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2dc4_0523_FreeResource({param1}, 0x{stringPtr:x4})");
+			this.oCPU.Log.EnterBlock($"F0_2dc4_0523_FreeResource({bitmapID}, 0x{stringPtr:x4})");
 
-			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			
+			// function body			
 			// Instruction address 0x2dc4:0x0529, size: 5
-			this.oParent.MSCAPI._dos_freemem(param1);
-
-			if (this.oCPU.AX.Word != 0)
+			if (this.oParent.Graphics.Bitmaps.ContainsKey(bitmapID))
+			{
+				this.oParent.Graphics.Bitmaps.RemoveByKey(bitmapID);
+			}
+			else
 			{
 				// Instruction address 0x2dc4:0x053d, size: 5
 				this.oParent.MSCAPI.strcpy(0xba06, "MEM.ERR:");
@@ -501,7 +490,6 @@ namespace OpenCiv1
 				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 			}
 		
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2dc4_0523_FreeResource");
 		}
@@ -533,7 +521,7 @@ namespace OpenCiv1
 		public void F0_2dc4_0626()
 		{
 			// function body
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2fec) == 0 && this.oParent.Var_d762 != 0)
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2fec) == 0)
 			{
 				// Instruction address 0x2dc4:0x0638, size: 5
 				this.oParent.Segment_1000.F0_1000_03fa_StartPaletteCycleSlot(1);
@@ -556,7 +544,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_2dc4_065f()");
 
 			// function body
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2fec) != 0 && this.oParent.Var_d762 != 0)
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2fec) != 0)
 			{
 				// Instruction address 0x2dc4:0x0671, size: 5
 				this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(1);

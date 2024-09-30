@@ -22,11 +22,11 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="frontColor"></param>
-		public void F0_1182_002a_DrawString(ushort stringPtr, int xPos, int yPos, byte frontColor)
+		public void F0_1182_002a_DrawStringToRectAA(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
 			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
-			F0_1182_002a_DrawString(text, xPos, yPos, frontColor);
+			F0_1182_002a_DrawStringToRectAA(text, xPos, yPos, frontColor);
 		}
 
 		/// <summary>
@@ -36,7 +36,7 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="frontColor"></param>
-		public void F0_1182_002a_DrawString(string text, int xPos, int yPos, byte frontColor)
+		public void F0_1182_002a_DrawStringToRectAA(string text, int xPos, int yPos, byte frontColor)
 		{
 			this.oParent.Var_aa_Rectangle.FrontColor = frontColor;
 
@@ -56,11 +56,11 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="frontColor"></param>
-		public void F0_1182_005c_DrawStringToScreen0(ushort stringPtr, int xPos, int yPos, byte frontColor)
+		public void F0_1182_005c_DrawStringToRectAA(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
 			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
-			F0_1182_005c_DrawStringToScreen0(text, xPos, yPos, frontColor);
+			F0_1182_005c_DrawStringToRectAA(text, xPos, yPos, frontColor);
 		}
 
 		/// <summary>
@@ -70,11 +70,11 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="frontColor"></param>
-		public void F0_1182_005c_DrawStringToScreen0(string text, int xPos, int yPos, byte frontColor)
+		public void F0_1182_005c_DrawStringToRectAA(string text, int xPos, int yPos, byte frontColor)
 		{
 			this.oParent.Var_aa_Rectangle.Flags = 0;
 
-			F0_1182_002a_DrawString(text, xPos, yPos, frontColor);
+			F0_1182_002a_DrawStringToRectAA(text, xPos, yPos, frontColor);
 
 			this.oParent.Var_aa_Rectangle.Flags = 1;
 		}
@@ -86,10 +86,10 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="frontColor"></param>
-		public void F0_1182_0086_DrawStringWithShadow(ushort stringPtr, int xPos, int yPos, byte frontColor)
+		public void F0_1182_0086_DrawStringWithShadowToRectAA(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
-			F0_1182_005c_DrawStringToScreen0(stringPtr, xPos, yPos + 1, 0);
-			F0_1182_005c_DrawStringToScreen0(stringPtr, xPos, yPos, frontColor);
+			F0_1182_005c_DrawStringToRectAA(stringPtr, xPos, yPos + 1, 0);
+			F0_1182_005c_DrawStringToRectAA(stringPtr, xPos, yPos, frontColor);
 		}
 
 		/// <summary>
@@ -99,10 +99,10 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="frontColor"></param>
-		public void F0_1182_0086_DrawStringWithShadow(string text, int xPos, int yPos, byte frontColor)
+		public void F0_1182_0086_DrawStringWithShadowToRectAA(string text, int xPos, int yPos, byte frontColor)
 		{
-			F0_1182_005c_DrawStringToScreen0(text, xPos, yPos + 1, 0);
-			F0_1182_005c_DrawStringToScreen0(text, xPos, yPos, frontColor);
+			F0_1182_005c_DrawStringToRectAA(text, xPos, yPos + 1, 0);
+			F0_1182_005c_DrawStringToRectAA(text, xPos, yPos, frontColor);
 		}
 
 		/// <summary>
@@ -112,11 +112,11 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="frontColor"></param>
-		public void F0_1182_00b3_DrawCenteredStringToScreen0(ushort stringPtr, int xPos, int yPos, byte frontColor)
+		public void F0_1182_00b3_DrawCenteredStringToRectAA(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
 			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
-			F0_1182_00b3_DrawCenteredStringToScreen0(text, xPos, yPos, frontColor);
+			F0_1182_00b3_DrawCenteredStringToRectAA(text, xPos, yPos, frontColor);
 		}
 
 		/// <summary>
@@ -126,13 +126,13 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="frontColor"></param>
-		public void F0_1182_00b3_DrawCenteredStringToScreen0(string text, int xPos, int yPos, byte frontColor)
+		public void F0_1182_00b3_DrawCenteredStringToRectAA(string text, int xPos, int yPos, byte frontColor)
 		{
 			xPos -= F0_1182_00ef_GetStringWidth(text) / 2;
 
 			this.oParent.Var_aa_Rectangle.Flags = 0;
 
-			F0_1182_002a_DrawString(text, xPos, yPos, frontColor);
+			F0_1182_002a_DrawStringToRectAA(text, xPos, yPos, frontColor);
 
 			this.oParent.Var_aa_Rectangle.Flags = 1;
 		}
@@ -144,11 +144,11 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="frontColor"></param>
-		public void F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(ushort stringPtr, int xPos, int yPos, byte frontColor)
+		public void F0_1182_00b3_DrawCenteredStringWithShadowToRectAA(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
 			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
-			F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(text, xPos, yPos, frontColor);
+			F0_1182_00b3_DrawCenteredStringWithShadowToRectAA(text, xPos, yPos, frontColor);
 		}
 
 		/// <summary>
@@ -158,14 +158,14 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="frontColor"></param>
-		public void F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(string text, int xPos, int yPos, byte frontColor)
+		public void F0_1182_00b3_DrawCenteredStringWithShadowToRectAA(string text, int xPos, int yPos, byte frontColor)
 		{
 			xPos -= F0_1182_00ef_GetStringWidth(text) / 2;
 
 			this.oParent.Var_aa_Rectangle.Flags = 0;
 
-			F0_1182_002a_DrawString(text, xPos + 1, yPos + 1, 0);
-			F0_1182_002a_DrawString(text, xPos, yPos, frontColor);
+			F0_1182_002a_DrawStringToRectAA(text, xPos + 1, yPos + 1, 0);
+			F0_1182_002a_DrawStringToRectAA(text, xPos, yPos, frontColor);
 
 			this.oParent.Var_aa_Rectangle.Flags = 1;
 		}

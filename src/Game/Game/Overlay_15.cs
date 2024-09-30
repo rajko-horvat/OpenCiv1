@@ -232,16 +232,15 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = (ushort)playerID;
 			this.oCPU.DI.Word = this.oCPU.SHL_UInt16(this.oCPU.DI.Word, 0x1);
 			// Instruction address 0x0000:0x0241, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30b8), this.oGameData.Players[playerID].Nationality);
+			this.oParent.Array_30b8[0] = this.oGameData.Players[playerID].Nationality;
 
 			// Instruction address 0x0000:0x0251, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30ba), 
-				this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16))].Nationality);
+			this.oParent.Array_30b8[1] = this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16))].Nationality;
 		
 			// Instruction address 0x0000:0x026a, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f((ushort)((playerID == this.oGameData.HumanPlayerID) ? 0x4a18 : 0x4a20));
 
-			this.oParent.Var_2f9e_Unknown = 0x5;
+			this.oParent.Var_2f9e = 5;
 
 			// Instruction address 0x0000:0x0281, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);

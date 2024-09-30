@@ -89,7 +89,7 @@ namespace OpenCiv1
 					}
 				}
 
-				GPoint direction = this.oGameData.Static.MoveOffsets[oRNG.Next(8) + 1];
+				GPoint direction = TerrainMap.MoveOffsets[oRNG.Next(8) + 1];
 
 				iXPos1 = Math.Min(Math.Max(iXPos1 + direction.X, 0), 18);
 				iYPos1 = Math.Min(Math.Max(iYPos1 + direction.Y, 0), 11);
@@ -338,7 +338,7 @@ namespace OpenCiv1
 							for (int i = 1; i < 9; i++)
 							{
 								int iPrefixTemp;
-								GPoint direction = this.oGameData.Static.MoveOffsets[i];
+								GPoint direction = TerrainMap.MoveOffsets[i];
 
 								if ((iYPos1 & 0x1) == 0)
 								{
@@ -404,7 +404,7 @@ namespace OpenCiv1
 								for (int i = 1; i < 9; i++)
 								{
 									int iPrefixTemp;
-									GPoint direction = this.oGameData.Static.MoveOffsets[i];
+									GPoint direction = TerrainMap.MoveOffsets[i];
 
 									if ((iYPos1 & 1) == 0)
 									{
@@ -479,7 +479,7 @@ namespace OpenCiv1
 					this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 
 					// Instruction address 0x0000:0x0db1, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(0xba06, 160, 2, 15);
+					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringWithShadowToRectAA(0xba06, 160, 2, 15);
 
 					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -487,14 +487,14 @@ namespace OpenCiv1
 					this.oParent.Segment_1238.F0_1238_1720_GetCurrentYearAsString();
 
 					// Instruction address 0x0000:0x0de7, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(0xba06, 160, 15, 15);
+					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringWithShadowToRectAA(0xba06, 160, 15, 15);
 				}
 				else
 				{
-					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdb38, 0x1);
+					this.oParent.Var_db38 = 1;
 
 					// Instruction address 0x0000:0x0e03, size: 5
-					this.oParent.Segment_2d05.F0_2d05_0031((ushort)(this.oCPU.BP.Word - 0x80), 80, 8, 1);
+					this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox((ushort)(this.oCPU.BP.Word - 0x80), 80, 8, 1);
 				}
 
 				this.oParent.Var_aa_Rectangle.ScreenID = 0;
@@ -522,7 +522,7 @@ namespace OpenCiv1
 					// Instruction address 0x0000:0x0e8c, size: 5
 					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
-					if (param2 == -3 && this.oParent.Var_d762 != 0)
+					if (param2 == -3)
 					{
 						// Instruction address 0x0000:0x0ea9, size: 5
 						this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4eaa, 0xbdee);
@@ -531,14 +531,11 @@ namespace OpenCiv1
 						this.oParent.Segment_1000.F0_1000_04aa_TransformPalette(15, 0xbdee);
 					}
 
-					if (this.oParent.Var_d762 != 0)
-					{
-						// Instruction address 0x0000:0x0ed8, size: 5
-						this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(4, 15, 64, 79);
+					// Instruction address 0x0000:0x0ed8, size: 5
+					this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(4, 15, 64, 79);
 
-						// Instruction address 0x0000:0x0ee4, size: 5
-						this.oParent.Segment_1000.F0_1000_03fa_StartPaletteCycleSlot(4);
-					}
+					// Instruction address 0x0000:0x0ee4, size: 5
+					this.oParent.Segment_1000.F0_1000_03fa_StartPaletteCycleSlot(4);
 				}
 
 				if (param2 == -1 && i3 == 0)
@@ -568,11 +565,8 @@ namespace OpenCiv1
 
 			if (param2 == -2)
 			{
-				if (this.oParent.Var_d762 != 0)
-				{
-					// Instruction address 0x0000:0x0fe6, size: 5
-					this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(4);
-				}
+				// Instruction address 0x0000:0x0fe6, size: 5
+				this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(4);
 			}
 			else
 			{
@@ -587,23 +581,17 @@ namespace OpenCiv1
 					this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 				}
 
-				if (this.oParent.Var_d762 != 0)
-				{
-					// Instruction address 0x0000:0x0f94, size: 5
-					this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(4);
-				}
+				// Instruction address 0x0000:0x0f94, size: 5
+				this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(4);
 
 				// Instruction address 0x0000:0x0fa5, size: 5
 				this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
-				if (this.oParent.Var_d762 != 0)
-				{
-					// Instruction address 0x0000:0x0fc7, size: 5
-					this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
+				// Instruction address 0x0000:0x0fc7, size: 5
+				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
-					// Instruction address 0x0000:0x0fcf, size: 5
-					this.oParent.Segment_1238.F0_1238_1beb();
-				}
+				// Instruction address 0x0000:0x0fcf, size: 5
+				this.oParent.Segment_1238.F0_1238_1beb();
 
 				// Instruction address 0x0000:0x0fd4, size: 5
 				this.oParent.Segment_2dc4.F0_2dc4_0626();
@@ -1240,13 +1228,9 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1682, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
-			if (this.oCPU.Flags.E) goto L16a0;
-
 			// Instruction address 0x0000:0x1698, size: 5
 			this.oParent.Graphics.SetPaletteColor(0xfd, GBitmap.Color18ToColor(3, 3, 3));
 
-		L16a0:
 			// Instruction address 0x0000:0x16a5, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
@@ -1393,8 +1377,9 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L18a2;
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
-			if (this.oCPU.Flags.NE) goto L18a2;
+			
+			if (this.oParent.Var_db3a != 0) goto L18a2;
+
 			goto L17db;
 
 		L18a2:
@@ -1425,7 +1410,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F19_0000_18c1_CivilDisorderAnimation()");
 
 			// function body
-			ushort[] aBitmaps = new ushort[10];
+			int[] aBitmaps = new int[10];
 
 			// Instruction address 0x0000:0x18c8, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
@@ -1442,7 +1427,7 @@ namespace OpenCiv1
 				for (int i = 0; i < 10; i++)
 				{
 					// Instruction address 0x0000:0x1943, size: 5
-					aBitmaps[i] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, (ushort)(((i % 4) * 79) + 1), (ushort)(((i >> 2) * 64) + 1), 78, 63);
+					aBitmaps[i] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, ((i % 4) * 79) + 1, ((i >> 2) * 64) + 1, 78, 63);
 				}
 			}
 			else
@@ -1650,8 +1635,9 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L1c89;
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
-			if (this.oCPU.Flags.NE) goto L1c89;
+			
+			if (this.oParent.Var_db3a != 0) goto L1c89;
+
 			goto L1ba8;
 
 		L1c89:

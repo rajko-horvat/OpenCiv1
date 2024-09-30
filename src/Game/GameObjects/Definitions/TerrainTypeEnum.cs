@@ -8,7 +8,6 @@ namespace OpenCiv1
 {
 	public enum TerrainTypeEnum
 	{
-		Undefined = -1,
 		Desert = 0,
 		Plains = 1,
 		Grassland = 2,

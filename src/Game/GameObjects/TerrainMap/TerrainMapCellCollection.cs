@@ -9,30 +9,49 @@ using System.Xml.Serialization;
 
 namespace OpenCiv1
 {
-	public class MapCellCollection : ICollection<MapCell>
+	public class TerrainMapCellCollection : ICollection<TerrainMapCell>
 	{
-		private Map oParent;
+		private TerrainMap oParent;
 		private int width;
 		private int height;
-		private MapCell[] aCells;
+		private TerrainMapCell[] aCells;
 
-		internal MapCellCollection(Map parent)
+		internal TerrainMapCellCollection(TerrainMap parent)
 		{
 			this.oParent = parent;
 			this.width = parent.Size.Width;
 			this.height = parent.Size.Height;
-			this.aCells = new MapCell[width * height];
+			this.aCells = new TerrainMapCell[width * height];
 
 			for (int i = 0; i < this.height; i++)
 			{
 				for (int j = 0; j < this.width; j++)
 				{
-					MapCell cell = new MapCell(j, i);
+					TerrainMapCell cell = new TerrainMapCell(j, i);
 					this.aCells[(i * this.width) + j] = cell;
 					cell.ParentInternal = parent;
 				}
 			}
 		}
+
+		#region AStar (A*) Path finding algorithm
+		/// <summary>
+		/// Clears the AStar Algorithm related data
+		/// </summary>
+		internal void ClearAStarData()
+		{
+			for (int i = 0; i < this.aCells.Length; i++)
+			{
+				TerrainMapCell cell = this.aCells[i];
+
+				cell.ParentPos = OpenCiv1Game.InvalidPosition;
+				cell.GCost = double.MaxValue;
+				cell.HCost = double.MaxValue;
+				cell.FCost = double.MaxValue;
+				cell.IsCellClosed = false;
+			}
+		}
+		#endregion
 
 		#region ICollection<MapCell> Members
 
@@ -48,20 +67,20 @@ namespace OpenCiv1
 
 		public void Clear()
 		{
-			this.aCells = new MapCell[this.width * this.height];
+			this.aCells = new TerrainMapCell[this.width * this.height];
 
 			for (int i = 0; i < this.height; i++)
 			{
 				for (int j = 0; j < this.width; j++)
 				{
-					MapCell cell = new MapCell(j, i);
+					TerrainMapCell cell = new TerrainMapCell(j, i);
 					this.aCells[(i * this.width) + j] = cell;
 					cell.ParentInternal = this.oParent;
 				}
 			}
 		}
 
-		public void Add(MapCell cell)
+		public void Add(TerrainMapCell cell)
 		{
 			if (cell.ParentInternal != null)
 			{
@@ -74,19 +93,19 @@ namespace OpenCiv1
 
 			int index = (cell.Y * this.width) + cell.X;
 
-			MapCell oldCell = this.aCells[index];
+			TerrainMapCell oldCell = this.aCells[index];
 			oldCell.ParentInternal = null;
 
 			this.aCells[index] = cell;
 			cell.ParentInternal = this.oParent;
 		}
 
-		public bool Remove(MapCell cell)
+		public bool Remove(TerrainMapCell cell)
 		{
 			return false;
 		}
 
-		public bool Contains(MapCell cell)
+		public bool Contains(TerrainMapCell cell)
 		{
 			if (cell.ParentInternal == this.oParent)
 			{
@@ -96,7 +115,7 @@ namespace OpenCiv1
 			return false;
 		}
 
-		public void CopyTo(MapCell[] array, int arrayIndex)
+		public void CopyTo(TerrainMapCell[] array, int arrayIndex)
 		{
 			this.aCells.CopyTo(array, arrayIndex);
 		}
@@ -104,7 +123,7 @@ namespace OpenCiv1
 
 		#region IEnumerable<MapCell> Members
 
-		public IEnumerator<MapCell> GetEnumerator()
+		public IEnumerator<TerrainMapCell> GetEnumerator()
 		{
 			return new Enumerator(this);
 		}
@@ -120,7 +139,7 @@ namespace OpenCiv1
 
 		#endregion
 
-		public MapCell this[int index]
+		public TerrainMapCell this[int index]
 		{
 			get
 			{
@@ -152,7 +171,7 @@ namespace OpenCiv1
 					throw new ArgumentOutOfRangeException("The Cell position and it's index value don't match");
 				}
 
-				MapCell oldCell = this.aCells[index];
+				TerrainMapCell oldCell = this.aCells[index];
 				oldCell.ParentInternal = null;
 
 				this.aCells[index] = value;
@@ -161,7 +180,14 @@ namespace OpenCiv1
 		}
 
 		[XmlIgnore]
-		public MapCell this[int x, int y]
+		public TerrainMapCell this[GPoint pt]
+		{
+			get => this[pt.X, pt.Y];
+			set => this[pt.X, pt.Y] = value;
+		}
+
+		[XmlIgnore]
+		public TerrainMapCell this[int x, int y]
 		{
 			get
 			{
@@ -196,7 +222,7 @@ namespace OpenCiv1
 
 				int index = (value.Y * this.width) + value.X;
 
-				MapCell oldCell = this.aCells[index];
+				TerrainMapCell oldCell = this.aCells[index];
 				oldCell.ParentInternal = null;
 
 				this.aCells[index] = value;
@@ -204,21 +230,21 @@ namespace OpenCiv1
 			}
 		}
 
-		public struct Enumerator : IEnumerator<MapCell>
+		public struct Enumerator : IEnumerator<TerrainMapCell>
 		{
-			private MapCellCollection oParent;
+			private TerrainMapCellCollection oParent;
 			private int iCurrentIndex;
-			private MapCell oCurrentItem;
+			private TerrainMapCell oCurrentItem;
 
-			internal Enumerator(MapCellCollection parent)
+			internal Enumerator(TerrainMapCellCollection parent)
 			{
 				this.oParent = parent;
 				this.iCurrentIndex = -1;
-				this.oCurrentItem = MapCell.Empty;
+				this.oCurrentItem = TerrainMapCell.Empty;
 			}
 
 			#region IEnumerator<MapCell> Members
-			public MapCell Current
+			public TerrainMapCell Current
 			{
 				get
 				{
@@ -245,7 +271,7 @@ namespace OpenCiv1
 				//Avoids going beyond the end of the collection. 
 				if (++this.iCurrentIndex >= this.oParent.Count)
 				{
-					this.oCurrentItem = MapCell.Empty;
+					this.oCurrentItem = TerrainMapCell.Empty;
 					return false;
 				}
 				else
@@ -259,7 +285,7 @@ namespace OpenCiv1
 			public void Reset()
 			{
 				this.iCurrentIndex = -1;
-				this.oCurrentItem = MapCell.Empty;
+				this.oCurrentItem = TerrainMapCell.Empty;
 			}
 			#endregion
 		}

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OpenCiv1
 {
-	public enum MapGroupTypeEnum
+	public enum TerrainMapGroupTypeEnum
 	{
 		Water,
 		Land,

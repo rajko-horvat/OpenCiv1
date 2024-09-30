@@ -128,29 +128,29 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("movedata");
 		}
 
-		public void _dos_freemem(ushort segment)
+		public void _dos_freemem(ushort objectPtr)
 		{
-			this.oCPU.Log.EnterBlock($"_dos_freemem(0x{segment:x4})");
+			this.oCPU.Log.EnterBlock($"_dos_freemem(0x{objectPtr:x4})");
 
 			// function body
-			if (segment >= 0xb000)
+			if (objectPtr >= 0xb000)
 			{
 				// this is a graphics bitmap
-				if (this.oParent.Graphics.Bitmaps.ContainsKey(segment))
+				if (this.oParent.Graphics.Bitmaps.ContainsKey(objectPtr))
 				{
-					this.oParent.Graphics.Bitmaps.RemoveByKey(segment);
+					this.oParent.Graphics.Bitmaps.RemoveByKey(objectPtr);
 
 					this.oCPU.Flags.C = false;
 					this.oCPU.AX.Word = 0;
 				}
 				else
 				{
-					throw new Exception($"The bitmap 0x{segment:x4} is not allocated");
+					throw new Exception($"The bitmap 0x{objectPtr:x4} is not allocated");
 				}
 			}
 			else
 			{
-				if (this.oCPU.Memory.FreeMemoryBlock(segment))
+				if (this.oCPU.Memory.FreeMemoryBlock(objectPtr))
 				{
 					this.oCPU.Flags.C = false;
 					this.oCPU.AX.Word = 0x0;
@@ -922,6 +922,12 @@ namespace OpenCiv1
 			return destinationPtr;
 		}
 
+		public ushort strlen(string str)
+		{
+			this.oCPU.AX.Word = (ushort)str.Length; // preserve compatibility
+			return (ushort)str.Length;
+		}
+
 		public ushort strlen(ushort stringPtr)
 		{
 			string sSource = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
@@ -976,6 +982,24 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = stringPtr; // preserve compatibility
 			return stringPtr;
+		}
+
+		public int strstr(ushort string1Ptr, string string2)
+		{
+			string sS1 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
+
+			short sRetVal = (short)sS1.IndexOf(string2);
+
+			if (sRetVal >= 0) // preserve compatibility
+			{
+				this.oCPU.AX.Word = (ushort)(string1Ptr + sRetVal);
+			}
+			else
+			{
+				this.oCPU.AX.Word = 0;
+			}
+
+			return sRetVal;
 		}
 
 		public int strstr(ushort string1Ptr, ushort string2Ptr)

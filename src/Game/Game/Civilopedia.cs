@@ -102,19 +102,19 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 60, 2, 200, 9, 15);
 
 			// Instruction address 0x0000:0x00c9, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("ENCYCLOPAEDIA of CIVILIZATION", 161, 4, 0);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA("ENCYCLOPAEDIA of CIVILIZATION", 161, 4, 0);
 
 			// Instruction address 0x0000:0x00e1, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("ENCYCLOPAEDIA of CIVILIZATION", 160, 3, 10);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA("ENCYCLOPAEDIA of CIVILIZATION", 160, 3, 10);
 
 			// Instruction address 0x0000:0x00f9, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("EXIT", 286, 4, 12);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("EXIT", 286, 4, 12);
 			
 			this.oCPU.CMP_UInt16(param2, 0xffff);
 			if (this.oCPU.Flags.NE) goto L011f;
 
 			// Instruction address 0x0000:0x0117, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("MORE", 8, 4, 12);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("MORE", 8, 4, 12);
 
 		L011f:
 			// Instruction address 0x0000:0x0137, size: 5
@@ -260,14 +260,14 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x0000:0x02bb, size: 5
-			this.oParent.MSCAPI.stricmp(this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x52))].Name, 
+			this.oParent.MSCAPI.stricmp(this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x52)))).Name, 
 				(ushort)(this.oCPU.BP.Word - 0x4c));
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.LE) goto L02f0;
 
 			// Instruction address 0x0000:0x02cc, size: 5
-			this.oParent.MSCAPI.stricmp(this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x52))].Name, 
+			this.oParent.MSCAPI.stricmp(this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x52)))).Name, 
 				(ushort)(this.oCPU.BP.Word - 0x32));
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
@@ -278,7 +278,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x02e8, size: 5
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x32), 
-				this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x52))].Name);
+				this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x52)))).Name);
 
 		L02f0:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x52), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x52))));
@@ -340,7 +340,7 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a)));
 
 			// Instruction address 0x0000:0x0396, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0((ushort)(this.oCPU.BP.Word - 0x18),
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA((ushort)(this.oCPU.BP.Word - 0x18),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4e)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x50)),
 				0);
@@ -394,8 +394,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0411, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0223();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
-			if (this.oCPU.Flags.NE) goto L0426;
+			if (this.oParent.Var_db3a != 0) goto L0426;
 
 			// Instruction address 0x0000:0x041d, size: 5
 			this.oParent.MSCAPI.kbhit();
@@ -404,7 +403,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0411;
 
 		L0426:
-			this.oCPU.AX.Word = this.oParent.Var_db3c;
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_db3c);
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0xa);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a));
@@ -432,8 +431,8 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x045e, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x2);
-			if (this.oCPU.Flags.NE) goto L0474;
+			if (this.oParent.Var_db3a != 2) goto L0474;
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x50), 0xffff);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4e), 0x2);
 
@@ -447,7 +446,7 @@ namespace OpenCiv1
 
 		L0480:
 			// Instruction address 0x0000:0x0480, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey();
+			this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x50), 0xffff);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4e), 0x2);
@@ -480,7 +479,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x5c)), 8, 15, 10);
 
 			// Instruction address 0x0000:0x04d5, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey();
+			this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x54), this.oCPU.AX.Word);
 
@@ -593,8 +592,8 @@ namespace OpenCiv1
 		L05cc:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x50)), 0x0);
 			if (this.oCPU.Flags.L) goto L060b;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xe17c), 0x3);
-			if (this.oCPU.Flags.E) goto L05eb;
+
+			if (this.oParent.Var_e17c == 3) goto L05eb;
 
 			// Instruction address 0x0000:0x05e3, size: 5
 			this.oParent.Segment_11a8.F0_11a8_02a4(3, 1);
@@ -653,6 +652,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x34);
 			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
+
 			this.oCPU.AX.Low = (byte)param2;
 			this.oCPU.AX.Low = this.oCPU.ADD_UInt8(this.oCPU.AX.Low, 0x30);
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x3fa9, this.oCPU.AX.Low);
@@ -664,8 +664,8 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0xffff);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xe17c), 0x3);
-			if (this.oCPU.Flags.E) goto L066d;
+			
+			if (this.oParent.Var_e17c == 3) goto L066d;
 
 			// Instruction address 0x0000:0x0658, size: 5
 			this.oParent.Segment_11a8.F0_11a8_02a4(3, 0);
@@ -677,8 +677,7 @@ namespace OpenCiv1
 
 		L066d:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0xf);
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
-			if (this.oCPU.Flags.E) goto L069e;
+			
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3c62), 0x0);
 			if (this.oCPU.Flags.E) goto L0687;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0xff);
@@ -782,7 +781,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, this.oGameData.Static.Technologies[id].Name);
 
 			// Instruction address 0x0000:0x07da, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("Civilization Advance", this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 36, 7);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA("Civilization Advance", this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 36, 7);
 
 		L07e2:
 			this.oParent.Var_aa_Rectangle.FontID = 6;
@@ -791,7 +790,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strupr(0xba06);
 
 			// Instruction address 0x0000:0x0802, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 20, 0);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 20, 0);
 
 			this.oParent.Var_aa_Rectangle.FontID = 7;
 
@@ -905,12 +904,12 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.G)
 			{
 				// Instruction address 0x0000:0x07da, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("Wonder of the World", this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 36, 7);
+				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA("Wonder of the World", this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 36, 7);
 			}
 			else
 			{
 				// Instruction address 0x0000:0x07da, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("City Improvement", this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 36, 7);
+				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA("City Improvement", this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 36, 7);
 			}
 
 			goto L07e2;
@@ -950,7 +949,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, this.oGameData.Static.Units[id].Name);
 
 			// Instruction address 0x0000:0x0a87, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("Military Unit", this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 36, 7);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA("Military Unit", this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 36, 7);
 
 			// Instruction address 0x0000:0x0aa4, size: 5
 			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
@@ -979,9 +978,6 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0ae8, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0xba06, 0);
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
-			if (this.oCPU.Flags.E) goto L0b25;
-
 			// Instruction address 0x0000:0x0aff, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x3d75, 0xc5be);
 
@@ -991,7 +987,6 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0b1d, size: 5
 			this.oParent.Graphics.SetPaletteColor(0xfd, GBitmap.Color18ToColor(0x3d, 0x3d, 0x3d));
 
-		L0b25:
 			F8_0000_16f7(
 				(ushort)(((this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34)) % 3) * 107) + 1),
 				(ushort)((((this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34)) % 6) / 3) * 87) + 5),
@@ -1001,10 +996,10 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0);
 
 			// Instruction address 0x0000:0x0b76, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oGameData.Static.Terrains[id].Name);
+			this.oParent.MSCAPI.strcat(0xba06, this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(id)).Name);
 
 			// Instruction address 0x0000:0x07da, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("Terrain Type", this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 36, 7);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA("Terrain Type", this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 36, 7);
 
 			goto L07e2;
 
@@ -1015,7 +1010,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x3c64)));
 
 			// Instruction address 0x0000:0x07da, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("Game Concept", this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 36, 7);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA("Game Concept", this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 36, 7);
 
 			goto L07e2;
 
@@ -1046,13 +1041,13 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x0000:0x0c37, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 32, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 1);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 32, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 1);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x10));
 
 			// Instruction address 0x0000:0x0c52, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Allows: ", 32, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 1);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("Allows: ", 32, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 1);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
@@ -1082,7 +1077,7 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x0000:0x0cd9, size: 5
-				this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 40, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
+				this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 40, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
 
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc),
 					this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
@@ -1106,7 +1101,7 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x0000:0x0d55, size: 5
-				this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 40, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
+				this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 40, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
 
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
 			}
@@ -1141,7 +1136,7 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.strcat(0xba06, " unit");
 
 				// Instruction address 0x0000:0x0ddc, size: 5
-				this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 60, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 12);
+				this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 60, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 12);
 
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc),
 					this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0xc));
@@ -1160,7 +1155,7 @@ namespace OpenCiv1
 
 		L0dfb:
 			// Instruction address 0x0000:0x0e17, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 60, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 2);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 60, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 2);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0xc));
@@ -1202,7 +1197,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0e94;
 
 			// Instruction address 0x0000:0x0e8c, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Allows: ", 
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("Allows: ", 
 				32, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)) - 12,
 				(byte)this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
 
@@ -1232,7 +1227,7 @@ namespace OpenCiv1
 
 		L0f11:
 			// Instruction address 0x0000:0x0f20, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 48, 7);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 48, 7);
 
 			goto L1655;
 
@@ -1259,7 +1254,7 @@ namespace OpenCiv1
 				this.oGameData.Static.Technologies[(int)this.oGameData.Static.ImprovementDefinitions(id).RequiresTechnology].Name);
 
 			// Instruction address 0x0000:0x0f75, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 12, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 12, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
@@ -1274,7 +1269,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, " shields.");
 
 			// Instruction address 0x0000:0x0fd5, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 12, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 12, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
@@ -1287,7 +1282,7 @@ namespace OpenCiv1
 
 		L1005:
 			// Instruction address 0x0000:0x101e, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 12, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 12);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 12, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 12);
 
 		L1019:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
@@ -1310,7 +1305,7 @@ namespace OpenCiv1
 
 		L1072:
 			// Instruction address 0x0000:0x1081, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 100, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 100, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
@@ -1330,7 +1325,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, " resources.");
 
 			// Instruction address 0x0000:0x10e9, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 100, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 100, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
@@ -1343,7 +1338,7 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.itoa(this.oGameData.Static.Units[id].AttackStrength, 10));
 
 			// Instruction address 0x0000:0x1135, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 100, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 12);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 100, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 12);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
@@ -1356,7 +1351,7 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.itoa(this.oGameData.Static.Units[id].DefenseStrength, 10));
 
 			// Instruction address 0x0000:0x1181, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 100, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 12);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 100, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 12);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
@@ -1369,7 +1364,7 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.itoa(this.oGameData.Static.Units[id].MoveCount, 10));
 
 			// Instruction address 0x0000:0x101e, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 100, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 100, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0);
 
 			goto L1019;
 
@@ -1387,7 +1382,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, id);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oGameData.Static.Terrains[id].Food == 2)
+			if (this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(id)).Food == 2)
 				goto L154e;
 
 		L11ed:
@@ -1396,15 +1391,15 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x0000:0x1206, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(
-				this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Name, 
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(
+				this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Name, 
 				12, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 1);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
 
-			if (this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Food == 0 &&
-				this.oGameData.Static.TerrainMultipliers[id].Multi1 >= -1)
+			if (this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Food == 0 &&
+				this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(id)).Multi1 >= -1)
 				goto L131e;
 
 			// Instruction address 0x0000:0x1233, size: 5
@@ -1416,9 +1411,9 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x1260, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Food, 10));
+				this.oParent.MSCAPI.itoa(this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Food, 10));
 
-			if (this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Food >= 3)
+			if (this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Food >= 3)
 			{
 				// Instruction address 0x0000:0x1275, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, "*");
@@ -1428,7 +1423,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, id);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			if (this.oGameData.Static.TerrainMultipliers[id].Multi1 < -1)
+			if (this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(id)).Multi1 < -1)
 			{
 				// Instruction address 0x0000:0x1296, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " (");
@@ -1439,10 +1434,10 @@ namespace OpenCiv1
 
 				// Instruction address 0x0000:0x12c6, size: 5
 				this.oParent.MSCAPI.strcat(0xba06,
-					this.oParent.MSCAPI.itoa(this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Food -
-						this.oGameData.Static.TerrainMultipliers[id].Multi1 - 1, 10));
+					this.oParent.MSCAPI.itoa(this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Food -
+						this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(id)).Multi1 - 1, 10));
 
-				if (this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Food >= 2)
+				if (this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Food >= 2)
 				{
 					// Instruction address 0x0000:0x12db, size: 5
 					this.oParent.MSCAPI.strcat(0xba06, "*");
@@ -1456,7 +1451,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, " units.");
 
 			// Instruction address 0x0000:0x1312, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 16, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 16, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
@@ -1466,10 +1461,10 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Production != 0)
+			if (this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Production != 0)
 				goto L133f;
 
-			if (this.oGameData.Static.TerrainMultipliers[id].Multi3 >= -1)
+			if (this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(id)).Multi3 >= -1)
 				goto L1433;
 
 		L133f:
@@ -1492,13 +1487,13 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x1390, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Production, 10));
+				this.oParent.MSCAPI.itoa(this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Production, 10));
 
 			this.oCPU.AX.Word = 0xc;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, id);
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
-			if (this.oGameData.Static.TerrainMultipliers[id].Multi3 >= -1)
+			if (this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(id)).Multi3 >= -1)
 				goto L1408;
 
 			// Instruction address 0x0000:0x13b1, size: 5
@@ -1506,12 +1501,12 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x13d5, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Production -
-						this.oGameData.Static.TerrainMultipliers[id].Multi3 - 1, 10));
+				this.oParent.MSCAPI.itoa(this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Production -
+						this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(id)).Multi3 - 1, 10));
 
-			this.oCPU.AX.Low = (byte)this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Production;
-			this.oCPU.CBW(this.oCPU.AX);
-			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.Static.TerrainMultipliers[id].Multi3);
+			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Production);
+			
+			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(id)).Multi3);
 			this.oCPU.AX.Word = this.oCPU.DEC_UInt16(this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x3);
 			if (this.oCPU.Flags.L) goto L13f8;
@@ -1528,7 +1523,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, " units.");
 
 			// Instruction address 0x0000:0x1427, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 16, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 16, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
@@ -1538,7 +1533,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Trade == 0 && id > 2)
+			if (this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Trade == 0 && id > 2)
 				goto L1529;
 
 			// Instruction address 0x0000:0x1453, size: 5
@@ -1550,9 +1545,9 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x1480, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Trade, 10));
+				this.oParent.MSCAPI.itoa(this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Trade, 10));
 
-			if (this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Trade == 0)
+			if (this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Trade == 0)
 				goto L149d;
 
 			// Instruction address 0x0000:0x1495, size: 5
@@ -1563,7 +1558,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Trade >= 3)
+			if (this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Trade >= 3)
 			{
 				// Instruction address 0x0000:0x14b4, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, "*");
@@ -1577,14 +1572,14 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x14f6, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Trade + 1, 10));
+				this.oParent.MSCAPI.itoa(this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)))).Trade + 1, 10));
 
 			// Instruction address 0x0000:0x1506, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "% with Roads)");
 
 		L150e:
 			// Instruction address 0x0000:0x151d, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 16, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 16, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
@@ -1594,7 +1589,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L154a;
 
 			// Instruction address 0x0000:0x153e, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("nothing", 16, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("nothing", 16, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
@@ -1616,13 +1611,13 @@ namespace OpenCiv1
 
 		L1560:
 			// Instruction address 0x0000:0x156f, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("*  -1 if government is Despotism/Anarchy.", 16, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("*  -1 if government is Despotism/Anarchy.", 16, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
 
 			// Instruction address 0x0000:0x158a, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("%  +1 if government is Republic/Democracy.", 16, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("%  +1 if government is Republic/Democracy.", 16, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 9);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0xc));
@@ -1636,13 +1631,13 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x15c9, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa(this.oGameData.Static.Terrains[id].MovementCost, 10));
+				$"{this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(id)).MovementCost}");
 
 			// Instruction address 0x0000:0x15d9, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " MP");
 
 			// Instruction address 0x0000:0x15ed, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 12, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 12);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 12, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 12);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
@@ -1652,7 +1647,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x1628, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
-				this.oParent.MSCAPI.itoa((short)((50 * this.oGameData.Static.Terrains[id].DefenseBonus) - 100), 10));
+				this.oParent.MSCAPI.itoa((short)((50 * this.oGameData.Static.Terrains.GetValueByKey(TerrainMap.ValueToTerrainTypeEnum(id)).DefenseBonus) - 100), 10));
 
 			// Instruction address 0x0000:0x100a, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "%");

@@ -5,6 +5,8 @@ namespace OpenCiv1
 {
 	public partial class OpenCiv1Game
 	{
+		public static readonly GPoint InvalidPosition = new GPoint(-1);
+
 		private static bool enableLog = false;
 
 		private VCPU oCPU;
@@ -13,7 +15,7 @@ namespace OpenCiv1
 		private Segment_11a8 oSegment_11a8;
 		private Segment_1000 oSegment_1000;
 		private Segment_1238 oSegment_1238;
-		private Segment_2d05 oSegment_2d05;
+		private MenuBoxDialog oMenuBoxDialog;
 		private Segment_1403 oSegment_1403;
 		private Segment_2dc4 oSegment_2dc4;
 		private Segment_1182 oSegment_1182;
@@ -85,7 +87,7 @@ namespace OpenCiv1
 			this.oSegment_11a8 = new Segment_11a8(this);
 			this.oSegment_1000 = new Segment_1000(this);
 			this.oSegment_1238 = new Segment_1238(this);
-			this.oSegment_2d05 = new Segment_2d05(this);
+			this.oMenuBoxDialog = new MenuBoxDialog(this);
 			this.oSegment_1403 = new Segment_1403(this);
 			this.oSegment_2dc4 = new Segment_2dc4(this);
 			this.oSegment_1182 = new Segment_1182(this);
@@ -282,7 +284,6 @@ namespace OpenCiv1
 			// Skip checking of strings as it slows down VCPU too much
 
 			/*this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x0267, 9, VCPUMemoryFlagsEnum.AccessNotAllowed));
-			//this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x1a22, 14, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			//this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x1a30, 12, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x1a93, 20, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new CPUMemoryRegion(0x3b01, 0x1aa7, 39, VCPUMemoryFlagsEnum.AccessNotAllowed));
@@ -1143,7 +1144,7 @@ namespace OpenCiv1
 			{
 				Unit unit = game.GameData.Players[playerID].Units[unitID];
 
-				log.WriteLine($"// Player[{playerID}{((playerID == humanPlayerID) ? " (Human player)" : "")}].Unit[{unitID}] = {{TypeID: {unit.TypeID}, Status: {unit.Status}, Position: {unit.Position}, GoTo: {unit.GoToPosition}}}");
+				log.WriteLine($"// Player[{playerID}{((playerID == humanPlayerID) ? " (Human player)" : "")}].Unit[{unitID}] = {{TypeID: {unit.TypeID}, Status: {unit.Status}, Position: {unit.Position}, GoTo: {unit.GoToDestination}}}");
 			}
 		}
 
@@ -1190,9 +1191,9 @@ namespace OpenCiv1
 			get { return this.oSegment_1238; }
 		}
 
-		public Segment_2d05 Segment_2d05
+		public MenuBoxDialog MenuBoxDialog
 		{
-			get { return this.oSegment_2d05; }
+			get { return this.oMenuBoxDialog; }
 		}
 
 		public Segment_1403 Segment_1403

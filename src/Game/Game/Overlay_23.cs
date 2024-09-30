@@ -39,10 +39,10 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 80, 80, 160, 32, 15);
 
 			// Instruction address 0x0000:0x003e, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(80, 80, 160, 32, 11);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(80, 80, 160, 32, 11);
 
 			// Instruction address 0x0000:0x0055, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("City Name...", 88, 82, 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("City Name...", 88, 82, 0);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 			
@@ -104,10 +104,10 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 158, 88, 160, 32, 15);
 
 			// Instruction address 0x0000:0x010f, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
 
 			// Instruction address 0x0000:0x0126, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Your Name...", 166, 90, 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("Your Name...", 166, 90, 0);
 
 			// Instruction address 0x0000:0x013c, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, this.oGameData.Players[this.oGameData.HumanPlayerID].Name);
@@ -143,10 +143,10 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 158, 88, 160, 32, 15);
 
 			// Instruction address 0x0000:0x01b2, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
 
 			// Instruction address 0x0000:0x01c9, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Name of your Tribe...", 166, 90, 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("Name of your Tribe...", 166, 90, 0);
 
 			// Instruction address 0x0000:0x01df, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, this.oGameData.Players[this.oGameData.HumanPlayerID].Nation);
@@ -204,13 +204,8 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
 			if (this.oCPU.Flags.E) goto L02cd;
 
-			this.oCPU.AX.Word = (ushort)this.oGameData.Map[this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.X,
-				this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.Y].Visibility;			
-			this.oCPU.DX.Word = 0x1;
-			this.oCPU.CX.Low = (byte)(this.oGameData.HumanPlayerID & 0xff);
-			this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-			if (this.oCPU.Flags.E) goto L02cd;
+			if (!this.oGameData.Map[this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.X,
+				this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.Y].IsVisibleTo(this.oGameData.HumanPlayerID)) goto L02cd;
 
 			// Instruction address 0x0000:0x02c3, size: 5
 			this.oParent.MapManagement.F0_2aea_0008(this.oGameData.HumanPlayerID,
@@ -224,7 +219,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 64, 78, 224, 10, 15);
 
 			// Instruction address 0x0000:0x02fc, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Unknown city.", 82, 80, 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("Unknown city.", 82, 80, 0);
 
 			// Instruction address 0x0000:0x0304, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
@@ -262,10 +257,10 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 64, 78, 224, 24, 15);
 
 			// Instruction address 0x0000:0x0353, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(64, 78, 224, 24, 0);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(64, 78, 224, 24, 0);
 
 			// Instruction address 0x0000:0x0369, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(stringPtr, 66, 80, 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(stringPtr, 66, 80, 0);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -353,7 +348,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos, yPos, (7 * width), 11, 15);
 
 			// Instruction address 0x0000:0x0456, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(xPos, yPos - 1, width * 8 + 8, 13, 0);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(xPos, yPos - 1, width * 8 + 8, 13, 0);
 
 			this.oParent.Var_aa_Rectangle.BackColor = 0xf;
 
@@ -384,8 +379,7 @@ namespace OpenCiv1
 			goto L0525;
 
 		L04b2:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
-			if (this.oCPU.Flags.NE) goto L052e;
+			if (this.oParent.Var_db3a != 0) goto L052e;
 
 			// Instruction address 0x0000:0x04d6, size: 5
 			this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, 
@@ -421,8 +415,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L04b2;
 
 		L052e:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
-			if (this.oCPU.Flags.E) goto L053c;
+			if (this.oParent.Var_db3a == 0) goto L053c;
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48), 0xd);
 			goto L0544;
 
@@ -620,7 +614,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba07), 0x0);
 
 			// Instruction address 0x0000:0x0722, size: 5
-			this.oParent.Segment_1182.F0_1182_002a_DrawString((ushort)(0xba06 + this.oCPU.BX.Word), xPos, yPos, 0);
+			this.oParent.Segment_1182.F0_1182_002a_DrawStringToRectAA((ushort)(0xba06 + this.oCPU.BX.Word), xPos, yPos, 0);
 			
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
 			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));

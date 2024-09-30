@@ -61,7 +61,14 @@ namespace OpenCiv1
 			7	// Arctic = 15
 		};
 
-		public ushort Var_2f9e_Unknown = 0xffff;
+		public int Var_2f9a = -1;
+		public int Var_2f9c = 0;
+		public int Var_2f9e = -1;
+		public int Var_2fa2 = 0;
+
+		public string[] Array_30ae = new string[] { "$US", "$THEM", "$BUCKS", "$RPLC1", "$RPLC2" };
+		public string[] Array_30b8 = new string[] { "", "", "", "", "" };
+		public int Var_3936 = -1;
 
 		// 0x652e - after this offset the default values are set to 0
 		public int Var_6b64 = 0;
@@ -69,8 +76,8 @@ namespace OpenCiv1
 		public int Var_6b92 = 0;
 		public int Var_6c98 = 0;
 		public int Var_6c9a = 0;
-		public ushort[] Array_6e00 = new ushort[15];
-		public ushort[] Array_6e1e = new ushort[15];
+		public int[] Array_6e00 = new int[15];
+		public int[] Array_6e1e = new int[15];
 		public ushort[] Array_6e96 = new ushort[9];
 		public int Var_6ed6 = 0;
 		public int[] Var_70da_Arr = new int[4];
@@ -83,36 +90,41 @@ namespace OpenCiv1
 		public int Var_7ef8_MapTemperature = 0;
 		public int Var_7efa_MapClimate = 0;
 		public int Var_7efc_MapAge = 0;
+		public int[] Array_804e = new int[13];
 		public int Var_8078 = 0;
 		public int Var_b1e8 = 0;
+		public int Var_b276 = 0;
 		public int Var_b278 = 0; // some kind of debugging flag
-		public ushort[] Array_b27a = new ushort[8];
-		public ushort[] Array_b29a = new ushort[8];
-		public ushort Var_b880 = 0;
+		public int[] Array_b27a = new int[8];
+		public int[] Array_b29a = new int[8];
+		public int Var_b880 = 0;
 		public int Var_b882 = 0;
 		public ushort[,] Array_b886 = new ushort[10, 16];
 		public ushort Var_b2ba = 0;
+		public int Var_d206 = 0;
 		public int Var_d20a = 0;
 		public ushort[,] Array_d294 = new ushort[8, 4];
-		public ushort[] Array_d2d4 = new ushort[4];
+		public int[] Array_d2d4 = new int[4];
 		public int Var_d2de = 0;
 		public int Var_d2e0 = 0;
 		public int Var_d2f6 = 0;
 		public short Var_d4cc_XPos = 0;
 		public ushort[] Array_d4ce = new ushort[320];
 		public short Var_d75e_YPos = 0;
-		public ushort Var_d762 = 0;
 		public ushort Var_d768 = 0;
 		public bool Var_d76a_IsEarthMap = false;
 		public short Var_d7f0 = 0;
 		public int Var_d806 = 0;
-		public ushort Var_db3a = 0;
-		public ushort Var_db3c = 0;
+		public int Var_db38 = 0;
+		public int Var_db3a = 0;
+		public int Var_db3c = 0;
 		public ushort Var_db3e = 0;
 		public int Var_db42 = 0;
 		public int Var_dcfc = 0;
 		public int Var_deb8 = 0;
+		public int[] Array_df62 = new int[3];
 		public int Var_e17a = 0;
+		public int Var_e17c = 0;
 		public int Var_e3c2 = 0;
 		public int Var_e3c6 = 0;
 		public int Var_e8b8 = 0;

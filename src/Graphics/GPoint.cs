@@ -134,20 +134,19 @@ namespace OpenCiv1.Graphics
 		/// <param name="sz">The GSize to subtract from the GPoint</param>
 		public static GPoint Subtract(GPoint pt, GSize sz) => new GPoint(pt.X - sz.Width, pt.Y - sz.Height);
 
-		/// <summary>Translates this GPoint by the specified amount</summary>
+		/// <summary>Translates this GPoint by the specified amount. The result is returned as the new GPoint</summary>
 		/// <param name="dx">The amount to offset the x-coordinate</param>
 		/// <param name="dy">The amount to offset the y-coordinate</param>
-		public void Offset(int dx, int dy)
+		public GPoint Offset(int dx, int dy)
 		{
-			this.X += dx;
-			this.Y += dy;
+			return new GPoint(this.X + dx, this.Y + dy);
 		}
 
-		/// <summary>Translates this GPoint by the specified GPoint</summary>
+		/// <summary>Translates this GPoint by the specified GPoint. The result is returned as the new GPoint</summary>
 		/// <param name="pt">The GPoint used to offset this GPoint</param>
-		public void Offset(GPoint pt)
+		public GPoint Offset(GPoint pt)
 		{
-			this.Offset(pt.X, pt.Y);
+			return this.Offset(pt.X, pt.Y);
 		}
 
 		/// <summary>Returns new GPoint class containing absolute X and Y coordinates</summary>

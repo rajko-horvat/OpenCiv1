@@ -6,14 +6,15 @@ namespace OpenCiv1
 	{
 		private GameData oParent;
 
+		public int ID = -1;
 		public string Name = "";
 		public short NationalityID = -1;
 		public string Nation = "";
 		public string Nationality = "";
 
-		public short Mood;
-		public short Policy;
-		public short Ideology;
+		public short Mood = 0;
+		public short Policy = 0;
+		public short Ideology = 0;
 
 		public short Coins = 0;
 		public short GovernmentType = 0;
@@ -65,9 +66,10 @@ namespace OpenCiv1
 		public short[] PalaceData1 = new short[15];
 		public short[] PalaceData2 = new short[13];
 
-		public Player(GameData parent)
+		public Player(GameData parent, int id)
 		{
 			this.oParent = parent;
+			this.ID = id;
 
 			for (int i = 0; i < this.Diplomacy.Length; i++)
 			{
@@ -133,6 +135,11 @@ namespace OpenCiv1
 			{
 				this.PalaceData2[i] = 0;
 			}
+		}
+
+		public GameData Parent
+		{
+			get => this.oParent;
 		}
 
 		public void InitSpaceshipData()

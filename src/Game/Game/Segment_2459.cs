@@ -254,7 +254,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			GPoint direction = this.oGameData.Static.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))];
+			GPoint direction = TerrainMap.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))];
 
 			// Instruction address 0x2459:0x0258, size: 5
 			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Map.WrapXPosition(
@@ -404,7 +404,7 @@ namespace OpenCiv1
 				goto L04bc;
 
 		L041a:
-			this.oParent.Var_2f9e_Unknown = 0x0;
+			this.oParent.Var_2f9e = 0;
 
 			// Instruction address 0x2459:0x0428, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Spies report:\n");
@@ -905,8 +905,7 @@ namespace OpenCiv1
 			// Instruction address 0x2459:0x091d, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0223();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
-			if (this.oCPU.Flags.NE) goto L0932;
+			if (this.oParent.Var_db3a != 0) goto L0932;
 
 			// Instruction address 0x2459:0x0929, size: 5
 			this.oParent.MSCAPI.kbhit();
@@ -915,8 +914,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L091d;
 
 		L0932:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
-			if (this.oCPU.Flags.NE) goto L0947;
+			if (this.oParent.Var_db3a != 0) goto L0947;
 
 			// Instruction address 0x2459:0x0939, size: 5
 			this.oParent.MSCAPI.getch();

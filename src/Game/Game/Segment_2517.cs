@@ -178,7 +178,7 @@ namespace OpenCiv1
 			// Instruction address 0x2517:0x01a0, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " has ended.\n");
 
-			this.oParent.Var_2f9e_Unknown = 0x1;
+			this.oParent.Var_2f9e = 1;
 
 			// Instruction address 0x2517:0x01ba, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -255,13 +255,13 @@ namespace OpenCiv1
 
 		L0240:
 			// Instruction address 0x2517:0x0248, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30be), "agree to a");
+			this.oParent.Array_30b8[3] = "agree to a";
 
 		L0243:
 			// Instruction address 0x2517:0x0254, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f(0x29a6);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3936, 0x1);
+			this.oParent.Var_3936 = 1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
 
 			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
@@ -360,8 +360,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 
 			// Instruction address 0x2517:0x036d, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30ba),
-				this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Nation);
+			this.oParent.Array_30b8[1] = this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Nation;
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -370,14 +369,14 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.itoa((short)this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), 10));
 
 			// Instruction address 0x2517:0x03a2, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30bc), 0xba06);
+			this.oParent.Array_30b8[2] = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x2517:0x03b3, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f(0x2988);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3936, 0x1);
+			this.oParent.Var_3936 = 1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
 
 			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
@@ -431,7 +430,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x2517:0x0475, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30ba), this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Nation);
+			this.oParent.Array_30b8[1] = this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Nation;
 
 			this.oCPU.BX.Word = (ushort)playerID;
 			this.oCPU.CX.Low = 0x4;
@@ -444,7 +443,7 @@ namespace OpenCiv1
 				goto L0240;
 
 			// Instruction address 0x2517:0x0248, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30be), "extend our");
+			this.oParent.Array_30b8[3] = "extend our";
 
 			goto L0243;
 
@@ -659,7 +658,7 @@ namespace OpenCiv1
 			this.oGameData.Players[playerID].Diplomacy[0] |= 4;
 
 		L06bc:
-			this.oParent.Var_2f9e_Unknown = 0x1;
+			this.oParent.Var_2f9e = 1;
 
 			// Instruction address 0x2517:0x06ce, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 64);
@@ -917,7 +916,7 @@ namespace OpenCiv1
 			// Instruction address 0x2517:0x0933, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " sign\na peace treaty.\n");
 
-			this.oParent.Var_2f9e_Unknown = 0x1;
+			this.oParent.Var_2f9e = 1;
 
 			// Instruction address 0x2517:0x094d, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -987,7 +986,7 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.strcat(0xba06, " declare\nwar on each other.\n");
 			}
 
-			this.oParent.Var_2f9e_Unknown = 0x1;
+			this.oParent.Var_2f9e = 1;
 
 			// Instruction address 0x2517:0x0a11, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);

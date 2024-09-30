@@ -229,10 +229,10 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 
-			// Instruction address 0x1866:0x01ea, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(xPos, yPos);
+			TerrainTypeEnum local_c;
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Word);
+			// Instruction address 0x1866:0x01ea, size: 5
+			local_c = this.oGameData.Map[xPos, yPos].TerrainType;
 			
 			if (playerID != this.oGameData.HumanPlayerID)
 				goto L02af;
@@ -243,7 +243,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			GPoint direction = this.oGameData.Static.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))];
+			GPoint direction = TerrainMap.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))];
 
 			// Instruction address 0x1866:0x0212, size: 5
 			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Map.WrapXPosition(xPos + direction.X));
@@ -273,24 +273,20 @@ namespace OpenCiv1
 				goto L0266;
 
 			// Instruction address 0x1866:0x0259, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L02a3;
+			if (this.oGameData.Map[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].TerrainType != TerrainTypeEnum.Water) goto L02a3;
 
 		L0266:
 			// Instruction address 0x1866:0x026c, size: 5
-			this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(
+			this.oCPU.AX.Word = (ushort)(this.oGameData.Map.IsValidPosition(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L02a3;
 			
 			this.oGameData.Map[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].Visibility |= 1 << playerID;
+				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].SetVisiblity(playerID, true);
 
 			// Instruction address 0x1866:0x029b, size: 5
 			this.oParent.MapManagement.F0_2aea_1601_UpdateVisiblemprovements(
@@ -320,12 +316,8 @@ namespace OpenCiv1
 
 		L02e2:
 			// Instruction address 0x1866:0x02e8, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L0329;
+			if (this.oGameData.Map[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].TerrainType != TerrainTypeEnum.Water) goto L0329;
 			
 			if (this.oParent.Var_d7f0 == 0) goto L0329;
 
@@ -395,7 +387,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			direction = this.oGameData.Static.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))];
+			direction = TerrainMap.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))];
 
 			// Instruction address 0x1866:0x0397, size: 5
 			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Map.WrapXPosition(xPos + direction.X));
@@ -405,9 +397,9 @@ namespace OpenCiv1
 			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), (short)(yPos + direction.Y));
 
 			// Instruction address 0x1866:0x03b0, size: 5
-			this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(
+			this.oCPU.AX.Word = (ushort)(this.oGameData.Map.IsValidPosition(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L037e;
@@ -415,7 +407,7 @@ namespace OpenCiv1
 			if (playerID != 0)
 			{
 				this.oGameData.Map[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-					this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].Visibility |= 1 << playerID;
+					this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].SetVisiblity(playerID, true);
 			}
 
 			// Instruction address 0x1866:0x03e5, size: 5
@@ -476,7 +468,7 @@ namespace OpenCiv1
 			if (this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Land)
 				goto L04bd;
 			
-			this.oGameData.Players[playerID].Units[unitID].VisibleByPlayer |= (ushort)(1 << this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)));
+			this.oGameData.Players[playerID].Units[unitID].SetVisiblity(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)), true);
 
 			this.oCPU.DI.Word = (ushort)playerID;
 			this.oCPU.CX.Low = 0x4;
@@ -526,21 +518,17 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oGameData.Players[playerID].Units[unitID].VisibleByPlayer |= (ushort)(1 << this.oParent.Var_d7f0);
+			this.oGameData.Players[playerID].Units[unitID].SetVisiblity(this.oParent.Var_d7f0, true);
 
 		L0503:
 			// Instruction address 0x1866:0x0513, size: 3
 			F0_1866_144b(this.oParent.Var_d7f0, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x14a2);
 
 			// Instruction address 0x1866:0x051f, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
+			if (this.oGameData.Map[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].TerrainType == TerrainTypeEnum.Water) goto L0532;
 
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.E) goto L0532;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0xa);
-			if (this.oCPU.Flags.E) goto L0548;
+			if (local_c == TerrainTypeEnum.Water) goto L0548;
 
 		L0532:
 			this.oCPU.AX.Word = 0x600;
@@ -551,18 +539,13 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oGameData.Players[this.oParent.Var_d7f0].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].GoToPosition.X = -1;
+			this.oGameData.Players[this.oParent.Var_d7f0].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].GoToDestination.X = -1;
 
 		L0548:
 			// Instruction address 0x1866:0x054e, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L0580;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0xa);
-			if (this.oCPU.Flags.E) goto L0580;
+			if (this.oGameData.Map[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].TerrainType != TerrainTypeEnum.Water ||
+				local_c == TerrainTypeEnum.Water) goto L0580;
 			
 			this.oCPU.AX.Word = 0xc;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
@@ -575,7 +558,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oGameData.Players[playerID].Units[unitID].TypeID));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Sea)
+			if (this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
 				goto L0595;
 
 		L0580:
@@ -587,7 +570,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oGameData.Players[playerID].Units[unitID].GoToPosition.X = -1;
+			this.oGameData.Players[playerID].Units[unitID].GoToDestination.X = -1;
 
 		L0595:
 			this.oCPU.TEST_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)), 0x1);
@@ -601,8 +584,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 			
-			this.oGameData.Players[this.oParent.Var_d7f0].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].VisibleByPlayer |= 
-				(ushort)(1 << playerID);
+			this.oGameData.Players[this.oParent.Var_d7f0].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].SetVisiblity(playerID, true);
 
 		L05b7:
 			this.oCPU.AX.Word = 0x600;
@@ -619,20 +601,14 @@ namespace OpenCiv1
 				goto L02e2;
 
 			// Instruction address 0x1866:0x05df, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(xPos, yPos);
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L05ef;
+			if (this.oGameData.Map[xPos, yPos].TerrainType != TerrainTypeEnum.Water) goto L05ef;
 			goto L02e2;
 
 		L05ef:
 			// Instruction address 0x1866:0x05f5, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
+			if (this.oGameData.Map[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].TerrainType != TerrainTypeEnum.Water) goto L0605;
 
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L0605;
 			goto L02e2;
 
 		L0605:
@@ -647,7 +623,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oGameData.Players[this.oParent.Var_d7f0].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oGameData.Static.Units[this.oGameData.Players[this.oParent.Var_d7f0].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID].MovementType == UnitMovementTypeEnum.Sea)
+			if (this.oGameData.Static.Units[this.oGameData.Players[this.oParent.Var_d7f0].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID].MovementType == UnitMovementTypeEnum.Water)
 				goto L02e2;
 
 			// Instruction address 0x1866:0x0635, size: 5
@@ -762,10 +738,8 @@ namespace OpenCiv1
 				goto L0760;
 
 			// Instruction address 0x1866:0x0750, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(xPos, yPos);
+			if (this.oGameData.Map[xPos, yPos].TerrainType == TerrainTypeEnum.Water) goto L0760;
 
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.E) goto L0760;
 			goto L07f0;
 
 		L0760:
@@ -778,7 +752,7 @@ namespace OpenCiv1
 
 			this.oGameData.Players[this.oParent.Var_d7f0].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Status &= 0xfe;
 
-			this.oGameData.Players[this.oParent.Var_d7f0].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].GoToPosition.X = -1;
+			this.oGameData.Players[this.oParent.Var_d7f0].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].GoToDestination.X = -1;
 
 			this.oCPU.TEST_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)), 0x1);
 			if (this.oCPU.Flags.NE) goto L079d;
@@ -791,16 +765,13 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
-			this.oGameData.Players[playerID].Units[unitID].VisibleByPlayer |= (ushort)(1 << this.oParent.Var_d7f0);
+			this.oGameData.Players[playerID].Units[unitID].SetVisiblity(this.oParent.Var_d7f0, true);
 
 		L079d:
 			// Instruction address 0x1866:0x07a3, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
+			if (this.oGameData.Map[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].TerrainType == TerrainTypeEnum.Water) goto L07b3;
 
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.E) goto L07b3;
 			goto L0857;
 
 		L07b3:
@@ -835,13 +806,7 @@ namespace OpenCiv1
 			this.oCPU.TEST_UInt8(this.oCPU.AX.Low, 0x1);
 			if (this.oCPU.Flags.E) goto L0857;
 
-			this.oCPU.AX.Word = (ushort)this.oGameData.Map[xPos, yPos].Visibility;
-			
-			this.oCPU.DX.Word = 0x1;
-			this.oCPU.CX.Low = (byte)(this.oGameData.HumanPlayerID & 0xff);
-			this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-			if (this.oCPU.Flags.E) goto L0857;
+			if (!this.oGameData.Map[xPos, yPos].IsVisibleTo(this.oGameData.HumanPlayerID)) goto L0857;
 
 			this.oCPU.AX.Word = 0xc;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
@@ -851,7 +816,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 			
-			this.oGameData.Players[playerID].Units[unitID].VisibleByPlayer |= (ushort)(1 << this.oParent.Var_d7f0);
+			this.oGameData.Players[playerID].Units[unitID].SetVisiblity(this.oParent.Var_d7f0, true);
 
 			// Instruction address 0x1866:0x084f, size: 5
 			this.oParent.MapManagement.F0_2aea_11d4(xPos, yPos);
@@ -868,14 +833,7 @@ namespace OpenCiv1
 			if ((short)this.oCPU.AX.Word != this.oGameData.HumanPlayerID)
 				goto L08b9;
 
-			this.oCPU.AX.Word = (ushort)this.oGameData.Map[xPos, yPos].Visibility;
-			
-			this.oCPU.DX.Word = 0x1;
-			this.oCPU.CX.Low = (byte)(this.oGameData.HumanPlayerID & 0xff);
-			this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-			if (this.oCPU.Flags.E) goto L08b9;
+			if (!this.oGameData.Map[xPos, yPos].IsVisibleTo(this.oGameData.HumanPlayerID)) goto L08b9;
 
 			this.oCPU.AX.Word = 0xc;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
@@ -885,7 +843,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oGameData.Players[playerID].Units[unitID].VisibleByPlayer |= (ushort)(1 << this.oGameData.HumanPlayerID);
+			this.oGameData.Players[playerID].Units[unitID].SetVisiblity(this.oGameData.HumanPlayerID, true);
 
 			// Instruction address 0x1866:0x08b1, size: 5
 			this.oParent.MapManagement.F0_2aea_11d4(xPos, yPos);
@@ -903,7 +861,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			direction = this.oGameData.Static.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))];
+			direction = TerrainMap.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))];
 
 			// Instruction address 0x1866:0x08d2, size: 5
 			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Map.WrapXPosition(xPos + direction.X));
@@ -913,9 +871,9 @@ namespace OpenCiv1
 			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), (short)(yPos + direction.Y));
 
 			// Instruction address 0x1866:0x08eb, size: 5
-			this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(
+			this.oCPU.AX.Word = (ushort)(this.oGameData.Map.IsValidPosition(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L08b9;
@@ -952,19 +910,16 @@ namespace OpenCiv1
 				goto L0958;
 
 			// Instruction address 0x1866:0x0948, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
+			if (this.oGameData.Map[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].TerrainType == TerrainTypeEnum.Water) goto L0958;
 
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.E) goto L0958;
 			goto L06ea;
 
 		L0958:
 			if (playerID != 0)
 			{
 				this.oGameData.Map[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-					this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].Visibility |= 1 << playerID;
+					this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].SetVisiblity(playerID, true);
 			}
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0xffff);
@@ -986,17 +941,12 @@ namespace OpenCiv1
 			this.oCPU.TEST_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)), 0x1);
 			if (this.oCPU.Flags.NE) goto L09b2;
 			
-			this.oGameData.Players[this.oParent.Var_d7f0].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].VisibleByPlayer |= 
-				(ushort)(1 << playerID);
+			this.oGameData.Players[this.oParent.Var_d7f0].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].SetVisiblity(playerID, true);
 
 		L09b2:
 			// Instruction address 0x1866:0x09b8, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L09f9;
+			if (this.oGameData.Map[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].TerrainType != TerrainTypeEnum.Water) goto L09f9;
 
 			if (this.oParent.Var_d7f0 == 0) goto L09f9;
 			
@@ -1066,7 +1016,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			direction = this.oGameData.Static.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))];
+			direction = TerrainMap.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))];
 
 			// Instruction address 0x1866:0x0a73, size: 5
 			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Map.WrapXPosition(xPos + direction.X));
@@ -1076,21 +1026,15 @@ namespace OpenCiv1
 			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), (short)(yPos + direction.Y));
 
 			// Instruction address 0x1866:0x0a8c, size: 5
-			this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(
+			this.oCPU.AX.Word = (ushort)(this.oGameData.Map.IsValidPosition(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0ac7;
 
-			this.oCPU.AX.Word = (ushort)this.oGameData.Map[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].Visibility;
-			
-			this.oCPU.DX.Word = 0x1;
-			this.oCPU.CX.Low = (byte)playerID;
-			this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-			if (this.oCPU.Flags.E) goto L0ac7;
+			if (!this.oGameData.Map[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
+				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].IsVisibleTo(playerID)) goto L0ac7;
 
 			// Instruction address 0x1866:0x0abf, size: 5
 			this.oParent.MapManagement.F0_2aea_11d4(
@@ -1223,14 +1167,14 @@ namespace OpenCiv1
 
 		L0bc9:
 			// Instruction address 0x1866:0x0bd9, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("End of Turn", 4, 124, 7);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("End of Turn", 4, 124, 7);
 
 		L0be1:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0xffff);
 			if (this.oCPU.Flags.E) goto L0bfb;
 
 			// Instruction address 0x1866:0x0bf3, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
 				15, 15, 15);
@@ -1276,10 +1220,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
 			// Instruction address 0x1866:0x0c5c, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(this.oGameData.Players[playerID].Units[unitID].Position.X, this.oGameData.Players[playerID].Units[unitID].Position.Y);
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.E)
+			if (this.oGameData.Map[this.oGameData.Players[playerID].Units[unitID].Position.X, this.oGameData.Players[playerID].Units[unitID].Position.Y].TerrainType == TerrainTypeEnum.Water)
 			{
 				this.oCPU.AX.Word = 0x1;
 			}
@@ -1297,14 +1238,14 @@ namespace OpenCiv1
 
 		L0c86:
 			// Instruction address 0x1866:0x0c95, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("End of Turn", 4, 124, 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("End of Turn", 4, 124, 0);
 
 		L0c9d:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0xffff);
 			if (this.oCPU.Flags.E) goto L0cb9;
 
 			// Instruction address 0x1866:0x0cb1, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
 				15, 15, 0);
@@ -1336,8 +1277,9 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L0cf0;
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
-			if (this.oCPU.Flags.NE) goto L0cf0;
+			
+			if (this.oParent.Var_db3a != 0) goto L0cf0;
+
 			goto L0b75;
 
 		L0cf0:
@@ -1402,13 +1344,14 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 
-			this.oGameData.Map[xPos, yPos].Visibility |= 1 << playerID;
+			this.oGameData.Map[xPos, yPos].SetVisiblity(playerID, true);
 
 			this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Status = 0;
 			this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position = new GPoint(xPos, yPos);
 			this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID = unitTypeID;
-			this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].VisibleByPlayer = (ushort)(1 << playerID);
-			this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].GoToPosition.X = -1;
+			this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].ClearVisibility();
+			this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].SetVisiblity(playerID, true);
+			this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].GoToDestination.X = -1;
 			this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].GoToNextDirection = -1;
 
 			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID));
@@ -1469,13 +1412,8 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Word = this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].VisibleByPlayer;
-			
-			this.oCPU.DX.Word = 0x1;
-			this.oCPU.CX.Low = (byte)(this.oGameData.HumanPlayerID & 0xff);
-			this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-			if (this.oCPU.Flags.E) goto L0e64;
+			if (!this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].IsVisibleTo(this.oGameData.HumanPlayerID))
+				goto L0e64;
 
 		L0e3d:
 			this.oCPU.AX.Word = 0x600;
@@ -1527,7 +1465,7 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd760), 0x0);
 			if (this.oCPU.Flags.NE) goto L0f08;
 
-			this.oParent.Var_2f9e_Unknown = 0x3;
+			this.oParent.Var_2f9e = 3;
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -1591,12 +1529,8 @@ namespace OpenCiv1
 					goto L0f9a;
 
 				// Instruction address 0x1866:0x0f78, size: 5
-				this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(
-					this.oGameData.Players[playerID].Units[unitID].Position.X,
-					this.oGameData.Players[playerID].Units[unitID].Position.Y);
-
-				this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-				if (this.oCPU.Flags.NE) goto L0f9a;
+				if (this.oGameData.Map[this.oGameData.Players[playerID].Units[unitID].Position.X,
+					this.oGameData.Players[playerID].Units[unitID].Position.Y].TerrainType != TerrainTypeEnum.Water) goto L0f9a;
 
 				// Instruction address 0x1866:0x0f94, size: 3
 				F0_1866_144b(playerID, unitID, 0x1610);
@@ -1616,12 +1550,8 @@ namespace OpenCiv1
 					goto L0fe6;
 
 				// Instruction address 0x1866:0x0fc4, size: 5
-				this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(
-					this.oGameData.Players[playerID].Units[unitID].Position.X,
-					this.oGameData.Players[playerID].Units[unitID].Position.Y);
-
-				this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-				if (this.oCPU.Flags.NE) goto L0fe6;
+				if (this.oGameData.Map[this.oGameData.Players[playerID].Units[unitID].Position.X,
+					this.oGameData.Players[playerID].Units[unitID].Position.Y].TerrainType != TerrainTypeEnum.Water) goto L0fe6;
 
 				// Instruction address 0x1866:0x0fe0, size: 3
 				F0_1866_144b(playerID, unitID, 0x1676);
@@ -1650,23 +1580,17 @@ namespace OpenCiv1
 
 				this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4), 0x0);
 				if (this.oCPU.Flags.NE) goto L1085;
-				this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3936), 0xffff);
-				if (this.oCPU.Flags.NE) goto L1085;
+
+				if (this.oParent.Var_3936 != -1) goto L1085;
 				
 				if (this.oParent.Var_d806 != 0) goto L105e;
 
 				if (playerID == this.oGameData.HumanPlayerID)
 					goto L105e;
 
-				this.oCPU.AX.Word = this.oGameData.Players[playerID].Units[unitID].VisibleByPlayer;
+				if (!this.oGameData.Players[playerID].Units[unitID].IsVisibleTo(this.oGameData.HumanPlayerID)) goto L1085;
 
-				this.oCPU.DX.Word = 0x1;
-				this.oCPU.CX.Low = (byte)(this.oGameData.HumanPlayerID & 0xff);
-				this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-				this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				if (this.oCPU.Flags.E) goto L1085;
-
-				L105e:
+			L105e:
 				this.oCPU.AX.Word = 0x600;
 				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 				this.oCPU.SI.Word = this.oCPU.AX.Word;
@@ -1843,6 +1767,8 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 
+			TerrainTypeEnum local_6;
+
 			this.oCPU.AX.Word = 0x600;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
@@ -1854,11 +1780,9 @@ namespace OpenCiv1
 				(short)this.oGameData.Players[playerID].Units[unitID].TypeID);
 
 			// Instruction address 0x1866:0x1195, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(this.oGameData.Players[playerID].Units[unitID].Position.X, this.oGameData.Players[playerID].Units[unitID].Position.Y);
+			local_6 = this.oGameData.Map[this.oGameData.Players[playerID].Units[unitID].Position.X, this.oGameData.Players[playerID].Units[unitID].Position.Y].TerrainType;
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L11b7;
+			if (local_6 != TerrainTypeEnum.Water) goto L11b7;
 
 			this.oCPU.AX.Word = 0x22;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
@@ -1895,8 +1819,8 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)this.oGameData.Static.Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].DefenseStrength));
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Low = (byte)this.oGameData.Static.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].DefenseBonus;
-			this.oCPU.CBW(this.oCPU.AX);
+			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Static.Terrains.GetValueByKey(local_6).DefenseBonus);
+			
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = this.oCPU.CX.Word;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.BX.Word);
@@ -2327,9 +2251,7 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x1866:0x14c2, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(this.oGameData.Players[playerID].Units[unitID].Position.X, this.oGameData.Players[playerID].Units[unitID].Position.Y);
-
-			if (this.oCPU.AX.Word != 0xa)
+			if (this.oGameData.Map[this.oGameData.Players[playerID].Units[unitID].Position.X, this.oGameData.Players[playerID].Units[unitID].Position.Y].TerrainType != TerrainTypeEnum.Water)
 			{
 				this.oGameData.Players[playerID].Units[unitID].Status &= 0xfe;
 			}
@@ -2398,7 +2320,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
 			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
 		
-			this.oGameData.Players[playerID].Units[unitID].GoToPosition.X = -1;
+			this.oGameData.Players[playerID].Units[unitID].GoToDestination.X = -1;
 			this.oGameData.Players[playerID].Units[unitID].GoToNextDirection = -1;
 
 			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
@@ -2456,7 +2378,7 @@ namespace OpenCiv1
 			}
 
 			this.oGameData.Players[playerID].Units[unitID].Status &= 0x30;
-			this.oGameData.Players[playerID].Units[unitID].GoToPosition.X = -1;
+			this.oGameData.Players[playerID].Units[unitID].GoToDestination.X = -1;
 
 			if (playerID == this.oGameData.HumanPlayerID)
 			{
@@ -2527,7 +2449,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oGameData.Players[playerID].Units[unitID].TypeID));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Sea)
+			if (this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Water)
 			{
 				// Instruction address 0x1866:0x16a0, size: 3
 				F0_1866_0f10(playerID, unitID);
@@ -2636,10 +2558,11 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 
-			// Instruction address 0x1866:0x175e, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(xPos, yPos);
+			TerrainTypeEnum local_e;
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), this.oCPU.AX.Word);
+			// Instruction address 0x1866:0x175e, size: 5
+			local_e = this.oGameData.Map[xPos, yPos].TerrainType;
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 0x1);
 			goto L1795;
 
@@ -2650,12 +2573,9 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1866:0x177a, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
+			if (this.oGameData.Map[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))].TerrainType != TerrainTypeEnum.Water) goto L178c;
 
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L178c;
 			this.oCPU.AX.Word = 0x1;
 			goto L178e;
 
@@ -2678,7 +2598,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			GPoint direction = this.oGameData.Static.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))];
+			GPoint direction = TerrainMap.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))];
 
 			// Instruction address 0x1866:0x17ab, size: 5
 			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Map.WrapXPosition(xPos + direction.X));
@@ -2687,8 +2607,8 @@ namespace OpenCiv1
 
 			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), (short)(yPos + direction.Y));
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)), 0xa);
-			if (this.oCPU.Flags.NE) goto L1770;
+			if (local_e != TerrainTypeEnum.Water) goto L1770;
+
 			this.oCPU.AX.Word = 0x1;
 			goto L1772;
 
@@ -2724,24 +2644,18 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
 			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
-			this.oCPU.AX.Word = this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].VisibleByPlayer;
-			
-			this.oCPU.DX.Word = 0x1;
-			this.oCPU.CX.Low = (byte)(this.oGameData.HumanPlayerID & 0xff);
-			this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.DX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L1856;
+			if (this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].IsVisibleTo(this.oGameData.HumanPlayerID))
+				goto L1856;
 			
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = (byte)(this.oGameData.HumanPlayerID & 0xff);
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), this.oCPU.AX.Word);
 
-			this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].VisibleByPlayer |= 
-				(ushort)(1 << this.oGameData.HumanPlayerID);
+			this.oGameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].SetVisiblity(this.oGameData.HumanPlayerID, true);
 
 			this.oGameData.Map[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))].Visibility |= 1 << this.oGameData.HumanPlayerID;
+				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))].SetVisiblity(this.oGameData.HumanPlayerID, true);
 
 			// Instruction address 0x1866:0x184e, size: 5
 			this.oParent.MapManagement.F0_2aea_11d4(
@@ -2775,7 +2689,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
 
 			this.oGameData.Map[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))].Visibility |= 1 << this.oGameData.HumanPlayerID;
+				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))].SetVisiblity(this.oGameData.HumanPlayerID, true);
 
 			// Instruction address 0x1866:0x18bb, size: 5
 			this.oParent.MapManagement.F0_2aea_11d4(
@@ -2830,7 +2744,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			GPoint direction = this.oGameData.Static.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))];
+			GPoint direction = TerrainMap.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))];
 
 			// Instruction address 0x1866:0x18f4, size: 5
 			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Map.WrapXPosition(xPos + direction.X));
@@ -2897,7 +2811,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oGameData.Players[playerID].Units[unitID].TypeID));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Sea)
+			if (this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Water)
 				goto L1d4f;
 
 			this.oCPU.AX.Word = 0x600;
@@ -3141,7 +3055,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
 			
-			this.oGameData.Players[0].Units[this.oCPU.AX.Word].VisibleByPlayer |= (ushort)(1 << playerID);
+			this.oGameData.Players[0].Units[this.oCPU.AX.Word].SetVisiblity(playerID, true);
 
 			if (playerID == this.oGameData.HumanPlayerID)
 			{
@@ -3167,7 +3081,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			GPoint direction = this.oGameData.Static.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))];
+			GPoint direction = TerrainMap.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))];
 
 			this.oCPU.AX.Word = 0x600;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
@@ -3197,21 +3111,15 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L1c71;
 
 			// Instruction address 0x1866:0x1cf0, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
+			if (this.oGameData.Map[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))].TerrainType != TerrainTypeEnum.Water) goto L1d00;
 
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L1d00;
 			goto L1c71;
 
 		L1d00:
 			// Instruction address 0x1866:0x1d06, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
-
-			if (this.oGameData.Static.Terrains[this.oCPU.AX.Word].MovementCost > 2)
+			if (this.oGameData.Map[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))].MovementCost > 2)
 				goto L1d1f;
 
 			goto L1c32;
@@ -3315,7 +3223,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Word);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			GPoint direction = this.oGameData.Static.MoveOffsets[moveDirection];
+			GPoint direction = TerrainMap.MoveOffsets[moveDirection];
 
 			// Instruction address 0x1866:0x1dfa, size: 5
 			this.oParent.Segment_1403.F0_1403_4508(
@@ -3330,10 +3238,8 @@ namespace OpenCiv1
 				goto L1e61;
 
 			// Instruction address 0x1866:0x1e1c, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(this.oGameData.Players[playerID].Units[unitID].Position.X, this.oGameData.Players[playerID].Units[unitID].Position.Y);
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L1e40;
+			if (this.oGameData.Map[this.oGameData.Players[playerID].Units[unitID].Position.X, this.oGameData.Players[playerID].Units[unitID].Position.Y].TerrainType != TerrainTypeEnum.Water)
+				goto L1e40;
 			
 			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oGameData.Players[playerID].Units[this.oGameData.Players[playerID].Units[unitID].NextUnitID].TypeID));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
@@ -3383,7 +3289,7 @@ namespace OpenCiv1
 		L1ecb:
 			this.oCPU.SI.Word = (ushort)(moveDirection << 1);
 
-			direction = this.oGameData.Static.MoveOffsets[moveDirection];
+			direction = TerrainMap.MoveOffsets[moveDirection];
 
 			// Instruction address 0x1866:0x1f0a, size: 5
 			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
@@ -3499,7 +3405,7 @@ namespace OpenCiv1
 
 		L1fe2:
 			// Instruction address 0x1866:0x1ffc, size: 5
-			this.oParent.Segment_2d05.F0_2d05_096c_FillRectangleWithDoubleShadow(100, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)),
+			this.oParent.MenuBoxDialog.F0_2d05_096c_FillRectangleWithDoubleShadow(100, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)),
 				120, (this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x28)) << 4) + 5, 3);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x28), 0x0);
@@ -3533,7 +3439,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x1866:0x2079, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 128, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)), 15);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 128, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)), 15);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 			this.oCPU.AX.Word = 0x600;
@@ -3547,7 +3453,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1e))].HomeCityID);
 			
 			// Instruction address 0x1866:0x20b7, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 128, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)) + 8, 14);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 128, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)) + 8, 14);
 
 			short oldUnitID1 = (short)this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1e))].NextUnitID;
 			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1e), oldUnitID1);
@@ -3579,8 +3485,8 @@ namespace OpenCiv1
 			// Instruction address 0x1866:0x20f5, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0223();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
-			if (this.oCPU.Flags.E) goto L2104;
+			if (this.oParent.Var_db3a == 0) goto L2104;
+
 			goto L21b7;
 
 		L2104:
@@ -3602,7 +3508,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), this.oCPU.AX.Word);
 
 			// Instruction address 0x1866:0x2144, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey();
+			this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24), this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x4800);
@@ -3651,18 +3557,17 @@ namespace OpenCiv1
 			// Instruction address 0x1866:0x21b7, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x1);
-			if (this.oCPU.Flags.E) goto L21c6;
+			if (this.oParent.Var_db3a == 1) goto L21c6;
+
 			goto L2256;
 
 		L21c6:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0x64);
-			if (this.oCPU.Flags.G) goto L21d0;
+			if (this.oParent.Var_db3c > 100) goto L21d0;
 			goto L2256;
 
 		L21d0:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0xdc);
-			if (this.oCPU.Flags.GE) goto L2256;
+			if (this.oParent.Var_db3c >= 220) goto L2256;
+
 			this.oCPU.AX.Word = this.oParent.Var_db3e;
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)));
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x5);
@@ -3711,7 +3616,7 @@ namespace OpenCiv1
 
 			this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].Status &= 0x30;
 
-			this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].GoToPosition.X = -1;
+			this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].GoToDestination.X = -1;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x28)), 0x1);
 			if (this.oCPU.Flags.LE) goto L2256;
@@ -3941,7 +3846,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12));
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 
-			GPoint direction = this.oGameData.Static.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))];
+			GPoint direction = TerrainMap.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))];
 
 			this.oCPU.AX.Word = 0x600;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);

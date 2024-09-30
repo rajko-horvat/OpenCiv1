@@ -24,6 +24,7 @@ namespace OpenCiv1
 		public short PlayerFlags = 0;
 		public short PlayerIdentityFlags = 0;
 		public short ActiveCivilizations = 0;
+		public int BarbarianPlayerID = 0;
 
 		public short PeaceTurnCount = 0;
 		public short AIOpponentCount = 0;
@@ -108,7 +109,7 @@ namespace OpenCiv1
 		public short PollutedSquareCount = 0;
 		public short PollutionEffectLevel = 0;
 		public short GlobalWarmingCount = 0;
-		public Map Map = new Map();
+		public TerrainMap Map = new TerrainMap();
 
 		// Replay data
 		public short ReplayDataLength = 0;
@@ -152,7 +153,7 @@ namespace OpenCiv1
 
 			for (int i = 0; i < this.Players.Length; i++)
 			{
-				this.Players[i] = new Player(this);
+				this.Players[i] = new Player(this, i);
 			}
 
 			for (int i = 0; i < 16; i++)

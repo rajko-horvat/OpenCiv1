@@ -1,5 +1,6 @@
 using System.Text;
 using IRB.VirtualCPU;
+using OpenCiv1.Graphics;
 
 namespace OpenCiv1
 {
@@ -77,7 +78,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x0000:0x0087, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 48, 65, 1);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 48, 65, 1);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xe168, this.oCPU.AX.Word);
 
@@ -351,9 +352,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L03a6;
 
 			// Instruction address 0x0000:0x03d3, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xe168), 0, 3);
+			this.oParent.Var_2f9a = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xe168), 0, 3);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(param1, 0xffff);
 			if (this.oCPU.Flags.NE) goto L0405;
 
@@ -361,7 +361,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x0000:0x03f5, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 48, 33, 1);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 48, 33, 1);
 
 			param1 = this.oCPU.AX.Word;
 
@@ -421,10 +421,10 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x04ae, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " Press key to continue.\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd206, 0x1);
+			this.oParent.Var_d206 = 1;
 
 			// Instruction address 0x0000:0x04c8, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 64, 127, 1);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 64, 127, 1);
 
 		L04d0:
 			// Instruction address 0x0000:0x04d9, size: 5
@@ -454,7 +454,8 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x8);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdb38, 0x1);
+
+			this.oParent.Var_db38 = 1;
 
 			// Instruction address 0x0000:0x0503, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, " ");
@@ -491,10 +492,10 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x05a9, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\n ... save in progress.\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd206, 0x1);
+			this.oParent.Var_d206 = 1;
 
 			// Instruction address 0x0000:0x05c3, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 64, 86, 1);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 64, 86, 1);
 
 			string path = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr));
 			F11_0000_08f6_SaveGameData(path);
@@ -570,7 +571,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(99, 80, 72, 0);
 
 			// Instruction address 0x0000:0x06a7, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey();
+			this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x41);
@@ -665,7 +666,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba03), this.oCPU.AX.Low);
 
 			// Instruction address 0x0000:0x07ba, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 100, 80, 1);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 100, 80, 1);
 
 			this.oCPU.AX.Word = 0xffff;
 			goto L07d2;
@@ -759,27 +760,21 @@ namespace OpenCiv1
 			try
 			{
 				// read map file
-				byte[] temp;
-
-				if (!this.oParent.Graphics.Screens.GetValueByKey(2).LoadPIC($"{VCPU.DefaultCIVPath}{filename}.MAP", 0, 0, out temp))
-					throw new Exception($"Can't read Map file '{filename}.MAP'");
+				GBitmap? map = null;
 
 				try
 				{
-					this.oGameData.Map = Map.FromPIC(this.oParent, $"{VCPU.DefaultCIVPath}{filename}.MAP");
-					
-					/*for (int i = 0; i < this.oGameData.Map.Size.Height; i++)
-					{
-						for (int j = 0; j < this.oGameData.Map.Size.Width; j++)
-						{
-							this.oGameData.Map[j, i].Layer8_VisibleTerrainImprovements2 |= 0x8;
-						}
-					}*/
+					byte[] palette;
+
+					map = GBitmap.FromPICFile($"{VCPU.DefaultCIVPath}{filename}.MAP", out palette);
 				}
 				catch
 				{
 					throw new Exception($"Can't read Map file '{filename}.MAP'");
 				}
+
+				// parse map file
+
 
 				// read sve file
 				FileStream reader = new FileStream($"{VCPU.DefaultCIVPath}{filename}.SVE", FileMode.Open);
@@ -1813,7 +1808,7 @@ namespace OpenCiv1
 			catch (Exception ex)
 			{
 				this.oParent.MSCAPI.strcpy(0xba06, ex.Message);
-				this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 4, 64, 1);
+				this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 4, 64, 1);
 
 				bSuccess = false;
 			}

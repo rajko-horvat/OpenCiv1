@@ -419,14 +419,24 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Check if file exists
 		/// </summary>
-		/// <param name="fileNamePtr"></param>
-		/// <returns></returns>
+		/// <param name="fileNamePtr">File name ptr to test</param>
+		/// <returns>Zero if file exists, otherwise -1</returns>
 		public ushort F0_1000_066a_FileExists(ushort fileNamePtr)
 		{
 			string fileName = MSCAPI.GetDOSFileName(this.oParent.CPU.ReadString(VCPU.ToLinearAddress(this.oParent.CPU.DS.Word, fileNamePtr)).ToUpper());
 
+			return F0_1000_066a_FileExists(fileName);
+		}
+
+		/// <summary>
+		/// Check if file exists
+		/// </summary>
+		/// <param name="fileName">File name to test</param>
+		/// <returns>Zero if file exists, otherwise -1</returns>
+		public ushort F0_1000_066a_FileExists(string fileName)
+		{
 			this.oCPU.Log.EnterBlock($"F0_1000_066a_FileExists('{fileName}')");
 
 			// function body
@@ -508,13 +518,13 @@ namespace OpenCiv1
 		/// <param name="rectPtr"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <param name="bitmapPtr"></param>
-		public void F0_1000_0797_DrawBitmapToScreen(CRectangle rect, int xPos, int yPos, ushort bitmapPtr)
+		/// <param name="bitmapID"></param>
+		public void F0_1000_0797_DrawBitmapToScreen(CRectangle rect, int xPos, int yPos, int bitmapID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_0797_DrawBitmapToScreen({rect}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
+			this.oCPU.Log.EnterBlock($"F0_1000_0797_DrawBitmapToScreen({rect}, {xPos}, {yPos}, 0x{bitmapID:x4})");
 
 			// function body
-			this.oParent.Graphics.F0_VGA_0c3e_DrawBitmapToScreen(rect, xPos, yPos, bitmapPtr);
+			this.oParent.Graphics.F0_VGA_0c3e_DrawBitmapToScreen(rect, xPos, yPos, bitmapID);
 
 			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
 			{
@@ -530,44 +540,17 @@ namespace OpenCiv1
 		/// <param name="rectPtr"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <param name="bitmapPtr"></param>
-		public void F0_1000_084d_DrawBitmapToScreen(CRectangle rect, int xPos, int yPos, ushort bitmapPtr)
+		/// <param name="bitmapID"></param>
+		public void F0_1000_084d_DrawBitmapToScreen(CRectangle rect, int xPos, int yPos, int bitmapID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_084d_DrawBitmapToScreen({rect}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
+			this.oCPU.Log.EnterBlock($"F0_1000_084d_DrawBitmapToScreen({rect}, {xPos}, {yPos}, 0x{bitmapID:x4})");
 
 			// function body
-			this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(rect, xPos, yPos, bitmapPtr);
+			this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(rect, xPos, yPos, bitmapID);
 
 			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
 			{
 				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0);
-
-			/*L075e:
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, this.oCPU.DECByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5402)));
-				if (this.oCPU.Flags.E) goto L0769;
-
-				this.oCPU.PushWord(this.oCPU.AX.Word);
-				this.oCPU.PushWord(this.oCPU.DX.Word);
-				this.oCPU.PushWord(this.oCPU.ES.Word);
-				
-				this.oCPU.ES.Word = 0x1000;
-				// Instruction address 0x1000:0x17a2, size: 5
-				this.oParent.Graphics.F0_VGA_0224_DrawBufferToScreen();
-
-				this.oCPU.ES.Word = 0x1000;
-				// Instruction address 0x1000:0x17c0, size: 5
-				this.oParent.Graphics.F0_VGA_0270(
-					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
-					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x587a)),
-					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5876));
-
-				this.oCPU.ES.Word = this.oCPU.PopWord();
-				this.oCPU.DX.Word = this.oCPU.PopWord();
-				this.oCPU.AX.Word = this.oCPU.PopWord();
-				goto L075e;
-
-			L0769:
-				this.oCPU.AX.Word |= 0;*/
 			}
 
 			this.oCPU.Log.ExitBlock("F0_1000_084d_DrawBitmapToScreen");

@@ -171,14 +171,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L0261;
 
 			// Instruction address 0x0000:0x0242, size: 5
-			this.oParent.Segment_1182.F0_1182_002a_DrawString(",-.", 8, 11, 0);
+			this.oParent.Segment_1182.F0_1182_002a_DrawStringToRectAA(",-.", 8, 11, 0);
 
 			// Instruction address 0x0000:0x0259, size: 5
-			this.oParent.Segment_1182.F0_1182_002a_DrawString(",-.", 268, 11, 0);
+			this.oParent.Segment_1182.F0_1182_002a_DrawStringToRectAA(",-.", 268, 11, 0);
 
 		L0261:
 			// Instruction address 0x0000:0x0270, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 11, 0);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 11, 0);
 
 			// Instruction address 0x0000:0x027c, size: 5
 			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(2));
@@ -232,10 +232,10 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.FontID = 3;
 
 			// Instruction address 0x0000:0x0308, size: 5
-			this.oParent.Segment_1182.F0_1182_002a_DrawString(0xba06, 6, 3, 0);
+			this.oParent.Segment_1182.F0_1182_002a_DrawStringToRectAA(0xba06, 6, 3, 0);
 
 			// Instruction address 0x0000:0x031f, size: 5
-			this.oParent.Segment_1182.F0_1182_002a_DrawString(0xba06, 272, 3, 0);
+			this.oParent.Segment_1182.F0_1182_002a_DrawStringToRectAA(0xba06, 272, 3, 0);
 			
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
@@ -245,7 +245,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, "10 cents");
 
 			// Instruction address 0x0000:0x0354, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 272, 28, 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 272, 28, 0);
 
 			// Instruction address 0x0000:0x0364, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "January 1, ");
@@ -254,7 +254,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1238.F0_1238_1720_GetCurrentYearAsString();
 
 			// Instruction address 0x0000:0x0380, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 8, 28, 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 8, 28, 0);
 
 			this.oParent.Var_aa_Rectangle.FontID = 2;
 
@@ -271,7 +271,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x5178, (ushort)(this.oCPU.BP.Word - 0xc));
 
 			// Instruction address 0x0000:0x03d4, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 3, 0);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 3, 0);
 
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
@@ -279,7 +279,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L041f;
 
 			// Instruction address 0x0000:0x03f7, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0x5181, 80, 128, 1);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0x5181, 80, 128, 1);
 
 			// Instruction address 0x0000:0x0417, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);

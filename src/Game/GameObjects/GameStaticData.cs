@@ -1,4 +1,5 @@
-﻿using OpenCiv1.Graphics;
+﻿using IRB.Collections.Generic;
+using OpenCiv1.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,25 +16,6 @@ namespace OpenCiv1
 			new GPoint(0, -2), new GPoint(2, 0), new GPoint(0, 2), new GPoint(-2, 0),
 			new GPoint(-1, -2), new GPoint(1, -2), new GPoint(2, -1), new GPoint(2, 1), new GPoint(1, 2), new GPoint(-1, 2), new GPoint(-2, 1), new GPoint(-2, -1),
 			new GPoint(0, 0) };
-
-		public readonly GPoint[] MoveOffsets = new GPoint[] {
-			new GPoint(0, 0), new GPoint(0, -1), new GPoint(1, -1),
-			new GPoint(1, 0), new GPoint(1, 1), new GPoint(0, 1),
-			new GPoint(-1, 1), new GPoint(-1, 0), new GPoint(-1, -1),
-			new GPoint(0, -2), new GPoint(1, -2), new GPoint(2, -1),
-			new GPoint(2, 0), new GPoint(2, 1), new GPoint(1, 2),
-			new GPoint(0, 2), new GPoint(-1, 2), new GPoint(-2, 1),
-			new GPoint(-2, 0), new GPoint(-2, -1), new GPoint(-1, -2),
-			new GPoint(2, 2), new GPoint(2, -2), new GPoint(-2, -2),
-			new GPoint(-2, 2), new GPoint(0, -3), new GPoint(1, -3),
-			new GPoint(2, -3), new GPoint(3, -2), new GPoint(3, -1),
-			new GPoint(3, 0), new GPoint(3, 1), new GPoint(3, 2),
-			new GPoint(2, 3), new GPoint(1, 3), new GPoint(0, 3),
-			new GPoint(-1, 3), new GPoint(-2, 3), new GPoint(-3, 2),
-			new GPoint(-3, 1), new GPoint(-3, 0), new GPoint(-3, -1),
-			new GPoint(-3, -2), new GPoint(-2, -3), new GPoint(-1, -3),
-			new GPoint(3, 3), new GPoint(3, -3), new GPoint(-3, 3),
-			new GPoint(-3, -3)};
 
 		// Nations
 		public readonly NationDefinition[] Nations = new NationDefinition[] {
@@ -87,46 +69,24 @@ namespace OpenCiv1
 					"Khanbalyk", "Khorasan", "Shangtu", "Kazan", "Quinsay", "Kerman" })};
 
 		// Terrains
-		public readonly TerrainDefinition[] Terrains = new TerrainDefinition[]{
-			new TerrainDefinition(0, "Desert", 1, 2, 0, 1, 0, 1, 14),
-			new TerrainDefinition(1, "Plains", 1, 2, 1, 1, 0, 1, 6),
-			new TerrainDefinition(2, "Grassland", 1, 2, 2, 1, 0, 1, 10),
-			new TerrainDefinition(3, "Forest", 2, 3, 1, 2, 0, 2, 2),
-			new TerrainDefinition(4, "Hills", 2, 4, 1, 0, 0, 2, 12),
-			new TerrainDefinition(5, "Mountains", 3, 6, 0, 1, 0, 3, 13),
-			new TerrainDefinition(6, "Tundra", 1, 2, 1, 0, 0, 0, 7),
-			new TerrainDefinition(7, "Arctic", 2, 2, 0, 0, 0, 0, 15),
-			new TerrainDefinition(8, "Swamp", 2, 3, 1, 0, 0, 0, 3),
-			new TerrainDefinition(9, "Jungle", 2, 3, 1, 0, 0, 0, 11),
-			new TerrainDefinition(10, "Ocean", 1, 2, 1, 0, 2, 0, 1),
-			new TerrainDefinition(11, "River", 1, 3, 2, 1, 1, 2, 9),
-			// Terrain addons
-			new TerrainDefinition(12, "Oasis", 1, 2, 3, 1, 0, 1, 14),
-			new TerrainDefinition(13, "Horses", 1, 2, 1, 3, 0, 1, 6),
-			new TerrainDefinition(14, "Grassland", 1, 2, 2, 1, 0, 1, 10),
-			new TerrainDefinition(15, "Game", 2, 3, 3, 2, 0, 2, 2),
-			new TerrainDefinition(16, "Coal", 2, 4, 1, 2, 0, 2, 12),
-			new TerrainDefinition(17, "Gold", 3, 6, 0, 1, 6, 3, 13),
-			new TerrainDefinition(18, "Game", 1, 2, 3, 0, 0, 0, 7),
-			new TerrainDefinition(19, "Seals", 2, 2, 2, 0, 0, 0, 15),
-			new TerrainDefinition(20, "Oil", 2, 3, 1, 4, 0, 0, 3),
-			new TerrainDefinition(21, "Gems", 2, 3, 1, 0, 4, 0, 11),
-			new TerrainDefinition(22, "Fish", 1, 2, 3, 0, 2, 0, 1),
-			new TerrainDefinition(23, "River", 1, 3, 2, 1, 1, 2, 9)};
+		public readonly BDictionary<TerrainTypeEnum, TerrainDefinition> Terrains = new ([
+			new (TerrainTypeEnum.Water, new ("Ocean", 1, 2, 1, 0, 2, -1, 0, -1, 0, 0, 0, [ new ("Fish", 2, 0, 0) ], 0, 1)),
 
-		public readonly TerrainMultiplierDefinition[] TerrainMultipliers = new TerrainMultiplierDefinition[] {
-			new TerrainMultiplierDefinition(0, -2, 5, -2, 5, 0, 0),
-			new TerrainMultiplierDefinition(1, -2, 5, 2, 15, 1, 1),
-			new TerrainMultiplierDefinition(2, -2, 5, 2, 10, 0, 1),
-			new TerrainMultiplierDefinition(3, 6, 5, -1, 5, 0, 0),
-			new TerrainMultiplierDefinition(4, -2, 10, -4, 10, 1, 1),
-			new TerrainMultiplierDefinition(5, -1, 0, -2, 10, 0, 0),
-			new TerrainMultiplierDefinition(6, -1, 0, -1, 0, 0, 0),
-			new TerrainMultiplierDefinition(7, -1, 0, -1, 0, 0, 0),
-			new TerrainMultiplierDefinition(8, 10, 15, 2, 15, 0, 0),
-			new TerrainMultiplierDefinition(9, 10, 15, 2, 15, 0, 0),
-			new TerrainMultiplierDefinition(10, -1, 0, -1, 0, 0, 0),
-			new TerrainMultiplierDefinition(11, -2, 5, -1, 0, 0, 1) };
+			new (TerrainTypeEnum.Plains, new ("Plains", 1, 2, 1, 1, 0, -2, 5, 2, 15, 1, 1, [ new ("Horses", 0, 2, 0) ], 1, 6)),
+			new (TerrainTypeEnum.Grassland, new ("Grassland", 1, 2, 2, 1, 0, -2, 5, 2, 10, 0, 1, [ ], 1, 10)),
+			new (TerrainTypeEnum.Swamp, new ("Swamp", 2, 3, 1, 0, 0, 10, 15, 2, 15, 0, 0, [ new ("Oil", 0, 4, 0) ], 0, 3)),
+			new (TerrainTypeEnum.Forest, new ("Forest", 2, 3, 1, 2, 0, 6, 5, -1, 5, 0, 0, [ new ("Game", 2, 0, 0) ], 2, 2)),
+
+			new (TerrainTypeEnum.Hills, new ("Hills", 2, 4, 1, 0, 0, -2, 10, -4, 10, 1, 1, [ new ("Coal", 0, 2, 0) ], 2, 12)),
+			new (TerrainTypeEnum.Mountains, new ("Mountains", 3, 6, 0, 1, 0, -1, 0, -2, 10, 0, 0, [ new ("Gold", 0, 0, 6) ], 3, 13)),
+
+			new (TerrainTypeEnum.River, new ("River", 1, 3, 2, 1, 1, -2, 5, -1, 0, 0, 1, [ ], 2, 9)),
+
+			new (TerrainTypeEnum.Tundra, new ("Tundra", 1, 2, 1, 0, 0, -1, 0, -1, 0, 0, 0, [ new ("Game", 2, 0, 0) ], 0, 7)),
+			new (TerrainTypeEnum.Arctic, new ("Arctic", 2, 2, 0, 0, 0, -1, 0, -1, 0, 0, 0, [ new ("Seals", 2, 0, 0) ], 0, 15)),
+
+			new (TerrainTypeEnum.Jungle, new ("Jungle", 2, 3, 1, 0, 0, 10, 15, 2, 15, 0, 0, [ new ("Gems", 0, 0, 4) ], 0, 11)),
+			new (TerrainTypeEnum.Desert, new ("Desert", 1, 2, 0, 1, 0, -2, 5, -2, 5, 0, 0, [ new ("Oasis", 3, 0, 0) ], 1, 14)) ]);
 
 		// Technology
 		public readonly TechnologyDefinition[] Technologies = new TechnologyDefinition[] {
@@ -221,15 +181,15 @@ namespace OpenCiv1
 			new UnitDefinition(UnitTypeEnum.Artillery, "Artillery", 6, UnitMovementTypeEnum.Land, 2, 12, 2, 0, 0, 0, 1, TechnologyEnum.Robotics, TechnologyEnum.NewFutureTechnology),	// 13
 			new UnitDefinition(UnitTypeEnum.Fighter, "Fighter", 6, UnitMovementTypeEnum.Air, 10, 4, 2, 1, 2, 0, 4, TechnologyEnum.Flight, TechnologyEnum.NewFutureTechnology),	// 14
 			new UnitDefinition(UnitTypeEnum.Bomber, "Bomber", 12, UnitMovementTypeEnum.Air, 8, 12, 1, 2, 2, 0, 1, TechnologyEnum.AdvancedFlight, TechnologyEnum.NewFutureTechnology),	// 15
-			new UnitDefinition(UnitTypeEnum.Trireme, "Trireme", 4, UnitMovementTypeEnum.Sea, 3, 1, 0, 0, 0, 2, 5, TechnologyEnum.Mapmaking, TechnologyEnum.Navigation),	// 16
-			new UnitDefinition(UnitTypeEnum.Sail, "Sail", 4, UnitMovementTypeEnum.Sea, 3, 1, 1, 0, 0, 3, 5, TechnologyEnum.Navigation, TechnologyEnum.Magnetism),	// 17
-			new UnitDefinition(UnitTypeEnum.Frigate, "Frigate", 4, UnitMovementTypeEnum.Sea, 3, 2, 2, 0, 0, 4, 5, TechnologyEnum.Magnetism, TechnologyEnum.Industrialization),	// 18
-			new UnitDefinition(UnitTypeEnum.Ironclad, "Ironclad", 6, UnitMovementTypeEnum.Sea, 4, 4, 4, 0, 0, 0, 3, TechnologyEnum.SteamEngine, TechnologyEnum.Combustion),	// 19
-			new UnitDefinition(UnitTypeEnum.Cruiser, "Cruiser", 8, UnitMovementTypeEnum.Sea, 6, 6, 6, 0, 3, 0, 3, TechnologyEnum.Combustion, TechnologyEnum.NewFutureTechnology),	// 20
-			new UnitDefinition(UnitTypeEnum.Battleship, "Battleship", 16, UnitMovementTypeEnum.Sea, 4, 18, 12, 0, 3, 0, 3, TechnologyEnum.Steel, TechnologyEnum.NewFutureTechnology),	// 21
-			new UnitDefinition(UnitTypeEnum.Submarine, "Submarine", 5, UnitMovementTypeEnum.Sea, 3, 8, 2, 0, 3, 0, 3, TechnologyEnum.MassProduction, TechnologyEnum.NewFutureTechnology),	// 22
-			new UnitDefinition(UnitTypeEnum.Carrier, "Carrier", 16, UnitMovementTypeEnum.Sea, 5, 1, 12, 0, 3, 0, 3, TechnologyEnum.AdvancedFlight, TechnologyEnum.NewFutureTechnology),	// 23
-			new UnitDefinition(UnitTypeEnum.Transport, "Transport", 5, UnitMovementTypeEnum.Sea, 4, 0, 3, 0, 0, 8, 5, TechnologyEnum.Industrialization, TechnologyEnum.NewFutureTechnology),	// 24
+			new UnitDefinition(UnitTypeEnum.Trireme, "Trireme", 4, UnitMovementTypeEnum.Water, 3, 1, 0, 0, 0, 2, 5, TechnologyEnum.Mapmaking, TechnologyEnum.Navigation),	// 16
+			new UnitDefinition(UnitTypeEnum.Sail, "Sail", 4, UnitMovementTypeEnum.Water, 3, 1, 1, 0, 0, 3, 5, TechnologyEnum.Navigation, TechnologyEnum.Magnetism),	// 17
+			new UnitDefinition(UnitTypeEnum.Frigate, "Frigate", 4, UnitMovementTypeEnum.Water, 3, 2, 2, 0, 0, 4, 5, TechnologyEnum.Magnetism, TechnologyEnum.Industrialization),	// 18
+			new UnitDefinition(UnitTypeEnum.Ironclad, "Ironclad", 6, UnitMovementTypeEnum.Water, 4, 4, 4, 0, 0, 0, 3, TechnologyEnum.SteamEngine, TechnologyEnum.Combustion),	// 19
+			new UnitDefinition(UnitTypeEnum.Cruiser, "Cruiser", 8, UnitMovementTypeEnum.Water, 6, 6, 6, 0, 3, 0, 3, TechnologyEnum.Combustion, TechnologyEnum.NewFutureTechnology),	// 20
+			new UnitDefinition(UnitTypeEnum.Battleship, "Battleship", 16, UnitMovementTypeEnum.Water, 4, 18, 12, 0, 3, 0, 3, TechnologyEnum.Steel, TechnologyEnum.NewFutureTechnology),	// 21
+			new UnitDefinition(UnitTypeEnum.Submarine, "Submarine", 5, UnitMovementTypeEnum.Water, 3, 8, 2, 0, 3, 0, 3, TechnologyEnum.MassProduction, TechnologyEnum.NewFutureTechnology),	// 22
+			new UnitDefinition(UnitTypeEnum.Carrier, "Carrier", 16, UnitMovementTypeEnum.Water, 5, 1, 12, 0, 3, 0, 3, TechnologyEnum.AdvancedFlight, TechnologyEnum.NewFutureTechnology),	// 23
+			new UnitDefinition(UnitTypeEnum.Transport, "Transport", 5, UnitMovementTypeEnum.Water, 4, 0, 3, 0, 0, 8, 5, TechnologyEnum.Industrialization, TechnologyEnum.NewFutureTechnology),	// 24
 			new UnitDefinition(UnitTypeEnum.Nuclear, "Nuclear", 16, UnitMovementTypeEnum.Air, 16, 99, 0, 1, 0, 0, 1, TechnologyEnum.Rocketry, TechnologyEnum.NewFutureTechnology),	// 25
 			new UnitDefinition(UnitTypeEnum.Diplomat, "Diplomat", 3, UnitMovementTypeEnum.Land, 2, 0, 0, 0, 0, 0, 6, TechnologyEnum.Writing, TechnologyEnum.NewFutureTechnology),	// 26
 			new UnitDefinition(UnitTypeEnum.Caravan, "Caravan", 5, UnitMovementTypeEnum.Land, 1, 0, 1, 0, 0, 0, 6, TechnologyEnum.Trade, TechnologyEnum.NewFutureTechnology)}; // 27

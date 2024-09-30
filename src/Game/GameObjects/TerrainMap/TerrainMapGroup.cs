@@ -2,14 +2,14 @@
 
 namespace OpenCiv1
 {
-	public class MapGroup
+	public class TerrainMapGroup
 	{
 		private int iID;
-		private MapGroupTypeEnum eGroupType;
+		private TerrainMapGroupTypeEnum eGroupType;
 		private int iSize = 0;
 		private int iBuildSiteCount = 0;
 
-		internal MapGroup(int id, MapGroupTypeEnum groupType)
+		internal TerrainMapGroup(int id, TerrainMapGroupTypeEnum groupType)
 		{
 			this.iID = id;
 			this.eGroupType = groupType;	
@@ -20,7 +20,7 @@ namespace OpenCiv1
 			get => this.iID;
 		}
 
-		public MapGroupTypeEnum GroupType
+		public TerrainMapGroupTypeEnum GroupType
 		{
 			get => this.eGroupType;
 			set => this.eGroupType = value;

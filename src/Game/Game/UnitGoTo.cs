@@ -14,11 +14,11 @@ namespace OpenCiv1
 		private int Var_6592_YPos = 0;
 		private int[] Var_6594 = new int[256];
 		private int[] Var_6694 = new int[256];
-		private int Var_6794 = 0;
+		private double Var_6794 = 0;
 		private int Var_6796 = 0;
 		private int Var_6798 = 0;
 		public int[,] Var_7f38_AuxPathFind = new int[20, 13];
-		private int[,] Var_b780 = new int[16, 16];
+		private double[,] Var_b780 = new double[16, 16];
 		private int[,] Var_d816 = new int[20, 13];
 
 		public UnitGoTo(OpenCiv1Game parent)
@@ -78,7 +78,7 @@ namespace OpenCiv1
 			int local_2;
 			int local_4;
 			int local_6;
-			int local_8;
+			double local_8;
 			int local_a;
 			int local_c;
 			int local_e;
@@ -87,13 +87,12 @@ namespace OpenCiv1
 			int local_14;
 			int local_16;
 			int local_18 = 0;
-			int local_1a;
 			int local_1c;
 			int local_22;
-			int local_24;
+			double local_24;
 			int local_2a;
 
-			GPoint move = this.oGameData.Players[playerID].Units[unitID].GoToPosition - this.oGameData.Players[playerID].Units[unitID].Position;
+			GPoint move = this.oGameData.Players[playerID].Units[unitID].GoToDestination - this.oGameData.Players[playerID].Units[unitID].Position;
 			GPoint absMove = GPoint.Abs(move);
 
 			if (playerID == this.oGameData.HumanPlayerID && absMove.X < 2 && absMove.Y < 2)
@@ -101,13 +100,13 @@ namespace OpenCiv1
 				move.X = (absMove.X >= 40) ? -Math.Sign(move.X) : Math.Sign(move.X);
 				move.Y = Math.Sign(move.Y);
 
-				this.oGameData.Players[playerID].Units[unitID].GoToPosition = new GPoint(-1);
+				this.oGameData.Players[playerID].Units[unitID].GoToDestination = OpenCiv1Game.InvalidPosition;
 
 				this.oCPU.AX.Word = 0;
 
 				for (int i = 1; i < 9; i++)
 				{
-					if (this.oGameData.Static.MoveOffsets[i] == move)
+					if (TerrainMap.MoveOffsets[i] == move)
 					{
 						this.oCPU.AX.Word = (ushort)i;
 						break;
@@ -117,10 +116,10 @@ namespace OpenCiv1
 			else
 			{
 				// !!! Illegal memory access
-				if (this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Sea)
+				if (this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Water)
 				{
-					this.Var_6590_XPos = this.oGameData.Players[playerID].Units[unitID].GoToPosition.X;
-					this.Var_6592_YPos = this.oGameData.Players[playerID].Units[unitID].GoToPosition.Y;
+					this.Var_6590_XPos = this.oGameData.Players[playerID].Units[unitID].GoToDestination.X;
+					this.Var_6592_YPos = this.oGameData.Players[playerID].Units[unitID].GoToDestination.Y;
 				}
 				else
 				{
@@ -128,8 +127,8 @@ namespace OpenCiv1
 
 					if (absMove.Y > 6 || (absMove.X > 6 && absMove.X < 74))
 					{
-						this.Var_6590_XPos = this.oGameData.Players[playerID].Units[unitID].GoToPosition.X;
-						this.Var_6592_YPos = this.oGameData.Players[playerID].Units[unitID].GoToPosition.Y;
+						this.Var_6590_XPos = this.oGameData.Players[playerID].Units[unitID].GoToDestination.X;
+						this.Var_6592_YPos = this.oGameData.Players[playerID].Units[unitID].GoToDestination.Y;
 
 						// Instruction address 0x2e31:0x01bf, size: 3
 						local_14 = F0_2e31_0c1d(playerID, unitID, 999);
@@ -177,7 +176,7 @@ namespace OpenCiv1
 
 				if (move.X == 0 && move.Y == 0)
 				{
-					this.oGameData.Players[playerID].Units[unitID].GoToPosition.X = -1;
+					this.oGameData.Players[playerID].Units[unitID].GoToDestination.X = -1;
 					this.oGameData.Players[playerID].Units[unitID].GoToNextDirection = -1;
 					this.oGameData.Players[playerID].Units[unitID].RemainingMoves = 0;
 
@@ -198,7 +197,7 @@ namespace OpenCiv1
 
 					for (int i = 1; i < 9; i++)
 					{
-						GPoint direction = this.oGameData.Static.MoveOffsets[i];
+						GPoint direction = TerrainMap.MoveOffsets[i];
 
 						local_10 = this.oGameData.Players[playerID].Units[unitID].Position.X + direction.X;
 						local_12 = this.oGameData.Players[playerID].Units[unitID].Position.Y + direction.Y;
@@ -229,7 +228,7 @@ namespace OpenCiv1
 						if (playerID != this.oGameData.HumanPlayerID || local_16 <= local_a)
 						{
 							// Instruction address 0x2e31:0x03b7, size: 5
-							local_1a = (short)this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(local_10, local_12);
+							TerrainMapCell local_1a = this.oGameData.Map[local_10, local_12];
 
 							// Instruction address 0x2e31:0x03c8, size: 5
 							local_22 = (short)this.oParent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(local_10, local_12);
@@ -238,14 +237,14 @@ namespace OpenCiv1
 							// Instruction address 0x2e31:0x045b, size: 5
 							// Instruction address 0x2e31:0x0470, size: 5
 							if (((local_22 == -1 || local_22 == playerID) &&
-								((((this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Air) ? 0 : 1) == (local_1a != 10 ? 0 : 1) &&
+								((((this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Air) ? 0 : 1) == (local_1a.TerrainType != TerrainTypeEnum.Grassland ? 0 : 1) &&
 								(local_1c == 0 || (short)this.oParent.Segment_1866.F0_1866_1725(playerID, local_10, local_12) == 0)) ||
-								(this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Sea))) ||
+								(this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Water))) ||
 								((this.oParent.MapManagement.F0_2aea_1585_GetImprovements(local_10, local_12) & 0x1) != 0 &&
 								(short)this.oParent.MapManagement.F0_2aea_1369_GetCellUnitPlayerID(local_10, local_12) == playerID))
 							{
 								// Instruction address 0x2e31:0x048c, size: 5
-								if (local_1a != 10 || this.oParent.MapManagement.F0_2aea_195d_GetGroupSize(local_10, local_12) >= 5)
+								if (local_1a.TerrainType != TerrainTypeEnum.Water || this.oParent.MapManagement.F0_2aea_195d_GetGroupSize(local_10, local_12) >= 5)
 								{
 									// Instruction address 0x2e31:0x04a8, size: 5
 									if (local_c == 0 || (this.oParent.MapManagement.F0_2aea_1585_GetImprovements(local_10, local_12) & 0x8) == 0)
@@ -253,7 +252,7 @@ namespace OpenCiv1
 										// !!! Illegal memory access
 										if (this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MoveCount > 1)
 										{
-											local_8 = this.oGameData.Static.Terrains[local_1a].MovementCost * 3;
+											local_8 = local_1a.MovementCost * 3;
 										}
 										else
 										{
@@ -303,7 +302,7 @@ namespace OpenCiv1
 
 					if (local_14 == 0)
 					{
-						this.oGameData.Players[playerID].Units[unitID].GoToPosition.X = -1;
+						this.oGameData.Players[playerID].Units[unitID].GoToDestination.X = -1;
 						this.oGameData.Players[playerID].Units[unitID].GoToNextDirection = -1;
 
 						local_14 = -1;
@@ -357,8 +356,8 @@ namespace OpenCiv1
 			local_36 = this.oGameData.Players[playerID].Units[unitID].Position.X;
 			local_3a = this.oGameData.Players[playerID].Units[unitID].Position.Y;
 
-			this.Var_6590_XPos = this.oGameData.Players[playerID].Units[unitID].GoToPosition.X;
-			this.Var_6592_YPos = this.oGameData.Players[playerID].Units[unitID].GoToPosition.Y;
+			this.Var_6590_XPos = this.oGameData.Players[playerID].Units[unitID].GoToDestination.X;
+			this.Var_6592_YPos = this.oGameData.Players[playerID].Units[unitID].GoToDestination.Y;
 
 			// !!! Illegal memory access
 			// Instruction address 0x2e31:0x063a, size: 3
@@ -367,8 +366,8 @@ namespace OpenCiv1
 
 			if (this.oCPU.AX.Word == 0)
 			{
-				this.Var_6590_XPos = this.oGameData.Players[playerID].Units[unitID].GoToPosition.X;
-				this.Var_6592_YPos = this.oGameData.Players[playerID].Units[unitID].GoToPosition.Y;
+				this.Var_6590_XPos = this.oGameData.Players[playerID].Units[unitID].GoToDestination.X;
+				this.Var_6592_YPos = this.oGameData.Players[playerID].Units[unitID].GoToDestination.Y;
 			}
 			else
 			{
@@ -377,8 +376,8 @@ namespace OpenCiv1
 
 				// Instruction address 0x2e31:0x06a7, size: 3
 				F0_2e31_0a2c(
-					this.oGameData.Players[playerID].Units[unitID].GoToPosition.X,
-					this.oGameData.Players[playerID].Units[unitID].GoToPosition.Y,
+					this.oGameData.Players[playerID].Units[unitID].GoToDestination.X,
+					this.oGameData.Players[playerID].Units[unitID].GoToDestination.Y,
 					((this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Air) ? 0 : 1));
 
 				// Instruction address 0x2e31:0x06b8, size: 5
@@ -441,7 +440,7 @@ namespace OpenCiv1
 			L077f:
 				if ((local_10 & (1 << (local_2e - 1))) == 0) goto L07f8;
 
-				GPoint direction = this.oGameData.Static.MoveOffsets[local_2e];
+				GPoint direction = TerrainMap.MoveOffsets[local_2e];
 
 				local_30 = direction.X + local_14;
 
@@ -507,8 +506,8 @@ namespace OpenCiv1
 
 				// Instruction address 0x2e31:0x08b0, size: 5
 				local_12 = this.oGameData.Map.GetDistance(
-					this.oGameData.Players[playerID].Units[unitID].GoToPosition.X,
-					this.oGameData.Players[playerID].Units[unitID].GoToPosition.Y,
+					this.oGameData.Players[playerID].Units[unitID].GoToDestination.X,
+					this.oGameData.Players[playerID].Units[unitID].GoToDestination.Y,
 					local_30 * 4 + 1, local_34 * 4 + 1);
 
 				if (local_12 >= local_a) goto L08cf;
@@ -527,7 +526,7 @@ namespace OpenCiv1
 			L08db:
 				if ((local_10 & (1 << (local_2e - 1))) == 0) goto L08cf;
 
-				direction = this.oGameData.Static.MoveOffsets[local_2e];
+				direction = TerrainMap.MoveOffsets[local_2e];
 
 				local_30 = local_36 + direction.X;
 				local_34 = local_3a + direction.Y;
@@ -556,8 +555,8 @@ namespace OpenCiv1
 
 				// Instruction address 0x2e31:0x0976, size: 5
 				local_a = this.oGameData.Map.GetDistance(
-					this.oGameData.Players[playerID].Units[unitID].GoToPosition.X,
-					this.oGameData.Players[playerID].Units[unitID].GoToPosition.Y,
+					this.oGameData.Players[playerID].Units[unitID].GoToDestination.X,
+					this.oGameData.Players[playerID].Units[unitID].GoToDestination.Y,
 					local_30 * 4 + 1, local_34 * 4 + 1);
 
 				goto L08cf;
@@ -565,14 +564,14 @@ namespace OpenCiv1
 			L0981:
 				if (local_e != -1)
 				{
-					direction = this.oGameData.Static.MoveOffsets[local_e];
+					direction = TerrainMap.MoveOffsets[local_e];
 
 					// Instruction address 0x2e31:0x099d, size: 3
 					this.Var_6590_XPos = this.oGameData.Map.WrapXPosition(((local_36 + direction.X) * 4) + 1);
 					this.Var_6592_YPos = ((local_3a + direction.Y) * 4) + 1;
 
 					// Instruction address 0x2e31:0x09ba, size: 5
-					if (this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(this.Var_6590_XPos, this.Var_6592_YPos) == TerrainTypeEnum.Water)
+					if (this.oGameData.Map[this.Var_6590_XPos, this.Var_6592_YPos].TerrainType == TerrainTypeEnum.Water)
 					{
 						this.oCPU.AX.Word = 0x1;
 					}
@@ -586,7 +585,7 @@ namespace OpenCiv1
 						this.Var_6590_XPos++;
 
 						// Instruction address 0x2e31:0x09df, size: 5
-						if (this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(this.Var_6590_XPos, this.Var_6592_YPos) == TerrainTypeEnum.Water)
+						if (this.oGameData.Map[this.Var_6590_XPos, this.Var_6592_YPos].TerrainType == TerrainTypeEnum.Water)
 						{
 							this.oCPU.AX.Word = 0x1;
 						}
@@ -605,8 +604,8 @@ namespace OpenCiv1
 			L09fc:
 				if (this.Var_6590_XPos == -1)
 				{
-					this.Var_6590_XPos = this.oGameData.Players[playerID].Units[unitID].GoToPosition.X;
-					this.Var_6592_YPos = this.oGameData.Players[playerID].Units[unitID].GoToPosition.Y;
+					this.Var_6590_XPos = this.oGameData.Players[playerID].Units[unitID].GoToDestination.X;
+					this.Var_6592_YPos = this.oGameData.Players[playerID].Units[unitID].GoToDestination.Y;
 				}
 
 				this.oCPU.AX.Word = (ushort)((short)local_c);
@@ -665,7 +664,7 @@ namespace OpenCiv1
 
 				for (int i = 1; i < 9; i++)
 				{
-					GPoint direction = this.oGameData.Static.MoveOffsets[i];
+					GPoint direction = TerrainMap.MoveOffsets[i];
 
 					local_a = local_12 + direction.X;
 					local_c = local_14 + direction.Y;
@@ -680,10 +679,10 @@ namespace OpenCiv1
 							local_2 = local_a * 4 + 1;
 							local_8 = local_c * 4 + 1;
 
-							if ((flag == ((this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(local_2, local_8) == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2, local_8, xPos, yPos, flag, 18) != -1) ||
-								(flag == ((this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(local_2 + 1, local_8) == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2 + 1, local_8, xPos, yPos, flag, 18) != -1) ||
-								(flag == ((this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(local_2 + 1, local_8 + 1) == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2 + 1, local_8 + 1, xPos, yPos, flag, 18) != -1) ||
-								(flag == ((this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(local_2, local_8 + 1) == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_CreateBarbarianUnit(local_2, local_8 + 1, xPos, yPos, flag, 18) != -1))
+							if ((flag == ((this.oGameData.Map[local_2, local_8].TerrainType == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_IsValidGoTo(local_2, local_8, xPos, yPos, flag, 18) != -1) ||
+								(flag == ((this.oGameData.Map[local_2 + 1, local_8].TerrainType == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_IsValidGoTo(local_2 + 1, local_8, xPos, yPos, flag, 18) != -1) ||
+								(flag == ((this.oGameData.Map[local_2 + 1, local_8 + 1].TerrainType == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_IsValidGoTo(local_2 + 1, local_8 + 1, xPos, yPos, flag, 18) != -1) ||
+								(flag == ((this.oGameData.Map[local_2, local_8 + 1].TerrainType == TerrainTypeEnum.Water) ? 1 : 0) && F0_2e31_111c_IsValidGoTo(local_2, local_8 + 1, xPos, yPos, flag, 18) != -1))
 							{
 								local_6 = local_4;
 								local_e = i;
@@ -695,7 +694,7 @@ namespace OpenCiv1
 
 			if (local_e != -1)
 			{
-				GPoint direction = this.oGameData.Static.MoveOffsets[local_e];
+				GPoint direction = TerrainMap.MoveOffsets[local_e];
 
 				this.Var_6590_XPos = local_12 + direction.X;
 				this.Var_6592_YPos = local_14 + direction.Y;
@@ -728,23 +727,22 @@ namespace OpenCiv1
 			// function body
 			int local_2;
 			int local_4;
-			int local_6;
+			double local_6;
 			int local_8;
-			int local_a;
+			double local_a;
 			int local_c;
-			int local_e = 0;
+			double local_e = 0;
 			int local_10;
 			int local_12;
 			int local_16;
-			int local_1a;
+			double local_1a;
 			int local_1c;
 			int local_1e;
 			int local_20;
 			int local_36;
-			int local_38;
+			double local_38;
 			int local_3a;
 			int local_3c;
-			int local_3e;
 			int local_40;
 			int local_44;
 			int local_46;
@@ -866,7 +864,7 @@ namespace OpenCiv1
 		L0dea:
 			if (local_3c > 8) goto L0d7c;
 
-			GPoint direction = this.oGameData.Static.MoveOffsets[local_3c];
+			GPoint direction = TerrainMap.MoveOffsets[local_3c];
 
 			local_40 = direction.X + local_1c;
 
@@ -882,12 +880,12 @@ namespace OpenCiv1
 			if (Math.Abs(local_44 - this.Var_6592_YPos) >= 8) goto L0de7;
 
 			// Instruction address 0x2e31:0x0e45, size: 5
-			if (this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(local_c, local_44) == 0) goto L0de7;
+			if (!this.oGameData.Map.IsValidPosition(local_c, local_44)) goto L0de7;
 
 			// Instruction address 0x2e31:0x0e57, size: 5
-			local_3e = (short)this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(local_c, local_44);
+			TerrainMapCell local_3e = this.oGameData.Map[local_c, local_44];
 
-			if (local_3e == 10) goto L0e6a;
+			if (local_3e.TerrainType == TerrainTypeEnum.Water) goto L0e6a;
 			goto L0dc8;
 
 		L0e6a:
@@ -907,7 +905,7 @@ namespace OpenCiv1
 				}
 				else
 				{
-					local_1a = (this.oGameData.Static.Terrains[local_3e].MovementCost * 3) + local_e;
+					local_1a = (local_3e.MovementCost * 3) + local_e;
 				}
 			}
 
@@ -942,7 +940,7 @@ namespace OpenCiv1
 			goto L10e2;
 
 		L0f32:
-			direction = this.oGameData.Static.MoveOffsets[local_3c];
+			direction = TerrainMap.MoveOffsets[local_3c];
 			local_40 = direction.X + local_46;
 
 			// Instruction address 0x2e31:0x0f46, size: 5
@@ -965,7 +963,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x2e31:0x0f95, size: 5
 			if (((this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Air) ? 0 : 1) ==
-				((this.oParent.MapManagement.F0_2aea_134a_GetMapLayer1_TerrainType(local_c, local_44) != TerrainTypeEnum.Water) ? 0 : 1))
+				((this.oGameData.Map[local_c, local_44].TerrainType != TerrainTypeEnum.Water) ? 0 : 1))
 				goto L0fec;
 
 			// Instruction address 0x2e31:0x0fdd, size: 5
@@ -1038,8 +1036,8 @@ namespace OpenCiv1
 		L10ed:
 			if (local_16 != -1) goto L1113;
 
-			this.Var_6590_XPos = this.oGameData.Players[playerID].Units[unitID].GoToPosition.X;
-			this.Var_6592_YPos = this.oGameData.Players[playerID].Units[unitID].GoToPosition.Y;
+			this.Var_6590_XPos = this.oGameData.Players[playerID].Units[unitID].GoToDestination.X;
+			this.Var_6592_YPos = this.oGameData.Players[playerID].Units[unitID].GoToDestination.Y;
 
 		L1113:
 			this.oCPU.AX.Word = 0xffff;
@@ -1061,7 +1059,7 @@ namespace OpenCiv1
 		/// <param name="unitType"></param>
 		/// <param name="param6"></param>
 		/// <returns></returns>
-		public int F0_2e31_111c_CreateBarbarianUnit(int xPos, int yPos, int xPos1, int yPos1, int unitType, int param6)
+		public int F0_2e31_111c_IsValidGoTo(int xPos, int yPos, int xPos1, int yPos1, int unitType, int param6)
 		{
 			this.oParent.GoToLog.EnterBlock($"F0_2e31_111c_CreateBarbarianUnit({xPos}, {yPos}, {xPos1}, {yPos1}, {unitType}, {param6})");
 
@@ -1072,8 +1070,8 @@ namespace OpenCiv1
 				this.oGameData.Players[0].Units[127].TypeID = (short)((unitType == 0) ? UnitTypeEnum.Militia : UnitTypeEnum.Trireme);
 				this.oGameData.Players[0].Units[127].Position.X = xPos;
 				this.oGameData.Players[0].Units[127].Position.Y = yPos;
-				this.oGameData.Players[0].Units[127].GoToPosition.X = xPos1;
-				this.oGameData.Players[0].Units[127].GoToPosition.Y = yPos1;
+				this.oGameData.Players[0].Units[127].GoToDestination.X = xPos1;
+				this.oGameData.Players[0].Units[127].GoToDestination.Y = yPos1;
 
 				this.Var_6590_XPos = xPos1;
 				this.Var_6592_YPos = yPos1;
@@ -1091,8 +1089,8 @@ namespace OpenCiv1
 				this.oGameData.Players[0].Units[127].TypeID = -1;
 				this.oGameData.Players[0].Units[127].Position.X = -1;
 				this.oGameData.Players[0].Units[127].Position.Y = -1;
-				this.oGameData.Players[0].Units[127].GoToPosition.X = -1;
-				this.oGameData.Players[0].Units[127].GoToPosition.Y = -1;
+				this.oGameData.Players[0].Units[127].GoToDestination.X = -1;
+				this.oGameData.Players[0].Units[127].GoToDestination.Y = -1;
 			}
 			else
 			{

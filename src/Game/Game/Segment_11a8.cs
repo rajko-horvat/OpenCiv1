@@ -30,9 +30,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0xa);
 
 			// Main menu selection
-			// '1' - VGA; first letter of driver
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x1a22, 0x4d);
-			// '1' - No sound 0x4e, '4' - Sound blaster 0x41, '5' - Roland MIDI board 0x52; first letter of driver
+			// '1' - No sound 0x4e ('N'), '4' - Sound blaster 0x41 ('A'), '5' - Roland MIDI board 0x52 ('R'); first letter of driver
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x1a30, 0x4e);
 			// '1' - Mouse and Keyboard 0x1, '2' - Keyboard only 0x0
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x1a3c, 0x1);
@@ -53,15 +51,8 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0x0);
 
 		L0064:
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
-			if (this.oCPU.Flags.E) goto L0070;
 			this.oCPU.AX.Word = 0x1f40;
-			goto L0073;
 
-		L0070:
-			this.oCPU.AX.Word = 0xfa0;
-
-		L0073:
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
 			if (this.oCPU.Flags.LE) goto L00ee;
 
@@ -75,7 +66,7 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.itoa((short)this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), 10));
 
 			// Instruction address 0x11a8:0x00c1, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30be), 0xba06);
+			this.oParent.Array_30b8[3] = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -83,11 +74,9 @@ namespace OpenCiv1
 			this.oParent.Segment_2f4d.F0_2f4d_044f(0x270);
 
 			// Instruction address 0x11a8:0x00e6, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 64, 49, 1);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 64, 49, 1);
 
 		L00ee:
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
-			if (this.oCPU.Flags.E) goto L0102;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), 0x23be);
 			if (this.oCPU.Flags.GE) goto L0102;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x1a3e, 0x1);
@@ -185,8 +174,8 @@ namespace OpenCiv1
 				this.oParent.Segment_1000.F0_1000_16d4();
 
 				this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5872));
-				this.oParent.Var_db3a = this.oCPU.AX.Word;
-				this.oParent.Var_db3c = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e);
+				this.oParent.Var_db3a = (short)this.oCPU.AX.Word;
+				this.oParent.Var_db3c = this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x586e);
 				this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5870);
 				this.oParent.Var_db3e = this.oCPU.AX.Word;
 			}
@@ -207,17 +196,14 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_11a8_0250()");
 
 			// function body
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdeea, 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea)));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1a3c), 0x0);
-			if (this.oCPU.Flags.E) goto L0267;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea), 0x1);
-			if (this.oCPU.Flags.NE) goto L0267;
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdeea, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea)));
 
-			// Instruction address 0x11a8:0x0262, size: 5
-			this.oParent.Segment_1000.F0_1000_16db();
-
-		L0267:
+			if (this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x1a3c) != 0 && this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xdeea) == 1)
+			{
+				// Instruction address 0x11a8:0x0262, size: 5
+				this.oParent.Segment_1000.F0_1000_16db();
+			}
+		
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_11a8_0250");
 		}
@@ -289,116 +275,75 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Check if a file exists. The files are divided among diskettes.
 		/// </summary>
-		/// <param name="param1"></param>
+		/// <param name="fileIndex"></param>
 		/// <param name="flag"></param>
 		/// <returns></returns>
-		public ushort F0_11a8_02a4(ushort param1, ushort flag)
+		public int F0_11a8_02a4(int fileIndex, int flag)
 		{
-			this.oCPU.Log.EnterBlock($"F0_11a8_02a4({param1}, {flag})");
+			this.oCPU.Log.EnterBlock($"F0_11a8_02a4({fileIndex}, {flag})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x102);
-			this.oCPU.CMP_UInt16(flag, 0x0);
-			if (this.oCPU.Flags.NE) goto L02d9;
+			int local_102;
+			string[] fileNames = new string[] { "civ.exe", "docker.pic", "govt0a.pic", "blurb0.txt", "king00.pic", "king08.pic", "fonts.cv", "birth2.pic" };
 
-			this.oCPU.BX.Word = param1;
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
+			if (flag == 0)
+			{
+				// Instruction address 0x11a8:0x02bd, size: 5
+				if ((short)this.oParent.Segment_1000.F0_1000_066a_FileExists(fileNames[fileIndex]) != -1)
+				{
+					this.oParent.Var_e17c = fileIndex;
 
-			// Instruction address 0x11a8:0x02bd, size: 5
-			this.oParent.Segment_1000.F0_1000_066a_FileExists(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1ace)));
-			
-			this.oCPU.AX.Word = this.oCPU.INC_UInt16(this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L02d4;
-			this.oCPU.AX.Word = param1;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xe17c, this.oCPU.AX.Word);
-			this.oCPU.AX.Word = 0x1;
-			goto L03d5;
+					this.oCPU.AX.Word = 0x1;
+					goto L03d5;
+				}
 
-		L02d4:
-			param1 = 0;
-
-		L02d9:
-			this.oCPU.BX.Word = param1;
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
+				fileIndex = 0;
+			}
 
 			// Instruction address 0x11a8:0x02e5, size: 5
-			this.oParent.Segment_1000.F0_1000_066a_FileExists(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1ace)));
+			while ((short)this.oParent.Segment_1000.F0_1000_066a_FileExists(fileNames[fileIndex]) == -1)
+			{
+				// Instruction address 0x11a8:0x02ff, size: 5
+				this.oParent.Segment_1000.F0_1000_0846(this.oParent.Var_aa_Rectangle.ScreenID);
 			
-			this.oCPU.AX.Word = this.oCPU.INC_UInt16(this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L02f9;
-			this.oCPU.CMP_UInt16(flag, 0xffff);
-			if (this.oCPU.Flags.E) goto L02f9;
-			goto L03cc;
+				// Instruction address 0x11a8:0x0313, size: 3
+				F0_11a8_0268();
 
-		L02f9:
-			// Instruction address 0x11a8:0x02ff, size: 5
-			this.oParent.Segment_1000.F0_1000_0846(this.oParent.Var_aa_Rectangle.ScreenID);
-			
-			this.oCPU.CMP_UInt16(flag, 0xffff);
-			if (this.oCPU.Flags.NE) goto L0312;
+				// Instruction address 0x11a8:0x032a, size: 5
+				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 15);
 
-			flag = 1;
+				string sMessage = $"Please insert Disk {(char)((fileIndex / this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeba)) + 0x31)}.\n \n    Press Return\n    to continue.\n";
 
-		L0312:
-			// Instruction address 0x11a8:0x0313, size: 3
-			F0_11a8_0268();
+				local_102 = this.oParent.Var_3936;
 
-			// Instruction address 0x11a8:0x032a, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 15);
+				this.oParent.Var_3936 = -1;
+				this.oParent.Var_d206 = 1;
 
-			this.oCPU.AX.Word = param1;
-			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-			this.oCPU.CX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeba);
-			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-			this.oCPU.AX.Low = this.oCPU.ADD_UInt8(this.oCPU.AX.Low, 0x31);
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x1ade, this.oCPU.AX.Low);
+				// Instruction address 0x11a8:0x0394, size: 5
+				this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(sMessage, 100, 81, 1);
 
-			// Instruction address 0x11a8:0x034a, size: 5
-			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x100), "Please insert Disk ");
+				this.oParent.Var_3936 = local_102;
 
-			// Instruction address 0x11a8:0x035b, size: 5
-			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x100), "A");
+				// Instruction address 0x11a8:0x03b7, size: 5
+				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 15);
 
-			// Instruction address 0x11a8:0x036c, size: 5
-			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x100), ".\n \n    Press Return\n    to continue.\n");
+				this.oParent.Var_1ae0 = 1;
 
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3936);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x102), this.oCPU.AX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3936, 0xffff);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd206, 0x1);
+				// Instruction address 0x11a8:0x03c6, size: 3
+				F0_11a8_0250();
+			}
 
-			// Instruction address 0x11a8:0x0394, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031((ushort)(this.oCPU.BP.Word - 0x100), 100, 81, 1);
+			this.oParent.Var_e17c = fileIndex;
 
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x102));
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3936, this.oCPU.AX.Word);
-
-			// Instruction address 0x11a8:0x03b7, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 15);
-
-			this.oParent.Var_1ae0 = 1;
-
-			// Instruction address 0x11a8:0x03c6, size: 3
-			F0_11a8_0250();
-
-			goto L02d9;
-
-		L03cc:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xe17c, param1);
-
-			this.oCPU.AX.Word = flag;
+			this.oCPU.AX.Word = (ushort)((short)flag);
 
 		L03d5:
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_11a8_02a4");
 
-			return this.oCPU.AX.Word;
+			return (short)this.oCPU.AX.Word;
 		}
 
 		/// <summary>
@@ -421,7 +366,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, " Start a New Game\n Load a Saved Game\n EARTH\n Customize World\n View Hall of Fame\n");
 
 			// Instruction address 0x11a8:0x04b0, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 100, 140, 1);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 100, 140, 1);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6b32, this.oCPU.AX.Word);
 
@@ -489,7 +434,7 @@ namespace OpenCiv1
 			this.oParent.GameInitAndIntro.F7_0000_17cf_AdvanceEvolutionAnimation();
 
 			//this.oParent.GameInitAndIntro.F7_0000_0012_GenerateMap(false);
-			this.oGameData.Map = new Map(this.oParent, 80, 50);
+			this.oGameData.Map = new TerrainMap(this.oParent, 80, 50);
 
 			this.oParent.GameInitAndIntro.Var_67fc = 1;
 			while (this.oParent.GameInitAndIntro.F7_0000_17cf_AdvanceEvolutionAnimation() != 0) ;
@@ -533,13 +478,9 @@ namespace OpenCiv1
 			// Instruction address 0x11a8:0x05a0, size: 3
 			F0_11a8_02a4(7, 1);
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
-			if (this.oCPU.Flags.E) goto L05be;
-
 			// Instruction address 0x11a8:0x05b6, size: 5
 			this.oParent.Segment_1000.F0_1000_04d4_TransformPaletteToColor(5, Color.FromRgb(0, 0, 0));
 
-		L05be:
 			// Instruction address 0x11a8:0x05d1, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
@@ -555,7 +496,7 @@ namespace OpenCiv1
 			// Instruction address 0x11a8:0x061a, size: 3
 			F0_11a8_0250();
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, 0x1);
+			this.oParent.Var_2f9a = 1;
 
 		L0623:
 			// Instruction address 0x11a8:0x062b, size: 5
@@ -565,22 +506,22 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, "LAND MASS:\n Small\n Normal\n Large\n");
 
 			// Instruction address 0x11a8:0x064f, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 200, 1, 1);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 200, 1, 1);
 
 			this.oParent.Var_7ef6_MapLandMass = (short)this.oCPU.AX.Word;
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
 			if (this.oCPU.Flags.E) goto L0623;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2f9c), 0x0);
-			if (this.oCPU.Flags.E) goto L067a;
+			
+			if (this.oParent.Var_2f9c == 0) goto L067a;
 
 			this.oParent.Help.F4_0000_0000(0x1b6a);
 
-			this.oCPU.AX.Word = (ushort)((short)oParent.Var_7ef6_MapLandMass);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, this.oCPU.AX.Word);
+			this.oParent.Var_2f9a = this.oParent.Var_7ef6_MapLandMass;
+
 			goto L0623;
 
 		L067a:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, 0x1);
+			this.oParent.Var_2f9a = 1;
 
 		L0680:
 			// Instruction address 0x11a8:0x0688, size: 5
@@ -590,22 +531,22 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, "TEMPERATURE:\n Cool\n Temperate\n Warm\n");
 
 			// Instruction address 0x11a8:0x06ac, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 200, 51, 1);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 200, 51, 1);
 
 			this.oParent.Var_7ef8_MapTemperature = (short)this.oCPU.AX.Word;
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
 			if (this.oCPU.Flags.E) goto L0680;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2f9c), 0x0);
-			if (this.oCPU.Flags.E) goto L06d7;
+
+			if (this.oParent.Var_2f9c == 0) goto L06d7;
 
 			this.oParent.Help.F4_0000_0000(0x1b94);
-			
-			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_7ef8_MapTemperature);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, this.oCPU.AX.Word);
+
+			this.oParent.Var_2f9a = this.oParent.Var_7ef8_MapTemperature;
+
 			goto L0680;
 
 		L06d7:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, 0x1);
+			this.oParent.Var_2f9a = 1;
 
 		L06dd:
 			// Instruction address 0x11a8:0x06e5, size: 5
@@ -615,26 +556,25 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, "CLIMATE:\n Arid\n Normal\n Wet\n");
 
 			// Instruction address 0x11a8:0x0709, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 200, 101, 1);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 200, 101, 1);
 
 			this.oParent.Var_7efa_MapClimate = (short)this.oCPU.AX.Word;
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
 			if (this.oCPU.Flags.E) goto L06dd;
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2f9c), 0x0);
-			if (this.oCPU.Flags.E) goto L0734;
+			if (this.oParent.Var_2f9c == 0) goto L0734;
 
 			this.oParent.Help.F4_0000_0000(0x1bbd);
 			
 			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_7efa_MapClimate);
 
 		L072f:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, this.oCPU.AX.Word);
+			this.oParent.Var_2f9a = (short)this.oCPU.AX.Word;
 			goto L06dd;
 
 		L0734:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, 0x1);
+			this.oParent.Var_2f9a = 1;
 
 		L073a:
 			// Instruction address 0x11a8:0x0742, size: 5
@@ -644,14 +584,14 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, "AGE:\n 3 billion years\n 4 billion years\n 5 billion years\n");
 
 			// Instruction address 0x11a8:0x0766, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 200, 151, 1);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 200, 151, 1);
 
 			this.oParent.Var_7efc_MapAge = (short)this.oCPU.AX.Word;
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
 			if (this.oCPU.Flags.E) goto L073a;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2f9c), 0x0);
-			if (this.oCPU.Flags.E) goto L078e;
+
+			if (this.oParent.Var_2f9c == 0) goto L078e;
 
 			this.oParent.Help.F4_0000_0000(0x1bfe);
 			
@@ -683,7 +623,7 @@ namespace OpenCiv1
 				GBitmap earthBitmap = new GBitmap(80, 50);
 				earthBitmap.DrawImage(0, 0, tempBitmap, new GRectangle(0, 0, 80, 50), false);
 
-				this.oGameData.Map = new Map(this.oParent, earthBitmap);
+				this.oGameData.Map = new TerrainMap(this.oParent, earthBitmap);
 			}
 			else
 			{
@@ -748,8 +688,6 @@ namespace OpenCiv1
 			this.oParent.StartGameMenu.F5_0000_1455();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f98, 0x1);
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
-			if (this.oCPU.Flags.E) goto L0848;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6b32), 0x0);
 			if (this.oCPU.Flags.E) goto L0837;

@@ -65,7 +65,7 @@ namespace OpenCiv1.Graphics
 			return this.oCPU.AX.Word;
 		}
 
-		public ushort F0_VGA_04ae_AllocateScreen(ushort screenID)
+		public ushort F0_VGA_04ae_AllocateScreen(int screenID)
 		{
 			// function body
 			if (!this.aScreens.ContainsKey(screenID))
@@ -308,8 +308,10 @@ namespace OpenCiv1.Graphics
 			}
 		}
 
-		public ushort F0_VGA_0b85_ScreenToBitmap(ushort screenID, ushort xPos, ushort yPos, ushort width, ushort height)
+		public int F0_VGA_0b85_ScreenToBitmap(int screenID, int xPos, int yPos, int width, int height)
 		{
+			int newScreenID = -1;
+
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
 			{
@@ -318,15 +320,18 @@ namespace OpenCiv1.Graphics
 					GBitmap screen = this.aScreens.GetValueByKey(screenID);
 					GBitmap bitmap = new GBitmap(width, height);
 					GRectangle rect = new GRectangle(xPos, yPos, width, height);
+					newScreenID = this.iNextBitmapID;
+
 					screen.CopyPalette(bitmap);
 
 					bitmap.DrawImage(0, 0, screen, rect, false);
 
-					this.aBitmaps.Add(this.iNextBitmapID, bitmap);
+					this.aBitmaps.Add(newScreenID, bitmap);
 
 					//bitmap.Bitmap.SaveToPIC($"Bitmaps{Path.DirectorySeparatorChar}Image_{this.iNextBitmapID:x4}.png", ImageFormat.Png);
 
-					this.oCPU.AX.Word = (ushort)this.iNextBitmapID;
+					this.oCPU.AX.Word = (ushort)((short)newScreenID);
+
 					this.iNextBitmapID++;
 				}
 			}
@@ -335,27 +340,27 @@ namespace OpenCiv1.Graphics
 				throw new Exception($"The screen {screenID} is not allocated");
 			}
 
-			return this.oCPU.AX.Word;
+			return newScreenID;
 		}
 
-		public void F0_VGA_0c3e_DrawBitmapToScreen(CRectangle rect, int xPos, int yPos, ushort bitmapPtr)
+		public void F0_VGA_0c3e_DrawBitmapToScreen(CRectangle rect, int xPos, int yPos, int bitmapID)
 		{
 			// function body
 			if (this.aScreens.ContainsKey(rect.ScreenID))
 			{
-				if (this.aBitmaps.ContainsKey(bitmapPtr))
+				if (this.aBitmaps.ContainsKey(bitmapID))
 				{
 					lock (this.GLock)
 					{
 						GBitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
-						GBitmap bitmap = this.aBitmaps.GetValueByKey(bitmapPtr);
+						GBitmap bitmap = this.aBitmaps.GetValueByKey(bitmapID);
 
 						screen.DrawImage(rect.Left + xPos, rect.Top + yPos, bitmap, true);
 					}
 				}
 				else
 				{
-					this.oCPU.Log.WriteLine($"The bitmap 0x{bitmapPtr:x4} is not allocated");
+					this.oCPU.Log.WriteLine($"The bitmap 0x{bitmapID:x4} is not allocated");
 				}
 			}
 			else
@@ -511,12 +516,22 @@ namespace OpenCiv1.Graphics
 		#endregion
 
 		#region Fonts
-		public ushort F0_VGA_115d_GetCharWidth(int fontID, byte ch)
+		public int F0_VGA_115d_GetCharWidth(int fontID, byte ch)
 		{
 			// function body
-			this.oCPU.AX.Word = (ushort)GetDrawStringSize(fontID, new string((char)ch, 1)).Width;
+			int iValue = GetDrawStringSize(fontID, new string((char)ch, 1)).Width;
+			this.oCPU.AX.Word = (ushort)((short)iValue);
 
-			return this.oCPU.AX.Word;
+			return iValue;
+		}
+
+		public int F0_VGA_115d_GetCharWidth(int fontID, char ch)
+		{
+			// function body
+			int iValue = GetDrawStringSize(fontID, new string(ch, 1)).Width;
+			this.oCPU.AX.Word = (ushort)((short)iValue);
+
+			return iValue;
 		}
 
 		public GSize GetDrawStringSize(int fontID, string text)
@@ -556,12 +571,13 @@ namespace OpenCiv1.Graphics
 			return new GSize(iWidth, iHeight);
 		}
 
-		public ushort F0_VGA_11ae_GetTextHeight(int fontID)
+		public int F0_VGA_11ae_GetTextHeight(int fontID)
 		{
 			// function body
-			this.oCPU.AX.Word = (ushort)GetDrawStringSize(fontID, "?").Height;
+			int iValue = GetDrawStringSize(fontID, "?").Height;
+			this.oCPU.AX.Word = (ushort)((short)iValue);
 
-			return this.oCPU.AX.Word;
+			return iValue;
 		}
 
 		public void F0_VGA_11d7_DrawString(CRectangle rect, int xPos, int yPos, string text)

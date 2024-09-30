@@ -92,7 +92,7 @@ namespace OpenCiv1
 				if (local_1c < 12 && local_18 < 15)
 				{
 					if (this.oParent.Var_d806 != 0 ||
-						(this.oGameData.Map[local_18 + this.oParent.Var_d4cc_XPos, local_1c + this.oParent.Var_d75e_YPos].Visibility & (1 << playerID)) != 0)
+						this.oGameData.Map[local_18 + this.oParent.Var_d4cc_XPos, local_1c + this.oParent.Var_d75e_YPos].IsVisibleTo(playerID))
 					{
 						// Instruction address 0x2aea:0x0118, size: 5
 						// Instruction address 0x2aea:0x0122, size: 3
@@ -121,7 +121,7 @@ namespace OpenCiv1
 					this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, (ushort)(327 - this.Array_6dac[i]));
 
 					// Instruction address 0x2aea:0x018d, size: 5
-					this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0xba06,
+					this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadowToRectAA(0xba06,
 						this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.Array_6dac[i] - 8, 80, 999),
 						this.Array_6e3e[i] + 16, 11);
 				}
@@ -214,10 +214,10 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x2aea:0x037c, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a66_DrawShadowRectangle(0, 8, 79, 49, 15, 8);
+			this.oParent.MenuBoxDialog.F0_2d05_0a66_DrawShadowRectangle(0, 8, 79, 49, 15, 8);
 
 			// Instruction address 0x2aea:0x03a2, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(xPos - local_c - 1, yPos - local_12 + 7, 17, 10, 15);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(xPos - local_c - 1, yPos - local_12 + 7, 17, 10, 15);
 
 			this.oParent.Var_d20a = local_2;
 
@@ -263,7 +263,7 @@ namespace OpenCiv1
 						this.oParent.Array_1946[F0_2aea_1369_GetCellUnitPlayerID(xPos, yPos)]);
 
 				}
-				else if (F0_2aea_134a_GetMapLayer1_TerrainType(xPos, yPos) == TerrainTypeEnum.Water) // Instruction address 0x2aea:0x041a, size: 3
+				else if (this.oGameData.Map[xPos, yPos].TerrainType == TerrainTypeEnum.Water) // Instruction address 0x2aea:0x041a, size: 3
 				{
 					// Instruction address 0x2aea:0x0408, size: 5
 					this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos * 4, yPos * 4, 4, 4, 1);
@@ -283,7 +283,7 @@ namespace OpenCiv1
 				if (local_6 > 79 && local_6 < 320 && local_a > 7 && local_a < 193)
 				{
 					// Instruction address 0x2aea:0x047c, size: 3
-					local_18 = F0_2aea_134a_GetMapLayer1_TerrainType(xPos, yPos);
+					local_18 = this.oGameData.Map[xPos, yPos].TerrainType;
 
 					// Instruction address 0x2aea:0x048c, size: 3
 					local_14 = F0_2aea_15c1_GetVisibleImprovements(xPos, yPos);
@@ -299,143 +299,107 @@ namespace OpenCiv1
 
 					if (local_18 == TerrainTypeEnum.Water)
 					{
-						if (this.oParent.Var_d762 == 0)
+						local_12 = 0;
+
+						for (int i = 1; i < 9; i++)
 						{
-							local_12 = 0;
+							local_12 /= 2;
 
-							for (int i = 1; i < 9; i += 2)
+							direction = TerrainMap.MoveOffsets[i];
+
+							// Instruction address 0x2aea:0x0566, size: 5
+							// Instruction address 0x2aea:0x0570, size: 3
+							// Instruction address 0x2aea:0x0587, size: 3
+							if (this.oGameData.Map.IsValidPosition(0, yPos + direction.Y) &&
+								this.oGameData.Map[xPos + direction.X, yPos + direction.Y].TerrainType != TerrainTypeEnum.Water)
 							{
-								local_12 /= 2;
-
-								direction = this.oGameData.Static.MoveOffsets[i];
-
-								// Instruction address 0x2aea:0x04e6, size: 5
-								// Instruction address 0x2aea:0x04f0, size: 3
-								// Instruction address 0x2aea:0x0507, size: 3
-								if (F0_2aea_134a_GetMapLayer1_TerrainType(this.oGameData.Map.WrapXPosition(xPos + direction.X), yPos + direction.Y) != TerrainTypeEnum.Water &&
-									F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y) != 0)
-								{
-									local_12 |= 0x8;
-								}
+								local_12 |= 0x80;
 							}
+						}
 
-							// Instruction address 0x2aea:0x053e, size: 5
-							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19fc_Rectangle, local_12 * 16, 64, 16, 16,
+						local_e = local_12;
+						local_12 = ((local_12 / 64) & 0x3) + (local_12 * 4);
+
+						for (int i = 0; i < 4; i++)
+						{
+							if (i >= 2)
+							{
+								// Instruction address 0x2aea:0x05f4, size: 5
+								this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+									local_6 - ((i & 0x1) * 8) + 8, local_a + 8,
+									this.oParent.Array_d294[(local_12 >> (i * 2)) & 0x7, i]);
+							}
+							else
+							{
+								// Instruction address 0x2aea:0x05f4, size: 5
+								this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+									local_6 + ((i & 0x1) * 8), local_a,
+									this.oParent.Array_d294[(local_12 >> (i * 2)) & 0x7, i]);
+							}
+						}
+
+						if (local_e == 28)
+						{
+							// Instruction address 0x2aea:0x0656, size: 5
+							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 224, 100, 16, 16,
 								this.oParent.Var_aa_Rectangle, local_6, local_a);
 						}
-						else
+
+						if (local_e == 193)
 						{
-							local_12 = 0;
+							// Instruction address 0x2aea:0x0680, size: 5
+							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 240, 100, 16, 16,
+								this.oParent.Var_aa_Rectangle, local_6, local_a);
+						}
 
-							for (int i = 1; i < 9; i++)
+						if (local_e == 7)
+						{
+							// Instruction address 0x2aea:0x06a9, size: 5
+							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 256, 100, 16, 16,
+								this.oParent.Var_aa_Rectangle, local_6, local_a);
+						}
+
+						if (local_e == 112)
+						{
+							// Instruction address 0x2aea:0x06d2, size: 5
+							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 272, 100, 16, 16,
+								this.oParent.Var_aa_Rectangle, local_6, local_a);
+						}
+
+						if (local_e == 143)
+						{
+							// Instruction address 0x2aea:0x06fc, size: 5
+							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 288, 100, 16, 16,
+								this.oParent.Var_aa_Rectangle, local_6, local_a);
+						}
+
+						if (local_e == 248)
+						{
+							// Instruction address 0x2aea:0x0726, size: 5
+							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 304, 100, 16, 16,
+								this.oParent.Var_aa_Rectangle, local_6, local_a);
+						}
+
+						for (int i = 1; i < 9; i += 2)
+						{
+							direction = TerrainMap.MoveOffsets[i];
+
+							// Instruction address 0x2aea:0x0748, size: 5
+							// Instruction address 0x2aea:0x0752, size: 3
+							if (this.oGameData.Map[xPos + direction.X, yPos + direction.Y].TerrainType == TerrainTypeEnum.River)
 							{
-								local_12 /= 2;
-
-								direction = this.oGameData.Static.MoveOffsets[i];
-
-								// Instruction address 0x2aea:0x0566, size: 5
-								// Instruction address 0x2aea:0x0570, size: 3
-								// Instruction address 0x2aea:0x0587, size: 3
-								if (F0_2aea_134a_GetMapLayer1_TerrainType(this.oGameData.Map.WrapXPosition(xPos + direction.X), yPos + direction.Y) != TerrainTypeEnum.Water &&
-									F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y) != 0)
-								{
-									local_12 |= 0x80;
-								}
-							}
-
-							local_e = local_12;
-							local_12 = ((local_12 / 64) & 0x3) + (local_12 * 4);
-
-							for (int i = 0; i < 4; i++)
-							{
-								if (i >= 2)
-								{
-									// Instruction address 0x2aea:0x05f4, size: 5
-									this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-										local_6 - ((i & 0x1) * 8) + 8, local_a + 8,
-										this.oParent.Array_d294[(local_12 >> (i * 2)) & 0x7, i]);
-								}
-								else
-								{
-									// Instruction address 0x2aea:0x05f4, size: 5
-									this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-										local_6 + ((i & 0x1) * 8), local_a,
-										this.oParent.Array_d294[(local_12 >> (i * 2)) & 0x7, i]);
-								}
-							}
-
-							if (local_e == 28)
-							{
-								// Instruction address 0x2aea:0x0656, size: 5
-								this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 224, 100, 16, 16,
-									this.oParent.Var_aa_Rectangle, local_6, local_a);
-							}
-
-							if (local_e == 193)
-							{
-								// Instruction address 0x2aea:0x0680, size: 5
-								this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 240, 100, 16, 16,
-									this.oParent.Var_aa_Rectangle, local_6, local_a);
-							}
-
-							if (local_e == 7)
-							{
-								// Instruction address 0x2aea:0x06a9, size: 5
-								this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 256, 100, 16, 16,
-									this.oParent.Var_aa_Rectangle, local_6, local_a);
-							}
-
-							if (local_e == 112)
-							{
-								// Instruction address 0x2aea:0x06d2, size: 5
-								this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 272, 100, 16, 16,
-									this.oParent.Var_aa_Rectangle, local_6, local_a);
-							}
-
-							if (local_e == 143)
-							{
-								// Instruction address 0x2aea:0x06fc, size: 5
-								this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 288, 100, 16, 16,
-									this.oParent.Var_aa_Rectangle, local_6, local_a);
-							}
-
-							if (local_e == 248)
-							{
-								// Instruction address 0x2aea:0x0726, size: 5
-								this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 304, 100, 16, 16,
-									this.oParent.Var_aa_Rectangle, local_6, local_a);
-							}
-
-							for (int i = 1; i < 9; i += 2)
-							{
-								direction = this.oGameData.Static.MoveOffsets[i];
-
-								// Instruction address 0x2aea:0x0748, size: 5
-								// Instruction address 0x2aea:0x0752, size: 3
-								if (F0_2aea_134a_GetMapLayer1_TerrainType(this.oGameData.Map.WrapXPosition(xPos + direction.X), yPos + direction.Y) == TerrainTypeEnum.River)
-								{
-									// Instruction address 0x2aea:0x0777, size: 5
-									this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-										local_6, local_a, this.oParent.Array_d2d4[i / 2]);
-								}
+								// Instruction address 0x2aea:0x0777, size: 5
+								this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+									local_6, local_a, this.oParent.Array_d2d4[i / 2]);
 							}
 						}
 					}
 				
 					if (local_18 != TerrainTypeEnum.Water)
 					{
-						if (this.oParent.Var_d762 == 0)
-						{
-							// Instruction address 0x2aea:0x07cd, size: 5
-							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19fc_Rectangle, 0, 80, 16, 16,
-								this.oParent.Var_aa_Rectangle, local_6, local_a);
-						}
-						else
-						{
-							// Instruction address 0x2aea:0x07cd, size: 5
-							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 256, 120, 16, 16,
-								this.oParent.Var_aa_Rectangle, local_6, local_a);
-						}
+						// Instruction address 0x2aea:0x07cd, size: 5
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 256, 120, 16, 16,
+							this.oParent.Var_aa_Rectangle, local_6, local_a);
 					}
 
 					if ((local_14 & 0x2) != 0 && local_18 != TerrainTypeEnum.Water && this.oParent.Var_dcfc == 0 && (local_14 & 0x1) == 0)
@@ -453,10 +417,10 @@ namespace OpenCiv1
 						{
 							local_12 /= 2;
 
-							direction = this.oGameData.Static.MoveOffsets[i];
+							direction = TerrainMap.MoveOffsets[i];
 
 							// Instruction address 0x2aea:0x082c, size: 3
-							local_4 = F0_2aea_134a_GetMapLayer1_TerrainType(this.oGameData.Map.WrapXPosition(xPos + direction.X), yPos + direction.Y);
+							local_4 = this.oGameData.Map[xPos + direction.X, yPos + direction.Y].TerrainType;
 
 							if (local_4 == TerrainTypeEnum.River || local_4 == TerrainTypeEnum.Water)
 							{
@@ -467,7 +431,7 @@ namespace OpenCiv1
 						// Instruction address 0x2aea:0x0862, size: 5
 						//if ((this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 150) & 0x8) == 0) goto L0872;
 
-						if (this.oParent.Var_d762 == 0 || (this.oGameData.Map[xPos, yPos].Layer7_TerrainImprovements2 & 0x8) != 0)
+						if ((this.oGameData.Map[xPos, yPos].Layer7_TerrainImprovements2 & 0x8) != 0)
 						{
 							// Instruction address 0x2aea:0x0885, size: 5
 							this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
@@ -483,79 +447,42 @@ namespace OpenCiv1
 
 					if (local_18 != TerrainTypeEnum.Water && local_18 != TerrainTypeEnum.River)
 					{
-						if (this.oParent.Var_d762 != 0)
+						local_12 = 0;
+
+						for (int i = 1; i < 9; i += 2)
 						{
-							local_12 = 0;
+							local_12 /= 2;
 
-							for (int i = 1; i < 9; i += 2)
+							direction = TerrainMap.MoveOffsets[i];
+
+							// Instruction address 0x2aea:0x08ec, size: 3
+							// Instruction address 0x2aea:0x08cb, size: 5
+							// Instruction address 0x2aea:0x08d5, size: 3
+							if (this.oGameData.Map.IsValidPosition(0, yPos + direction.Y) &&
+								this.oGameData.Map[xPos + direction.X, yPos + direction.Y].TerrainType == local_18)
 							{
-								local_12 /= 2;
-
-								direction = this.oGameData.Static.MoveOffsets[i];
-
-								// Instruction address 0x2aea:0x08ec, size: 3
-								// Instruction address 0x2aea:0x08cb, size: 5
-								// Instruction address 0x2aea:0x08d5, size: 3
-								if (F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y) != 0 &&
-									F0_2aea_134a_GetMapLayer1_TerrainType(this.oGameData.Map.WrapXPosition(xPos + direction.X), yPos + direction.Y) == local_18)
-								{
-									local_12 |= 0x8;
-								}
-							}
-
-							// Instruction address 0x2aea:0x091e, size: 5
-							this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-								local_6, local_a,
-								this.oParent.Array_b886[(int)local_18, local_12]);
-
-							if (local_18 == TerrainTypeEnum.Grassland && (((xPos * 7) + (yPos * 11)) & 0x2) == 0)
-							{
-								// Instruction address 0x2aea:0x0996, size: 5
-								this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-									local_6 + 4, local_a + 4, this.oParent.Var_b880);
+								local_12 |= 0x8;
 							}
 						}
-						else
+
+						// Instruction address 0x2aea:0x091e, size: 5
+						this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+							local_6, local_a,
+							this.oParent.Array_b886[(int)local_18, local_12]);
+
+						if (local_18 == TerrainTypeEnum.Grassland && (((xPos * 7) + (yPos * 11)) & 0x2) == 0)
 						{
-							if (local_18 == TerrainTypeEnum.Grassland)
-							{
-								// Instruction address 0x2aea:0x0996, size: 5
-								this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-									local_6, local_a,
-									this.oParent.Array_b886[(int)local_18, (((yPos * 11) + (xPos * 7)) & 0x2) >> 1]);
-							}
-							else
-							{
-								// Instruction address 0x2aea:0x0996, size: 5
-								this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-									local_6, local_a,
-									this.oParent.Array_b886[(int)local_18, ((xPos + yPos) & 0x1)]);
-							}
+							// Instruction address 0x2aea:0x0996, size: 5
+							this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+								local_6 + 4, local_a + 4, this.oParent.Var_b880);
 						}
 					}
 
 					if ((local_14 & 0x40) != 0)
 					{
-						if (this.oParent.Var_d762 != 0)
-						{
-							// Instruction address 0x2aea:0x09bc, size: 5
-							this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-								local_6, local_a, this.oParent.Array_d4ce[6]);
-						}
-						else
-						{
-							// Instruction address 0x2aea:0x09dc, size: 5
-							this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, local_6, local_a, 16, 16, 2, 0);
-
-							// Instruction address 0x2aea:0x09fb, size: 5
-							this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, local_6, local_a, 16, 16, 10, 15);
-
-							// Instruction address 0x2aea:0x0a1a, size: 5
-							this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, local_6, local_a, 16, 16, 9, 8);
-
-							// Instruction address 0x2aea:0x0a38, size: 5
-							this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, local_6, local_a, 16, 16, 11, 0);
-						}
+						// Instruction address 0x2aea:0x09bc, size: 5
+						this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+							local_6, local_a, this.oParent.Array_d4ce[6]);
 					}
 
 					if ((local_14 & 0x8) != 0)
@@ -571,7 +498,7 @@ namespace OpenCiv1
 
 						for (int i = 1; i < 9; i++)
 						{
-							direction = this.oGameData.Static.MoveOffsets[i];
+							direction = TerrainMap.MoveOffsets[i];
 
 							// Instruction address 0x2aea:0x0a9a, size: 3
 							local_1c = F0_2aea_15c1_GetVisibleImprovements(this.oGameData.Map.WrapXPosition(xPos + direction.X), yPos + direction.Y);
@@ -611,7 +538,7 @@ namespace OpenCiv1
 					}
 				
 					// Instruction address 0x2aea:0x0b11, size: 3
-					if (this.oGameData.Map[xPos, yPos].HasSpecialResource)
+					if (this.oGameData.Map[xPos, yPos].HasSpecialResources)
 					{
 						// Instruction address 0x2aea:0x0b28, size: 5
 						this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
@@ -637,12 +564,11 @@ namespace OpenCiv1
 					{
 						for (int i = 1; i < 9; i += 2)
 						{
-							direction = this.oGameData.Static.MoveOffsets[i];
+							direction = TerrainMap.MoveOffsets[i];
 
 							int yTemp = yPos + direction.Y;
 
-							if ((((yTemp >= 0 && yTemp < 50) ? this.oGameData.Map[xPos + direction.X, yTemp].Visibility : 0) &
-								(1 << this.oGameData.HumanPlayerID)) == 0)
+							if (yTemp >= 0 && yTemp < 50 && !this.oGameData.Map[xPos + direction.X, yTemp].IsVisibleTo(this.oGameData.HumanPlayerID))
 							{
 								// Instruction address 0x2aea:0x0bce, size: 5
 								this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
@@ -663,10 +589,10 @@ namespace OpenCiv1
 							this.oGameData.Cities[local_c].VisibleSize != 0 || this.oParent.Var_d806 != 0)
 						{
 							// Instruction address 0x2aea:0x0c4b, size: 5
-							this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(local_6 + 1, local_a + 1, 13, 13, 15);
+							this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(local_6 + 1, local_a + 1, 13, 13, 15);
 
 							// Instruction address 0x2aea:0x0c7d, size: 5
-							this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(local_6 + 2, local_a + 1, 12, 12,
+							this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(local_6 + 2, local_a + 1, 12, 12,
 								this.oParent.Array_1956[this.oGameData.Cities[local_c].PlayerID]);
 
 							// Instruction address 0x2aea:0x0cac, size: 5
@@ -706,14 +632,14 @@ namespace OpenCiv1
 							else
 							{
 								// Instruction address 0x2aea:0x0d8d, size: 5
-								this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, ((local_e < 10) ? 6 : 3) + local_6, local_a + 5, 0);
+								this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, ((local_e < 10) ? 6 : 3) + local_6, local_a + 5, 0);
 							}
 
 							// Instruction address 0x2aea:0x0d9c, size: 3
 							if ((short)F0_2aea_1458_GetCellActiveUnitID(xPos, yPos) != -1 || this.oGameData.Cities[local_c].Unknown[0] != -1)
 							{
 								// Instruction address 0x2aea:0x0dc2, size: 5
-								this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(local_6, local_a, 15, 15, 0);
+								this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(local_6, local_a, 15, 15, 0);
 							}
 						
 							if ((this.oGameData.Cities[local_c].ImprovementFlags0 & 0x80) != 0)
@@ -804,7 +730,7 @@ namespace OpenCiv1
 					local_2 = this.oGameData.Players[playerID].Units[unitID].TypeID;
 
 					// Instruction address 0x2aea:0x0f33, size: 3
-					local_c = F0_2aea_134a_GetMapLayer1_TerrainType(this.oGameData.Players[playerID].Units[unitID].Position.X, this.oGameData.Players[playerID].Units[unitID].Position.Y);
+					local_c = this.oGameData.Map[this.oGameData.Players[playerID].Units[unitID].Position].TerrainType;
 
 					if (local_c != TerrainTypeEnum.Water ||
 						(this.oGameData.Players[playerID].Units[unitID].Status & 0x1) == 0 ||
@@ -875,35 +801,35 @@ namespace OpenCiv1
 					if (playerID == 1)
 					{
 						// Instruction address 0x2aea:0x103d, size: 5
-						this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("F", xPos + 4, yPos + 7, 9);
+						this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadowToRectAA("F", xPos + 4, yPos + 7, 9);
 					}
 					else
 					{
 						// Instruction address 0x2aea:0x103d, size: 5
-						this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("F", xPos + 4, yPos + 7, 15);
+						this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadowToRectAA("F", xPos + 4, yPos + 7, 15);
 					}
 				}
 			}
 
 			if (playerID == this.oGameData.HumanPlayerID)
 			{
-				if (this.oGameData.Players[playerID].Units[unitID].GoToPosition.X != -1)
+				if (this.oGameData.Players[playerID].Units[unitID].GoToDestination.X != -1)
 				{
 					if (playerID == 1)
 					{
 						// Instruction address 0x2aea:0x1085, size: 5
-						this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("G", xPos + 4, yPos + 7, 9);
+						this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadowToRectAA("G", xPos + 4, yPos + 7, 9);
 					}
 					else
 					{
 						// Instruction address 0x2aea:0x1085, size: 5
-						this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("G", xPos + 4, yPos + 7, 15);
+						this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadowToRectAA("G", xPos + 4, yPos + 7, 15);
 					}
 				}
 			}
 
 			if ((this.oGameData.Players[playerID].Units[unitID].Status & 0xc2) != 0 &&
-				this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Sea)
+				this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
 			{
 				char local_2 = 'R';
 
@@ -942,16 +868,16 @@ namespace OpenCiv1
 				if (playerID == 1)
 				{
 					// Instruction address 0x2aea:0x1157, size: 5
-					this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0xba06, xPos + 4, yPos + 7, 9);
+					this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadowToRectAA(0xba06, xPos + 4, yPos + 7, 9);
 				}
 				else
 				{
 					// Instruction address 0x2aea:0x1157, size: 5
-					this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0xba06, xPos + 4, yPos + 7, 15);
+					this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadowToRectAA(0xba06, xPos + 4, yPos + 7, 15);
 				}
 
 				// Instruction address 0x2aea:0x1172, size: 5
-				this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(xPos - 1, yPos - 1, 15, 15, 7);
+				this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(xPos - 1, yPos - 1, 15, 15, 7);
 			}
 		
 			if ((this.oGameData.Players[playerID].Units[unitID].Status & 0x1) != 0)
@@ -988,7 +914,7 @@ namespace OpenCiv1
 				if (unitID != -1)
 				{
 					if (this.oParent.Var_d806 != 0 || this.oParent.Var_d20a == this.oGameData.HumanPlayerID ||
-						(this.oGameData.Players[this.oParent.Var_d20a].Units[unitID].VisibleByPlayer & (1 << this.oGameData.HumanPlayerID)) != 0)
+						this.oGameData.Players[this.oParent.Var_d20a].Units[unitID].IsVisibleTo(this.oGameData.HumanPlayerID))
 					{
 						// Instruction address 0x2aea:0x123e, size: 3
 						if ((F0_2aea_1585_GetImprovements(xPos, yPos) & 0x1) == 0)
@@ -1018,8 +944,7 @@ namespace OpenCiv1
 			int local_4;
 
 			// Instruction address 0x2aea:0x127f, size: 3
-			TerrainTypeEnum local_6 = F0_2aea_134a_GetMapLayer1_TerrainType(this.oGameData.Players[playerID].Units[unitID].Position.X, 
-				this.oGameData.Players[playerID].Units[unitID].Position.Y);
+			TerrainTypeEnum local_6 = this.oGameData.Map[this.oGameData.Players[playerID].Units[unitID].Position].TerrainType;
 
 			if (local_6 == TerrainTypeEnum.Water && this.oGameData.Players[playerID].Units[unitID].NextUnitID != -1 &&
 				this.oGameData.Static.Units[this.oGameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Air)
@@ -1055,49 +980,6 @@ namespace OpenCiv1
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2aea_125b");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		/// <returns></returns>
-		public ushort F0_2aea_1326_CheckMapBounds(int xPos, int yPos)
-		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_1326_CheckMapBounds({xPos}, {yPos})");
-
-			// function body
-			if (xPos < 0 || xPos >= 80 || yPos < 0 || yPos >= 50)
-			{
-				this.oCPU.AX.Word = 0;
-			}
-			else
-			{
-				this.oCPU.AX.Word = 1;
-			}
-
-			this.oCPU.Log.ExitBlock("F0_2aea_1326_CheckMapBounds");
-
-			return this.oCPU.AX.Word;
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		/// <returns></returns>
-		public TerrainTypeEnum F0_2aea_134a_GetMapLayer1_TerrainType(int xPos, int yPos)
-		{
-			// function body
-			// Instruction address 0x2aea:0x1357, size: 5
-			//this.oCPU.AX.Word = (ushort)((short)this.oParent.Array_2ba6[this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos)]);
-
-			TerrainTypeEnum eValue = this.oGameData.Map[xPos, yPos].TerrainType;
-			this.oCPU.AX.Word = (ushort)((short)eValue);
-
-			return eValue;
 		}
 
 		/// <summary>
@@ -1522,7 +1404,7 @@ namespace OpenCiv1
 			{
 				this.oCPU.AX.Word = 1;
 			}*/
-			bool bTemp = this.oGameData.Map[xPos, yPos].HasSpecialResource;
+			bool bTemp = this.oGameData.Map[xPos, yPos].HasSpecialResources;
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2aea_1836_HasSpecialResource");
@@ -1541,7 +1423,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_2aea_1894({terrain}, {xPos}, {yPos})");
 
 			// function body
-			if (terrain == TerrainTypeEnum.Water || (this.oGameData.Map[xPos, yPos].Visibility & 1) != 0 ||
+			if (terrain == TerrainTypeEnum.Water || this.oGameData.Map[xPos, yPos].IsVisibleTo(this.oGameData.BarbarianPlayerID) ||
 				yPos <= 1 || yPos >= 48)
 			{
 				this.oCPU.AX.Word = 0;
@@ -1549,7 +1431,7 @@ namespace OpenCiv1
 			else
 			{
 				if (((xPos & 3) * 4 + (yPos & 3)) == ((((xPos / 4) * 13) + ((yPos / 4) * 11) + this.oGameData.RandomSeed + 8) & 0x1f) &&
-					(F0_2aea_1585_GetImprovements(xPos, yPos) & 1) == 0)
+					(F0_2aea_1585_GetImprovements(xPos, yPos) & 0x1) == 0)
 				{
 					this.oCPU.AX.Word = 1;
 				}
