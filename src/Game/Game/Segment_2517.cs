@@ -543,10 +543,8 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10));
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0xe), this.oCPU.AX.Word);
 
-			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10));
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x2517:0x0575, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1966)));
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.Array_1966[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10))]);
 
 			// Instruction address 0x2517:0x0585, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\n ");
@@ -581,12 +579,12 @@ namespace OpenCiv1
 		L05d3:
 			this.oGameData.Players[playerID].GovernmentType = (short)this.oCPU.AX.Word;
 
-			this.oParent.StartGameMenu.F5_0000_1af6();
+			this.oParent.StartGameMenu.F5_0000_1af6_LoadGovernmentImage();
 
 			// Instruction address 0x2517:0x05dc, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
 
-			this.oParent.StartGameMenu.F5_0000_1ba2();
+			this.oParent.StartGameMenu.F5_0000_1ba2_ChangeGovernment();
 
 			goto L06f0;
 
@@ -628,11 +626,8 @@ namespace OpenCiv1
 			// Instruction address 0x2517:0x064a, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " government\nchanged to ");
 
-			this.oCPU.BX.Word = (ushort)governmentType;
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
-
 			// Instruction address 0x2517:0x065f, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1966)));
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.Array_1966[governmentType]);
 
 			// Instruction address 0x2517:0x066f, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "!\n");

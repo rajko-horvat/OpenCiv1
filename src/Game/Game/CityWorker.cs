@@ -555,7 +555,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < 4; i++)
 				{
-					this.oParent.Var_70da_Arr[i] = 0;
+					this.oParent.Array_70da[i] = 0;
 				}
 
 				local_ee_UInt = 0;
@@ -630,7 +630,7 @@ namespace OpenCiv1
 					local_50--;
 				}
 
-				while ((((city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6)) > ((local_50 / 2) + this.oParent.Var_70da_Arr[0]) || city.ActualSize < 3) &&
+				while ((((city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6)) > ((local_50 / 2) + this.oParent.Array_70da[0]) || city.ActualSize < 3) &&
 					local_50 > this.oParent.Var_e8b8 && local_108 != -1)
 				{
 					local_108 = -1;
@@ -650,7 +650,7 @@ namespace OpenCiv1
 							// Instruction address 0x1d12:0x0fb6, size: 5
 							local_d4 = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, 1) * 2;
 
-							if (local_50 != 1 || this.oParent.Var_70da_Arr[1] != 0 || local_d4 != 0)
+							if (local_50 != 1 || this.oParent.Array_70da[1] != 0 || local_d4 != 0)
 							{
 								// Instruction address 0x1d12:0x0ff0, size: 5
 								local_d4 += F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, 2);
@@ -701,20 +701,20 @@ namespace OpenCiv1
 
 							// Instruction address 0x1d12:0x1151, size: 5
 							local_d4 = local_4 * (16 / this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-								this.oParent.Var_70da_Arr[0] - (city.ActualSize * 2) - (local_48 * this.oParent.Var_e3c6), 1, 99));
+								this.oParent.Array_70da[0] - (city.ActualSize * 2) - (local_48 * this.oParent.Var_e3c6), 1, 99));
 
 							// Instruction address 0x1d12:0x1190, size: 5
 							local_c = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, 1);
 
 							// Instruction address 0x1d12:0x11af, size: 5
 							local_d4 += ((city.ActualSize * 3) / this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-								this.oParent.Var_70da_Arr[1] - this.oParent.Var_d2f6, 1, 99)) * local_c;
+								this.oParent.Array_70da[1] - this.oParent.Var_d2f6, 1, 99)) * local_c;
 
 							// Instruction address 0x1d12:0x11dc, size: 5
 							local_46 = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, 2);
 
 							// Instruction address 0x1d12:0x11f7, size: 5
-							local_d4 += ((city.ActualSize * 2) / this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.Var_70da_Arr[2], 1, 99)) * local_46;
+							local_d4 += ((city.ActualSize * 2) / this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.Array_70da[2], 1, 99)) * local_46;
 
 							if (local_d4 > local_d6)
 							{
@@ -816,16 +816,16 @@ namespace OpenCiv1
 
 				// Instruction address 0x1d12:0x1484, size: 5
 				local_ac = (short)this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(local_ac, 0, local_f8);
-				local_10a = this.oParent.Var_70da_Arr[1];
-				local_a = this.oParent.Var_70da_Arr[2];
+				local_10a = this.oParent.Array_70da[1];
+				local_a = this.oParent.Array_70da[2];
 
-				this.oParent.Var_70da_Arr[1] += ((local_f8 * this.oParent.Var_70da_Arr[1]) / 4) + ((local_ac * this.oParent.Var_70da_Arr[1]) / 4);
+				this.oParent.Array_70da[1] += ((local_f8 * this.oParent.Array_70da[1]) / 4) + ((local_ac * this.oParent.Array_70da[1]) / 4);
 
 				if (flag == 0)
 				{
-					city.FoodCount += (short)(this.oParent.Var_70da_Arr[0] - (local_48 * this.oParent.Var_e3c6) - (city.ActualSize * 2));
+					city.FoodCount += (short)(this.oParent.Array_70da[0] - (local_48 * this.oParent.Var_e3c6) - (city.ActualSize * 2));
 
-					local_e8 = this.oParent.Var_70da_Arr[1];
+					local_e8 = this.oParent.Array_70da[1];
 					local_e8 -= this.oParent.Var_d2f6;
 
 					if ((city.StatusFlag & 0x1) != 0)
@@ -1111,8 +1111,8 @@ namespace OpenCiv1
 									this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
 									// Instruction address 0x1d12:0x1dbe, size: 5
-									if (this.Var_6548_PlayerID == this.oGameData.HumanPlayerID && (this.oGameData.GameSettingFlags & 0x8) != 0 && (local_e8 <= 21 || local_e8 > 24) &&
-										(city.StatusFlag & 0x10) == 0 && local_e8 != 1 && this.oParent.Segment_11a8.F0_11a8_02a4(1, 0) != 0)
+									if (this.Var_6548_PlayerID == this.oGameData.HumanPlayerID && (this.oGameData.GameSettingFlags & 0x8) != 0 && 
+										(local_e8 <= 21 || local_e8 > 24) && (city.StatusFlag & 0x10) == 0 && local_e8 != 1)
 									{
 										this.oParent.CityView.F19_0000_0000(cityID, (short)local_e8);
 									}
@@ -1427,7 +1427,7 @@ namespace OpenCiv1
 					this.Var_6b30 = 10;
 				}
 
-				this.oParent.Var_d2e0 = ((this.oParent.Var_70da_Arr[2] * this.Var_6b30) * 3) / ((this.oGameData.Players[this.Var_6548_PlayerID].GovernmentType * 20) + 80);
+				this.oParent.Var_d2e0 = ((this.oParent.Array_70da[2] * this.Var_6b30) * 3) / ((this.oGameData.Players[this.Var_6548_PlayerID].GovernmentType * 20) + 80);
 
 				if (city.HasImprovement(ImprovementEnum.Courthouse) || city.HasImprovement(ImprovementEnum.Palace))
 				{
@@ -1439,7 +1439,7 @@ namespace OpenCiv1
 					this.oParent.Var_d2e0 = 0;
 				}
 
-				city.BaseTrade = (sbyte)(this.oParent.Var_70da_Arr[2] - this.oParent.Var_d2e0);
+				city.BaseTrade = (sbyte)(this.oParent.Array_70da[2] - this.oParent.Var_d2e0);
 
 				for (int i = 0; i < 3; i++)
 				{
@@ -1449,16 +1449,16 @@ namespace OpenCiv1
 					{
 						if (this.oGameData.Cities[local_4c].PlayerID == this.Var_6548_PlayerID)
 						{
-							this.oParent.Var_70da_Arr[2] += (this.oGameData.Cities[local_4c].BaseTrade + this.oParent.Var_70da_Arr[2] + 4) / 16;
+							this.oParent.Array_70da[2] += (this.oGameData.Cities[local_4c].BaseTrade + this.oParent.Array_70da[2] + 4) / 16;
 						}
 						else
 						{
-							this.oParent.Var_70da_Arr[2] += (this.oGameData.Cities[local_4c].BaseTrade + this.oParent.Var_70da_Arr[2] + 4) / 8;
+							this.oParent.Array_70da[2] += (this.oGameData.Cities[local_4c].BaseTrade + this.oParent.Array_70da[2] + 4) / 8;
 						}
 					}
 				}
 
-				this.oParent.Var_d2e0 = ((this.oParent.Var_70da_Arr[2] * this.Var_6b30) * 3) / ((this.oGameData.Players[this.Var_6548_PlayerID].GovernmentType * 20) + 80);
+				this.oParent.Var_d2e0 = ((this.oParent.Array_70da[2] * this.Var_6b30) * 3) / ((this.oGameData.Players[this.Var_6548_PlayerID].GovernmentType * 20) + 80);
 
 				if (this.oGameData.Players[this.Var_6548_PlayerID].GovernmentType == 5)
 				{
@@ -1471,19 +1471,19 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x1d12:0x2960, size: 5
-				this.oParent.Var_70da_Arr[3] = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
+				this.oParent.Array_70da[3] = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 					((-(this.oGameData.Players[this.Var_6548_PlayerID].ScienceTaxRate +
 						this.oGameData.Players[this.Var_6548_PlayerID].TaxRate - 10) *
-						(this.oParent.Var_70da_Arr[2] - this.oParent.Var_d2e0)) + 5) / 10,
-					0, this.oParent.Var_70da_Arr[2]);
+						(this.oParent.Array_70da[2] - this.oParent.Var_d2e0)) + 5) / 10,
+					0, this.oParent.Array_70da[2]);
 
 				// !!! Minimum value is greater than maximum value, why?
 				// Instruction address 0x1d12:0x2999, size: 5
 				this.oParent.Var_e17a = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-					((this.oGameData.Players[this.Var_6548_PlayerID].TaxRate * (this.oParent.Var_70da_Arr[2] - this.oParent.Var_d2e0)) + 5) / 10,
-					0, this.oParent.Var_70da_Arr[2] - this.oParent.Var_70da_Arr[3] - this.oParent.Var_d2e0);
+					((this.oGameData.Players[this.Var_6548_PlayerID].TaxRate * (this.oParent.Array_70da[2] - this.oParent.Var_d2e0)) + 5) / 10,
+					0, this.oParent.Array_70da[2] - this.oParent.Array_70da[3] - this.oParent.Var_d2e0);
 
-				this.oParent.Var_70e6 = this.oParent.Var_70da_Arr[2] - this.oParent.Var_70da_Arr[3] - this.oParent.Var_e17a - this.oParent.Var_d2e0;
+				this.oParent.Var_70e6 = this.oParent.Array_70da[2] - this.oParent.Array_70da[3] - this.oParent.Var_e17a - this.oParent.Var_d2e0;
 
 				// Instruction address 0x1d12:0x29ba, size: 5
 				this.oParent.Var_e17a += F0_1d12_6dcc_GetWorkerCountByType(1) * 2;
@@ -1492,17 +1492,17 @@ namespace OpenCiv1
 				this.oParent.Var_70e6 += F0_1d12_6dcc_GetWorkerCountByType(2) * 2;
 
 				// Instruction address 0x1d12:0x29de, size: 5
-				this.oParent.Var_70da_Arr[3] += F0_1d12_6dcc_GetWorkerCountByType(3) * 2;
+				this.oParent.Array_70da[3] += F0_1d12_6dcc_GetWorkerCountByType(3) * 2;
 
 				if (city.HasImprovement(ImprovementEnum.MarketPlace))
 				{
-					this.oParent.Var_70da_Arr[3] += this.oParent.Var_70da_Arr[3] / 2;
+					this.oParent.Array_70da[3] += this.oParent.Array_70da[3] / 2;
 					this.oParent.Var_e17a += this.oParent.Var_e17a / 2;
 				}
 
 				if (city.HasImprovement(ImprovementEnum.Bank))
 				{
-					this.oParent.Var_70da_Arr[3] += this.oParent.Var_70da_Arr[3] / 2;
+					this.oParent.Array_70da[3] += this.oParent.Array_70da[3] / 2;
 					this.oParent.Var_e17a += this.oParent.Var_e17a / 2;
 				}
 			
@@ -1577,7 +1577,7 @@ namespace OpenCiv1
 					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 100, local_42 - 2, 222, local_42 - 2, 1);
 				}
 
-				this.oParent.Var_70e2 = this.oParent.Var_70da_Arr[3] / 2;
+				this.oParent.Var_70e2 = this.oParent.Array_70da[3] / 2;
 
 				// Instruction address 0x1d12:0x2c4e, size: 5
 				F0_1d12_6dfe(cityID, local_8);
@@ -1894,7 +1894,7 @@ namespace OpenCiv1
 
 						if (flag == 0)
 						{
-							if (this.oParent.Var_70da_Arr[1] < this.oParent.Var_d2f6 ||
+							if (this.oParent.Array_70da[1] < this.oParent.Var_d2f6 ||
 								((city.StatusFlag & 0x1) != 0 && ((i + this.oGameData.TurnCount) & 0x7) == 0 &&
 								this.Var_6548_PlayerID != this.oGameData.HumanPlayerID &&
 								this.oGameData.Players[this.Var_6548_PlayerID].GovernmentType >= 4))
@@ -1923,7 +1923,7 @@ namespace OpenCiv1
 									}
 								}
 
-								if (this.oParent.Var_70da_Arr[1] >= this.oParent.Var_d2f6)
+								if (this.oParent.Array_70da[1] >= this.oParent.Var_d2f6)
 								{
 									if (this.oParent.Var_8078 != 0 &&
 										this.oGameData.Players[this.Var_6548_PlayerID].DiscoveredTechnologyCount <
@@ -2091,9 +2091,9 @@ namespace OpenCiv1
 
 				if (flag == 0)
 				{
-					if (this.oParent.Var_70da_Arr[1] < this.oParent.Var_deb8)
+					if (this.oParent.Array_70da[1] < this.oParent.Var_deb8)
 					{
-						this.oParent.Var_e3c2 += (this.oParent.Var_deb8 - this.oParent.Var_70da_Arr[1]) * 5;
+						this.oParent.Var_e3c2 += (this.oParent.Var_deb8 - this.oParent.Array_70da[1]) * 5;
 					}
 
 					// Instruction address 0x1d12:0x3a2c, size: 5
@@ -2329,17 +2329,17 @@ namespace OpenCiv1
 							// Instruction address 0x1d12:0x416d, size: 5
 							// Instruction address 0x1d12:0x4181, size: 5
 							local_e8 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-								116 / (this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.Var_70da_Arr[i], 
+								116 / (this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.Array_70da[i], 
 									(city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6), 999) + 1),
 								1, 8);
 						}
 						else
 						{
 							// Instruction address 0x1d12:0x41ac, size: 5
-							local_e8 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(116 / (this.oParent.Var_70da_Arr[i] + 1), 1, 8);
+							local_e8 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(116 / (this.oParent.Array_70da[i] + 1), 1, 8);
 						}
 
-						for (int j = 0; j < this.oParent.Var_70da_Arr[i]; j++)
+						for (int j = 0; j < this.oParent.Array_70da[i]; j++)
 						{
 							switch (i)
 							{
@@ -2358,7 +2358,7 @@ namespace OpenCiv1
 									break;
 
 								case 2:
-									if ((this.oParent.Var_70da_Arr[2] - this.oParent.Var_d2e0) == j)
+									if ((this.oParent.Array_70da[2] - this.oParent.Var_d2e0) == j)
 									{
 										local_d8 += 2;
 									}
@@ -2377,9 +2377,9 @@ namespace OpenCiv1
 
 					// Instruction address 0x1d12:0x42a6, size: 5
 					local_e8 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-						224 / (this.oParent.Var_70da_Arr[3] + this.oParent.Var_70e6 + this.oParent.Var_e17a + this.oParent.Var_d2e0 + 2), 1, 16);
+						224 / (this.oParent.Array_70da[3] + this.oParent.Var_70e6 + this.oParent.Var_e17a + this.oParent.Var_d2e0 + 2), 1, 16);
 
-					for (int i = 0; i < this.oParent.Var_70da_Arr[3]; i++)
+					for (int i = 0; i < this.oParent.Array_70da[3]; i++)
 					{
 						// Instruction address 0x1d12:0x42e1, size: 5
 						this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
@@ -2388,7 +2388,7 @@ namespace OpenCiv1
 						local_d8 += local_e8;
 					}
 
-					if (this.oParent.Var_70da_Arr[3] != 0)
+					if (this.oParent.Array_70da[3] != 0)
 					{
 						local_d8 += 8;
 					}
@@ -2418,12 +2418,12 @@ namespace OpenCiv1
 						local_d8 += local_e8;
 					}
 
-					if ((city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6) > this.oParent.Var_70da_Arr[0])
+					if ((city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6) > this.oParent.Array_70da[0])
 					{
 						// Instruction address 0x1d12:0x43ed, size: 5
 						local_e8 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(116 / ((city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6) + 1), 1, 8);
 
-						for (int i = this.oParent.Var_70da_Arr[0]; i < (city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6); i++)
+						for (int i = this.oParent.Array_70da[0]; i < (city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6); i++)
 						{
 							// Instruction address 0x1d12:0x443e, size: 5
 							this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
@@ -2432,17 +2432,17 @@ namespace OpenCiv1
 
 						// Instruction address 0x1d12:0x448f, size: 5
 						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-							(local_e8 * this.oParent.Var_70da_Arr[0]) + 8, local_fc,
-							(((city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6) - this.oParent.Var_70da_Arr[0]) * local_e8) + 4,
+							(local_e8 * this.oParent.Array_70da[0]) + 8, local_fc,
+							(((city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6) - this.oParent.Array_70da[0]) * local_e8) + 4,
 							8, 15, 0);
 					}
 
-					if (this.oParent.Var_70da_Arr[1] < this.oParent.Var_d2f6)
+					if (this.oParent.Array_70da[1] < this.oParent.Var_d2f6)
 					{
 						// Instruction address 0x1d12:0x44b9, size: 5
-						local_e8 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(116 / (this.oParent.Var_70da_Arr[1] + 1), 1, 8);
+						local_e8 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(116 / (this.oParent.Array_70da[1] + 1), 1, 8);
 
-						for (int i = this.oParent.Var_70da_Arr[1]; i < this.oParent.Var_d2f6; i++)
+						for (int i = this.oParent.Array_70da[1]; i < this.oParent.Var_d2f6; i++)
 						{
 							// Instruction address 0x1d12:0x44f7, size: 5
 							this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
@@ -2451,19 +2451,19 @@ namespace OpenCiv1
 
 						// Instruction address 0x1d12:0x4532, size: 5
 						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-							(this.oParent.Var_70da_Arr[1] * local_e8) + 8, local_fc + 8,
-							(this.oParent.Var_d2f6 - this.oParent.Var_70da_Arr[1]) * local_e8,
+							(this.oParent.Array_70da[1] * local_e8) + 8, local_fc + 8,
+							(this.oParent.Var_d2f6 - this.oParent.Array_70da[1]) * local_e8,
 							8, 15, 0);
 					}
 
 					if (this.oParent.Var_d2e0 != 0)
 					{
 						// Instruction address 0x1d12:0x455a, size: 5
-						local_e8 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(116 / (this.oParent.Var_70da_Arr[2] + 1), 1, 8);
+						local_e8 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(116 / (this.oParent.Array_70da[2] + 1), 1, 8);
 
 						// Instruction address 0x1d12:0x4598, size: 5
 						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-							((this.oParent.Var_70da_Arr[2] - this.oParent.Var_d2e0) * local_e8) + 6,
+							((this.oParent.Array_70da[2] - this.oParent.Var_d2e0) * local_e8) + 6,
 							local_fc + 16, (local_e8 * this.oParent.Var_d2e0) + 2,
 							8, 15, 0);
 					}
@@ -2531,7 +2531,7 @@ namespace OpenCiv1
 
 					if (this.Var_2496 == 0)
 					{
-						local_e0 = (this.oParent.Var_70da_Arr[1] / this.oParent.Var_6c98) - 20 + ((city.ActualSize * this.oParent.Var_b882) / 4);
+						local_e0 = (this.oParent.Array_70da[1] / this.oParent.Var_6c98) - 20 + ((city.ActualSize * this.oParent.Var_b882) / 4);
 
 						// Instruction address 0x1d12:0x47ef, size: 5
 						// Instruction address 0x1d12:0x4802, size: 5
@@ -2686,8 +2686,8 @@ namespace OpenCiv1
 								}
 							}
 
-							this.oParent.Var_70da_Arr[1] = local_10a;
-							this.oParent.Var_70da_Arr[2] = local_a;
+							this.oParent.Array_70da[1] = local_10a;
+							this.oParent.Array_70da[2] = local_a;
 
 							goto L12c2;
 						}
@@ -2867,8 +2867,8 @@ namespace OpenCiv1
 						this.Var_2496 = (this.oParent.Var_db3c - 96) / 32;
 
 					L4faf:
-						this.oParent.Var_70da_Arr[1] = local_10a;
-						this.oParent.Var_70da_Arr[2] = local_a;
+						this.oParent.Array_70da[1] = local_10a;
+						this.oParent.Array_70da[2] = local_a;
 
 						if (this.Var_2496 != 3)
 							goto L12c2;
@@ -2963,8 +2963,8 @@ namespace OpenCiv1
 						if (local_fc != 0x1b)
 							goto L504b;
 
-						this.oParent.Var_70da_Arr[1] = local_10a;
-						this.oParent.Var_70da_Arr[2] = local_a;
+						this.oParent.Array_70da[1] = local_10a;
+						this.oParent.Array_70da[2] = local_a;
 
 						goto L12c2;
 
@@ -3067,8 +3067,8 @@ namespace OpenCiv1
 						goto L045f;
 
 					L53b5:
-						this.oParent.Var_70da_Arr[1] = local_10a;
-						this.oParent.Var_70da_Arr[2] = local_a;
+						this.oParent.Array_70da[1] = local_10a;
+						this.oParent.Array_70da[2] = local_a;
 
 						goto L12c2;
 
@@ -3247,8 +3247,8 @@ namespace OpenCiv1
 
 						local_ca ^= 1;
 						local_da = local_fe;
-						this.oParent.Var_70da_Arr[1] = local_10a;
-						this.oParent.Var_70da_Arr[2] = local_a;
+						this.oParent.Array_70da[1] = local_10a;
+						this.oParent.Array_70da[2] = local_a;
 
 						goto L12c2;
 
@@ -3306,8 +3306,8 @@ namespace OpenCiv1
 
 						local_ca ^= 1;
 						local_da = local_fe;
-						this.oParent.Var_70da_Arr[1] = local_10a;
-						this.oParent.Var_70da_Arr[2] = local_a;
+						this.oParent.Array_70da[1] = local_10a;
+						this.oParent.Array_70da[2] = local_a;
 
 						goto L12c2;
 
@@ -3435,8 +3435,8 @@ namespace OpenCiv1
 						goto L045f;
 
 					L595b:
-						this.oParent.Var_70da_Arr[1] = local_10a;
-						this.oParent.Var_70da_Arr[2] = local_a;
+						this.oParent.Array_70da[1] = local_10a;
+						this.oParent.Array_70da[2] = local_a;
 
 						goto L12c2;
 
@@ -3468,8 +3468,8 @@ namespace OpenCiv1
 						this.oGameData.Players[this.Var_6548_PlayerID].Units[Arr_74[local_106]].Status &= 0x30;
 						this.oGameData.Players[this.Var_6548_PlayerID].Units[Arr_74[local_106]].GoToDestination.X = -1;
 
-						this.oParent.Var_70da_Arr[1] = local_10a;
-						this.oParent.Var_70da_Arr[2] = local_a;
+						this.oParent.Array_70da[1] = local_10a;
+						this.oParent.Array_70da[2] = local_a;
 
 						goto L12c2;
 
@@ -3501,8 +3501,8 @@ namespace OpenCiv1
 						goto L045f;
 
 					L5b13:
-						this.oParent.Var_70da_Arr[1] = local_10a;
-						this.oParent.Var_70da_Arr[2] = local_a;
+						this.oParent.Array_70da[1] = local_10a;
+						this.oParent.Array_70da[2] = local_a;
 
 						if ((city.WorkerFlags & (1 << local_ea)) != 0)
 							goto L5b6e;
@@ -3545,7 +3545,7 @@ namespace OpenCiv1
 						local_cc = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID,
 							city.Position.X + this.oGameData.Static.CityOffsets[local_ea].X, city.Position.Y + this.oGameData.Static.CityOffsets[local_ea].Y, local_bc);
 
-						this.oParent.Var_70da_Arr[local_bc] -= local_cc;
+						this.oParent.Array_70da[local_bc] -= local_cc;
 
 						goto L5bf2;
 
@@ -3615,9 +3615,6 @@ namespace OpenCiv1
 				this.oParent.CityView.F19_0000_0000(cityID, -2);
 
 				this.oParent.CityView.F19_0000_18c1_CivilDisorderAnimation();
-
-				// Instruction address 0x1d12:0x5d89, size: 5
-				this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
 				// Instruction address 0x1d12:0x5d91, size: 5
 				this.oParent.Segment_1238.F0_1238_1b44();
@@ -3823,9 +3820,6 @@ namespace OpenCiv1
 
 					this.oParent.CityView.F19_0000_1ae1();
 
-					// Instruction address 0x1d12:0x6175, size: 5
-					this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
-
 					// Instruction address 0x1d12:0x617d, size: 5
 					this.oParent.Segment_1238.F0_1238_1b44();
 				}
@@ -3846,7 +3840,7 @@ namespace OpenCiv1
 				goto L6210;
 
 			L61bc:
-				if (((city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6)) < this.oParent.Var_70da_Arr[0]) goto L61df;
+				if (((city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6)) < this.oParent.Array_70da[0]) goto L61df;
 				goto L6210;
 
 			L61df:
@@ -4030,7 +4024,7 @@ namespace OpenCiv1
 				if (this.Var_6548_PlayerID != this.oGameData.HumanPlayerID)
 					goto L68cc;
 
-				local_e0 = (this.oParent.Var_70da_Arr[1] / this.oParent.Var_6c98) - 20;
+				local_e0 = (this.oParent.Array_70da[1] / this.oParent.Var_6c98) - 20;
 				local_e0 += (city.ActualSize * this.oParent.Var_b882) / 4;
 
 				// Instruction address 0x1d12:0x6530, size: 5
@@ -4330,7 +4324,7 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x6a10, size: 3
 				local_c = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_6, local_a, i);
 
-				this.oParent.Var_70da_Arr[i] += local_c;
+				this.oParent.Array_70da[i] += local_c;
 
 				while (flag == 1 && local_c > 0)
 				{

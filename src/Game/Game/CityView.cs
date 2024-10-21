@@ -276,9 +276,6 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x08e4, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			// Instruction address 0x0000:0x08f0, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(1, 1);
-
 			F19_0000_137f((ushort)param2, city.PlayerID, cityID);
 
 			int i3 = 0;
@@ -525,10 +522,10 @@ namespace OpenCiv1
 					if (param2 == -3)
 					{
 						// Instruction address 0x0000:0x0ea9, size: 5
-						this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4eaa, 0xbdee);
+						this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, "hill.pal", out this.oParent.Var_bdee);
 
 						// Instruction address 0x0000:0x0eb9, size: 5
-						this.oParent.Segment_1000.F0_1000_04aa_TransformPalette(15, 0xbdee);
+						this.oParent.Segment_1000.F0_1000_04aa_TransformPalette(15, this.oParent.Var_bdee);
 					}
 
 					// Instruction address 0x0000:0x0ed8, size: 5
@@ -583,9 +580,6 @@ namespace OpenCiv1
 
 				// Instruction address 0x0000:0x0f94, size: 5
 				this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(4);
-
-				// Instruction address 0x0000:0x0fa5, size: 5
-				this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
 				// Instruction address 0x0000:0x0fc7, size: 5
 				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);

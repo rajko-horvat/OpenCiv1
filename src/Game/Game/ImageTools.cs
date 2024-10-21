@@ -31,7 +31,7 @@ namespace OpenCiv1
 		/// <param name="palettePtr"></param>
 		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, ushort xPos, ushort yPos, ushort filenamePtr, ushort palettePtr)
 		{
-			string filename = VCPU.DefaultCIVPath + MSCAPI.GetDOSFileName(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)).ToUpper());
+			string filename = MSCAPI.GetDOSFileName(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)).ToUpper());
 
 			F0_2fa1_01a2_LoadBitmapOrPalette(screenID, xPos, yPos, filename, palettePtr);
 		}
@@ -47,8 +47,7 @@ namespace OpenCiv1
 		/// <exception cref="Exception"></exception>
 		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, ushort xPos, ushort yPos, string filename, ushort palettePtr)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2fa1_01a2_LoadBitmapOrPalette(0x{screenID:x4}, 0x{xPos:x4}, 0x{yPos:x4}, " +
-				$"'{filename}', 0x{palettePtr:x4})");
+			filename = VCPU.DefaultCIVPath + filename;
 
 			if (screenID >= 0 && (Path.GetExtension(filename).Equals(".pic", StringComparison.InvariantCultureIgnoreCase) ||
 				Path.GetExtension(filename).Equals(".map", StringComparison.InvariantCultureIgnoreCase)))
@@ -92,7 +91,7 @@ namespace OpenCiv1
 				}
 				else
 				{
-					throw new Exception($"The page {screenID} is not allocated");
+					throw new Exception($"The screen {screenID} is not allocated");
 				}
 			}
 			else
@@ -133,18 +132,47 @@ namespace OpenCiv1
 						this.oParent.Graphics.SetColorsFromColorStruct(palette);
 				}
 			}
+		}
 
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2fa1_01a2_LoadBitmapOrPalette");
+		/// <summary>
+		/// Loads and .pic or .map Image from given filename with optional palette data
+		/// </summary>
+		/// <param name="screenID"></param>
+		/// <param name="xPos"></param>
+		/// <param name="yPos"></param>
+		/// <param name="filenamePtr"></param>
+		/// <param name="palettePtr"></param>
+		/// <exception cref="Exception"></exception>
+		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, ushort xPos, ushort yPos, string filename, out byte[] palette)
+		{
+			filename = VCPU.DefaultCIVPath + filename;
+
+			if (screenID >= 0 && (Path.GetExtension(filename).Equals(".pic", StringComparison.InvariantCultureIgnoreCase) ||
+				Path.GetExtension(filename).Equals(".map", StringComparison.InvariantCultureIgnoreCase)))
+			{
+				if (this.oParent.Graphics.Screens.ContainsKey(screenID))
+				{
+					this.oParent.Graphics.Screens.GetValueByKey(screenID).LoadPIC(filename, xPos, yPos, out palette);
+				}
+				else
+				{
+					throw new Exception($"The screen {screenID} is not allocated");
+				}
+			}
+			else
+			{
+				// function body
+				GBitmap.ReadPaletteFromPICFile(filename, out palette);
+			}
 		}
 
 		/// <summary>
 		/// Loads an Bitmap (Icon) from given image Filename
 		/// </summary>
 		/// <param name="filenamePtr"></param>
-		public ushort F0_2fa1_044c_LoadIcon(ushort filenamePtr)
+		public int F0_2fa1_044c_LoadIcon(ushort filenamePtr)
 		{
-			return this.oParent.Graphics.LoadIcon(MSCAPI.GetDOSFileName(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr))));
+			return this.oParent.Graphics.LoadIcon(MSCAPI.GetDOSFileName(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)).ToUpper()));
 		}
 		#endregion
 	}

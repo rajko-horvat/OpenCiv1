@@ -376,6 +376,56 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
+		/// Transform current palette to another palette
+		/// </summary>
+		/// <param name="speed"></param>
+		/// <param name="palettePtr"></param>
+		public void F0_1000_04aa_TransformPalette(int speed, byte[] palette)
+		{
+			this.oCPU.Log.EnterBlock($"F0_1000_04aa_TransformPalette({speed}, palette)");
+
+			// function body
+			if (speed < 1 || speed > 50)
+				throw new ArgumentOutOfRangeException("The argument speed is out of range");
+
+			this.aTransformColors = new TransformColor[256];
+			int palettePtr = 6;
+
+			lock (this.oParent.Graphics.GLock)
+			{
+				while (this.bInTimer)
+				{
+					Thread.Sleep(1);
+				}
+
+				this.iTransformValue = speed * 10;
+				this.iTransformCount = 0;
+
+				for (int i = 0; i < 256; i++)
+				{
+					HSVColor from = HSVColor.FromColor(this.oGraphics.GetPaletteColor((byte)i));
+					HSVColor to = HSVColor.FromColor(GBitmap.Color18ToColor(palette[palettePtr], palette[palettePtr + 1],
+						palette[palettePtr + 2]));
+
+					this.aTransformColors[i] = new TransformColor(from, to, this.iTransformValue);
+
+					palettePtr += 3;
+				}
+
+				this.bTransformFlag = true;
+			}
+
+			while (this.bTransformFlag)
+			{
+				this.oCPU.DoEvents();
+				Thread.Sleep(1);
+			}
+
+			// Far return
+			this.oCPU.Log.ExitBlock("F0_1000_04aa_TransformPalette");
+		}
+
+		/// <summary>
 		/// Transform entire palette to one color
 		/// </summary>
 		/// <param name="speed"></param>
@@ -477,12 +527,12 @@ namespace OpenCiv1
 		/// <param name="param1"></param>
 		/// <param name="param2"></param>
 		/// <param name="param3"></param>
-		public void F0_1000_083f(short param1, short param2, ushort param3)
+		public void F0_1000_083f(short param1, short param2, int bitmapID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_083f({param1}, {param2}, {param3})");
+			this.oCPU.Log.EnterBlock($"F0_1000_083f({param1}, {param2}, {bitmapID})");
 
 			// function body
-			//this.oParent.Graphics.F0_VGA_0270(param1, param2, param3);
+			//this.oParent.Graphics.F0_VGA_0270(param1, param2, bitmapID);
 
 			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
 			{
@@ -763,15 +813,15 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="param1"></param>
 		/// <param name="param2"></param>
-		/// <param name="param3"></param>
-		public void F0_1000_1697(ushort param1, ushort param2, ushort param3)
+		/// <param name="bitmapID"></param>
+		public void F0_1000_1697(ushort param1, ushort param2, int bitmapID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_1697({param1}, {param2}, {param3})");
+			this.oCPU.Log.EnterBlock($"F0_1000_1697({param1}, {param2}, {bitmapID})");
 
 			// function body
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5878, param1);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x587a, param2);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5876, param3);
+			this.oParent.Var_5876 = bitmapID;
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1000_1697");
@@ -832,15 +882,15 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_1000_16db()");
 
 			// function body
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5876), 0x0);
-			if (this.oCPU.Flags.E) goto L170a;
+			if (this.oParent.Var_5876 == 0) goto L170a;
+
 			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403), 0x0);
 			if (this.oCPU.Flags.NE) goto L170a;
 
 			// Instruction address 0x1000:0x16fd, size: 5
 			F0_1000_083f((short)(this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x586e) - this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x5878)),
 				(short)(this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x5870) - this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x587a)),
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5876));
+				this.oParent.Var_5876);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5403, 0x1);
 
@@ -857,8 +907,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_1000_170b()");
 
 			// function body
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5876), 0x0);
-			if (this.oCPU.Flags.E) goto L1723;
+			if (this.oParent.Var_5876 == 0) goto L1723;
 
 			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403), 0x0);
 			if (this.oCPU.Flags.E) goto L1723;

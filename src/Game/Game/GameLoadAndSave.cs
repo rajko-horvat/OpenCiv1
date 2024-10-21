@@ -111,9 +111,6 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xe168, 0xffff);
 
 		L00dc:
-			// Instruction address 0x0000:0x00e5, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
-
 			// Instruction address 0x0000:0x00ed, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
@@ -260,9 +257,6 @@ namespace OpenCiv1
 			string path = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr));
 
 			F11_0000_083b_LoadGameData(path);
-
-			// Instruction address 0x0000:0x0310, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 2;
 
@@ -427,9 +421,6 @@ namespace OpenCiv1
 			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 64, 127, 1);
 
 		L04d0:
-			// Instruction address 0x0000:0x04d9, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
-
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x04e6, size: 5
@@ -466,7 +457,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0522, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\n ");
 
-			this.oCPU.BX.Word = (ushort)this.oGameData.DifficultyLevel;
+			this.oCPU.BX.Word = (ushort)((short)this.oGameData.DifficultyLevel);
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x0538, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x33a2)));
@@ -1383,7 +1374,7 @@ namespace OpenCiv1
 				WriteInt16(writer, this.oGameData.PlayerFlags);
 				WriteUInt16(writer, this.oGameData.RandomSeed);
 				WriteInt16(writer, this.oGameData.Year);
-				WriteInt16(writer, this.oGameData.DifficultyLevel);
+				WriteInt16(writer, (short)this.oGameData.DifficultyLevel);
 				WriteInt16(writer, this.oGameData.ActiveCivilizations);
 				WriteInt16(writer, this.oGameData.Players[this.oGameData.HumanPlayerID].CurrentResearchID);
 

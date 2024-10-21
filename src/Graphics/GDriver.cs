@@ -165,6 +165,40 @@ namespace OpenCiv1.Graphics
 			}
 		}
 
+		public void F0_VGA_0162_SetColorsFromColorStruct(byte[] colorStruct)
+		{
+			// function body
+			int colorStructPtr = 0;
+
+			if (colorStruct[0] == 0x4d && colorStruct[1] == 0x30)
+			{
+				int iFrom = colorStruct[4];
+				int iTo = colorStruct[5];
+				int iCount = (iTo - iFrom) + 1;
+
+				colorStructPtr += 6;
+
+				lock (this.GLock)
+				{
+					Color[] aColors = new Color[iCount];
+
+					for (int i = 0; i < iCount; i++)
+					{
+						aColors[i] = GBitmap.Color18ToColor(colorStruct[colorStructPtr + (i * 3)],
+							colorStruct[colorStructPtr + (i * 3) + 1], colorStruct[colorStructPtr + (i * 3) + 2]);
+
+						//this.oCPU.Log.WriteLine($"Setting palette index {iFrom + i}, #{aColors[i].A:x2}{aColors[i].R:x2}{aColors[i].G:x2}{aColors[i].B:x2}");
+					}
+
+					// set colors to all planes, as this is what original code does
+					for (int i = 0; i < this.aScreens.Count; i++)
+					{
+						this.aScreens[i].Value.SetPaletteFromColorArray(aColors, iFrom, iFrom, iCount);
+					}
+				}
+			}
+		}
+
 		public void SetColorsFromColorStruct(byte[] colorStruct)
 		{
 			int iStructPos = 0;
@@ -395,24 +429,21 @@ namespace OpenCiv1.Graphics
 			}
 		}
 
-		public ushort LoadIcon(string filename)
+		public int LoadIcon(string filename)
 		{
 			byte[] aTemp;
 			GBitmap? bitmap = GBitmap.FromPICFile($"{VCPU.DefaultCIVPath}{filename.ToUpper()}", out aTemp);
+			int bitmapID = -1;
 
 			if (bitmap != null)
 			{
 				this.aBitmaps.Add(this.iNextBitmapID, bitmap);
 
-				this.oCPU.AX.Word = (ushort)this.iNextBitmapID;
+				bitmapID = this.iNextBitmapID;
 				this.iNextBitmapID++;
 			}
-			else
-			{
-				this.oCPU.AX.Word = 0xffff;
-			}
-			
-			return this.oCPU.AX.Word;
+
+			return bitmapID;
 		}
 
 		public byte F0_VGA_038c_GetPixel(int screenID, int xPos, int yPos)

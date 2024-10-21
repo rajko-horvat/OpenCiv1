@@ -32,10 +32,6 @@ namespace OpenCiv1
 
 			for (int i = 1; i < 8; i++)
 			{
-				// Instruction address 0x0000:0x0019, size: 5
-				if (this.oParent.Segment_11a8.F0_11a8_02a4(i, 0) == 0)
-					break;
-
 				this.oCPU.WriteInt16(this.oCPU.DS.Word, 0xdeba, (short)(i + 1));
 			}
 			
@@ -418,9 +414,6 @@ namespace OpenCiv1
 			int local_242;
 			int local_244;
 
-			// Instruction address 0x0000:0x0be9, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(6, 1);
-
 			// Instruction address 0x0000:0x0bf9, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "planet2.pic", 0);
 
@@ -444,9 +437,6 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0cdc, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 32, 320, 24, this.oParent.Var_19d4_Rectangle, 0, 176);
-
-			// Instruction address 0x0000:0x0ced, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
 			// Instruction address 0x0000:0x0d2b, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0xec);
@@ -642,9 +632,6 @@ namespace OpenCiv1
 
 			if (playerID == this.oGameData.HumanPlayerID)
 			{
-				// Instruction address 0x0000:0x11f7, size: 5
-				this.oParent.Segment_11a8.F0_11a8_02a4(6, 1);
-
 				// Instruction address 0x0000:0x1207, size: 5
 				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x330a, 0);
 
@@ -659,9 +646,6 @@ namespace OpenCiv1
 
 				// Instruction address 0x0000:0x1252, size: 5
 				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x3316, 1);
-
-				// Instruction address 0x0000:0x1263, size: 5
-				this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
 				// Instruction address 0x0000:0x126f, size: 5
 				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x22, 0);
@@ -792,9 +776,6 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1530, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			// Instruction address 0x0000:0x153f, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(6, 1);
-
 			// Instruction address 0x0000:0x155a, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
@@ -803,9 +784,6 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x1576, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x332e, 1);
-
-			// Instruction address 0x0000:0x1587, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
 			// Instruction address 0x0000:0x15a7, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);

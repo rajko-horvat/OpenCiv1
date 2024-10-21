@@ -468,7 +468,7 @@ namespace OpenCiv1
 						// Instruction address 0x2aea:0x091e, size: 5
 						this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
 							local_6, local_a,
-							this.oParent.Array_b886[(int)local_18, local_12]);
+							this.oParent.Array_b886[TerrainMap.TerrainTypeEnumToValue(local_18), local_12]);
 
 						if (local_18 == TerrainTypeEnum.Grassland && (((xPos * 7) + (yPos * 11)) & 0x2) == 0)
 						{
@@ -542,7 +542,7 @@ namespace OpenCiv1
 					{
 						// Instruction address 0x2aea:0x0b28, size: 5
 						this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-							local_6, local_a, this.oParent.Array_d4ce[(int)local_18 + 16]);
+							local_6, local_a, this.oParent.Array_d4ce[TerrainMap.TerrainTypeEnumToValue(local_18) + 16]);
 					}
 
 					// Instruction address 0x2aea:0x0b3a, size: 3

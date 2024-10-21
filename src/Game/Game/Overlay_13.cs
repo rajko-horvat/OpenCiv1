@@ -52,10 +52,8 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0088, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Government: ");
 
-			this.oCPU.BX.Word = (ushort)this.oGameData.Players[playerID].GovernmentType;
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x0000:0x009e, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1966)));
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.Array_1966[this.oGameData.Players[playerID].GovernmentType]);
 
 			// Instruction address 0x0000:0x00b6, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 16, 24, 15);

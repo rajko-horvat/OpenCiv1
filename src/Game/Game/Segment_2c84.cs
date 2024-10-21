@@ -222,14 +222,14 @@ namespace OpenCiv1
 			goto L01d4;
 
 		L01a3:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, 0x2);
+			this.oParent.Var_dc48 = 2;
 
 		L01a9:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0x1000);
 			goto L01d4;
 
 		L01b1:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, 0x1);
+			this.oParent.Var_dc48 = 1;
 			goto L01a9;
 
 		L01b9:

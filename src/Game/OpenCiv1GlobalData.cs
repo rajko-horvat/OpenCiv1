@@ -34,12 +34,16 @@ namespace OpenCiv1
 		public CRectangle Var_aa_Rectangle = new CRectangle(0, 0, 0, 319, 199, 0x1, 15, 0, 4, 0, 0);
 		public byte[] Array_1946 = new byte[] { 12, 15, 10, 9, 14, 11, 13, 7 };
 		public byte[] Array_1956 = new byte[] { 4, 7, 2, 1, 10, 3, 4, 8 };
+		public string[] Array_1966 = new string[] { "Anarchy", "Despotism", "Monarchy", "Communist", "Republic", "Democratic" };
 		public CRectangle Var_19d4_Rectangle = new CRectangle(1, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 		public CRectangle Var_19e8_Rectangle = new CRectangle(2, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 
 		// !!! This should not be used at all as screen 3 doesn't exist
 		public CRectangle Var_19fc_Rectangle = new CRectangle(3, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 
+		public char Var_1a30_SoundDriverType = 'N';
+		public bool Var_1a3c_MouseAvailable = true;
+		public int Var_1a3e = 0;
 		public int Var_1ae0 = 0;
 
 		public int[] Array_2ba6 = new int[] {
@@ -65,12 +69,15 @@ namespace OpenCiv1
 		public int Var_2f9c = 0;
 		public int Var_2f9e = -1;
 		public int Var_2fa2 = 0;
+		public string[] Var_2fac = new string[] { "Defense Minister:", "Domestic Advisor:", "Foreign Minister:", "Science Advisor:" };
 
 		public string[] Array_30ae = new string[] { "$US", "$THEM", "$BUCKS", "$RPLC1", "$RPLC2" };
 		public string[] Array_30b8 = new string[] { "", "", "", "", "" };
 		public int Var_3936 = -1;
+		public int Var_5876 = 0;
 
 		// 0x652e - after this offset the default values are set to 0
+		public byte[] Var_6b34 = new byte[48];
 		public int Var_6b64 = 0;
 		public int Var_6b90 = 0;
 		public int Var_6b92 = 0;
@@ -78,14 +85,15 @@ namespace OpenCiv1
 		public int Var_6c9a = 0;
 		public int[] Array_6e00 = new int[15];
 		public int[] Array_6e1e = new int[15];
-		public ushort[] Array_6e96 = new ushort[9];
+		public int Var_6e92 = 0;
+		public int[] Array_6e96 = new int[9];
 		public int Var_6ed6 = 0;
-		public int[] Var_70da_Arr = new int[4];
+		public int[] Array_70da = new int[4];
 		public int Var_70e2 = 0;
 		public int Var_70e4 = 0;
 		public int Var_70e6 = 0;
 		public int Var_70ea = 0;
-		public ushort[] Array_7eec = new ushort[4];
+		public int[] Array_7eec = new int[4];
 		public int Var_7ef6_MapLandMass = 0;
 		public int Var_7ef8_MapTemperature = 0;
 		public int Var_7efa_MapClimate = 0;
@@ -99,17 +107,20 @@ namespace OpenCiv1
 		public int[] Array_b29a = new int[8];
 		public int Var_b880 = 0;
 		public int Var_b882 = 0;
-		public ushort[,] Array_b886 = new ushort[10, 16];
-		public ushort Var_b2ba = 0;
+		public int Var_b884 = 0;
+		public int[,] Array_b886 = new int[10, 16];
+		public int Var_b2ba = 0;
+		public byte[] Var_bdee = new byte[771];
 		public int Var_d206 = 0;
 		public int Var_d20a = 0;
-		public ushort[,] Array_d294 = new ushort[8, 4];
+		public int[,] Array_d21c = new int[3, 20];
+		public int[,] Array_d294 = new int[8, 4];
 		public int[] Array_d2d4 = new int[4];
 		public int Var_d2de = 0;
 		public int Var_d2e0 = 0;
 		public int Var_d2f6 = 0;
 		public short Var_d4cc_XPos = 0;
-		public ushort[] Array_d4ce = new ushort[320];
+		public int[] Array_d4ce = new int[320];
 		public short Var_d75e_YPos = 0;
 		public ushort Var_d768 = 0;
 		public bool Var_d76a_IsEarthMap = false;
@@ -120,8 +131,10 @@ namespace OpenCiv1
 		public int Var_db3c = 0;
 		public ushort Var_db3e = 0;
 		public int Var_db42 = 0;
+		public int Var_dc48 = 0;
 		public int Var_dcfc = 0;
 		public int Var_deb8 = 0;
+		public int Var_df0c = 0;
 		public int[] Array_df62 = new int[3];
 		public int Var_e17a = 0;
 		public int Var_e17c = 0;

@@ -41,9 +41,6 @@ namespace OpenCiv1
 
 			RandomMT19937 rng = new RandomMT19937(12345);
 
-			// Instruction address 0x0000:0x0024, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(7, 1);
-
 			this.oParent.Var_aa_Rectangle.ScreenID = 1;
 
 			this.Var_67fc = 0;
@@ -51,7 +48,7 @@ namespace OpenCiv1
 			if (earthMap)
 			{
 				// Instruction address 0x0000:0x0049, size: 5
-				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, $"{VCPU.DefaultCIVPath}map.pic", 1);
+				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, $"map.pic", 1);
 			}
 			else
 			{
@@ -1620,7 +1617,7 @@ namespace OpenCiv1
 							}
 
 							// Instruction address 0x0000:0x1a21, size: 5 
-							this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(2, 0, 0, VCPU.DefaultCIVPath + sFileName, 0);
+							this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(2, 0, 0, sFileName, 0);
 
 							// Instruction address 0x0000:0x1a39, size: 5
 							this.oParent.Segment_1000.F0_1000_04d4_TransformPaletteToColor(8, Color.FromRgb(0, 0, 0));
@@ -1632,7 +1629,7 @@ namespace OpenCiv1
 							sFileName = sFileName.Replace(".pic", ".pal");
 
 							// Instruction address 0x0000:0x1a83, size: 5
-							this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, VCPU.DefaultCIVPath + sFileName, 0xc5be);
+							this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, sFileName, 0xc5be);
 
 							// Instruction address 0x0000:0x1a93, size: 5
 							this.oParent.Segment_1000.F0_1000_04aa_TransformPalette(8, 0xc5be);

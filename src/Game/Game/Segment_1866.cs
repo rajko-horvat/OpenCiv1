@@ -3478,8 +3478,7 @@ namespace OpenCiv1
 			// Instruction address 0x1866:0x20e9, size: 5
 			this.oParent.Segment_1403.F0_1403_4545();
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1a3c), 0x0);
-			if (this.oCPU.Flags.E) goto L2110;
+			if (!this.oParent.Var_1a3c_MouseAvailable) goto L2110;
 
 		L20f5:
 			// Instruction address 0x1866:0x20f5, size: 5

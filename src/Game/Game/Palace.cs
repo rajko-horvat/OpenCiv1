@@ -41,9 +41,6 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0028, size: 5
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x100), 0xba06);
 
-			// Instruction address 0x0000:0x003a, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(2, 1);
-
 			this.oParent.Var_aa_Rectangle.ScreenID = 1;
 
 			F17_0000_07ec(0);
@@ -630,9 +627,6 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x07a1, size: 5
 			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 
-			// Instruction address 0x0000:0x07b2, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
-
 			// Instruction address 0x0000:0x07dc, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
 
@@ -660,9 +654,6 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x2e);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-
-			// Instruction address 0x0000:0x07fd, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(2, 1);
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 1;
 
@@ -1073,9 +1064,8 @@ namespace OpenCiv1
 				this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Low);
 
 				// Instruction address 0x0000:0x0c0b, size: 5
-				this.oParent.ImageTools.F0_2fa1_044c_LoadIcon((ushort)(this.oCPU.BP.Word - 0x10));
-
-				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2a), this.oCPU.AX.Word);
+				this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2a),
+					(short)this.oParent.ImageTools.F0_2fa1_044c_LoadIcon((ushort)(this.oCPU.BP.Word - 0x10)));
 
 				// Instruction address 0x0000:0x0c2e, size: 5
 				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
@@ -1092,9 +1082,8 @@ namespace OpenCiv1
 				this.oCPU.WriteUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Low);
 
 				// Instruction address 0x0000:0x0c4b, size: 5
-				this.oParent.ImageTools.F0_2fa1_044c_LoadIcon((ushort)(this.oCPU.BP.Word - 0x10));
-
-				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c), this.oCPU.AX.Word);
+				this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c),
+					(short)this.oParent.ImageTools.F0_2fa1_044c_LoadIcon((ushort)(this.oCPU.BP.Word - 0x10)));
 
 				// Instruction address 0x0000:0x0c6f, size: 5
 				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
@@ -1132,9 +1121,6 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0ce0, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4bb0, 1);
-
-			// Instruction address 0x0000:0x0cf1, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
 		L0cf9:
 			this.oCPU.SI.Word = this.oCPU.POP_UInt16();

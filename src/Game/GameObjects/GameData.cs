@@ -14,21 +14,21 @@ namespace OpenCiv1
 		// Game settings
 		public short GameSettingFlags = 2;
 		public short DebugFlags = 0;
+		public ushort RandomSeed = 0;
 
 		// Game common data
+		public int DifficultyLevel = 0;
 		public short TurnCount = 0;
 		public short Year = 0;
-		public ushort RandomSeed = 0;
-		public short DifficultyLevel = 0;
+		public short PeaceTurnCount = 0;
+		public short NextAnthologyTurn = 80;
+
+		public short AIOpponentCount = 0;
+		public int BarbarianPlayerID = 0;
 		public short HumanPlayerID = 0;
 		public short PlayerFlags = 0;
 		public short PlayerIdentityFlags = 0;
 		public short ActiveCivilizations = 0;
-		public int BarbarianPlayerID = 0;
-
-		public short PeaceTurnCount = 0;
-		public short AIOpponentCount = 0;
-		public short NextAnthologyTurn = 80;
 
 		// Players
 		public Player[] Players = new Player[8];

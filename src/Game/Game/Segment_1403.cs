@@ -132,8 +132,8 @@ namespace OpenCiv1
 			this.oParent.Segment_1238.F0_1238_1b44();
 
 		L0165:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48), 0x0);
-			if (this.oCPU.Flags.NE) goto L016f;
+			if (this.oParent.Var_dc48 != 0) goto L016f;
+
 			goto L0177;
 
 		L016f:
@@ -613,9 +613,6 @@ namespace OpenCiv1
 
 			// Instruction address 0x1403:0x080d, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
-
-			// Instruction address 0x1403:0x081e, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
 			// Instruction address 0x1403:0x0826, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
@@ -1232,8 +1229,7 @@ namespace OpenCiv1
 			goto L1b5e;
 
 		L0ffd:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1a3c), 0x0);
-			if (this.oCPU.Flags.E) goto L1007;
+			if (!this.oParent.Var_1a3c_MouseAvailable) goto L1007;
 			goto L108b;
 
 		L1007:
@@ -4035,7 +4031,7 @@ namespace OpenCiv1
 
 			this.oParent.Overlay_21.F21_0000_0000(-1);
 			
-			this.oParent.StartGameMenu.F5_0000_1af6();
+			this.oParent.StartGameMenu.F5_0000_1af6_LoadGovernmentImage();
 
 			// Instruction address 0x1403:0x35be, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
@@ -4261,24 +4257,24 @@ namespace OpenCiv1
 			goto L38eb;
 
 		L38e2:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, 0x0);
+			this.oParent.Var_dc48 = 0;
+
 			goto L3c40;
 
 		L38eb:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48), 0x0);
-			if (this.oCPU.Flags.E) goto L38f5;
+			if (this.oParent.Var_dc48 == 0) goto L38f5;
+
 			goto L38fb;
 
 		L38f5:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, 0x1);
+			this.oParent.Var_dc48 = 1;
 
 		L38fb:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32), 0x80);
 			goto L3c40;
 
 		L3903:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1a3c), 0x0);
-			if (this.oCPU.Flags.E) goto L390d;
+			if (!this.oParent.Var_1a3c_MouseAvailable) goto L390d;
 			goto L3952;
 
 		L390d:
@@ -4307,8 +4303,7 @@ namespace OpenCiv1
 			goto L3c40;
 
 		L3955:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1a3c), 0x0);
-			if (this.oCPU.Flags.E) goto L395f;
+			if (!this.oParent.Var_1a3c_MouseAvailable) goto L395f;
 			goto L3a38;
 
 		L395f:
@@ -4704,8 +4699,8 @@ namespace OpenCiv1
 			goto L3c77;
 
 		L3c6d:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48), 0x0);
-			if (this.oCPU.Flags.NE) goto L3c77;
+			if (this.oParent.Var_dc48 != 0) goto L3c77;
+
 			goto L047f;
 
 		L3c77:
@@ -4834,13 +4829,13 @@ namespace OpenCiv1
 			goto L3e61;
 
 		L3e57:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48), 0x0);
-			if (this.oCPU.Flags.NE) goto L3e61;
+			if (this.oParent.Var_dc48 != 0) goto L3e61;
+
 			goto L013c;
 
 		L3e61:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48), 0x0);
-			if (this.oCPU.Flags.E) goto L3e6b;
+			if (this.oParent.Var_dc48 == 0) goto L3e6b;
+
 			goto L3ea1;
 
 		L3e6b:

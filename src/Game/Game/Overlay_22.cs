@@ -820,14 +820,6 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x3a);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 
-			// Instruction address 0x0000:0x0976, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(1, 0);
-
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L0985;
-			goto L0af0;
-
-		L0985:
 			// Instruction address 0x0000:0x098d, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x5318, 1);
 
@@ -909,13 +901,9 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0ad2, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x38)), 0);
 
-			// Instruction address 0x0000:0x0ae3, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
-
 			// Instruction address 0x0000:0x0aeb, size: 5
 			this.oParent.Segment_1238.F0_1238_1beb();
 
-		L0af0:
 			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
@@ -1258,14 +1246,6 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x10);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 
-			// Instruction address 0x0000:0x0ebe, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(1, 0);
-
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L0ecd;
-			goto L114d;
-
-		L0ecd:
 			// Instruction address 0x0000:0x0ecd, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
@@ -1395,9 +1375,6 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x10d3, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 0x539a);
 
-			// Instruction address 0x0000:0x10e4, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
-
 			// Instruction address 0x0000:0x10fc, size: 5
 			this.oParent.Segment_1000.F0_1000_04d4_TransformPaletteToColor(10, Color.FromRgb(0, 0, 0));
 
@@ -1427,7 +1404,6 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1148, size: 5
 			this.oParent.Segment_1403.F0_1403_4545();
 
-		L114d:
 			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();

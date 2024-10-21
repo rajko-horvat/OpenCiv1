@@ -395,9 +395,6 @@ namespace OpenCiv1
 			this.oCPU.TEST_UInt8((byte)(this.oGameData.GameSettingFlags & 0xff), 0x8);
 			if (this.oCPU.Flags.E) goto L0484;
 
-			// Instruction address 0x0000:0x046d, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(1, 0);
-
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0484;
 			
@@ -1565,8 +1562,9 @@ namespace OpenCiv1
 
 		L1269:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18), 0xffff);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb884), 0x0);
-			if (this.oCPU.Flags.E) goto L128e;
+			
+			if (this.oParent.Var_b884 == 0) goto L128e;
+
 			this.oCPU.AX.Word = 0x64;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)this.oGameData.AIOpponentCount);
 			this.oCPU.CX.Word = 0x226;
