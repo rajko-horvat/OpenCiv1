@@ -94,9 +94,6 @@ namespace OpenCiv1
 			// Instruction address 0x11a8:0x0139, size: 5
 			this.oParent.Segment_1000.F0_1000_1697(0, 0, this.oParent.Var_6e92);
 			
-			// Instruction address 0x11a8:0x0142, size: 3
-			F0_11a8_0250();
-
 		L0145:
 			// Game type, load, etc. menu
 			// And then after menu Intro
@@ -176,92 +173,6 @@ namespace OpenCiv1
 		/// <summary>
 		/// ?
 		/// </summary>
-		public void F0_11a8_0250()
-		{
-			this.oCPU.Log.EnterBlock("F0_11a8_0250()");
-
-			// function body
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdeea, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea)));
-
-			if (this.oParent.Var_1a3c_MouseAvailable && this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xdeea) == 1)
-			{
-				// Instruction address 0x11a8:0x0262, size: 5
-				this.oParent.Segment_1000.F0_1000_16db();
-			}
-		
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_11a8_0250");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		public void F0_11a8_0268()
-		{
-			this.oCPU.Log.EnterBlock("F0_11a8_0268()");
-
-			// function body
-			if (this.oParent.Var_1a3c_MouseAvailable && this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea) == 1)
-			{
-				// Instruction address 0x11a8:0x0276, size: 5
-				this.oParent.Segment_1000.F0_1000_170b();
-			}
-		
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdeea, 
-				this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea)));
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_11a8_0268");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		public void F0_11a8_0280()
-		{
-			this.oCPU.Log.EnterBlock("F0_11a8_0280()");
-
-			// function body
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x652e, this.oCPU.AX.Word);
-			goto L028c;
-
-		L0288:
-			// Instruction address 0x11a8:0x0289, size: 3
-			F0_11a8_0250();
-
-		L028c:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea), 0x1);
-			if (this.oCPU.Flags.L) goto L0288;
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_11a8_0280");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		public void F0_11a8_0294()
-		{
-			this.oCPU.Log.EnterBlock("F0_11a8_0294()");
-
-			// function body
-			goto L029a;
-
-		L0296:
-			// Instruction address 0x11a8:0x0297, size: 3
-			F0_11a8_0268();
-
-		L029a:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x652e);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeea), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.G) goto L0296;
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_11a8_0294");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
 		public void F0_11a8_0486_LogoAndMainGameMenu()
 		{
 			this.oCPU.Log.EnterBlock("F0_11a8_0486_LogoAndMainGameMenu()");
@@ -331,9 +242,6 @@ namespace OpenCiv1
 			goto L0810;
 
 		L0511:
-			// Instruction address 0x11a8:0x0512, size: 3
-			F0_11a8_0268();
-
 			this.oParent.Var_7ef6_MapLandMass = 1;
 			this.oParent.Var_7ef8_MapTemperature = 1;
 			this.oParent.Var_7efa_MapClimate = 1;
@@ -370,7 +278,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
 			// Instruction address 0x11a8:0x053e, size: 5
-			this.oParent.Segment_1000.F0_1000_0846(0);
+			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(0);
 
 			// Instruction address 0x11a8:0x054e, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x1b33, 0);
@@ -382,9 +290,6 @@ namespace OpenCiv1
 			goto L0810;
 
 		L0591:
-			// Instruction address 0x11a8:0x0592, size: 3
-			F0_11a8_0268();
-
 			// Instruction address 0x11a8:0x05b6, size: 5
 			this.oParent.Segment_1000.F0_1000_04d4_TransformPaletteToColor(5, Color.FromRgb(0, 0, 0));
 
@@ -396,9 +301,6 @@ namespace OpenCiv1
 
 			// Instruction address 0x11a8:0x0611, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
-
-			// Instruction address 0x11a8:0x061a, size: 3
-			F0_11a8_0250();
 
 			this.oParent.Var_2f9a = 1;
 
@@ -495,23 +397,14 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
 			if (this.oCPU.Flags.E) goto L073a;
 
-			if (this.oParent.Var_2f9c == 0) goto L078e;
+			if (this.oParent.Var_2f9c == 0) goto L052e;
 
 			this.oParent.Help.F4_0000_0000(0x1bfe);
 			
 			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_7efc_MapAge);
 			goto L072f;
 
-		L078e:
-			// Instruction address 0x11a8:0x078f, size: 3
-			F0_11a8_0268();
-
-			goto L052e;
-
 		L0795:
-			// Instruction address 0x11a8:0x0796, size: 3
-			F0_11a8_0268();
-
 			this.oParent.Var_d76a_IsEarthMap = true;
 
 			this.oParent.GameInitAndIntro.Var_67fc = 0;
@@ -553,7 +446,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
 			// Instruction address 0x11a8:0x07af, size: 5
-			this.oParent.Segment_1000.F0_1000_0846(0);
+			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(0);
 
 			// Instruction address 0x11a8:0x054e, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x1c02, 0);
@@ -566,23 +459,14 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.INC_UInt16(this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0807;
 
-			// Instruction address 0x11a8:0x07cd, size: 3
-			F0_11a8_0268();
-
 			// Instruction address 0x11a8:0x07e4, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 7);
 			goto L0810;
 
 		L07ee:
-			// Instruction address 0x11a8:0x07ef, size: 3
-			F0_11a8_0268();
-
 			this.oParent.HallOfFame.F3_0000_002b();
 
 			this.oParent.HallOfFame.F3_0000_00d7(0xffff);
-
-			// Instruction address 0x11a8:0x0804, size: 3
-			F0_11a8_0250();
 
 		L0807:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6b32, 0xffff);
@@ -615,9 +499,6 @@ namespace OpenCiv1
 
 			// Instruction address 0x11a8:0x086f, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_05dd();
-
-			// Instruction address 0x11a8:0x0875, size: 3
-			F0_11a8_0250();
 
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();

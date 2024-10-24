@@ -127,7 +127,7 @@ namespace OpenCiv1
 			goto L0879;
 
 		L0105:
-			this.oCPU.AX.Word = (ushort)this.oGameData.AIOpponentCount;
+			this.oCPU.AX.Word = (ushort)((short)this.oGameData.MaximumPlayers);
 			this.oCPU.AX.Word = this.oCPU.INC_UInt16(this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)), this.oCPU.AX.Word);
 			if (this.oCPU.Flags.LE) goto L0113;
@@ -143,16 +143,16 @@ namespace OpenCiv1
 			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16));
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.AX.Word = this.oCPU.NOT_UInt16(this.oCPU.AX.Word);
-			oParent.GameData.ActiveCivilizations &= (short)this.oCPU.AX.Word;
+			oParent.GameData.ActivePlayers &= (short)this.oCPU.AX.Word;
 
-			this.oParent.StartGameMenu.F5_0000_07c7(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)));
+			this.oParent.StartGameMenu.F5_0000_07c7_InitPlayerData(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)));
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0100;
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16));
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			oParent.GameData.ActiveCivilizations |= (short)this.oCPU.AX.Word;
+			oParent.GameData.ActivePlayers |= (short)this.oCPU.AX.Word;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x0);
 			if (this.oCPU.Flags.NE) goto L0166;
 			this.oCPU.SI.Word = (ushort)this.oGameData.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16))].NationalityID;

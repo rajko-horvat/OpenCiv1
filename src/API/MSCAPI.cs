@@ -928,12 +928,12 @@ namespace OpenCiv1
 			return (ushort)str.Length;
 		}
 
-		public ushort strlen(ushort stringPtr)
+		public int strlen(ushort stringPtr)
 		{
 			string sSource = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
 
 			this.oCPU.AX.Word = (ushort)sSource.Length; // preserve compatibility
-			return (ushort)sSource.Length;
+			return sSource.Length;
 		}
 
 		public short stricmp(string string1, ushort string2Ptr)

@@ -641,9 +641,6 @@ namespace OpenCiv1
 			param1 = 0x13;
 
 		L06ba:
-			// Instruction address 0x0000:0x06ba, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x06c8, size: 5
@@ -793,9 +790,6 @@ namespace OpenCiv1
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
-			// Instruction address 0x0000:0x09a3, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
 		L09a8:
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
@@ -909,9 +903,6 @@ namespace OpenCiv1
 			goto L09ef;
 
 		L0a8e:
-			// Instruction address 0x0000:0x0a8e, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x0aac, size: 5
@@ -1030,9 +1021,6 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
-
-			// Instruction address 0x0000:0x0c6d, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
 			this.oCPU.DI.Word = this.oCPU.POP_UInt16();

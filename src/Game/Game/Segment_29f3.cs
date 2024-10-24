@@ -431,9 +431,6 @@ namespace OpenCiv1
 				this.oGameData.Players[playerID2].Units[unitID2].Position.X,
 				this.oGameData.Players[playerID2].Units[unitID2].Position.Y);
 
-			// Instruction address 0x29f3:0x03e6, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			this.oCPU.AX.Word = 0x600;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID1);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
@@ -446,7 +443,7 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L0416;
-			goto L071c;
+			goto L0721;
 
 		L0416:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0x0);
@@ -648,7 +645,7 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.ADD_UInt16(this.oCPU.DI.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
 
 			// Instruction address 0x29f3:0x061e, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+			this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
 				(short)this.oCPU.SI.Word + 1, (short)this.oCPU.DI.Word + 1,
 				this.oParent.Array_d4ce[this.oGameData.Players[playerID1].Units[unitID1].TypeID + (playerID1 << 5) + 64]);
 
@@ -704,7 +701,7 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.ADD_UInt16(this.oCPU.DI.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
 
 			// Instruction address 0x29f3:0x06e6, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+			this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
 				(short)this.oCPU.SI.Word + 1, (short)this.oCPU.DI.Word + 1,
 				this.oParent.Array_d4ce[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)) + 32]);
 
@@ -718,10 +715,6 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c))));
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)), 0x8);
 			if (this.oCPU.Flags.L) goto L06c1;
-
-		L071c:
-			// Instruction address 0x29f3:0x071c, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
 
 		L0721:
 			this.oCPU.SI.Word = (ushort)playerID1;

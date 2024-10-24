@@ -29,9 +29,6 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x4);
 
-			// Instruction address 0x0000:0x0006, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
 		L0010:
@@ -76,9 +73,6 @@ namespace OpenCiv1
 		L00c5:
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
-			// Instruction address 0x0000:0x00ca, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
@@ -97,9 +91,6 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F23_0000_00d6()");
 
 			// function body
-			// Instruction address 0x0000:0x00d6, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			// Instruction address 0x0000:0x00f3, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 158, 88, 160, 32, 15);
 
@@ -117,9 +108,6 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0165, size: 5
 			this.oGameData.Players[this.oGameData.HumanPlayerID].Name = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
 
-			// Instruction address 0x0000:0x016d, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
 			// Far return
 			this.oCPU.Log.ExitBlock("F23_0000_00d6");
 		}
@@ -136,9 +124,6 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x2);
 
-			// Instruction address 0x0000:0x0179, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			// Instruction address 0x0000:0x0196, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 158, 88, 160, 32, 15);
 
@@ -149,9 +134,9 @@ namespace OpenCiv1
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("Name of your Tribe...", 166, 90, 0);
 
 			// Instruction address 0x0000:0x01df, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oGameData.Players[this.oGameData.HumanPlayerID].Nation);
+			this.oParent.MSCAPI.strcpy(0xba06, this.oGameData.Static.Nations[this.oGameData.HumanPlayerID].Nation);
 
-			F23_0000_0414(0xa6, 0x68, 0xb);
+			F23_0000_0414(166, 104, 11);
 
 			// Instruction address 0x0000:0x0208, size: 5
 			this.oGameData.Players[this.oGameData.HumanPlayerID].Nation = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
@@ -169,9 +154,6 @@ namespace OpenCiv1
 		L022e:
 			// Instruction address 0x0000:0x023c, size: 5
 			this.oGameData.Players[this.oGameData.HumanPlayerID].Nationality = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06).Substring(0, 9);
-
-			// Instruction address 0x0000:0x0252, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
@@ -192,9 +174,6 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x2);
 			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-
-			// Instruction address 0x0000:0x0263, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
@@ -227,9 +206,6 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 		L030e:
-			// Instruction address 0x0000:0x030e, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
 			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
 			this.oCPU.DI.Word = this.oCPU.POP_UInt16();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;

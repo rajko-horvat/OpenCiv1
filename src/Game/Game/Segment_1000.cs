@@ -506,107 +506,6 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
-		/// </summary>
-		public void F0_1000_07d6()
-		{
-			this.oCPU.Log.EnterBlock("F0_1000_07d6()");
-
-			// function body
-			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
-			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0);
-			}
-
-			this.oCPU.Log.ExitBlock("F0_1000_07d6");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		/// <param name="param1"></param>
-		/// <param name="param2"></param>
-		/// <param name="param3"></param>
-		public void F0_1000_083f(short param1, short param2, int bitmapID)
-		{
-			this.oCPU.Log.EnterBlock($"F0_1000_083f({param1}, {param2}, {bitmapID})");
-
-			// function body
-			//this.oParent.Graphics.F0_VGA_0270(param1, param2, bitmapID);
-
-			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
-			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0);
-			}
-
-			this.oCPU.Log.ExitBlock("F0_1000_083f");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		/// <param name="screenID"></param>
-		public void F0_1000_0846(int screenID)
-		{
-			this.oCPU.Log.EnterBlock($"F0_1000_0846({screenID})");
-
-			// function body
-			//this.oParent.Graphics.F0_VGA_063c(screenID);
-			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(screenID);
-
-			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
-			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0);
-			}
-
-			this.oCPU.Log.ExitBlock("F0_1000_0846");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		/// <param name="rectPtr"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		/// <param name="bitmapID"></param>
-		public void F0_1000_0797_DrawBitmapToScreen(CRectangle rect, int xPos, int yPos, int bitmapID)
-		{
-			this.oCPU.Log.EnterBlock($"F0_1000_0797_DrawBitmapToScreen({rect}, {xPos}, {yPos}, 0x{bitmapID:x4})");
-
-			// function body
-			this.oParent.Graphics.F0_VGA_0c3e_DrawBitmapToScreen(rect, xPos, yPos, bitmapID);
-
-			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
-			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0);
-			}
-
-			this.oCPU.Log.ExitBlock("F0_1000_0797_DrawBitmapToScreen");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		/// <param name="rectPtr"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		/// <param name="bitmapID"></param>
-		public void F0_1000_084d_DrawBitmapToScreen(CRectangle rect, int xPos, int yPos, int bitmapID)
-		{
-			this.oCPU.Log.EnterBlock($"F0_1000_084d_DrawBitmapToScreen({rect}, {xPos}, {yPos}, 0x{bitmapID:x4})");
-
-			// function body
-			this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(rect, xPos, yPos, bitmapID);
-
-			if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403) != 0)
-			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0);
-			}
-
-			this.oCPU.Log.ExitBlock("F0_1000_084d_DrawBitmapToScreen");
-		}
-
-		/// <summary>
 		/// Sound function
 		/// </summary>
 		public void F0_1000_0a2b_InitSound()
@@ -875,106 +774,20 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
-		/// </summary>
-		public void F0_1000_16db()
-		{
-			this.oCPU.Log.EnterBlock("F0_1000_16db()");
-
-			// function body
-			if (this.oParent.Var_5876 == 0) goto L170a;
-
-			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403), 0x0);
-			if (this.oCPU.Flags.NE) goto L170a;
-
-			// Instruction address 0x1000:0x16fd, size: 5
-			F0_1000_083f((short)(this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x586e) - this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x5878)),
-				(short)(this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x5870) - this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x587a)),
-				this.oParent.Var_5876);
-
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5403, 0x1);
-
-		L170a:
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_16db");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		public void F0_1000_170b()
-		{
-			this.oCPU.Log.EnterBlock("F0_1000_170b()");
-
-			// function body
-			if (this.oParent.Var_5876 == 0) goto L1723;
-
-			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403), 0x0);
-			if (this.oCPU.Flags.E) goto L1723;
-
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5403, 0x0);
-
-			// Instruction address 0x1000:0x171e, size: 5
-			F0_1000_07d6();
-
-		L1723:
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_170b");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		public void F0_1000_179a()
-		{
-			this.oCPU.Log.EnterBlock("F0_1000_179a()");
-
-			// function body
-			// Near return
-			this.oCPU.Log.ExitBlock("F0_1000_179a");
-		}
-
-		/// <summary>
 		/// Handles mouse events
 		/// </summary>
 		public void F0_1000_17db_MouseEvent()
 		{
-			//this.oCPU.Log.EnterBlock("F0_1000_17db_MouseEvent()");
-
 			// function body
 			this.oCPU.DS.Word = 0x3b01;
 
-			this.oCPU.BP.Word = this.oCPU.CX.Word;
-			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x587c);
-			this.oCPU.BP.Word = this.oCPU.SHR_UInt16(this.oCPU.BP.Word, this.oCPU.CX.Low);
-			this.oCPU.CX.Word = this.oCPU.BP.Word;
+			this.oCPU.CX.Word >>= this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x587c);
+
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5874, 
 				this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5874), this.oCPU.BX.Word));
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5872, this.oCPU.BX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x586e, this.oCPU.CX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5870, this.oCPU.DX.Word);
-
-			this.oCPU.BP.Word = this.oCPU.AX.Word;
-			this.oCPU.TEST_UInt16(this.oCPU.BP.Word, 0x1);
-			if (this.oCPU.Flags.E) goto L1829;
-			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5403), 0x0);
-			if (this.oCPU.Flags.E) goto L1829;
-			this.oCPU.AX.Low = 0x2;
-			this.oCPU.Temp.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5402);
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, this.oCPU.AX.Low);
-			this.oCPU.AX.Low = this.oCPU.Temp.Low;
-			this.oCPU.AX.Low = this.oCPU.OR_UInt8(this.oCPU.AX.Low, this.oCPU.AX.Low);
-			if (this.oCPU.Flags.NE) goto L1829;
-
-			// Instruction address 0x1000:0x1821, size: 3
-			F0_1000_179a();
-
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, 0x0);
-
-		L1829:
-			// Far return
-			//this.oCPU.Log.ExitBlock("F0_1000_17db_MouseEvent");
-			this.oCPU.AX.Low = this.oCPU.AX.Low;
 		}
 	}
 }

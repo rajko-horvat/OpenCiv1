@@ -32,9 +32,6 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x6);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681a, 0x1);
 
-			// Instruction address 0x0000:0x000c, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			F11_0000_05f8();
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
@@ -74,16 +71,10 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0xa);
 			if (this.oCPU.Flags.B) goto L0044;
 
-			// Instruction address 0x0000:0x0076, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
 			// Instruction address 0x0000:0x0087, size: 5
 			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 48, 65, 1);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xe168, this.oCPU.AX.Word);
-
-			// Instruction address 0x0000:0x0092, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
 
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0xe168);
@@ -111,16 +102,10 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xe168, 0xffff);
 
 		L00dc:
-			// Instruction address 0x0000:0x00ed, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xe168);
 			goto L00ff;
 
 		L00f7:
-			// Instruction address 0x0000:0x00f7, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
 			this.oCPU.AX.Word = 0xffff;
 
 		L00ff:
@@ -258,10 +243,6 @@ namespace OpenCiv1
 
 			F11_0000_083b_LoadGameData(path);
 
-			this.oParent.Var_aa_Rectangle.ScreenID = 2;
-
-			this.oParent.GameInitAndIntro.F7_0000_1440_InitAuxPathFind(false);
-
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6820, 0x1);
@@ -315,9 +296,6 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681c, 0);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681a, 0);
 
-			// Instruction address 0x0000:0x0378, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
 			F11_0000_05f8();
@@ -351,16 +329,8 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(param1, 0xffff);
 			if (this.oCPU.Flags.NE) goto L0405;
 
-			// Instruction address 0x0000:0x03e4, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
 			// Instruction address 0x0000:0x03f5, size: 5
-			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 48, 33, 1);
-
-			param1 = this.oCPU.AX.Word;
-
-			// Instruction address 0x0000:0x0400, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			param1 = this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 48, 33, 1);
 
 		L0405:
 			this.oCPU.CMP_UInt16(param1, 0xffff);
@@ -422,9 +392,6 @@ namespace OpenCiv1
 
 		L04d0:
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
-
-			// Instruction address 0x0000:0x04e6, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
@@ -775,7 +742,7 @@ namespace OpenCiv1
 				this.oGameData.RandomSeed = ReadUInt16(reader);
 				this.oGameData.Year = ReadInt16(reader);
 				this.oGameData.DifficultyLevel = ReadInt16(reader);
-				this.oGameData.ActiveCivilizations = ReadInt16(reader);
+				this.oGameData.ActivePlayers = ReadInt16(reader);
 				this.oGameData.Players[this.oGameData.HumanPlayerID].CurrentResearchID = ReadInt16(reader);
 
 				for (int i = 0; i < 8; i++)
@@ -1180,7 +1147,7 @@ namespace OpenCiv1
 
 				this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceLevel = ReadInt16(reader);
 				this.oGameData.PeaceTurnCount = ReadInt16(reader);
-				this.oGameData.AIOpponentCount = ReadInt16(reader);
+				this.oGameData.MaximumPlayers = ReadInt16(reader);
 
 				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{
@@ -1375,7 +1342,7 @@ namespace OpenCiv1
 				WriteUInt16(writer, this.oGameData.RandomSeed);
 				WriteInt16(writer, this.oGameData.Year);
 				WriteInt16(writer, (short)this.oGameData.DifficultyLevel);
-				WriteInt16(writer, this.oGameData.ActiveCivilizations);
+				WriteInt16(writer, this.oGameData.ActivePlayers);
 				WriteInt16(writer, this.oGameData.Players[this.oGameData.HumanPlayerID].CurrentResearchID);
 
 				for (int i = 0; i < 8; i++)
@@ -1778,7 +1745,7 @@ namespace OpenCiv1
 
 				WriteInt16(writer, this.oGameData.Players[this.oGameData.HumanPlayerID].PalaceLevel);
 				WriteInt16(writer, this.oGameData.PeaceTurnCount);
-				WriteInt16(writer, this.oGameData.AIOpponentCount);
+				WriteInt16(writer, (short)this.oGameData.MaximumPlayers);
 
 				for (int i = 0; i < this.oGameData.Players.Length; i++)
 				{

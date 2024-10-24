@@ -23,7 +23,6 @@ namespace OpenCiv1
 		private Segment_2f4d oSegment_2f4d;
 		private MapManagement oMapManagement;
 		private Segment_1866 oSegment_1866;
-		private UnitGoTo oUnitGoTo;
 		private Segment_2459 oSegment_2459;
 		private Segment_25fb oSegment_25fb;
 		private Segment_1ade oSegment_1ade;
@@ -95,7 +94,6 @@ namespace OpenCiv1
 			this.oSegment_2f4d = new Segment_2f4d(this);
 			this.oMapManagement = new MapManagement(this);
 			this.oSegment_1866 = new Segment_1866(this);
-			this.oUnitGoTo = new UnitGoTo(this);
 			this.oSegment_2459 = new Segment_2459(this);
 			this.oSegment_25fb = new Segment_25fb(this);
 			this.oSegment_1ade = new Segment_1ade(this);
@@ -1229,11 +1227,6 @@ namespace OpenCiv1
 		public Segment_1866 Segment_1866
 		{
 			get { return this.oSegment_1866; }
-		}
-
-		public UnitGoTo UnitGoTo
-		{
-			get { return this.oUnitGoTo; }
 		}
 
 		public Segment_2459 Segment_2459

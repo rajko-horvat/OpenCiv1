@@ -23,12 +23,12 @@ namespace OpenCiv1
 		public short PeaceTurnCount = 0;
 		public short NextAnthologyTurn = 80;
 
-		public short AIOpponentCount = 0;
+		public int MaximumPlayers = 0;
+		public short ActivePlayers = 0;
 		public int BarbarianPlayerID = 0;
 		public short HumanPlayerID = 0;
 		public short PlayerFlags = 0;
 		public short PlayerIdentityFlags = 0;
-		public short ActiveCivilizations = 0;
 
 		// Players
 		public Player[] Players = new Player[8];

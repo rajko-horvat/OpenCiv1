@@ -338,14 +338,8 @@ namespace OpenCiv1
 			this.oCPU.TEST_UInt8((byte)(this.oGameData.GameSettingFlags & 0xff), 0x8);
 			if (this.oCPU.Flags.E) goto L03b7;
 
-			// Instruction address 0x2459:0x036c, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			this.oParent.CityView.F19_0000_0000(cityID, -2);
 			
-			// Instruction address 0x2459:0x0380, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
 			this.oParent.CityView.F19_0000_167b(playerID);
 
 			// Instruction address 0x2459:0x03b0, size: 5

@@ -128,9 +128,6 @@ namespace OpenCiv1
 			local_12 = 0;
 			local_8 = 0;
 
-			// Instruction address 0x2d05:0x011c, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			// Instruction address 0x2d05:0x012f, size: 3
 			Array_654e[0] = 0;
 
@@ -273,7 +270,7 @@ namespace OpenCiv1
 					else
 					{
 						// Instruction address 0x2d05:0x06c8, size: 5
-						this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, xPos - 40, yPos - 5, this.oParent.Array_df62[this.oParent.Var_2f9e]);
+						this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, xPos - 40, yPos - 5, this.oParent.Array_df62[this.oParent.Var_2f9e]);
 					}
 
 					// Instruction address 0x2d05:0x072b, size: 5
@@ -379,9 +376,6 @@ namespace OpenCiv1
 				}
 			}
 
-			// Instruction address 0x2d05:0x0135, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
 			if (this.oParent.Var_db38 == 0)
 			{
 				do
@@ -481,7 +475,7 @@ namespace OpenCiv1
 									break;
 
 								case 0x5000:
-									if (local_4 < Var_d208 - 1)
+									if (local_4 < Var_d208)
 									{
 										local_4++;
 									}
@@ -504,16 +498,13 @@ namespace OpenCiv1
 						}
 					}
 
-					if (local_4 < 0 || local_4 >= Var_d208 || this.oParent.Var_d206 != 0)
+					if (local_4 < 0 || local_4 > Var_d208 || this.oParent.Var_d206 != 0)
 					{
 						local_4 = -1;
 					}
 
 					if (local_4 != local_2)
 					{
-						// Instruction address 0x2d05:0x0243, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0268();
-
 						if (local_2 != -1)
 						{
 							// Instruction address 0x2d05:0x027c, size: 5
@@ -551,23 +542,14 @@ namespace OpenCiv1
 						}
 
 						local_2 = local_4;
-
-						// Instruction address 0x2d05:0x0332, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0250();
 					}
 				}
 				while (local_8 == 0);
 
 				if (local_4 != -1)
 				{
-					// Instruction address 0x2d05:0x0349, size: 5
-					this.oParent.Segment_11a8.F0_11a8_0268();
-
 					// Instruction address 0x2d05:0x0441, size: 5
 					this.oParent.Segment_1000.F0_1182_0134_WaitTimer(20);
-
-					// Instruction address 0x2d05:0x0449, size: 5
-					this.oParent.Segment_11a8.F0_11a8_0250();
 				}
 				else
 				{

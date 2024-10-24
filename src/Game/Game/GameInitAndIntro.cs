@@ -794,8 +794,6 @@ namespace OpenCiv1
 
 			F7_0000_1188_InitPathFind();
 
-			F7_0000_1440_InitAuxPathFind(true);
-
 			F7_0000_17cf_AdvanceEvolutionAnimation();
 
 			F7_0000_0f0a_ProcessBuildSites();
@@ -1252,164 +1250,6 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// Initializes auxial Path finding array (used exclusively withing GoTo function)
-		/// </summary>
-		/// <param name="flag"></param>
-		public void F7_0000_1440_InitAuxPathFind(bool flag)
-		{
-			this.oCPU.Log.EnterBlock($"F7_0000_1440({flag})");
-
-			// function body
-			// Instruction address 0x0000:0x1453, size: 5
-			for (int i = 0; i < 20; i++)
-			{
-				for (int j = 0; j < 13; j++)
-				{
-					this.oParent.UnitGoTo.Var_7f38_AuxPathFind[i, j] = 0;
-				}
-			}
-
-			for (int i = 0; i < 20; i++)
-			{
-				for (int j = 0; j < 12; j++)
-				{
-					int xPos = (i * 4) + 1;
-					int yPos = (j * 4) + 1;
-					int local_16 = -1;
-
-					if (F7_0000_176d_GetMapTerrainType_Screen1(xPos, yPos) == TerrainTypeEnum.Water)
-					{
-						local_16 = (short)F7_0000_178e_GetMapGroupID_Screen1(xPos, yPos);
-					}
-					else if (F7_0000_176d_GetMapTerrainType_Screen1(xPos + 1, yPos) == TerrainTypeEnum.Water)
-					{
-						local_16 = (short)F7_0000_178e_GetMapGroupID_Screen1(xPos + 1, yPos);
-					}
-					else if (F7_0000_176d_GetMapTerrainType_Screen1(xPos, yPos + 1) == TerrainTypeEnum.Water)
-					{
-						local_16 = (short)F7_0000_178e_GetMapGroupID_Screen1(xPos, yPos + 1);
-					}
-					else if (F7_0000_176d_GetMapTerrainType_Screen1(xPos + 1, yPos + 1) == TerrainTypeEnum.Water)
-					{
-						local_16 = (short)F7_0000_178e_GetMapGroupID_Screen1(xPos + 1, yPos + 1);
-					}
-
-					if (local_16 != -1)
-					{
-						for (int k = 0; k < 9; k++)
-						{
-							GPoint direction = TerrainMap.MoveOffsets[k];
-
-							int xPos1 = xPos + (direction.X * 4);
-							int yPos1 = yPos + (direction.Y * 4);
-							int local_e = -1;
-
-							if (F7_0000_176d_GetMapTerrainType_Screen1(xPos1, yPos1) == TerrainTypeEnum.Water)
-							{
-								local_e = (short)F7_0000_178e_GetMapGroupID_Screen1(xPos1, yPos1);
-							}
-							else if (F7_0000_176d_GetMapTerrainType_Screen1(xPos1 + 1, yPos1) == TerrainTypeEnum.Water)
-							{
-								local_e = (short)F7_0000_178e_GetMapGroupID_Screen1(xPos1 + 1, yPos1);
-							}
-							else if (F7_0000_176d_GetMapTerrainType_Screen1(xPos1, yPos1 + 1) == TerrainTypeEnum.Water)
-							{
-								local_e = (short)F7_0000_178e_GetMapGroupID_Screen1(xPos1, yPos1 + 1);
-							}
-							else if (F7_0000_176d_GetMapTerrainType_Screen1(xPos1 + 1, yPos1 + 1) != TerrainTypeEnum.Water)
-							{
-								local_e = (short)F7_0000_178e_GetMapGroupID_Screen1(xPos1 + 1, yPos1 + 1);
-							}
-
-							if (local_16 == local_e)
-							{
-								xPos1 = xPos;
-								yPos1 = yPos;
-								int local_10 = 1;
-
-								for (int l = 0; l < 5; l++)
-								{
-									direction = TerrainMap.MoveOffsets[k];
-
-									xPos1 += direction.X;
-									yPos1 += direction.Y;
-									int local_6 = 4;
-
-									// Instruction address 0x0000:0x15fe, size: 5
-									if (!this.oGameData.Map.IsValidPosition(xPos1, yPos1) || F7_0000_176d_GetMapTerrainType_Screen1(xPos1, yPos1) != TerrainTypeEnum.Water)
-									{
-										local_6--;
-									}
-
-									// Instruction address 0x0000:0x1625, size: 5
-									if (!this.oGameData.Map.IsValidPosition(xPos1 + 1, yPos1) || F7_0000_176d_GetMapTerrainType_Screen1(xPos1 + 1, yPos1) != TerrainTypeEnum.Water)
-									{
-										local_6--;
-									}
-
-									// Instruction address 0x0000:0x164c, size: 5
-									if (!this.oGameData.Map.IsValidPosition(xPos1, yPos1 + 1) || F7_0000_176d_GetMapTerrainType_Screen1(xPos1, yPos1 + 1) != TerrainTypeEnum.Water)
-									{
-										local_6--;
-									}
-
-									// Instruction address 0x0000:0x1673, size: 5
-									if (!this.oGameData.Map.IsValidPosition(xPos1 + 1, yPos1 + 1) || F7_0000_176d_GetMapTerrainType_Screen1(xPos1 + 1, yPos1 + 1) != TerrainTypeEnum.Water)
-									{
-										local_6--;
-									}
-
-									if (local_6 < 2)
-									{
-										local_10 = 0;
-										break;
-									}									
-								}
-
-								if (local_10 != 0 || (j == 11 && k == 3))
-								{
-									direction = TerrainMap.MoveOffsets[k];
-
-									if (j + direction.Y < 12)
-									{
-										this.oParent.UnitGoTo.Var_7f38_AuxPathFind[i, j] |= (byte)(1 << (k - 1));
-
-										xPos1 = i + direction.X;
-										yPos1 = j + direction.Y;
-
-										if (xPos1 >= 0 && xPos1 < 20 && j + direction.Y >= 0 && j + direction.Y <= 12)
-										{
-											this.oParent.UnitGoTo.Var_7f38_AuxPathFind[xPos1, j + direction.Y] |= (byte)(1 << ((k + 3) & 0x7));
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-
-				if (flag)
-				{
-					F7_0000_17cf_AdvanceEvolutionAnimation();
-				}
-			}
-
-			for (int i = 0; i < 12; i++)
-			{
-				this.oParent.UnitGoTo.Var_7f38_AuxPathFind[0, i] |= 0xe0;
-				this.oParent.UnitGoTo.Var_7f38_AuxPathFind[19, i] |= 0xe;
-			}
-
-			this.oParent.UnitGoTo.Var_7f38_AuxPathFind[0, 0] &= 0x7f;
-			this.oParent.UnitGoTo.Var_7f38_AuxPathFind[0, 11] &= 0xdf;
-			this.oParent.UnitGoTo.Var_7f38_AuxPathFind[19, 0] &= 0xfd;
-			this.oParent.UnitGoTo.Var_7f38_AuxPathFind[19, 11] &= 0xf7;
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F7_0000_1440");
-		}
-
-		/// <summary>
 		/// ?
 		/// </summary>
 		/// <param name="xPos"></param>
@@ -1701,7 +1541,7 @@ namespace OpenCiv1
 					}
 
 					// Instruction address 0x0000:0x1bc1, size: 5
-					this.oParent.Segment_1000.F0_1000_0846(0);
+					this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(0);
 
 					this.oParent.Var_aa_Rectangle.ScreenID = 1;
 

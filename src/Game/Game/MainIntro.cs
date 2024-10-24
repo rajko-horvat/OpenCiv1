@@ -334,7 +334,7 @@ namespace OpenCiv1
 				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
 				// Instruction address 0x0000:0x0a81, size: 5
-				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_19d4_Rectangle, 0, 64, local_4e);
+				this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(this.oParent.Var_19d4_Rectangle, 0, 64, local_4e);
 
 				// Instruction address 0x0000:0x0aa0, size: 5
 				this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(4, 14, 224, 239);
@@ -375,7 +375,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, 0);
 
 			// Instruction address 0x0000:0x0b7b, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_19d4_Rectangle, 0, 64, local_4e);
+			this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(this.oParent.Var_19d4_Rectangle, 0, 64, local_4e);
 
 			// Instruction address 0x0000:0x0b8b, size: 5
 			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(1);
@@ -384,7 +384,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x0bb6, size: 5
-			this.oParent.Segment_1000.F0_1000_0846(0);
+			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(0);
 			
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
@@ -567,7 +567,7 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x0000:0x0f4d, size: 5
-				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_19d4_Rectangle, 135, 51, local_238[local_208]);
+				this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(this.oParent.Var_19d4_Rectangle, 135, 51, local_238[local_208]);
 
 				// Instruction address 0x0000:0x0f8d, size: 5
 				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 12, 319, 20, 0xec);
@@ -621,7 +621,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
 			// Instruction address 0x0000:0x11b6, size: 5
-			this.oParent.Segment_1000.F0_1000_0846(0);
+			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(0);
 
 			// Instruction address 0x0000:0x11cb, size: 5
 			local_200 = this.oCPU.ReadString(this.oCPU.DS.Word, (ushort)(0xba07 + local_204));
@@ -904,9 +904,6 @@ namespace OpenCiv1
 			int local_a;
 			int local_c;
 
-			// Instruction address 0x0000:0x17e0, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			local_a = this.oParent.Var_d4cc_XPos + 7;
 			local_c = this.oParent.Var_d75e_YPos + 6;
 
@@ -953,9 +950,6 @@ namespace OpenCiv1
 
 			F2_0000_195a(40, 128, 88, 170);
 			
-			// Instruction address 0x0000:0x194b, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
 			// Instruction address 0x0000:0x1950, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 

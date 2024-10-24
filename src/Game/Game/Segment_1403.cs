@@ -589,9 +589,6 @@ namespace OpenCiv1
 			goto L0833;
 
 		L0796:
-			// Instruction address 0x1403:0x0796, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			this.oParent.Palace.F17_0000_07ec(0);
 			
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
@@ -607,9 +604,6 @@ namespace OpenCiv1
 
 			// Instruction address 0x1403:0x0800, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
-
-			// Instruction address 0x1403:0x0808, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x1403:0x080d, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
@@ -739,18 +733,12 @@ namespace OpenCiv1
 			goto L09cf;
 
 		L09a5:
-			// Instruction address 0x1403:0x09a5, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			// Instruction address 0x1403:0x09b4, size: 5
 			this.oParent.Civilopedia.F8_0000_062a((ushort)TerrainMap.TerrainTypeEnumToValue(this.oGameData.Map[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].TerrainType), 3);
 			
 			// Instruction address 0x1403:0x09c5, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
-
-			// Instruction address 0x1403:0x09ca, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
 
 		L09cf:
 			if (this.oParent.Var_db3a == 1) goto L09d9;
@@ -3819,21 +3807,15 @@ namespace OpenCiv1
 			goto L33cf;
 
 		L33a5:
-			// Instruction address 0x1403:0x33a5, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-			
 			// Instruction address 0x1403:0x33ae, size: 5
-			this.oParent.Segment_1000.F0_1000_0846(2);
+			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(2);
 			
 			// Instruction address 0x1403:0x33b6, size: 5
 			this.oParent.MSCAPI.getch();
 
 			// Instruction address 0x1403:0x33bf, size: 5
-			this.oParent.Segment_1000.F0_1000_0846(0);
+			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(0);
 			
-			// Instruction address 0x1403:0x33c7, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
 			goto L33db;
 
 		L33cf:
@@ -4866,14 +4848,8 @@ namespace OpenCiv1
 			if (playerID != this.oGameData.HumanPlayerID)
 				goto L3ece;
 
-			// Instruction address 0x1403:0x3eac, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			// Instruction address 0x1403:0x3ec1, size: 5
 			this.oParent.Segment_1238.F0_1238_1bb2_FillRectangleWithShadow(0, 97, 80, 103);
-
-			// Instruction address 0x1403:0x3ec9, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
 
 		L3ece:
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
@@ -5097,9 +5073,6 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x12);
 			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-
-			// Instruction address 0x1403:0x4068, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
 
 			// Instruction address 0x1403:0x407c, size: 5
 			this.oParent.Segment_1238.F0_1238_1bb2_FillRectangleWithShadow(0, 97, 80, 103);
@@ -5440,9 +5413,6 @@ namespace OpenCiv1
 			}
 
 		L44fd:
-			// Instruction address 0x1403:0x44fd, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
 			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
 			this.oCPU.DI.Word = this.oCPU.POP_UInt16();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;

@@ -77,9 +77,6 @@ namespace OpenCiv1
 
 			TerrainTypeEnum local_c;
 
-			// Instruction address 0x0000:0x0080, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			// Instruction address 0x0000:0x0098, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
@@ -415,9 +412,6 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.getch();
 
 			this.oParent.Var_aa_Rectangle.FontID = 1;
-
-			// Instruction address 0x0000:0x046d, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;

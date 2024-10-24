@@ -37,13 +37,7 @@ namespace OpenCiv1
 				flag = (short)this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.Var_db3c / 60, 0, 4);
 			}
 		
-			// Instruction address 0x2c84:0x0031, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
-
-			// Instruction address 0x2c84:0x003b, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			switch (flag)
 			{
@@ -73,9 +67,6 @@ namespace OpenCiv1
 					break;
 			}
 
-			// Instruction address 0x2c84:0x0082, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x654a);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x1);
@@ -95,9 +86,6 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 		L00a6:
-			// Instruction address 0x2c84:0x00a6, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2c84_0000");
@@ -653,13 +641,7 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 
-			// Instruction address 0x2c84:0x0652, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
-
-			// Instruction address 0x2c84:0x065c, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x654a, 0xffff);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
@@ -749,13 +731,7 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 
-			// Instruction address 0x2c84:0x072f, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
-
-			// Instruction address 0x2c84:0x0739, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x654a, 0xffff);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
