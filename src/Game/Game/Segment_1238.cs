@@ -1485,11 +1485,9 @@ namespace OpenCiv1
 
 			if (this.oParent.Var_d806 == 0) goto L115d;
 
-			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
-			this.oCPU.PUSH_UInt16(0x111e); // stack management - push return offset
 			// Instruction address 0x1238:0x1119, size: 5
 			this.oParent.Graphics.F0_VGA_0492_GetFreeMemory();
-			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 

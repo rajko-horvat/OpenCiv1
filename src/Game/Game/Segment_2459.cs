@@ -80,19 +80,15 @@ namespace OpenCiv1
 				this.oGameData.Players[this.oGameData.HumanPlayerID].Ranking >=
 				this.oGameData.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))].Ranking) goto L00c5;
 
-			this.oParent.Overlay_15.F15_0000_0000(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
+			this.oParent.Schizm.F15_0000_0000(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L00c5;
-			this.oCPU.AX.Low = (byte)playerID;
-			this.oGameData.Cities[cityID].PlayerID = (sbyte)this.oCPU.AX.Low;
 
-			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
-			this.oCPU.PUSH_UInt16(0x00ab); // stack management - push return offset
-			this.oParent.Overlay_15.F15_0000_08ba(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
-			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
-			
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
+			this.oGameData.Cities[cityID].PlayerID = playerID;
+
+			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2),
+				(short)this.oGameData.FindNearestDomesticCity(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))));
 
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
@@ -775,10 +771,7 @@ namespace OpenCiv1
 			goto L07fe;
 
 		L07ed:
-			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
-			this.oCPU.PUSH_UInt16(0x07fe); // stack management - push return offset
 			this.oParent.MeetWithKing.F6_0000_251d(0xba06, 0x14, 0x8b);
-			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
 
 		L07fe:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x9a), this.oCPU.AX.Word);
@@ -822,10 +815,7 @@ namespace OpenCiv1
 			goto L08a1;
 
 		L088d:
-			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
-			this.oCPU.PUSH_UInt16(0x089e); // stack management - push return offset
 			this.oParent.MeetWithKing.F6_0000_251d(0xba06, 0x14, 0x8b);
-			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
 
 		L08a1:
 			// Instruction address 0x2459:0x08aa, size: 5

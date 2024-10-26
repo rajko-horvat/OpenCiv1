@@ -150,7 +150,21 @@ namespace OpenCiv1
 				nationalityID += 2;
 			}
 
+			this.oGameData.HumanPlayerID = (short)(this.oParent.MSCAPI.RNG.Next(this.oGameData.MaximumPlayers) + 1);
 			this.oGameData.ActivePlayers = (short)(255 >> (6 - this.oGameData.MaximumPlayers));
+			this.oGameData.NextAnthologyTurn += (short)this.oParent.MSCAPI.RNG.Next(50);
+			this.oGameData.PlayerFlags = (short)(1 << this.oGameData.HumanPlayerID);
+
+			this.oParent.GameData.PlayerIdentityFlags = 0;
+
+			for (int i = 0; i < 8; i++)
+			{
+				if (this.oGameData.Players[i].NationalityID > 8)
+				{
+					this.oParent.GameData.PlayerIdentityFlags |= (short)(1 << i);
+				}
+			}
+
 			this.oGameData.Year = -4000;
 
 			if (this.oGameData.DifficultyLevel == 0)
@@ -158,12 +172,6 @@ namespace OpenCiv1
 				// Turn on suggestions for novices
 				this.oGameData.GameSettingFlags |= 1;
 			}
-
-			// Instruction address 0x0000:0x047f, size: 5
-			this.oGameData.HumanPlayerID = (short)(this.oParent.MSCAPI.RNG.Next(this.oGameData.MaximumPlayers) + 1);
-
-			// Instruction address 0x0000:0x0410, size: 5
-			this.oGameData.NextAnthologyTurn += (short)this.oParent.MSCAPI.RNG.Next(50);
 
 			Player humanPlayer = this.oGameData.Players[this.oGameData.HumanPlayerID];
 
@@ -199,31 +207,19 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x0000:0x0587, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(
-				this.oGameData.Players[this.oGameData.HumanPlayerID].Nation, 46, 92, 15);
+			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(humanPlayer.Nation, 46, 92, 15);
 
 			for (int i = 0; i < 8; i++)
 			{
 				F5_0000_07c7_InitPlayerData((short)i);
 			}
 
-			this.oGameData.PlayerFlags = (short)(1 << this.oGameData.HumanPlayerID);
-			this.oGameData.Players[this.oGameData.HumanPlayerID].TaxRate = 5;
-			this.oGameData.Players[this.oGameData.HumanPlayerID].ScienceTaxRate = 5;
+			humanPlayer.TaxRate = 5;
+			humanPlayer.ScienceTaxRate = 5;
 
 			if (this.oGameData.DifficultyLevel == 0)
 			{
-				this.oGameData.Players[this.oGameData.HumanPlayerID].Coins = 50;
-			}
-
-			this.oParent.GameData.PlayerIdentityFlags = 0;
-
-			for (int i = 0; i < 8; i++)
-			{
-				if (this.oGameData.Players[i].NationalityID > 8)
-				{
-					this.oParent.GameData.PlayerIdentityFlags |= (short)(1 << i);
-				}
+				humanPlayer.Coins = 50;
 			}
 
 			// Instruction address 0x0000:0x0645, size: 5
@@ -234,10 +230,10 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
 			// Instruction address 0x0000:0x066e, size: 5
-			this.oParent.Array_30b8[3] = this.oGameData.Players[this.oGameData.HumanPlayerID].Name;
+			this.oParent.Array_30b8[3] = humanPlayer.Name;
 
 			// Instruction address 0x0000:0x0684, size: 5
-			this.oParent.Array_30b8[0] = this.oGameData.Players[this.oGameData.HumanPlayerID].Nation;
+			this.oParent.Array_30b8[0] = humanPlayer.Nation;
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -270,7 +266,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0738, size: 5
 			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(
-				this.oGameData.Static.Nations[this.oGameData.Players[this.oGameData.HumanPlayerID].NationalityID].LongTune, 3);
+				this.oGameData.Static.Nations[humanPlayer.NationalityID].LongTune, 3);
 
 			// Instruction address 0x0000:0x0759, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 15);
@@ -528,15 +524,7 @@ namespace OpenCiv1
 
 					if (this.oGameData.TurnCount != 0)
 					{
-						if (this.oGameData.Players[playerID].NationalityID >= 8 && (this.oGameData.PlayerIdentityFlags & (1 << playerID)) != 0)
-						{
-							retryCount = 2000;
-						}
-
-						if (this.oGameData.Players[playerID].NationalityID < 8 && (this.oGameData.PlayerIdentityFlags & (1 << playerID)) == 0)
-						{
-							retryCount = 2000;
-						}
+						retryCount = 2000;
 					}
 
 					if (playerID != this.oGameData.HumanPlayerID)

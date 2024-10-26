@@ -50,7 +50,7 @@ namespace OpenCiv1
 		private Overlay_20 oOverlay_20;
 		private Palace oPalace;
 		private Overlay_10 oOverlay_10;
-		private Overlay_15 oOverlay_15;
+		private Schizm oSchizm;
 		private MSCAPI oMSCAPI;
 		private GDriver oGraphics;
 		private NSound oSound;
@@ -121,7 +121,7 @@ namespace OpenCiv1
 			this.oOverlay_20 = new Overlay_20(this);
 			this.oPalace = new Palace(this);
 			this.oOverlay_10 = new Overlay_10(this);
-			this.oOverlay_15 = new Overlay_15(this);
+			this.oSchizm = new Schizm(this);
 			#endregion
 
 			/*string[] aFiles = Directory.GetFiles(this.oCPU.DefaultCIVPath, "*.pic");
@@ -1364,9 +1364,9 @@ namespace OpenCiv1
 			get { return this.oOverlay_10; }
 		}
 
-		public Overlay_15 Overlay_15
+		public Schizm Schizm
 		{
-			get { return this.oOverlay_15; }
+			get { return this.oSchizm; }
 		}
 
 		public MSCAPI MSCAPI

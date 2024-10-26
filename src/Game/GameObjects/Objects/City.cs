@@ -285,6 +285,27 @@ namespace OpenCiv1
 			return this.Improvements.Contains(improvement);
 		}
 
+		/// <summary>
+		/// Sets the new owner of the city
+		/// </summary>
+		/// <param name="cityID">The city that is about to change ownership</param>
+		/// <param name="playerID">The new owner of the city</param>
+		public void SetCityOwner(GameData gameData, int cityID, int playerID)
+		{
+			// function body
+			City city = gameData.Cities[cityID];
+
+			// The city size should be removed from previous owner
+			gameData.Players[city.PlayerID].TotalCitySize -= city.ActualSize;
+
+			// !!! The units that belong to this city should also change ownership
+
+			city.PlayerID = (short)playerID;
+			gameData.Map[city.Position].Layer9_ActiveUnits &= 0x8;
+			gameData.Map[city.Position].Layer9_ActiveUnits += playerID;
+			gameData.Players[playerID].TotalCitySize += city.ActualSize;
+		}
+
 		public static City FromStream(int id, Stream stream)
 		{
 			City city = new City(id);

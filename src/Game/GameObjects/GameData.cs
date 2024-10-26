@@ -219,5 +219,42 @@ namespace OpenCiv1
 		{
 			get => this.aSpaceshipCells;
 		}
+
+		/// <summary>
+		/// Finds the city that is nearer to all other cities
+		/// </summary>
+		/// <param name="playerID">The player ID to find the city for</param>
+		/// <returns></returns>
+		public int FindNearestDomesticCity(int playerID)
+		{
+			// function body
+			int totalDistance = int.MaxValue;
+			int local_a = -1;
+
+			for (int i = 0; i < 128; i++)
+			{
+				if (this.Cities[i].StatusFlag != 0xff && this.Cities[i].PlayerID == playerID)
+				{
+					int local_4 = 0;
+
+					for (int j = 0; j < 128; j++)
+					{
+						if (this.Cities[j].StatusFlag != 0xff && this.Cities[j].PlayerID == playerID)
+						{
+							// Instruction address 0x0000:0x0905, size: 5
+							local_4 += this.Map.GetDistance(this.Cities[i].Position, this.Cities[j].Position);
+						}
+					}
+
+					if (local_4 < totalDistance)
+					{
+						totalDistance = local_4;
+						local_a = i;
+					}
+				}
+			}
+
+			return local_a;
+		}
 	}
 }

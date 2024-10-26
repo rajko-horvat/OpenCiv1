@@ -3026,10 +3026,7 @@ namespace OpenCiv1
 			this.oParent.Var_3936 = 2;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
 
-			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
-			this.oCPU.PUSH_UInt16(0x200b); // stack management - push return offset
 			this.oParent.MeetWithKing.F6_0000_251d(0xba06, 0x14, 0x8b);
-			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
 
 			this.oParent.MeetWithKing.F6_0000_16ac();
 

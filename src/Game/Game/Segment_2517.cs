@@ -264,10 +264,7 @@ namespace OpenCiv1
 			this.oParent.Var_3936 = 1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
 
-			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
-			this.oCPU.PUSH_UInt16(0x0279); // stack management - push return offset
 			this.oParent.MeetWithKing.F6_0000_251d(0xba06, 0x14, 0x8b);
-			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x1);
 			if (this.oCPU.Flags.NE) goto L02c2;
@@ -379,10 +376,7 @@ namespace OpenCiv1
 			this.oParent.Var_3936 = 1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
 
-			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
-			this.oCPU.PUSH_UInt16(0x03d8); // stack management - push return offset
 			this.oParent.MeetWithKing.F6_0000_251d(0xba06, 0x14, 0x8b);
-			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
 			
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x1);
 			if (this.oCPU.Flags.NE) goto L0428;

@@ -37,11 +37,9 @@ namespace OpenCiv1
 
 			this.oParent.MainIntro.F2_0000_0000();
 
-			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
-			this.oCPU.PUSH_UInt16(0x0055); // stack management - push return offset
 			// Instruction address 0x11a8:0x0050, size: 5
 			this.oParent.Graphics.F0_VGA_0492_GetFreeMemory();
-			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6dfc), 0x0);
 			if (this.oCPU.Flags.E) goto L0064;
