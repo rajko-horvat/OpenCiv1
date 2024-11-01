@@ -161,7 +161,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba06), 0x0);
 
 			// Instruction address 0x2f4d:0x013b, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA((ushort)(0xba06 + this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))),
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA((ushort)(0xba06 + this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))),
 				xPos, yPos, frontColor);
 
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
@@ -194,7 +194,7 @@ namespace OpenCiv1
 				goto L01a6;
 
 			// Instruction address 0x2f4d:0x0198, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA((ushort)(0xba06 + this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))),
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA((ushort)(0xba06 + this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))),
 				xPos, yPos, frontColor);
 
 			yPos += this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa));
@@ -545,7 +545,7 @@ namespace OpenCiv1
 
 		L0537:
 			// Instruction address 0x2f4d:0x053a, size: 5
-			this.oParent.Segment_1182.F0_1182_00ef_GetStringWidth(stringPtr);
+			this.oParent.DrawStringTools.F0_1182_00ef_GetStringWidth(stringPtr);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, maxWidth);
 			if (this.oCPU.Flags.G) goto L04fd;

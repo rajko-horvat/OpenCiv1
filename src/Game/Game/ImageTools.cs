@@ -29,7 +29,7 @@ namespace OpenCiv1
 		/// <param name="yPos"></param>
 		/// <param name="filenamePtr"></param>
 		/// <param name="palettePtr"></param>
-		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, ushort xPos, ushort yPos, ushort filenamePtr, ushort palettePtr)
+		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, int xPos, int yPos, ushort filenamePtr, ushort palettePtr)
 		{
 			string filename = MSCAPI.GetDOSFileName(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)).ToUpper());
 
@@ -45,7 +45,7 @@ namespace OpenCiv1
 		/// <param name="filenamePtr"></param>
 		/// <param name="palettePtr"></param>
 		/// <exception cref="Exception"></exception>
-		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, ushort xPos, ushort yPos, string filename, ushort palettePtr)
+		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, int xPos, int yPos, string filename, ushort palettePtr)
 		{
 			filename = VCPU.DefaultCIVPath + filename;
 
@@ -143,7 +143,7 @@ namespace OpenCiv1
 		/// <param name="filenamePtr"></param>
 		/// <param name="palettePtr"></param>
 		/// <exception cref="Exception"></exception>
-		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, ushort xPos, ushort yPos, string filename, out byte[] palette)
+		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, int xPos, int yPos, string filename, out byte[] palette)
 		{
 			filename = VCPU.DefaultCIVPath + filename;
 

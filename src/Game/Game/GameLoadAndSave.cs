@@ -738,7 +738,7 @@ namespace OpenCiv1
 				FileStream reader = new FileStream($"{VCPU.DefaultCIVPath}{filename}.SVE", FileMode.Open);
 				this.oGameData.TurnCount = ReadInt16(reader);
 				this.oGameData.HumanPlayerID = ReadInt16(reader);
-				this.oGameData.PlayerFlags = ReadInt16(reader);
+				this.oGameData.HumanPlayerBitFlag = ReadInt16(reader);
 				this.oGameData.RandomSeed = ReadUInt16(reader);
 				this.oGameData.Year = ReadInt16(reader);
 				this.oGameData.DifficultyLevel = ReadInt16(reader);
@@ -1338,7 +1338,7 @@ namespace OpenCiv1
 				FileStream writer = new FileStream($"{VCPU.DefaultCIVPath}{filename}.SVE", FileMode.Create);
 				WriteInt16(writer, this.oGameData.TurnCount);
 				WriteInt16(writer, this.oGameData.HumanPlayerID);
-				WriteInt16(writer, this.oGameData.PlayerFlags);
+				WriteInt16(writer, this.oGameData.HumanPlayerBitFlag);
 				WriteUInt16(writer, this.oGameData.RandomSeed);
 				WriteInt16(writer, this.oGameData.Year);
 				WriteInt16(writer, (short)this.oGameData.DifficultyLevel);

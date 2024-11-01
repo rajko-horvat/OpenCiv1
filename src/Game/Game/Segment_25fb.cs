@@ -796,7 +796,7 @@ namespace OpenCiv1
 				this.oCPU.AX.Word = 0x1;
 				this.oCPU.CX.Low = (byte)playerID;
 				this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-				this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.PlayerFlags);
+				this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.HumanPlayerBitFlag);
 				if (this.oCPU.Flags.NE) goto L079d;
 
 				// Instruction address 0x25fb:0x0797, size: 3
@@ -846,7 +846,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = (byte)playerID;
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.PlayerFlags);
+			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.HumanPlayerBitFlag);
 			if (this.oCPU.Flags.E) goto L081c;
 			goto L0c97;
 
@@ -855,7 +855,7 @@ namespace OpenCiv1
 				this.oGameData.Players[playerID].CityCount != 0 ||
 				playerID == this.oGameData.HumanPlayerID) goto L0845;
 
-			this.oParent.StartGameMenu.F5_0000_0e6c_CheckPlayerEndGame(playerID, 0);
+			this.oParent.StartGameMenu.F5_0000_0e6c_PlayerCheckEndGame(playerID, 0);
 
 		L0845:
 			this.oCPU.AX.Low = (byte)playerID;
@@ -6160,7 +6160,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.CX.Low = (byte)this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e))].PlayerID;
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.PlayerFlags);
+			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oGameData.HumanPlayerBitFlag);
 			if (this.oCPU.Flags.E) goto L3a60;
 			this.oCPU.AX.Word = (ushort)((short)this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e))].Position.X);
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2a)));

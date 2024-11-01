@@ -1,6 +1,7 @@
 using System;
 using IRB.VirtualCPU;
 using OpenCiv1.Graphics;
+using OpenCiv1.UI;
 using Tmds.DBus.Protocol;
 
 namespace OpenCiv1
@@ -461,34 +462,33 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="bitmapID"></param>
 		/// <param name="stringPtr"></param>
-		public void F0_2dc4_0523_FreeResource(int bitmapID, ushort stringPtr)
+		public void F0_2dc4_0523_FreeResource(int bitmapID, string text)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2dc4_0523_FreeResource({bitmapID}, 0x{stringPtr:x4})");
+			this.oCPU.Log.EnterBlock($"F0_2dc4_0523_FreeResource({bitmapID}, \"{text}\")");
 
-			// function body			
-			// Instruction address 0x2dc4:0x0529, size: 5
-			if (this.oParent.Graphics.Bitmaps.ContainsKey(bitmapID))
+			// function body
+			// ignore unallocated bitmaps
+			if (bitmapID != 0)
 			{
-				this.oParent.Graphics.Bitmaps.RemoveByKey(bitmapID);
-			}
-			else
-			{
-				// Instruction address 0x2dc4:0x053d, size: 5
-				this.oParent.MSCAPI.strcpy(0xba06, "MEM.ERR:");
-
-				if (stringPtr != 0)
+				// Instruction address 0x2dc4:0x0529, size: 5
+				if (this.oParent.Graphics.Bitmaps.ContainsKey(bitmapID))
 				{
-					// Instruction address 0x2dc4:0x054c, size: 5
-					this.oParent.MSCAPI.strcat(0xba06, stringPtr);
+					this.oParent.Graphics.Bitmaps.RemoveByKey(bitmapID);
 				}
-
-				// Instruction address 0x2dc4:0x055c, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, "\n");
-
-				// Instruction address 0x2dc4:0x0570, size: 5
-				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
+				else
+				{
+					// Instruction address 0x2dc4:0x0570, size: 5
+					if (string.IsNullOrEmpty(text))
+					{
+						MessageBox.Show("Unspecified memory error", "Memory error", MessageBoxIcon.Error, MessageBoxButtons.OK);
+					}
+					else
+					{
+						MessageBox.Show(text, "Memory error", MessageBoxIcon.Error, MessageBoxButtons.OK);
+					}
+				}
 			}
-		
+
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2dc4_0523_FreeResource");
 		}

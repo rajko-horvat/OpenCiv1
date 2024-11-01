@@ -18,12 +18,11 @@ namespace OpenCiv1
 
 		public short Coins = 0;
 		public short GovernmentType = 0;
-		public short TaxRate = 0;
 		public short MilitaryPower = 0;
+		public short TaxRate = 0;
+		public short ScienceTaxRate = 0;
 		public short ContactPlayerCountdown = 0;
 		public short XStart = 0;
-		public short CityCount = 0;
-		public short TotalCitySize = 0;
 		public short LandCount = 0;
 
 		public ushort[] Diplomacy = new ushort[8];
@@ -31,13 +30,16 @@ namespace OpenCiv1
 		public short CumulativeEpicRanking = 0;
 		public short Score = 0;
 
+		// Cities
+		public short CityCount = 0;
+		public short TotalCitySize = 0;
+
 		public PlayerContinent[] Continents = new PlayerContinent[16];
 
 		// Strategic locations
 		public StrategicLocation[] StrategicLocations = new StrategicLocation[16];
 
 		// Technology
-		public short ScienceTaxRate = 0;
 		public short ResearchProgress = 0;
 		public short DiscoveredTechnologyCount = 0;
 		public short CurrentResearchID = 0;

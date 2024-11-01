@@ -18,7 +18,7 @@ namespace OpenCiv1
 		private MenuBoxDialog oMenuBoxDialog;
 		private Segment_1403 oSegment_1403;
 		private Segment_2dc4 oSegment_2dc4;
-		private Segment_1182 oSegment_1182;
+		private DrawStringTools oDrawStringTools;
 		private ImageTools oImageTools;
 		private Segment_2f4d oSegment_2f4d;
 		private MapManagement oMapManagement;
@@ -89,7 +89,7 @@ namespace OpenCiv1
 			this.oMenuBoxDialog = new MenuBoxDialog(this);
 			this.oSegment_1403 = new Segment_1403(this);
 			this.oSegment_2dc4 = new Segment_2dc4(this);
-			this.oSegment_1182 = new Segment_1182(this);
+			this.oDrawStringTools = new DrawStringTools(this);
 			this.oImageTools = new ImageTools(this);
 			this.oSegment_2f4d = new Segment_2f4d(this);
 			this.oMapManagement = new MapManagement(this);
@@ -1204,9 +1204,9 @@ namespace OpenCiv1
 			get { return this.oSegment_2dc4; }
 		}
 
-		public Segment_1182 Segment_1182
+		public DrawStringTools DrawStringTools
 		{
-			get { return this.oSegment_1182; }
+			get { return this.oDrawStringTools; }
 		}
 
 		public ImageTools ImageTools

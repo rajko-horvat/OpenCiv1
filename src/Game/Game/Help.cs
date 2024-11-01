@@ -52,7 +52,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 2);
 
 			// Instruction address 0x0000:0x007c, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA((ushort)(this.oCPU.BP.Word - 0x18), 160, 192, 0);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA((ushort)(this.oCPU.BP.Word - 0x18), 160, 192, 0);
 
 			// Instruction address 0x0000:0x008e, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(32, 32, 32, 15);
@@ -331,7 +331,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.FontID = 2;
 
 			// Instruction address 0x0000:0x036d, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA("--- Civilization Note ---", 160, 19, 0);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA("--- Civilization Note ---", 160, 19, 0);
 
 			// Instruction address 0x0000:0x0385, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(32, 64, 25, 15);
@@ -396,7 +396,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.FontID = 2;
 
 			// Instruction address 0x0000:0x043c, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA("--- Civilization Note ---", 160, 19, 0);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA("--- Civilization Note ---", 160, 19, 0);
 
 			// Instruction address 0x0000:0x0454, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(32, 64, 25, 15);

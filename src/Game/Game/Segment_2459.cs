@@ -334,9 +334,9 @@ namespace OpenCiv1
 			this.oCPU.TEST_UInt8((byte)(this.oGameData.GameSettingFlags & 0xff), 0x8);
 			if (this.oCPU.Flags.E) goto L03b7;
 
-			this.oParent.CityView.F19_0000_0000(cityID, -2);
+			this.oParent.CityView.F19_0000_0000_DrawCityLayout(cityID, -2);
 			
-			this.oParent.CityView.F19_0000_167b(playerID);
+			this.oParent.CityView.F19_0000_167b_ConqueredCityAnimation(playerID);
 
 			// Instruction address 0x2459:0x03b0, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
@@ -538,7 +538,7 @@ namespace OpenCiv1
 			this.oGameData.Players[playerID].UnitsInProduction[this.oGameData.Cities[cityID].CurrentProductionID]++;
 
 		L05da:
-			this.oParent.StartGameMenu.F5_0000_0e6c_CheckPlayerEndGame(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), playerID);
+			this.oParent.StartGameMenu.F5_0000_0e6c_PlayerCheckEndGame(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), playerID);
 
 			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
 			this.oCPU.DI.Word = this.oCPU.POP_UInt16();

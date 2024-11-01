@@ -1354,7 +1354,7 @@ namespace OpenCiv1
 					this.Var_6800 = (int)this.oParent.Var_5c_TickCount / 60;
 
 					// Instruction address 0x0000:0x1847, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA("BUILDING NEW WORLD...", 160, 160, (byte)(((this.Var_6800 & 0x1) != 0) ? 15 : 3));
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA("BUILDING NEW WORLD...", 160, 160, (byte)(((this.Var_6800 & 0x1) != 0) ? 15 : 3));
 				}
 
 				this.oParent.Var_aa_Rectangle.ScreenID = 1;
@@ -1394,7 +1394,7 @@ namespace OpenCiv1
 					if (this.Var_3b62 != 2 && this.Var_6802 < 40)
 					{
 						// Instruction address 0x0000:0x18df, size: 5
-						this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 160, 3);
+						this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 160, 3);
 
 						// Instruction address 0x0000:0x18eb, size: 5
 						this.oParent.Segment_1000.F0_1182_0134_WaitTimer(5);
@@ -1415,13 +1415,13 @@ namespace OpenCiv1
 						this.oParent.Segment_1000.F0_1182_0134_WaitTimer(10);
 
 						// Instruction address 0x0000:0x196b, size: 5
-						this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 160, 3);
+						this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 160, 3);
 
 						// Instruction address 0x0000:0x1977, size: 5
 						this.oParent.Segment_1000.F0_1182_0134_WaitTimer(5);
 
 						// Instruction address 0x0000:0x198c, size: 5
-						this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 160, 11);
+						this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 160, 11);
 
 						this.Var_6806 = 0;
 

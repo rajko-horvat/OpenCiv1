@@ -64,25 +64,25 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_010c_SetColorsByIndexArray(0x19fe);
 			
 			// Instruction address 0x0000:0x0223, size: 5
-			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x328a, 1);
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "logo.pic", 1);
 
 			// Instruction address 0x0000:0x023e, size: 5
 			local_4e = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, 0, 64, 320, 80);
 
 			// Instruction address 0x0000:0x0256, size: 5
-			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x3293, 1);
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "birth0.pic", 1);
 
 			// Instruction address 0x0000:0x027c, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 76, 320, 24, this.oParent.Var_19d4_Rectangle, 0, 176);
 
 			// Instruction address 0x0000:0x028c, size: 5
-			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(2, 0, 0, 0x329e, 1);
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(2, 0, 0, "birth1.pic", 1);
 
 			// Instruction address 0x0000:0x02b2, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 0, 76, 320, 24, this.oParent.Var_19e8_Rectangle, 0, 176);
 
 			// Instruction address 0x0000:0x02be, size: 5
-			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x32a9, 1);
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, "logo.pic", 1);
 
 			// Instruction address 0x0000:0x02dc, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 12, 320, 176, 0);
@@ -149,13 +149,13 @@ namespace OpenCiv1
 					this.oParent.Var_aa_Rectangle.ScreenID = 1;
 
 					// Instruction address 0x0000:0x0362, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 184, 0xfc);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 184, 0xfc);
 
 					// Instruction address 0x0000:0x0386, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 182, 0xf8);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 182, 0xf8);
 
 					// Instruction address 0x0000:0x03aa, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 183, 0xfa);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 183, 0xfa);
 
 					this.oParent.Var_aa_Rectangle.ScreenID = local_44;
 				}
@@ -237,13 +237,13 @@ namespace OpenCiv1
 					this.oParent.Var_aa_Rectangle.ScreenID = 1;
 
 					// Instruction address 0x0000:0x064d, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 184, 0xfc);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 184, 0xfc);
 
 					// Instruction address 0x0000:0x0671, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 182, 0xf8);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 182, 0xf8);
 
 					// Instruction address 0x0000:0x0695, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 183, 0xfa);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 183, 0xfa);
 
 					this.oParent.Var_aa_Rectangle.ScreenID = local_44;
 				}
@@ -389,7 +389,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
 			// Instruction address 0x0000:0x0bca, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(local_4e, 0);
+			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(local_4e, "");
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F2_0000_0000");
@@ -551,10 +551,10 @@ namespace OpenCiv1
 					this.oParent.Var_aa_Rectangle.ScreenID = 1;
 
 					// Instruction address 0x0000:0x0eec, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA((ushort)(0xba06 + local_23c), 160, 184, 0x38);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA((ushort)(0xba06 + local_23c), 160, 184, 0x38);
 
 					// Instruction address 0x0000:0x0f14, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA((ushort)(0xba06 + local_23c), 160, 183, 0x3c);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA((ushort)(0xba06 + local_23c), 160, 183, 0x3c);
 
 					this.oParent.Var_aa_Rectangle.ScreenID = local_23a;
 				}
@@ -616,7 +616,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x0000:0x11a3, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(local_238[0], 0);
+			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(local_238[0], "");
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
@@ -633,7 +633,7 @@ namespace OpenCiv1
 			if (playerID == this.oGameData.HumanPlayerID)
 			{
 				// Instruction address 0x0000:0x1207, size: 5
-				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x330a, 0);
+				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "spacest.pic", 0);
 
 				// Instruction address 0x0000:0x1213, size: 5
 				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
@@ -645,7 +645,7 @@ namespace OpenCiv1
 				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
 				// Instruction address 0x0000:0x1252, size: 5
-				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x3316, 1);
+				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, "spacest.pic", 1);
 
 				// Instruction address 0x0000:0x126f, size: 5
 				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x22, 0);
@@ -706,10 +706,10 @@ namespace OpenCiv1
 					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 32, this.oParent.Var_aa_Rectangle, 0, 0);
 
 					// Instruction address 0x0000:0x13f3, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(local_200.Substring(local_23c), 160, 5, 11);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(local_200.Substring(local_23c), 160, 5, 11);
 
 					// Instruction address 0x0000:0x1410, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(local_200.Substring(local_23c), 160, 4, 15);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(local_200.Substring(local_23c), 160, 4, 15);
 
 					// Instruction address 0x0000:0x1428, size: 5
 					this.oParent.Segment_1000.F0_1000_104f_SetPixel(280, 32, 15);
@@ -780,10 +780,10 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
 			// Instruction address 0x0000:0x1566, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x23, 0);
+			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(35, 0);
 
 			// Instruction address 0x0000:0x1576, size: 5
-			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x332e, 1);
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "arch.pic", 1);
 
 			// Instruction address 0x0000:0x15a7, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
@@ -850,13 +850,13 @@ namespace OpenCiv1
 					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 6, 320, 20, this.oParent.Var_aa_Rectangle, 0, 6);
 
 					// Instruction address 0x0000:0x16e5, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA((ushort)(0xba06 + local_4), 160, 7, 15);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA((ushort)(0xba06 + local_4), 160, 7, 15);
 
 					// Instruction address 0x0000:0x1700, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA((ushort)(0xba06 + local_4), 160, 9, 13);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA((ushort)(0xba06 + local_4), 160, 9, 13);
 
 					// Instruction address 0x0000:0x173b, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA((ushort)(0xba06 + local_4), 160, 8, 14);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA((ushort)(0xba06 + local_4), 160, 8, 14);
 
 					// Instruction address 0x0000:0x174d, size: 5
 					if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(local_2 + 0xba05)) != 0x21 && this.oParent.MSCAPI.kbhit() == 0)

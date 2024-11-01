@@ -27,7 +27,7 @@ namespace OpenCiv1
 		public short ActivePlayers = 0;
 		public int BarbarianPlayerID = 0;
 		public short HumanPlayerID = 0;
-		public short PlayerFlags = 0;
+		public short HumanPlayerBitFlag = 0;
 		public short PlayerIdentityFlags = 0;
 
 		// Players
@@ -229,32 +229,32 @@ namespace OpenCiv1
 		{
 			// function body
 			int totalDistance = int.MaxValue;
-			int local_a = -1;
+			int cityID = -1;
 
 			for (int i = 0; i < 128; i++)
 			{
 				if (this.Cities[i].StatusFlag != 0xff && this.Cities[i].PlayerID == playerID)
 				{
-					int local_4 = 0;
+					int distance = 0;
 
 					for (int j = 0; j < 128; j++)
 					{
 						if (this.Cities[j].StatusFlag != 0xff && this.Cities[j].PlayerID == playerID)
 						{
 							// Instruction address 0x0000:0x0905, size: 5
-							local_4 += this.Map.GetDistance(this.Cities[i].Position, this.Cities[j].Position);
+							distance += this.Map.GetDistance(this.Cities[i].Position, this.Cities[j].Position);
 						}
 					}
 
-					if (local_4 < totalDistance)
+					if (distance < totalDistance)
 					{
-						totalDistance = local_4;
-						local_a = i;
+						totalDistance = distance;
+						cityID = i;
 					}
 				}
 			}
 
-			return local_a;
+			return cityID;
 		}
 	}
 }

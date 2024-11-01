@@ -118,7 +118,7 @@ namespace OpenCiv1
 					this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, (ushort)(327 - this.Array_6dac[i]));
 
 					// Instruction address 0x2aea:0x018d, size: 5
-					this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadowToRectAA(0xba06,
+					this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToRectAA(0xba06,
 						this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.Array_6dac[i] - 8, 80, 999),
 						this.Array_6e3e[i] + 16, 11);
 				}
@@ -623,7 +623,7 @@ namespace OpenCiv1
 							else
 							{
 								// Instruction address 0x2aea:0x0d8d, size: 5
-								this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, ((local_e < 10) ? 6 : 3) + local_6, local_a + 5, 0);
+								this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA(0xba06, ((local_e < 10) ? 6 : 3) + local_6, local_a + 5, 0);
 							}
 
 							// Instruction address 0x2aea:0x0d9c, size: 3
@@ -783,12 +783,12 @@ namespace OpenCiv1
 					if (playerID == 1)
 					{
 						// Instruction address 0x2aea:0x103d, size: 5
-						this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadowToRectAA("F", xPos + 4, yPos + 7, 9);
+						this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToRectAA("F", xPos + 4, yPos + 7, 9);
 					}
 					else
 					{
 						// Instruction address 0x2aea:0x103d, size: 5
-						this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadowToRectAA("F", xPos + 4, yPos + 7, 15);
+						this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToRectAA("F", xPos + 4, yPos + 7, 15);
 					}
 				}
 			}
@@ -800,12 +800,12 @@ namespace OpenCiv1
 					if (playerID == 1)
 					{
 						// Instruction address 0x2aea:0x1085, size: 5
-						this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadowToRectAA("G", xPos + 4, yPos + 7, 9);
+						this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToRectAA("G", xPos + 4, yPos + 7, 9);
 					}
 					else
 					{
 						// Instruction address 0x2aea:0x1085, size: 5
-						this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadowToRectAA("G", xPos + 4, yPos + 7, 15);
+						this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToRectAA("G", xPos + 4, yPos + 7, 15);
 					}
 				}
 			}
@@ -850,12 +850,12 @@ namespace OpenCiv1
 				if (playerID == 1)
 				{
 					// Instruction address 0x2aea:0x1157, size: 5
-					this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadowToRectAA(0xba06, xPos + 4, yPos + 7, 9);
+					this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToRectAA(0xba06, xPos + 4, yPos + 7, 9);
 				}
 				else
 				{
 					// Instruction address 0x2aea:0x1157, size: 5
-					this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadowToRectAA(0xba06, xPos + 4, yPos + 7, 15);
+					this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToRectAA(0xba06, xPos + 4, yPos + 7, 15);
 				}
 
 				// Instruction address 0x2aea:0x1172, size: 5

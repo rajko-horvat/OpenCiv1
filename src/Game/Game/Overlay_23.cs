@@ -39,7 +39,7 @@ namespace OpenCiv1
 			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(80, 80, 160, 32, 11);
 
 			// Instruction address 0x0000:0x0055, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("City Name...", 88, 82, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA("City Name...", 88, 82, 0);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 			
@@ -98,7 +98,7 @@ namespace OpenCiv1
 			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
 
 			// Instruction address 0x0000:0x0126, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("Your Name...", 166, 90, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA("Your Name...", 166, 90, 0);
 
 			// Instruction address 0x0000:0x013c, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, this.oGameData.Players[this.oGameData.HumanPlayerID].Name);
@@ -131,7 +131,7 @@ namespace OpenCiv1
 			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
 
 			// Instruction address 0x0000:0x01c9, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("Name of your Tribe...", 166, 90, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA("Name of your Tribe...", 166, 90, 0);
 
 			// Instruction address 0x0000:0x01df, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, this.oGameData.Static.Nations[this.oGameData.HumanPlayerID].Nation);
@@ -198,7 +198,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 64, 78, 224, 10, 15);
 
 			// Instruction address 0x0000:0x02fc, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("Unknown city.", 82, 80, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA("Unknown city.", 82, 80, 0);
 
 			// Instruction address 0x0000:0x0304, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
@@ -236,7 +236,7 @@ namespace OpenCiv1
 			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(64, 78, 224, 24, 0);
 
 			// Instruction address 0x0000:0x0369, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(stringPtr, 66, 80, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA(stringPtr, 66, 80, 0);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -590,7 +590,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba07), 0x0);
 
 			// Instruction address 0x0000:0x0722, size: 5
-			this.oParent.Segment_1182.F0_1182_002a_DrawStringToRectAA((ushort)(0xba06 + this.oCPU.BX.Word), xPos, yPos, 0);
+			this.oParent.DrawStringTools.F0_1182_002a_DrawStringToRectAA((ushort)(0xba06 + this.oCPU.BX.Word), xPos, yPos, 0);
 			
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
 			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));

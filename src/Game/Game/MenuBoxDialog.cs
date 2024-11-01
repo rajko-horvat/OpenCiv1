@@ -235,7 +235,7 @@ namespace OpenCiv1
 					}
 
 					// Instruction address 0x2d05:0x0644, size: 5
-					int local_58 = this.oParent.Segment_1182.F0_1182_00ef_GetStringWidth(local_50);
+					int local_58 = this.oParent.DrawStringTools.F0_1182_00ef_GetStringWidth(local_50);
 
 					if (Var_de0e < xPos + local_58 + 8)
 					{
@@ -274,12 +274,12 @@ namespace OpenCiv1
 					}
 
 					// Instruction address 0x2d05:0x072b, size: 5
-					this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(local_50, xPos + 5, yPos - 4, 15);
+					this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA(local_50, xPos + 5, yPos - 4, 15);
 
 					// Instruction address 0x2d05:0x0742, size: 5
 					// Instruction address 0x2d05:0x0753, size: 5
 					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle,
-						xPos + 5 + this.oParent.Segment_1182.F0_1182_00ef_GetStringWidth(local_50), yPos + 3, xPos + 5, yPos + 3, 11);
+						xPos + 5 + this.oParent.DrawStringTools.F0_1182_00ef_GetStringWidth(local_50), yPos + 3, xPos + 5, yPos + 3, 11);
 				}
 			}
 
@@ -289,7 +289,7 @@ namespace OpenCiv1
 				this.oParent.Var_aa_Rectangle.FontID = 2;
 
 				// Instruction address 0x2d05:0x0787, size: 5
-				this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("(HELP AVAILABLE)", Var_de0e - 74, local_52 - 4, 10);
+				this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA("(HELP AVAILABLE)", Var_de0e - 74, local_52 - 4, 10);
 
 				this.oParent.Var_aa_Rectangle.FontID = local_56;
 			}
@@ -314,7 +314,7 @@ namespace OpenCiv1
 					if (local_5a1 < 0 && Var_2fa4 > 9)
 					{
 						// Instruction address 0x2d05:0x087b, size: 5
-						this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(item, xPos + 5, (i * Var_2fa4) + yPos + 6, 0);
+						this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA(item, xPos + 5, (i * Var_2fa4) + yPos + 6, 0);
 					}
 
 					if (local_5a1 >= 0)
@@ -322,18 +322,18 @@ namespace OpenCiv1
 						if ((this.oParent.Var_b276 & (1 << local_5a1)) != 0)
 						{
 							// Instruction address 0x2d05:0x08c6, size: 5
-							this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(item, xPos + 5, (i * Var_2fa4) + yPos + 5, 3);
+							this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA(item, xPos + 5, (i * Var_2fa4) + yPos + 5, 3);
 						}
 						else
 						{
 							// Instruction address 0x2d05:0x08c6, size: 5
-							this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(item, xPos + 5, (i * Var_2fa4) + yPos + 5, 0);
+							this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA(item, xPos + 5, (i * Var_2fa4) + yPos + 5, 0);
 						}
 					}
 					else
 					{
 						// Instruction address 0x2d05:0x08c6, size: 5
-						this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(item, xPos + 5, (i * Var_2fa4) + yPos + 5, (byte)Var_654c);
+						this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA(item, xPos + 5, (i * Var_2fa4) + yPos + 5, (byte)Var_654c);
 					}
 				}
 				else
@@ -345,17 +345,17 @@ namespace OpenCiv1
 					{
 						if ((this.oParent.Var_b276 & (1 << local_5a1)) != 0)
 						{
-							this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(item, xPos + 5, (i * Var_2fa4) + yPos + 5, 3);
+							this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA(item, xPos + 5, (i * Var_2fa4) + yPos + 5, 3);
 						}
 						else
 						{
-							this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(item, xPos + 5, (i * Var_2fa4) + yPos + 5, 0);
+							this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA(item, xPos + 5, (i * Var_2fa4) + yPos + 5, 0);
 						}
 					}
 					else
 					{
 						// Instruction address 0x2d05:0x0834, size: 5
-						this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(item, xPos + 5, (i * Var_2fa4) + yPos + 5, (byte)Var_654c);
+						this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA(item, xPos + 5, (i * Var_2fa4) + yPos + 5, (byte)Var_654c);
 					}
 
 					//this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(text + Array_654e[i]), 0x20);

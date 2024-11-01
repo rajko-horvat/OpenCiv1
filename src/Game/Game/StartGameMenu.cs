@@ -153,7 +153,7 @@ namespace OpenCiv1
 			this.oGameData.HumanPlayerID = (short)(this.oParent.MSCAPI.RNG.Next(this.oGameData.MaximumPlayers) + 1);
 			this.oGameData.ActivePlayers = (short)(255 >> (6 - this.oGameData.MaximumPlayers));
 			this.oGameData.NextAnthologyTurn += (short)this.oParent.MSCAPI.RNG.Next(50);
-			this.oGameData.PlayerFlags = (short)(1 << this.oGameData.HumanPlayerID);
+			this.oGameData.HumanPlayerBitFlag = (short)(1 << this.oGameData.HumanPlayerID);
 
 			this.oParent.GameData.PlayerIdentityFlags = 0;
 
@@ -169,7 +169,7 @@ namespace OpenCiv1
 
 			if (this.oGameData.DifficultyLevel == 0)
 			{
-				// Turn on suggestions for novices
+				// Enable Instant advice for beginners
 				this.oGameData.GameSettingFlags |= 1;
 			}
 
@@ -207,7 +207,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x0000:0x0587, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(humanPlayer.Nation, 46, 92, 15);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(humanPlayer.Nation, 46, 92, 15);
 
 			for (int i = 0; i < 8; i++)
 			{
@@ -304,7 +304,7 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public ushort F5_0000_07c7_InitPlayerData(short playerID)
 		{
-			this.oCPU.Log.EnterBlock($"F5_0000_07c7({playerID})");
+			this.oCPU.Log.EnterBlock($"F5_0000_07c7_InitPlayerData({playerID})");
 
 			// function body
 			int iMapGroupLength = this.oGameData.Map.Groups.Count;
@@ -426,6 +426,7 @@ namespace OpenCiv1
 				{
 					if (playerID != this.oGameData.HumanPlayerID)
 					{
+						// !!! This will have to be moved to GameData object as a part of new player method, the check if all nationalities are used is also needed
 						int nationalityID = -1;
 
 						while (nationalityID == -1)
@@ -451,6 +452,16 @@ namespace OpenCiv1
 						player.Name = nation.Leader;
 						player.Nationality = nation.Nationality;
 						player.Nation = nation.Nation;
+
+						if (!string.IsNullOrEmpty(nation.Nation))
+						{
+							player.Nation = nation.Nation;
+						}
+						else
+						{
+							player.Nation = player.Nationality + "s";
+						}
+
 						player.Mood = nation.Mood;
 						player.Policy = nation.Policy;
 						player.Ideology = nation.Ideology;
@@ -595,7 +606,7 @@ namespace OpenCiv1
 			}
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F5_0000_07c7");
+			this.oCPU.Log.ExitBlock("F5_0000_07c7_InitPlayerData");
 
 			return this.oCPU.AX.Word;
 		}
@@ -605,9 +616,9 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="playerID1"></param>
-		public void F5_0000_0e6c_CheckPlayerEndGame(short playerID, short playerID1)
+		public void F5_0000_0e6c_PlayerCheckEndGame(short playerID, short playerID1)
 		{
-			this.oCPU.Log.EnterBlock($"F5_0000_0e6c_CheckPlayerDestroyed({playerID}, {playerID1})");
+			this.oCPU.Log.EnterBlock($"F5_0000_0e6c_PlayerCheckEndGame({playerID}, {playerID1})");
 
 			// function body
 			if (playerID != 0 && playerID != this.oGameData.HumanPlayerID)
@@ -681,7 +692,7 @@ namespace OpenCiv1
 			}
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F5_0000_0e6c_CheckPlayerDestroyed");
+			this.oCPU.Log.ExitBlock("F5_0000_0e6c_PlayerCheckEndGame");
 		}
 
 		/// <summary>
@@ -938,7 +949,7 @@ namespace OpenCiv1
 				this.oParent.Var_aa_Rectangle.FontID = 6;
 
 				// Instruction address 0x0000:0x1c58, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA("New Cabinet:", 160, 102, 0);
+				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA("New Cabinet:", 160, 102, 0);
 
 				this.oParent.Var_aa_Rectangle.FontID = 2;
 
@@ -955,7 +966,7 @@ namespace OpenCiv1
 					this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + this.oParent.MSCAPI.strlen(0xba06) - 1), 0x0);
 
 					// Instruction address 0x0000:0x1c7c, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, (80 * i) + 40, ((i & 1) != 0) ? 186 : 180, 0);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, (80 * i) + 40, ((i & 1) != 0) ? 186 : 180, 0);
 				}
 
 				this.oParent.Var_aa_Rectangle.FontID = 1;

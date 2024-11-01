@@ -1164,7 +1164,7 @@ namespace OpenCiv1
 
 		L0bc9:
 			// Instruction address 0x1866:0x0bd9, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("End of Turn", 4, 124, 7);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA("End of Turn", 4, 124, 7);
 
 		L0be1:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0xffff);
@@ -1229,7 +1229,7 @@ namespace OpenCiv1
 
 		L0c86:
 			// Instruction address 0x1866:0x0c95, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA("End of Turn", 4, 124, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA("End of Turn", 4, 124, 0);
 
 		L0c9d:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0xffff);
@@ -3417,7 +3417,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x1866:0x2079, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 128, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)), 15);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA(0xba06, 128, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)), 15);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 			this.oCPU.AX.Word = 0x600;
@@ -3431,7 +3431,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1e))].HomeCityID);
 			
 			// Instruction address 0x1866:0x20b7, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToRectAA(0xba06, 128, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)) + 8, 14);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA(0xba06, 128, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x20)) + 8, 14);
 
 			short oldUnitID1 = (short)this.oGameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1e))].NextUnitID;
 			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1e), oldUnitID1);

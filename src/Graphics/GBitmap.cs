@@ -564,7 +564,7 @@ namespace OpenCiv1.Graphics
 			writer.Close();
 		}
 
-		public bool LoadPIC(string filename, ushort xPos, ushort yPos, out byte[] palette)
+		public bool LoadPIC(string filename, int xPos, int yPos, out byte[] palette)
 		{
 			// function body
 			GBitmap? bitmap = GBitmap.FromPICFile(filename, out palette);
