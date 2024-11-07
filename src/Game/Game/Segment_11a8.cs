@@ -66,7 +66,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x11a8:0x00d2, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x270);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x270);
 
 			// Instruction address 0x11a8:0x00e6, size: 5
 			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 64, 49, 1);

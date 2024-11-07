@@ -543,6 +543,20 @@ namespace IRB.VirtualCPU
 			return sb.ToString();
 		}
 
+		public void WriteString(uint address, string text)
+		{
+			if (address == 0)
+				return;
+
+			for (int i = 0; i < text.Length; i++)
+			{
+				this.oMemory.WriteUInt8(address, (byte)text[i]);
+				address++;
+			}
+
+			this.oMemory.WriteUInt8(address, 0);
+		}
+
 		public void WriteString(uint address, string text, int maxLength)
 		{
 			if (address == 0)
@@ -2506,7 +2520,7 @@ namespace IRB.VirtualCPU
 				this.oLog.WriteLine($"Wrong drive number {this.oDX.Low}");
 			}
 			string sTemp = VCPU.DefaultCIVPath.Substring(3).ToUpper();
-			this.WriteString(VCPU.ToLinearAddress(this.oDS.Word, this.oSI.Word), sTemp, sTemp.Length);
+			this.WriteString(VCPU.ToLinearAddress(this.oDS.Word, this.oSI.Word), sTemp);
 			this.oFlags.C = false;
 		}
 

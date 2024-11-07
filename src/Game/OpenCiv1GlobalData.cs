@@ -38,9 +38,6 @@ namespace OpenCiv1
 		public CRectangle Var_19d4_Rectangle = new CRectangle(1, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 		public CRectangle Var_19e8_Rectangle = new CRectangle(2, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 
-		// !!! This should not be used at all as screen 3 doesn't exist
-		public CRectangle Var_19fc_Rectangle = new CRectangle(3, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
-
 		public char Var_1a30_SoundDriverType = 'N';
 		public bool Var_1a3c_MouseAvailable = true;
 		public int Var_1a3e = 0;
@@ -71,7 +68,7 @@ namespace OpenCiv1
 		public int Var_2fa2 = 0;
 		public string[] Var_2fac = new string[] { "Defense Minister:", "Domestic Advisor:", "Foreign Minister:", "Science Advisor:" };
 
-		public string[] Array_30ae = new string[] { "$US", "$THEM", "$BUCKS", "$RPLC1", "$RPLC2" };
+		// { "$US", "$THEM", "$BUCKS", "$RPLC1", "$RPLC2" }
 		public string[] Array_30b8 = new string[] { "", "", "", "", "" };
 		public int Var_3936 = -1;
 		public int Var_5876 = 0;

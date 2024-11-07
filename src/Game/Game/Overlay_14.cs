@@ -783,7 +783,8 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x38)));
 
 			// Instruction address 0x0000:0x0a3d, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, 62);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
+				this.oParent.LanguageTools.F0_2f4d_04f7_TrimStringToWidth(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06)), 62));
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x36)), 0xb4);
 			if (this.oCPU.Flags.GE) goto L0a63;
@@ -1878,7 +1879,8 @@ namespace OpenCiv1
 				this.oGameData.Static.ImprovementDefinitions(-this.oGameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].CurrentProductionID).Name);
 
 			// Instruction address 0x0000:0x18be, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, 96);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
+				this.oParent.LanguageTools.F0_2f4d_04f7_TrimStringToWidth(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06)), 96));
 
 			// Instruction address 0x0000:0x18ce, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\x0087 (");

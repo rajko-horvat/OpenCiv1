@@ -2013,16 +2013,17 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, "Military Advisor:\n");
 
 			// Instruction address 0x1ade:0x1344, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x2284, (ushort)(this.oCPU.BP.Word - 0x12e));
+			this.oParent.LanguageTools.F0_2f4d_01ad_GetTextBySectionAndKey("PRODUCE", (ushort)(this.oCPU.BP.Word - 0x12e));
 
 			// Instruction address 0x1ade:0x1355, size: 5
 			this.oParent.Array_30b8[3] = this.oCPU.ReadString(this.oCPU.DS.Word, (ushort)(this.oCPU.BP.Word - 0x12d));
 
 			// Instruction address 0x1ade:0x135d, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0471();
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
+				this.oParent.LanguageTools.F0_2f4d_0471_ReplaceKeywords(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06))));
 
 			// Instruction address 0x1ade:0x1366, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0000(0x32);
+			this.oParent.LanguageTools.F0_2f4d_0000_AdjustLineWidth(50);
 
 			this.oParent.Var_db38 = 1;
 
@@ -2058,16 +2059,17 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, "Domestic Advisor:\n");
 
 			// Instruction address 0x1ade:0x13e3, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x22a3, (ushort)(this.oCPU.BP.Word - 0x12e));
+			this.oParent.LanguageTools.F0_2f4d_01ad_GetTextBySectionAndKey("PRODUCE", (ushort)(this.oCPU.BP.Word - 0x12e));
 
 			// Instruction address 0x1ade:0x13f4, size: 5
 			this.oParent.Array_30b8[3] = this.oCPU.ReadString(this.oCPU.DS.Word, (ushort)(this.oCPU.BP.Word - 0x12d));
 
 			// Instruction address 0x1ade:0x13fc, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0471();
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
+				this.oParent.LanguageTools.F0_2f4d_0471_ReplaceKeywords(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06))));
 
 			// Instruction address 0x1ade:0x1405, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0000(0x32);
+			this.oParent.LanguageTools.F0_2f4d_0000_AdjustLineWidth(50);
 
 			this.oParent.Var_db38 = 1;
 
@@ -3021,7 +3023,7 @@ namespace OpenCiv1
 			this.oParent.Array_30b8[3] = this.oGameData.Static.Technologies[technologyID].Name;
 
 			// Instruction address 0x1ade:0x1fe6, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x240e);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x240e);
 
 			this.oParent.Var_3936 = 2;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);

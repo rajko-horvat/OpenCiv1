@@ -115,7 +115,8 @@ namespace OpenCiv1
 					this.oParent.Segment_2459.F0_2459_08c6_GetCityName((short)this.Array_df20[i]);
 
 					// Instruction address 0x2aea:0x015c, size: 5
-					this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, (ushort)(327 - this.Array_6dac[i]));
+					this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
+						this.oParent.LanguageTools.F0_2f4d_04f7_TrimStringToWidth(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06)), 327 - this.Array_6dac[i]));
 
 					// Instruction address 0x2aea:0x018d, size: 5
 					this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToRectAA(0xba06,

@@ -238,7 +238,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0695, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x35c3);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x35c3);
 
 			for (int i = 0, j = 0; i < 72; i++)
 			{
@@ -288,7 +288,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x0000:0x07b0, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(99, 88, 81, 0);
+			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(99, 88, 81, 0);
 
 			// Instruction address 0x0000:0x07bd, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();

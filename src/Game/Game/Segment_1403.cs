@@ -3985,7 +3985,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x1403:0x354b, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x1f6a);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x1f6a);
 
 			// Instruction address 0x1403:0x355f, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 64, 80);

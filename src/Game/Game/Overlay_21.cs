@@ -108,7 +108,7 @@ namespace OpenCiv1
 
 		L017f:
 			// Instruction address 0x0000:0x018e, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(40, 16, 40, 0);
+			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(40, 16, 40, 0);
 
 			this.oParent.Var_aa_Rectangle.FontID = 5;
 
@@ -265,7 +265,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x03bd, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x5178, (ushort)(this.oCPU.BP.Word - 0xc));
+			this.oParent.LanguageTools.F0_2f4d_01ad_GetTextBySectionAndKey("KING", (ushort)(this.oCPU.BP.Word - 0xc));
 
 			// Instruction address 0x0000:0x03d4, size: 5
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 160, 3, 0);

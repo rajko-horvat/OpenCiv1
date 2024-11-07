@@ -357,12 +357,12 @@ namespace OpenCiv1
 						}
 						if (ch != -1 && sbResult.Length > 0)
 						{
-							this.oCPU.WriteString(uiVarAddress, sbResult.ToString(), sbResult.Length);
+							this.oCPU.WriteString(uiVarAddress, sbResult.ToString());
 							sCount = 1;
 						}
 						else
 						{
-							this.oCPU.WriteString(uiVarAddress, "", 1);
+							this.oCPU.WriteString(uiVarAddress, "");
 							sCount = -1;
 						}
 						break;
@@ -887,7 +887,7 @@ namespace OpenCiv1
 			string sDest = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr));
 			string sSource = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
 
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sDest + sSource, sDest.Length + sSource.Length);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sDest + sSource);
 
 			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
 			return destinationPtr;
@@ -897,8 +897,7 @@ namespace OpenCiv1
 		{
 			string sDest = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr));
 
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sDest + sourceString, 
-				sDest.Length + sourceString.Length);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sDest + sourceString);
 
 			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
 			return destinationPtr;
@@ -906,9 +905,9 @@ namespace OpenCiv1
 
 		public ushort strcpy(ushort destinationPtr, ushort sourcePtr)
 		{
-			string sSource = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
+			string source = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
 
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sSource, sSource.Length);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), source);
 
 			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
 			return destinationPtr;
@@ -916,7 +915,7 @@ namespace OpenCiv1
 
 		public ushort strcpy(ushort destinationPtr, string source)
 		{
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), source, source.Length);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), source);
 
 			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
 			return destinationPtr;
@@ -976,9 +975,9 @@ namespace OpenCiv1
 
 		public ushort strupr(ushort stringPtr)
 		{
-			string sTemp = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr)).ToUpper();
+			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr)).ToUpper();
 
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr), sTemp, sTemp.Length);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr), text);
 
 			this.oCPU.AX.Word = stringPtr; // preserve compatibility
 			return stringPtr;
@@ -1023,9 +1022,9 @@ namespace OpenCiv1
 
 		public ushort itoa(int value, ushort stringPtr, short radix)
 		{
-			string sValue = Convert.ToString(value, radix);
+			string textValue = Convert.ToString(value, radix);
 
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr), sValue, sValue.Length);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr), textValue);
 
 			this.oCPU.AX.Word = stringPtr; // preserve compatibility
 			return stringPtr;

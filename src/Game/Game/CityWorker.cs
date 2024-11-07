@@ -2121,7 +2121,8 @@ namespace OpenCiv1
 								this.oParent.MSCAPI.strupr(0xba06);
 
 								// Instruction address 0x1d12:0x3b25, size: 5
-								this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, 63);
+								this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
+									this.oParent.LanguageTools.F0_2f4d_04f7_TrimStringToWidth(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06)), 63));
 
 								// Instruction address 0x1d12:0x3b40, size: 5
 								this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA(0xba06, 253, local_e4 + 2, 15);
@@ -2162,7 +2163,8 @@ namespace OpenCiv1
 								this.oParent.MSCAPI.strcpy(0xba06, this.oGameData.Static.ImprovementDefinitions(i + 1).Name);
 
 								// Instruction address 0x1d12:0x3c22, size: 5
-								this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, 56);
+								this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
+									this.oParent.LanguageTools.F0_2f4d_04f7_TrimStringToWidth(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06)), 56));
 
 								// Instruction address 0x1d12:0x3c3d, size: 5
 								this.oParent.MSCAPI.strupr(0xba06);
@@ -2234,7 +2236,8 @@ namespace OpenCiv1
 						this.oParent.MSCAPI.strcpy(0xba06, this.oGameData.Static.ImprovementDefinitions(-city.CurrentProductionID).Name);
 
 						// Instruction address 0x1d12:0x3ec5, size: 5
-						this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, 0x56);
+						this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
+							this.oParent.LanguageTools.F0_2f4d_04f7_TrimStringToWidth(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06)), 86));
 
 						// Instruction address 0x1d12:0x3edd, size: 5
 						this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(0xba06, 274, 100, 15);

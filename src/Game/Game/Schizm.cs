@@ -137,7 +137,7 @@ namespace OpenCiv1
 						this.oParent.Array_30b8[1] = newPlayer.Nationality;
 
 						// Instruction address 0x0000:0x026a, size: 5
-						this.oParent.Segment_2f4d.F0_2f4d_044f((ushort)((playerID == this.oGameData.HumanPlayerID) ? 0x4a18 : 0x4a20));
+						this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection((ushort)((playerID == this.oGameData.HumanPlayerID) ? 0x4a18 : 0x4a20));
 
 						this.oParent.Var_2f9e = 5;
 

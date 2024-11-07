@@ -449,7 +449,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x051c, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x4f74);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x4f74);
 
 			// Instruction address 0x0000:0x0530, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 64, 80);
@@ -638,7 +638,7 @@ namespace OpenCiv1
 
 		L06dd:
 			// Instruction address 0x0000:0x06e1, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x4f99);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x4f99);
 
 			this.oCPU.CMP_UInt8((byte)this.oGameData.Cities[cityID].ActualSize, 0x0);
 			if (this.oCPU.Flags.NE) goto L06f3;
@@ -678,7 +678,7 @@ namespace OpenCiv1
 
 		L0738:
 			// Instruction address 0x0000:0x073c, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x4f9d);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x4f9d);
 
 			if (this.oGameData.Cities[cityID].ActualSize > 1)
 				goto L06f3;
@@ -709,7 +709,7 @@ namespace OpenCiv1
 
 		L0784:
 			// Instruction address 0x0000:0x0788, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x4fa1);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x4fa1);
 
 			if (this.oGameData.Cities[cityID].ActualSize > 1)
 				goto L079a;
@@ -747,7 +747,7 @@ namespace OpenCiv1
 
 		L07d9:
 			// Instruction address 0x0000:0x07dd, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x4fa5);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x4fa5);
 
 			this.oGameData.Cities[cityID].FoodCount = 0;
 			this.oCPU.AX.Low = (byte)this.oGameData.Cities[cityID].ActualSize;
@@ -823,7 +823,7 @@ namespace OpenCiv1
 			this.oParent.Array_30b8[0] = this.oGameData.Static.ImprovementDefinitions(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)) + 1).Name;
 
 			// Instruction address 0x0000:0x08a6, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x4fc3);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x4fc3);
 
 			goto L0bc6;
 
@@ -841,7 +841,7 @@ namespace OpenCiv1
 
 		L08cd:
 			// Instruction address 0x0000:0x08d1, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x4fc7);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x4fc7);
 
 			this.oGameData.Cities[cityID].FoodCount = 0;
 			this.oGameData.Cities[cityID].ShieldsCount = 0;

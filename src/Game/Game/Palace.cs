@@ -33,7 +33,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0017, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x4ade);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x4ade);
 
 			// Instruction address 0x0000:0x0028, size: 5
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x100), 0xba06);

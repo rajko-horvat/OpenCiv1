@@ -488,10 +488,11 @@ namespace OpenCiv1
 			this.oParent.Array_30b8[4] = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
 
 			// Instruction address 0x0000:0x0e70, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x3301, (ushort)((playerID != this.oGameData.HumanPlayerID) ? 0x32f9 : 0x32f2));
+			this.oParent.LanguageTools.F0_2f4d_01ad_GetTextBySectionAndKey("KING", (ushort)((playerID != this.oGameData.HumanPlayerID) ? 0x32f9 : 0x32f2));
 
 			// Instruction address 0x0000:0x0e78, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0471();
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
+				this.oParent.LanguageTools.F0_2f4d_0471_ReplaceKeywords(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06))));
 
 			// Instruction address 0x0000:0x0e86, size: 5
 			local_200 = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
@@ -816,10 +817,11 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x1645, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x3348, 0x3342);
+			this.oParent.LanguageTools.F0_2f4d_01ad_GetTextBySectionAndKey("KING", 0x3342);
 
 			// Instruction address 0x0000:0x164d, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0471();
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
+				this.oParent.LanguageTools.F0_2f4d_0471_ReplaceKeywords(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06))));
 
 			this.oParent.Var_aa_Rectangle.FontID = 6;
 

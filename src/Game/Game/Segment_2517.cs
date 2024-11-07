@@ -259,7 +259,7 @@ namespace OpenCiv1
 
 		L0243:
 			// Instruction address 0x2517:0x0254, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x29a6);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x29a6);
 
 			this.oParent.Var_3936 = 1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
@@ -371,7 +371,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x2517:0x03b3, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x2988);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x2988);
 
 			this.oParent.Var_3936 = 1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);

@@ -798,7 +798,8 @@ namespace OpenCiv1
 				16, (short)(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)) + 3));
 
 			// Instruction address 0x0000:0x08d8, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, 270);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
+				this.oParent.LanguageTools.F0_2f4d_04f7_TrimStringToWidth(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06)), 270));
 
 			// Instruction address 0x0000:0x08f3, size: 5
 			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA(0xba06, 40, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)) + 5, 15);

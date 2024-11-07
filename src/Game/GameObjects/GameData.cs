@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO.Compression;
+using System.Xml.Serialization;
 using IRB.Collections.Generic;
 using OpenCiv1.Graphics;
 
@@ -7,6 +9,8 @@ namespace OpenCiv1
 	public class GameData
 	{
 		private OpenCiv1Game oParent;
+
+		private LanguagePack oLanguagePack = new LanguagePack();
 
 		// Static Data
 		private GameStaticData oStaticData;
@@ -208,6 +212,14 @@ namespace OpenCiv1
 					this.PathFind[i, j] = 0;
 				}
 			}
+
+			LoadLanguagePack("en-en");
+		}
+
+		[XmlIgnore]
+		public LanguagePack Language
+		{
+			get => this.oLanguagePack;
 		}
 
 		public GameStaticData Static
@@ -218,6 +230,59 @@ namespace OpenCiv1
 		public SpaceshipCell[] SpaceshipCells
 		{
 			get => this.aSpaceshipCells;
+		}
+
+		/// <summary>
+		/// Loads a specified Language Pack from IETF language tag
+		/// </summary>
+		/// <param name="languageTag">The IETF language tag</param>
+		/// <returns>true if the language pack was successfully loaded</returns>
+		public bool LoadLanguagePack(string languageTag)
+		{
+			bool success = false;
+
+			try
+			{
+				StreamReader reader;
+				string path = string.Format("Languages{0}{1}.xml", Path.DirectorySeparatorChar, languageTag.ToLower());
+
+				if (Path.Exists(path) || Path.Exists(path + ".gz"))
+				{
+					if (Path.Exists(path))
+					{
+						reader = new StreamReader(new BufferedStream(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read), 65536));
+					}
+					else
+					{
+						reader = new StreamReader(new GZipStream(new BufferedStream(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read), 65536), CompressionMode.Decompress));
+					}
+
+					LoadLanguagePack(reader);
+
+					reader.Close();
+
+					success = true;
+				}
+			}
+			catch { }
+
+			return success;
+		}
+
+		/// <summary>
+		/// Loads a Language Pack from stream
+		/// </summary>
+		/// <param name="reader">A stream to read the Map object from.</param>
+		/// <returns>A deserialized Map object.</returns>
+		public void LoadLanguagePack(StreamReader reader)
+		{
+			XmlSerializer ser = new XmlSerializer(typeof(LanguagePack));
+			object? obj = ser.Deserialize(reader);
+
+			if (obj == null)
+				throw new Exception("Can't deserialize Language Pack");
+
+			this.oLanguagePack = (LanguagePack)obj;
 		}
 
 		/// <summary>

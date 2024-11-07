@@ -41,7 +41,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x003b, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x34b2, (ushort)(this.oCPU.BP.Word - 0x18));
+			this.oParent.LanguageTools.F0_2f4d_01ad_GetTextBySectionAndKey("HELP", (ushort)(this.oCPU.BP.Word - 0x18));
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L00a5;
@@ -55,7 +55,7 @@ namespace OpenCiv1
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA((ushort)(this.oCPU.BP.Word - 0x18), 160, 192, 0);
 
 			// Instruction address 0x0000:0x008e, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(32, 32, 32, 15);
+			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(32, 32, 32, 15);
 
 			// Instruction address 0x0000:0x0096, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
@@ -308,12 +308,13 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x02fa, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x34de, stringPtr);
+			this.oParent.LanguageTools.F0_2f4d_01ad_GetTextBySectionAndKey("HELP", stringPtr);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x0305, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0471();
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06), 
+				this.oParent.LanguageTools.F0_2f4d_0471_ReplaceKeywords(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06))));
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
@@ -334,7 +335,7 @@ namespace OpenCiv1
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA("--- Civilization Note ---", 160, 19, 0);
 
 			// Instruction address 0x0000:0x0385, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(32, 64, 25, 15);
+			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(32, 64, 25, 15);
 
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
@@ -373,12 +374,13 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x03c9, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x3501, stringPtr);
+			this.oParent.LanguageTools.F0_2f4d_01ad_GetTextBySectionAndKey("ERROR", stringPtr);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x03d4, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0471();
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
+				this.oParent.LanguageTools.F0_2f4d_0471_ReplaceKeywords(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06))));
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
@@ -399,7 +401,7 @@ namespace OpenCiv1
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA("--- Civilization Note ---", 160, 19, 0);
 
 			// Instruction address 0x0000:0x0454, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(32, 64, 25, 15);
+			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(32, 64, 25, 15);
 
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 

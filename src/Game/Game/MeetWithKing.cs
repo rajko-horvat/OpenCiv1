@@ -787,7 +787,7 @@ namespace OpenCiv1
 			this.oParent.Array_30b8[3] = this.oGameData.Static.Technologies[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))].Name;
 
 			// Instruction address 0x0000:0x0787, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x3776);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x3776);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
 
@@ -888,7 +888,7 @@ namespace OpenCiv1
 
 		L08b9:
 			// Instruction address 0x0000:0x08ca, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x378f);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x378f);
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24)), 0x0);
 			if (this.oCPU.Flags.E) goto L08dd;
@@ -972,7 +972,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x09ca, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x3797);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x3797);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6b8e, 0x0);
 			this.oParent.Var_3936 = 2;
@@ -1019,7 +1019,7 @@ namespace OpenCiv1
 			this.oParent.Array_30b8[3] = this.oGameData.Static.Technologies[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].Name;
 
 			// Instruction address 0x0000:0x0a76, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x37a0);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x37a0);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6b8e, 0x0);
 			this.oParent.Var_3936 = 2;
@@ -1073,11 +1073,11 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 			
 			// Instruction address 0x0000:0x0b1b, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x37a9);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x37a9);
 
 		L0b1a:
 			// Instruction address 0x0000:0x0b27, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0000(0x28);
+			this.oParent.LanguageTools.F0_2f4d_0000_AdjustLineWidth(40);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6b8e, 0x1);
 			this.oParent.Var_3936 = 2;
@@ -1091,7 +1091,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0bee, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x37b2);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x37b2);
 
 			goto L0bed;
 
@@ -1114,7 +1114,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 			
 			// Instruction address 0x0000:0x0b1b, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x37bb);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x37bb);
 
 			goto L0b1a;
 
@@ -1149,7 +1149,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 			
 			// Instruction address 0x0000:0x0b1b, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x37c3);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x37c3);
 
 			goto L0b1a;
 
@@ -1157,11 +1157,11 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0bee, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x37c8);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x37c8);
 
 		L0bed:
 			// Instruction address 0x0000:0x0bfa, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0000(0x28);
+			this.oParent.LanguageTools.F0_2f4d_0000_AdjustLineWidth(40);
 
 			// Instruction address 0x0000:0x0c0e, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 40, 100);
@@ -1201,7 +1201,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0c6e, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x37cd);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x37cd);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6b8e, 0x0);
 			this.oParent.Var_3936 = 0;
@@ -1273,7 +1273,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0d72, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x3805);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x3805);
 
 			this.oParent.Var_3936 = 0;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
@@ -1347,7 +1347,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0e98, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x380e);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x380e);
 
 			this.oParent.Var_3936 = 0;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
@@ -1398,7 +1398,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0f5b, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x3818);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x3818);
 
 			this.oParent.Var_3936 = 0;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
@@ -1482,7 +1482,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x106a, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x3820);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x3820);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6b8e, 0x1);
 			this.oParent.Var_3936 = 2;
@@ -1533,7 +1533,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x1124, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x382a);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x382a);
 
 			goto L11c3;
 
@@ -1593,7 +1593,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x1227, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x388f);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x388f);
 
 			this.oCPU.AX.Word = (ushort)oParent.GameData.TurnCount;
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34)));
@@ -1650,7 +1650,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x12f1, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x3897);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x3897);
 
 			this.oParent.Var_3936 = 0;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd76c, 0xc);
@@ -1673,7 +1673,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x134d, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x38a1);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x38a1);
 
 			// Instruction address 0x0000:0x1360, size: 5
 			this.oParent.Segment_2517.F0_2517_0aa1_ClearDiplomacyFlags(this.oGameData.HumanPlayerID, playerID, 2);
@@ -1771,7 +1771,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x15c7, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x38e9);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x38e9);
 
 			goto L15cf;
 
@@ -1789,7 +1789,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x14a3, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x38f4);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x38f4);
 
 			F6_0000_251d(0xba06, 0x14, 0x8b);
 			
@@ -1823,7 +1823,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x153f, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x38fb);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x38fb);
 
 			F6_0000_251d(0xba06, 0x14, 0x8b);
 			
@@ -1857,7 +1857,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x15c7, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x391e);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x391e);
 
 		L15cf:
 			F6_0000_251d(0xba06, 0x14, 0x8b);
@@ -2269,7 +2269,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x1a7c, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x3a8c);
+			this.oParent.LanguageTools.F0_2f4d_044f_GetAndAdjustLanguageItemFromKingSection(0x3a8c);
 
 			F6_0000_251d(0xba06, 0x14, 0x8b);
 			

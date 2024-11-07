@@ -326,9 +326,9 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x18), (ushort)(this.oCPU.BP.Word - 0x32));
 
 			// Instruction address 0x0000:0x0381, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_04f7(
-				(ushort)(this.oCPU.BP.Word - 0x18),
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a)));
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)),
+				this.oParent.LanguageTools.F0_2f4d_04f7_TrimStringToWidth(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18))),
+					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a))));
 
 			// Instruction address 0x0000:0x0396, size: 5
 			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA((ushort)(this.oCPU.BP.Word - 0x18),
@@ -622,10 +622,10 @@ namespace OpenCiv1
 		/// ?
 		/// </summary>
 		/// <param name="id"></param>
-		/// <param name="param2"></param>
-		public void F8_0000_062a(ushort id, ushort param2)
+		/// <param name="sectionNo"></param>
+		public void F8_0000_062a(ushort id, int sectionNo)
 		{
-			this.oCPU.Log.EnterBlock($"F8_0000_062a({id}, {param2})");
+			this.oCPU.Log.EnterBlock($"F8_0000_062a({id}, {sectionNo})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -634,7 +634,7 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 
-			this.oCPU.AX.Low = (byte)param2;
+			this.oCPU.AX.Low = (byte)sectionNo;
 			this.oCPU.AX.Low = this.oCPU.ADD_UInt8(this.oCPU.AX.Low, 0x30);
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x3fa9, this.oCPU.AX.Low);
 
@@ -666,15 +666,16 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32), 0xcc);
-			this.oCPU.CMP_UInt16(param2, 0x2);
-			if (this.oCPU.Flags.NE) goto L06dc;
+			
+			if (sectionNo != 2) goto L06dc;
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32), 0xe0);
 
 		L06dc:
-			this.oCPU.CMP_UInt16(param2, 0x4);
-			if (this.oCPU.Flags.E) goto L06f5;
-			this.oCPU.CMP_UInt16(param2, 0x1);
-			if (this.oCPU.Flags.NE) goto L06ee;
+			if (sectionNo == 4) goto L06f5;
+
+			if (sectionNo != 1) goto L06ee;
+
 			this.oCPU.CMP_UInt16(id, 0x18);
 			if (this.oCPU.Flags.G) goto L06f5;
 
@@ -686,26 +687,23 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32), 0xa0);
 
 		L06fa:
-			this.oCPU.AX.Word = param2;
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L0724;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x1);
-			if (this.oCPU.Flags.NE) goto L0709;
+			this.oCPU.AX.Word = (ushort)sectionNo;
+			
+			if (sectionNo == 0) goto L0724;
+
+			if (sectionNo != 1) goto L0709;
 			goto L08ea;
 
 		L0709:
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x2);
-			if (this.oCPU.Flags.NE) goto L0711;
+			if (sectionNo != 2) goto L0711;
 			goto L09d8;
 
 		L0711:
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x3);
-			if (this.oCPU.Flags.NE) goto L0719;
+			if (sectionNo != 3) goto L0719;
 			goto L0aac;
 
 		L0719:
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x4);
-			if (this.oCPU.Flags.NE) goto L0721;
+			if (sectionNo != 4) goto L0721;
 			goto L0b8f;
 
 		L0721:
@@ -772,13 +770,13 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L089c;
 
 			// Instruction address 0x0000:0x0855, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x3fa4, (ushort)(this.oCPU.BP.Word - 0x2c));
+			this.oParent.LanguageTools.F0_2f4d_01ad_GetTextBySectionAndKey("ENCYCLOPEDIA", (ushort)(this.oCPU.BP.Word - 0x2c));
 
 			this.oCPU.AX.Word = this.oCPU.INC_UInt16(this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L089c;
 
 			// Instruction address 0x0000:0x0870, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(37, 12, 76, 1);
+			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(37, 12, 76, 1);
 
 			// Instruction address 0x0000:0x0878, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
@@ -792,20 +790,20 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x2c), "2");
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
-			this.oCPU.CMP_UInt16(param2, 0x0);
-			if (this.oCPU.Flags.E) goto L08e4;
+			
+			if (sectionNo == 0) goto L08e4;
 
 			// Instruction address 0x0000:0x08bf, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x3fa4, (ushort)(this.oCPU.BP.Word - 0x2c));
+			this.oParent.LanguageTools.F0_2f4d_01ad_GetTextBySectionAndKey("ENCYCLOPEDIA", (ushort)(this.oCPU.BP.Word - 0x2c));
 
 			// Instruction address 0x0000:0x08d6, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(36, 12, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 1);
+			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(36, 12, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 1);
 
 			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x8);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Word);
 
 		L08e4:
-			this.oCPU.AX.Word = param2;
+			this.oCPU.AX.Word = (ushort)sectionNo;
 			goto L1636;
 
 		L08ea:

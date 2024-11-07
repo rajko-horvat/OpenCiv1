@@ -526,7 +526,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, "    Press Escape to cancel.\n");
 
 			// Instruction address 0x0000:0x069f, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(99, 80, 72, 0);
+			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(99, 80, 72, 0);
 
 			// Instruction address 0x0000:0x06a7, size: 5
 			this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey();

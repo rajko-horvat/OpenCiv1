@@ -1,0 +1,2179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguagePack xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>en-EN</Name>
+  <DisplayName>English (EN)</DisplayName>
+  <Items>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_NAVIGATION</Key>
+      <Value>
+        <string>The sailors of antiquity studied the night sky. Reading the sky map, they could sail away from sight of the shore, knowing that steering by certain reliable stars would bring them home. This crude, practical application of ASTRONOMY allowed the adventurous to sail into the unknown with a reasonable chance of finding their way. Wind-powered ships risked longer voyages, tempted by the knowledge, trade, and new settlements offered by distant lands. The maps of the known world expanded as the blanks were filled in by the reports of the sailors who had mastered NAVIGATION.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CONSTRUCTION</Key>
+      <Value>
+        <string>Advancing beyond the use of mud bricks and mortar to build homes and walls, ancient engineers responded to the need for stronger, more elaborate structures by developing new techniques and skills in CONSTRUCTION. The preferred building material became stone. These new skills made possible the aqueducts, city walls, palaces, temples, bridges, and roads that still stand today in many places, testaments to the ancient builders. In CIVILIZATION, Construction allows Settler units to construct Fortresses.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_HORSEBACK_RIDING</Key>
+      <Value>
+        <string>The HORSE was first domesticated by tribesmen on the Asian steppes. It was used by these tribes for transportation and warfare, and with its help they overwhelmed the proto-civilizations just rising in southeast Europe and the Middle East. HORSEBACK RIDING was in turn acquired by the conquered peoples and this skill accompanied the spread of civilization. In areas where the HORSE could be bred, it was extremely useful for transport and agriculture. Only in the last one hundred years has the HORSE been replaced by motor vehicles as a draft animal and mount for Cavalry.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CEREMONIAL_BURIAL</Key>
+      <Value>
+        <string>Groping for an explanation of the world around them, the earliest humans developed the first concepts of religion. These early forms of worship attempted to give order to the world and assign humans a role in the universe. Gradually the rites of worship grew more sophisticated with sacrifices, ceremonies, vigils, symbology, sacred items, and prayer. One significant step in the advance of worship was the CEREMONIAL BURIAL, often a preparation for an afterlife. The remains of CEREMONIAL BURIALS offer some of the most detailed information available of past civilizations.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_POTTERY</Key>
+      <Value>
+        <string>Concomitant and essential to the Agricultural Revolution was the invention of POTTERY. For seasonal crops and domesticated animals to be really useful, sturdy and waterproof containers were necessary to hold and protect the surplus until needed. The discovery of the properties of clay, the kiln, and the potter's wheel made dependable containers possible. POTTERY was essential to the growth of substantial human populations. Without it, cities would not have been possible.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ALPHABET</Key>
+      <Value>
+        <string>An ALPHABET is a group of symbols that represents phonemes, sounds that humans can make or distinguish. Some ALPHABETS represent syllables. The ancestors of modern ALPHABETS are the iconographic and ideographic symbols of ancient man such as cuneiform and hieroglyphics. The modern ALPHABET of the West traces back to the Romans, then to the Greeks, and then to the Phoenicians. The ALPHABET was significant because ideas could now be transferred by being painted on pottery, carved in stone, or impressed in clay. Ideas no longer had to be exchanged face-to-face by voice or hand signals.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ADVANCED_FLIGHT</Key>
+      <Value>
+        <string>The technology of FLIGHT advanced rapidly in the 20th Century, especially during the two World Wars when the contending nations raced against each other for air superiority. ADVANCED FLIGHT technology was a specialty of the Germans in World War II. They developed the first practical jet fighters, extremely long-ranged Bombers, and the first guided rockets. However, these innovations could not be produced in sufficient quantities to be really useful. The Allies mass-produced less innovative, but dependable, aircraft that won the air war.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ASTRONOMY</Key>
+      <Value>
+        <string>Perhaps the oldest of the sciences, ASTRONOMY originated by observing the regularity of celestial movements. The earliest astronomers were priests who were often able to use the predictability of events to maintain their power. Ancient Greek students of ASTRONOMY understood that the Sun was the center of the Solar System, made reasonable estimates for the size and distance of the Sun and Moon, and made a close estimate of the size of the Earth. These facts not rediscovered in the West for over one thousand years. Much later, ASTRONOMY became important in timekeeping and NAVIGATION.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ATOMIC_THEORY</Key>
+      <Value>
+        <string>Greek philosophers first proposed that matter was composed of tiny, indivisible particles in constant motion. However, this concept was not popular at the time, especially with Aristotle, and disappeared. Independently, ATOMIC THEORY was revived in the 19th Century. Advances in PHYSICS, especially the development of quantum mechanics, provided a satisfactory explanation for the behavior of electrons and other sub-atomic particles. An understanding of ATOMIC THEORY made possible the development of NUCLEAR FISSION and atomic weapons.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_AUTOMOBILE</Key>
+      <Value>
+        <string>The first practical AUTOMOBILES were developed in the late 19th Century, although experiments with steam-powered wagons had been carried out over one hundred years earlier. The critical invention that made the AUTOMOBILE a success was the internal COMBUSTION engine. This relatively small but powerful engine could be mounted within the frame of the "horseless carriage" and drive the wheels. The AUTOMOBILE had a tremendous impact on the economy and lifestyles of the rich Western nations, and it also revolutionized warfare. Armed and armored AUTOMOBILES, known as tanks, became a dominant weapon on the battlefield.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_BANKING</Key>
+      <Value>
+        <string>Modern BANKING arose during the Renaissance among the merchant families of the Italian city-states who were benefiting from the increase in TRADE, both within Europe and with the Middle East. The wealthy merchants pooled their surplus money into a Bank, and loaned cash at interest to other commercial enterprises. The availability of this capital for investment made many new businesses possible and helped accelerate economic growth. BANKING was even more important after the Industrial Revolution due to the even larger capital investments required by the newly rising industrial CORPORATIONS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_BRIDGE_BUILDING</Key>
+      <Value>
+        <string>An important measure of the advancement of any civilization was the internal CONSTRUCTION improvements built to facilitate trade and communication. The Roman Empire was renowned for its roads, aqueducts, and other structures that linked the frontiers to the capital. BRIDGE BUILDING was greatly advanced by the Romans, and rediscovered in the West by medieval engineers many years later. The first IRON bridge was built in England in the late 18th Century, and BRIDGE BUILDING techniques advanced rapidly to meet the demands of the expanding RAILROADS of the 19th Century.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_BRONZE_WORKING</Key>
+      <Value>
+        <string>BRONZE is an alloy of copper and other metals, mainly tin. BRONZE WORKING technology grew out of experiments with copper ore, which was often found pure enough in ancient times to be worked into metal objects. Experiments with the distinctive greenish copper ore led to mixtures of metals into BRONZE. The new metal proved much more useful than copper because it was harder, less brittle, and could hold a sharper edge. It made better, less costly tools, and was very useful for making weapons and armor. The first societies possessing BRONZE weapons had a distinct advantage over those armed with stone or copper.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CHEMISTRY</Key>
+      <Value>
+        <string>The basis for modern CHEMISTRY was laid by the pseudo-science of alchemy, which attempted to turn base metals into gold and silver through the agency of an elixir or Philosopher's Stone. Alchemy periodically surfaced and degenerated until the real science of CHEMISTRY was found to have economically useful applications. CHEMISTRY was also spurred by the practical needs of MEDICINE and the theoretical considerations of natural PHILOSOPHY.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CHIVALRY</Key>
+      <Value>
+        <string>CHIVALRY was a system of ethical ideals that grew out of FEUDALISM. It established a code of behavior for the landed class of mounted warriors, known as Knights. The chief chivalric virtues were piety, honor, valor, courtesy, chastity, and loyalty. These represented a fusion of Christian and military morality and became the basis for gentlemanly conduct. The zenith of CHIVALRY were the Crusades, a series of invasions of the Middle East that attempted to recapture the Holy Land from the Muslims. CHIVALRY was enhanced by monastic orders of knighthood, including the Knights Templar and Knights Hospitaler.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CODE_OF_LAWS</Key>
+      <Value>
+        <string>As populations and cities grew, the need grew for the establishment of rules of conduct within the newly organized societies. After the development of the ALPHABET, these rules were written down along with the punishments that kept them enforced. The earliest known such codes existed in Babylon, India, and Palestine. Roman law was the first to distinguish between public law, in which the state is involved, and private law, concerning disputes between citizens. U.S. law was greatly influenced by the work of Sir William Blackstone, who stressed the natural rights of the individual.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_COMBUSTION</Key>
+      <Value>
+        <string>The development of the internal COMBUSTION engine was a great advance of the Industrial Age. Relying on the volatility of new fuels made available by the REFINING of oil, these compact engines developed great power. They were essential to the development of the AUTOMOBILE and aircraft because previous engines were too bulky to be practical. In addition, the internal COMBUSTION engine was extremely efficient in generating power for the fuel it consumed, which allowed vehicles, aircraft, and ships to travel reasonable distances.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_COMMUNISM</Key>
+      <Value>
+        <string>Communism is similar in effect to a monarchy with one important exception. Under a communist government, corruption is at the same level in all cities. This makes it especially attractive for empires that are spread over large distances. Normally in this case, corruption may be overwhelming at the fringes of the empire. But under communism, corruption may remain manageable. Communism is equivalent to the monarchy in its ability to allow greater production than a despotism.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_COMPUTERS</Key>
+      <Value>
+        <string>A COMPUTER is a device capable of performing a series of arithmetic or logical operations. It is distinguished from a calculator by being programmable and capable of storing and retrieving data. COMPUTERS are made possible by previous advances in MATHEMATICS and continuing developments in ELECTRONICS. Significant advances in COMPUTER technology take place at an amazing pace. COMPUTERS have proven useful and necessary in many applications, including huge computations, entertainment, information storage, cryptography, and and control of ROBOTS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CONSCRIPTION</Key>
+      <Value>
+        <string>Compulsory enrollment in the armed forces, or CONSCRIPTION, was introduced in France during the Revolution. It was thought necessary and equitable by the new government surrounded by enemies. In the era of national mobilization for war that followed, wartime CONSCRIPTION was instituted by many nations, including most major participants in the World Wars. In the U.S., peacetime CONSCRIPTION was maintained for nearly 30 years following World War II.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CURRENCY</Key>
+      <Value>
+        <string>As cities grew, their internal economies became more complicated. People specialized in their labors, some producing grain, some pottery, some bricks, etc. A system of barter developed so that the wares and services of one individual could be exchanged for those of another. In response to the need for a medium of exchange, and for more sophisticated ways to store purchasing power and set standards of value, CURRENCY came into use. The first satisfactory CURRENCY was coinage made from electrum, a naturally occurring alloy of gold and silver.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_DEMOCRACY</Key>
+      <Value>
+        <string>A democracy government dramatically increases trade in the same manner as a republic and has one major additional advantage. There is no corruption in cities under a democracy, which makes it very useful for large empires. However, a democracy has two unique worries. First, military units not in their home city cause two citizens to be unhappy, not one citizen as in a republic. This makes war especially hard to wage. Also, if any city in a democracy slips into civil disorder, the government is immediately overthrown and becomes an anarchy for several turns. While a democracy has tremendous economic advantages, it is fragile and requires vigilance.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ELECTRICITY</Key>
+      <Value>
+        <string>The phenomenon of ELECTRICITY has been witnessed by humans since the dawn of time in the form of lightning, static ELECTRICITY, and MAGNETISM, but only in the last two hundred years has the energy of charged particles been harnessed. Electric current is a flow of electrons from an electromotive force, such as a battery or generator, that possesses a negative charge. The current flows through a conductor of electricity (a copper wire for example) to a positive terminal that attracts the charge. Along the way, the electric current can be made to provide power and do work.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ELECTRONICS</Key>
+      <Value>
+        <string>ELECTRONICS is the science of understanding and ENGINEERING the controlled flow of electrons in electronic currents. Historical breakthroughs that have occurred in ELECTRONICS include the electronic tube, semiconductor, transistor, and integrated circuits. These made possible COMPUTERS, advanced weapons, improved radars, and communication receivers, as well as more efficient techniques in power generation and transmission.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ENGINEERING</Key>
+      <Value>
+        <string>The science of ENGINEERING originated with the civil engineers, who built bridges, roads, aqueducts, and other structures, and the military engineers, who built fortifications and weapons. Over time, ENGINEERING came to mean the design, CONSTRUCTION, and operation of the structures and machines of industry, warfare, and day-to-day life. Engineers were the people who put the new advances of knowledge to practical use. They were people not only good with their hands, but also with their heads. The ENGINEERING problem-solver was most likely to discover a new INVENTION and lead the advance of knowledge.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_EXPLOSIVES</Key>
+      <Value>
+        <string>EXPLOSIVES were discovered during experiments with GUNPOWDER and CHEMISTRY in the search for stable and powerful chemicals for industrial and military applications. An EXPLOSIVE is a chemical that undergoes a rapid COMBUSTION, and produces much heat and gas. The heat causes the gas to rapidly expand, thereby exerting the pressures of an explosion. Some EXPLOSIVES are mixtures of combustibles that are ignited. Others contain unstable molecules that can undergo an EXPLOSIVE decomposition called a detonation. The former type is used as propellants for bullets and fireworks, while the latter is used in warheads and rock blasting.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_FEUDALISM</Key>
+      <Value>
+        <string>In the unsettled times that followed the collapse of Charlemagne's Frankish empire, a new social and political system arose in Europe, called FEUDALISM. Derived from the concept of MONARCHY, it was a hierarchial system where each succeeding stratum owed allegiance to those above. At the bottom were the serfs, who worked the land for the lord of the local manor. The local lord in turn managed the land for the lord above him, and so on to the king, who actually owned all the land. The people at the bottom of the hierarchy were protected by those above, and in return served their masters. FEUDALISM led to the code of CHIVALRY and the mounted Knight.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_FLIGHT</Key>
+      <Value>
+        <string>Sustained, self-powered motion through the air, or FLIGHT, has tantalized humans since the dawn of time. Despite many experiments and attempts at flying, it wasn't until the development of the internal COMBUSTION engine that the laws of PHYSICS could be made to work for man's quest. Just after the turn of the 20th Century, Orville and Wilbur Wright made the first four controlled, sustained flights at Kitty Hawk, N.C. The technology of FLIGHT advanced rapidly. Within a relatively few years, aircraft were circling the globe, safely delivering passengers and mail at record speeds.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_FUSION_POWER</Key>
+      <Value>
+        <string>Nuclear FUSION is the process by which two atomic nuclei combine to form one heavier atomic nucleus, giving off tremendous energy in the process. The difficulty with sustaining this thermonuclear reaction is that it requires very high temperatures for initiation and fuel containment. An answer to part of the problems of FUSION may lie in the development of SUPERCONDUCTORS. Nuclear FUSION offers great promise as a source of electric power because a safe fuel is available in large quantities and the process does not create the radioactive waste that plagues Nuclear FISSION. In CIVILIZATION, FUSION POWER eliminates the risk of a Nuclear Power Plant meltdown.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_GENETIC_ENGINEERING</Key>
+      <Value>
+        <string>One of the hopes in the search for a cure for cancer and many other diseases and disorders comes from GENETIC ENGINEERING, a new field of study in science and MEDICINE. GENETIC ENGINEERING is a group of techniques that manipulate the genetic material of living cells. Gene splicing is a technique for transporting genetic material from one species to another. Other techniques include cell fusion and nuclear transplantation. The hope is that DNA, the basic genetic material for all life, may prove to be repairable and changeable. Then all genetic disorders would no longer be permanent, but curable.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_GUNPOWDER</Key>
+      <Value>
+        <string>GUNPOWDER is a chemical mixture of saltpeter, sulphur, and charcoal. When ignited, it burns so rapidly that it explodes if contained to any degree. GUNPOWDER is believed to have been developed by the Chinese as early as the 9th Century, but did not reach Europe until the 1300's. The Chinese appear to have used it almost exclusively for fireworks, but the competing and aggressive Europeans turned it into weapons that revolutionized warfare. Musketeers and Cannon brought an end to the battlefield dominance of heavy Cavalry and also ended recurring invasions of barbarians from Asia.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_INDUSTRIALIZATION</Key>
+      <Value>
+        <string>The invention of the STEAM ENGINE and other technology, especially the RAILROAD, led to the INDUSTRIALIZATION of the West. INDUSTRIALIZATION was the use of machines to dramatically increase the productivity of workers. Industry became concentrated in factories, allowing new products to become available in huge quantities. INDUSTRIALIZATION revolutionized living standards, but not always for the better. The new worker class often suffered a grinding, subservient existence that eventually fostered the social philosophy of COMMUNISM and the more practical LABOR UNION. Both were attempts to improve the lot of workers.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_INVENTION</Key>
+      <Value>
+        <string>The contrivance of a previously unknown device, method, or process is known as an INVENTION. The advance of technical knowledge is essentially the discovery of new INVENTIONS. The history of civilization shows that the spread of LITERACY and the rise of ENGINEERING specialists were critical to the acceleration of new technology. ENGINEERING is the practical employment of INVENTION, and people who do this work are often the ones who identify the need for further advance and achieve it. The progress of a society is a measure of how well it encourages and adapts new INVENTIONS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_IRON_WORKING</Key>
+      <Value>
+        <string>Building on the experience of their BRONZE WORKING, ancient smelters learned IRON WORKING, the manufacture and fabrication of a much more useful metal. Iron ore was extremely common compared to copper and tin, and IRON was harder, less brittle, and could hold a much sharper edge. It was an ideal material for tools and weapons. Some observers consider the development of IRON WORKING to have been a key step in the advance of civilization. It made workers much more efficient and was found useful in many new applications.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_LABOR_UNION</Key>
+      <Value>
+        <string>With the rise of MASS PRODUCTION in the Industrial Age, the balance of power between owners and workers swung too far in favor of the owners. The rising worker class often found themselves stuck in poor working and living conditions while the owners grew rich. In response to this inequity the LABOR UNION arose, an attempt by the workers to bind their interests together and collectively bargain with ownership for better working conditions and economic status. After much turmoil, the LABOR UNIONS were able to achieve a working balance of power with ownership and improve the worker's lot.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_LITERACY</Key>
+      <Value>
+        <string>The development of WRITING made available a critical new tool for the advance of knowledge, but, like all tools, it was only useful if employed. The greater the percentage of the population that was LITERATE, the greater the advantage that could be taken from WRITING. Where only priests and scribes were LITERATE, all others had to share knowledge slowly, by face-to-face contact. When a high percentage of the population was LITERATE, as in classical Greece, the economy benefited and the advance of knowledge accelerated.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MAGNETISM</Key>
+      <Value>
+        <string>The force of attraction or repulsion between various substances, especially iron, is due to the motion of electric charges and is known as MAGNETISM. A MAGNETIC object normally has two poles, a north-seeking pole and a south- seeking pole, named because a freely floating MAGNET orients itself in the Earth's MAGNETIC field along a north-south axis. MAGNETISM may have been discovered in China, but its important application in the mariner's compass occurred in 12th Century Europe. Later work with MAGNETISM was important in the discovery of PHYSICS and ELECTRICITY.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MAPMAKING</Key>
+      <Value>
+        <string>MAPMAKING was an offshoot of the development of the ALPHABET. With this technology if became possible to record the location of important places and features on animal skins, clay tablets, tree bark, or other materials, and thus pass on this information to others. This was especially useful to seamen, who often ventured far from home along strange coasts with their only guide being the MAPS made by those who had sailed there previously. MAPMAKING encouraged travel and exploration by making it less risky. It was the beginning of the skills that became the science of NAVIGATION.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MASONRY</Key>
+      <Value>
+        <string>The aggregation of people into the first cities required permanent buildings. To fill the need for these structures, some of the new city dwellers became expert in the techniques of MASONRY. This technology utilized rocks and mud bricks, cementing these materials into buildings and walls. With experience, their buildings grew larger and more elaborate, walls became more imposing, and the work became more permanent and pleasing to the eye. Years of experience led to more sophisticated techniques of CONSTRUCTION.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MASS_PRODUCTION</Key>
+      <Value>
+        <string>Following the advent of INDUSTRIALIZATION, factory owners developed new techniques to make production more efficient. Henry Ford is credited with one major advance, the installation of MASS PRODUCTION assembly lines in his AUTOMOBILE plants. In this case, the object being assembled, a car, was carried along conveyor belts to the various workstations, where each worker expertly performed his part of the assembly. When the car reached the end of the line, it was fully built. Techniques such as this resulted in dramatic increases in worker productivity as long as the workers were content.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MATHEMATICS</Key>
+      <Value>
+        <string>From the earliest ALPHABETS, some symbols came to represent the concept of numbers. MATHEMATICS arose from the needs of agriculture and commerce to keep track of quantities, accounts, and measurements. Farmers needed to know the size of the yield from their fields. Traders needed to know what they had available for barter and the rates of exchange. MASONS needed to know the dimensions of the structure they were building. The development of MATHEMATICS was critical to the future advance of PHYSICS and other sciences.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MEDICINE</Key>
+      <Value>
+        <string>The study of the body and healing was first developed into a science by the Greeks. Hippocrates, considered the father of MEDICINE, based his studies of the human body on observation and reasoning. His studies were just one of many breakthroughs that resulted from the flowering of Greek PHILOSOPHY. Though some of his beliefs were incorrect, many modern medical students take the Hippocratic Oath upon graduation, swearing to uphold his principles. MEDICINE and alchemy were the basis for the developing science of CHEMISTRY.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_METALLURGY</Key>
+      <Value>
+        <string>The science of METALLURGY became especially important after the development of GUNPOWDER, as the European powers vied with one another for the latest technological advance in weapons. Research in METALLURGY was conducted by the private smelters and UNIVERSITIES. The result was artillery and naval guns superior to any in the world. This development was an important factor in the rise of European states as world powers. METALLURGY later led to the discovery of STEEL and other metals.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MONARCHY</Key>
+      <Value>
+        <string>Monarchy is the form of government that most often replaces a despotism. Under a monarchy, food and resource production can both be dramatically increased by mining and irrigation when your cities have reached a healthy size. Although war may be somewhat more difficult to wage than under despotism and new production may slow, ultimately your cities can achieve much greater strength and overcome the early handicaps this government might impose.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MYSTICISM</Key>
+      <Value>
+        <string>As populations and knowledge grew, a new class of spiritual advisors arose to satisfy the need for less formal, state-centered rites of worship. The priests and priestesses of MYSTICISM, often called oracles, claimed union with the divine through meditation and trance-like contemplation. MYSTICISM offered for the first time the hope of personal salvation and immortality, concepts important in the development of later RELIGIONS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_NUCLEAR_FISSION</Key>
+      <Value>
+        <string>NUCLEAR FISSION occurs when a fissionable atomic nucleus absorbs a neutron, becomes unstable, and splits into two new nuclei. In the process, tremendous energy is given off as heat, light, and radioactivity. The first use of NUCLEAR FISSION was in warfare, where the heat and shock wave of uncontrolled fission produced an unprecedented weapon, the atomic bomb. Later, controlled NUCLEAR FISSION was employed to provide enough heat to power the generation of electricity in a NUCLEAR POWER Plant. The dangers and risks associated with NUCLEAR POWER have so far limited its employment.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_NUCLEAR_POWER</Key>
+      <Value>
+        <string>The development of NUCLEAR POWER was an attempt to find a peaceful application for the energy released by NUCLEAR FISSION. The heat given off created steam that drove electric turbines, producing electricity. NUCLEAR POWER held the promise of being cleaner and less costly than burning fossil fuels. However, the radioactive materials consumed in the process were extremely lethal, the disposal of nuclear waste was difficult, and the risk of nuclear meltdown could not be eliminated. Continuing work may lead to a safer application. For example, employing reactors built on the principles of nuclear FUSION, rather than FISSION, may yet provide safe, clean power.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_PHILOSOPHY</Key>
+      <Value>
+        <string>In ancient Greece, LITERACY and interest in the natural world was common in an expanding upper class that devoted much of its leisure time to debate. Popular topics for discussion were the reality, causes, and principles of thinking and being, better known as PHILOSOPHY. These debates considered the facts independent of the traditional religious dogmas of the day, and opened the door to examination of a wide range of new ideas. The writings of many of these early Greek philosophers, including Plato and Aristotle, have been luckily preserved. It has been said that all PHILOSOPHY after Plato was no more than footnotes to his work.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_PHYSICS</Key>
+      <Value>
+        <string>The study of PHYSICS came into being from abstract theories of MATHEMATICS and the practical experience of engineers and sailors. Concerned with the study of matter and energy, and the relationships between them, classical PHYSICS dealt with phenomena within the bounds of normal observation: motion, acoustics, thermodynamics, and optics. These studies in turn led to further advances in areas such as MAGNETISM and ELECTRICITY. Modern PHYSICS is primarily concerned with the behavior of matter and energy under extreme conditions or at extreme scales.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_PLASTICS</Key>
+      <Value>
+        <string>One of the spinoffs of research in the REFINING of oil was the discovery of PLASTICS, organic compounds that can be molded under heat and pressure. PLASTICS appeared to be wonders of the Industrial Age and were found to be cheap and sturdy substitutes for more traditional materials in all manner of uses. But the widespread use of PLASTICS led to environmental problems because the material does not decay. Disposal by incineration was complicated because it melts, clogs equipment, and may give off harmful fumes.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_RAILROAD</Key>
+      <Value>
+        <string>The RAILROAD resulted from the successful marriage of a promising new technology, the STEAM ENGINE, and a growing need: fast, safe, and inexpensive transportation. RAILROADS applied the unprecedented power of the locomotive to the pulling of trains of loaded wagons over rails. This resulted in a dramatic increase in the amount of cargo that a few men could move quickly and over great distances. RAILROADS were a critical contributor to INDUSTRIALIZATION. They not only made it easier to obtain raw materials and reach markets, but the search for better equipment spurred innovation that benefited many other industries.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_RECYCLING</Key>
+      <Value>
+        <string>Although scrap metals and other materials have been reused in manufacturing processes for some time, only recently has RECYCLING become a household concern. Increasing world populations and the flow of products off the MASS PRODUCTION lines are threatening to choke our planet in refuse and pollution. In the DEMOCRACIES of the West, the richest nations and the most wasteful, a movement is underway to reuse as much refuse as possible. When RECYCLED, old newspapers used again spare trees, plastic bottles save oil, and aluminum cans save electricity. RECYCLING reduces costs and pollution, thereby improving the quality of life.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_REFINING</Key>
+      <Value>
+        <string>Mineral tar and petroleum have been known throughout history, but little use was found for either until it was discovered through CHEMISTRY that oil could be REFINED into chemicals with a wide variety of uses. The primary application of oil derivatives was as fuel for internal COMBUSTION engines that powered the AUTOMOBILE and other machines. Oil had to await the Industrial Revolution before its potential could be realized, because large CORPORATIONS could afford the investments in AUTOMOBILE production and REFINING that were required.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_RELIGION</Key>
+      <Value>
+        <string>The evolution of RELIGION traces back to elementary forms of belief and practice concerning the extraordinary, the mysterious, and the supernatural. RELIGION gave people an object of devotion, a code of social behavior, and a reference for the individual within the group and the universe. Acceptance of the teachings of RELIGION brought peace of mind and the ability to get on with the work of life, because the terrifying questions of the unknown were contained. The advance of knowledge that followed the development of WRITING and the study of PHILOSOPHY led to the great RELIGIONS of the modern world.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ROBOTICS</Key>
+      <Value>
+        <string>Advances in COMPUTER technology have made possible the new science of ROBOTICS, which was previously the realm of science fiction. ROBOTICS concerns the design and building of machines capable of mimicking some modicum of human action. These machines can sense changes in their environment and take limited action based on this information. ROBOTS are essentially computer-controlled machine tools that can be programmed to perform tasks such as welding car parts. They are especially useful for tasks that are monotonous, dangerous, or tiring, where they are often more productive than their human counterparts.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ROCKETRY</Key>
+      <Value>
+        <string>Although experiments with ROCKETRY trace back to Chinese fireworks powered by GUNPOWDER one thousand years ago, most of our current knowledge was developed in the 20th Century. A ROCKET is propelled by the ejection of gases created by the COMBUSTION of on-board fuel. The COMBUSTION creates great pressure that is vented through the rear, and this thrust against the front interior of the COMBUSTION chamber pushes the ROCKET forward. The first practical guided ROCKETS were used in World War II. More recently, ROCKETS have been used to propel intercontinental ballistic weapons and launch spacecraft.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SPACE_FLIGHT</Key>
+      <Value>
+        <string>Following the development of the first guided missiles in World War II, the science of ROCKETRY advanced to the point where direct space exploration became possible. SPACE FLIGHT advanced from simple sub-orbital flights to manned missions to the Moon. Work continues today on building space stations and reusable space vehicles. In the near future there may be a manned mission to Mars. In succeeding generations, new advances may make manned travel to other star systems practical.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_STEAM_ENGINE</Key>
+      <Value>
+        <string>Some of the properties of steam have been known since ancient times, but it took thousands of years of groundwork in PHYSICS and the practical skills of a few INVENTORS to build a working STEAM ENGINE. The beauty and value of this engine was that it could do the work of many men. A STEAM ENGINE operator could have his strength multiplied enormously by tapping the heat energy released by burning coal. The STEAM ENGINE was the prerequiste for the Industrial Revolution, leading to the spread of Factories and RAILROADS around the world.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_STEEL</Key>
+      <Value>
+        <string>With the Industrial Revolution came new needs for metals, both as construction materials and for fabrication into products. The rise of RAILROADS especially spurred research in METALLURGY for a metal that could be fashioned into cheap, strong rails and bridges. Eventually, the secret of STEEL was discovered, and it was found to be a nearly perfect construction material. However, it could not be made cheaply until INDUSTRIALIZATION brought the resources and machines together at one time. In turn, STEEL led to great changes in the world, including enormous skyscrapers, armored warships, and the AUTOMOBLE.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SUPERCONDUCTOR</Key>
+      <Value>
+        <string>When electric current is passed through a conductor, such as a copper wire, a small but significant amount of the current is lost to resistance. When certain substances are cooled to temperatures near absolute zero, this resistance disappears. This phenomenon is called superconductivity, and a substance with no electrical resistance is a SUPERCONDUCTOR. If such a material could be found that worked at something nearer normal temperatures, its discovery might revolutionize everyday life by greatly reducing the cost of energy and making hosts of new inventions practical.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_THE_CORPORATION</Key>
+      <Value>
+        <string>The RAILROADS, iron mongers, and other businesses that launched the Industrial Revolution grew into great enterprises within a generation, far outstripping the resources of a single owner. The huge capital investments that INDUSTRIALIZATION required were met in the West by CORPORATIONS of stockholders that had access to sophisticated BANKING systems. These large industrial enterprises now dominate world business. Though often considered wasteful, conspiratory, and beyond the law, they are generally efficient and innovative, or they are soon out of business.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_THE_REPUBLIC</Key>
+      <Value>
+        <string>The concept of THE REPUBLIC first appeared in ancient Rome, where the local provinces sent representatives to the Senate to govern the nation. The head of state in a REPUBLIC was an elected representative, not a MONARCH. The concept was revived in the Constitution of the United States, and many nations of significant size and diverse make-ups have adopted something similar. THE REPUBLIC allowed unprecedented freedom, at least to a significant portion of the citizens, and this in turn often fostered strong economic growth.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_THE_WHEEL</Key>
+      <Value>
+        <string>One of the five great simple machines, the WHEEL and axle greatly increased the load that a human or animal could pull by lowering the resistance to movement. The WHEEL was also quickly turned into a weapon of war after its invention, especially in the adaptation of the Chariot. In addition to its use in transport, the WHEEL became a vitally important tool in ENGINEERING and in the Industrial Age. In the pre-Columbian New World, the WHEEL only appeared in children's toys, partly because the mountainous terrain of South America made it less practical.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_THEORY_OF_GRAVITY</Key>
+      <Value>
+        <string>The attracting force that exists between any two particles of matter is called gravity. This force exists throughout the universe and explains the behavior of both the apple that fell on Newton's head and the orbit of the Earth around the Sun. The THEORY OF GRAVITY is credited to Sir Isaac Newton, who first recognized that gravitation was universal. His work opened the door to later scientists including Albert Einstein, who developed the Theory of Relativity, and the men who developed ATOMIC THEORY.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_TRADE</Key>
+      <Value>
+        <string>One of the oldest and most widespread social institutions is the exchange of goods, or TRADE. At the most basic level of TRADE, two people exchange items with each other. Ideally, the items given are in surplus and the items received are desired. The result is that both are better off, having exchanged extras for something wanted. People, as well as nations, normally have a comparative advantage over others in the production of some good or service. Through TRADE, this advantage benefits both parties. TRADE has also proven very important in the exchange of ideas.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_UNIVERSITY</Key>
+      <Value>
+        <string>A UNIVERSITY is an institution of higher education, offering courses of study to individuals seeking specialized instruction. In the West, UNIVERSITIES were first founded in the Middle Ages, mostly in cities that had important CATHEDRALS, to study the matters of interest to church leaders. The curricula quickly expanded to include classical art, literature, and languages. The modern UNIVERSITY has become a research powerhouse in addition to being an educational institution. Experiments are conducted in a wide variety of areas, including weaponry, computers, physics, and football.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_WRITING</Key>
+      <Value>
+        <string>The development of WRITING is considered one of the most important advances of civilization. From that point, history began, as defined by written records first inscribed on clay tablets or carved into stone. The significance of WRITING is that it allowed ideas and knowledge to be stored and passed on over distance and time, far removed from the originator. Prior to this, communication had to take place face-to-face. WRITING greatly accelerated the advance of knowledge because what was known in the past did not have to be relearned by each new generation.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_PALACE</Key>
+      <Value>
+        <string>When people began concentrating in cities, their governments became more structured and formalized as well. At an early stage, the ruler of the city established headquarters buildings where the business of running the city was conducted: citizens were interviewed, edicts were issued, taxes were collected and stored, and diplomacy was carried on. In many cases, these seats of governmental power also served as the living quarters of the ruler. In cities that were sufficiently wealthy, these headquarters often became PALACES, immense and imposing structures that were a source of civic pride, and which reinforced the aura of power attached to the ruler.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_PALACE2</Key>
+      <Value>
+        <string>A center of administration and governmental power. The further cities are from a PALACE, the more corruption is likely.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_BARRACKS</Key>
+      <Value>
+        <string>Warfare has been a recurring phenomenon in the history of civilization and continues to plague the world today. Those unprepared for war, either philosophically, materially, or technologically, soon fall out of the parade. Throughout history, warfare has been a prime agent of expansion. The neighbors of Rome joined the empire in most cases only after spirited hand-to-hand negotiations with Roman legions. When warring civilizations were closely matched in technology and material, victory normally went to the side with the best training, organization, morale, strategy, and tactics. The fostering of these skills and traditions took place in the BARRACKS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_BARRACKS2</Key>
+      <Value>
+        <string>New units are Veterans when produced at a city containing a BARRACKS, giving them advantages in combat against similar, non-Veteran units.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_GRANARY</Key>
+      <Value>
+        <string>Cities became possible only when the development of agriculture made the supply of food more abundant and dependable. However, the new cities needed a way of stabilizing the food supply; seasonal crops had to be stored for later use. The GRANARY was designed for the storage and protection of food surpluses. The new agricultural techniques and the ability to store food meant that only some of the people had to work producing food for all. The rest could devote their time to dreaming up the alphabet, mathematics, computer games, and other important advances of civilization.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_GRANARY2</Key>
+      <Value>
+        <string>Only 50% of food storage is used to create new population. Protects the city against the disaster of Famine.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_TEMPLE</Key>
+      <Value>
+        <string>In ancient times, nearly every city had a TEMPLE consecrated to its own god, as well as those dedicated to other deities. But although today TEMPLES and churches are places of worship, to the Greeks, Romans, and others, TEMPLES were perceived primarily as dwelling places for their respective gods and goddesses. Here the deity was honored and revered, and here the faithful brought gifts of food, rare metals, and spices. Having a TEMPLE in their city comforted the people, and the wise ruler often invested in TEMPLES as soon as a city began to grow.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_TEMPLE2</Key>
+      <Value>
+        <string>Unhappy people are made content (1 if you have Ceremonial Burial, 2 if Mysticism). This is doubled if you have the Oracle Wonder.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MARKETPLACE</Key>
+      <Value>
+        <string>As cities grew and prospered, trade between the farmers, artisans and craftsmen who lived in the vicinity contributed to the economic health of the city. It soon became apparent that the best means for conducting such activities was to have a central location, or MARKETPLACE, where those persons offering goods and services for sale, or seeking to find them, could meet. Here, among the tumult and bustle of the tents and stalls, people, wares, and livestock would all be gathered for display, trade and sale. As the MARKETPLACE grew in importance, so grew the economic vitality of the city itself.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MARKETPLACE2</Key>
+      <Value>
+        <string>Luxuries and tax revenues are increased by 50%.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_LIBRARY</Key>
+      <Value>
+        <string>The development of WRITING meant that the accumulated knowledge of a society no longer needed to be memorized and passed along orally. It could be written down, stored, and consulted later. This made possible a great body of knowledge in written texts that could be transferred throughout the world. The storehouse for the accumulated texts was called a LIBRARY, after the Latin word liber, meaning book. The great LIBRARIES of the ancient world, especially the ones at Alexandria and Pergamum, became leading centers of science and scholarship. The librarians actively collected the books of the world, accelerating the spread of new knowledge.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_LIBRARY2</Key>
+      <Value>
+        <string>Knowledge production increased by 50%.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_COURTHOUSE</Key>
+      <Value>
+        <string>As kingdoms and empires grew, it became increasingly difficult for the ruler to maintain control over the more distant segments of the realm. To insure that the far-flung cities of the empire contributed their expected share to the coffers, local magistrates and courts were established. In the COURTHOUSE the ruler's representatives listened to the grievances of the people and meted out justice. Here the laws that governed social interaction were defined and enforced. The COURTHOUSE reduced crime, and thereby kept the local population productive and content. Unhappy and unproductive citizens were not willing taxpayers.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_COURTHOUSE2</Key>
+      <Value>
+        <string>Reduces corruption in city by 50%.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CITY_WALLS</Key>
+      <Value>
+        <string>Before the development, of large publicly-financed, centralized governments capable of supporting strong national armies, cities were normally left to their own devices for protection. As a result, many civilizations constructed WALLS around their cities to protect against invaders from other regions, or from bandits and pirates. CITY WALLS represented a major investment of resources and required many years to complete. But these WALLS transformed the city into a fortress, capable of withstanding all but the most determined attack.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CITY_WALLS2</Key>
+      <Value>
+        <string>Defense bonus = +200%; no population loss when attacked.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_AQUEDUCT</Key>
+      <Value>
+        <string>A major obstacle to growth in early cities was the scarcity of water. The answer to this problem in many cases was an AQUEDUCT: a large, elevated stone "canal" that brought water from nearby hills directly into the city. This assured a convenient and dependable supply of fresh water to the city. AQUEDUCTS allowed cities to grow to unprecedented size, while at the same time they reduced the incidence of water-borne disease. Not only were larger cities now possible, but cities could be placed in otherwise inhospitable places, such as Los Angeles, which is located in a desert.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_AQUEDUCT2</Key>
+      <Value>
+        <string>A city without an AQUEDUCT may not grow beyond a size of 10.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_BANK</Key>
+      <Value>
+        <string>A highly developed banking system is one of the hallmarks of an advanced civilization. BANKS lend money to individuals or groups of individuals, providing capital for industrial and real estate development. BANKS contribute to the economic growth of a city or region by stimulating the development of production facilities. In addition, individuals can invest their own surplus money and earn interest on it.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_BANK2</Key>
+      <Value>
+        <string>Luxuries and tax revenue increased by 50%.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CATHEDRAL</Key>
+      <Value>
+        <string>Through the Dark Ages that followed the fall of the Roman Empire in Europe, a major influence in the revival of civilization was the Christian Church. Elsewhere, other great religions were also expanding their influence. In recognition of the importance of religion in local affairs, the largest European towns built CATHEDRALS, centers of religious study and worship, presided over by the local bishop. When completed, CATHEDRALS became the centers of social and cultural activity, as well as religious worship. They brought great pride, stability, and tradition to their community.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CATHEDRAL2</Key>
+      <Value>
+        <string>Four unhappy people are made content.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_UNIVERSITY2</Key>
+      <Value>
+        <string>Knowledge production increased by 50%.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_COLOSSEUM</Key>
+      <Value>
+        <string>The original COLOSSEUM of Rome presented spectacles intended to entertain and divert the landless, jobless citizenry who were supported by massive handouts. As the Empire declined, the increasing barbarity of the spectacles came to reflect the moral bankruptcy of Rome. In the 20th Century, COLOSSEUMS have been revived, again to provide entertainment and diversion. The promotions today are music concerts and professional sports contests. However, the modern spectacles have not exhibited the barbarity of ancient times, with the notable exception of ice hockey games.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_COLOSSEUM2</Key>
+      <Value>
+        <string>Three unhappy people changed to content in city.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_RECYCLING_CNTR</Key>
+      <Value>
+        <string>As cities grew, they produced more and more refuse, until eventually the traditional dumping sites were filled. As a result, pollution gradually began spoiling the environment. To reverse this tide many cities installed RECYCLING CENTERS, where a large percentage of this trash was sorted, melted down, or otherwise reduced to reusable components that could be RECYCLED into the process of manufacturing new products. In this way, much of the city's trash ended up as raw material for production, not waste in a landfill.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_RECYCLING_CNTR2</Key>
+      <Value>
+        <string>Reduces industrial pollution in city by two-thirds.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_FACTORY</Key>
+      <Value>
+        <string>The development of the FACTORY evolved from the specialization of labor, where each worker learned only one step in the manufacturing process. When the worker became expert at that one task, the total production of the FACTORY increased. In Adam Smith's classic example from his book, The Wealth of Nations, a FACTORY of specialists made many more nails than one where each worker handcrafted nails one at a time. The FACTORY system was one prerequisite for the Industrial Revolution that soon followed.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_FACTORY2</Key>
+      <Value>
+        <string>Production is increased by 50%.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MFG_PLANT</Key>
+      <Value>
+        <string>MANUFACTURING PLANTS were large industrial complexes that produced goods of all types, but especially durable consumer goods such as the AUTOMOBILE. A MANUFACTURING PLANT was essentially a large, sophisticated FACTORY. In addition to specialization of labor, it employed interchangeable parts, complex machinery, and assembly lines to gain efficiency and economies of scale. The result was highly productive workers and relatively low costs.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MFG_PLANT2</Key>
+      <Value>
+        <string>Production is increased by 100%.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_POWER_PLANT</Key>
+      <Value>
+        <string>POWER PLANTS burn fossil fuels, mainly oil and coal, to produce the heat and steam necessary to generate electricity. The importance of electric power is that each factory does not need a steam engine to power its machines. Centrally generated electricity is transmitted throughout the countryside to power machines everywhere. However, increasing demand for electricity requires the burning of ever greater amounts of fossil fuels, and this has led to problems with air pollution and acid rain. Since modern society cannot function without electricity, researchers are working to perfect other methods of power generation.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_POWER_PLANT2</Key>
+      <Value>
+        <string>Factory production is increased by 50%; high pollution level.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_HYDRO_PLANT</Key>
+      <Value>
+        <string>One alternative to fossil fuel power generation is the HYDROELECTRIC POWER PLANT. These use the energy of falling water to turn turbines at high speed and thereby generate electricity. Where water flow rates make HYDRO PLANTS practical, they offer safe and clean electricity, free of the pollution and acid rain caused by burning fossil fuels. HYDRO PLANTS are not free of problems, however. They create their own environmental disruptions, flooding large areas behind their dams, interrupting the normal flow of rivers, and destroying the habitats of wild animal species.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_HYDRO_PLANT2</Key>
+      <Value>
+        <string>Factory production is increased by 50%; existing pollution is reduced.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_NUCLEAR_PLANT</Key>
+      <Value>
+        <string>NUCLEAR POWER PLANTS burn atomic fuels through the process of nuclear fission to generate the heat and steam needed to produce electricity. Because it doesn't cause the pollution problems associated with the burning of fossil fuels, NUCLEAR POWER is being examined as a possible alternative to these "dirty" sources of energy. However, the extremely dangerous nature of Nuclear Fission creates its own hazards, including the risk of a meltdown of the nuclear reactor. While the future of NUCLEAR POWER is unclear now, continuing research in Nuclear Fusion may result in a safe and cheap source of power.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_NUCLEAR_PLANT2</Key>
+      <Value>
+		<string>Factory production is increased by 50%. Nuclear power plant has low pollution level, but there is a risk of Reactor Meltdown!</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MASS_TRANSIT</Key>
+      <Value>
+        <string>Within a few decades of the invention of the AUTOMOBILE, the horse and carriage disappeared from city streets. However, the AUTOMOBILE brought new problems, including air pollution and the release of large quantities of carbon monoxide into the atmosphere. As cities became larger and more crowded, travel around town became difficult and time consuming. The development of MASS TRANSIT, including buses, trolleys, subways, and light rail, led to a reduction in traffic and an accompanying reduction in pollution.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MASS_TRANSIT2</Key>
+      <Value>
+        <string>Reduces pollution produced by city population.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SDI_DEFENSE</Key>
+      <Value>
+        <string>The history of warfare has been a struggle between offense and defense, with sometimes one side having the upper hand, and sometimes the other. The development of nuclear weapons seemed to demonstrate that for the very first time, an offensive weapon existed for which there was no effective defense. SDI (Strategic Defense Initiative), however, could be the answer. Using either orbital laser weapons, or thousands of missile-launched "Brilliant Pebbles," which are intended to collide with nuclear-tipped missiles in mid-air, SDI DEFENSE offers the real possibility of negating the threat posed by nuclear missiles.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SDI_DEFENSE2</Key>
+      <Value>
+        <string>Protects city from nuclear weapons.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SS_MODULE</Key>
+      <Value>
+        <string>The MODULES are the central features of your spaceship. There are three types: Habitation, Life Support, and Solar Panels. The Habitation MODULES each provide living space for 10,000 colonists. The Life Support MODULES each provide the food and other requirements for the colonists carried in one Habitation MODULE. One Solar Power MODULE provides enough energy to run two other MODULES. At the minimum, a succesful spaceship must contain one of each type of MODULE. To transport more than the minimum number of colonists possible you must build additional sets of MODULES.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SS_MODULE2</Key>
+      <Value>
+        <string>Habitation and Life Support MODULES have a mass of 1,600 tons and Solar Panel MODULES have a mass of 400 tons. A spaceship may include a maximum of four MODULES of each type.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SS_COMPONENT</Key>
+      <Value>
+        <string>The COMPONENTS provide the motive power of your spaceship. There are two types: Propulsion and Fuel. Propulsion COMPONENTS are the spaceship engines, providing the acceleration and deceleration needed for the journey. Fuel COMPONENTS are supplies of fuel, each sufficient for one Propulsion COMPONENT. The minimum a spaceship requires is one of each COMPONENT, but to arrive at the best speed, it requires many more of both.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SS_COMPONENT2</Key>
+      <Value>
+        <string>Spaceship COMPONENTS have a mass of 400 tons each and a spaceship may include a maximum of eight of each type.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SS_STRUCTURAL</Key>
+      <Value>
+        <string>The STRUCTURAL parts of your spaceship constitute the frame to which all other parts are attached. There must be sufficient STRUCTURE to connect the other parts together or the others cannot function. A MODULE or COMPONENT that is not connected by STRUCTURAL parts appears in a red box in the spaceship display. When enough STRUCTURAL parts are added, the red box disappears.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SS_STRUCTURAL2</Key>
+      <Value>
+        <string>Spaceship STRUCTURAL parts each have a mass of 100 tons and a spaceship may include up to thirty-nine STRUCTURAL pieces.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_PYRAMIDS</Key>
+      <Value>
+        <string>Built by the fourth dynasty of Eqyptian rulers on the Giza plateau outside modern-day Cairo, the PYRAMIDS represent the pinnacle of ancient Egyptian cultural achievement. These Wonders were burial tombs and monuments for the Pharaohs and may have required generations and tens of thousands of workers to complete. They were ancient monuments when visited by Herodutus, centuries before the time of Christ. They are the only one of the generally accepted seven wonders of the ancient world that still stand. The construction of the PYRAMIDS implied a highly stable government and well organized society.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_PYRAMIDS2</Key>
+      <Value>
+        <string>Allows change of government without Anarchy; Makes available all forms of government. Both of these effects last until the development of COMMUNISM.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_HANGING_GARDENS</Key>
+      <Value>
+        <string>The HANGING GARDENS of Babylon are believed to have been a series of ascending, tiered gardens built within the palace to please a queen from a more verdant region. The gardens contained all manner of trees, shrubs, and vines, and appeared to be a large green mountain in a city built of sun-dried mud bricks. Pleasing to look at, cool to linger in, and a remarkable piece of engineering, the gardens were a distinctive feature of Babylon. They were written about by many visitors and were a great source of pride to the people.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_HANGING_GARDENS2</Key>
+      <Value>
+        <string>+1 happy face in each city, until the development of INVENTION.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_COLOSSUS</Key>
+      <Value>
+        <string>The COLOSSUS of Rhodes was a bronze statue of Helios, the God of the Sun, erected near the city harbor. It stood over 100 feet high, about two-thirds the height of the Statue of Liberty. Unfortunately, it was knocked down by an earthquake only 56 years after its construction. Taking the counsel of an oracle, the city elected to leave the statue where it lay, and it stayed there for 900 years until sold for scrap by Muslims who plundered the city in 654 A.D. Travelers from all over the ancient world came to Rhodes to see the Colossus, both when it stood and after it fell.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_COLOSSUS2</Key>
+      <Value>
+        <string>+1 trade per trade square in the city, until the development of ELECTRICITY.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_LIGHTHOUSE</Key>
+      <Value>
+        <string>The Pharos of Alexandria was a marble watch tower and LIGHTHOUSE built on an island in the harborof the city. Estimated to have been 300 feet high, the building was erected around 280 B.C. The primary function of the LIGHTHOUSE was to guide approaching ships to the harbor on an otherwise unmarked coast. Historians debate whether fires were burned on the top of the tower, or whether mirrors were used to reflect sunlight. Since ships rarely sailed along coasts at night, there may have been little need for light after dark. The Pharos was finally ruined in the 14th Century after having been damaged in several earthquakes.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_LIGHTHOUSE2</Key>
+      <Value>
+        <string>Increases sea movement rates by 1 MP, until the development of MAGNETISM.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_GREAT_LIBRARY</Key>
+      <Value>
+        <string>The Royal GREAT LIBRARY of Alexandria was one of the two most important libraries of the ancient world. It was founded around 300 B.C. by Ptolemy I, and was greatly enhanced by the later Ptolemaic rulers, when Alexandria served as the cultural center of the Hellenistic world. The LIBRARY attempted to obtain copies of all known scrolls of any consequence, and it was said to have contained over 700,000 volumes. It became a center for learning as well as a repository of knowledge. The LIBRARY was ultimately destroyed by religious fanatics in 391 A.D. Only part of the catalog survives to tantalize us about the treasures it contained.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_GREAT_LIBRARY2</Key>
+      <Value>
+        <string>Gives you any technology that two other civilizations possess, until the development of the UNIVERSITY.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ORACLE</Key>
+      <Value>
+        <string>In ancient Greek religion, an ORACLE was a priest or priestess who transmitted a god's response to questions. The Oracle interpreted dreams, the actions of entranced persons, and physical signs found in the entrails of sacrificed animals. The most famous ORACLE was the shrine of Apollo at Delphi, located on the slopes of Mt. Parnassos. It was consulted for centuries by Greeks, Romans, and others about public policy and private matters. A priestess called the Pythia would, for a fee, make predictions for the future. These ecstatic pronouncements (oracles) became famous (or infamous) for their ambiguity.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ORACLE2</Key>
+      <Value>
+        <string>Doubles the effects of Temples, until the development of RELIGION.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_GREAT_WALL</Key>
+      <Value>
+        <string>The GREAT WALL of China, stretching from the Yellow Sea to the Asian deserts, was built over a period of approximately 1,800 years. Construction was not continual, but waxed and waned in response to barbarian threats from the north. The wall is 25 feet high and 12 feet thick; it runs 1,500 miles across northern China. The purpose of the GREAT WALL was to make it difficult for raiders to escape with their booty, and thereby discourage invasion. It was not intended to keep invaders out, because it would have been prohibitively expensive to keep it manned.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_GREAT_WALL2</Key>
+      <Value>
+        <string>Other civilizations always offer to make peace with you, until the development of GUNPOWDER.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MAGELLANS_EXPEDITION</Key>
+      <Value>
+        <string>In 1519, Ferdinand Magellan sailed from Spain, seeking to reach the spice-rich Moluccas Islands of Indonesia by sailing west, instead of east. Although the leader was killed by natives in the Philippines, MAGELLAN'S EXPEDITION proved conclusively that the world was round, and, more importantly, that the Americas were indeed a New World. MAGELLAN'S EXPEDITION was one of the great sea voyages of history and it inspired further expeditions by other adventurers. Its discoveries opened new worlds and reduced the dangers to those who followed in its wake.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MAGELLANS_EXPEDITION2</Key>
+      <Value>
+        <string>Increases sea movement by 1 MP.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MICHELANGELOS_CHAPEL</Key>
+      <Value>
+        <string>The beauty of Rome's Sistine Chapel, whose ceiling was painted by Michelangelo, has long served as a testament to the mixture of strong religious beliefs and the love of art which pervaded Renaissance Europe. The artist devoted four years to the work, which depicts important scenes from Genesis and other books of the Bible. Few visitors to MICHELANGELO'S CHAPEL failed to be moved by the artist's dedication to his subject, or his feeling for the nature of human struggle, suffering, and spiritual triumph.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MICHELANGELOS_CHAPEL2</Key>
+      <Value>
+        <string>Increases the effect of CATHEDRALS, until the development of COMMUNISM.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_COPERNICUS_OBSERVATORY</Key>
+      <Value>
+        <string>Early in the 16th Century, Nicholas Copernicus rediscovered the heliocentric theory of planetary motion, which is the belief -- now known to be fact -- that the planets revolve around the Sun. The foundation of modern astronomy was this theory and the meticulous scientific data collected by Copernicus in his OBSERVATORY, a small room in an East Prussian Cathedral spire. The methods of his research and observation that led to his correct conclusion were also a rebirth of the scientific method and an important step in the advance of knowledge.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_COPERNICUS_OBSERVATORY2</Key>
+      <Value>
+        <string>Doubles knowledge production in city, until the development of the AUTOMOBILE.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SHAKESPEARES_THEATRE</Key>
+      <Value>
+        <string>Most of the plays of William Shakespeare were first performed at London's Globe Theatre during the 1600s. SHAKESPEARE'S THEATRE offered the people a diversion from their own troubles, delighting them instead with the tragedies, comedies, and triumphs acted out on stage. Similar theaters, such as the Comedie Francaise in Paris, and La Scala, the famed opera house of Milan, fulfilled similar roles, by offering entertainment to the citizens of their cities.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SHAKESPEARES_THEATRE2</Key>
+      <Value>
+        <string>All unhappy people in city are content, until the development of ELECTRONICS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ISAAC_NEWTONS_COLLEGE</Key>
+      <Value>
+        <string>Sir Isaac Newton, a mathematician and physicist, is considered by many the greatest scientist of all time. He is credited for many important discoveries including the laws of gravity, the color spectrum of light, calculus, fluid dynamics, and an understanding of ocean tides. He also built the first reflecting telescope. For 32 years he held an important teaching post on the faculty of Cambridge University, continuing his own researches and instructing a generation of students.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ISAAC_NEWTONS_COLLEGE2</Key>
+      <Value>
+        <string>Increases the benefit of LIBRARIES+UNIVERSITIES, until the development of NUCLEAR FISSION.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_JSBACHS_CATHEDRAL</Key>
+      <Value>
+        <string>Few composers were more prolific or beloved than Johann Sebastian Bach, the best-known member of a gifted family of German musicians. Bach was perhaps the finest proponent of the baroque style of music, as demonstrated in his numerous choral and orchestral pieces. Bach was more renowned during his lifetime as an organist and music director of St. Thomas Church in Leipzig, Saxony. But since his passing, his music has found a worldwide audience and appreciation.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_JSBACHS_CATHEDRAL2</Key>
+      <Value>
+        <string>Decreases unhappy people on continent by 2 per city.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_DARWINS_VOYAGE</Key>
+      <Value>
+        <string>Charles Darwin, the main proponent of the theory of organic evolution, built up much of his evidence for natural selection while aboard the H.M.S. Beagle on its five-year cruise around the world. DARWIN'S VOYAGE was instrumental not only in the establishment of his theory, but also in the rigorous application of the scientific method to nature. Darwin published the theory and the evidence for it in his major work, The Origin of Species. He was so complete and persuasive that he was criticized only on philosophical grounds, not scientific. His work opened many new lines of inquiry and triggered a wave of new biological research.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_DARWINS_VOYAGE2</Key>
+      <Value>
+        <string>Two immediate civilization advances.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_HOOVER_DAM</Key>
+      <Value>
+        <string>For centuries mankind has been harnessing the power of rushing water to power waterwheels, but more recently water was found useful for generating electricity. To derive power from rivers, dams were built to assure a dependable supply of water, then the overflow was released through special chambers where the moving water turned giant turbines, generating electricity. The HOOVER DAM was one of the earliest hydroelectric dams, taming the Colorado River to bring electricity to the deserts of Arizona.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_HOOVER_DAM2</Key>
+      <Value>
+        <string>Supplies Hydro power to all cities on the continent.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_WOMENS_SUFFRAGE</Key>
+      <Value>
+        <string>After many years of struggle, women in the United States won the right to vote in 1920 with the passage of the 19th amendment to the U.S. Constitution. The achievement of WOMEN'S SUFFRAGE was accelerated by the excellent record of women in traditional male jobs during World War I. Full voting rights were given to women in Great Britain in 1928. Since then women have gained this right in most of the developed world.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_WOMENS_SUFFRAGE2</Key>
+      <Value>
+        <string>Reduces unhappy people by one per unit not in home city under Republic or Democracy.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MANHATTAN_PROJECT</Key>
+      <Value>
+        <string>The atomic bomb derived its power from the sudden release of nuclear energy following the splitting of heavy atomic nuclei. The MANHATTAN PROJECT, an intensive and costly research effort, developed the first atomic bombs during World War II. For a brief period the United States held a monopoly on these weapons. However, by 1949 the Soviet Union had also developed them, at least partly thanks to espionage that obtained much of the MANHATTAN PROJECT research. The nuclear standoff that resulted seems to have been largely responsible for the absence of major wars since.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MANHATTAN_PROJECT2</Key>
+      <Value>
+        <string>Allows the construction of nuclear weapons.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_UNITED_NATIONS</Key>
+      <Value>
+        <string>Established following the holocaust of World War II, the UNITED NATIONS is an international organization dedicated to promoting peace and security. It also attempts to achieve international cooperation in solving world problems concerning the environment, economics, and cultures. Even when its peace keeping role has not been effective, it has remained a forum for debate where all nations can voice their concerns.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_UNITED_NATIONS2</Key>
+      <Value>
+        <string>Other civilizations always offer to make peace with you.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_APOLLO_PROGRAM</Key>
+      <Value>
+        <string>The APOLLO PROGRAM was begun by the United States in response to early Soviet successes in space, and was intended to place men on the Moon. This was dramatically accomplished on July 20, 1969, when two American astronauts first set foot on the lunar landscape. Technology developed for the APOLLO PROGRAM was later found to be invaluable in designing future space vehicles and orbital platforms.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_APOLLO_PROGRAM2</Key>
+      <Value>
+        <string>Allows the construction of Spaceships. Makes all cities on the map visible.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SETI_PROGRAM</Key>
+      <Value>
+        <string>Is anybody Out There? Are we alone? The Search for Extraterrestrial Intelligence (SETI), initiated (officially, at least) in the U.S. during the latter decades of the 20th Century, was not immediately successful in detecting the presence of other intelligent life in the universe. However, the research invested in the effort produced many useful spinoff benefits to astronomy, telecommunications, and other fields requiring high technology.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SETI_PROGRAM2</Key>
+      <Value>
+        <string>Increases knowledge production in all cities by 50%.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CURE_FOR_CANCER</Key>
+      <Value>
+        <string>Cancer remains a terrifying and deadly plague on life, despite huge outlays on research for a CURE. We have learned that there are many types of cancer, and that many factors seem capable of triggering it, but so far a remedy for this scourge eludes us. A CURE FOR CANCER would end suffering and anguish beyond measure, and give years of happy and productive life to millions of people, otherwise doomed.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CURE_FOR_CANCER2</Key>
+      <Value>
+        <string>+1 happy citizen in each city.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_PHALANX</Key>
+      <Value>
+        <string>A military formation developed in Greece and perfected in Macedonia, the PHALANX was a large block of men in ranks and files, generally ranging from 8 to 32 men deep. All were armed with long pikes. The first five ranks of men presented their pikes outward, forming a bristling barrier of spearpoints, while the others kept their pikes upright to deflect missiles. An enemy had difficulty closing with the men behind the pikes. On the attack, the enemy was faced with this densely-packed body of pikemen advancing, often at the run, and usually had to give ground or risk being impaled en masse.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_PHALANX2</Key>
+      <Value>
+        <string>Made obsolete by the availability of MUSKETEERS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_KNIGHTS</Key>
+      <Value>
+        <string>KNIGHTS of the Middle Ages were the consummate heavy cavalry. Mounted on huge horses bred for power rather than speed, encased in armor, braced in stirrups, and charging at a thunderous gallop, they were a terrifying prospect to the knaves and ruffians on foot. They were the medieval equivalent of the M1 Main Battle Tank. Although innovative tactics and defensive formations sometimes made KNIGHTS ineffective, they dominated the battlefield until the development of firearms. They remained the primary offensive weapon of war until the day arrived when they could be shot out of the saddle from a distance.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_KNIGHTS2</Key>
+      <Value>
+        <string>Made obsolete by the availability of ARMOR.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_TRIREME</Key>
+      <Value>
+        <string>The Greeks introduced the TRIREME, the first ship designed for war. It mounted a huge bronze beak in its bow that was used to ram and sink enemy ships. The TRIREME was also fast, powered by three banks of oars on each side, manned by well-trained oarsmen -- highly paid professionals or patriotic citizens, contrary to popular belief. Because of its long, narrow hull, however, the TRIREME was unstable in all but the calmest waters, and as a consequence its crew never ventured out of sight of land for long, lest the ship be caught by storms.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_TRIREME2</Key>
+      <Value>
+        <string>TRIREMES may be lost at sea if not adjacent to land at then end of a turn. They can transport up to 2 other units and are made obsolete by SAILING SHIPS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SAIL</Key>
+      <Value>
+        <string>Although the TRIREME and its descendants ruled the waves for many years, eventually it was superseded by the SAILING SHIP. Advances in naval architecture permitted the construction of large, sturdy vessels that could carry people, cargo, and guns, with a very small crew. SAILING SHIPS could also travel much greater distances than TRIREMES and over larger expanses of water with much less fear of foundering. This made exploration and conquest of new lands far simpler.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SAIL2</Key>
+      <Value>
+        <string>SAILING SHIPS may carry up to 3 other units and are made obsolete by FRIGATES.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_FRIGATE</Key>
+      <Value>
+        <string>The FRIGATE was a fast and powerful sailing warship that evolved to fill several important navy roles. It was used as the eyes of the main fleet of ships-of-the-line and it raided enemy shipping. The FRIGATE was powerful enough to overcome most of its prospective opponents and fast enough to escape those it could not outgun. Because of its speed and strength, the FRIGATE was often also employed in the role of convoying merchant vessels in time of war, many of which were carrying troops and equipment. The FRIGATE was the most useful and dominant naval vessel until the appearance of the IRONCLAD.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_FRIGATE2</Key>
+      <Value>
+        <string>Frigates may carry up to 4 other units and are made obsolete by TRANSPORTS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_IRONCLAD</Key>
+      <Value>
+        <string>During the American Civil War, IRONCLAD ships first demonstrated their superiority over the wooden warships that dominated world navies. IRONCLADS were nearly impervious to the naval weaponry of the era, while wooden ships were easily penetrated and wrecked by the large-caliber explosive shells. IRONCLADS were the first of future generations of armored ships that ruled the waves for most of the next one hundred years.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_IRONCLAD2</Key>
+      <Value>
+        <string>Made obsolete by CRUISERS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_TRANSPORT</Key>
+      <Value>
+        <string>The troop TRANSPORT, which in peacetime serves as a cargo or passenger ship, is the principal means used by modern powers to move large quantities of equipment and military units from one place to another. Always requiring protection, the TRANSPORT, when properly employed, can quickly move substantial forces to either threaten enemy-held territory, or to reinforce friendly troops or cities located overseas.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_TRANSPORT2</Key>
+      <Value>
+        <string>Transports may carry up to 8 other units.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_FIGHTER</Key>
+      <Value>
+        <string>The first military aircraft were used primarily in a reconnaissance role, but it wasn't long before guns were put on the planes and the FIGHTER was born. The FIGHTER'S purpose was to shoot down other airplanes, especially BOMBERS and reconaissance aircraft. In addition, the destruction of enemy FIGHTER units was the best way to insure that friendly BOMBERS and scouts survived to to reach their targets. The FIGHTER'S job was to achieve air superiority and gain control of the skies.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_FIGHTER2</Key>
+      <Value>
+        <string>Fighters must return to a city or CARRIER at the end of every turn. Fighters are the only unit which may attack other air units.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_BOMBER</Key>
+      <Value>
+        <string>The BOMBER was introduced in World War I but did not become a significant weapon until World War II. Its job was to carry bombs into enemy territory, normally beyond the range of artillery, and destroy targets of military and economic value. BOMBERS became specialized for certain jobs, such as attacking ships, ground attack versus vehicles and railroads, daylight precision bombing, and carpet bombing. Post World War II experiences indicated that precision bombing by "smart" weapons was more effective than mass bombing with "dumb" weapons.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_BOMBER2</Key>
+      <Value>
+        <string>BOMBER units ignore the effects of City Walls when attacking and must return to a city or CARRIER by the end of their second turn in the air. BOMBERS have a visibility range of 2 map squares. An attack by a BOMBER ends its turn.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CARRIER</Key>
+      <Value>
+        <string>The aircraft CARRIER functions as a floating airfield, carrying FIGHTER and BOMBER units far from friendly shores to be launched against enemy targets. It allows the projection of military power at great distances from friendly cities, against targets, both on land and sea, which might otherwise be far out of range. The CARRIER may also carry and launch NUCLEAR weapons, bringing these fearsome weapons to bear on distant targets.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CARRIER2</Key>
+      <Value>
+        <string>Carriers have a visibility range of 2 sea squares. Carriers may carry up to 8 air and NUCLEAR units.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SUBMARINE</Key>
+      <Value>
+        <string>The SUBMARINE is a submersible warship, designed to attack other ships from underwater by firing torpedos. Although weak on defense, the SUBMARINE is a feared offensive weapon due to its ability to attack while hidden. Often a torpedo striking a ship is the first warning that a SUBMARINE is nearby. A lurking SUBMARINE can hide near the sea lanes and then strike out at a passing TRANSPORT, CARRIER, or other ship.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SUBMARINE2</Key>
+      <Value>
+        <string>Submarines have a visibility range of 2 sea squares.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CRUISER</Key>
+      <Value>
+        <string>The CRUISER is the modern equivalent of the FRIGATE. Although much more powerful than its sailing forebear, it is still designed to be a sea raider and escort. In addition, it can conduct naval bombardment of land targets like a BATTLESHIP, but with much less firepower. It also costs much less than a BATTLESHIP and moves faster. A CRUISER is not generally able to stand up to enemy BATTLESHIPS in combat, but it can still fulfill useful scouting functions and attack unescorted TRANSPORTS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CRUISER2</Key>
+      <Value>
+        <string>CRUISERS have a visibility range of 2 sea squares. CRUISERS may bombard units in coastal land squares.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_BATTLESHIP</Key>
+      <Value>
+        <string>The most powerful surface warship ever built, the BATTLESHIP was the queen of the seas until the appearance of its deadly nemesis, the CARRIER. Heavily armored and difficult to destroy, it possessed massive guns that could accurately fire heavy projectiles for many miles. The BATTLESHIP had two primary military functions, clearing the seas of enemy ships and inflicting punishing bombardments upon enemy coastal targets, especially in preparation for invasion.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_BATTLESHIP2</Key>
+      <Value>
+        <string>BATTLESHIPS have a visibility range of 2 sea squares. BATTLESHIPS may bombard units in coastal land squares.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_NUCLEAR</Key>
+      <Value>
+        <string>The atomic bomb changed all the standards for measuring military power. The strongest cities and the most powerful ground forces could be erased from the map with the release of just one NUCLEAR bomb. NUCLEAR weapons could obliterate any target. The only viable defense against the NUCLEAR threat was to acquire one's own arsenal of NUCLEAR weapons as a deterrent. It is ironic to many that the development of the most devastating weapon of history was at least partly responsible for the longest period of relative world peace.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_NUCLEAR2</Key>
+      <Value>
+        <string>NUCLEAR weapons must be placed in a city or on a CARRIER at the end of every turn (unless they are used to attack). NUCLEAR weapons may ignore zones of control and are invisible to enemy players.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_DIPLOMAT</Key>
+      <Value>
+        <string>The astute DIPLOMAT serves his homeland in a variety of ways. He establishes and maintains contacts with other powers, he reports back to his ruler on developments of interest, and, when needed he engages in less reputable activities. These may include sabotage of enemy production; espionage (including the theft of new technologies); and subversion and bribery of enemy cities and military units. Possessing no apparent military strength, the DIPLOMAT, when properly employed, is nevertheless a potent weapon in the arsenal of the intelligent ruler.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_DIPLOMAT2</Key>
+      <Value>
+        <string>DIPLOMATS may ignore adjacent enemy units during movement.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CARAVAN</Key>
+      <Value>
+        <string>Trade has been a major source of income to civilizations throughout history. Journeying to distant lands, CARAVANS exchanged their loads of goods for money or other items of value, leaving both parties better off. In addition, the traders who accompanied the CARAVANS often brought back new knowledge about the advances made by their contacts. Such a person was Marco Polo, who went with traders to China, stayed there for many years, and brought back much valuable information to the West.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CARAVAN2</Key>
+      <Value>
+        <string>Caravans may ignore adjacent enemy units during movement.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ARMOR</Key>
+      <Value>
+        <string>With the demise of the KNIGHT and the ascendancy of RIFLEMEN, the defense gained the advantage on the battlefield for many years. It was only with the development of ARMOR, first appearing in World War I, that a weapon was found which could once more be used to punch a hole through enemy field forces. ARMOR moved quickly and struck with power, while still possessing a fair defensive strength. It was a powerful weapon against any ground unit.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ARMOR2</Key>
+      <Value>
+        <string>ARMOR units may attack up to three times in one turn.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ARTILLERY</Key>
+      <Value>
+        <string>Modern, self-propelled ARTILLERY is far more powerful and far more mobile than its muzzle-loading ancestors. Strong enough to batter opposing forces behind the strongest fortifications, it is also able to move from one firing position to another quickly, an important capability in a fluid battle or when avoiding counter-battery fire.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ARTILLERY2</Key>
+      <Value>
+        <string>ARTILLERY units ignore the effects of City Walls when attacking.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CANNON</Key>
+      <Value>
+        <string>The development of CANNON following the discovery of GUNPOWDER caused a revolution in siege warfare. CANNON forced a redesign of most fortifications because the straight, high walls surrounding most cities could be easily battered down by direct fire. This was the fate of the walls at Constantinople, which had held various besiegers at bay for over a thousand years. On the battlefield, CANNON assumed an important role, but were unable to dominate because of the development of firearms.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CANNON2</Key>
+      <Value>
+        <string>Made obsolete by the availability of ARTILLERY.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CATAPULT</Key>
+      <Value>
+        <string>The CATAPULT was the ancient ancestor of ARTILLERY. It was a large mechanical arm that threw heavy stones, fireballs, or other missiles at a great distance. It could pierce or eventually batter down even the strongest gates and walls, while inflicting damage on buildings and the defenders. Though cumbersome and nearly useless on a battlefield, the CATAPULT was an effective weapon during sieges and attacks on fortified enemies.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CATAPULT2</Key>
+      <Value>
+        <string>Made obsolete by the availability of CANNON.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CAVALRY</Key>
+      <Value>
+        <string>Men have been taming and riding horses for millennia, beginning with the tribesmen of the Asian plains. The value of the horse in combat was quickly realized, as the mounted warrior coming on at a gallop had a dramatic effect on the resolve of those in his path. Mounted warriors, known as CAVALRY, were not only useful in battle as shock troops, but could follow up a victory by pursuing the losers and finishing the rout. The horse gave CAVALRY power, imposing size, and speed. Nathan Bedford Forrest, a Confederate general, is credited with saying that victory usually went to the "fustest with the mostest," and usually the CAVALRY were first.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CAVALRY2</Key>
+      <Value>
+        <string>Made obsolete by the availability of RIFLEMEN.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CHARIOT</Key>
+      <Value>
+        <string>The CHARIOT was the first true fighting vehicle. It was used by the armies of antiquity to transport archers and other troops to the battlefield, where they would then disembark to actually fight. The CHARIOT was turned into a fearsome offensive weapon by the Assyrians, whose archers and spearmen fought from the car of the CHARIOT itself. Few enemy armies were able to withstand the onslaught of a host of Assyrian chariots, and this devastating weapon was soon adopted by many of the Assyrians' enemies, and used against them with good effect.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_CHARIOT2</Key>
+      <Value>
+        <string>Made obsolete by the availability of KNIGHTS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_LEGION</Key>
+      <Value>
+        <string>The Roman LEGION, created during the early wars of the Republic and tested during the three great Punic Wars with Carthage, was the fighting force that conquered and held an empire for five centuries. Nearly unstoppable in the attack, the LEGION was relatively weak on defense, especially in broken ground. Its demise as a military formation was accelerated by the destruction of the Emperor Valens' army by Gothic KNIGHTS in the 4th Century.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_LEGION2</Key>
+      <Value>
+        <string>Made obsolete by the availability of RIFLEMEN.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MECH_INF</Key>
+      <Value>
+        <string>The introduction of ARMOR meant that a means now existed to break through enemy positions and to move aggressively forward on the battlefield. What was needed, however, was a force which could rapidly deploy into enemy territory and then defend the ground which had been won. MECHANIZED INFANTRY, first used during World War II, so proved its worth that by the end of that war all of the major combatants had developed large formations of this type. Infantry were mounted in armored vehicles of their own, such as half-tracks or APCs (Armored Personnel Carriers), to carry them quickly and safely along with the rapidly advancing ARMOR.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MECH_INF2</Key>
+      <Value>
+        <string>MECH. INF. may attack up to three times in one turn.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MILITIA</Key>
+      <Value>
+        <string>The first military units were simply the citizenry armed with whatever tools and weapons they could grab. Although MILITIA units were inexpensive to organize and maintain, they were not effective against trained armies. However, MILITIA units continued in use for many years due to the speed in which they could be raised. They were useful for stopgaps while superior units could be trained or brought forward, and were certainly better than no defense at all.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MILITIA2</Key>
+      <Value>
+        <string>Made obsolete by the availability of MUSKETEERS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MUSKETEERS</Key>
+      <Value>
+        <string>The development of Gunpowder revolutionized warfare because MUSKETEERS, relatively inexpensive to equip and train, proved a deadly foe to the KNIGHT, the previous champion of the battlefield. The mounted warrior was forced to share the battlefield with MUSKETEERS and CANNON, because now each arm had to complement the strengths and weaknesses of the others. Victory most often went to the general who could best orchestrate the deployment of all three. Large numbers of MUSKETEERS within a fortress, or entrenched behind city walls, could prove an exceedingly difficult obstacle to an attacking army.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MUSKETEERS2</Key>
+      <Value>
+        <string>Made obsolete by the availability of RIFLEMEN.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_RIFLEMEN</Key>
+      <Value>
+        <string>RIFLEMEN were a refinement of MUSKETEERS. The rifle was a better weapon, accurate at many times the distance of a musket. With the dawning of long- standing, conscripted armies, the rifle meant even more difficulties for the attacker. First employed in large numbers during the American Civil War, the rifle gave the defense a strong advantage. A RIFLEMAN could fire several times while the attackers advanced, and this was normally enough to hold any position. The RIFLEMAN'S advantage was to last, for the most part, until the appearance of ARMOR.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_RIFLEMEN2</Key>
+      <Value>
+        <string>RIFLEMEN do not become obsolete.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SETTLERS</Key>
+      <Value>
+        <string>In ancient times, cities would inevitably grow to a size where the resources were insufficient to adequately insure a decent standard of living for the populace. When this happened, it was time for some of the more adventurous citizens to move on and look for another place to build a city. New SETTLERS set out, searching for a suitable site, and there establishing their new homes. The new city normally maintained ties and loyalty to the old, and eventually sent out its own SETTLERS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SETTLERS2</Key>
+      <Value>
+        <string>SETTLERS are the only units which can build roads, railroads, irrigation, mines, and fortresses. SETTLERS can also found cities and clean up pollution.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ROADS</Key>
+      <Value>
+        <string>Roads of good quality improved communications between cities. This was important for trade and for military purposes. Good quality roads were passable in nearly all weather, and could be traversed by wheeled vehicles much faster than bare dirt trails. This meant that mounted messengers, commercial wagons, and military units all could move from one part of the road network to another at good speed. This made it easier for centrally located armies to reach threatened frontiers. The most famous roads of antiquity were the Persian Royal Road and the Roman roads built throughout southern Europe.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ROADS2</Key>
+      <Value>
+        <string>Built by Settlers only. Press the Road key (R key) or select Build Road from the Orders menu. Roads may not be built over Rivers until you have acquired Bridge Building. Units moving from one road square to another road square use 1/3 of a movement point regardless of terrain. Roads increase the trade generated by Grasslands, Plains, and Deserts.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_RAILROADS</Key>
+      <Value>
+        <string>Railroads revolutionized transportation by providing a relatively cheap and fast method of moving people, raw materials, finished goods, and military units. Railroads were essential to the Industrial Revolution. Not only did they support and encourage industrial growth by dramatically reducing transport costs, but they spurred technological research on their own. Advances in locomotive technology and engineering spun off into other industries and applications. Railroads were the first great industrial corporations.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_RAILROADS2</Key>
+      <Value>
+        <string>Built by Settlers only, and only in squares that already contain a road. Press the Railroad key (R key). Units moving from one railroad square to another railroad square use no movement points regardless of terrain. Railroads increase food and resource production in a map square by 1/2 (rounded down). They increase trade by the same amount, but before the effects of Republic or Democracy governments.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_IRRIGATION</Key>
+      <Value>
+        <string>When the early farmers moved down from the hills into the valleys of the Nile, Tigris, and Euphrates Rivers, they had to develop the technology of irrigation. The freshwater rivers passed through lands essentially barren due to the lack of rainfall. Through irrigation, water could be removed from the rivers and spread on the nearby land, making it bloom. Ever since these early days, irrigation has been an important tool of farmers, making other deserts bloom as well. Modern examples are the very productive deserts of California.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_IRRIGATION2</Key>
+      <Value>
+        <string>Irrigation increases the food value of River, Grassland, Plains, Desert, and Hill squares. Only squares vertically or horizontally adjacent to water (Ocean or River) or existing irrigation squares may be irrigated.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MINING</Key>
+      <Value>
+        <string>When thinking humans first evolved, it was possible to find nearly pure deposits of several metals exposed on the Earth's surface. The most common were gold, silver, and copper. As time passed, the surface deposits were exhausted and men began digging into the ground looking for more. The mining and excavation of the Earth in search of minerals continues today, although the list of things for which we dig has greatly expanded. The discovery of new metals and resources, or new methods of extraction, often turned previously unwanted areas into mother lodes of oil, uranium, platinum, etc.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MINING2</Key>
+      <Value>
+        <string>Mining increases the production value of Desert (+1), Hills (+3), and Mountain (+1) squares.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_FORTIFY</Key>
+      <Value>
+        <string>Roman legions on campaign halted their march early enough each evening to build a completely fortified camp for the night. They had learned the value of defensive fortifications when under attack. Where possible, it was the standard practice of most armies to build defensive works of some type whenever expecting an attack. Fortified defenders had their fighting strength multiplied, making it much harder for an attacker to dislodge them.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_FORTIFY2</Key>
+      <Value>
+        <string>A fortified unit has its defense value increase by 50%.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_FORTRESS</Key>
+      <Value>
+        <string>To guard important positions such as mountain passes, fords, or invasion beaches, you may build a Fortress. When properly defended, a Fortress may block the path of approaching enemies. Fortresses may be built by Settlers once you have achieved the advance of Construction. They may be built on any land square except one containing a city. A city founded in a Fortress square destroys the Fortress. A Fortress doubles the strength of all defending units after considering terrain and veteran status. Units defend a Fortress one at a time. Unlike combat in normal terrain, all other defenders in a Fortress are not destroyed when one unit in the square is destroyed.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_FORTRESS2</Key>
+      <Value>
+        <string>Built by Settlers only. Press the Fortress key (F key) or choose the Fortress option from the Orders menu. Doubles the strength of defenders. Units defend one at a time. May not be built or exist in a city square.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_PILLAGE</Key>
+      <Value>
+        <string>You may destroy the irrigation and mining improvements of enemies by moving a unit into an improved square and ordering the unit to pillage. This reduces the production of the nearby city and forces the enemy to redo the work later to restore it. If you have plans to capture the nearby city, it may be best not to pillage because the city and production may soon be yours.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_PILLAGE2</Key>
+      <Value>
+        <string>Any square improved by mining or irrigation may be pillaged by pressing the Pillage key (Shift + P key) or by choosing the Pillage option from the Orders men. The pillaging unit must have movement remaining.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_DISBAND</Key>
+      <Value>
+        <string>At times you may wish to eliminate friendly units. They may be obsolete, or costing resources to maintain that you wish to employ otherwise, or they may be causing unhappiness in their home city under the Republic or Democracy governments. To eliminate an unwanted unit, order it to disband. The unit is removed from the map and its home city display.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_DISBAND2</Key>
+      <Value>
+        <string>To disband a unit waiting for orders, press the Disband key (Shift + D keys) or select the Disband option from the Orders menu.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_VETERAN_UNITS</Key>
+      <Value>
+        <string>During the American Civil War, green units that had never been in battle were said to have "seen the elephant" after being under fire for the first time. They were now veterans, having been witness to, and part of, something that could never be completely conveyed to those without the experience. The historical evidence shows that trained, veteran soldiers were dramatically more likely to survive and perform their combat mission than inexperienced troops. For American replacements in World War II, the first two weeks in combat were the most dangerous. After that period they had become veterans and wily in the ways of battlefield survival.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_VETERAN_UNITS2</Key>
+      <Value>
+        <string>Veteran units have their attack and defense values increased by 50%. Units may become veterans by winning a battle or if built in a city with a Barracks.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ANARCHY</Key>
+      <Value>
+        <string>Anarchy is a breakdown in government resulting in the absence of political authority or any cohering purpose. The government ceases to function, along with any services it provides. While anarchy has been seriously proposed as an alternative to government, it has never achieved more than fringe acceptance. Anarchy has occurred at various times in history following great social upheaval caused by revolution, war, natural disaster, or disease. In almost every case, anarchy meant panic, disruption, waste, and destruction.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_ANARCHY2</Key>
+      <Value>
+        <string>Squares producing three or more of any commodity have production reduced by one. For example, a square that normally would produce three food produces only two under anarchy. Units up to city size do not require maintenance. Military units in a city decrease unhappiness. No taxes collected or knowledge accumulated.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_DESPOTISM</Key>
+      <Value>
+        <string>Despotism is a primitive form of government that is nevertheless useful for a beginning civilization. Due to the minimum of maintenance required for units, it is possible to field relatively large armies for the population and build new items quickly. However, the growth of cities is ultimately retarded by despotism and in order for them to continue to grow to substantial size you must adopt a new form of government that increases food and resource production. Despotism is most useful during expansion and wartime.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_DESPOTISM2</Key>
+      <Value>
+        <string>Production squares of 3 or more reduced by one (3 food-&gt;2). Home city units numbering less than or equal to city size do not require maintenance. Military units in city decrease unhappiness.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_MONARCHY2</Key>
+      <Value>
+        <string>Normal economic effects. Units require 1 resource per turn to maintain. Military units in city decrease unhappiness.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_COMMUNISM2</Key>
+      <Value>
+        <string>Normal economic effects. Units require 1 resource per turn to maintain. Military units in city decrease unhappiness. Corruption equal in all cities.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_REPUBLIC</Key>
+      <Value>
+        <string>The "republican" form of government encourages greater economic freedom among the people and leads to dramatic increases in trade. More trade means more luxuries, tax revenues, and science research. However, under a republic war is much more difficult to wage because military units not in their home city cause one citizen to become unhappy. Most cities can therefore only afford to have a few military units on campaign without risking civil disorder. The republic becomes especially useful when your cities have grown quite large, because the increase in trade is very helpful in providing luxuries and maintaining a reasonable rate of technology advance.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_REPUBLIC2</Key>
+      <Value>
+        <string>+1 trade per square where trade exists. Must accept all peace offers. Military units in city do not decrease unhappiness - no martial law. Military units not in city increase unhappiness. Units require 1 resource per turn to maintain.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_DEMOCRACY2</Key>
+      <Value>
+        <string>+1 trade per square where trade exists. Must accept all peace offers. Military units in city do not decrease unhappiness - no martial law. Military units not in city increase unhappiness. Units require 1 resource per turn to maintain. No corruption. Civil disorder leads to Anarchy.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_POLLUTION</Key>
+      <Value>
+        <string>Pollution may be caused by large resource production in cities, large city populations, nuclear weapons, or the meltdown of a Nuclear Power Plant. If a city has a potential pollution problem, smokestacks in the city display information window indicate the probability that a nearby map square may become polluted.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_POLLUTION2</Key>
+      <Value>
+        <string>The pollution in a map square may be cleaned up by a Settler. Move the Settler into the square and press the Pollution key (P key) or choose the Pollution option from the Orders menu. It takes four turns of work to clean up pollution. If pollution gets out of control, global warming may occur.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SENTRY</Key>
+      <Value>
+        <string>Units ordered to go on sentry duty are shown faded out on the game display and thereafter do not flash each turn waiting for orders. This is useful when you have a unit in a square where you wish to leave it and do not, or cannot, have it fortify. Also, sentry units in a city are automatically loaded onto any ship that can carry them and sails out of the city.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SENTRY2</Key>
+      <Value>
+        <string>Place a unit on sentry duty by pressing the Sentry key (S key) or by choosing the Sentry option from the Orders menu. A Sentry unit may be activated by clicking on it with the LMB, or when an enemy unit moves adjacent to it.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_LUXURIES</Key>
+      <Value>
+        <string>The provision of luxuries for the people of your cities is indicated by the bright diamond symbols in the resource window of the city display. Each two luxuries makes one contented citizen happy, or one unhappy citizen content. The amount of luxuries a city produces is mainly determined by the luxury rate of your civilization, the percentage of each city's trade that arrives as luxuries. You can modify this rate by adjusting your tax and science rates from the Game menu.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_LUXURIES2</Key>
+      <Value>
+        <string>You can also increase luxuries by building Marketplace and Bank improvements, and by turning some of your citizens into Entertainers.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_TAXES</Key>
+      <Value>
+        <string>The taxes collected by a city is indicated by the gold coin symbols in the resource window of the city map display. The taxes collected by the city are first put toward paying for the maintainence of the improvements that exist in the city. Any surplus is added to the treasury and any shortfall is withdrawn from the treasury. The amount of taxes a city produces is mainly determined by the tax rate of the civilization, the percentage of each city's trade that arrives as taxes. You can modify this rate by adjusting your tax rate from the Game menu.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_TAXES2</Key>
+      <Value>
+        <string>You can also increase taxes by building Marketplace and Bank improvements, and by turning some of your citizens into Taxmen.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SCIENCE</Key>
+      <Value>
+        <string>The science research contributed by a city is indicated by the light bulb symbols in the resource window of the city display. The science from a city is added to previous research and, if enough research has been done, a new civilization advance is achieved. The amount of science a city produces is mainly determined by the science rate of your civilization, the percentage of each city's trade that arrives as new knowledge. You can modify this rate by adjusting your science rate from the Game menu.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_SCIENCE2</Key>
+      <Value>
+        <string>You can also increase science by building Library and University improvements, certain Wonders, and by turning some of your citizens into Scientists.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_TRADE_ROUTES</Key>
+      <Value>
+        <string>Trade routes are established when you move a Caravan into another city, either one of your own at least ten map squares from the Caravan's home city, or a rival's city. The arrival of a Caravan results in an immediate payment of cash into your treasury plus the trade route. A trade route increases the trade generated by the Caravan's home city each turn thereafter, unless the connected city is destroyed. The value of a trade route is highest between a rival city on another continent, and increases with the size of both cities involved and the distance they are apart. Trade routes are essential to strong economies and large civilizations.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ENCYCLOPEDIA_TRADE_ROUTES2</Key>
+      <Value>
+        <string>Created by Caravans.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ERROR_ZOC</Key>
+      <Value>
+        <string>A unit may not move from one square^adjacent to an enemy unit to another^square also adjacent to an enemy unit.^Exception: Diplomats, Caravans, Naval and^Air units; entering and exiting a city.^See pg. 34 in the manual for more details.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ERROR_TRIREME</Key>
+      <Value>
+        <string>Your trireme has been lost at sea.^A trireme may be lost if it does not^end its turn close to land.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ERROR_FUEL</Key>
+      <Value>
+        <string>Your air unit has run out of fuel.^Fighter/Nuclear units must return^to a city or Carrier at the end of^each turn. Bomber units must return^at the end of their second turn.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ERROR_AMPHIB</Key>
+      <Value>
+        <string>Ground units must be put ashore before^they can engage in combat.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ERROR_FIGHTER</Key>
+      <Value>
+        <string>Only FIGHTER units may attack AIR units.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ERROR_OCCUPY</Key>
+      <Value>
+        <string>Only GROUND units may occupy an enemy city.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ERROR_PILLAGE</Key>
+      <Value>
+        <string>City squares may not be pillaged.^Diplomat, Caravan, Fighter, and^Naval units may not pillage.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ERROR_SETTLERS</Key>
+      <Value>
+        <string>This function may only be performed^by Settler units.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ERROR_NOWATER</Key>
+      <Value>
+        <string>This square has no access to water.^An irrigated square must be adjacent^to a RIVER or OCEAN square or a pre-^viously irrigated non-city square.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ERROR_NOMINE</Key>
+      <Value>
+        <string>This terrain type cannot be mined.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ERROR_NOIRR</Key>
+      <Value>
+        <string>This terrain type cannot be irrigated.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>ERROR_ADDCITY</Key>
+      <Value>
+        <string>Settlers may not be added to cities^with a size of 10 or more.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_FIRSTMOVE</Key>
+      <Value>
+        <string>Your first task is to find a suitable^site and found your capital city.^The best city sites are near rivers,^grasslands, coastal areas, or areas^near special resources.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_BUILDCITY</Key>
+      <Value>
+        <string>This spot looks like a good site for a^city. Select 'Found New City' from the^ORDERS menu or use the 'b' key to found^a city here.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_FIRSTPRODUCT</Key>
+      <Value>
+        <string>Each of your cities can build additional^Settlers, military units, or city improve-^ments to further the growth of your civil-^ization. Only one item can be in production^per city. Production orders can be changed^at any time. Select the item you wish to^build by clicking the 'CHANGE' button in^the city information screen which follows.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_FIRSTCIV</Key>
+      <Value>
+        <string>Cities also act as centers for trade and^the flow of information. Your wise men^and scientists can collect this information^to acquire important new abilities and^skills for your civilization. Use the^following menu to direct their studies:</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_FIRSTUNIT1</Key>
+      <Value>
+        <string>You have just built your first military^unit. Use the keyboard arrows to move^this unit and the Orders menu to give^special commands. Military units allow^you to explore, expand, attack, and^defend your civilization.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_FIRSTUNIT2</Key>
+      <Value>
+        <string>Fortify units in your cities to defend^them against barbarians or enemy armies.^Settler units can found new cities as well^as build roads, irrigation, and mines.^Attack your enemies with Legions, Chariots,^and Catapults.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_MINING</Key>
+      <Value>
+        <string>This area could produce more resources.^Mining ('m') these hills will add to the^production capacity of $US.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_IRRIGATE</Key>
+      <Value>
+        <string>This would be a suitable area to build^irrigation ('i'). More food will help the^city of $US to grow more rapidly.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_ROAD</Key>
+      <Value>
+        <string>This would be a good place to build a^road. Your units will be able to move^faster and more trade will be generated^in the city of $US.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_MONARCHY</Key>
+      <Value>
+        <string>You have just acquired knowledge of^MONARCHY. Under a MONARCHY your citizens^are more productive but the maintenance^costs of military units are higher. To^change your government to a MONARCHY,^you must first have a Revolution!^(Revolution: see the GAME Menu).</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_LAND</Key>
+      <Value>
+        <string>LAND MASS:</string>
+        <string>- A planet with a normal land mass will favor a mixture of islands and continents.</string>
+        <string>- A planet with a small land mass will tend to have more islands, encouraging isolated and undisturbed civilization development.</string>
+        <string>- A planet with a large land mass will tend to have more continents, encouraging more trade and war between civilizations.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_TEMPERATURE</Key>
+      <Value>
+        <string>TEMPERATURE:</string>
+        <string>- A planet with TEMPERATE temperatures will favor a mixture of all terrain types.</string>
+        <string>- A planet with COOL temperatures will favor the formation of Arctic and Tundra terrain at the expense of Desert.</string>
+        <string>- A planet with WARM temperatures will favor the formation of Desert terrain at the expense of Tundra and Arctic.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_CLIMATE</Key>
+      <Value>
+        <string>CLIMATE:</string>
+        <string>- A planet with a NORMAL climate will favor a mixture of all terrain types.</string>
+        <string>- A planet with an ARID climate will have more Desert and Plains.</string>
+        <string>- A planet with with a WET climate will have more Jungles, Swamps, and Rivers.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_AGE</Key>
+      <Value>
+        <string>AGE:</string>
+        <string>- A younger planet has large areas of similar terrain (forests, mountains, etc.)</string>
+        <string>- An older planet has smaller, more broken up features.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_HELP1</Key>
+      <Value>
+        <string>GENERAL PRINCIPLES: (1)^^Defend your cities with at least one^(preferably two) good defensive units.^^Strike a balance between improving your^existing cities and striking out to found^new cities.^^Don't expand beyond your ability to defend^yourself; barbarians and hostile armies^may appear without warning.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_HELP2</Key>
+      <Value>
+        <string>GENERAL PRINCIPLES: (2)^^Make peace with your stronger neighbors.^Isolate and conquer your weaker neighbors.^^Think about changing your government to^Monarchy once your cities reach sizes of^six or seven.^^As your civilization grows don't forget to^use your Diplomats to learn what your^opponents are up to. Use Caravans to^establish trade routes and strengthen^your economy.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_DISORDER</Key>
+      <Value>
+        <string>A city falls into Civil Disorder when^the number of unhappy citizens exceeds^the number of happy citizens. Growth^and production cease while a city is^in disorder. Remedies for disorder^include: turning citizens into enter-^tainers, moving military units into^the city, building a Temple, Cathedral,^or Colosseum, increasing the amount of^trade used for Luxuries. See pp. 66 in^the manual for more details.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>HELP_SCHISM</Key>
+      <Value>
+        <string>The $THEM are a large and powerful^civilization. However, rebel factions^threaten to start a civil war. If your^armies can capture their capital city,^the shock could split the country in two!</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NEWSA</Key>
+      <Value>
+        <string>Lions Defeat Gladiators 7-0!</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NEWSB</Key>
+      <Value>
+        <string>Mayor fiddles as city burns!</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NEWSC</Key>
+      <Value>
+        <string>Earth is round Columbus claims!</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NEWSD</Key>
+      <Value>
+        <string>Latest Olympic Games results!</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NEWSE</Key>
+      <Value>
+        <string>Attila sorry for misunderstanding.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NEWSF</Key>
+      <Value>
+        <string>Cleopatra's beauty secrets! Section B.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NEWSG</Key>
+      <Value>
+        <string>Iliad tops bestseller list, see BOOKS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NEWSH</Key>
+      <Value>
+        <string>Crusade ends in disaster, Press blamed.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NEWSI</Key>
+      <Value>
+        <string>Renaissance imminent, scholars claim.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NEWSJ</Key>
+      <Value>
+        <string>We Love King? Latest poll results.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NEWSK</Key>
+      <Value>
+        <string>Rain, Rain, more Rain! Noah predicts.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NEWSL</Key>
+      <Value>
+        <string>Great Wall damaged, Vandals suspected.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NEWSM</Key>
+      <Value>
+        <string>Nostradamus fortells future: Trouble ahead!</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NEWSN</Key>
+      <Value>
+        <string>Marie Antionette's diet secret: Cake!</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_EXCHANGE</Key>
+      <Value>
+        <string>'We note that your primitive civil-^ization has not even discovered^$RPLC1. Do you care^to exchange knowledge with us?'</string>
+        <string>_'No, we do not need $RPLC1.'</string>
+        <string>_'OK, let's exchange knowledge.'</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_CANCEL</Key>
+      <Value>
+        <string>You have made peace with our evil^neighbors: the $THEM.^We $RPLC1 you cancel this treaty^at once!</string>
+        <string>_'Never, the $THEM are our friends.'</string>
+        <string>_Cancel treaty with the $THEM.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_TRIBUTE</Key>
+      <Value>
+        <string>'You are unworthy to make peace^with us. However, we will agree^not to crush your puny civilization^in exchange for $BUCKS$ in tribute.'</string>
+        <string>_'We laugh at your empty threats'</string>
+        <string>_Pay $BUCKS in tribute</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_TAKECIV</Key>
+      <Value>
+        <string>'Your civilization makes us laugh.^We will agree not to crush your^worthless civilization in exchange^for the secret of $RPLC1.'</string>
+        <string>_'We ignore your hollow threats'</string>
+        <string>_Give secret of $RPLC1</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_PEACE</Key>
+      <Value>
+        <string>'You may be worthy to make peace^with us. We have prepared a treaty^for your signature.'</string>
+        <string>_Reject</string>
+        <string>_Accept</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_ATTITUDE</Key>
+      <Value>
+        <string>In spite of your disrespectful^attitude, we will spare you from^the wrath of our mighty armies.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_PROVOKE</Key>
+      <Value>
+        <string>'Our patience is exhausted. We^can no longer tolerate your vile^provocations. Prepare for WAR!'</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_REJECT</Key>
+      <Value>
+        <string>'You reject our generous offer?^Your insolence must be punished.^Prepare for WAR!'</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_RID</Key>
+      <Value>
+        <string>'We have decided to rid the world^of your worthless civilization.^Prepare for WAR!'</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_MOBILIZE</Key>
+      <Value>
+        <string>'Very well, we will mobilize our^armies for WAR! You will pay for^your foolish pride!'</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_THREAT</Key>
+      <Value>
+        <string>You respond: 'We...</string>
+        <string>_Welcome peace with the $RPLC1.'</string>
+        <string>_Have a military proposal for you.'</string>
+        <string>_Demand tribute for our patience.'</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_NOCONTACT</Key>
+      <Value>
+        <string>We have no contact with the $RPLC1.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_ATWAR</Key>
+      <Value>
+        <string>We are already at war with the^worthless $RPLC1.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_MERCENARY</Key>
+      <Value>
+        <string>We will ruthlessly smite the evil^$RPLC1 in exchange for^$BUCKS to cover our expenses.</string>
+        <string>_Never mind.</string>
+        <string>_Yes, we will gladly pay.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_UNFORTUNATE</Key>
+      <Value>
+        <string>Unfortunately, your treasury does^not contain sufficient funds to^support your extravagant promises.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_PALACE</Key>
+      <Value>
+        <string>The people spontaneously decide to recognize^your many years of enlightened leadership.^Craftsmen, masons, laborers, and artisans turn^out to build a fine addition to your palace.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_HELPME</Key>
+      <Value>
+        <string>Our civilization is threatened by the^evil $THEM. Will you help us to repel^their unprovoked agression? We will^send you $BUCKS$ to cover your expenses.</string>
+        <string>_No, sorry, tough luck.</string>
+        <string>_Yes, cancel treaty with $THEM.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_CRUSADE</Key>
+      <Value>
+        <string>We invite you to join our crusade to^rid the world of the evil $THEM.^We will $RPLC1 peace treaty^for the duration of the hostilities.</string>
+        <string>_No, not interested.</string>
+        <string>_Yes, cancel treaty with $THEM.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_GIVECIV</Key>
+      <Value>
+        <string>In exchange for peace we will share^with you the secret of $RPLC1.</string>
+        <string>_Reject offer</string>
+        <string>_Make Peace</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_GIVECASH</Key>
+      <Value>
+        <string>In exchange for peace we offer^you $BUCKS$ in tribute to your^manifest magnificence.</string>
+        <string>_Reject offer</string>
+        <string>_Make Peace</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_GIVEMORE</Key>
+      <Value>
+        <string>We present you with a gift of $BUCKS$^in tribute to your peaceful nature.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_GROVEL</Key>
+      <Value>
+        <string>Have mercy on our humble and peace-^loving civilization. We will give^you all of our gold ($BUCKS$) and^knowledge if you let us live in peace.</string>
+        <string>_Reject offer</string>
+        <string>_Make Peace</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_TREATY</Key>
+      <Value>
+        <string>We affirm this treaty of eternal^friendship and goodwill between^the people of the $RPLC1^and $US civilizations.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_GAPE</Key>
+      <Value>
+        <string>You are invited to gape with^awe and amazement as the^$US demonstrate the wonders^of $RPLC1. WARNING: Absolutely^no scribes will be allowed.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_LEADER</Key>
+      <Value>
+        <string>Barbarian leader captured!^100$ ransom paid.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_ESCHISM</Key>
+      <Value>
+        <string>The $US empire is swept by^Civil War triggered by the fall^of their capital! When the dust^settles the empire has been split^into loyal ($US) and^rebel ($THEM) factions.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_QUIZ</Key>
+      <Value>
+        <string>A usurper claims that you are not the^rightful king! To prove you are of royal^birth you must answer this question:</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_QUIZ2</Key>
+      <Value>
+        <string>The people laugh at your feeble answer.^You have one last chance to prove your^royal birth. Check your Manual carefully.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_CORRECT</Key>
+      <Value>
+        <string>Congratulations, you have proven your^worthiness. May you enjoy a long and^glorious reign as sovereign.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_INCORRECT</Key>
+      <Value>
+        <string>Word of your lack of knowledge spreads^from town to town. Throughout the^realm soldiers return to their homes.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_INIT</Key>
+      <Value>
+        <string>$RPLC1, you have risen^to become leader of the^$US. May your reign^be long and prosperous.^The $US have knowledge^of Irrigation, Mining,</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_TAXES</Key>
+      <Value>
+        <string>Warning: Funds are running low.^Perhaps we should raise our tax^rate or hire some tax collectors.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_SPACE</Key>
+      <Value>
+        <string>^In the year $RPLC1^voyagers from the planet Earth^set forth on a journey^of cosmic exploration.^A spaceship populated by^$BUCKS0,000 $THEM colonists^successfully bridged the^vast distances between the stars.^Arriving in $RPLC2^at the star system^Alpha Centauri,^these intrepid pioneers^began the colonization^of a new world.^$US, your people^have fulfilled the dream^of countless generations.^Your name will live forever^in the annals of CIVILIZATION!</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_SPACE2</Key>
+      <Value>
+        <string>^In the year $RPLC1^voyagers from the planet Earth^set forth on a journey^of cosmic exploration.^A spaceship populated by^$BUCKS0,000 $THEM colonists^successfully bridged the^vast distances between the stars.^Arriving in $RPLC2^at the star system^Alpha Centauri,^these intrepid pioneers^began the colonization^of a new world.^$US, your people^have a long and glorious history.^Perhaps one day, your name^will also be written^in the annals of CIVILIZATION.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_ARCH</Key>
+      <Value>
+        <string>Centuries later,^archeologists discover the remains^of your ancient civilization.^Evidence of thriving towns,^$RPLC1, roads,^and a centralized government^amaze the startled scientists.^Finally, they come upon^a stone tablet, which contains^but one mysterious phrase:^$US WILL RETURN!</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_FAME</Key>
+      <Value>
+        <string>Your final score has been^entered into the Hall of Fame.^Do you want to keep playing?^(No further score will be recorded)</string>
+        <string>_No, I'm done.</string>
+        <string>_Yes, keep playing.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_LOMEM</Key>
+      <Value>
+        <string>There appears to be insufficent^memory available in this computer^for the options you have chosen.^This may cause problems in display-^ing animations and saving games.^To reduce the memory required:^1) Remove any TSR or other memory-^resident programs in your computer.^2) select the IBM or No Sound^drivers instead of Roland or AdLib,^3) select EGA instead of VGA/MCGA.^.^MEM AVAIL=$RPLC1, MEM NEEDED=8000^Continue at your own risk!</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_D1</Key>
+      <Value>
+        <string>Plague in $RPLC1!^Scores perish!^Citizens demand AQUEDUCT.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_D2</Key>
+      <Value>
+        <string>Floods strike $RPLC1!^Houses washed away.^Citizens demand CITY WALLS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_D3</Key>
+      <Value>
+        <string>Volcano erupts near $RPLC1!^Citizens flee in terror.^Citizens demand TEMPLE.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_D4</Key>
+      <Value>
+        <string>Famine strikes $RPLC1!^Scores perish.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_D5</Key>
+      <Value>
+        <string>Fire sweeps through $RPLC1!^$US destroyed.^Citizens demand AQUEDUCT.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_D6</Key>
+      <Value>
+        <string>Pirates plunder $RPLC1!^Production halted, Food Stolen.^Citizens demand BARRACKS.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_REV</Key>
+      <Value>
+        <string>Are you sure you want a REVOLUTION?</string>
+        <string>_No thanks.</string>
+        <string>_Yes, we need a new government.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_UMAX</Key>
+      <Value>
+        <string>Sire, our population can not^support so many military units.^We must eliminate some of our old^units before we build new ones.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>KING_PMAX</Key>
+      <Value>
+        <string>Sire, our bureaucrats can not^administer so many cities.^We must remove some of our old^cities before we build new ones.</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>GENERAL_CREDITS</Key>
+      <Value>
+        <string>A MICROPROSE PRESENTATION</string>
+        <string>Designed by SID MEIER</string>
+        <string>with BRUCE SHELLEY</string>
+        <string>Computer Graphics by</string>
+        <string>MICHAEL HAIRE</string>
+        <string>HARRY TEASLEY</string>
+        <string>BARBARA BENTS</string>
+        <string>TODD BRIZZI</string>
+        <string>ERROLL ROBERTS</string>
+        <string>CHRIS SOARES</string>
+        <string>NICHOLAS RUSKO BERGER</string>
+        <string>STACEY CLARK</string>
+        <string>BRIAN MARTEL</string>
+        <string>Original Music by</string>
+        <string>JEFFERY L% BRIGGS</string>
+        <string>Quality Assurance by</string>
+        <string>AL ROIREAU</string>
+        <string>MIKE CORCORAN</string>
+        <string>TIM TRAIN</string>
+        <string>MICHAEL REA</string>
+        <string>CHRIS CLARK</string>
+        <string>MICHAEL CRAIGHEAD</string>
+        <string>NICK YURAN</string>
+        <string>PAUL MURPHY</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+    <BKeyValuePairOfStringListOfString>
+      <Key>GENERAL_STORY</Key>
+      <Value>
+        <string>_</string>
+        <string>In the beginning,</string>
+        <string>the Earth was without form,</string>
+        <string>and void.</string>
+        <string>_</string>
+        <string>But the Sun shone upon the sleeping Earth</string>
+        <string>and deep inside the brittle crust</string>
+        <string>massive forces waited to be unleashed.</string>
+        <string>_</string>
+        <string>The seas parted</string>
+        <string>and great continents were formed.</string>
+        <string>The continents shifted, mountains arose.</string>
+        <string>Earthquakes spawned massive tidal waves.</string>
+        <string>Volcanoes erupted</string>
+        <string>and spewed forth fiery lava</string>
+        <string>and charged the atmosphere</string>
+        <string>with strange gases.</string>
+        <string>_</string>
+        <string>Into this swirling maelstrom</string>
+        <string>of Fire and Air and Water</string>
+        <string>the first stirrings of Life appeared:</string>
+        <string>tiny organisms, cells, and amoeba,</string>
+        <string>clinging to tiny sheltered habitats.</string>
+        <string>_</string>
+        <string>But the seeds of Life grew,</string>
+        <string>and strengthened, and spread,</string>
+        <string>and diversified,</string>
+        <string>and prospered,</string>
+        <string>and soon every continent and climate</string>
+        <string>teemed with Life.</string>
+        <string>_</string>
+        <string>And with Life came instinct,</string>
+        <string>and specialization, natural selection,</string>
+        <string>Reptiles, Dinosaurs, and Mammals</string>
+        <string>and finally there evolved a species</string>
+        <string>known as Man</string>
+        <string>and there appeared</string>
+        <string>the first faint glimmers of</string>
+        <string>Intelligence.</string>
+        <string>_</string>
+        <string>The fruits of intelligence were many:</string>
+        <string>fire, tools, and weapons,</string>
+        <string>the hunt, farming, and the sharing of food,</string>
+        <string>the family, the village, and the tribe.</string>
+        <string>Now it required but one more ingredient:</string>
+        <string>a great Leader</string>
+        <string>to unite the quarreling tribes</string>
+        <string>to harness the power of the land</string>
+        <string>to build a legacy</string>
+        <string>that would stand the test of time:</string>
+        <string>_</string>
+        <string>a CIVILIZATION!</string>
+      </Value>
+    </BKeyValuePairOfStringListOfString>
+  </Items>
+</LanguagePack>
