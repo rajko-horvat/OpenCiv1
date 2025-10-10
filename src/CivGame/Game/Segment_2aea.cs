@@ -368,7 +368,7 @@ namespace OpenCiv1
 
 		L0413:
 			// Instruction address 0x2aea:0x041a, size: 3
-			F0_2aea_134a(xPos, yPos);
+			F0_2aea_134a_GetTerrainID(xPos, yPos);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
 			if (this.oCPU.Flags.NE) goto L042a;
@@ -413,7 +413,7 @@ namespace OpenCiv1
 
 		L0475:
 			// Instruction address 0x2aea:0x047c, size: 3
-			F0_2aea_134a(xPos, yPos);
+			F0_2aea_134a_GetTerrainID(xPos, yPos);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18), this.oCPU.AX.Word);
 
@@ -458,7 +458,7 @@ namespace OpenCiv1
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
 			// Instruction address 0x2aea:0x04f0, size: 3
-			F0_2aea_134a((short)this.oCPU.AX.Word, yPos + direction.Y);
+			F0_2aea_134a_GetTerrainID((short)this.oCPU.AX.Word, yPos + direction.Y);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
 			if (this.oCPU.Flags.E) goto L0515;
@@ -499,7 +499,7 @@ namespace OpenCiv1
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
 			// Instruction address 0x2aea:0x0570, size: 3
-			F0_2aea_134a((short)this.oCPU.AX.Word, yPos + direction.Y);
+			F0_2aea_134a_GetTerrainID((short)this.oCPU.AX.Word, yPos + direction.Y);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
 			if (this.oCPU.Flags.E) goto L0595;
@@ -651,7 +651,7 @@ namespace OpenCiv1
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
 			// Instruction address 0x2aea:0x0752, size: 3
-			F0_2aea_134a((short)this.oCPU.AX.Word, yPos + direction.Y);
+			F0_2aea_134a_GetTerrainID((short)this.oCPU.AX.Word, yPos + direction.Y);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xb);
 			if (this.oCPU.Flags.NE) goto L077f;
@@ -729,7 +729,7 @@ namespace OpenCiv1
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
 			// Instruction address 0x2aea:0x082c, size: 3
-			F0_2aea_134a((short)this.oCPU.AX.Word, yPos + direction.Y);
+			F0_2aea_134a_GetTerrainID((short)this.oCPU.AX.Word, yPos + direction.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xb);
@@ -795,7 +795,7 @@ namespace OpenCiv1
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
 			// Instruction address 0x2aea:0x08d5, size: 3
-			F0_2aea_134a((short)this.oCPU.AX.Word, yPos + direction.Y);
+			F0_2aea_134a_GetTerrainID((short)this.oCPU.AX.Word, yPos + direction.Y);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18)));
 			if (this.oCPU.Flags.NE) goto L08fa;
@@ -1383,7 +1383,7 @@ namespace OpenCiv1
 				(short)this.oParent.CivState.Players[playerID].Units[unitID].TypeID);
 
 			// Instruction address 0x2aea:0x0f33, size: 3
-			F0_2aea_134a(this.oParent.CivState.Players[playerID].Units[unitID].Position.X, this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
+			F0_2aea_134a_GetTerrainID(this.oParent.CivState.Players[playerID].Units[unitID].Position.X, this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Word);
 
@@ -1728,7 +1728,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
 			// Instruction address 0x2aea:0x127f, size: 3
-			F0_2aea_134a(this.oParent.CivState.Players[playerID].Units[unitID].Position.X, this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
+			F0_2aea_134a_GetTerrainID(this.oParent.CivState.Players[playerID].Units[unitID].Position.X, this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
@@ -1822,14 +1822,15 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Returns terrain ID at specified map coordinates.
+		/// Only basic terrain IDs are returned. Terrain addons presence should be checked separately using F0_2aea_1836().
 		/// </summary>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <returns></returns>
-		public ushort F0_2aea_134a(int xPos, int yPos)
+		/// <returns>terrain ID</returns>
+		public ushort F0_2aea_134a_GetTerrainID(int xPos, int yPos)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_134a({xPos}, {yPos})");
+			this.oCPU.Log.EnterBlock($"F0_2aea_134a_GetTerrainID({xPos}, {yPos})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -1844,7 +1845,7 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_2aea_134a");
+			this.oCPU.Log.ExitBlock("F0_2aea_134a_GetTerrainID");
 
 			return this.oCPU.AX.Word;
 		}
@@ -2377,7 +2378,7 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x2aea:0x1967, size: 3
-			F0_2aea_134a(xPos, yPos);
+			F0_2aea_134a_GetTerrainID(xPos, yPos);
 
 			if (this.oCPU.AX.Word != 10)
 			{

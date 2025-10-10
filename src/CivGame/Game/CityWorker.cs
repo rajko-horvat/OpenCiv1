@@ -933,7 +933,7 @@ namespace OpenCiv1
 												if (local_c8 > this.oParent.Var_6c9a || (local_c8 == this.oParent.Var_6c9a && this.oParent.MSCAPI.RNG.Next(++local_106) == 0))
 												{
 													// Instruction address 0x1d12:0x191e, size: 5
-													this.oParent.Segment_2aea.F0_2aea_134a(
+													this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(
 														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
 														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y);
 
@@ -4059,7 +4059,7 @@ namespace OpenCiv1
 
 			L6590:
 				// Instruction address 0x1d12:0x6598, size: 5
-				if (this.oParent.Segment_2aea.F0_2aea_134a(local_c6, local_d2) != 10) goto L65a8;
+				if (this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(local_c6, local_d2) != 10) goto L65a8;
 				goto L6640;
 
 			L65a8:
@@ -4397,7 +4397,7 @@ namespace OpenCiv1
 			if (this.oParent.Segment_2aea.F0_2aea_1326_CheckMapBounds(xPos, yPos) != 0)
 			{
 				// Instruction address 0x1d12:0x6ade, size: 5
-				local_6 = (short)this.oParent.Segment_2aea.F0_2aea_134a(xPos, yPos);
+				local_6 = (short)this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(xPos, yPos);
 
 				// Instruction address 0x1d12:0x6af0, size: 5
 				if (this.oParent.Segment_2aea.F0_2aea_1836(xPos, yPos) == 0)
@@ -5035,7 +5035,7 @@ namespace OpenCiv1
 						int rectYPos = ((yPos / 2) * 3) + this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(local_10 + 0x2810)) + 118;
 
 						// Instruction address 0x1d12:0x73a3, size: 5
-						if (this.oParent.Segment_2aea.F0_2aea_134a(mapXPos, mapYPos) != 10)
+						if (this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(mapXPos, mapYPos) != 10)
 						{
 							// Instruction address 0x1d12:0x72f7, size: 5
 							this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, rectXPos, rectYPos, 2, 2, 2);
