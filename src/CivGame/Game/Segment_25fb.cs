@@ -3407,7 +3407,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L2060;
 
 			// Instruction address 0x25fb:0x2051, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1836(
+			this.oParent.Segment_2aea.F0_2aea_1836_CheckTerrainAddon(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x36)));
 
@@ -3628,7 +3628,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L2257;
 
 			// Instruction address 0x25fb:0x224b, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1836(
+			this.oParent.Segment_2aea.F0_2aea_1836_CheckTerrainAddon(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2e)));
 

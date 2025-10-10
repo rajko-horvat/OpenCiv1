@@ -998,7 +998,7 @@ namespace OpenCiv1
 
 		L0b07:
 			// Instruction address 0x2aea:0x0b11, size: 3
-			F0_2aea_1836(xPos, yPos);
+			F0_2aea_1836_CheckTerrainAddon(xPos, yPos);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0b30;
@@ -2291,14 +2291,14 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Checks terrain addon presence at specified map coordinate.
 		/// </summary>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <returns></returns>
-		public ushort F0_2aea_1836(int xPos, int yPos)
+		/// <returns>true if terrain addon exists</returns>
+		public ushort F0_2aea_1836_CheckTerrainAddon(int xPos, int yPos)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_1836({xPos}, {yPos})");
+			this.oCPU.Log.EnterBlock($"F0_2aea_1836_CheckTerrainAddon({xPos}, {yPos})");
 
 			// function body
 			if (yPos <= 0x1 || yPos >= 48 ||
@@ -2312,7 +2312,7 @@ namespace OpenCiv1
 			}
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_2aea_1836");
+			this.oCPU.Log.ExitBlock("F0_2aea_1836_CheckTerrainAddon");
 
 			return this.oCPU.AX.Word;
 		}

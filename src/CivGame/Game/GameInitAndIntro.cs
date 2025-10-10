@@ -1877,7 +1877,7 @@ namespace OpenCiv1
 
 		L1078:
 			// Instruction address 0x0000:0x1081, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1836(
+			this.oParent.Segment_2aea.F0_2aea_1836_CheckTerrainAddon(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a)));
 

@@ -4400,7 +4400,7 @@ namespace OpenCiv1
 				local_6 = (short)this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(xPos, yPos);
 
 				// Instruction address 0x1d12:0x6af0, size: 5
-				if (this.oParent.Segment_2aea.F0_2aea_1836(xPos, yPos) == 0)
+				if (this.oParent.Segment_2aea.F0_2aea_1836_CheckTerrainAddon(xPos, yPos) == 0)
 				{
 					switch (resourceType)
 					{
