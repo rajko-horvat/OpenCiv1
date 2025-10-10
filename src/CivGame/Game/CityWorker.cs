@@ -5,6 +5,14 @@ namespace OpenCiv1
 {
 	public class CityWorker
 	{
+		public enum ResourceType
+		{
+			Food = 0,
+			Production = 1,
+			Trade = 2,
+			Max = 3
+		}
+
 		private CivGame oParent;
 		private VCPU oCPU;
 
@@ -643,15 +651,15 @@ namespace OpenCiv1
 							local_d2 = city.Position.Y + this.oParent.CityOffsets[i].Y;
 
 							// Instruction address 0x1d12:0x0f9e, size: 5
-							local_cc = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, 0);
+							local_cc = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, ResourceType.Food);
 
 							// Instruction address 0x1d12:0x0fb6, size: 5
-							local_d4 = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, 1) * 2;
+							local_d4 = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, ResourceType.Production) * 2;
 
 							if (local_50 != 1 || this.oParent.Var_70da_Arr[1] != 0 || local_d4 != 0)
 							{
 								// Instruction address 0x1d12:0x0ff0, size: 5
-								local_d4 += F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, 2);
+								local_d4 += F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, ResourceType.Trade);
 
 								if (local_cc > local_ce || (local_cc == local_ce && local_d4 > local_d6))
 								{
@@ -695,21 +703,21 @@ namespace OpenCiv1
 							local_d2 = city.Position.Y + this.oParent.CityOffsets[i].Y;
 
 							// Instruction address 0x1d12:0x1173, size: 5
-							local_4 = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, 0);
+							local_4 = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, ResourceType.Food);
 
 							// Instruction address 0x1d12:0x1151, size: 5
 							local_d4 = local_4 * (16 / this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 								this.oParent.Var_70da_Arr[0] - (city.ActualSize * 2) - (local_48 * this.oParent.Var_e3c6), 1, 99));
 
 							// Instruction address 0x1d12:0x1190, size: 5
-							local_c = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, 1);
+							local_c = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, ResourceType.Production);
 
 							// Instruction address 0x1d12:0x11af, size: 5
 							local_d4 += ((city.ActualSize * 3) / this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
 								this.oParent.Var_70da_Arr[1] - this.oParent.Var_d2f6, 1, 99)) * local_c;
 
 							// Instruction address 0x1d12:0x11dc, size: 5
-							local_46 = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, 2);
+							local_46 = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_c6, local_d2, ResourceType.Trade);
 
 							// Instruction address 0x1d12:0x11f7, size: 5
 							local_d4 += ((city.ActualSize * 2) / this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.Var_70da_Arr[2], 1, 99)) * local_46;
@@ -3552,7 +3560,7 @@ namespace OpenCiv1
 
 						// Instruction address 0x1d12:0x5c28, size: 5
 						local_cc = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID,
-							city.Position.X + this.oParent.CityOffsets[local_ea].X, city.Position.Y + this.oParent.CityOffsets[local_ea].Y, local_bc);
+							city.Position.X + this.oParent.CityOffsets[local_ea].X, city.Position.Y + this.oParent.CityOffsets[local_ea].Y, (ResourceType)local_bc);
 
 						this.oParent.Var_70da_Arr[local_bc] -= local_cc;
 
@@ -4303,7 +4311,7 @@ namespace OpenCiv1
 
 				local_10 = 0;
 
-				for (int i = 0; i < 3; i++)
+				for (ResourceType i = 0; i < ResourceType.Max; i++)
 				{
 					// Instruction address 0x1d12:0x698b, size: 3
 					local_10 += F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_6, local_a, i);
@@ -4336,7 +4344,7 @@ namespace OpenCiv1
 			for (int i = 0; i < 3; i++)
 			{
 				// Instruction address 0x1d12:0x6a10, size: 3
-				local_c = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_6, local_a, i);
+				local_c = F0_1d12_6abc_GetCityResourceCount(this.Var_6548_PlayerID, this.Var_653e_CityID, local_6, local_a, (ResourceType)i);
 
 				this.oParent.Var_70da_Arr[i] += local_c;
 
@@ -4384,156 +4392,144 @@ namespace OpenCiv1
 		/// <param name="yPos"></param>
 		/// <param name="resourceType"></param>
 		/// <returns></returns>
-		public int F0_1d12_6abc_GetCityResourceCount(int playerID, int cityID, int xPos, int yPos, int resourceType)
+		public int F0_1d12_6abc_GetCityResourceCount(int playerID, int cityID, int xPos, int yPos, ResourceType resourceType)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1d12_6abc_GetCityResourceCount({playerID}, {cityID}, {xPos}, {yPos}, {resourceType})");
 
 			// function body
-			int resourceCount = 0;
-			int local_4;
-			int local_6;
-
 			// Instruction address 0x1d12:0x6ac9, size: 5
-			if (this.oParent.Segment_2aea.F0_2aea_1326_CheckMapBounds(xPos, yPos) != 0)
+			if (this.oParent.Segment_2aea.F0_2aea_1326_CheckMapBounds(xPos, yPos) == 0)
 			{
-				// Instruction address 0x1d12:0x6ade, size: 5
-				local_6 = (short)this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(xPos, yPos);
+				this.oCPU.AX.Word = 0;
 
-				// Instruction address 0x1d12:0x6af0, size: 5
-				if (this.oParent.Segment_2aea.F0_2aea_1836_CheckTerrainAddon(xPos, yPos) == 0)
+				// Far return
+				this.oCPU.Log.ExitBlock("F0_1d12_6abc_GetCityResourceCount");
+
+				return 0;
+			}
+
+			// Instruction address 0x1d12:0x6ade, size: 5
+			int terrainID = (short)this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(xPos, yPos);
+			int index = terrainID;
+
+			// Instruction address 0x1d12:0x6af0, size: 5
+			if (this.oParent.Segment_2aea.F0_2aea_1836_CheckTerrainAddon(xPos, yPos) != 0)
+			{
+				// Access addon terrains
+				index += 12;
+			}
+
+			int resourceCount = 0;
+			switch (resourceType)
+			{
+				case ResourceType.Food:
+					resourceCount = this.oParent.CivState.Terrains[index].Food;
+					break;
+
+				case ResourceType.Production:
+					resourceCount = this.oParent.CivState.Terrains[index].Production;
+					break;
+
+				case ResourceType.Trade:
+					resourceCount = this.oParent.CivState.Terrains[index].Trade;
+					break;
+
+				default:
+					throw new Exception("Unknown terrain field");
+			}
+
+			// Instruction address 0x1d12:0x6b26, size: 5
+			int local_4 = (short)this.oParent.Segment_2aea.F0_2aea_1585(xPos, yPos);
+
+			if ((this.oParent.CivState.DebugFlags & 0x2) == 0)
+			{
+				local_4 = (terrainID <= 2) ? 2 : 4;
+				local_4 |= (terrainID != 1) ? 8 : 0;
+			}
+
+			if (terrainID != 10)
+			{
+				if (resourceType == ResourceType.Food && (local_4 & 0x2) != 0)
 				{
-					switch (resourceType)
-					{
-						case 0:
-							resourceCount = this.oParent.CivState.Terrains[local_6].Food;
-							break;
-
-						case 1:
-							resourceCount = this.oParent.CivState.Terrains[local_6].Production;
-							break;
-
-						case 2:
-							resourceCount = this.oParent.CivState.Terrains[local_6].Trade;
-							break;
-
-						default:
-							throw new Exception("Unknown terrain field");
-					}
-				}
-				else
-				{
-					switch (resourceType)
-					{
-						case 0:
-							resourceCount = this.oParent.CivState.Terrains[12 + local_6].Food;
-							break;
-
-						case 1:
-							resourceCount = this.oParent.CivState.Terrains[12 + local_6].Production;
-							break;
-
-						case 2:
-							resourceCount = this.oParent.CivState.Terrains[12 + local_6].Trade;
-							break;
-
-						default:
-							throw new Exception("Unknown terrain field");
-					}
-				}
-
-				// Instruction address 0x1d12:0x6b26, size: 5
-				local_4 = (short)this.oParent.Segment_2aea.F0_2aea_1585(xPos, yPos);
-
-				if ((this.oParent.CivState.DebugFlags & 0x2) == 0)
-				{
-					local_4 = (local_6 <= 2) ? 2 : 4;
-					local_4 |= (local_6 != 1) ? 8 : 0;
-				}
-
-				if (local_6 != 10)
-				{
-					if (resourceType == 0 && (local_4 & 0x2) != 0)
-					{
-						resourceCount += -1 - this.oParent.CivState.TerrainMultipliers[local_6].Multi1;
-					}
-
-					if (resourceType == 1 && (local_4 & 0x4) != 0)
-					{
-						resourceCount += -1 - this.oParent.CivState.TerrainMultipliers[local_6].Multi3;
-					}
-
-					if (resourceType == 2 && (local_4 & 0x8) != 0 && local_6 <= 2)
-					{
-						resourceCount++;
-					}
+					resourceCount += -1 - this.oParent.CivState.TerrainMultipliers[terrainID].Multi1;
 				}
 
-				if (resourceType == 1 && (local_6 == 2 || local_6 == 11))
+				if (resourceType == ResourceType.Production && (local_4 & 0x4) != 0)
 				{
-					if ((((xPos * 7) + (yPos * 11)) & 0x2) != 0)
-					{
-						resourceCount = 0;
-					}
+					resourceCount += -1 - this.oParent.CivState.TerrainMultipliers[terrainID].Multi3;
 				}
 
-				// Instruction address 0x1d12:0x6be7, size: 3
-				if (resourceCount != 0 && resourceType == 2 && F0_1d12_6cf3_GetWonderCityID((int)WonderEnum.Colossus) == cityID)
+				if (resourceType == ResourceType.Trade && (local_4 & 0x8) != 0 && terrainID <= 2)
 				{
 					resourceCount++;
 				}
+			}
 
-				if ((local_4 & 0x10) != 0)
-				{
-					resourceCount += resourceCount / 2;
-				}
-
-				if (resourceCount > 2 && (this.oParent.CivState.Cities[cityID].StatusFlag & 0x40) == 0)
-				{
-					if (this.oParent.CivState.Players[playerID].GovernmentType <= 1)
-					{
-						resourceCount--;
-					}
-
-					if (this.Var_2494 != 0)
-					{
-						this.oParent.Var_e3c2 -= 2;
-					}
-				}
-
-				if (resourceCount != 0 && resourceType == 2)
-				{
-					if (this.Var_2494 != 0)
-					{
-						this.oParent.Var_db42++;
-					}
-
-					if ((this.oParent.CivState.Cities[cityID].StatusFlag & 0x40) != 0)
-					{
-						if (this.oParent.CivState.Players[playerID].GovernmentType >= 2)
-						{
-							resourceCount++;
-						}
-					}
-					else
-					{
-						if (this.oParent.CivState.Players[playerID].GovernmentType >= 4)
-						{
-							resourceCount++;
-						}
-					}
-				}
-
-				if ((local_4 & 0x40) != 0)
-				{
-					resourceCount = (resourceCount + 1) / 2;
-				}
-				
-				if (resourceCount < 0)
+			if (resourceType == ResourceType.Production && (terrainID == 2 || terrainID == 11))
+			{
+				if ((((xPos * 7) + (yPos * 11)) & 0x2) != 0)
 				{
 					resourceCount = 0;
 				}
 			}
 
+			// Instruction address 0x1d12:0x6be7, size: 3
+			if (resourceCount != 0 && resourceType == ResourceType.Trade && F0_1d12_6cf3_GetWonderCityID((int)WonderEnum.Colossus) == cityID)
+			{
+				resourceCount++;
+			}
+
+			if ((local_4 & 0x10) != 0)
+			{
+				resourceCount += resourceCount / 2;
+			}
+
+			if (resourceCount > 2 && (this.oParent.CivState.Cities[cityID].StatusFlag & 0x40) == 0)
+			{
+				if (this.oParent.CivState.Players[playerID].GovernmentType <= 1)
+				{
+					resourceCount--;
+				}
+
+				if (this.Var_2494 != 0)
+				{
+					this.oParent.Var_e3c2 -= 2;
+				}
+			}
+
+			if (resourceCount != 0 && resourceType == ResourceType.Trade)
+			{
+				if (this.Var_2494 != 0)
+				{
+					this.oParent.Var_db42++;
+				}
+
+				if ((this.oParent.CivState.Cities[cityID].StatusFlag & 0x40) != 0)
+				{
+					if (this.oParent.CivState.Players[playerID].GovernmentType >= 2)
+					{
+						resourceCount++;
+					}
+				}
+				else
+				{
+					if (this.oParent.CivState.Players[playerID].GovernmentType >= 4)
+					{
+						resourceCount++;
+					}
+				}
+			}
+
+			if ((local_4 & 0x40) != 0)
+			{
+				resourceCount = (resourceCount + 1) / 2;
+			}
+				
+			if (resourceCount < 0)
+			{
+				resourceCount = 0;
+			}
+			
 			this.oCPU.AX.Word = (ushort)((short)resourceCount);
 
 			// Far return

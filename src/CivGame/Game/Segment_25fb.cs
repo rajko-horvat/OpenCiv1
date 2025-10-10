@@ -3503,7 +3503,7 @@ namespace OpenCiv1
 			// Instruction address 0x25fb:0x211c, size: 5
 			// !!! this call was using uninitialized playerID and cityID from CityWorker class, it now makes sense to use referenced player and unit ID
 			this.oParent.CityWorker.F0_1d12_6abc_GetCityResourceCount(playerID, this.oParent.CivState.Players[playerID].Units[unitID].HomeCityID, 
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)), this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x36)), 1);
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)), this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x36)), CityWorker.ResourceType.Production);
 
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 			this.oCPU.TEST_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a)), 0x8);
