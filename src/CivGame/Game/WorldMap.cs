@@ -210,7 +210,7 @@ namespace OpenCiv1
 
 		L01ef:
 			// Instruction address 0x0000:0x01f5, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1369(
+			this.oParent.Segment_2aea.F0_2aea_1369_MapGetCityOwner(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)));
 
@@ -1321,7 +1321,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0e18;
 
 			// Instruction address 0x0000:0x0e3a, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1369(
+			this.oParent.Segment_2aea.F0_2aea_1369_MapGetCityOwner(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x54)));
 

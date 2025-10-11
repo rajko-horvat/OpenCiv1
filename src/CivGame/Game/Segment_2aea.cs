@@ -356,7 +356,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0413;
 
 			// Instruction address 0x2aea:0x03e1, size: 3
-			F0_2aea_1369(xPos, yPos);
+			F0_2aea_1369_MapGetCityOwner(xPos, yPos);
 
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
@@ -1085,7 +1085,7 @@ namespace OpenCiv1
 
 		L0be0:
 			// Instruction address 0x2aea:0x0be7, size: 3
-			F0_2aea_1369(xPos, yPos);
+			F0_2aea_1369_MapGetCityOwner(xPos, yPos);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1e), this.oCPU.AX.Word);
 			this.oCPU.TEST_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)), 0x1);
@@ -1851,18 +1851,18 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Gets the city owner on map
 		/// </summary>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <returns></returns>
-		public ushort F0_2aea_1369(int xPos, int yPos)
+		/// <returns>ID of a player that owns the city</returns>
+		public ushort F0_2aea_1369_MapGetCityOwner(int xPos, int yPos)
 		{
 			// function body
 			// Instruction address 0x2aea:0x137d, size: 5
-			this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos + 160, yPos);
+			ushort value = this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos + 160, yPos);
 
-			this.oCPU.AX.Word = this.oCPU.AND_UInt16(this.oCPU.AX.Word, 0x7);
+			this.oCPU.AX.Word = (ushort)(value & 0x7);
 
 			return this.oCPU.AX.Word;
 		}
@@ -2245,7 +2245,7 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 
 			// Instruction address 0x2aea:0x1768, size: 3
-			F0_2aea_1369(xPos, yPos);
+			F0_2aea_1369_MapGetCityOwner(xPos, yPos);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0x0);
