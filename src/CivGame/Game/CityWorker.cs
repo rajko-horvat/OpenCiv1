@@ -941,11 +941,11 @@ namespace OpenCiv1
 												if (local_c8 > this.oParent.Var_6c9a || (local_c8 == this.oParent.Var_6c9a && this.oParent.MSCAPI.RNG.Next(++local_106) == 0))
 												{
 													// Instruction address 0x1d12:0x191e, size: 5
-													this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(
+													TerrainEnum terrainID = (TerrainEnum)this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(
 														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
 														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y);
 
-													if ((short)this.oCPU.AX.Word != 10)
+													if (terrainID != TerrainEnum.Ocean)
 													{
 														// Instruction address 0x1d12:0x1956, size: 5
 														// Instruction address 0x1d12:0x1970, size: 5
@@ -4067,7 +4067,7 @@ namespace OpenCiv1
 
 			L6590:
 				// Instruction address 0x1d12:0x6598, size: 5
-				if (this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(local_c6, local_d2) != 10) goto L65a8;
+				if ((TerrainEnum)this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(local_c6, local_d2) != TerrainEnum.Ocean) goto L65a8;
 				goto L6640;
 
 			L65a8:
@@ -4443,11 +4443,11 @@ namespace OpenCiv1
 
 			if ((this.oParent.CivState.DebugFlags & 0x2) == 0)
 			{
-				local_4 = (terrainID <= 2) ? 2 : 4;
-				local_4 |= (terrainID != 1) ? 8 : 0;
+				local_4 = (terrainID <= (int)TerrainEnum.Grassland) ? 2 : 4;
+				local_4 |= (terrainID != (int)TerrainEnum.Plains) ? 8 : 0;
 			}
 
-			if (terrainID != 10)
+			if (terrainID != (int)TerrainEnum.Ocean)
 			{
 				if (resourceType == ResourceType.Food && (local_4 & 0x2) != 0)
 				{
@@ -4459,13 +4459,13 @@ namespace OpenCiv1
 					resourceCount += -1 - this.oParent.CivState.TerrainMultipliers[terrainID].Multi3;
 				}
 
-				if (resourceType == ResourceType.Trade && (local_4 & 0x8) != 0 && terrainID <= 2)
+				if (resourceType == ResourceType.Trade && (local_4 & 0x8) != 0 && terrainID <= (int)TerrainEnum.Grassland)
 				{
 					resourceCount++;
 				}
 			}
 
-			if (resourceType == ResourceType.Production && (terrainID == 2 || terrainID == 11))
+			if (resourceType == ResourceType.Production && (terrainID == (int)TerrainEnum.Grassland || terrainID == (int)TerrainEnum.River))
 			{
 				if ((((xPos * 7) + (yPos * 11)) & 0x2) != 0)
 				{
@@ -5031,7 +5031,7 @@ namespace OpenCiv1
 						int rectYPos = ((yPos / 2) * 3) + this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(local_10 + 0x2810)) + 118;
 
 						// Instruction address 0x1d12:0x73a3, size: 5
-						if (this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(mapXPos, mapYPos) != 10)
+						if ((TerrainEnum)this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(mapXPos, mapYPos) != TerrainEnum.Ocean)
 						{
 							// Instruction address 0x1d12:0x72f7, size: 5
 							this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, rectXPos, rectYPos, 2, 2, 2);
