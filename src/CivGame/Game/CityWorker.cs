@@ -3288,7 +3288,7 @@ namespace OpenCiv1
 
 						this.oParent.Var_aa_Rectangle.FontID = 1;
 
-						this.oParent.Overlay_23.F23_0000_0000(cityID);
+						this.oParent.Overlay_23.F23_0000_0000_CityNameDialog(cityID);
 
 						this.oParent.Var_6b64 = 1;
 

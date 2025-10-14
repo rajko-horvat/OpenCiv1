@@ -109,7 +109,7 @@ namespace OpenCiv1
 			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.PlayerFlags);
 			if (this.oCPU.Flags.E) goto L0118;
 			
-			this.oParent.Overlay_23.F23_0000_0000(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
+			this.oParent.Overlay_23.F23_0000_0000_CityNameDialog(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
 			
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L00fe;

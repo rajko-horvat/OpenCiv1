@@ -524,7 +524,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0645, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 150, 0, 170, 200, 0);
 
-			this.oParent.Overlay_23.F23_0000_00d6();
+			this.oParent.Overlay_23.F23_0000_00d6_PlayerNameDialog();
 
 			// Instruction address 0x0000:0x0652, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
