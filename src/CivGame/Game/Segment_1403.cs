@@ -4147,7 +4147,7 @@ namespace OpenCiv1
 			goto L3c40;
 
 		L3521:
-			this.oParent.Overlay_23.F23_0000_025b();
+			this.oParent.Overlay_23.F23_0000_025b_FindCityDialog();
 
 			goto L3c40;
 

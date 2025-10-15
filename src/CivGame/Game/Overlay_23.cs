@@ -180,46 +180,42 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows find city dialog. Handles city name input and search.
+		/// Centers camera on a city if found and city is visible to the player.
 		/// </summary>
-		public void F23_0000_025b()
+		public void F23_0000_025b_FindCityDialog()
 		{
-			this.oCPU.Log.EnterBlock("F23_0000_025b()");
+			this.oCPU.Log.EnterBlock("F23_0000_025b_FindCityDialog()");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x2);
-			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-
 			// Instruction address 0x0000:0x0263, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
+			// Save main screen graphics before showing popup dialog
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
-			F23_0000_0319(0x53ce);
+			ushort cityID = F23_0000_0319_FindCityEditBox("Where in the heck is ... (city name)");
+			if (cityID != 0xffff)
+			{
+				City city = this.oParent.CivState.Cities[cityID];
+				ushort visibilityMask = this.oParent.CivState.MapVisibility[city.Position.X, city.Position.Y];
+				var playerMask = 1 << (this.oParent.CivState.HumanPlayerID & 0xff);
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
-			if (this.oCPU.Flags.E) goto L02cd;
+				if ((visibilityMask & playerMask) != 0)
+				{
+					// Center camera at the city
+					// Instruction address 0x0000:0x02c3, size: 5
+					this.oParent.Segment_2aea.F0_2aea_0008(this.oParent.CivState.HumanPlayerID, city.Position.X - 7, city.Position.Y - 6);
+					// Instruction address 0x0000:0x030e, size: 5
+					this.oParent.Segment_11a8.F0_11a8_0250();
+					// Far return
+					this.oCPU.Log.ExitBlock("F23_0000_025b_FindCityDialog");
+					return;
+				}
+			}
 
-			this.oCPU.AX.Word = this.oParent.CivState.MapVisibility[this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.X,
-				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.Y];			
-			this.oCPU.DX.Word = 0x1;
-			this.oCPU.CX.Low = (byte)(this.oParent.CivState.HumanPlayerID & 0xff);
-			this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-			if (this.oCPU.Flags.E) goto L02cd;
+			// Could not find city or it is not visible
 
-			// Instruction address 0x0000:0x02c3, size: 5
-			this.oParent.Segment_2aea.F0_2aea_0008(this.oParent.CivState.HumanPlayerID,
-				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.X - 7,
-				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.Y - 6);
-
-			goto L030e;
-
-		L02cd:
 			// Instruction address 0x0000:0x02e5, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 64, 78, 224, 10, 15);
 
@@ -229,28 +225,25 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0304, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 
+			// Restore main screen graphics, 'hide' dialog
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
-		L030e:
 			// Instruction address 0x0000:0x030e, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
-			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.DI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F23_0000_025b");
+			this.oCPU.Log.ExitBlock("F23_0000_025b_FindCityDialog");
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows popup dialog, handles edit box and searches for a city by name
 		/// </summary>
-		/// <param name="stringPtr"></param>
-		/// <returns></returns>
-		public ushort F23_0000_0319(ushort stringPtr)
+		/// <param name="title">Popup dialog title string</param>
+		/// <returns>city ID or 0xffff if not found</returns>
+		private ushort F23_0000_0319_FindCityEditBox(string title)
 		{
-			this.oCPU.Log.EnterBlock($"F23_0000_0319(0x{stringPtr:x4})");
+			this.oCPU.Log.EnterBlock($"F23_0000_0319_FindCityEditBox({title})");
+
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -258,14 +251,17 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x14);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 
+			// Dialog background
 			// Instruction address 0x0000:0x0338, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 64, 78, 224, 24, 15);
 
+			// Borders
 			// Instruction address 0x0000:0x0353, size: 5
 			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(64, 78, 224, 24, 0);
 
+			// Title
 			// Instruction address 0x0000:0x0369, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(stringPtr, 66, 80, 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(title, 66, 80, 0);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -327,7 +323,7 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F23_0000_0319");
+			this.oCPU.Log.ExitBlock("F23_0000_0319_FindCityEditBox");
 
 			return this.oCPU.AX.Word;
 		}
