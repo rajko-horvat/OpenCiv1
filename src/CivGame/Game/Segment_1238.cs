@@ -16,12 +16,17 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows message box. Size of message box is determined by its text contents.
+		/// Text can be formatted in order to show list of options to choose for the player.
+		/// Each option should take a single line and start with one or multiple spaces.
+		/// Option lines shouldn't be mixed with non-option lines in order for selection to render properly.
+		/// Value at address 0xb276 (ushort) can be used as a bitmask indicating disabled options.
 		/// </summary>
-		/// <param name="stringPtr"></param>
+		/// <param name="stringPtr">Address of a message string</param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		public void F0_1238_001e_ShowDialog(ushort stringPtr, int xPos, int yPos)
+		/// <returns>Index of selected option in AX register or 0xffff if no options provided</returns>
+		public ushort F0_1238_001e_ShowDialog(ushort stringPtr, int xPos, int yPos)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1238_001e_ShowDialog(0x{stringPtr:x4}, {xPos}, {yPos})");
 
@@ -58,6 +63,8 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1238_001e_ShowDialog");
+
+			return this.oCPU.AX.Word;
 		}
 
 		/// <summary>
