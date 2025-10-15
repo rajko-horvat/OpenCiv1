@@ -2791,7 +2791,7 @@ namespace OpenCiv1
 			goto L1b8f;
 
 		L1c52:
-			this.oParent.Var_2f9e_Unknown = 0x6;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.ScienceAdvisor;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), 0x0);
 			if (this.oCPU.Flags.E) goto L1cca;
@@ -3043,12 +3043,12 @@ namespace OpenCiv1
 
 			if (playerID == this.oParent.CivState.HumanPlayerID) goto L1f2a;
 
-			this.oParent.Var_2f9e_Unknown = 0x0;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.SpiesReport;
 
 			goto L1f30;
 
 		L1f2a:
-			this.oParent.Var_2f9e_Unknown = 0x6;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.ScienceAdvisor;
 
 		L1f30:
 			// Instruction address 0x1ade:0x1f3c, size: 5
@@ -3180,7 +3180,7 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x20b2, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " agree to\nan exchange of ambassadors.\n");
 
-			this.oParent.Var_2f9e_Unknown = 0x1;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DiplomatsReport;
 
 			// Instruction address 0x1ade:0x20cc, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 100);
@@ -3215,7 +3215,7 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x2152, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\nmakes existing Barracks\nobsolete.\n");
 
-			this.oParent.Var_2f9e_Unknown = 0x3;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DefenseMinister;
 
 			// Instruction address 0x1ade:0x216c, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 100);

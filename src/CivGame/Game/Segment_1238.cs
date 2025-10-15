@@ -339,7 +339,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x034f, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f(0x1c2a);
 
-			this.oParent.Var_2f9e_Unknown = 0x4;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
 
 			// Instruction address 0x1238:0x0367, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -1144,7 +1144,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x0ca4, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "!\n");
 
-			this.oParent.Var_2f9e_Unknown = 0x2;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.TravelersReport;
 
 			// Instruction address 0x1238:0x0cbf, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 32);
@@ -1742,7 +1742,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x147d, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "00,000 citizens.\n");
 
-			this.oParent.Var_2f9e_Unknown = 0x4;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
 
 			// Instruction address 0x1238:0x1498, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -2110,7 +2110,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x2;
 
 		L17f2:
-			this.oParent.Var_2f9e_Unknown = this.oCPU.AX.Word;
+			this.oParent.Var_2f9e_MessageBoxStyle = (MsgBoxStyleEnum)this.oCPU.AX.Word;
 
 			// Instruction address 0x1238:0x1802, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 80);

@@ -64,7 +64,10 @@ namespace OpenCiv1
 		// !!! This should not be used at all as screen 3 doesn't exist
 		public CRectangle Var_19fc_Rectangle = new CRectangle(3, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 
-		public ushort Var_2f9e_Unknown = 0xffff;
+		/// <summary>
+		/// Allows to customize dialog shown by F0_1238_001e_ShowDialog().
+		/// </summary>
+		public MsgBoxStyleEnum Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.Default;
 
 		// 0x652e - after this offset the default values are set to 0
 		public int Var_6b64 = 0;

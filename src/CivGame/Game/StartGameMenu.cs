@@ -1288,11 +1288,11 @@ namespace OpenCiv1
 				this.oCPU.AX.Word = 0x2;
 			}
 		
-			this.oParent.Var_2f9e_Unknown = this.oCPU.AX.Word;
+			this.oParent.Var_2f9e_MessageBoxStyle = (MsgBoxStyleEnum)this.oCPU.AX.Word;
 
 			if (playerID1 == this.oParent.CivState.HumanPlayerID)
 			{
-				this.oParent.Var_2f9e_Unknown = 0x3;
+				this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DefenseMinister;
 			}
 
 			// Instruction address 0x0000:0x0f32, size: 5

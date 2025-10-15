@@ -274,7 +274,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0294, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-			this.oParent.Var_2f9e_Unknown = 0x0;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.SpiesReport;
 
 			// Instruction address 0x0000:0x02ab, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -400,7 +400,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0420, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-			this.oParent.Var_2f9e_Unknown = 0x0;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.SpiesReport;
 
 			// Instruction address 0x0000:0x0437, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -486,7 +486,7 @@ namespace OpenCiv1
 			}
 
 		L054b:
-			this.oParent.Var_2f9e_Unknown = 0x0;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.SpiesReport;
 
 			// Instruction address 0x0000:0x055d, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -716,7 +716,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0876, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "!\n");
 
-			this.oParent.Var_2f9e_Unknown = 0x0;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.SpiesReport;
 
 			// Instruction address 0x0000:0x0890, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 40);

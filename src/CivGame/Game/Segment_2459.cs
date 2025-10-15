@@ -399,7 +399,7 @@ namespace OpenCiv1
 				goto L04bc;
 
 		L041a:
-			this.oParent.Var_2f9e_Unknown = 0x0;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.SpiesReport;
 
 			// Instruction address 0x2459:0x0428, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Spies report:\n");
