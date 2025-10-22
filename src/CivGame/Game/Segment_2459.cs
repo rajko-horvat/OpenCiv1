@@ -330,7 +330,7 @@ namespace OpenCiv1
 			// Instruction address 0x2459:0x035d, size: 5
 			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oParent.CivState.Nations[this.oParent.CivState.Players[playerID].NationalityID].ShortTune, 0);
 
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x8);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x8);
 			if (this.oCPU.Flags.E) goto L03b7;
 
 			// Instruction address 0x2459:0x036c, size: 5

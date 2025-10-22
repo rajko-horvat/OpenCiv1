@@ -1105,7 +1105,7 @@ namespace OpenCiv1
 									this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
 									// Instruction address 0x1d12:0x1dbe, size: 5
-									if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID && (this.oParent.CivState.GameSettingFlags & 0x8) != 0 && (local_e8 <= 21 || local_e8 > 24) &&
+									if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID && this.oParent.CivState.GameSettingFlags.Animations && (local_e8 <= 21 || local_e8 > 24) &&
 										(city.StatusFlag & 0x10) == 0 && local_e8 != 1 && this.oParent.Segment_11a8.F0_11a8_02a4(1, 0) != 0)
 									{
 										this.oParent.CityView.F19_0000_0000(cityID, (short)local_e8);
@@ -3609,7 +3609,7 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x5d3b, size: 5
 				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x24, 0);
 
-				if ((this.oParent.CivState.GameSettingFlags & 0x8) != 0) goto L5d4d;
+				if (this.oParent.CivState.GameSettingFlags.Animations) goto L5d4d;
 				goto L5d9f;
 
 			L5d4d:
@@ -3650,7 +3650,7 @@ namespace OpenCiv1
 			L5dd7:
 				this.oParent.Var_b1e8 = 1;
 
-				if ((this.oParent.CivState.GameSettingFlags & 0x1) != 0) goto L5de7;
+				if (this.oParent.CivState.GameSettingFlags.InstantAdvice) goto L5de7;
 				goto L5df3;
 
 			L5de7:
@@ -3826,7 +3826,7 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x6143, size: 5
 				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x22, 0);
 
-				if ((this.oParent.CivState.GameSettingFlags & 0x8) != 0)
+				if (this.oParent.CivState.GameSettingFlags.Animations)
 				{
 					this.oParent.CityView.F19_0000_0000(cityID, -2);
 

@@ -403,7 +403,7 @@ namespace OpenCiv1
 			goto L055e;
 			
 		L0416:
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x2);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x2);
 			if (this.oCPU.Flags.E) goto L0439;
 
 			this.oParent.GameLoadAndSave.F11_0000_036a((ushort)((((this.oParent.CivState.TurnCount / 50) - 1) % 6) + 4));
@@ -575,7 +575,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L05f0;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 0x0);
 			if (this.oCPU.Flags.E) goto L066e;
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x80);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x80);
 			if (this.oCPU.Flags.E) goto L066e;
 			this.oCPU.TEST_UInt16((ushort)this.oParent.CivState.SpaceshipFlags, 0x100);
 			if (this.oCPU.Flags.NE) goto L066e;

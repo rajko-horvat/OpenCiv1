@@ -224,7 +224,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)this.oParent.CivState.HumanPlayerID;
 			this.oCPU.CMP_UInt16((ushort)playerID, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0275;
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x20);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x20);
 			if (this.oCPU.Flags.E) goto L027a;
 
 		L0275:

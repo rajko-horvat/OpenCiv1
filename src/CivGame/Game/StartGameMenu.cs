@@ -242,10 +242,10 @@ namespace OpenCiv1
 			goto L02ca;
 
 		L02f7:
-			this.oParent.CivState.GameSettingFlags = 0xfa;
+			this.oParent.CivState.GameSettingFlags.Value = 0xfa;
 			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x1a30), 0x4e);
 			if (this.oCPU.Flags.NE) goto L0309;
-			this.oParent.CivState.GameSettingFlags &= 0x7fef;
+			this.oParent.CivState.GameSettingFlags.Value &= 0x7fef;
 
 		L0309:
 			// Instruction address 0x0000:0x0311, size: 5
@@ -318,7 +318,7 @@ namespace OpenCiv1
 
 			if (this.oParent.CivState.DifficultyLevel == 0)
 			{
-				this.oParent.CivState.GameSettingFlags |= 1;
+				this.oParent.CivState.GameSettingFlags.InstantAdvice = true;
 			}
 
 			// Another indexing error. Value this.oParent.GameState.HumanPlayerID is equal

@@ -2450,7 +2450,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x25, 0);
 
 		L1ea4:
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x1);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x1);
 			if (this.oCPU.Flags.NE) goto L1eae;
 			goto L1eba;
 
@@ -3425,7 +3425,7 @@ namespace OpenCiv1
 				goto L2cdd;
 
 		L2c94:
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x20);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x20);
 			if (this.oCPU.Flags.E) goto L2c9e;
 			goto L2ca9;
 
@@ -3786,7 +3786,7 @@ namespace OpenCiv1
 			if (playerID == this.oParent.CivState.HumanPlayerID)
 				goto L31dc;
 
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x20);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x20);
 			if (this.oCPU.Flags.NE) goto L31dc;
 			goto L3220;
 
@@ -4382,12 +4382,12 @@ namespace OpenCiv1
 			goto L3c40;
 
 		L384e:
-			this.oParent.CivState.GameSettingFlags ^= 0x10;
+			this.oParent.CivState.GameSettingFlags.Sound ^= true;
 
 			// Instruction address 0x1403:0x385c, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Sounds ");
 
-			if ((this.oParent.CivState.GameSettingFlags & 0x10) != 0)
+			if (this.oParent.CivState.GameSettingFlags.Sound)
 			{
 				// Instruction address 0x1403:0x387c, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, "ON\n");
@@ -5041,7 +5041,7 @@ namespace OpenCiv1
 			goto L3e8f;
 
 		L3e85:
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x4);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x4);
 			if (this.oCPU.Flags.NE) goto L3e8f;
 			goto L3ea1;
 

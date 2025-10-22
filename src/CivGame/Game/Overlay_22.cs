@@ -1215,12 +1215,12 @@ namespace OpenCiv1
 			goto L0d52;
 
 		L0e52:
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.GameSettingFlags;
+			this.oCPU.AX.Word = (ushort)this.oParent.CivState.GameSettingFlags.Value;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18), this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x28bc, 0x1);
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeba), 0x1);
 			if (this.oCPU.Flags.G) goto L0e6a;
-			this.oParent.CivState.GameSettingFlags &= 0x7ff7;
+			this.oParent.CivState.GameSettingFlags.Value &= 0x7ff7;
 
 		L0e6a:
 			// Instruction address 0x0000:0x0e76, size: 5
@@ -1228,7 +1228,7 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x28bc, 0x0);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18));
-			this.oParent.CivState.GameSettingFlags = (short)this.oCPU.AX.Word;
+			this.oParent.CivState.GameSettingFlags.Value = (short)this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;

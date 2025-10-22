@@ -385,7 +385,7 @@ namespace OpenCiv1
 		L0456:
 			if (playerID != this.oParent.CivState.HumanPlayerID) goto L0499;
 
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x8);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x8);
 			if (this.oCPU.Flags.E) goto L0484;
 
 			// Instruction address 0x0000:0x046d, size: 5

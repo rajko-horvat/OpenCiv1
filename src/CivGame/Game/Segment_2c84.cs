@@ -47,7 +47,7 @@ namespace OpenCiv1
 			{
 				case 0:
 					// Instruction address 0x2c84:0x005e, size: 3
-					F0_2c84_00ad();
+					F0_2c84_00ad_GameMenu();
 					break;
 
 				case 1:
@@ -102,142 +102,111 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows game menu and handles its options submenu
 		/// </summary>
-		public void F0_2c84_00ad()
+		private void F0_2c84_00ad_GameMenu()
 		{
-			this.oCPU.Log.EnterBlock("F0_2c84_00ad()");
+			this.oCPU.Log.EnterBlock("F0_2c84_00ad_GameMenu()");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x6);
 
-			if (oParent.CivState.TurnCount != 0) goto L00c0;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, 0x10);
+			if (oParent.CivState.TurnCount == 0)
+			{
+				// Disable 'Save Game' option
+				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, 0x10);
+			}
 
-		L00c0:
 			// Instruction address 0x2c84:0x00c8, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, " Tax Rate\n Luxuries Rate\n FindCity\n Options\n Save Game\n REVOLUTION!\n \n Retire\n QUIT to DOS\n");
 
-			this.oCPU.TEST_UInt16((ushort)this.oParent.CivState.SpaceshipFlags, 0x100);
-			if (this.oCPU.Flags.E) goto L00e8;
+			if (((ushort)this.oParent.CivState.SpaceshipFlags & 0x100) != 0)
+			{
+				// Instruction address 0x2c84:0x00e0, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, " View Replay\n");
+			}
 
-			// Instruction address 0x2c84:0x00e0, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, " View Replay\n");
-
-		L00e8:
 			// Instruction address 0x2c84:0x00f4, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 16, 8, 0);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);
+			var selectedOption = this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 16, 8, 0);
 
 			// Instruction address 0x2c84:0x00ff, size: 5
 			this.oParent.Segment_1403.F0_1403_4545();
 
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x9);
-			if (this.oCPU.Flags.BE) goto L010f;
-			goto L01d4;
-
-		L010f:
-			switch(this.oCPU.AX.Word)
+			switch(selectedOption)
 			{
-				case 0:
-					goto L0120;
-				case 1:
-					goto L0129;
-				case 2:
-					goto L0132;
-				case 3:
-					goto L013b;
-				case 4:
-					goto L019b;
-				case 5:
-					goto L0117;
-				case 6:
-					goto L01d4;
-				case 7:
-					goto L01a3;
-				case 8:
-					goto L01b1;
-				case 9:
-					goto L01b9;
+				case 0: // Tax Rate
+					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0x3d);
+					break;
+
+				case 1: // Luxuries
+					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0x2d);
+					break;
+
+				case 2: // Find City
+					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0x3f);
+					break;
+
+				case 3: // Options
+					{
+						// Instruction address 0x2c84:0x0143, size: 5
+						this.oParent.MSCAPI.strcpy(0xba06, "Options:\n Instant Advice\n AutoSave\n End of Turn\n Animations\n Sound\n Enemy Moves\n Civilopedia Text\n Palace\n");
+
+						ushort index = 0xffff;
+						do
+						{
+							// Write current flags to show as checkmarks in options submenu
+							this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd7f2, (ushort)this.oParent.CivState.GameSettingFlags.Value);
+							// Process options submenu, return selected option index or 0xffff if selection was rejected
+							index = this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 24, 16, 0);
+							if (index == 0xffff)
+							{
+								continue;
+							}
+
+							if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2f9c) == 0)
+							{
+								oParent.CivState.GameSettingFlags.Value ^= (short)(1 << index);
+							}
+
+							this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, index);
+
+						} while (index != 0xffff || this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2f9c) != 0);
+
+						break;
+					}
+
+				case 4: // Save Game
+					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0x53);
+					break;
+
+				case 5: // Revolution
+					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0xfffe);
+					break;
+
+				case 6: // Empty option line
+					break;
+
+				case 7: // Retire
+					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, 0x2);
+					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0x1000);
+					break;
+
+				case 8: // Quit
+					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, 0x1);
+					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0x1000);
+					break;
+
+				case 9: // View replay
+					this.oParent.GameReplay.F9_0000_0000();
+					break;
 			}
 
-		L0117:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0xfffe);
-			goto L01d4;
-
-		L0120:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0x3d);
-			goto L01d4;
-
-		L0129:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0x2d);
-			goto L01d4;
-
-		L0132:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0x3f);
-			goto L01d4;
-
-		L013b:
-			// Instruction address 0x2c84:0x0143, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, "Options:\n Instant Advice\n AutoSave\n End of Turn\n Animations\n Sound\n Enemy Moves\n Civilopedia Text\n Palace\n");
-
-		L014b:
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.GameSettingFlags;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd7f2, this.oCPU.AX.Word);
-
-			// Instruction address 0x2c84:0x015d, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 24, 16, 0);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
-			if (this.oCPU.Flags.E) goto L0180;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2f9c), 0x0);
-			if (this.oCPU.Flags.NE) goto L0180;
-			this.oCPU.AX.Word = 0x1;
-			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
-			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			oParent.CivState.GameSettingFlags ^= (short)this.oCPU.AX.Word;
-
-		L0180:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0xffff);
-			if (this.oCPU.Flags.E) goto L018c;
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, this.oCPU.AX.Word);
-
-		L018c:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0xffff);
-			if (this.oCPU.Flags.NE) goto L014b;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2f9c), 0x0);
-			if (this.oCPU.Flags.NE) goto L014b;
-			goto L01d4;
-
-		L019b:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0x53);
-			goto L01d4;
-
-		L01a3:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, 0x2);
-
-		L01a9:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0x1000);
-			goto L01d4;
-
-		L01b1:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, 0x1);
-			goto L01a9;
-
-		L01b9:
-			this.oParent.GameReplay.F9_0000_0000();
-
-		L01d4:
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_2c84_00ad");
+			this.oCPU.Log.ExitBlock("F0_2c84_00ad_GameMenu");
 		}
 
 		/// <summary>

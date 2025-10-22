@@ -376,8 +376,8 @@ namespace OpenCiv1
 			goto L01d4;
 
 		L039a:
-			this.oParent.CivState.GameSettingFlags ^= 0x10;
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x10);
+			this.oParent.CivState.GameSettingFlags.Sound ^= true;
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x10);
 			if (this.oCPU.Flags.E) goto L03a9;
 			goto L0217;
 

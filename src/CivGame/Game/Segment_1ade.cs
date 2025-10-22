@@ -2015,7 +2015,7 @@ namespace OpenCiv1
 			goto L14e7;
 
 		L12cd:
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x1);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x1);
 			if (this.oCPU.Flags.NE) goto L12d7;
 			goto L1438;
 
@@ -2395,7 +2395,7 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L16f1;
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x8);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x8);
 			if (this.oCPU.Flags.E) goto L16f1;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42), 0x1);
 
@@ -2592,7 +2592,7 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x19f6, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x1);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x1);
 			if (this.oCPU.Flags.NE) goto L1a05;
 			goto L1b3d;
 
