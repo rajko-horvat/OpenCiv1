@@ -32,7 +32,7 @@ namespace OpenCiv1
 			if (menuIndex == -1)
 			{
 				// Instruction address 0x2c84:0x0026, size: 5
-				menuIndex = (short)this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange((short)this.oParent.Var_db3c / 60, 0, 4);
+				menuIndex = (short)this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange((short)this.oParent.Var_db3c_MouseXPos / 60, 0, 4);
 			}
 		
 			// Instruction address 0x2c84:0x0031, size: 5

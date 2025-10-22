@@ -381,7 +381,7 @@ namespace OpenCiv1
 			goto L0525;
 
 		L04b2:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.NE) goto L052e;
 
 			// Instruction address 0x0000:0x04d6, size: 5
@@ -409,7 +409,7 @@ namespace OpenCiv1
 
 		L0520:
 			// Instruction address 0x0000:0x0520, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
 		L0525:
 			// Instruction address 0x0000:0x0525, size: 5
@@ -419,7 +419,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L04b2;
 
 		L052e:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.E) goto L053c;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48), 0xd);
 			goto L0544;

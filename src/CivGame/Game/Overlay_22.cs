@@ -1381,14 +1381,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L10aa;
 
 			// Instruction address 0x0000:0x10b4, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
 			// Instruction address 0x0000:0x10b9, size: 5
 			this.oParent.MSCAPI.kbhit();
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L10cc;
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.NE) goto L10cc;
 			goto L100e;
 

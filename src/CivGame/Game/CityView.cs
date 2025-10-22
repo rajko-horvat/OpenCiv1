@@ -1384,14 +1384,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L1880;
 
 			// Instruction address 0x0000:0x188a, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
 			// Instruction address 0x0000:0x188f, size: 5
 			this.oParent.MSCAPI.kbhit();
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L18a2;
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.NE) goto L18a2;
 			goto L17db;
 
@@ -1492,10 +1492,10 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x0000:0x1aaf, size: 5
-				this.oParent.Segment_11a8.F0_11a8_0223();
+				this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
 				// Instruction address 0x0000:0x1ab4, size: 5
-				if (this.oParent.MSCAPI.kbhit() != 0 || this.oParent.Var_db3a != 0)
+				if (this.oParent.MSCAPI.kbhit() != 0 || this.oParent.Var_db3a_MouseButton != 0)
 					break;
 			}
 
@@ -1641,14 +1641,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L1c67;
 
 			// Instruction address 0x0000:0x1c71, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
 			// Instruction address 0x0000:0x1c76, size: 5
 			this.oParent.MSCAPI.kbhit();
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L1c89;
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.NE) goto L1c89;
 			goto L1ba8;
 

@@ -140,12 +140,12 @@ namespace OpenCiv1
 
 		L0159:
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd2e2, 0x0);
-			this.oParent.Var_db3a = 0x0;
+			this.oParent.Var_db3a_MouseButton = 0x0;
 
 			// Instruction address 0x2d05:0x0165, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.NE) goto L0177;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), 0x0);
 			if (this.oCPU.Flags.E) goto L01db;
@@ -154,12 +154,12 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2fa2, this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x2);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x2);
 			if (this.oCPU.Flags.NE) goto L018a;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9c, this.oCPU.AX.Word);
 
 		L018a:
-			this.oCPU.AX.Word = this.oParent.Var_db3e;
+			this.oCPU.AX.Word = this.oParent.Var_db3e_MouseYPos;
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)((short)yPos));
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x4);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
@@ -168,13 +168,13 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb1ec));
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 
-			if (xPos > (short)this.oParent.Var_db3c)
+			if (xPos > (short)this.oParent.Var_db3c_MouseXPos)
 			{
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0xffff);
 			}
 			else
 			{
-				if ((short)this.oParent.Var_db3c > this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xde0e))
+				if ((short)this.oParent.Var_db3c_MouseXPos > this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xde0e))
 				{
 					this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0xffff);
 				}
@@ -192,7 +192,7 @@ namespace OpenCiv1
 			goto L0217;
 
 		L01cd:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 
 		L01d2:
 			if (this.oCPU.Flags.NE) goto L0217;

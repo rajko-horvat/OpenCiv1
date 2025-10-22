@@ -390,9 +390,9 @@ namespace OpenCiv1
 
 		L0411:
 			// Instruction address 0x0000:0x0411, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.NE) goto L0426;
 
 			// Instruction address 0x0000:0x041d, size: 5
@@ -402,15 +402,15 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0411;
 
 		L0426:
-			this.oCPU.AX.Word = this.oParent.Var_db3c;
+			this.oCPU.AX.Word = this.oParent.Var_db3c_MouseXPos;
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0xa);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a));
 			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4e), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0x10);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3e_MouseYPos, 0x10);
 			if (this.oCPU.Flags.L) goto L044d;
-			this.oCPU.AX.Word = this.oParent.Var_db3e;
+			this.oCPU.AX.Word = this.oParent.Var_db3e_MouseYPos;
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x10);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.Word = 0x7;
@@ -430,7 +430,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x045e, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x2);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x2);
 			if (this.oCPU.Flags.NE) goto L0474;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x50), 0xffff);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4e), 0x2);

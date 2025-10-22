@@ -483,7 +483,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x1);
 
 		L066c:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.E) goto L0676;
 			goto L06b4;
 
@@ -506,9 +506,9 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), this.oCPU.AX.Word);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12));
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26), this.oCPU.AX.Word);
-			this.oParent.Var_db3c = 0x50;
-			this.oParent.Var_db3e = 0x8;
-			this.oParent.Var_db3a = 0x1;
+			this.oParent.Var_db3c_MouseXPos = 0x50;
+			this.oParent.Var_db3e_MouseYPos = 0x8;
+			this.oParent.Var_db3a_MouseButton = 0x1;
 			goto L09cf;
 
 		L06b1:
@@ -517,10 +517,10 @@ namespace OpenCiv1
 		L06b4:
 			// Instruction address 0x1403:0x06cd, size: 5
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
-				(((short)this.oParent.Var_db3c - 80) / 16) + this.oParent.Var_d4cc_XPos);
+				(((short)this.oParent.Var_db3c_MouseXPos - 80) / 16) + this.oParent.Var_d4cc_XPos);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = this.oParent.Var_db3e;
+			this.oCPU.AX.Word = this.oParent.Var_db3e_MouseYPos;
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x8);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.AX.Word = this.oCPU.XOR_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
@@ -531,7 +531,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
 			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.Var_d75e_YPos);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0x8);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3e_MouseYPos, 0x8);
 			if (this.oCPU.Flags.L) goto L06fd;
 			goto L073a;
 
@@ -563,29 +563,29 @@ namespace OpenCiv1
 			goto L3c40;
 
 		L073a:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0x50);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3c_MouseXPos, 0x50);
 			if (this.oCPU.Flags.L) goto L0744;
 			goto L0846;
 
 		L0744:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0x3a);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3e_MouseYPos, 0x3a);
 			if (this.oCPU.Flags.L) goto L074e;
 			goto L078c;
 
 		L074e:
 			// Instruction address 0x1403:0x0775, size: 5
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
-				(short)this.oParent.Var_db3c + this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6ed6) - 7);
+				(short)this.oParent.Var_db3c_MouseXPos + this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6ed6) - 7);
 
 			// Instruction address 0x1403:0x0781, size: 5
 			this.oParent.Segment_2aea.F0_2aea_0008(playerID,
 				(short)this.oCPU.AX.Word,
-				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange((short)this.oParent.Var_db3e + this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x70ea) - 14, 0, 49));
+				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange((short)this.oParent.Var_db3e_MouseYPos + this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x70ea) - 14, 0, 49));
 
 			goto L0840;
 
 		L078c:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0x48);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3e_MouseYPos, 0x48);
 			if (this.oCPU.Flags.L) goto L0796;
 			goto L0833;
 
@@ -635,10 +635,10 @@ namespace OpenCiv1
 			goto L3ea1;
 
 		L0840:
-			this.oParent.Var_db3a = 0x0;
+			this.oParent.Var_db3a_MouseButton = 0x0;
 
 		L0846:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x2);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x2);
 			if (this.oCPU.Flags.E) goto L0850;
 			goto L096c;
 
@@ -649,19 +649,19 @@ namespace OpenCiv1
 
 		L085a:
 			// Instruction address 0x1403:0x085a, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.E) goto L0869;
 			goto L085a;
 
 		L0869:
 			// Instruction address 0x1403:0x0882, size: 5
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
-				((short)this.oParent.Var_db3c - 80) / 16 + this.oParent.Var_d4cc_XPos);
+				((short)this.oParent.Var_db3c_MouseXPos - 80) / 16 + this.oParent.Var_d4cc_XPos);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = this.oParent.Var_db3e;
+			this.oCPU.AX.Word = this.oParent.Var_db3e_MouseYPos;
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x8);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.AX.Word = this.oCPU.XOR_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
@@ -718,7 +718,7 @@ namespace OpenCiv1
 
 			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].GoToNextDirection = -1;
 
-			this.oParent.Var_db3a = 0x0;
+			this.oParent.Var_db3a_MouseButton = 0x0;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x36), 0x0);
 
 			// Instruction address 0x1403:0x095b, size: 5
@@ -727,10 +727,10 @@ namespace OpenCiv1
 			goto L096c;
 
 		L0966:
-			this.oParent.Var_db3a = 0x2;
+			this.oParent.Var_db3a_MouseButton = 0x2;
 
 		L096c:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x2);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x2);
 			if (this.oCPU.Flags.E) goto L0976;
 			goto L09cf;
 
@@ -769,7 +769,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 		L09cf:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x1);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x1);
 			if (this.oCPU.Flags.E) goto L09d9;
 			goto L0ce5;
 
@@ -5707,9 +5707,9 @@ namespace OpenCiv1
 
 		L4555:
 			// Instruction address 0x1403:0x4555, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.NE) goto L4555;
 
 			// Far return
