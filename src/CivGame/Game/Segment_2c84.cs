@@ -14,14 +14,14 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows and handles one of the five top menus: Game, Orders, Advisors, World and Civilopedia.
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		/// <param name="flag"></param>
-		public void F0_2c84_0000(short playerID, short unitID, short flag)
+		/// <param name="menuIndex">Index of specific menu to show or -1 to select menu using current mouse X coordinate</param>
+		public void F0_2c84_0000_ShowTopMenu(short playerID, short unitID, short menuIndex)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2c84_0000({playerID}, {unitID}, {flag})");
+			this.oCPU.Log.EnterBlock($"F0_2c84_0000_ShowTopMenu({playerID}, {unitID}, {menuIndex})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -29,10 +29,10 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0xffff);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x654a, 0x0);
 
-			if (flag == -1)
+			if (menuIndex == -1)
 			{
 				// Instruction address 0x2c84:0x0026, size: 5
-				flag = (short)this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange((short)this.oParent.Var_db3c / 60, 0, 4);
+				menuIndex = (short)this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange((short)this.oParent.Var_db3c / 60, 0, 4);
 			}
 		
 			// Instruction address 0x2c84:0x0031, size: 5
@@ -43,7 +43,7 @@ namespace OpenCiv1
 			// Instruction address 0x2c84:0x003b, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
-			switch (flag)
+			switch (menuIndex)
 			{
 				case 0:
 					// Instruction address 0x2c84:0x005e, size: 3
@@ -52,22 +52,22 @@ namespace OpenCiv1
 
 				case 1:
 					// Instruction address 0x2c84:0x006a, size: 3
-					F0_2c84_01d8(playerID, unitID);
+					F0_2c84_01d8_OrdersMenu(playerID, unitID);
 					break;
 
 				case 2:
 					// Instruction address 0x2c84:0x0073, size: 3
-					F0_2c84_0615();
+					F0_2c84_0615_AdvisorsMenu();
 					break;
 
 				case 3:
 					// Instruction address 0x2c84:0x0079, size: 3
-					F0_2c84_06e4();
+					F0_2c84_06e4_WorldMenu();
 					break;
 
 				case 4:
 					// Instruction address 0x2c84:0x007f, size: 3
-					F0_2c84_07af();
+					F0_2c84_07af_CivilopediaMenu();
 					break;
 			}
 
@@ -98,7 +98,7 @@ namespace OpenCiv1
 
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_2c84_0000");
+			this.oCPU.Log.ExitBlock("F0_2c84_0000_ShowTopMenu");
 		}
 
 		/// <summary>
@@ -210,13 +210,13 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows orders menu
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_2c84_01d8(short playerID, short unitID)
+		private void F0_2c84_01d8_OrdersMenu(short playerID, short unitID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2c84_01d8({playerID}, {unitID})");
+			this.oCPU.Log.EnterBlock($"F0_2c84_01d8_OrdersMenu({playerID}, {unitID})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -620,15 +620,15 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_2c84_01d8");
+			this.oCPU.Log.ExitBlock("F0_2c84_01d8_OrdersMenu");
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows advisors menu
 		/// </summary>
-		public void F0_2c84_0615()
+		private void F0_2c84_0615_AdvisorsMenu()
 		{
-			this.oCPU.Log.EnterBlock("F0_2c84_0615()");
+			this.oCPU.Log.EnterBlock("F0_2c84_0615_AdvisorsMenu()");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -712,15 +712,15 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_2c84_0615");
+			this.oCPU.Log.ExitBlock("F0_2c84_0615_AdvisorsMenu");
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows world menu
 		/// </summary>
-		public void F0_2c84_06e4()
+		private void F0_2c84_06e4_WorldMenu()
 		{
-			this.oCPU.Log.EnterBlock("F0_2c84_06e4()");
+			this.oCPU.Log.EnterBlock("F0_2c84_06e4_WorldMenu()");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -798,15 +798,15 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_2c84_06e4");
+			this.oCPU.Log.ExitBlock("F0_2c84_06e4_WorldMenu");
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows civilopedia menu
 		/// </summary>
-		public void F0_2c84_07af()
+		private void F0_2c84_07af_CivilopediaMenu()
 		{
-			this.oCPU.Log.EnterBlock("F0_2c84_07af()");
+			this.oCPU.Log.EnterBlock("F0_2c84_07af_CivilopediaMenu()");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -839,7 +839,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_2c84_07af");
+			this.oCPU.Log.ExitBlock("F0_2c84_07af_CivilopediaMenu");
 		}
 	}
 }

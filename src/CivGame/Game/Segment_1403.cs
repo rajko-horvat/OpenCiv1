@@ -537,7 +537,7 @@ namespace OpenCiv1
 
 		L06fd:
 			// Instruction address 0x1403:0x0707, size: 5
-			this.oParent.Segment_2c84.F0_2c84_0000(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), -1);
+			this.oParent.Segment_2c84.F0_2c84_0000_ShowTopMenu(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), -1);
 
 			// Instruction address 0x1403:0x070f, size: 5
 			F0_1403_4545();
@@ -4564,31 +4564,31 @@ namespace OpenCiv1
 
 		L3a3b:
 			// Instruction address 0x1403:0x3a45, size: 5
-			this.oParent.Segment_2c84.F0_2c84_0000(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 0);
+			this.oParent.Segment_2c84.F0_2c84_0000_ShowTopMenu(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 0);
 
 			goto L3aa4;
 
 		L3a50:
 			// Instruction address 0x1403:0x3a5a, size: 5
-			this.oParent.Segment_2c84.F0_2c84_0000(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 1);
+			this.oParent.Segment_2c84.F0_2c84_0000_ShowTopMenu(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 1);
 
 			goto L3aa4;
 
 		L3a65:
 			// Instruction address 0x1403:0x3a6f, size: 5
-			this.oParent.Segment_2c84.F0_2c84_0000(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 2);
+			this.oParent.Segment_2c84.F0_2c84_0000_ShowTopMenu(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 2);
 
 			goto L3aa4;
 
 		L3a7a:
 			// Instruction address 0x1403:0x3a84, size: 5
-			this.oParent.Segment_2c84.F0_2c84_0000(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 3);
+			this.oParent.Segment_2c84.F0_2c84_0000_ShowTopMenu(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 3);
 
 			goto L3aa4;
 
 		L3a8f:
 			// Instruction address 0x1403:0x3a99, size: 5
-			this.oParent.Segment_2c84.F0_2c84_0000(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 4);
+			this.oParent.Segment_2c84.F0_2c84_0000_ShowTopMenu(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)), 4);
 
 			goto L3aa4;
 
