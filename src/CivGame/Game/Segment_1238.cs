@@ -1423,7 +1423,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.CivState.HumanPlayerID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ActiveUnits[25] != 0 ||
+			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ActiveUnits[(int)UnitEnum.Nuclear] != 0 ||
 				oParent.CivState.TurnCount <= 200) goto L0fe4;
 
 			this.oParent.Var_8078 = 1;

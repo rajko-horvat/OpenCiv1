@@ -986,7 +986,7 @@ namespace OpenCiv1
 										}
 									}
 
-									if (city.CurrentProductionID == 25 && this.oParent.CivState.Players[this.Var_6548_PlayerID].ActiveUnits[25] == 1)
+									if (city.CurrentProductionID == 25 && this.oParent.CivState.Players[this.Var_6548_PlayerID].ActiveUnits[(int)UnitEnum.Nuclear] == 1)
 									{
 										this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ContactPlayerCountdown = -1;
 									}
@@ -1362,7 +1362,7 @@ namespace OpenCiv1
 								0, this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 3);
 						}
 
-						if (city.CurrentProductionID >= 0 && city.StatusFlag == 0x19 && this.oParent.CivState.Players[this.Var_6548_PlayerID].ActiveUnits[25] == 0 && city.ShieldsCount != 0)
+						if (city.CurrentProductionID >= 0 && city.StatusFlag == 0x19 && this.oParent.CivState.Players[this.Var_6548_PlayerID].ActiveUnits[(int)UnitEnum.Nuclear] == 0 && city.ShieldsCount != 0)
 						{
 							// Instruction address 0x1d12:0x260d, size: 5
 							local_cc = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(

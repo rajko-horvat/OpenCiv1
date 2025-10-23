@@ -36,6 +36,7 @@ namespace OpenCiv1
 		Transport = 24,
 		Nuclear = 25,
 		Diplomat = 26,
-		Caravan = 27
+		Caravan = 27,
+		Max
 	}
 }

@@ -1138,14 +1138,14 @@ namespace OpenCiv1
 				goto L0b64;
 
 		L0b9b:
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[playerID2].ActiveUnits[25];
+			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[playerID2].ActiveUnits[(int)UnitEnum.Nuclear];
 
 			this.oCPU.CX.Word = this.oCPU.AX.Word;
 			this.oCPU.AX.Word = 0x38;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID1);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.Players[playerID1].ActiveUnits[25] < (short)this.oCPU.CX.Word)
+			if (this.oParent.CivState.Players[playerID1].ActiveUnits[(int)UnitEnum.Nuclear] < (short)this.oCPU.CX.Word)
 				goto L0b64;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 0x0);

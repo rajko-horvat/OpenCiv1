@@ -1420,7 +1420,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.Players[playerID].UnitsInProduction[27] > 0)
+			if (this.oParent.CivState.Players[playerID].UnitsInProduction[(int)UnitEnum.Caravan] > 0)
 				goto L0ed5;
 
 			// Instruction address 0x1ade:0x0e04, size: 5
@@ -1666,7 +1666,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			
-			if (this.oParent.CivState.Players[playerID].ActiveUnits[0] != 0x0)
+			if (this.oParent.CivState.Players[playerID].ActiveUnits[(int)UnitEnum.Settlers] != 0x0)
 				goto L0f53;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x11a)), 0x1);
@@ -1686,10 +1686,10 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 			
-			if (this.oParent.CivState.Players[playerID].ActiveUnits[25] >= 4)
+			if (this.oParent.CivState.Players[playerID].ActiveUnits[(int)UnitEnum.Nuclear] >= 4)
 				goto L0f53;
 
-			if (this.oParent.CivState.Players[playerID].UnitsInProduction[25] >= 2)
+			if (this.oParent.CivState.Players[playerID].UnitsInProduction[(int)UnitEnum.Nuclear] >= 2)
 				goto L0f53;
 
 		L1009:
@@ -1707,7 +1707,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
 			//this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xb3dc));
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ActiveUnits[15];
+			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ActiveUnits[(int)UnitEnum.Bomber];
 
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
