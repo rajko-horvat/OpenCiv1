@@ -109,10 +109,6 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_2c84_00ad_GameMenu()");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x6);
-
 			if (oParent.CivState.TurnCount == 0)
 			{
 				// Disable 'Save Game' option
@@ -203,8 +199,6 @@ namespace OpenCiv1
 					break;
 			}
 
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2c84_00ad_GameMenu");
 		}
