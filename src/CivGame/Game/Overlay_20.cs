@@ -150,7 +150,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2aea.F0_2aea_1653(9, xPos, yPos);
 
 			// Instruction address 0x0000:0x01a1, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a(xPos, yPos);
+			this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(xPos, yPos);
 
 			if (this.oParent.CivState.TerrainMultipliers[this.oCPU.AX.Word].Multi1 < -1)
 			{
@@ -260,7 +260,7 @@ namespace OpenCiv1
 			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))];
 
 			// Instruction address 0x0000:0x0307, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a(xPos + direction.X, yPos + direction.Y);
+			this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(xPos + direction.X, yPos + direction.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
@@ -338,7 +338,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L040e;
 
 			// Instruction address 0x0000:0x03e5, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1369(
+			this.oParent.Segment_2aea.F0_2aea_1369_MapGetCityOwner(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
 
@@ -491,7 +491,7 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x0000:0x0575, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a(
+			this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(
 				this.oParent.CivState.Cities[cityID].Position.X + direction.X,
 				this.oParent.CivState.Cities[cityID].Position.Y + direction.Y);
 

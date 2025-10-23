@@ -1877,7 +1877,7 @@ namespace OpenCiv1
 
 		L1078:
 			// Instruction address 0x0000:0x1081, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1836(
+			this.oParent.Segment_2aea.F0_2aea_1836_CheckTerrainAddon(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a)));
 
@@ -3269,7 +3269,7 @@ namespace OpenCiv1
 
 		L1cb8:
 			// Instruction address 0x0000:0x1cbe, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a(
+			this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 
@@ -3286,7 +3286,7 @@ namespace OpenCiv1
 			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))];
 
 			// Instruction address 0x0000:0x1ced, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a(
+			this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)) + direction.X,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)) + direction.Y);
 
