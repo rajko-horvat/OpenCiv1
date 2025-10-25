@@ -35,5 +35,12 @@ namespace OpenCiv1.GPU
 			this.Undefined0 = undefined0;
 			this.FontID = fontID;
 		}
+
+		/// <summary>Converts this CRectangle to a human-readable string</summary>
+		/// <returns>A string that represents this CRectangle</returns>
+		public override string ToString()
+		{
+			return $"{{ID={this.ScreenID}, Left={this.Left}, Top={this.Top}, Width={this.Width}, Height={this.Height}}}";
+		}
 	}
 }
