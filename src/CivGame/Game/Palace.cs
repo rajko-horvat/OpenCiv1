@@ -158,9 +158,9 @@ namespace OpenCiv1
 
 		L0231:
 			// Instruction address 0x0000:0x0231, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.NE) goto L0246;
 
 			// Instruction address 0x0000:0x023d, size: 5
@@ -175,9 +175,9 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L02a0;
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3e, 0x9a);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3e_MouseYPos, 0x9a);
 			if (this.oCPU.Flags.GE) goto L0292;
-			this.oCPU.AX.Word = this.oParent.Var_db3c;
+			this.oCPU.AX.Word = this.oParent.Var_db3c_MouseXPos;
 			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0xc);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.Word = 0x30;
@@ -209,7 +209,7 @@ namespace OpenCiv1
 			goto L02e6;
 
 		L0292:
-			this.oCPU.AX.Word = this.oParent.Var_db3c;
+			this.oCPU.AX.Word = this.oParent.Var_db3c_MouseXPos;
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.Word = 0x6b;
 			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
@@ -560,9 +560,9 @@ namespace OpenCiv1
 
 		L06c8:
 			// Instruction address 0x0000:0x06c8, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.NE) goto L06dd;
 
 			// Instruction address 0x0000:0x06d4, size: 5
@@ -577,7 +577,7 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L06f5;
-			this.oCPU.AX.Word = this.oParent.Var_db3c;
+			this.oCPU.AX.Word = this.oParent.Var_db3c_MouseXPos;
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.Word = 0x6b;
 			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);

@@ -330,7 +330,7 @@ namespace OpenCiv1
 			// Instruction address 0x2459:0x035d, size: 5
 			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oParent.CivState.Nations[this.oParent.CivState.Players[playerID].NationalityID].ShortTune, 0);
 
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x8);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x8);
 			if (this.oCPU.Flags.E) goto L03b7;
 
 			// Instruction address 0x2459:0x036c, size: 5
@@ -399,7 +399,7 @@ namespace OpenCiv1
 				goto L04bc;
 
 		L041a:
-			this.oParent.Var_2f9e_Unknown = 0x0;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.SpiesReport;
 
 			// Instruction address 0x2459:0x0428, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Spies report:\n");
@@ -898,9 +898,9 @@ namespace OpenCiv1
 
 		L091d:
 			// Instruction address 0x2459:0x091d, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.NE) goto L0932;
 
 			// Instruction address 0x2459:0x0929, size: 5
@@ -910,7 +910,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L091d;
 
 		L0932:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.NE) goto L0947;
 
 			// Instruction address 0x2459:0x0939, size: 5

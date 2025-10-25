@@ -51,13 +51,13 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L009b;
 
 			// Instruction address 0x0000:0x006f, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0x87);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3c_MouseXPos, 0x87);
 			if (this.oCPU.Flags.GE) goto L009b;
 
 			// Instruction address 0x0000:0x0090, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(((short)this.oParent.Var_db3e - 12) / 35, 0, 4);
+			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(((short)this.oParent.Var_db3e_MouseYPos - 12) / 35, 0, 4);
 
 			this.oParent.CivState.DifficultyLevel = (short)this.oCPU.AX.Word;
 
@@ -242,10 +242,10 @@ namespace OpenCiv1
 			goto L02ca;
 
 		L02f7:
-			this.oParent.CivState.GameSettingFlags = 0xfa;
+			this.oParent.CivState.GameSettingFlags.Value = 0xfa;
 			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x1a30), 0x4e);
 			if (this.oCPU.Flags.NE) goto L0309;
-			this.oParent.CivState.GameSettingFlags &= 0x7fef;
+			this.oParent.CivState.GameSettingFlags.Value &= 0x7fef;
 
 		L0309:
 			// Instruction address 0x0000:0x0311, size: 5
@@ -318,7 +318,7 @@ namespace OpenCiv1
 
 			if (this.oParent.CivState.DifficultyLevel == 0)
 			{
-				this.oParent.CivState.GameSettingFlags |= 1;
+				this.oParent.CivState.GameSettingFlags.InstantAdvice = true;
 			}
 
 			// Another indexing error. Value this.oParent.GameState.HumanPlayerID is equal
@@ -524,7 +524,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0645, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 150, 0, 170, 200, 0);
 
-			this.oParent.Overlay_23.F23_0000_00d6();
+			this.oParent.Overlay_23.F23_0000_00d6_PlayerNameDialog();
 
 			// Instruction address 0x0000:0x0652, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
@@ -1288,11 +1288,11 @@ namespace OpenCiv1
 				this.oCPU.AX.Word = 0x2;
 			}
 		
-			this.oParent.Var_2f9e_Unknown = this.oCPU.AX.Word;
+			this.oParent.Var_2f9e_MessageBoxStyle = (MsgBoxStyleEnum)this.oCPU.AX.Word;
 
 			if (playerID1 == this.oParent.CivState.HumanPlayerID)
 			{
-				this.oParent.Var_2f9e_Unknown = 0x3;
+				this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DefenseMinister;
 			}
 
 			// Instruction address 0x0000:0x0f32, size: 5

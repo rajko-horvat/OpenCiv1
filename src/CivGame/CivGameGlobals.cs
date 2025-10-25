@@ -64,7 +64,10 @@ namespace OpenCiv1
 		// !!! This should not be used at all as screen 3 doesn't exist
 		public CRectangle Var_19fc_Rectangle = new CRectangle(3, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 
-		public ushort Var_2f9e_Unknown = 0xffff;
+		/// <summary>
+		/// Allows to customize dialog shown by F0_1238_001e_ShowDialog().
+		/// </summary>
+		public MsgBoxStyleEnum Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.Default;
 
 		// 0x652e - after this offset the default values are set to 0
 		public int Var_6b64 = 0;
@@ -86,9 +89,13 @@ namespace OpenCiv1
 		public short Var_d75e_YPos = 0;
 		public ushort Var_d762 = 0;
 		public ushort Var_d768 = 0;
-		public ushort Var_db3a = 0;
-		public ushort Var_db3c = 0;
-		public ushort Var_db3e = 0;
+
+		// Currently pressed mouse button: 0 - nothing, 1 - left button, 2 - right button
+		public ushort Var_db3a_MouseButton = 0;
+		// Current mouse position, in pixels. Position (0, 0) is the top-left corner
+		public ushort Var_db3c_MouseXPos = 0;
+		public ushort Var_db3e_MouseYPos = 0;
+
 		public int Var_db42 = 0;
 		public int Var_deb8 = 0;
 		public int Var_e17a = 0;

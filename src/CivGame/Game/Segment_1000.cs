@@ -590,7 +590,7 @@ namespace OpenCiv1
 		/// <param name="param2"></param>
 		public void F0_1000_0a32_PlayTune(short tune, ushort param2)
 		{
-			if ((this.oParent.CivState.GameSettingFlags & 0x10) != 0)
+			if (this.oParent.CivState.GameSettingFlags.Sound)
 			{
 				// Instruction address 0x1000:0x0a32, size: 5
 				this.oParent.Sound.F0_0000_0062_PlayTune(tune, param2);

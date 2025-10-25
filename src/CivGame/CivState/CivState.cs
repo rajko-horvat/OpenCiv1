@@ -21,7 +21,7 @@ namespace OpenCiv1
 		public short NextAnthologyTurn = 80;
 
 		// Game settings
-		public short GameSettingFlags = 2;
+		public GameSettings GameSettingFlags = new GameSettings();
 		public short DebugFlags = 0;
 
 		// Players

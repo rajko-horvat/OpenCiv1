@@ -1325,14 +1325,14 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1182_0134_WaitTimer((short)this.oCPU.AX.Word);
 
 			// Instruction address 0x1866:0x0cd8, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
 			// Instruction address 0x1866:0x0cdd, size: 5
 			this.oParent.MSCAPI.kbhit();
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L0cf0;
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.NE) goto L0cf0;
 			goto L0b75;
 
@@ -1522,7 +1522,7 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd760), 0x0);
 			if (this.oCPU.Flags.NE) goto L0f08;
 
-			this.oParent.Var_2f9e_Unknown = 0x3;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DefenseMinister;
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -3568,9 +3568,9 @@ namespace OpenCiv1
 
 		L20f5:
 			// Instruction address 0x1866:0x20f5, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.E) goto L2104;
 			goto L21b7;
 
@@ -3642,19 +3642,19 @@ namespace OpenCiv1
 			// Instruction address 0x1866:0x21b7, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x1);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x1);
 			if (this.oCPU.Flags.E) goto L21c6;
 			goto L2256;
 
 		L21c6:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0x64);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3c_MouseXPos, 0x64);
 			if (this.oCPU.Flags.G) goto L21d0;
 			goto L2256;
 
 		L21d0:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3c, 0xdc);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3c_MouseXPos, 0xdc);
 			if (this.oCPU.Flags.GE) goto L2256;
-			this.oCPU.AX.Word = this.oParent.Var_db3e;
+			this.oCPU.AX.Word = this.oParent.Var_db3e_MouseYPos;
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x22)));
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x5);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);

@@ -1107,7 +1107,7 @@ namespace OpenCiv1
 				this.oParent.CivState.PollutedSquareCount = ReadInt16(reader);
 				this.oParent.CivState.PollutionEffectLevel = ReadInt16(reader);
 				this.oParent.CivState.GlobalWarmingCount = ReadInt16(reader);
-				this.oParent.CivState.GameSettingFlags = ReadInt16(reader);
+				this.oParent.CivState.GameSettingFlags.Value = ReadInt16(reader);
 
 				for (int i = 0; i < 260; i++)
 				{
@@ -1702,7 +1702,7 @@ namespace OpenCiv1
 				WriteInt16(writer, this.oParent.CivState.PollutedSquareCount);
 				WriteInt16(writer, this.oParent.CivState.PollutionEffectLevel);
 				WriteInt16(writer, this.oParent.CivState.GlobalWarmingCount);
-				WriteInt16(writer, this.oParent.CivState.GameSettingFlags);
+				WriteInt16(writer, this.oParent.CivState.GameSettingFlags.Value);
 
 				for (int i = 0; i < 260; i++)
 				{
