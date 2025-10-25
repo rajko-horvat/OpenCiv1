@@ -3961,12 +3961,12 @@ namespace OpenCiv1
 			goto L3c40;
 
 		L337d:
-			this.oParent.Overlay_14.F14_0000_186f(this.oParent.CivState.HumanPlayerID);
+			this.oParent.Overlay_14.F14_0000_186f_CityStatus(this.oParent.CivState.HumanPlayerID);
 
 			goto L3c40;
 
 		L338c:
-			this.oParent.Overlay_14.F14_0000_03ad(this.oParent.CivState.HumanPlayerID);
+			this.oParent.Overlay_14.F14_0000_03ad_MilitaryStatus(this.oParent.CivState.HumanPlayerID);
 			
 			goto L3c40;
 
@@ -3994,23 +3994,23 @@ namespace OpenCiv1
 			goto L33db;
 
 		L33cf:
-			this.oParent.Overlay_14.F14_0000_0d43();
+			this.oParent.Overlay_14.F14_0000_0d43_IntelligenceReport();
 
 		L33db:
 			goto L3c40;
 
 		L33de:
-			this.oParent.Overlay_14.F14_0000_15f4(this.oParent.CivState.HumanPlayerID);
+			this.oParent.Overlay_14.F14_0000_15f4_AttitudeSurvey(this.oParent.CivState.HumanPlayerID);
 
 			goto L3c40;
 
 		L33ed:
-			this.oParent.Overlay_14.F14_0000_07f1(this.oParent.CivState.HumanPlayerID);
+			this.oParent.Overlay_14.F14_0000_07f1_TradeReport(this.oParent.CivState.HumanPlayerID);
 			
 			goto L3c40;
 
 		L33fc:
-			this.oParent.Overlay_14.F14_0000_014b(this.oParent.CivState.HumanPlayerID);
+			this.oParent.Overlay_14.F14_0000_014b_ScienceReport(this.oParent.CivState.HumanPlayerID);
 
 			goto L3c40;
 

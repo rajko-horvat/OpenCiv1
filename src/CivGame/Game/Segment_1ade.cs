@@ -3185,7 +3185,7 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x20cc, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 100);
 
-			this.oParent.Overlay_14.F14_0000_0d43();
+			this.oParent.Overlay_14.F14_0000_0d43_IntelligenceReport();
 
 		L20d9:
 			if (technologyID != 0x22 && technologyID != 0x25)

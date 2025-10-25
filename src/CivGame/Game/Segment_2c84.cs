@@ -625,10 +625,6 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_2c84_0615_AdvisorsMenu()");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x4);
-
 			// Instruction address 0x2c84:0x0623, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, " City Status (F1)\n Military Advisor (F2)\n Intelligence Advisor (F3)\n Attitude Advisor (F4)\n");
 
@@ -636,9 +632,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, " Trade Advisor (F5)\n Science Advisor (F6)\n");
 
 			// Instruction address 0x2c84:0x0647, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 112, 8, 0);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
+			ushort selectedOption = this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 112, 8, 0);
 
 			// Instruction address 0x2c84:0x0652, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
@@ -649,62 +643,41 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x654a, 0xffff);
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L06ca;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x1);
-			if (this.oCPU.Flags.E) goto L0694;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x2);
-			if (this.oCPU.Flags.E) goto L06b4;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x3);
-			if (this.oCPU.Flags.E) goto L06bf;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x4);
-			if (this.oCPU.Flags.E) goto L0689;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x5);
-			if (this.oCPU.Flags.E) goto L06d5;
 
-			goto L06e0;
+			switch (selectedOption)
+			{
+				case 0: // City Status
+					this.oParent.Overlay_14.F14_0000_186f_CityStatus(this.oParent.CivState.HumanPlayerID);
+					break;
 
-		L0689:
-			this.oParent.Overlay_14.F14_0000_07f1(this.oParent.CivState.HumanPlayerID);
+				case 1: // Military Advisor
+					if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806) == 0)
+					{
+						this.oParent.Overlay_14.F14_0000_03ad_MilitaryStatus(this.oParent.CivState.HumanPlayerID);
+					}
+					else
+					{
+						this.oParent.Overlay_13.F13_0000_0554();
+					}
+					break;
 
-			goto L06e0;
+				case 2: // Intelligence Advisor
+					this.oParent.Overlay_14.F14_0000_0d43_IntelligenceReport();
+					break;
 
+				case 3: // Attitude Advisor
+					this.oParent.Overlay_14.F14_0000_15f4_AttitudeSurvey(this.oParent.CivState.HumanPlayerID);
+					break;
 
-		L0694:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806), 0x0);
-			if (this.oCPU.Flags.E) goto L06a9;
+				case 4: // Trade Advisor
+					this.oParent.Overlay_14.F14_0000_07f1_TradeReport(this.oParent.CivState.HumanPlayerID);
+					break;
 
-			this.oParent.Overlay_13.F13_0000_0554();
+				case 5: // Science Advisor
+					this.oParent.Overlay_14.F14_0000_014b_ScienceReport(this.oParent.CivState.HumanPlayerID);
+					break;
+			}
 
-			goto L06e0;
-
-		L06a9:
-			this.oParent.Overlay_14.F14_0000_03ad(this.oParent.CivState.HumanPlayerID);
-
-			goto L06e0;
-
-		L06b4:
-			this.oParent.Overlay_14.F14_0000_0d43();
-
-			goto L06e0;
-
-		L06bf:
-			this.oParent.Overlay_14.F14_0000_15f4(this.oParent.CivState.HumanPlayerID);
-
-			goto L06e0;
-
-		L06ca:
-			this.oParent.Overlay_14.F14_0000_186f(this.oParent.CivState.HumanPlayerID);
-
-			goto L06e0;
-
-		L06d5:
-			this.oParent.Overlay_14.F14_0000_014b(this.oParent.CivState.HumanPlayerID);
-
-		L06e0:
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2c84_0615_AdvisorsMenu");
 		}

@@ -140,12 +140,12 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows Science Report window.
 		/// </summary>
 		/// <param name="playerID"></param>
-		public void F14_0000_014b(short playerID)
+		public void F14_0000_014b_ScienceReport(short playerID)
 		{
-			this.oCPU.Log.EnterBlock($"F14_0000_014b({playerID})");
+			this.oCPU.Log.EnterBlock($"F14_0000_014b_ScienceReport({playerID})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -319,16 +319,16 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F14_0000_014b");
+			this.oCPU.Log.ExitBlock("F14_0000_014b_ScienceReport");
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows Military Status window.
 		/// </summary>
 		/// <param name="playerID"></param>
-		public void F14_0000_03ad(short playerID)
+		public void F14_0000_03ad_MilitaryStatus(short playerID)
 		{
-			this.oCPU.Log.EnterBlock($"F14_0000_03ad({playerID})");
+			this.oCPU.Log.EnterBlock($"F14_0000_03ad_MilitaryStatus({playerID})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -476,7 +476,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F14_0000_03ad");
+			this.oCPU.Log.ExitBlock("F14_0000_03ad_MilitaryStatus");
 		}
 
 		/// <summary>
@@ -612,12 +612,12 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows Trade Report window.
 		/// </summary>
 		/// <param name="playerID"></param>
-		public void F14_0000_07f1(short playerID)
+		public void F14_0000_07f1_TradeReport(short playerID)
 		{
-			this.oCPU.Log.EnterBlock($"F14_0000_07f1({playerID})");
+			this.oCPU.Log.EnterBlock($"F14_0000_07f1_TradeReport({playerID})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -986,15 +986,15 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F14_0000_07f1");
+			this.oCPU.Log.ExitBlock("F14_0000_07f1_TradeReport");
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows Intelligence Report window.
 		/// </summary>
-		public void F14_0000_0d43()
+		public void F14_0000_0d43_IntelligenceReport()
 		{
-			this.oCPU.Log.EnterBlock("F14_0000_0d43()");
+			this.oCPU.Log.EnterBlock("F14_0000_0d43_IntelligenceReport()");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -1363,7 +1363,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F14_0000_0d43");
+			this.oCPU.Log.ExitBlock("F14_0000_0d43_IntelligenceReport");
 		}
 
 		/// <summary>
@@ -1672,12 +1672,12 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows Attitude Survey window.
 		/// </summary>
 		/// <param name="playerID"></param>
-		public void F14_0000_15f4(short playerID)
+		public void F14_0000_15f4_AttitudeSurvey(short playerID)
 		{
-			this.oCPU.Log.EnterBlock($"F14_0000_15f4({playerID})");
+			this.oCPU.Log.EnterBlock($"F14_0000_15f4_AttitudeSurvey({playerID})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -1846,7 +1846,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F14_0000_15f4");
+			this.oCPU.Log.ExitBlock("F14_0000_15f4_AttitudeSurvey");
 		}
 
 		/// <summary>
@@ -1875,12 +1875,12 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows City Status window.
 		/// </summary>
 		/// <param name="playerID"></param>
-		public void F14_0000_186f(short playerID)
+		public void F14_0000_186f_CityStatus(short playerID)
 		{
-			this.oCPU.Log.EnterBlock($"F14_0000_186f({playerID})");
+			this.oCPU.Log.EnterBlock($"F14_0000_186f_CityStatus({playerID})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -2050,7 +2050,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F14_0000_186f");
+			this.oCPU.Log.ExitBlock("F14_0000_186f_CityStatus");
 		}
 	}
 }
