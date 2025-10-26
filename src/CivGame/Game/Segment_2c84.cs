@@ -149,7 +149,7 @@ namespace OpenCiv1
 						// Instruction address 0x2c84:0x0143, size: 5
 						this.oParent.MSCAPI.strcpy(0xba06, "Options:\n Instant Advice\n AutoSave\n End of Turn\n Animations\n Sound\n Enemy Moves\n Civilopedia Text\n Palace\n");
 
-						ushort index = 0xffff;
+						ushort index;
 						do
 						{
 							// Write current flags to show as checkmarks in options submenu
