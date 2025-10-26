@@ -945,29 +945,26 @@ namespace OpenCiv1
 														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
 														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y);
 
-													if (terrainID != TerrainEnum.Ocean)
+													// Instruction address 0x1d12:0x1956, size: 5
+													// Instruction address 0x1d12:0x1970, size: 5
+													if (terrainID != TerrainEnum.Ocean && this.oParent.Segment_2aea.F0_2aea_1942(
+														this.oParent.CivState.Cities[i].Position.X,
+														this.oParent.CivState.Cities[i].Position.Y) ==
+														this.oParent.Segment_2aea.F0_2aea_1942(
+														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
+														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y))
 													{
-														// Instruction address 0x1d12:0x1956, size: 5
-														// Instruction address 0x1d12:0x1970, size: 5
-														if (this.oParent.Segment_2aea.F0_2aea_1942(
-															this.oParent.CivState.Cities[i].Position.X,
-															this.oParent.CivState.Cities[i].Position.Y) ==
-															this.oParent.Segment_2aea.F0_2aea_1942(
-															this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
-															this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y))
+														if (local_c8 != this.oParent.Var_6c9a)
 														{
-															if (local_c8 != this.oParent.Var_6c9a)
-															{
-																local_c8 = this.oParent.Var_6c9a;
-															}
-															else
-															{
-																local_106 = 1;
-															}
-
-															local_108 = local_e8;
-															local_b0 = i;
+															local_c8 = this.oParent.Var_6c9a;
 														}
+														else
+														{
+															local_106 = 1;
+														}
+
+														local_108 = local_e8;
+														local_b0 = i;
 													}
 												}
 											}

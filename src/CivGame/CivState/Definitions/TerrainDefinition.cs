@@ -8,7 +8,7 @@ namespace OpenCiv1
 {
 	public class TerrainDefinition
 	{
-		TerrainEnum ID;
+		readonly TerrainEnum ID;
 
 		// Total size: 19 bytes
 		public string Name; // (12 bytes)
