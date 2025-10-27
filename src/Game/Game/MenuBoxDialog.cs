@@ -30,7 +30,7 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public ushort F0_2d05_0031_ShowMenuBox(ushort stringPtr, int xPos, int yPos, int flag)
 		{
-			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, stringPtr));
 
 			return F0_2d05_0031_ShowMenuBox(text, xPos, yPos, flag);
 		}
@@ -463,7 +463,7 @@ namespace OpenCiv1
 									if ((this.oGameData.GameSettingFlags & 0x10) == 0)
 									{
 										// Instruction address 0x2d05:0x03ad, size: 5
-										this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
+										this.oParent.CommonTools.F0_1000_0a32_PlayTune(1, 0);
 									}
 									break;
 
@@ -549,7 +549,7 @@ namespace OpenCiv1
 				if (local_4 != -1)
 				{
 					// Instruction address 0x2d05:0x0441, size: 5
-					this.oParent.Segment_1000.F0_1182_0134_WaitTimer(20);
+					this.oParent.CommonTools.F0_1182_0134_WaitTimer(20);
 				}
 				else
 				{
@@ -562,18 +562,18 @@ namespace OpenCiv1
 				this.oParent.Var_d206 = 0;
 				this.oParent.Var_b276 = 0;
 				this.Var_d7f2 = 0;
-				this.oCPU.AX.Word = (ushort)((short)local_4);
+				this.oCPU.AX.UInt16 = (ushort)((short)local_4);
 			}
 			else
 			{
 				this.oParent.Var_db38 = 0;
-				this.oCPU.AX.Word = 0xffff;
+				this.oCPU.AX.UInt16 = 0xffff;
 			}
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2d05_0031_ShowDialogBox");
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -587,7 +587,7 @@ namespace OpenCiv1
 		public void F0_2d05_096c_FillRectangleWithDoubleShadow(int xPos, int yPos, int width, int height, ushort mode)
 		{
 			// function body
-			if (mode == 7 && this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2f98) != 0)
+			if (mode == 7 && this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2f98) != 0)
 			{
 				// Instruction address 0x2d05:0x098c, size: 5
 				this.oParent.Segment_2dc4.F0_2dc4_03ce_FillRectangleWithPattern(xPos + 1, yPos + 1, width, height);
@@ -595,7 +595,7 @@ namespace OpenCiv1
 			else
 			{
 				// Instruction address 0x2d05:0x09b1, size: 5
-				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos + 1, yPos + 1, width, height, mode);
+				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos + 1, yPos + 1, width, height, mode);
 			}
 		
 			this.oParent.Var_aa_Rectangle.BackColor = (byte)mode;
@@ -750,7 +750,7 @@ namespace OpenCiv1
 					break;
 			}
 
-			this.oCPU.AX.Word = (ushort)((short)iKey);
+			this.oCPU.AX.UInt16 = (ushort)((short)iKey);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2d05_0ac9_GetNavigationKey");

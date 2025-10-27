@@ -29,25 +29,25 @@ namespace OpenCiv1
 
 			for (int i = 0; i < this.oParent.MSCAPI.strlen(0xba06); i++)
 			{
-				if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i)) == 0x5e)
+				if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + i)) == 0x5e)
 				{
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i), 0x20);
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i + 1), 0xa);
+					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + i), 0x20);
+					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + i + 1), 0xa);
 
 					lineWidth = -1;
 				}
 
-				if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i)) == 0xa)
+				if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + i)) == 0xa)
 				{
 					lineWidth = -1;
 				}
 			
 				lineWidth++;
 
-				if (lineWidth > maxLineWidth && this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i)) == 0x20 &&
-					this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i + 1)) != 0x20)
+				if (lineWidth > maxLineWidth && this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + i)) == 0x20 &&
+					this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + i + 1)) != 0x20)
 				{
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i), 0xa);
+					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + i), 0xa);
 					lineWidth = 0;
 				}
 			}
@@ -86,37 +86,37 @@ namespace OpenCiv1
 
 			for (int i = 0; yPos <= 192 && i < this.oParent.MSCAPI.strlen(0xba06); i++)
 			{
-				this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i));
+				this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + i));
 
 				// Instruction address 0x2f4d:0x00d9, size: 5
-				lineWidth += this.oParent.Graphics.F0_VGA_115d_GetCharWidth(this.oParent.Var_aa_Rectangle.FontID, this.oCPU.AX.Low);
+				lineWidth += this.oParent.Graphics.F0_VGA_115d_GetCharWidth(this.oParent.Var_aa_Rectangle.FontID, this.oCPU.AX.LowUInt8);
 
-				if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i)) == 0x20 ||
-					this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i)) == 0xa ||
-					this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i)) == 0x5e)
+				if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + i)) == 0x20 ||
+					this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + i)) == 0xa ||
+					this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + i)) == 0x5e)
 				{
 					linePos = i;
 				}
 
-				if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i)) == 0xa ||
-					this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i)) == 0x5e ||
+				if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + i)) == 0xa ||
+					this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + i)) == 0x5e ||
 					maxWidth * 8 < lineWidth)
 				{
-					byte local_2 = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + linePos));
+					byte local_2 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + linePos));
 
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + linePos), 0x0);
+					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + linePos), 0x0);
 
 					// Instruction address 0x2f4d:0x013b, size: 5
 					this.oParent.DrawStringTools.F0_1182_005c_DrawStringToRectAA((ushort)(0xba06 + lineStart), xPos, yPos, frontColor);
 
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + linePos), local_2);
+					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + linePos), local_2);
 
 					yPos += charHeight;
 
 					lineWidth = 0;
 					lineStart = linePos + 1;
 
-					if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i)) == 0x5e)
+					if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + i)) == 0x5e)
 					{
 						lineStart++;
 					}
@@ -137,7 +137,7 @@ namespace OpenCiv1
 			yPos += charHeight;
 
 		L01a6:
-			this.oCPU.AX.Word = (ushort)((short)yPos);
+			this.oCPU.AX.UInt16 = (ushort)((short)yPos);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2f4d_0088_DrawTextBlock");
@@ -147,7 +147,7 @@ namespace OpenCiv1
 
 		public string F0_2f4d_01ad_GetTextBySectionAndKey(string filename, ushort keyPtr)
 		{
-			string key = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, keyPtr));
+			string key = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, keyPtr));
 
 			return F0_2f4d_01ad_GetLanguageItemBySectionAndKey(filename, key);
 		}
@@ -184,7 +184,7 @@ namespace OpenCiv1
 
 				this.oParent.MSCAPI.strcat(0xba06, languageItem.ToString().Replace("^", "^ "));
 
-				this.oCPU.AX.Word = (ushort)((short)lineCount);
+				this.oCPU.AX.UInt16 = (ushort)((short)lineCount);
 			}
 			else
 			{
@@ -292,8 +292,8 @@ namespace OpenCiv1
 			F0_2f4d_01ad_GetTextBySectionAndKey("KING", stringPtr);
 
 			// Instruction address 0x2f4d:0x0461, size: 3
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
-				F0_2f4d_0471_ReplaceKeywords(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06))));
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, 0xba06),
+				F0_2f4d_0471_ReplaceKeywords(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, 0xba06))));
 
 			// Instruction address 0x2f4d:0x0469, size: 3
 			F0_2f4d_0000_AdjustLineWidth(80);

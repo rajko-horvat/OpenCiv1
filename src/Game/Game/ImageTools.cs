@@ -31,7 +31,7 @@ namespace OpenCiv1
 		/// <param name="palettePtr"></param>
 		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, int xPos, int yPos, ushort filenamePtr, ushort palettePtr)
 		{
-			string filename = MSCAPI.GetDOSFileName(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)).ToUpper());
+			string filename = MSCAPI.GetDOSFileName(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr)).ToUpper());
 
 			F0_2fa1_01a2_LoadBitmapOrPalette(screenID, xPos, yPos, filename, palettePtr);
 		}
@@ -47,7 +47,7 @@ namespace OpenCiv1
 		/// <exception cref="Exception"></exception>
 		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, int xPos, int yPos, string filename, ushort palettePtr)
 		{
-			filename = VCPU.DefaultCIVPath + filename;
+			filename = VCPU.DefaultCIVPath + filename.ToUpper();
 
 			if (screenID >= 0 && (Path.GetExtension(filename).Equals(".pic", StringComparison.InvariantCultureIgnoreCase) ||
 				Path.GetExtension(filename).Equals(".map", StringComparison.InvariantCultureIgnoreCase)))
@@ -66,14 +66,14 @@ namespace OpenCiv1
 								startPtr = 0xba08;
 								for (int i = 0; i < palette.Length; i++)
 								{
-									this.oCPU.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+									this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, startPtr++, palette[i]);
 								}
 								break;
 							case 1:
 								startPtr = 0xba06;
 								for (int i = 0; i < palette.Length; i++)
 								{
-									this.oCPU.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+									this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, startPtr++, palette[i]);
 								}
 								break;
 
@@ -81,7 +81,7 @@ namespace OpenCiv1
 								startPtr = palettePtr;
 								for (int i = 0; i < palette.Length; i++)
 								{
-									this.oCPU.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+									this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, startPtr++, palette[i]);
 								}
 								break;
 						}
@@ -109,14 +109,14 @@ namespace OpenCiv1
 							startPtr = 0xba08;
 							for (int i = 0; i < palette.Length; i++)
 							{
-								this.oCPU.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+								this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, startPtr++, palette[i]);
 							}
 							break;
 						case 1:
 							startPtr = 0xba06;
 							for (int i = 0; i < palette.Length; i++)
 							{
-								this.oCPU.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+								this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, startPtr++, palette[i]);
 							}
 							break;
 
@@ -124,7 +124,7 @@ namespace OpenCiv1
 							startPtr = palettePtr;
 							for (int i = 0; i < palette.Length; i++)
 							{
-								this.oCPU.WriteUInt8(this.oCPU.DS.Word, startPtr++, palette[i]);
+								this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, startPtr++, palette[i]);
 							}
 							break;
 					}
@@ -145,7 +145,7 @@ namespace OpenCiv1
 		/// <exception cref="Exception"></exception>
 		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, int xPos, int yPos, string filename, out byte[] palette)
 		{
-			filename = VCPU.DefaultCIVPath + filename;
+			filename = VCPU.DefaultCIVPath + filename.ToUpper();
 
 			if (screenID >= 0 && (Path.GetExtension(filename).Equals(".pic", StringComparison.InvariantCultureIgnoreCase) ||
 				Path.GetExtension(filename).Equals(".map", StringComparison.InvariantCultureIgnoreCase)))
@@ -172,7 +172,7 @@ namespace OpenCiv1
 		/// <param name="filenamePtr"></param>
 		public int F0_2fa1_044c_LoadIcon(ushort filenamePtr)
 		{
-			return this.oParent.Graphics.LoadIcon(MSCAPI.GetDOSFileName(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)).ToUpper()));
+			return this.oParent.Graphics.LoadIcon(MSCAPI.GetDOSFileName(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr)).ToUpper()));
 		}
 		#endregion
 	}

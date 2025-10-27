@@ -10,6 +10,9 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
+**Is this bug present in the original DOS Civilization version 474.05 (475.05)?**
+Yes/No
+
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'

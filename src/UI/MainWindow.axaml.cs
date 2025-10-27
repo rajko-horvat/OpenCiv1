@@ -133,9 +133,10 @@ namespace OpenCiv1.UI
 			}
 		}
 
+		#region Keyboard and Mouse events
 		private void MainWindow_KeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
 		{
-			lock (this.oGame.Graphics.GLock)
+			lock (VCPU.KeyboardLock)
 			{
 				e.Handled = true;
 
@@ -362,20 +363,17 @@ namespace OpenCiv1.UI
 
 		private void MainWindow_PointerMoved(object? sender, PointerEventArgs e)
 		{
-			lock (this.oGame.Graphics.GLock)
+			PointerPoint pointer = e.GetCurrentPoint(this.mainImage);
+			Point point = pointer.Position;
+			GPoint location = new GPoint((int)point.X, (int)point.Y);
+
+			if (this.oMouseRect.Contains(location))
 			{
-				PointerPoint pointer = e.GetCurrentPoint(this.mainImage);
-				Point point = pointer.Position;
-				GPoint location = new GPoint((int)point.X, (int)point.Y);
+				this.oGame.CPU.MouseLocation = new GPoint(location.X / (this.oScreenSize.Width / 320),
+					location.Y / (this.oScreenSize.Height / 200));
 
-				if (this.oMouseRect.Contains(location))
-				{
-					this.oGame.CPU.MouseLocation = new GPoint(location.X / (this.oScreenSize.Width / 320),
-						location.Y / (this.oScreenSize.Height / 200));
-
-					this.oGame.CPU.MouseButtons = (pointer.Properties.IsLeftButtonPressed ? MouseButtonsEnum.Left : MouseButtonsEnum.None) |
-						(pointer.Properties.IsRightButtonPressed ? MouseButtonsEnum.Right : MouseButtonsEnum.None);
-				}
+				this.oGame.CPU.MouseButtons = (pointer.Properties.IsLeftButtonPressed ? MouseButtonsEnum.Left : MouseButtonsEnum.None) |
+					(pointer.Properties.IsRightButtonPressed ? MouseButtonsEnum.Right : MouseButtonsEnum.None);
 			}
 
 			e.Handled = true;
@@ -383,20 +381,17 @@ namespace OpenCiv1.UI
 
 		private void MainWindow_PointerPressed(object? sender, PointerPressedEventArgs e)
 		{
-			lock (this.oGame.Graphics.GLock)
+			PointerPoint pointer = e.GetCurrentPoint(this.mainImage);
+			Point point = pointer.Position;
+			GPoint location = new GPoint((int)point.X, (int)point.Y);
+
+			if (this.oMouseRect.Contains(location))
 			{
-				PointerPoint pointer = e.GetCurrentPoint(this.mainImage);
-				Point point = pointer.Position;
-				GPoint location = new GPoint((int)point.X, (int)point.Y);
+				this.oGame.CPU.MouseLocation = new GPoint(location.X / (this.oScreenSize.Width / 320),
+					location.Y / (this.oScreenSize.Height / 200));
 
-				if (this.oMouseRect.Contains(location))
-				{
-					this.oGame.CPU.MouseLocation = new GPoint(location.X / (this.oScreenSize.Width / 320),
-						location.Y / (this.oScreenSize.Height / 200));
-
-					this.oGame.CPU.MouseButtons = (pointer.Properties.IsLeftButtonPressed ? MouseButtonsEnum.Left : MouseButtonsEnum.None) |
-						(pointer.Properties.IsRightButtonPressed ? MouseButtonsEnum.Right : MouseButtonsEnum.None);
-				}
+				this.oGame.CPU.MouseButtons = (pointer.Properties.IsLeftButtonPressed ? MouseButtonsEnum.Left : MouseButtonsEnum.None) |
+					(pointer.Properties.IsRightButtonPressed ? MouseButtonsEnum.Right : MouseButtonsEnum.None);
 			}
 
 			e.Handled = true;
@@ -404,24 +399,22 @@ namespace OpenCiv1.UI
 
 		private void MainWindow_PointerReleased(object? sender, PointerReleasedEventArgs e)
 		{
-			lock (this.oGame.Graphics.GLock)
+			PointerPoint pointer = e.GetCurrentPoint(this.mainImage);
+			Point point = pointer.Position;
+			GPoint location = new GPoint((int)point.X, (int)point.Y);
+
+			if (this.oMouseRect.Contains(location))
 			{
-				PointerPoint pointer = e.GetCurrentPoint(this.mainImage);
-				Point point = pointer.Position;
-				GPoint location = new GPoint((int)point.X, (int)point.Y);
+				this.oGame.CPU.MouseLocation = new GPoint(location.X / (this.oScreenSize.Width / 320),
+					location.Y / (this.oScreenSize.Height / 200));
 
-				if (this.oMouseRect.Contains(location))
-				{
-					this.oGame.CPU.MouseLocation = new GPoint(location.X / (this.oScreenSize.Width / 320),
-						location.Y / (this.oScreenSize.Height / 200));
-
-					this.oGame.CPU.MouseButtons = (pointer.Properties.IsLeftButtonPressed ? MouseButtonsEnum.Left : MouseButtonsEnum.None) |
-						(pointer.Properties.IsRightButtonPressed ? MouseButtonsEnum.Right : MouseButtonsEnum.None);
-				}
+				this.oGame.CPU.MouseButtons = (pointer.Properties.IsLeftButtonPressed ? MouseButtonsEnum.Left : MouseButtonsEnum.None) |
+					(pointer.Properties.IsRightButtonPressed ? MouseButtonsEnum.Right : MouseButtonsEnum.None);
 			}
 
 			e.Handled = true;
 		}
+		#endregion
 
 		private void MainWindow_Closing(object? sender, WindowClosingEventArgs e)
 		{
@@ -442,36 +435,33 @@ namespace OpenCiv1.UI
 
 		private void ResizeWindowAndImage()
 		{
-			lock (this.oGame.Graphics.GLock)
+			switch (this.iScreenCount)
 			{
-				switch (this.iScreenCount)
-				{
-					case 0:
-					case 1:
-						this.iScreenColumns = 1;
-						this.iScreenRows = 1;
-						break;
+				case 0:
+				case 1:
+					this.iScreenColumns = 1;
+					this.iScreenRows = 1;
+					break;
 
-					case 2:
-						this.iScreenColumns = 2;
-						this.iScreenRows = 1;
-						break;
+				case 2:
+					this.iScreenColumns = 2;
+					this.iScreenRows = 1;
+					break;
 
-					case 3:
-						this.iScreenColumns = 2;
-						this.iScreenRows = 2;
-						break;
-				}
-				this.oImageSize = new GSize(this.oScreenSize.Width * this.iScreenColumns, this.oScreenSize.Height * this.iScreenRows);
-
-				this.mainImage.Width = this.oImageSize.Width;
-				this.mainImage.Height = this.oImageSize.Height;
-
-				this.oMouseRect = new GRectangle(0, 0, this.oScreenSize);
-
-				this.aBitmaps[0] = new WriteableBitmap(new PixelSize(this.oImageSize.Width, this.oImageSize.Height), new Vector(96, 96), PixelFormat.Bgra8888);
-				this.aBitmaps[1] = new WriteableBitmap(new PixelSize(this.oImageSize.Width, this.oImageSize.Height), new Vector(96, 96), PixelFormat.Bgra8888);
+				case 3:
+					this.iScreenColumns = 2;
+					this.iScreenRows = 2;
+					break;
 			}
+			this.oImageSize = new GSize(this.oScreenSize.Width * this.iScreenColumns, this.oScreenSize.Height * this.iScreenRows);
+
+			this.mainImage.Width = this.oImageSize.Width;
+			this.mainImage.Height = this.oImageSize.Height;
+
+			this.oMouseRect = new GRectangle(0, 0, this.oScreenSize);
+
+			this.aBitmaps[0] = new WriteableBitmap(new PixelSize(this.oImageSize.Width, this.oImageSize.Height), new Vector(96, 96), PixelFormat.Bgra8888);
+			this.aBitmaps[1] = new WriteableBitmap(new PixelSize(this.oImageSize.Width, this.oImageSize.Height), new Vector(96, 96), PixelFormat.Bgra8888);
 		}
 
 		private void ToggleScreen(int screen)
@@ -491,7 +481,7 @@ namespace OpenCiv1.UI
 		{
 			if (this.oGame != null)
 			{
-				lock (this.oGame.Graphics.GLock)
+				lock (VCPU.GraphicsLock)
 				{
 					int iColumn = 0;
 					int iRow = 0;

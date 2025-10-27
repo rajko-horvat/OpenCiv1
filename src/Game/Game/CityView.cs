@@ -51,7 +51,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="cityID"></param>
 		/// <param name="improvementID"></param>
-		public void F19_0000_0000_DrawCityLayout(short cityID, short improvementID)
+		public void F19_0000_0000_DrawCityLayout(int cityID, short improvementID)
 		{
 			// function body
 			this.oCPU.Log.EnterBlock($"F19_0000_0000_DrawCityLayout({cityID}, {improvementID})");
@@ -100,13 +100,13 @@ namespace OpenCiv1
 			if (this.oParent.MSCAPI.strlen(0xba06) < 120)
 			{
 				// Instruction address 0x0000:0x004d, size: 5
-				local_80 = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
+				local_80 = this.oCPU.ReadString(this.oCPU.DS.UInt16, 0xba06);
 			}
 
 			// RNG based on city name
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
-			string sCityName = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06));
+			string sCityName = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, 0xba06));
 
 			// We need predictable RNG for city layout (based on city name)
 			RandomMT19937 oRNG = new RandomMT19937(sCityName.GetHashCode());
@@ -541,7 +541,7 @@ namespace OpenCiv1
 
 				if (string.IsNullOrEmpty(local_80))
 				{
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 					// Instruction address 0x0000:0x0d82, size: 5
 					this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
@@ -549,7 +549,7 @@ namespace OpenCiv1
 					// Instruction address 0x0000:0x0db1, size: 5
 					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringWithShadowToRectAA(0xba06, 160, 2, 15);
 
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 					// Instruction address 0x0000:0x0dbe, size: 5
 					this.oParent.Segment_1238.F0_1238_1720_GetCurrentYearAsString();
@@ -571,7 +571,7 @@ namespace OpenCiv1
 				if (i3 != 0)
 				{
 					// Instruction address 0x0000:0x0e2c, size: 5
-					this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x2c, 0);
+					this.oParent.CommonTools.F0_1000_0a32_PlayTune(0x2c, 0);
 
 					// Instruction address 0x0000:0x0e3c, size: 5
 					this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(1);
@@ -579,7 +579,7 @@ namespace OpenCiv1
 				else
 				{
 					// Instruction address 0x0000:0x0e5a, size: 5
-					this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
+					this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
 					if (improvementID != -3)
 					{
@@ -596,14 +596,14 @@ namespace OpenCiv1
 						this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, "hill.pal", out this.oParent.Var_bdee);
 
 						// Instruction address 0x0000:0x0eb9, size: 5
-						this.oParent.Segment_1000.F0_1000_04aa_TransformPalette(15, this.oParent.Var_bdee);
+						this.oParent.CommonTools.F0_1000_04aa_TransformPalette(15, this.oParent.Var_bdee);
 					}
 
 					// Instruction address 0x0000:0x0ed8, size: 5
-					this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(4, 15, 64, 79);
+					this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(4, 15, 64, 79);
 
 					// Instruction address 0x0000:0x0ee4, size: 5
-					this.oParent.Segment_1000.F0_1000_03fa_StartPaletteCycleSlot(4);
+					this.oParent.CommonTools.F0_1000_03fa_StartPaletteCycleSlot(4);
 				}
 
 				if (improvementID == -1 && i3 == 0)
@@ -618,7 +618,7 @@ namespace OpenCiv1
 				i3 = 1;
 
 				// Instruction address 0x0000:0x0f3d, size: 5
-				this.oParent.Segment_1000.F0_1182_0134_WaitTimer(60);
+				this.oParent.CommonTools.F0_1182_0134_WaitTimer(60);
 			}
 			while (this.oParent.MSCAPI.kbhit() == 0);
 
@@ -646,7 +646,7 @@ namespace OpenCiv1
 			if (improvementID == -2)
 			{
 				// Instruction address 0x0000:0x0fe6, size: 5
-				this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(4);
+				this.oParent.CommonTools.F0_1000_042b_StopPaletteCycleSlot(4);
 			}
 			else
 			{
@@ -662,10 +662,10 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x0000:0x0f94, size: 5
-				this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(4);
+				this.oParent.CommonTools.F0_1000_042b_StopPaletteCycleSlot(4);
 
 				// Instruction address 0x0000:0x0fc7, size: 5
-				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
+				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
 				// Instruction address 0x0000:0x0fcf, size: 5
 				this.oParent.Segment_1238.F0_1238_1beb();
@@ -685,7 +685,7 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="maxSize"></param>
-		public void F19_0000_111f_DrawCityPopulation(short cityID, int xPos, int yPos, int maxSize)
+		public void F19_0000_111f_DrawCityPopulation(int cityID, int xPos, int yPos, int maxSize)
 		{
 			this.oCPU.Log.EnterBlock($"F19_0000_111f_DrawCityPopulation({cityID}, {xPos}, {yPos}, {maxSize})");
 
@@ -807,7 +807,7 @@ namespace OpenCiv1
 		/// <param name="improvementID"></param>
 		/// <param name="playerID"></param>
 		/// <param name="cityID"></param>
-		public void F19_0000_137f_LoadCityBitmaps(short improvementID, short playerID, short cityID)
+		public void F19_0000_137f_LoadCityBitmaps(short improvementID, short playerID, int cityID)
 		{
 			this.oCPU.Log.EnterBlock($"F19_0000_137f_LoadCityBitmaps({improvementID}, {playerID}, {cityID})");
 
@@ -983,7 +983,7 @@ namespace OpenCiv1
 			for (int xOffset = 0; xOffset < 660; xOffset += 3)
 			{
 				// Instruction address 0x0000:0x17e9, size: 5
-				this.oParent.Segment_1000.F0_1000_033e_ResetWaitTimer();
+				this.oParent.CommonTools.F0_1000_033e_ResetWaitTimer();
 
 				// Instruction address 0x0000:0x1809, size: 5
 				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 100, this.oParent.Var_19d4_Rectangle, 0, 100);
@@ -1077,7 +1077,7 @@ namespace OpenCiv1
 			for (int i = -48, j = 0; i < 420; i += 3, j++)
 			{
 				// Instruction address 0x0000:0x19fb, size: 5
-				this.oParent.Segment_1000.F0_1000_033e_ResetWaitTimer();
+				this.oParent.CommonTools.F0_1000_033e_ResetWaitTimer();
 
 				// Draw a lower portion of City View to screen 0
 				// Instruction address 0x0000:0x1a1b, size: 5
@@ -1166,7 +1166,7 @@ namespace OpenCiv1
 			for (int xOffset = 420; xOffset > -48; xOffset -= 3)
 			{
 				// Instruction address 0x0000:0x1bb5, size: 5
-				this.oParent.Segment_1000.F0_1000_033e_ResetWaitTimer();
+				this.oParent.CommonTools.F0_1000_033e_ResetWaitTimer();
 
 				// Instruction address 0x0000:0x1bd5, size: 5
 				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 100, this.oParent.Var_19d4_Rectangle, 0, 100);

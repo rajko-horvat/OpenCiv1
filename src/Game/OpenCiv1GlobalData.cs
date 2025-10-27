@@ -43,6 +43,8 @@ namespace OpenCiv1
 		public int Var_1a3e = 0;
 		public int Var_1ae0 = 0;
 
+		public int Var_2a6e = 0;
+
 		public int[] Array_2ba6 = new int[] {
 			-1,	// Water = 0
 			10,	// Coast = 1
@@ -84,6 +86,7 @@ namespace OpenCiv1
 		public int[] Array_6e1e = new int[15];
 		public int Var_6e92 = 0;
 		public int[] Array_6e96 = new int[9];
+		public int Var_6ed4 = 0;
 		public int Var_6ed6 = 0;
 		public int[] Array_70da = new int[4];
 		public int Var_70e2 = 0;

@@ -34,7 +34,6 @@ namespace OpenCiv1
 			GPoint local_e = new GPoint(-1);
 			int local_10 = 0;
 			int newPlayerID = -1;
-			int local_18;
 			int local_1a;
 			int local_1c;
 			int local_1e;
@@ -128,7 +127,7 @@ namespace OpenCiv1
 							newPlayer.Nation = newPlayer.Nationality + "s";
 						}
 
-						this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+						this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 						// Instruction address 0x0000:0x0241, size: 5
 						this.oParent.Array_30b8[0] = oldPlayer.Nationality;
@@ -164,7 +163,7 @@ namespace OpenCiv1
 						local_1e = local_44[local_24];
 						local_22 = 0;
 
-						for (int i = 0; i < 16; i++)
+						for (int i = 0; i < mapGroupCount; i++)
 						{
 							if (local_44[i] != 0)
 							{
@@ -191,9 +190,7 @@ namespace OpenCiv1
 							{
 								if (this.oGameData.Cities[i].StatusFlag != 0xff && this.oGameData.Cities[i].PlayerID == playerID)
 								{
-									local_18 = this.oGameData.Map[this.oGameData.Cities[i].Position].Layer3_GroupID;
-
-									if (local_44[local_18] == 2)
+									if (local_44[this.oGameData.Map[this.oGameData.Cities[i].Position].Layer3_GroupID] == 2)
 									{
 										this.oGameData.Cities[i].SetCityOwner(this.oGameData, i, newPlayerID);
 									}
@@ -204,7 +201,7 @@ namespace OpenCiv1
 						{
 							local_22 = 0;
 
-							while (((9 * local_22) / (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc6a) + 3)) < oldPlayer.TotalCitySize)
+							while (((9 * local_22) / (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdc6a) + 3)) < oldPlayer.TotalCitySize)
 							{
 								local_a = 1;
 
@@ -238,14 +235,14 @@ namespace OpenCiv1
 								local_2 = oldPlayer.Units[i].TypeID;
 
 								// Instruction address 0x0000:0x0765, size: 5
-								if ((this.oGameData.Map[oldPlayer.Units[i].Position].Layer5_TerrainImprovements1 & 0x1) != 0)
+								if (this.oGameData.Map[oldPlayer.Units[i].Position].Improvements.ContainsAnyFlag(TerrainImprovementEnum.City))
 								{
 									// Instruction address 0x0000:0x0780, size: 5
 									this.oParent.Segment_2dc4.F0_2dc4_00ba(
 										oldPlayer.Units[i].Position.X,
 										oldPlayer.Units[i].Position.Y);
 
-									local_10 = (short)this.oCPU.AX.Word;
+									local_10 = (short)this.oCPU.AX.UInt16;
 
 									local_2 = oldPlayer.Units[i].TypeID;
 
@@ -288,7 +285,7 @@ namespace OpenCiv1
 											oldPlayer.Units[i].Position.X,
 											oldPlayer.Units[i].Position.Y);
 
-										local_6 = (short)this.oCPU.AX.Word;
+										local_6 = (short)this.oCPU.AX.UInt16;
 									}
 								}
 								else
@@ -302,7 +299,7 @@ namespace OpenCiv1
 										this.oParent.Segment_1866.F0_1866_0f10(playerID, (short)i);
 
 										// Instruction address 0x0000:0x0583, size: 5
-										this.oParent.MapManagement.F0_2aea_138c_MapSetCityOwner(
+										this.oParent.MapManagement.F0_2aea_138c_MapSetPlayerID(
 											oldPlayer.Units[i].Position.X,
 											oldPlayer.Units[i].Position.Y,
 											(short)newPlayerID);
@@ -331,7 +328,7 @@ namespace OpenCiv1
 											this.oParent.Segment_1866.F0_1866_0f10(playerID, (short)local_1a);
 
 											// Instruction address 0x0000:0x063e, size: 5
-											this.oParent.MapManagement.F0_2aea_138c_MapSetCityOwner(
+											this.oParent.MapManagement.F0_2aea_138c_MapSetPlayerID(
 												oldPlayer.Units[i].Position.X,
 												oldPlayer.Units[i].Position.Y,
 												(short)newPlayerID);
@@ -401,27 +398,27 @@ namespace OpenCiv1
 							this.oGameData.Cities[local_8].PlayerID = playerID;
 						}
 					
-						this.oCPU.AX.Word = 0x1;
+						this.oCPU.AX.UInt16 = 0x1;
 					}
 					else
 					{
-						this.oCPU.AX.Word = 0;
+						this.oCPU.AX.UInt16 = 0;
 					}
 				}
 				else
 				{
-					this.oCPU.AX.Word = 0;
+					this.oCPU.AX.UInt16 = 0;
 				}
 			}
 			else
 			{
-				this.oCPU.AX.Word = 0;
+				this.oCPU.AX.UInt16 = 0;
 			}
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F15_0000_0000");
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 	}
 }

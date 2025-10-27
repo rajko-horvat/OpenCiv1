@@ -26,9 +26,9 @@ namespace OpenCiv1
 		#region Keyboard operations
 		public short kbhit()
 		{
-			this.oCPU.AX.Word = (ushort)((this.oCPU.Keys.Count > 0) ? 0xffff : 0);
+			this.oCPU.AX.UInt16 = (ushort)((this.oCPU.Keys.Count > 0) ? 0xffff : 0);
 
-			return (short)this.oCPU.AX.Word;
+			return (short)this.oCPU.AX.UInt16;
 		}
 
 		public short getch()
@@ -39,12 +39,12 @@ namespace OpenCiv1
 				this.oCPU.DoEvents();
 			}
 
-			lock (this.oParent.Graphics.GLock)
+			lock (VCPU.KeyboardLock)
 			{
-				this.oCPU.AX.Word = (ushort)this.oCPU.Keys.Dequeue();
+				this.oCPU.AX.UInt16 = (ushort)this.oCPU.Keys.Dequeue();
 			}
 
-			return (short)this.oCPU.AX.Word;
+			return (short)this.oCPU.AX.UInt16;
 		}
 		#endregion
 
@@ -55,8 +55,8 @@ namespace OpenCiv1
 
 			// function body
 			int iDirection = 1;
-			uint uiDestination = VCPU.ToLinearAddress(this.oCPU.DS.Word, destination);
-			uint uiSource = VCPU.ToLinearAddress(this.oCPU.DS.Word, source);
+			uint uiDestination = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destination);
+			uint uiSource = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, source);
 			int iCount = count;
 
 			if (uiDestination > uiSource && (uiSource + iCount) >= uiDestination)
@@ -76,7 +76,7 @@ namespace OpenCiv1
 
 			// Far return
 			this.oCPU.Log.ExitBlock("memcpy");
-			this.oCPU.AX.Word = destination; // for compatibility reasons
+			this.oCPU.AX.UInt16 = destination; // for compatibility reasons
 			return destination;
 		}
 
@@ -85,7 +85,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"memset(0x{destination:x4}, 0x{value:x2}, {count})");
 
 			// function body
-			uint uiDestination = VCPU.ToLinearAddress(this.oCPU.DS.Word, destination);
+			uint uiDestination = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destination);
 			int iCount = count;
 
 			while (iCount > 0)
@@ -96,7 +96,7 @@ namespace OpenCiv1
 			}
 
 			this.oCPU.Log.ExitBlock("memset");
-			this.oCPU.AX.Word = destination; // for compatibility reasons
+			this.oCPU.AX.UInt16 = destination; // for compatibility reasons
 			return destination;
 		}
 
@@ -141,7 +141,7 @@ namespace OpenCiv1
 					this.oParent.Graphics.Bitmaps.RemoveByKey(objectPtr);
 
 					this.oCPU.Flags.C = false;
-					this.oCPU.AX.Word = 0;
+					this.oCPU.AX.UInt16 = 0;
 				}
 				else
 				{
@@ -153,12 +153,12 @@ namespace OpenCiv1
 				if (this.oCPU.Memory.FreeMemoryBlock(objectPtr))
 				{
 					this.oCPU.Flags.C = false;
-					this.oCPU.AX.Word = 0x0;
+					this.oCPU.AX.UInt16 = 0x0;
 				}
 				else
 				{
 					this.oCPU.Flags.C = true;
-					this.oCPU.AX.Word = 9; // Invalid memory block uiAddress
+					this.oCPU.AX.UInt16 = 9; // Invalid memory block uiAddress
 				}
 			}
 
@@ -186,19 +186,19 @@ namespace OpenCiv1
 
 		public short fopen(ushort filenamePtr, ushort modePtr)
 		{
-			return fopen(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)),
-				this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, modePtr)));
+			return fopen(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr)),
+				this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, modePtr)));
 		}
 
 		public short fopen(string filename, ushort modePtr)
 		{
 			return fopen(filename,
-				this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, modePtr)));
+				this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, modePtr)));
 		}
 
 		public short fopen(ushort filenamePtr, string mode)
 		{
-			return fopen(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)), mode);
+			return fopen(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr)), mode);
 		}
 
 		public short fopen(string filename, string mode)
@@ -253,7 +253,7 @@ namespace OpenCiv1
 				sHandle = -1;
 			}
 
-			this.oCPU.AX.Word = (ushort)sHandle; // preserve compatibility
+			this.oCPU.AX.UInt16 = (ushort)sHandle; // preserve compatibility
 			return sHandle;
 		}
 
@@ -265,7 +265,7 @@ namespace OpenCiv1
 		public ushort fread(ushort ptr, ushort itemSize, ushort itemCount, short handle)
 		{
 			ushort usItemCount = 0;
-			uint uiAddress = VCPU.ToLinearAddress(this.oCPU.DS.Word, ptr);
+			uint uiAddress = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, ptr);
 
 			if (this.oCPU.Files.ContainsKey(handle))
 			{
@@ -324,19 +324,19 @@ namespace OpenCiv1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
-			this.oCPU.AX.Word = usItemCount; // preserve compatibility
+			this.oCPU.AX.UInt16 = usItemCount; // preserve compatibility
 			return usItemCount;
 		}
 
 		public short fscanf(short handle, ushort formatPtr, ushort varPtr)
 		{
-			return fscanf(handle, this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, formatPtr)), varPtr);
+			return fscanf(handle, this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, formatPtr)), varPtr);
 		}
 
 		public short fscanf(short handle, string format, ushort varPtr)
 		{
 			short sCount = -1;
-			uint uiVarAddress = VCPU.ToLinearAddress(this.oCPU.DS.Word, varPtr);
+			uint uiVarAddress = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, varPtr);
 
 			if (this.oCPU.Files.ContainsKey(handle))
 			{
@@ -378,14 +378,14 @@ namespace OpenCiv1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
-			this.oCPU.AX.Word = (ushort)sCount; // preserve compatibility
+			this.oCPU.AX.UInt16 = (ushort)sCount; // preserve compatibility
 			return sCount;
 		}
 
 		public ushort fwrite(ushort ptr, ushort itemSize, ushort itemCount, short handle)
 		{
 			ushort usItemCount = 0;
-			uint uiAddress = VCPU.ToLinearAddress(this.oCPU.DS.Word, ptr);
+			uint uiAddress = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, ptr);
 
 			if (this.oCPU.Files.ContainsKey(handle))
 			{
@@ -447,7 +447,7 @@ namespace OpenCiv1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
-			this.oCPU.AX.Word = usItemCount; // preserve compatibility
+			this.oCPU.AX.UInt16 = usItemCount; // preserve compatibility
 			return usItemCount;
 		}
 
@@ -485,7 +485,7 @@ namespace OpenCiv1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
-			this.oCPU.AX.Word = (ushort)sRetVal; // preserve compatibility
+			this.oCPU.AX.UInt16 = (ushort)sRetVal; // preserve compatibility
 			return sRetVal;
 		}
 
@@ -553,7 +553,7 @@ namespace OpenCiv1
 
 		public short open(ushort filenamePtr, ushort access, ushort mode)
 		{
-			return open(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr)), access, mode);
+			return open(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr)), access, mode);
 		}
 
 		public short open(string filename, ushort access, ushort mode)
@@ -620,7 +620,7 @@ namespace OpenCiv1
 				sHandle = -1;
 			}
 
-			this.oCPU.AX.Word = (ushort)sHandle; // preserve compatibility
+			this.oCPU.AX.UInt16 = (ushort)sHandle; // preserve compatibility
 			return sHandle;
 		}
 
@@ -640,13 +640,13 @@ namespace OpenCiv1
 				sTemp = -1;
 			}
 
-			this.oCPU.AX.Word = (ushort)sTemp; // preserve compatibility
+			this.oCPU.AX.UInt16 = (ushort)sTemp; // preserve compatibility
 			return sTemp;
 		}
 
 		public short read(short handle, ushort bufferPtr, ushort length)
 		{
-			uint address = VCPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr);
+			uint address = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, bufferPtr);
 			short sItemCount = -1;
 
 			if (this.oCPU.Files.ContainsKey(handle))
@@ -673,13 +673,13 @@ namespace OpenCiv1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
-			this.oCPU.AX.Word = (ushort)sItemCount; // preserve compatibility
+			this.oCPU.AX.UInt16 = (ushort)sItemCount; // preserve compatibility
 			return sItemCount;
 		}
 
 		public short write(short handle, ushort bufferPtr, ushort length)
 		{
-			uint address = VCPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr);
+			uint address = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, bufferPtr);
 			short sItemCount = -1;
 
 			if (this.oCPU.Files.ContainsKey(handle))
@@ -715,16 +715,16 @@ namespace OpenCiv1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
-			this.oCPU.AX.Word = (ushort)sItemCount; // preserve compatibility
+			this.oCPU.AX.UInt16 = (ushort)sItemCount; // preserve compatibility
 			return sItemCount;
 		}
 
 		public short _dos_open(ushort filenamePtr, ushort flags, ushort handlePtr)
 		{
-			uint uiHandleAddress = VCPU.ToLinearAddress(this.oCPU.DS.Word, handlePtr);
+			uint uiHandleAddress = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, handlePtr);
 			short sRetVal = -1;
 
-			string sName = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr));
+			string sName = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr));
 			FileMode eMode = FileMode.Open;
 			FileAccess eAccess = FileAccess.Read;
 			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
@@ -767,11 +767,11 @@ namespace OpenCiv1
 				this.oCPU.Files.Add(this.oCPU.FileHandleCount, new FileStreamItem(new FileStream(sPath, eMode, eAccess), eType));
 				short sHandle = this.oCPU.FileHandleCount;
 				this.oCPU.FileHandleCount++;
-				this.oCPU.Memory.WriteUInt16(VCPU.ToLinearAddress(this.oCPU.DS.Word, handlePtr), (ushort)sHandle);
+				this.oCPU.Memory.WriteUInt16(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, handlePtr), (ushort)sHandle);
 				sRetVal = 0;
 			}
 
-			this.oCPU.AX.Word = (ushort)sRetVal; // preserve compatibility
+			this.oCPU.AX.UInt16 = (ushort)sRetVal; // preserve compatibility
 			return sRetVal;
 		}
 
@@ -779,13 +779,13 @@ namespace OpenCiv1
 		{
 			ushort usRetVal = (ushort)this.close(handle);
 
-			this.oCPU.AX.Word = usRetVal; // preserve compatibility
+			this.oCPU.AX.UInt16 = usRetVal; // preserve compatibility
 			return usRetVal;
 		}
 
 		public ushort _dos_read(short handle, ushort bufferPtr, ushort length, ushort nreadPtr)
 		{
-			uint uiBufferAddress = VCPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr);
+			uint uiBufferAddress = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, bufferPtr);
 			ushort usRetVal = 1;
 			ushort usItemCount = 0;
 
@@ -808,7 +808,7 @@ namespace OpenCiv1
 					}
 				}
 
-				this.oCPU.Memory.WriteUInt16(VCPU.ToLinearAddress(this.oCPU.DS.Word, nreadPtr), usItemCount);
+				this.oCPU.Memory.WriteUInt16(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, nreadPtr), usItemCount);
 				usRetVal = 0;
 			}
 			else
@@ -816,7 +816,7 @@ namespace OpenCiv1
 				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
 			}
 
-			this.oCPU.AX.Word = usRetVal; // preserve compatibility
+			this.oCPU.AX.UInt16 = usRetVal; // preserve compatibility
 			return usRetVal;
 		}
 
@@ -826,7 +826,7 @@ namespace OpenCiv1
 
 			// function body
 			DriveInfo[] driveInfo = DriveInfo.GetDrives();
-			uint uiAddress = VCPU.ToLinearAddress(this.oCPU.DS.Word, diskInfoPtr);
+			uint uiAddress = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, diskInfoPtr);
 			int iDrive = this.oCPU.Memory.ReadUInt16(uiAddress);
 			char chDrive = (char)((iDrive >= 0x80) ? (iDrive - 0x80 + 'C') : ('A' + iDrive));
 
@@ -834,7 +834,7 @@ namespace OpenCiv1
 			{
 				case 0:
 					// reset disk system
-					this.oCPU.AX.High = 0;
+					this.oCPU.AX.HighUInt8 = 0;
 					this.oCPU.Flags.C = false;
 					this.oCPU.Log.ExitBlock("'_bios_disk'");
 					return;
@@ -848,7 +848,7 @@ namespace OpenCiv1
 						{
 							if (driveInfo[i].IsReady)
 							{
-								this.oCPU.AX.High = 0;
+								this.oCPU.AX.HighUInt8 = 0;
 								this.oCPU.Flags.C = false;
 								this.oCPU.Log.ExitBlock("'_bios_disk'");
 								return;
@@ -862,7 +862,7 @@ namespace OpenCiv1
 					break;
 			}
 
-			this.oCPU.AX.High = 0x80;
+			this.oCPU.AX.HighUInt8 = 0x80;
 			this.oCPU.Flags.C = true;
 
 			this.oCPU.Log.ExitBlock("'_bios_disk'");
@@ -871,7 +871,7 @@ namespace OpenCiv1
 		public void _dos_getdrive(ushort valuePtr)
 		{
 			// function body
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, valuePtr, 3);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, valuePtr, 3);
 		}
 		#endregion
 
@@ -884,82 +884,82 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public ushort strcat(ushort destinationPtr, ushort sourcePtr)
 		{
-			string sDest = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr));
-			string sSource = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
+			string sDest = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destinationPtr));
+			string sSource = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, sourcePtr));
 
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sDest + sSource);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destinationPtr), sDest + sSource);
 
-			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
+			this.oCPU.AX.UInt16 = destinationPtr; // preserve compatibility
 			return destinationPtr;
 		}
 
 		public ushort strcat(ushort destinationPtr, string sourceString)
 		{
-			string sDest = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr));
+			string sDest = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destinationPtr));
 
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), sDest + sourceString);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destinationPtr), sDest + sourceString);
 
-			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
+			this.oCPU.AX.UInt16 = destinationPtr; // preserve compatibility
 			return destinationPtr;
 		}
 
 		public ushort strcpy(ushort destinationPtr, ushort sourcePtr)
 		{
-			string source = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, sourcePtr));
+			string source = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, sourcePtr));
 
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), source);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destinationPtr), source);
 
-			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
+			this.oCPU.AX.UInt16 = destinationPtr; // preserve compatibility
 			return destinationPtr;
 		}
 
 		public ushort strcpy(ushort destinationPtr, string source)
 		{
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, destinationPtr), source);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destinationPtr), source);
 
-			this.oCPU.AX.Word = destinationPtr; // preserve compatibility
+			this.oCPU.AX.UInt16 = destinationPtr; // preserve compatibility
 			return destinationPtr;
 		}
 
 		public ushort strlen(string str)
 		{
-			this.oCPU.AX.Word = (ushort)str.Length; // preserve compatibility
+			this.oCPU.AX.UInt16 = (ushort)str.Length; // preserve compatibility
 			return (ushort)str.Length;
 		}
 
 		public int strlen(ushort stringPtr)
 		{
-			string sSource = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			string sSource = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, stringPtr));
 
-			this.oCPU.AX.Word = (ushort)sSource.Length; // preserve compatibility
+			this.oCPU.AX.UInt16 = (ushort)sSource.Length; // preserve compatibility
 			return sSource.Length;
 		}
 
 		public short stricmp(string string1, ushort string2Ptr)
 		{
-			string sS2 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
+			string sS2 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string2Ptr));
 
 			short sRetVal = (short)string.Compare(string1, sS2, StringComparison.CurrentCultureIgnoreCase);
 
-			this.oCPU.AX.Word = (ushort)sRetVal; // preserve compatibility
+			this.oCPU.AX.UInt16 = (ushort)sRetVal; // preserve compatibility
 			return sRetVal;
 		}
 
 		public short stricmp(ushort string1Ptr, ushort string2Ptr)
 		{
-			string sS1 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
-			string sS2 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
+			string sS1 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string1Ptr));
+			string sS2 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string2Ptr));
 
 			short sRetVal = (short)string.Compare(sS1, sS2, StringComparison.CurrentCultureIgnoreCase);
 
-			this.oCPU.AX.Word = (ushort)sRetVal; // preserve compatibility
+			this.oCPU.AX.UInt16 = (ushort)sRetVal; // preserve compatibility
 			return sRetVal;
 		}
 
 		public short strnicmp(ushort string1Ptr, ushort string2Ptr, ushort maxLength)
 		{
-			string sS1 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
-			string sS2 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
+			string sS1 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string1Ptr));
+			string sS2 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string2Ptr));
 
 			if (sS1.Length > maxLength)
 				sS1 = sS1.Substring(0, maxLength);
@@ -969,33 +969,33 @@ namespace OpenCiv1
 
 			short sRetVal = (short)string.Compare(sS1, sS2, StringComparison.CurrentCultureIgnoreCase);
 
-			this.oCPU.AX.Word = (ushort)sRetVal; // preserve compatibility
+			this.oCPU.AX.UInt16 = (ushort)sRetVal; // preserve compatibility
 			return sRetVal;
 		}
 
 		public ushort strupr(ushort stringPtr)
 		{
-			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr)).ToUpper();
+			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, stringPtr)).ToUpper();
 
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr), text);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, stringPtr), text);
 
-			this.oCPU.AX.Word = stringPtr; // preserve compatibility
+			this.oCPU.AX.UInt16 = stringPtr; // preserve compatibility
 			return stringPtr;
 		}
 
 		public int strstr(ushort string1Ptr, string string2)
 		{
-			string sS1 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
+			string sS1 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string1Ptr));
 
 			short sRetVal = (short)sS1.IndexOf(string2);
 
 			if (sRetVal >= 0) // preserve compatibility
 			{
-				this.oCPU.AX.Word = (ushort)(string1Ptr + sRetVal);
+				this.oCPU.AX.UInt16 = (ushort)(string1Ptr + sRetVal);
 			}
 			else
 			{
-				this.oCPU.AX.Word = 0;
+				this.oCPU.AX.UInt16 = 0;
 			}
 
 			return sRetVal;
@@ -1003,18 +1003,18 @@ namespace OpenCiv1
 
 		public int strstr(ushort string1Ptr, ushort string2Ptr)
 		{
-			string sS1 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, string1Ptr));
-			string sS2 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, string2Ptr));
+			string sS1 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string1Ptr));
+			string sS2 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string2Ptr));
 
 			short sRetVal = (short)sS1.IndexOf(sS2);
 
 			if (sRetVal >= 0) // preserve compatibility
 			{
-				this.oCPU.AX.Word = (ushort)(string1Ptr + sRetVal);
+				this.oCPU.AX.UInt16 = (ushort)(string1Ptr + sRetVal);
 			}
 			else
 			{
-				this.oCPU.AX.Word = 0;
+				this.oCPU.AX.UInt16 = 0;
 			}
 
 			return sRetVal;
@@ -1024,9 +1024,9 @@ namespace OpenCiv1
 		{
 			string textValue = Convert.ToString(value, radix);
 
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr), textValue);
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, stringPtr), textValue);
 
-			this.oCPU.AX.Word = stringPtr; // preserve compatibility
+			this.oCPU.AX.UInt16 = stringPtr; // preserve compatibility
 			return stringPtr;
 		}
 
@@ -1042,7 +1042,7 @@ namespace OpenCiv1
 		public void time()
 		{
 			this.oCPU.UInt32ToTwoUInt16(this.oCPU.AX, this.oCPU.DX, 
-				(uint)time(VCPU.ToLinearAddress(this.oCPU.DS.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)))));
+				(uint)time(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.SP.UInt16 + 0x4)))));
 		}
 
 		public int time(uint timePtr)
@@ -1060,7 +1060,7 @@ namespace OpenCiv1
 		public short abs(short value)
 		{
 			short retval = Math.Abs(value);
-			this.oCPU.AX.Word = (ushort)retval; // for compatibility
+			this.oCPU.AX.UInt16 = (ushort)retval; // for compatibility
 
 			return retval;
 		}
@@ -1069,7 +1069,7 @@ namespace OpenCiv1
 		#region Random number generator operations
 		public void srand()
 		{
-			srand(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.SP.Word + 0x4)));
+			srand(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.SP.UInt16 + 0x4)));
 		}
 
 		public void srand(int value)
@@ -1079,8 +1079,8 @@ namespace OpenCiv1
 
 		public short rand()
 		{
-			this.oCPU.AX.Word = (ushort)(this.oRNG.UNext() & 0x7fff);
-			return (short)this.oCPU.AX.Word;
+			this.oCPU.AX.UInt16 = (ushort)(this.oRNG.UNext() & 0x7fff);
+			return (short)this.oCPU.AX.UInt16;
 		}
 
 		public RandomMT19937 RNG

@@ -5,11 +5,10 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Title>OpenCiv1 - Open source rewrite of Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991</Title>
-    <Version>1.475.6.7</Version>
-    <Copyright>Copyright (c) 2023-2024 by Rajko Horvat, Parts of the code Copyright (c) 1991 Microprose Software, Inc. and Take-Two Interactive Software, Inc.</Copyright>
+    <Title>OpenCiv1 - Open source rewrite of DOS Civilization 1 Game designed by Sid Meier and Bruce Shelley in year 1991</Title>
+    <Version>1.475.6.8</Version>
+    <Copyright>Copyright (c) 2023-2025 by Rajko Horvat, Parts of the code Copyright (c) 1991 Microprose Software, Inc. and Take-Two Interactive Software, Inc.</Copyright>
     <PackageProjectUrl>https://github.com/rajko-horvat/OpenCiv1</PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/rajko-horvat/OpenCiv1</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>game;retro;remake;civilization;retrogaming;4x-strategy-game;4x;retro-game;civilization-games;sid-meier-civilization;remake-games</PackageTags>
@@ -28,27 +27,19 @@
         <SubType>Designer</SubType>
     </EmbeddedResource>
     <AvaloniaResource Include="**\*.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.2.0" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.2.0" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.0" />
-	<PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Resources\Resources.Designer.cs">
+    <EmbeddedResource Update="Resources\CommonResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CommonResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\CommonResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>CommonResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="App.axaml.cs">
-      <DependentUpon>App.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\MainWindow.axaml.cs">
-      <DependentUpon>MainWindow.axaml</DependentUpon>
-    </Compile>
+    <EmbeddedResource Update="UI\MessageBox\MessageBoxResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageBoxResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <Compile Update="UI\MessageBox\MessageBoxResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -57,14 +48,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UI\MessageBox\MessageBoxResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>MessageBoxResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Compile Update="App.axaml.cs">
+      <DependentUpon>App.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\MainWindow.axaml.cs">
+      <DependentUpon>MainWindow.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -93,6 +82,13 @@
     <None Update="Languages\en-en.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.3" />
   </ItemGroup>
 	
 </Project>

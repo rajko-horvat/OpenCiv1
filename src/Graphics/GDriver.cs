@@ -11,7 +11,6 @@ namespace OpenCiv1.Graphics
 		private OpenCiv1Game oParent;
 		private VCPU oCPU;
 
-		public object GLock = new object();
 		private BDictionary<int, GBitmap> aScreens = new BDictionary<int, GBitmap>();
 		private int iNextBitmapID = 0xb000;
 		private BDictionary<int, GBitmap> aBitmaps = new BDictionary<int, GBitmap>();
@@ -24,7 +23,7 @@ namespace OpenCiv1.Graphics
 
 			this.aScreens.Add(0, new GBitmap()); // Main screen
 
-			byte[] fonts = Resources.Fonts_xml;
+			byte[] fonts = CommonResources.Fonts_xml;
 
 			Stream fonts1 = new GZipStream(new MemoryStream(fonts), CompressionMode.Decompress);
 			//Stream fonts1 = new MemoryStream(fonts);
@@ -59,10 +58,10 @@ namespace OpenCiv1.Graphics
 		public ushort F0_VGA_0492_GetFreeMemory()
 		{
 			// function body
-			this.oCPU.AX.Word = (ushort)((this.oCPU.Memory.FreeMemory.Size >> 4) & 0xffff);
+			this.oCPU.AX.UInt16 = (ushort)((this.oCPU.Memory.FreeMemory.Size >> 4) & 0xffff);
 			this.oCPU.Flags.C = true;
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 
 		public ushort F0_VGA_04ae_AllocateScreen(int screenID)
@@ -70,7 +69,7 @@ namespace OpenCiv1.Graphics
 			// function body
 			if (!this.aScreens.ContainsKey(screenID))
 			{
-				lock (this.GLock)
+				lock (VCPU.GraphicsLock)
 				{
 					GBitmap bitmap = new GBitmap();
 					bitmap.Visible = false; // additional screens are not shown by default
@@ -78,9 +77,9 @@ namespace OpenCiv1.Graphics
 				}
 			}
 
-			this.oCPU.AX.Word = 0xa000; // return something to make underlying code happy
+			this.oCPU.AX.UInt16 = 0xa000; // return something to make underlying code happy
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 		#endregion
 
@@ -88,13 +87,13 @@ namespace OpenCiv1.Graphics
 		public void F0_VGA_010c_SetColorsByIndexArray(ushort indexArrayPtr)
 		{
 			// function body
-			lock (this.GLock)
+			lock (VCPU.GraphicsLock)
 			{
 				Color[] aColors = new Color[16];
 
 				for (int i = 0; i < 16; i++)
 				{
-					aColors[i] = GBitmap.Palette1[this.oCPU.ReadUInt8(this.oCPU.DS.Word, indexArrayPtr)];
+					aColors[i] = GBitmap.Palette1[this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, indexArrayPtr)];
 
 					indexArrayPtr++;
 				}
@@ -109,7 +108,7 @@ namespace OpenCiv1.Graphics
 
 		public void SetPaletteColor(byte index, Color color)
 		{
-			lock (this.GLock)
+			lock (VCPU.GraphicsLock)
 			{
 				// set colors to all planes, as this is what original code does
 				for (int i = 0; i < this.aScreens.Count; i++)
@@ -121,7 +120,7 @@ namespace OpenCiv1.Graphics
 
 		public Color GetPaletteColor(byte index)
 		{
-			lock (this.GLock)
+			lock (VCPU.GraphicsLock)
 			{
 				// set colors to all planes, as this is what original code does
 				if (this.aScreens.Count > 0)
@@ -136,22 +135,22 @@ namespace OpenCiv1.Graphics
 		public void F0_VGA_0162_SetColorsFromColorStruct(ushort colorStructPtr)
 		{
 			// function body
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, colorStructPtr) == 0x304d)
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, colorStructPtr) == 0x304d)
 			{
-				int iFrom = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + 0x4));
-				int iTo = this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + 0x5));
+				int iFrom = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(colorStructPtr + 0x4));
+				int iTo = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(colorStructPtr + 0x5));
 				int iCount = (iTo - iFrom) + 1;
 				colorStructPtr += 6;
 
-				lock (this.GLock)
+				lock (VCPU.GraphicsLock)
 				{
 					Color[] aColors = new Color[iCount];
 
 					for (int i = 0; i < iCount; i++)
 					{
-						aColors[i] = GBitmap.Color18ToColor(this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3))),
-							this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3) + 1)),
-						this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(colorStructPtr + (i * 3) + 2)));
+						aColors[i] = GBitmap.Color18ToColor(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(colorStructPtr + (i * 3))),
+							this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(colorStructPtr + (i * 3) + 1)),
+						this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(colorStructPtr + (i * 3) + 2)));
 
 						this.oCPU.Log.WriteLine($"Setting palette index {iFrom + i}, #{aColors[i].A:x2}{aColors[i].R:x2}{aColors[i].G:x2}{aColors[i].B:x2}");
 					}
@@ -178,7 +177,7 @@ namespace OpenCiv1.Graphics
 
 				colorStructPtr += 6;
 
-				lock (this.GLock)
+				lock (VCPU.GraphicsLock)
 				{
 					Color[] aColors = new Color[iCount];
 
@@ -210,7 +209,7 @@ namespace OpenCiv1.Graphics
 				int iCount = (iTo - iFrom) + 1;
 				iStructPos += 6;
 
-				lock (this.GLock)
+				lock (VCPU.GraphicsLock)
 				{
 					Color[] aColors = new Color[iCount];
 
@@ -259,7 +258,7 @@ namespace OpenCiv1.Graphics
 					while (iCount < iPixelCount)
 					{
 						// draw it in batches, because of the slow timer
-						lock (this.GLock)
+						lock (VCPU.GraphicsLock)
 						{
 							for (int k = 0; k < 80 && iCount < iPixelCount; k++)
 							{
@@ -298,7 +297,7 @@ namespace OpenCiv1.Graphics
 					GBitmap screen0 = this.aScreens.GetValueByKey(0);
 					GBitmap newScreen = this.aScreens.GetValueByKey(screenID);
 
-					lock (this.GLock)
+					lock (VCPU.GraphicsLock)
 					{
 						screen0.DrawImage(newScreen);
 					}
@@ -324,7 +323,7 @@ namespace OpenCiv1.Graphics
 
 				if (this.aScreens.ContainsKey(dstRect.ScreenID))
 				{
-					lock (this.GLock)
+					lock (VCPU.GraphicsLock)
 					{
 						GBitmap destBitmap = this.aScreens.GetValueByKey(dstRect.ScreenID);
 
@@ -349,7 +348,7 @@ namespace OpenCiv1.Graphics
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
 			{
-				lock (this.GLock)
+				lock (VCPU.GraphicsLock)
 				{
 					GBitmap screen = this.aScreens.GetValueByKey(screenID);
 					GBitmap bitmap = new GBitmap(width, height);
@@ -364,7 +363,7 @@ namespace OpenCiv1.Graphics
 
 					//bitmap.Bitmap.SaveToPIC($"Bitmaps{Path.DirectorySeparatorChar}Image_{this.iNextBitmapID:x4}.png", ImageFormat.Png);
 
-					this.oCPU.AX.Word = (ushort)((short)newScreenID);
+					this.oCPU.AX.UInt16 = (ushort)((short)newScreenID);
 
 					this.iNextBitmapID++;
 				}
@@ -384,7 +383,7 @@ namespace OpenCiv1.Graphics
 			{
 				if (this.aBitmaps.ContainsKey(bitmapID))
 				{
-					lock (this.GLock)
+					lock (VCPU.GraphicsLock)
 					{
 						GBitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 						GBitmap bitmap = this.aBitmaps.GetValueByKey(bitmapID);
@@ -410,7 +409,7 @@ namespace OpenCiv1.Graphics
 			{
 				if (this.aBitmaps.ContainsKey(bitmapPtr))
 				{
-					lock (this.GLock)
+					lock (VCPU.GraphicsLock)
 					{
 						GBitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 						GBitmap bitmap = this.aBitmaps.GetValueByKey(bitmapPtr);
@@ -451,9 +450,9 @@ namespace OpenCiv1.Graphics
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
 			{
-				lock (this.GLock)
+				lock (VCPU.GraphicsLock)
 				{
-					this.oCPU.AX.Word = this.aScreens.GetValueByKey(screenID).GetPixel(xPos, yPos);
+					this.oCPU.AX.UInt16 = this.aScreens.GetValueByKey(screenID).GetPixel(xPos, yPos);
 				}
 			}
 			else
@@ -461,7 +460,7 @@ namespace OpenCiv1.Graphics
 				throw new Exception($"The screen {screenID} is not allocated");
 			}
 
-			return this.oCPU.AX.Low;
+			return this.oCPU.AX.LowUInt8;
 		}
 
 		public void F0_VGA_0550_SetPixel(int screenID, int xPos, int yPos, byte frontColor)
@@ -474,7 +473,7 @@ namespace OpenCiv1.Graphics
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
 			{
-				lock (this.GLock)
+				lock (VCPU.GraphicsLock)
 				{
 					GBitmap screen = this.aScreens.GetValueByKey(screenID);
 
@@ -492,7 +491,7 @@ namespace OpenCiv1.Graphics
 			// function body
 			if (this.aScreens.ContainsKey(rect.ScreenID))
 			{
-				lock (this.GLock)
+				lock (VCPU.GraphicsLock)
 				{
 					GBitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 
@@ -515,7 +514,7 @@ namespace OpenCiv1.Graphics
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
 			{
-				lock (this.GLock)
+				lock (VCPU.GraphicsLock)
 				{
 					this.aScreens.GetValueByKey(screenID).FillRectangle(rect, frontColor, (PixelWriteModeEnum)pixelMode);
 				}
@@ -529,7 +528,7 @@ namespace OpenCiv1.Graphics
 		public void F0_VGA_009a_ReplaceColor(CRectangle rect, int xPos, int yPos, int width, int height, byte oldColor, byte newColor)
 		{
 			// function body
-			lock (this.GLock)
+			lock (VCPU.GraphicsLock)
 			{
 				int iLeft = rect.Left + xPos;
 				int iTop = rect.Top + yPos;
@@ -551,7 +550,7 @@ namespace OpenCiv1.Graphics
 		{
 			// function body
 			int iValue = GetDrawStringSize(fontID, new string((char)ch, 1)).Width;
-			this.oCPU.AX.Word = (ushort)((short)iValue);
+			this.oCPU.AX.UInt16 = (ushort)((short)iValue);
 
 			return iValue;
 		}
@@ -560,7 +559,7 @@ namespace OpenCiv1.Graphics
 		{
 			// function body
 			int iValue = GetDrawStringSize(fontID, new string(ch, 1)).Width;
-			this.oCPU.AX.Word = (ushort)((short)iValue);
+			this.oCPU.AX.UInt16 = (ushort)((short)iValue);
 
 			return iValue;
 		}
@@ -606,7 +605,7 @@ namespace OpenCiv1.Graphics
 		{
 			// function body
 			int iValue = GetDrawStringSize(fontID, "?").Height;
-			this.oCPU.AX.Word = (ushort)((short)iValue);
+			this.oCPU.AX.UInt16 = (ushort)((short)iValue);
 
 			return iValue;
 		}
@@ -623,7 +622,7 @@ namespace OpenCiv1.Graphics
 
 			if (this.aScreens.ContainsKey(rect.ScreenID))
 			{
-				lock (this.GLock)
+				lock (VCPU.GraphicsLock)
 				{
 					GBitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 					GRectangle rect1 = new GRectangle(rect.Left + xPos, rect.Top + yPos, rect.Width, rect.Height);

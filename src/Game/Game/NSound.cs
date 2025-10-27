@@ -27,12 +27,12 @@ namespace OpenCiv1
 
 			// function body
 			usBufferPosition = 0x0;
-			this.oCPU.AX.Word = 0x0;
+			this.oCPU.AX.UInt16 = 0x0;
 
 			// Far return
 			//this.oCPU.Log.ExitBlock("'F0_0000_0048_InitSound'");
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -73,11 +73,11 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock("'F0_0000_005d_SoundTimer'(Cdecl, Far) at 0x0000:0x005d");
 
 			// function body
-			this.oCPU.AX.Word = usBufferPosition;
+			this.oCPU.AX.UInt16 = usBufferPosition;
 			// Far return
 			//this.oCPU.Log.ExitBlock("'F0_0000_005d_SoundTimer'");
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -104,11 +104,11 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock("'F0_0000_006a_CloseSound'(Cdecl, Far) at 0x0000:0x006a");
 
 			// function body
-			this.oCPU.AX.Word = 0x0;
+			this.oCPU.AX.UInt16 = 0x0;
 			// Far return
 			//this.oCPU.Log.ExitBlock("'F0_0000_006a_CloseSound'");
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 	}
 }

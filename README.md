@@ -1,5 +1,5 @@
 ## About
-<p>OpenCiv1 project is an open source rewrite of <a href="https://en.wikipedia.org/wiki/Civilization_(video_game)">Civilization 1 Game</a> designed by Sid Meier and Bruce Shelley in year 1991.</p>
+<p>OpenCiv1 project is an open source rewrite of <a href="https://en.wikipedia.org/wiki/Civilization_(video_game)">DOS Civilization 1 Game</a> designed by Sid Meier and Bruce Shelley in year 1991.</p>
 <ul>
 <li>The OpenCiv1 uses .NET 8 and Avalonia UI framework and is OS independent. It is currently compatible with desktops: Windows, Linux and MacOSX.</li>
 <p align="center">

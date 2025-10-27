@@ -24,7 +24,7 @@ namespace OpenCiv1
 		/// <param name="frontColor"></param>
 		public void F0_1182_002a_DrawStringToRectAA(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
-			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, stringPtr));
 
 			F0_1182_002a_DrawStringToRectAA(text, xPos, yPos, frontColor);
 		}
@@ -40,7 +40,7 @@ namespace OpenCiv1
 		{
 			this.oParent.Var_aa_Rectangle.FrontColor = frontColor;
 
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6b8c) != 0x0)
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6b8c) != 0x0)
 			{
 				xPos *= 2;
 			}
@@ -58,7 +58,7 @@ namespace OpenCiv1
 		/// <param name="frontColor"></param>
 		public void F0_1182_005c_DrawStringToRectAA(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
-			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, stringPtr));
 
 			F0_1182_005c_DrawStringToRectAA(text, xPos, yPos, frontColor);
 		}
@@ -114,7 +114,7 @@ namespace OpenCiv1
 		/// <param name="frontColor"></param>
 		public void F0_1182_00b3_DrawCenteredStringToRectAA(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
-			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, stringPtr));
 
 			F0_1182_00b3_DrawCenteredStringToRectAA(text, xPos, yPos, frontColor);
 		}
@@ -146,7 +146,7 @@ namespace OpenCiv1
 		/// <param name="frontColor"></param>
 		public void F0_1182_00b3_DrawCenteredStringWithShadowToRectAA(ushort stringPtr, int xPos, int yPos, byte frontColor)
 		{
-			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, stringPtr));
 
 			F0_1182_00b3_DrawCenteredStringWithShadowToRectAA(text, xPos, yPos, frontColor);
 		}
@@ -177,7 +177,7 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public int F0_1182_00ef_GetStringWidth(ushort stringPtr)
 		{
-			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, stringPtr));
+			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, stringPtr));
 
 			return F0_1182_00ef_GetStringWidth(text);
 		}
@@ -191,7 +191,7 @@ namespace OpenCiv1
 		{
 			int width = this.oParent.Graphics.GetDrawStringSize(this.oParent.Var_aa_Rectangle.FontID, text).Width;
 
-			this.oCPU.AX.Word = (ushort)((short)width);
+			this.oCPU.AX.UInt16 = (ushort)((short)width);
 
 			return width;
 		}

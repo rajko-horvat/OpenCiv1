@@ -44,8 +44,8 @@ namespace OpenCiv1
 		private int iClimate = 1; // [0-2]
 		private int iXMedian;
 		private int iYMedian;
-		private TerrainMapCellCollection oCells;
-		private List<TerrainMapGroup> aGroups = new List<TerrainMapGroup>();
+		private TerrainMapCellCollection mapCells;
+		private List<TerrainMapGroup> mapGroups = new List<TerrainMapGroup>();
 
 		/// <summary>
 		/// Used exclusively for deserialization
@@ -56,7 +56,7 @@ namespace OpenCiv1
 			this.oSize = new GSize(2, 2);
 			this.iXMedian = this.oSize.Width / 2;
 			this.iYMedian = this.oSize.Height / 2;
-			this.oCells = new TerrainMapCellCollection(this);
+			this.mapCells = new TerrainMapCellCollection(this);
 		}
 
 		public TerrainMap(OpenCiv1Game parent, int width, int height) : this(parent, new GSize(width, height))
@@ -87,7 +87,7 @@ namespace OpenCiv1
 			this.oSize = size;
 			this.iXMedian = this.oSize.Width / 2;
 			this.iYMedian = this.oSize.Height / 2;
-			this.oCells = new TerrainMapCellCollection(this);
+			this.mapCells = new TerrainMapCellCollection(this);
 
 			RandomMT19937 rng = new RandomMT19937(this.iSeed);
 			GenerateNewMap(rng);
@@ -219,7 +219,7 @@ namespace OpenCiv1
 			this.oSize = bitmap.Size;
 			this.iXMedian = this.oSize.Width / 2;
 			this.iYMedian = this.oSize.Height / 2;
-			this.oCells = new TerrainMapCellCollection(this);
+			this.mapCells = new TerrainMapCellCollection(this);
 
 			RandomMT19937 rng = new RandomMT19937(this.iSeed);
 
@@ -725,7 +725,7 @@ namespace OpenCiv1
 						if ((local_10 ^ 0x4) > local_18)
 						{
 							// Instruction address 0x0000:0x077c, size: 5
-							this.Cells[xPos, yPos].Layer7_TerrainImprovements2 = 8;
+							this.Cells[xPos, yPos].Improvements = new([TerrainImprovementEnum.Flag80]);
 						}
 
 
@@ -912,7 +912,7 @@ namespace OpenCiv1
 							this.Cells[j, i].Layer2_PlayerOwnership = totalCellWorth; // do we care for layer2 (layer2 is used for player map cell ownership)?
 							this.Cells[j, i].Layer4_BuildSites = totalCellWorth;
 
-							this.aGroups[this.Cells[j, i].Layer3_GroupID].BuildSiteCount++;
+							this.mapGroups[this.Cells[j, i].Layer3_GroupID].BuildSiteCount++;
 						}
 					}
 				}
@@ -922,7 +922,7 @@ namespace OpenCiv1
 
 		public void ReGenerateMapGroups()
 		{
-			this.aGroups.Clear();
+			this.mapGroups.Clear();
 
 			for (int i = 0; i < this.oSize.Width; i++)
 			{
@@ -945,7 +945,7 @@ namespace OpenCiv1
 
 			if (iGroupID == -1)
 			{
-				iGroupID = this.aGroups.Count; // this will be our new group ID
+				iGroupID = this.mapGroups.Count; // this will be our new group ID
 				int iCellCount = 0;
 				Queue<GPoint> queue = new Queue<GPoint>();
 				TerrainMapGroupTypeEnum groupType = this.Cells[x, y].GroupType; // Get the cell Group type
@@ -1040,7 +1040,7 @@ namespace OpenCiv1
 				}
 
 				group.Size = iCellCount; // update group cell count
-				this.aGroups.Add(group); // add the group to our array
+				this.mapGroups.Add(group); // add the group to our array
 			}
 
 			return iGroupID;
@@ -1272,7 +1272,7 @@ namespace OpenCiv1
 				}
 
 				// Clean AStar cell details
-				this.oCells.ClearAStarData();
+				this.mapCells.ClearAStarData();
 
 				// Create a sorted open list in descending order (sorted from higher to lower value)
 				// We compare this list by cell's f value
@@ -1320,7 +1320,7 @@ namespace OpenCiv1
 									// we have reached our destination
 									if (newPos == unit.GoToDestination)
 									{
-										newCell.GCost = cell.GCost + newCell.VisibleMovementCost;
+										newCell.GCost = cell.GCost + newCell.VisibleMovementCost(unit.PlayerID);
 										newCell.HCost = 0.0;
 										newCell.FCost = newCell.GCost + newCell.HCost;
 										newCell.ParentPos = pos;
@@ -1332,7 +1332,7 @@ namespace OpenCiv1
 									// Ignore the successor cell if it is closed or blocked
 									if (!newCell.IsCellClosed && (!testVisibility || this[newPos].IsVisibleTo(unit.PlayerID)))
 									{
-										double newGCost = cell.GCost + newCell.VisibleMovementCost;
+										double newGCost = cell.GCost + newCell.VisibleMovementCost(unit.PlayerID);
 										double newHCost = GetDistance(newPos, unit.GoToDestination);
 										double newFCost = newGCost + newHCost;
 
@@ -1463,7 +1463,7 @@ namespace OpenCiv1
 					this.oSize = value;
 					this.iXMedian = this.oSize.Width / 2;
 					this.iYMedian = this.oSize.Height / 2;
-					this.oCells = new TerrainMapCellCollection(this);
+					this.mapCells = new TerrainMapCellCollection(this);
 				}
 			}
 		}
@@ -1500,26 +1500,26 @@ namespace OpenCiv1
 
 		public TerrainMapCellCollection Cells
 		{
-			get => this.oCells;
+			get => this.mapCells;
 		}
 
 		public List<TerrainMapGroup> Groups
 		{
-			get => this.aGroups;
+			get => this.mapGroups;
 		}
 
 		[XmlIgnore]
 		public TerrainMapCell this[int x, int y]
 		{
-			get => this.oCells[x, y];
-			set => this.oCells[x, y] = value;
+			get => this.mapCells[x, y];
+			set => this.mapCells[x, y] = value;
 		}
 
 		[XmlIgnore]
 		public TerrainMapCell this[GPoint pt]
 		{
-			get => this.oCells[pt.X, pt.Y];
-			set => this.oCells[pt.X, pt.Y] = value;
+			get => this.mapCells[pt.X, pt.Y];
+			set => this.mapCells[pt.X, pt.Y] = value;
 		}
 
 

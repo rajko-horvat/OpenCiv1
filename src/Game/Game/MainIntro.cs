@@ -28,37 +28,37 @@ namespace OpenCiv1
 			int local_44;
 			int local_4e;
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdeba, 0x1);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xdeba, 0x1);
 
 			for (int i = 1; i < 8; i++)
 			{
-				this.oCPU.WriteInt16(this.oCPU.DS.Word, 0xdeba, (short)(i + 1));
+				this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0xdeba, (short)(i + 1));
 			}
 			
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6dfc, 0x0);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6dfc, 0x0);
 
 			for (int i = 0; i < 3; i++)
 			{
 				// Instruction address 0x0000:0x01a1, size: 5
 				if (this.oParent.Graphics.F0_VGA_04ae_AllocateScreen(i) == 0)
 				{
-					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6dfc, 0x1);
+					this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6dfc, 0x1);
 				}
 			}
 
 			// Instruction address 0x0000:0x01be, size: 5
-			this.oParent.Segment_1000.F0_1000_0a2b_InitSound();
+			this.oParent.CommonTools.F0_1000_0a2b_InitSound();
 
 			// Instruction address 0x0000:0x01c3, size: 5
-			this.oParent.Segment_1000.F0_1000_0000_InitializeTimer();
+			this.oParent.CommonTools.F0_1000_0000_InitializeTimer();
 
 			// Instruction address 0x0000:0x01c8, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0042_Randomize();
 
 			// Instruction address 0x0000:0x01e0, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 		
 			// Instruction address 0x0000:0x020e, size: 5
 			this.oParent.Graphics.F0_VGA_010c_SetColorsByIndexArray(0x19fe);
@@ -85,15 +85,15 @@ namespace OpenCiv1
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, "logo.pic", 1);
 
 			// Instruction address 0x0000:0x02dc, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 12, 320, 176, 0);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 12, 320, 176, 0);
 
 			// Instruction address 0x0000:0x02f4, size: 5
-			this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(1, 14, 146, 152);
+			this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(1, 14, 146, 152);
 
 			for (int i = 1; i <= 3; i++)
 			{
 				// Instruction address 0x0000:0x030b, size: 5
-				this.oParent.Segment_1000.F0_1000_03fa_StartPaletteCycleSlot(i);
+				this.oParent.CommonTools.F0_1000_03fa_StartPaletteCycleSlot(i);
 			}
 
 			this.oGameData.GameSettingFlags |= 0x10;
@@ -102,19 +102,19 @@ namespace OpenCiv1
 			this.oParent.Var_d768 = (ushort)this.oParent.MSCAPI.fopen("credits.txt", "rt");
 
 			// Instruction address 0x0000:0x0334, size: 5
-			this.oParent.Segment_1000.F0_1000_033e_ResetWaitTimer();
+			this.oParent.CommonTools.F0_1000_033e_ResetWaitTimer();
 
 			// Instruction address 0x0000:0x033d, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(3, 0);
+			this.oParent.CommonTools.F0_1000_0a32_PlayTune(3, 0);
 
 			// First screen animation with credits
 			this.oParent.Var_aa_Rectangle.FontID = 5;
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			for (int i = 0; i < 320; i++)
 			{
 				// Instruction address 0x0000:0x04f7, size: 5
-				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_19d4_Rectangle, 0, 176, 320 - i, 24, 0);
+				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_19d4_Rectangle, 0, 176, 320 - i, 24, 0);
 
 				// Instruction address 0x0000:0x051a, size: 5
 				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle,
@@ -138,7 +138,7 @@ namespace OpenCiv1
 
 					case 50:
 					case 160:
-						this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+						this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 						break;
 				}
 
@@ -173,13 +173,13 @@ namespace OpenCiv1
 					0, 88, i, 88, this.oParent.Var_aa_Rectangle, 320 - i, 100);
 
 				// Instruction address 0x0000:0x0476, size: 5
-				if ((i * 21) / 4 < (short)this.oParent.Segment_1000.F0_1000_0a4e_Soundtimer() && (i & 0x1) == 0)
+				if ((i * 21) / 4 < (short)this.oParent.CommonTools.F0_1000_0a4e_Soundtimer() && (i & 0x1) == 0)
 				{
 					i++;
 				}
 
 				// Instruction address 0x0000:0x04a0, size: 5
-				while ((i * 21) / 4 > (short)this.oParent.Segment_1000.F0_1000_0a4e_Soundtimer() && this.oParent.MSCAPI.kbhit() == 0)
+				while ((i * 21) / 4 > (short)this.oParent.CommonTools.F0_1000_0a4e_Soundtimer() && this.oParent.MSCAPI.kbhit() == 0)
 				{
 					Thread.Sleep(0);
 				}
@@ -226,7 +226,7 @@ namespace OpenCiv1
 					case 50:
 					case 116:
 					case 310:
-						this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+						this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 						break;
 				}
 
@@ -275,14 +275,14 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x0000:0x07d0, size: 5
-				if ((i * 21 + 6720) / 4 < this.oParent.Segment_1000.F0_1000_0a4e_Soundtimer() && (i & 0x1) == 0)
+				if ((i * 21 + 6720) / 4 < this.oParent.CommonTools.F0_1000_0a4e_Soundtimer() && (i & 0x1) == 0)
 				{
 					i++;
 				}
 
 				// Instruction address 0x0000:0x07fd, size: 5
 				// Instruction address 0x0000:0x0806, size: 5			
-				while ((i * 21 + 6720) / 4 > this.oParent.Segment_1000.F0_1000_0a4e_Soundtimer() && this.oParent.MSCAPI.kbhit() == 0)
+				while ((i * 21 + 6720) / 4 > this.oParent.CommonTools.F0_1000_0a4e_Soundtimer() && this.oParent.MSCAPI.kbhit() == 0)
 				{
 					Thread.Sleep(0);
 				}
@@ -294,38 +294,38 @@ namespace OpenCiv1
 				}
 			}
 
-			this.oCPU.WriteInt16(this.oCPU.DS.Word, 0x6b32, -2);
+			this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0x6b32, -2);
 
 			// Instruction address 0x0000:0x09dd, size: 5
 			if (this.oParent.MSCAPI.kbhit() != 0)
 			{
-				this.oCPU.WriteInt16(this.oCPU.DS.Word, 0x6b32, -1);
+				this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0x6b32, -1);
 
 				// Instruction address 0x0000:0x09ec, size: 5
 				char navigationKey = char.ToUpper((char)this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey());
 
 				if (navigationKey == 'N')
 				{
-					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6b32, 0);
+					this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6b32, 0);
 				}
 				else if (navigationKey == 'C')
 				{
-					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6b32, 0x3);
+					this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6b32, 0x3);
 				}
 				else if (navigationKey == 'E')
 				{
-					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6b32, 0x2);
+					this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6b32, 0x2);
 				}
 				else if (navigationKey == 'L')
 				{
-					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6b32, 0x1);
+					this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6b32, 0x1);
 				}
 			}
 
-			if (this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6b32) == -2)
+			if (this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x6b32) == -2)
 			{
 				// Instruction address 0x0000:0x0a19, size: 5
-				while (this.oParent.Segment_1000.F0_1000_0a4e_Soundtimer() < 3463)
+				while (this.oParent.CommonTools.F0_1000_0a4e_Soundtimer() < 3463)
 				{
 					Thread.Sleep(0);
 				}
@@ -337,10 +337,10 @@ namespace OpenCiv1
 				this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(this.oParent.Var_19d4_Rectangle, 0, 64, local_4e);
 
 				// Instruction address 0x0000:0x0aa0, size: 5
-				this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(4, 14, 224, 239);
+				this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(4, 14, 224, 239);
 
 				// Instruction address 0x0000:0x0aac, size: 5
-				this.oParent.Segment_1000.F0_1000_03fa_StartPaletteCycleSlot(4);
+				this.oParent.CommonTools.F0_1000_03fa_StartPaletteCycleSlot(4);
 
 				for (int i = 0; i < 320; i += 4)
 				{
@@ -349,30 +349,30 @@ namespace OpenCiv1
 						i, 64, 4, 80, this.oParent.Var_aa_Rectangle, i, 64);
 
 					// Instruction address 0x0000:0x0ae3, size: 5
-					this.oParent.Segment_1000.F0_1182_0134_WaitTimer(1);
+					this.oParent.CommonTools.F0_1182_0134_WaitTimer(1);
 				}
 
 				// Instruction address 0x0000:0x0b12, size: 5
 				for (int i = 0; i < 100 && this.oParent.MSCAPI.kbhit() == 0; i++)
 				{
 					// Instruction address 0x0000:0x0b01, size: 5
-					this.oParent.Segment_1000.F0_1182_0134_WaitTimer(5);
+					this.oParent.CommonTools.F0_1182_0134_WaitTimer(5);
 				}
 
 				// Instruction address 0x0000:0x0b1b, size: 5
 				this.oParent.Segment_1403.F0_1403_4545();
 
-				this.oCPU.WriteInt16(this.oCPU.DS.Word, 0x6b32, -1);
+				this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0x6b32, -1);
 			}
 
 			for (int i = 1; i <= 4; i++)
 			{
 				// Instruction address 0x0000:0x0b40, size: 5
-				this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(i);
+				this.oParent.CommonTools.F0_1000_042b_StopPaletteCycleSlot(i);
 			}
 
 			// Instruction address 0x0000:0x0b65, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, 0);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, 0);
 
 			// Instruction address 0x0000:0x0b7b, size: 5
 			this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(this.oParent.Var_19d4_Rectangle, 0, 64, local_4e);
@@ -427,7 +427,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
 			// Instruction address 0x0000:0x0c83, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 236);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 236);
 
 			// Instruction address 0x0000:0x0c93, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "planet1.pic", 1);
@@ -439,15 +439,15 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 32, 320, 24, this.oParent.Var_19d4_Rectangle, 0, 176);
 
 			// Instruction address 0x0000:0x0d2b, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0xec);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0xec);
 
 			// Instruction address 0x0000:0x0d4a, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 12, 320, 176, 0xec);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 12, 320, 176, 0xec);
 
-			this.oCPU.BX.Word = (ushort)this.oGameData.Players[this.oGameData.HumanPlayerID].GovernmentType;
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
+			this.oCPU.BX.UInt16 = (ushort)this.oGameData.Players[this.oGameData.HumanPlayerID].GovernmentType;
+			this.oCPU.BX.UInt16 = this.oCPU.SHLUInt16(this.oCPU.BX.UInt16, 0x1);
 			// Instruction address 0x0000:0x0d66, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x19b2)));
+			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x19b2)));
 
 			// Instruction address 0x0000:0x0d76, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " ");
@@ -456,46 +456,46 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, this.oGameData.Players[this.oGameData.HumanPlayerID].Name);
 
 			// Instruction address 0x0000:0x0d9c, size: 5
-			this.oParent.Array_30b8[0] = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
+			this.oParent.Array_30b8[0] = this.oCPU.ReadString(this.oCPU.DS.UInt16, 0xba06);
 
 			// Instruction address 0x0000:0x0db1, size: 5
 			this.oParent.Array_30b8[1] = this.oGameData.Players[playerID].Nationality;
 
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0dd7, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
 				this.oParent.MSCAPI.itoa(this.oGameData.Players[playerID].SpaceshipPopulation, 10));
 
 			// Instruction address 0x0000:0x0de7, size: 5
-			this.oParent.Array_30b8[2] = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
+			this.oParent.Array_30b8[2] = this.oCPU.ReadString(this.oCPU.DS.UInt16, 0xba06);
 
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0e0d, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
 				this.oParent.MSCAPI.itoa(this.oGameData.Players[playerID].SpaceshipLaunchYear, 10));
 
 			// Instruction address 0x0000:0x0e1d, size: 5
-			this.oParent.Array_30b8[3] = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
+			this.oParent.Array_30b8[3] = this.oCPU.ReadString(this.oCPU.DS.UInt16, 0xba06);
 
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0e43, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, this.oParent.MSCAPI.itoa(this.oGameData.Year, 10));
 
 			// Instruction address 0x0000:0x0e53, size: 5
-			this.oParent.Array_30b8[4] = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
+			this.oParent.Array_30b8[4] = this.oCPU.ReadString(this.oCPU.DS.UInt16, 0xba06);
 
 			// Instruction address 0x0000:0x0e70, size: 5
 			this.oParent.LanguageTools.F0_2f4d_01ad_GetTextBySectionAndKey("KING", (ushort)((playerID != this.oGameData.HumanPlayerID) ? 0x32f9 : 0x32f2));
 
 			// Instruction address 0x0000:0x0e78, size: 5
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
-				this.oParent.LanguageTools.F0_2f4d_0471_ReplaceKeywords(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06))));
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, 0xba06),
+				this.oParent.LanguageTools.F0_2f4d_0471_ReplaceKeywords(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, 0xba06))));
 
 			// Instruction address 0x0000:0x0e86, size: 5
-			local_200 = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
+			local_200 = this.oCPU.ReadString(this.oCPU.DS.UInt16, 0xba06);
 
 			this.oParent.Var_aa_Rectangle.FontID = 6;
 
@@ -509,19 +509,19 @@ namespace OpenCiv1
 			local_240 = this.oParent.MSCAPI.strlen(0xba06);
 
 			// Instruction address 0x0000:0x0ec2, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(3, 0);
+			this.oParent.CommonTools.F0_1000_0a32_PlayTune(3, 0);
 
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 			
 			local_208 = 0;
 
 			for (int i = 0; i < 320; i++)
 			{
 				// Instruction address 0x0000:0x10d7, size: 5
-				this.oParent.Segment_1000.F0_1000_033e_ResetWaitTimer();
+				this.oParent.CommonTools.F0_1000_033e_ResetWaitTimer();
 
 				// Instruction address 0x0000:0x10ff, size: 5
-				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_19d4_Rectangle, 0, 176, 320 - i, 24, 0xec);
+				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_19d4_Rectangle, 0, 176, 320 - i, 24, 0xec);
 
 				if (i > 0)
 				{
@@ -538,11 +538,11 @@ namespace OpenCiv1
 					{
 						local_204++;
 					}
-					while (this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + local_204)) != 0x5e && local_204 < local_240);
+					while (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0xba06 + local_204)) != 0x5e && local_204 < local_240);
 
 					if (local_204 < local_240)
 					{
-						this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(local_204 + 0xba06), 0x0);
+						this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(local_204 + 0xba06), 0x0);
 					}
 				}
 			
@@ -571,7 +571,7 @@ namespace OpenCiv1
 				this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(this.oParent.Var_19d4_Rectangle, 135, 51, local_238[local_208]);
 
 				// Instruction address 0x0000:0x0f8d, size: 5
-				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 12, 319, 20, 0xec);
+				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 12, 319, 20, 0xec);
 
 				if (i > 0)
 				{
@@ -584,7 +584,7 @@ namespace OpenCiv1
 				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 176, 320, 24, this.oParent.Var_aa_Rectangle, 0, 32);
 
 				// Instruction address 0x0000:0x100d, size: 5
-				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 56, 320 - i, 132, 0xec);
+				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 56, 320 - i, 132, 0xec);
 
 				if (i > 0)
 				{
@@ -598,7 +598,7 @@ namespace OpenCiv1
 					local_242++;
 
 					// Instruction address 0x0000:0x1067, size: 5
-					this.oParent.Segment_1000.F0_1000_104f_SetPixel(local_242 - i, local_244, 15);
+					this.oParent.CommonTools.F0_1000_104f_SetPixel(local_242 - i, local_244, 15);
 				}
 
 				local_242++;
@@ -625,7 +625,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(0);
 
 			// Instruction address 0x0000:0x11cb, size: 5
-			local_200 = this.oCPU.ReadString(this.oCPU.DS.Word, (ushort)(0xba07 + local_204));
+			local_200 = this.oCPU.ReadString(this.oCPU.DS.UInt16, (ushort)(0xba07 + local_204));
 
 			local_240 -= local_204 + 1;
 
@@ -637,45 +637,45 @@ namespace OpenCiv1
 				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "spacest.pic", 0);
 
 				// Instruction address 0x0000:0x1213, size: 5
-				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
+				this.oParent.CommonTools.F0_1000_0a32_PlayTune(1, 0);
 
 				// Instruction address 0x0000:0x122b, size: 5
-				this.oParent.Segment_1000.F0_1000_04d4_TransformPaletteToColor(5, Color.FromRgb(0, 0, 0));
+				this.oParent.CommonTools.F0_1000_04d4_TransformPaletteToColor(5, Color.FromRgb(0, 0, 0));
 
 				// Instruction address 0x0000:0x1246, size: 5
-				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
+				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
 				// Instruction address 0x0000:0x1252, size: 5
 				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, "spacest.pic", 1);
 
 				// Instruction address 0x0000:0x126f, size: 5
-				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x22, 0);
+				this.oParent.CommonTools.F0_1000_0a32_PlayTune(0x22, 0);
 
 				// Instruction address 0x0000:0x128f, size: 5
 				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 				// Instruction address 0x0000:0x12b1, size: 5
-				this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(1, 15, 16, 31);
+				this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(1, 15, 16, 31);
 
 				// Instruction address 0x0000:0x12c9, size: 5
-				this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(2, 100, 32, 34);
+				this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(2, 100, 32, 34);
 
 				// Instruction address 0x0000:0x12e1, size: 5
-				this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(3, 42, 35, 40);
+				this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(3, 42, 35, 40);
 
 				// Instruction address 0x0000:0x12f9, size: 5
-				this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(4, 300, 41, 47);
+				this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(4, 300, 41, 47);
 
 				// Instruction address 0x0000:0x1311, size: 5
-				this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(5, 60, 48, 53);
+				this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(5, 60, 48, 53);
 
 				// Instruction address 0x0000:0x1329, size: 5
-				this.oParent.Segment_1000.F0_1000_0382_AddPaletteCycleSlot(6, 37, 54, 63);
+				this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(6, 37, 54, 63);
 
 				for (int i = 1; i <= 6; i++)
 				{
 					// Instruction address 0x0000:0x133b, size: 5
-					this.oParent.Segment_1000.F0_1000_03fa_StartPaletteCycleSlot(i);
+					this.oParent.CommonTools.F0_1000_03fa_StartPaletteCycleSlot(i);
 				}
 			}
 			else
@@ -713,16 +713,16 @@ namespace OpenCiv1
 					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA(local_200.Substring(local_23c), 160, 4, 15);
 
 					// Instruction address 0x0000:0x1428, size: 5
-					this.oParent.Segment_1000.F0_1000_104f_SetPixel(280, 32, 15);
+					this.oParent.CommonTools.F0_1000_104f_SetPixel(280, 32, 15);
 
 					// Instruction address 0x0000:0x1434, size: 5
-					this.oParent.Segment_1000.F0_1182_0134_WaitTimer(80);
+					this.oParent.CommonTools.F0_1182_0134_WaitTimer(80);
 
 					// Instruction address 0x0000:0x144b, size: 5
-					this.oParent.Segment_1000.F0_1000_104f_SetPixel(280, 32, 0);
+					this.oParent.CommonTools.F0_1000_104f_SetPixel(280, 32, 0);
 
 					// Instruction address 0x0000:0x1457, size: 5
-					this.oParent.Segment_1000.F0_1182_0134_WaitTimer(80);
+					this.oParent.CommonTools.F0_1182_0134_WaitTimer(80);
 				}
 			}
 			while (local_204 < local_240);
@@ -735,14 +735,14 @@ namespace OpenCiv1
 				for (int i = 1; i < 7; i++)
 				{
 					// Instruction address 0x0000:0x148a, size: 5
-					this.oParent.Segment_1000.F0_1000_042b_StopPaletteCycleSlot(i);
+					this.oParent.CommonTools.F0_1000_042b_StopPaletteCycleSlot(i);
 				}
 			}
 		
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
 			// Instruction address 0x0000:0x14a9, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
+			this.oParent.CommonTools.F0_1000_0a32_PlayTune(1, 0);
 			
 			// Instruction address 0x0000:0x14b5, size: 5
 			this.oParent.MSCAPI.fclose((short)this.oParent.Var_d768);
@@ -750,7 +750,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
 			// Instruction address 0x0000:0x1513, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
 			// Instruction address 0x0000:0x151b, size: 5
 			this.oParent.Segment_1238.F0_1238_1beb();
@@ -778,10 +778,10 @@ namespace OpenCiv1
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
 			// Instruction address 0x0000:0x155a, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
 			// Instruction address 0x0000:0x1566, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(35, 0);
+			this.oParent.CommonTools.F0_1000_0a32_PlayTune(35, 0);
 
 			// Instruction address 0x0000:0x1576, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "arch.pic", 1);
@@ -796,7 +796,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strupr(0xba06);
 
 			// Instruction address 0x0000:0x15d9, size: 5
-			this.oParent.Array_30b8[0] = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
+			this.oParent.Array_30b8[0] = this.oCPU.ReadString(this.oCPU.DS.UInt16, 0xba06);
 
 			// Instruction address 0x0000:0x15e9, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Irrigation");
@@ -812,16 +812,16 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x0000:0x1630, size: 5
-			this.oParent.Array_30b8[3] = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
+			this.oParent.Array_30b8[3] = this.oCPU.ReadString(this.oCPU.DS.UInt16, 0xba06);
 
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x1645, size: 5
 			this.oParent.LanguageTools.F0_2f4d_01ad_GetTextBySectionAndKey("KING", 0x3342);
 
 			// Instruction address 0x0000:0x164d, size: 5
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06),
-				this.oParent.LanguageTools.F0_2f4d_0471_ReplaceKeywords(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0xba06))));
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, 0xba06),
+				this.oParent.LanguageTools.F0_2f4d_0471_ReplaceKeywords(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, 0xba06))));
 
 			this.oParent.Var_aa_Rectangle.FontID = 6;
 
@@ -839,11 +839,11 @@ namespace OpenCiv1
 				{
 					local_2++;
 				}
-				while (this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(local_2 + 0xba06)) != 0x5e && local_2 < local_8);
+				while (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(local_2 + 0xba06)) != 0x5e && local_2 < local_8);
 
 				if (local_2 < local_8)
 				{
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(local_2 + 0xba06), 0x0);
+					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(local_2 + 0xba06), 0x0);
 				}
 
 				if (local_2 < local_8)
@@ -861,30 +861,30 @@ namespace OpenCiv1
 					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToRectAA((ushort)(0xba06 + local_4), 160, 8, 14);
 
 					// Instruction address 0x0000:0x174d, size: 5
-					if (this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(local_2 + 0xba05)) != 0x21 && this.oParent.MSCAPI.kbhit() == 0)
+					if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(local_2 + 0xba05)) != 0x21 && this.oParent.MSCAPI.kbhit() == 0)
 					{
 						// Instruction address 0x0000:0x175a, size: 5
-						this.oParent.Segment_1000.F0_1182_0134_WaitTimer(200);
+						this.oParent.CommonTools.F0_1182_0134_WaitTimer(200);
 					}
 				}
 			}
 			while (local_2 < local_8);
 
 			// Instruction address 0x0000:0x1771, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
+			this.oParent.CommonTools.F0_1000_0a32_PlayTune(1, 0);
 
 			// Instruction address 0x0000:0x178c, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(
+			this.oParent.CommonTools.F0_1000_0a32_PlayTune(
 				this.oGameData.Static.Nations[this.oGameData.Players[this.oGameData.HumanPlayerID].NationalityID].ShortTune, 0);
 
 			// Instruction address 0x0000:0x1798, size: 5
-			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(300);
+			this.oParent.CommonTools.F0_1182_0134_WaitTimer(300);
 
 			// Instruction address 0x0000:0x17a4, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
+			this.oParent.CommonTools.F0_1000_0a32_PlayTune(1, 0);
 
 			// Instruction address 0x0000:0x17bf, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
 			// Instruction address 0x0000:0x17c7, size: 5
 			this.oParent.Segment_1238.F0_1238_1beb();

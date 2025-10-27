@@ -6,14 +6,14 @@ using OpenCiv1.Graphics;
 
 namespace OpenCiv1
 {
-	public class Segment_1000
+	public class CommonTools
 	{
 		private OpenCiv1Game oParent;
 		private VCPU oCPU;
 		private GameData oGameData;
 		private GDriver oGraphics;
 
-		private bool bInTimer = false;
+		private volatile bool bInTimer = false;
 		private Timer? oTimer = null;
 
 		private BDictionary<int, PaletteCycleSlot> aPletteCycleSlots = new BDictionary<int, PaletteCycleSlot>();
@@ -23,7 +23,7 @@ namespace OpenCiv1
 		private int iTransformCount = 0;
 		private TransformColor[] aTransformColors = new TransformColor[0];
 
-		public Segment_1000(OpenCiv1Game parent)
+		public CommonTools(OpenCiv1Game parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -72,7 +72,7 @@ namespace OpenCiv1
 		/// </summary>
 		private void F0_1000_01a7_Timer(object? state)
 		{
-			lock (this.oGraphics.GLock)
+			if (!this.bInTimer)
 			{
 				this.bInTimer = true;
 
@@ -213,45 +213,42 @@ namespace OpenCiv1
 			}
 
 			// function body
-			lock (this.oGraphics.GLock)
+			if (this.aPletteCycleSlots.ContainsKey(index))
 			{
-				if (this.aPletteCycleSlots.ContainsKey(index))
+				// restore old slot palette
+				PaletteCycleSlot oldSlot = this.aPletteCycleSlots.GetValueByKey(index);
+
+				if (oldSlot.Active)
 				{
-					// restore old slot palette
-					PaletteCycleSlot oldSlot = this.aPletteCycleSlots.GetValueByKey(index);
-					
-					if (oldSlot.Active)
+					for (int i = 0; i < oldSlot.Palette.Length; i++)
 					{
-						for (int i = 0; i < oldSlot.Palette.Length; i++)
-						{
-							this.oGraphics.SetPaletteColor((byte)(oldSlot.StartPosition + i), oldSlot.Palette[i]);
-						}
+						this.oGraphics.SetPaletteColor((byte)(oldSlot.StartPosition + i), oldSlot.Palette[i]);
 					}
-
-					// prepare new slot
-					Color[] palette = new Color[(toColorIndex - fromColorIndex) + 1];
-					for (int i = 0; i < palette.Length; i++)
-					{
-						palette[i] = this.oGraphics.GetPaletteColor((byte)(fromColorIndex + i));
-					}
-
-					PaletteCycleSlot newSlot = new PaletteCycleSlot(speed, fromColorIndex, palette);
-					//newSlot.Active = oldSlot.Active;
-
-					this.aPletteCycleSlots.SetValueByKey(index, newSlot);
 				}
-				else
+
+				// prepare new slot
+				Color[] palette = new Color[(toColorIndex - fromColorIndex) + 1];
+				for (int i = 0; i < palette.Length; i++)
 				{
-					Color[] palette = new Color[(toColorIndex - fromColorIndex) + 1];
-					for (int i = 0; i < palette.Length; i++)
-					{
-						palette[i] = this.oGraphics.GetPaletteColor((byte)(fromColorIndex + i));
-					}
-
-					PaletteCycleSlot slot = new PaletteCycleSlot(speed, fromColorIndex, palette);
-
-					this.aPletteCycleSlots.Add(index, slot);
+					palette[i] = this.oGraphics.GetPaletteColor((byte)(fromColorIndex + i));
 				}
+
+				PaletteCycleSlot newSlot = new PaletteCycleSlot(speed, fromColorIndex, palette);
+				//newSlot.Active = oldSlot.Active;
+
+				this.aPletteCycleSlots.SetValueByKey(index, newSlot);
+			}
+			else
+			{
+				Color[] palette = new Color[(toColorIndex - fromColorIndex) + 1];
+				for (int i = 0; i < palette.Length; i++)
+				{
+					palette[i] = this.oGraphics.GetPaletteColor((byte)(fromColorIndex + i));
+				}
+
+				PaletteCycleSlot slot = new PaletteCycleSlot(speed, fromColorIndex, palette);
+
+				this.aPletteCycleSlots.Add(index, slot);
 			}
 
 			// Far return
@@ -274,10 +271,7 @@ namespace OpenCiv1
 					Thread.Sleep(1);
 				}
 
-				lock (this.oGraphics.GLock)
-				{
-					this.aPletteCycleSlots.GetValueByKey(index).Active = true;
-				}
+				this.aPletteCycleSlots.GetValueByKey(index).Active = true;
 			}
 			else
 			{
@@ -304,20 +298,17 @@ namespace OpenCiv1
 					Thread.Sleep(1);
 				}
 
-				lock (this.oGraphics.GLock)
+				PaletteCycleSlot slot = this.aPletteCycleSlots.GetValueByKey(index);
+
+				if (slot.Active)
 				{
-					PaletteCycleSlot slot = this.aPletteCycleSlots.GetValueByKey(index);
-
-					if (slot.Active)
+					for (int i = 0; i < slot.Palette.Length; i++)
 					{
-						for (int i = 0; i < slot.Palette.Length; i++)
-						{
-							this.oGraphics.SetPaletteColor((byte)(slot.StartPosition + i), slot.Palette[i]);
-						}
+						this.oGraphics.SetPaletteColor((byte)(slot.StartPosition + i), slot.Palette[i]);
 					}
-
-					slot.Active = false;
 				}
+
+				slot.Active = false;
 			}
 
 			// Far return
@@ -340,30 +331,27 @@ namespace OpenCiv1
 			this.aTransformColors = new TransformColor[256];
 			palettePtr += 6;
 
-			lock (this.oParent.Graphics.GLock)
+			while (this.bInTimer)
 			{
-				while (this.bInTimer)
-				{
-					Thread.Sleep(1);
-				}
-
-				this.iTransformValue = speed * 10;
-				this.iTransformCount = 0;
-
-				for (int i = 0; i < 256; i++)
-				{
-					HSVColor from = HSVColor.FromColor(this.oGraphics.GetPaletteColor((byte)i));
-					HSVColor to = HSVColor.FromColor(GBitmap.Color18ToColor(this.oCPU.ReadUInt8(this.oCPU.DS.Word, palettePtr),
-						this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(palettePtr + 1)),
-						this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(palettePtr + 2))));
-
-					this.aTransformColors[i] = new TransformColor(from, to, this.iTransformValue);
-
-					palettePtr += 3;
-				}
-
-				this.bTransformFlag = true;
+				Thread.Sleep(1);
 			}
+
+			this.iTransformValue = speed * 10;
+			this.iTransformCount = 0;
+
+			for (int i = 0; i < 256; i++)
+			{
+				HSVColor from = HSVColor.FromColor(this.oGraphics.GetPaletteColor((byte)i));
+				HSVColor to = HSVColor.FromColor(GBitmap.Color18ToColor(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, palettePtr),
+					this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(palettePtr + 1)),
+					this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(palettePtr + 2))));
+
+				this.aTransformColors[i] = new TransformColor(from, to, this.iTransformValue);
+
+				palettePtr += 3;
+			}
+
+			this.bTransformFlag = true;
 
 			while (this.bTransformFlag)
 			{
@@ -391,29 +379,26 @@ namespace OpenCiv1
 			this.aTransformColors = new TransformColor[256];
 			int palettePtr = 6;
 
-			lock (this.oParent.Graphics.GLock)
+			while (this.bInTimer)
 			{
-				while (this.bInTimer)
-				{
-					Thread.Sleep(1);
-				}
-
-				this.iTransformValue = speed * 10;
-				this.iTransformCount = 0;
-
-				for (int i = 0; i < 256; i++)
-				{
-					HSVColor from = HSVColor.FromColor(this.oGraphics.GetPaletteColor((byte)i));
-					HSVColor to = HSVColor.FromColor(GBitmap.Color18ToColor(palette[palettePtr], palette[palettePtr + 1],
-						palette[palettePtr + 2]));
-
-					this.aTransformColors[i] = new TransformColor(from, to, this.iTransformValue);
-
-					palettePtr += 3;
-				}
-
-				this.bTransformFlag = true;
+				Thread.Sleep(1);
 			}
+
+			this.iTransformValue = speed * 10;
+			this.iTransformCount = 0;
+
+			for (int i = 0; i < 256; i++)
+			{
+				HSVColor from = HSVColor.FromColor(this.oGraphics.GetPaletteColor((byte)i));
+				HSVColor to = HSVColor.FromColor(GBitmap.Color18ToColor(palette[palettePtr], palette[palettePtr + 1],
+					palette[palettePtr + 2]));
+
+				this.aTransformColors[i] = new TransformColor(from, to, this.iTransformValue);
+
+				palettePtr += 3;
+			}
+
+			this.bTransformFlag = true;
 
 			while (this.bTransformFlag)
 			{
@@ -438,25 +423,22 @@ namespace OpenCiv1
 			HSVColor to = HSVColor.FromColor(color);
 			this.aTransformColors = new TransformColor[256];
 
-			lock (this.oParent.Graphics.GLock)
+			while (this.bInTimer)
 			{
-				while (this.bInTimer)
-				{
-					Thread.Sleep(1);
-				}
-
-				this.iTransformValue = speed * 10;
-				this.iTransformCount = 0;
-
-				for (int i = 0; i < 256; i++)
-				{
-					HSVColor from = HSVColor.FromColor(this.oGraphics.GetPaletteColor((byte)i));
-
-					this.aTransformColors[i] = new TransformColor(from, to, this.iTransformValue);
-				}
-
-				this.bTransformFlag = true;
+				Thread.Sleep(1);
 			}
+
+			this.iTransformValue = speed * 10;
+			this.iTransformCount = 0;
+
+			for (int i = 0; i < 256; i++)
+			{
+				HSVColor from = HSVColor.FromColor(this.oGraphics.GetPaletteColor((byte)i));
+
+				this.aTransformColors[i] = new TransformColor(from, to, this.iTransformValue);
+			}
+
+			this.bTransformFlag = true;
 
 			while (this.bTransformFlag)
 			{
@@ -475,7 +457,7 @@ namespace OpenCiv1
 		/// <returns>Zero if file exists, otherwise -1</returns>
 		public ushort F0_1000_066a_FileExists(ushort fileNamePtr)
 		{
-			string fileName = MSCAPI.GetDOSFileName(this.oParent.CPU.ReadString(VCPU.ToLinearAddress(this.oParent.CPU.DS.Word, fileNamePtr)).ToUpper());
+			string fileName = MSCAPI.GetDOSFileName(this.oParent.CPU.ReadString(VCPU.ToLinearAddress(this.oParent.CPU.DS.UInt16, fileNamePtr)).ToUpper());
 
 			return F0_1000_066a_FileExists(fileName);
 		}
@@ -492,17 +474,17 @@ namespace OpenCiv1
 			// function body
 			if (File.Exists($"{VCPU.DefaultCIVPath}{fileName}"))
 			{
-				this.oCPU.AX.Word = 0;
+				this.oCPU.AX.UInt16 = 0;
 			}
 			else
 			{
-				this.oCPU.AX.Word = 0xffff;
+				this.oCPU.AX.UInt16 = 0xffff;
 			}
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1000_066a_FileExists");
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -581,10 +563,10 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock("Sound overlay 'F0_1000_0a4e_Soundtimer'");
 
 			// Instruction address 0x1000:0x0a4e, size: 5
-			this.oCPU.AX.Word = this.oParent.Sound.F0_0000_005d_SoundTimer();
+			this.oCPU.AX.UInt16 = this.oParent.Sound.F0_0000_005d_SoundTimer();
 			//this.oCPU.Log.ExitBlock("Sound overlay 'F0_1000_0a4e_Soundtimer'");
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -665,21 +647,21 @@ namespace OpenCiv1
 			//this.oCPU.INT(0x33);
 			//this.oCPU.AX.Word = 0x3;
 			//this.oCPU.INT(0x33);
-			this.oCPU.CX.Low = 0;
-			this.oCPU.AX.Word = (ushort)(this.oCPU.MouseLocation.X >> this.oCPU.CX.Low);
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x587c, this.oCPU.CX.Low);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x586e, this.oCPU.AX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5870, (ushort)this.oCPU.MouseLocation.Y);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5872, (ushort)this.oCPU.MouseButtons);
-			this.oCPU.AX.Word = 0xffff;
+			this.oCPU.CX.LowUInt8 = 0;
+			this.oCPU.AX.UInt16 = (ushort)(this.oCPU.MouseLocation.X >> this.oCPU.CX.LowUInt8);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x587c, this.oCPU.CX.LowUInt8);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x586e, this.oCPU.AX.UInt16);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5870, (ushort)this.oCPU.MouseLocation.Y);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5872, (ushort)this.oCPU.MouseButtons);
+			this.oCPU.AX.UInt16 = 0xffff;
 
 		//L1683:
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x587d, this.oCPU.AX.Low);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x587d, this.oCPU.AX.LowUInt8);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1000_163e_InitMouse");
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -690,17 +672,17 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_1000_1687()");
 
 			// function body
-			this.oCPU.AX.Low = 0x0;
-			this.oCPU.Temp.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x587d);
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x587d, this.oCPU.AX.Low);
-			this.oCPU.AX.Low = this.oCPU.Temp.Low;
-			this.oCPU.AX.Low = this.oCPU.OR_UInt8(this.oCPU.AX.Low, this.oCPU.AX.Low);
+			this.oCPU.AX.LowUInt8 = 0x0;
+			this.oCPU.Temp.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x587d);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x587d, this.oCPU.AX.LowUInt8);
+			this.oCPU.AX.LowUInt8 = this.oCPU.Temp.LowUInt8;
+			this.oCPU.AX.LowUInt8 = this.oCPU.ORUInt8(this.oCPU.AX.LowUInt8, this.oCPU.AX.LowUInt8);
 			if (this.oCPU.Flags.E) goto L1696;
 
 			//this.oCPU.AX.Word = 0x0;
 			//this.oCPU.INT(0x33);
-			this.oCPU.AX.Word = 0xffff;
-			this.oCPU.BX.Word = 2;
+			this.oCPU.AX.UInt16 = 0xffff;
+			this.oCPU.BX.UInt16 = 2;
 
 		L1696:
 			// Far return
@@ -718,8 +700,8 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_1000_1697({param1}, {param2}, {bitmapID})");
 
 			// function body
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5878, param1);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x587a, param2);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5878, param1);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x587a, param2);
 			this.oParent.Var_5876 = bitmapID;
 
 			// Far return
@@ -736,26 +718,26 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_1000_16ae({param1}, {param2})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
+			this.oCPU.PUSHUInt16(this.oCPU.BP.UInt16);
+			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
 
-			this.oCPU.AX.Word = param1;
-			this.oCPU.DX.Word = param2;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x586e, this.oCPU.AX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5870, this.oCPU.DX.Word);
+			this.oCPU.AX.UInt16 = param1;
+			this.oCPU.DX.UInt16 = param2;
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x586e, this.oCPU.AX.UInt16);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5870, this.oCPU.DX.UInt16);
 
-			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x587d), 0x0);
+			this.oCPU.CMPUInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x587d), 0x0);
 			if (this.oCPU.Flags.E) goto L16d2;
 			
-			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x587c);
-			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.CX.Word = this.oCPU.AX.Word;
+			this.oCPU.CX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x587c);
+			this.oCPU.AX.UInt16 = this.oCPU.SHLUInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
+			this.oCPU.CX.UInt16 = this.oCPU.AX.UInt16;
 			
 			//this.oCPU.AX.Word = 0x4;
 			//this.oCPU.INT(0x33);
 
 		L16d2:
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
+			this.oCPU.BP.UInt16 = this.oCPU.POPUInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1000_16ae");
 		}
@@ -767,10 +749,10 @@ namespace OpenCiv1
 		public ushort F0_1000_16d4()
 		{
 			// function body
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5874);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5874, 0);
+			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x5874);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5874, 0);
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -779,15 +761,15 @@ namespace OpenCiv1
 		public void F0_1000_17db_MouseEvent()
 		{
 			// function body
-			this.oCPU.DS.Word = 0x3b01;
+			this.oCPU.DS.UInt16 = 0x3b01;
 
-			this.oCPU.CX.Word >>= this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x587c);
+			this.oCPU.CX.UInt16 >>= this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x587c);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5874, 
-				this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5874), this.oCPU.BX.Word));
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5872, this.oCPU.BX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x586e, this.oCPU.CX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5870, this.oCPU.DX.Word);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5874, 
+				this.oCPU.ORUInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x5874), this.oCPU.BX.UInt16));
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5872, this.oCPU.BX.UInt16);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x586e, this.oCPU.CX.UInt16);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5870, this.oCPU.DX.UInt16);
 		}
 	}
 }

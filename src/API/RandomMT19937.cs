@@ -1,87 +1,74 @@
+using OpenCiv1.API;
 using System;
 
-/* 
-   Marsenne Twister (MT19937), with initialization improved 2002/1/26.
-   Coded by Takuji Nishimura and Makoto Matsumoto.
-
-   Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
-   All rights reserved.                          
-
-   Redistribution and use in source and binary forms, with or without
-   modification, are permitted provided that the following conditions
-   are met:
-
-	 1. Redistributions of source code must retain the above copyright
-		notice, this list of conditions and the following disclaimer.
-
-	 2. Redistributions in binary form must reproduce the above copyright
-		notice, this list of conditions and the following disclaimer in the
-		documentation and/or other materials provided with the distribution.
-
-	 3. The names of its contributors may not be used to endorse or promote 
-		products derived from this software without specific prior written 
-		permission.
-
-   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-   A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
-   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-   EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
-   Any feedback is very welcome.
-   http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html
-   email: m-mat @ math.sci.hiroshima-u.ac.jp (remove space)
- 
- ***********************************************************************************
- 
-   C# version (revision 1.01) by:
-   Rajko Horvat
-   Laboratory for information systems, Division of Electronics
-   Rudjer Boskovic Institute, Croatia
-   e-mail: rhorvat @ irb.hr (remove space)
-   
-   Any suggestions or bug reports are welcome
-   
- ***********************************************************************************
-*/
+/// <summary>
+/// Marsenne Twister (MT19937), with initialization improved 2002/1/26. Version 1.02
+/// </summary>
+/// <license>
+///		Mixed License
+/// 
+/// Authors:
+///		Takuji Nishimura and Makoto Matsumoto, Copyright(C) 1997 - 2002, All rights reserved.
+/// 	Rajko Horvat (https://github.com/rajko-horvat), C# version, 2023
+/// 
+/// Redistribution and use in source and binary forms, with or without
+/// modification, are permitted provided that the following conditions
+/// are met:
+/// 
+/// 1.Redistributions of source code must retain the above copyright
+/// notice, this list of conditions and the following disclaimer.
+/// 
+/// 2. Redistributions in binary form must reproduce the above copyright
+/// notice, this list of conditions and the following disclaimer in the
+/// documentation and/or other materials provided with the distribution.
+/// 
+/// 3. The names of its contributors may not be used to endorse or promote 
+/// products derived from this software without specific prior written 
+/// permission.
+/// 
+/// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+/// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+/// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+/// A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+/// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+/// EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+/// PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+/// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+/// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+/// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+/// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+/// </license>
 [Serializable]
 public class RandomMT19937
 {
 	// Fields
-	private const int N = 624;
-	private const int M = 397;
-	private const uint MATRIX_A = 0x9908b0dfU;   // constant vector a
-	private const uint UPPER_MASK = 0x80000000U; // most significant w-r bits
-	private const uint LOWER_MASK = 0x7fffffffU; // least significant r bits
+	private const int matrixLength = 624;
+	private const int matrixMedian = 397;
+	private const uint upperMask = 0x80000000U; // Most significant w-r bits
+	private const uint lowerMask = 0x7fffffffU; // Least significant r bits
 
-	private uint[] aMatrix = new uint[N]; // the array for the state vector
-	private int iMatrixIndex = N + 1; // iMatrixIndex == N+1 means aMatrix[N] is not initialized
-	private uint[] mag01 = new uint[] { 0x0U, MATRIX_A }; // mag01[x] = x * MATRIX_A  for x=0,1
+	private RandomMT19937State state;
+	private uint[] matrixA = new uint[] { 0x0U, 0x9908b0dfU }; // Constant Vector A = 0x9908b0dfU
 
 	// Methods
 	public RandomMT19937() : this(Environment.TickCount)
 	{ }
 
-	// initializes aMatrix[N] with a seed
+	// initializes matrix[N] with a seed
 	public RandomMT19937(int seed)
 	{
-		aMatrix[0] = (uint)seed & 0xffffffffU; // for >32 bit machines
+		this.state = new RandomMT19937State(matrixLength);
 
-		// generate N words at one time
-		for (iMatrixIndex = 1; iMatrixIndex < N; iMatrixIndex++)
+		this.state.Matrix[0] = (uint)seed & 0xffffffffU; // for >32 bit machines
+
+		// generate matrixLength words at one time
+		for (int i = 1; i < matrixLength; i++)
 		{
-			aMatrix[iMatrixIndex] = (1812433253U * (aMatrix[iMatrixIndex - 1] ^ (aMatrix[iMatrixIndex - 1] >> 30)) + (uint)iMatrixIndex);
+			this.state.Matrix[i] = (1812433253U * (this.state.Matrix[i - 1] ^ (this.state.Matrix[i - 1] >> 30)) + (uint)i);
 			// See Knuth TAOCP Vol 2. 3rd Ed. P.106 for multiplier.
 			// In the previous versions, MSBs of the seed affect only MSBs of the array aMatrix[].
 			// 2002/01/09 modified by Makoto Matsumoto
-			aMatrix[iMatrixIndex] &= 0xffffffffU; // for >32 bit machines
+			this.state.Matrix[i] &= 0xffffffffU; // for >32 bit machines
 		}
 	}
 
@@ -93,30 +80,30 @@ public class RandomMT19937
 	{
 		uint value;
 
-		if (iMatrixIndex >= N)
+		if (this.state.MatrixIndex >= matrixLength)
 		{
-			// generate N words at one time
+			// generate matrixLength words at one time
 			int i;
 
-			for (i = 0; i < N - M; i++)
+			for (i = 0; i < matrixLength - matrixMedian; i++)
 			{
-				value = (aMatrix[i] & UPPER_MASK) | (aMatrix[i + 1] & LOWER_MASK);
-				aMatrix[i] = aMatrix[i + M] ^ (value >> 1) ^ mag01[value & 1];
+				value = (this.state.Matrix[i] & upperMask) | (this.state.Matrix[i + 1] & lowerMask);
+				this.state.Matrix[i] = this.state.Matrix[i + matrixMedian] ^ (value >> 1) ^ matrixA[value & 1];
 			}
 
-			for (; i < N - 1; i++)
+			for (; i < matrixLength - 1; i++)
 			{
-				value = (aMatrix[i] & UPPER_MASK) | (aMatrix[i + 1] & LOWER_MASK);
-				aMatrix[i] = aMatrix[i + (M - N)] ^ (value >> 1) ^ mag01[value & 1];
+				value = (this.state.Matrix[i] & upperMask) | (this.state.Matrix[i + 1] & lowerMask);
+				this.state.Matrix[i] = this.state.Matrix[i + (matrixMedian - matrixLength)] ^ (value >> 1) ^ matrixA[value & 1];
 			}
 
-			value = (aMatrix[N - 1] & UPPER_MASK) | (aMatrix[0] & LOWER_MASK);
-			aMatrix[N - 1] = aMatrix[M - 1] ^ (value >> 1) ^ mag01[value & 1];
+			value = (this.state.Matrix[matrixLength - 1] & upperMask) | (this.state.Matrix[0] & lowerMask);
+			this.state.Matrix[matrixLength - 1] = this.state.Matrix[matrixMedian - 1] ^ (value >> 1) ^ matrixA[value & 1];
 
-			iMatrixIndex = 0;
+			this.state.MatrixIndex = 0;
 		}
 
-		value = aMatrix[iMatrixIndex++];
+		value = this.state.Matrix[this.state.MatrixIndex++];
 
 		// Tempering
 		value ^= (value >> 11);
@@ -190,4 +177,6 @@ public class RandomMT19937
 		// (1.0 / 4294967296.0) = 2.3283064365386962890625e-10
 		return (this.InternalSample() * 2.3283064365386962890625e-10);
 	}
+
+	public RandomMT19937State State { get => this.State; set => this.state = value; }
 }

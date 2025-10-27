@@ -17,7 +17,7 @@ namespace OpenCiv1
 
 		#region Segment definitions
 		private Segment_11a8 oSegment_11a8;
-		private Segment_1000 oSegment_1000;
+		private CommonTools oCommonTools;
 		private Segment_1238 oSegment_1238;
 		private MenuBoxDialog oMenuBoxDialog;
 		private Segment_1403 oSegment_1403;
@@ -88,7 +88,7 @@ namespace OpenCiv1
 			this.oSound = new NSound(this);
 
 			this.oSegment_11a8 = new Segment_11a8(this);
-			this.oSegment_1000 = new Segment_1000(this);
+			this.oCommonTools = new CommonTools(this);
 			this.oSegment_1238 = new Segment_1238(this);
 			this.oMenuBoxDialog = new MenuBoxDialog(this);
 			this.oSegment_1403 = new Segment_1403(this);
@@ -321,7 +321,7 @@ namespace OpenCiv1
 			uint uiEXEStart = VCPU.ToLinearAddress(usStartSegment, 0);
 			uint uiEXELength = 0x3a0e0;
 
-			byte[] resources = Resources.BinaryResources;
+			byte[] resources = CommonResources.BinaryResources;
 
 			this.oCPU.Memory.AllocateMemoryBlock(uiEXEStart, uiEXELength, VCPUMemoryFlagsEnum.ReadWrite);
 			this.oCPU.Memory.WriteBlock(VCPU.ToLinearAddress(0x35cf, 0), resources, 0, resources.Length);
@@ -337,70 +337,70 @@ namespace OpenCiv1
 
 			// Initialize CPU
 			//this.oCPU.CS.Word = (ushort)(usInitialCS + usStartSegment);
-			this.oCPU.SS.Word = (ushort)(usInitialSS + usStartSegment);
-			this.oCPU.DS.Word = (ushort)(usStartSegment - 0x10);
-			this.oCPU.ES.Word = (ushort)(usStartSegment - 0x10);
-			this.oCPU.SP.Word = usInitialSP;
+			this.oCPU.SS.UInt16 = (ushort)(usInitialSS + usStartSegment);
+			this.oCPU.DS.UInt16 = (ushort)(usStartSegment - 0x10);
+			this.oCPU.ES.UInt16 = (ushort)(usStartSegment - 0x10);
+			this.oCPU.SP.UInt16 = usInitialSP;
 
 			ushort usDataSegment = 0x3b01;
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.DS.Word);
+			this.oCPU.PUSHUInt16(this.oCPU.DS.UInt16);
 
-			this.oCPU.DS.Word = 0x3b01;
+			this.oCPU.DS.UInt16 = 0x3b01;
 
 			// Not important, but just for case it's still needed, to be removed later
 			string sPath = $"{VCPU.DefaultCIVPath}CIV.EXE";
 
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x61ee, (byte)'C');
-			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.Word, 0x6156), sPath);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x61ee, (byte)'C');
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, 0x6156), sPath);
 
-			this.oCPU.DS.Word = this.oCPU.POP_UInt16();
-			this.oCPU.ES.Word = this.oCPU.DS.Word;
+			this.oCPU.DS.UInt16 = this.oCPU.POPUInt16();
+			this.oCPU.ES.UInt16 = this.oCPU.DS.UInt16;
 
-			this.oCPU.SI.Word = (ushort)(this.oCPU.Memory.FreeMemory.End >> 4); // top of memory
-			this.oCPU.SI.Word = this.oCPU.SUB_UInt16(this.oCPU.SI.Word, usDataSegment);
+			this.oCPU.SI.UInt16 = (ushort)(this.oCPU.Memory.FreeMemory.End >> 4); // top of memory
+			this.oCPU.SI.UInt16 = this.oCPU.SUBUInt16(this.oCPU.SI.UInt16, usDataSegment);
 
 			// Init SS:SP
 			this.oCPU.CLI();
-			this.oCPU.SS.Word = usDataSegment;
-			this.oCPU.SP.Word = this.oCPU.ADD_UInt16(this.oCPU.SP.Word, 0xe8c0);
+			this.oCPU.SS.UInt16 = usDataSegment;
+			this.oCPU.SP.UInt16 = this.oCPU.ADDUInt16(this.oCPU.SP.UInt16, 0xe8c0);
 			this.oCPU.STI();
 
 			// Align SP
-			this.oCPU.SP.Word = this.oCPU.AND_UInt16(this.oCPU.SP.Word, 0xfffe);
+			this.oCPU.SP.UInt16 = this.oCPU.ANDUInt16(this.oCPU.SP.UInt16, 0xfffe);
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, 0x5890, this.oCPU.SP.Word);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, 0x588c, this.oCPU.SP.Word);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, 0x5890, this.oCPU.SP.UInt16);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, 0x588c, this.oCPU.SP.UInt16);
 
-			this.oCPU.AX.Word = this.oCPU.SI.Word;
-			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, 4);
-			this.oCPU.AX.Word = this.oCPU.DEC_UInt16(this.oCPU.AX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, 0x588a, this.oCPU.AX.Word);
+			this.oCPU.AX.UInt16 = this.oCPU.SI.UInt16;
+			this.oCPU.AX.UInt16 = this.oCPU.SHLUInt16(this.oCPU.AX.UInt16, 4);
+			this.oCPU.AX.UInt16 = this.oCPU.DECUInt16(this.oCPU.AX.UInt16);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, 0x588a, this.oCPU.AX.UInt16);
 
-			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, usDataSegment);
-			this.oCPU.BX.Word = this.oCPU.ES.Word;
-			this.oCPU.BX.Word = this.oCPU.SUB_UInt16(this.oCPU.BX.Word, this.oCPU.SI.Word);
-			this.oCPU.BX.Word = this.oCPU.NEG_UInt16(this.oCPU.BX.Word);
-			if (this.oCPU.Memory.ResizeMemoryBlock(this.oCPU.ES.Word, this.oCPU.BX.Word))
+			this.oCPU.SI.UInt16 = this.oCPU.ADDUInt16(this.oCPU.SI.UInt16, usDataSegment);
+			this.oCPU.BX.UInt16 = this.oCPU.ES.UInt16;
+			this.oCPU.BX.UInt16 = this.oCPU.SUBUInt16(this.oCPU.BX.UInt16, this.oCPU.SI.UInt16);
+			this.oCPU.BX.UInt16 = this.oCPU.NEGUInt16(this.oCPU.BX.UInt16);
+			if (this.oCPU.Memory.ResizeMemoryBlock(this.oCPU.ES.UInt16, this.oCPU.BX.UInt16))
 			{
 				this.oCPU.Flags.C = false;
-				this.oCPU.AX.Word = 0;
+				this.oCPU.AX.UInt16 = 0;
 			}
 			else
 			{
 				this.oCPU.Flags.C = true;
-				this.oCPU.AX.Word = 8;
-				this.oCPU.BX.Word = 0;
+				this.oCPU.AX.UInt16 = 8;
+				this.oCPU.BX.UInt16 = 0;
 			}
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, 0x5901, this.oCPU.DS.Word);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, 0x5901, this.oCPU.DS.UInt16);
 
-			this.oCPU.ES.Word = this.oCPU.SS.Word;
-			this.oCPU.DS.Word = this.oCPU.SS.Word;
+			this.oCPU.ES.UInt16 = this.oCPU.SS.UInt16;
+			this.oCPU.DS.UInt16 = this.oCPU.SS.UInt16;
 
 			// Clear the rest of data and stack segment 0x652e - 0xe8c0
-			for (int i = 0x652e; i < this.oCPU.SP.Word; i++)
+			for (int i = 0x652e; i < this.oCPU.SP.UInt16; i++)
 			{
 				if (i < 0x70ec && i > 0x70ec + 0xdff)
 					this.oCPU.WriteUInt8(usDataSegment, (ushort)i, 0);
@@ -517,18 +517,18 @@ namespace OpenCiv1
 			#endregion
 
 			// DOS version
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5903, 0x616);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5903, 0x616);
 
 			// Environment block is not used
 			// Argument block is not used
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5922, 0);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x5920, 0);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x591e, 0);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5922, 0);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5920, 0);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x591e, 0);
 
 			// Get special devices information
 			// Defaults are OK, no need to modify bytes at 0x590a - 0x590e
 
-			this.oCPU.BP.Word = 0x0;
+			this.oCPU.BP.UInt16 = 0x0;
 
 			/*this.oCPU.ES.Word = 0x3b01; // segment
 			StreamWriter writer = new StreamWriter("Data.cs");
@@ -570,7 +570,7 @@ namespace OpenCiv1
 			// Call our 'short Main()' function
 			this.Segment_11a8.F0_11a8_0008_Main();
 
-			this.MSCAPI.exit((short)this.oCPU.AX.Word);
+			this.MSCAPI.exit((short)this.oCPU.AX.UInt16);
 		}
 
 		public static void LogUnit(OpenCiv1Game game, LogWrapper log, int playerID, int unitID, int humanPlayerID)
@@ -620,9 +620,9 @@ namespace OpenCiv1
 			get { return this.oSegment_11a8; }
 		}
 
-		public Segment_1000 Segment_1000
+		public CommonTools CommonTools
 		{
-			get { return this.oSegment_1000; }
+			get { return this.oCommonTools; }
 		}
 
 		public Segment_1238 Segment_1238

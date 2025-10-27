@@ -22,10 +22,11 @@ namespace OpenCiv1
 		public int Layer2_PlayerOwnership = 0;
 		public int Layer3_GroupID = -1; // GroupID
 		public int Layer4_BuildSites = 0;
-		public int Layer5_TerrainImprovements1 = 0;
-		public int Layer6_VisibleTerrainImprovements1 = 0; // 1 - City?, 2 - Irrigation, 4 - Mine, 8 - Roads
-		public int Layer7_TerrainImprovements2 = 0;
-		public int Layer8_VisibleTerrainImprovements2 = 0; // 1 - Railroads, 2 - City Walls, 4 - Pollution, 8 - ?
+
+		// 0x1 - City, 0x2 - Irrigation, 0x4 - Mine, 0x8 - Roads, 0x10 - Railroads, 0x20 - City Walls, 0x40 - Pollution, 0x80 - Flag80
+		private EnumFlagCollection<TerrainImprovementEnum> terrainImprovements = [];
+		private BDictionary<int, EnumFlagCollection<TerrainImprovementEnum>> visibleTerrainImprovements = [];
+
 		public int Layer9_ActiveUnits = 0;
 		public int Layer10_MiniMap = 0;
 
@@ -172,79 +173,7 @@ namespace OpenCiv1
 			}*/
 		}
 
-		[XmlIgnore]
-		public TerrainMapGroupTypeEnum GroupType
-		{
-			get
-			{
-				switch (this.eTerrainType)
-				{
-					case TerrainTypeEnum.Water:
-						return TerrainMapGroupTypeEnum.Water;
-
-					default:
-						return TerrainMapGroupTypeEnum.Land;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Makes this cell invisible to everyone
-		/// </summary>
-		public void ClearVisibility()
-		{
-			this.VisibilityList.Clear();
-		}
-
-		/// <summary>
-		/// Tests if this cell is visible
-		/// </summary>
-		/// <param name="playerID">The Player ID to test visibility for</param>
-		/// <returns></returns>
-		public bool IsVisibleTo(int playerID)
-		{
-			return this.VisibilityList.Contains(playerID);
-		}
-
-		/// <summary>
-		/// Sets visibility of this cell
-		/// </summary>
-		/// <param name="playerID">Player ID to set visibility for</param>
-		/// <param name="visible">If the cell is visible to the provided Player</param>
-		public void SetVisiblity(int playerID, bool visible)
-		{
-			if (visible)
-			{
-				if (!this.VisibilityList.Contains(playerID))
-				{
-					this.VisibilityList.Add(playerID);
-				}
-			}
-			else
-			{
-				if (this.VisibilityList.Contains(playerID))
-				{
-					this.VisibilityList.Remove(playerID);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Appends another Visibility list to this cell
-		/// </summary>
-		/// <param name="visibilityList"></param>
-		public void AppendVisibility(BHashSet<int> visibilityList)
-		{
-			for (int i = 0; i < visibilityList.Count; i++)
-			{
-				if (!this.VisibilityList.Contains(visibilityList[i]))
-				{
-					this.VisibilityList.Add(visibilityList[i]);
-				}
-			}
-		}
-
-		#region Map Cell Terrain type properties
+		#region Terrain Type constants
 		public string TerrainName
 		{
 			get
@@ -300,11 +229,11 @@ namespace OpenCiv1
 
 				double dValue = this.oTerrainDefinition.MovementCost;
 
-				if ((this.Layer5_TerrainImprovements1 & 0x8) != 0) // roads
+				if (this.terrainImprovements.ContainsAnyFlag(TerrainImprovementEnum.Roads))
 				{
 					dValue /= 3.0;
 				}
-				if ((this.Layer7_TerrainImprovements2 & 0x1) != 0) // railroads
+				if (this.terrainImprovements.ContainsAnyFlag(TerrainImprovementEnum.Railroads))
 				{
 					dValue = 0.0;
 				}
@@ -316,35 +245,32 @@ namespace OpenCiv1
 		/// <summary>
 		/// Movement cost based on currently visible improvements
 		/// </summary>
-		public double VisibleMovementCost
+		public double VisibleMovementCost(int playerID)
 		{
-			get
+			if (this.oTerrainDefinition == null)
 			{
-				if (this.oTerrainDefinition == null)
+				if (this.oParent != null && this.oParent.Parent != null)
 				{
-					if (this.oParent != null && this.oParent.Parent != null)
-					{
-						this.oTerrainDefinition = this.oParent.Parent.GameData.Static.Terrains.GetValueByKey(this.eTerrainType);
-					}
-					else
-					{
-						return 1;
-					}
+					this.oTerrainDefinition = this.oParent.Parent.GameData.Static.Terrains.GetValueByKey(this.eTerrainType);
 				}
-
-				double dValue = this.oTerrainDefinition.MovementCost;
-
-				if ((this.Layer6_VisibleTerrainImprovements1 & 0x8) != 0) // roads
+				else
 				{
-					dValue = 1.0 / 3.0;
+					return 1;
 				}
-				if ((this.Layer8_VisibleTerrainImprovements2 & 0x1) != 0) // railroads
-				{
-					dValue = 0.0;
-				}
-
-				return dValue;
 			}
+
+			double dValue = this.oTerrainDefinition.MovementCost;
+
+			if (this.visibleTerrainImprovements.GetValueByKey(playerID).ContainsAnyFlag(TerrainImprovementEnum.Roads)) // roads
+			{
+				dValue = 1.0 / 3.0;
+			}
+			if (this.visibleTerrainImprovements.GetValueByKey(playerID).ContainsAnyFlag(TerrainImprovementEnum.Railroads)) // railroads
+			{
+				dValue = 0.0;
+			}
+
+			return dValue;
 		}
 
 		public int DefenseBonus
@@ -654,6 +580,103 @@ namespace OpenCiv1
 		}
 		#endregion
 
+		#region Terrain Improvements
+		public EnumFlagCollection<TerrainImprovementEnum> Improvements
+		{
+			get => this.terrainImprovements;
+			set => this.terrainImprovements = value;
+		}
+
+		public BDictionary<int, EnumFlagCollection<TerrainImprovementEnum>> VisibleImprovements
+		{
+			get => this.visibleTerrainImprovements;
+			set => this.visibleTerrainImprovements = value;
+		}
+
+		public void UpdateVisibleImprovements(int playerID)
+		{
+			if (this.visibleTerrainImprovements.ContainsKey(playerID))
+			{
+				this.visibleTerrainImprovements.SetValueByKey(playerID, new(this.terrainImprovements));
+			}
+		}
+		#endregion
+
+		[XmlIgnore]
+		public TerrainMapGroupTypeEnum GroupType
+		{
+			get
+			{
+				switch (this.eTerrainType)
+				{
+					case TerrainTypeEnum.Water:
+						return TerrainMapGroupTypeEnum.Water;
+
+					default:
+						return TerrainMapGroupTypeEnum.Land;
+				}
+			}
+		}
+
+		#region Terrain Visibility
+		/// <summary>
+		/// Makes this cell invisible to everyone
+		/// </summary>
+		public void ClearVisibility()
+		{
+			this.VisibilityList.Clear();
+		}
+
+		/// <summary>
+		/// Tests if this cell is visible
+		/// </summary>
+		/// <param name="playerID">The Player ID to test visibility for</param>
+		/// <returns></returns>
+		public bool IsVisibleTo(int playerID)
+		{
+			return this.VisibilityList.Contains(playerID);
+		}
+
+		/// <summary>
+		/// Sets visibility of this cell
+		/// </summary>
+		/// <param name="playerID">Player ID to set visibility for</param>
+		/// <param name="visible">If the cell is visible to the provided Player</param>
+		public void SetVisiblity(int playerID, bool visible)
+		{
+			if (visible)
+			{
+				if (!this.VisibilityList.Contains(playerID))
+				{
+					this.VisibilityList.Add(playerID);
+				}
+			}
+			else
+			{
+				if (this.VisibilityList.Contains(playerID))
+				{
+					this.VisibilityList.Remove(playerID);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Appends another Visibility list to this cell
+		/// </summary>
+		/// <param name="visibilityList"></param>
+		public void AppendVisibility(BHashSet<int> visibilityList)
+		{
+			for (int i = 0; i < visibilityList.Count; i++)
+			{
+				if (!this.VisibilityList.Contains(visibilityList[i]))
+				{
+					this.VisibilityList.Add(visibilityList[i]);
+				}
+			}
+		}
+
+		#endregion
+
 		/*[XmlIgnore]
 		public bool HasSpecialResources
 		{
@@ -680,8 +703,7 @@ namespace OpenCiv1
 				if (this.oParent == other.Parent && this.Position.Equals(other.Position) &&
 					this.TerrainType.Equals(other.TerrainType) && this.Layer2_PlayerOwnership.Equals(other.Layer2_PlayerOwnership) &&
 					this.Layer3_GroupID.Equals(other.Layer3_GroupID) && this.Layer4_BuildSites.Equals(other.Layer4_BuildSites) &&
-					this.Layer5_TerrainImprovements1.Equals(other.Layer5_TerrainImprovements1) && this.Layer6_VisibleTerrainImprovements1.Equals(other.Layer6_VisibleTerrainImprovements1) &&
-					this.Layer7_TerrainImprovements2.Equals(other.Layer7_TerrainImprovements2) && this.Layer8_VisibleTerrainImprovements2.Equals(other.Layer8_VisibleTerrainImprovements2) &&
+					this.terrainImprovements.Equals(other.terrainImprovements) && this.visibleTerrainImprovements.Equals(other.visibleTerrainImprovements) &&
 					this.Layer9_ActiveUnits.Equals(other.Layer9_ActiveUnits) && this.Layer10_MiniMap.Equals(other.Layer10_MiniMap) &&
 					this.Visibility.Equals(other.Visibility))
 				{

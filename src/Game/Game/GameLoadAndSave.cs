@@ -27,20 +27,20 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F11_0000_0000({flag})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x6);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681a, 0x1);
+			this.oCPU.PUSHUInt16(this.oCPU.BP.UInt16);
+			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
+			this.oCPU.SP.UInt16 = this.oCPU.SUBUInt16(this.oCPU.SP.UInt16, 0x6);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x681a, 0x1);
 
 			F11_0000_05f8();
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
+			this.oCPU.CMPUInt16(this.oCPU.AX.UInt16, 0xffff);
 			if (this.oCPU.Flags.NE) goto L0020;
 			goto L00f7;
 
 		L0020:
-			this.oCPU.CMP_UInt16(flag, 0xffff);
+			this.oCPU.CMPUInt16(flag, 0xffff);
 			if (this.oCPU.Flags.E) goto L0029;
 			goto L00ae;
 
@@ -48,74 +48,74 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0031, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "\x008cSelect Load File...\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd74e, 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x0);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd74e, 0x0);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x0);
 
 		L0044:
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
-			this.oCPU.AX.Low = this.oCPU.ADD_UInt8(this.oCPU.AX.Low, 0x30);
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x41cd, this.oCPU.AX.Low);
+			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
+			this.oCPU.AX.LowUInt8 = this.oCPU.ADDUInt8(this.oCPU.AX.LowUInt8, 0x30);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x41cd, this.oCPU.AX.LowUInt8);
 
 			F11_0000_0103_LoadGame(0x41c6, 1);
 			
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
+			this.oCPU.AX.UInt16 = this.oCPU.ORUInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.E) goto L006d;
 
-			this.oCPU.AX.Word = 0x1;
-			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
-			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd74e, this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd74e), this.oCPU.AX.Word));
+			this.oCPU.AX.UInt16 = 0x1;
+			this.oCPU.CX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
+			this.oCPU.AX.UInt16 = this.oCPU.SHLUInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd74e, this.oCPU.ORUInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd74e), this.oCPU.AX.UInt16));
 
 		L006d:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0xa);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.INCUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0xa);
 			if (this.oCPU.Flags.B) goto L0044;
 
 			// Instruction address 0x0000:0x0087, size: 5
 			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 48, 65, 1);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xe168, this.oCPU.AX.Word);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xe168, this.oCPU.AX.UInt16);
 
-			this.oCPU.AX.Word = 0x1;
-			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0xe168);
-			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd74e));
+			this.oCPU.AX.UInt16 = 0x1;
+			this.oCPU.CX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xe168);
+			this.oCPU.AX.UInt16 = this.oCPU.SHLUInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
+			this.oCPU.TESTUInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd74e));
 			if (this.oCPU.Flags.NE) goto L00b4;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xe168, 0xffff);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xe168, 0xffff);
 			goto L00b4;
 
 		L00ae:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xe168, flag);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xe168, flag);
 
 		L00b4:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xe168), 0xffff);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xe168), 0xffff);
 			if (this.oCPU.Flags.E) goto L00dc;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0xe168);
-			this.oCPU.AX.Low = this.oCPU.ADD_UInt8(this.oCPU.AX.Low, 0x30);
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x41cd, this.oCPU.AX.Low);
+			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xe168);
+			this.oCPU.AX.LowUInt8 = this.oCPU.ADDUInt8(this.oCPU.AX.LowUInt8, 0x30);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x41cd, this.oCPU.AX.LowUInt8);
 
 			F11_0000_0103_LoadGame(0x41c6, 0);
 			
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
+			this.oCPU.AX.UInt16 = this.oCPU.ORUInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L00dc;
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xe168, 0xffff);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xe168, 0xffff);
 
 		L00dc:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xe168);
+			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xe168);
 			goto L00ff;
 
 		L00f7:
-			this.oCPU.AX.Word = 0xffff;
+			this.oCPU.AX.UInt16 = 0xffff;
 
 		L00ff:
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
+			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
+			this.oCPU.BP.UInt16 = this.oCPU.POPUInt16();
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F11_0000_0000");
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -129,14 +129,14 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F11_0000_0103_LoadGame(0x{filenamePtr:x4}, {flag})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x10);
+			this.oCPU.PUSHUInt16(this.oCPU.BP.UInt16);
+			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
+			this.oCPU.SP.UInt16 = this.oCPU.SUBUInt16(this.oCPU.SP.UInt16, 0x10);
 
 			// Instruction address 0x0000:0x0114, size: 5
 			this.oParent.MSCAPI.strcpy((ushort)(filenamePtr + 9), "SVE");
 
-			this.oCPU.CMP_UInt16(flag, 0x0);
+			this.oCPU.CMPUInt16(flag, 0x0);
 			if (this.oCPU.Flags.NE) goto L0125;
 			goto L02fd;
 
@@ -144,9 +144,9 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x012c, size: 5
 			this.oParent.MSCAPI.open(filenamePtr, 0x8000);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681e, this.oCPU.AX.Word);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x681e, this.oCPU.AX.UInt16);
 			
-			if (this.oCPU.AX.Word == 0xffff)
+			if (this.oCPU.AX.UInt16 == 0xffff)
 			{
 				// Instruction address 0x0000:0x02d9, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " (EMPTY)\n");
@@ -154,65 +154,65 @@ namespace OpenCiv1
 			else
 			{
 				// Instruction address 0x0000:0x014c, size: 5
-				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 2, 0);
+				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), 2, 0);
 
 				// Instruction address 0x0000:0x0160, size: 5
-				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 0x6822, 2);
+				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), 0x6822, 2);
 
 				// Instruction address 0x0000:0x0175, size: 5
-				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 8, 0);
+				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), 8, 0);
 
 				// Instruction address 0x0000:0x0189, size: 5
-				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 0x6826, 2);
+				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), 0x6826, 2);
 
 				// Instruction address 0x0000:0x0199, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " ");
 
 				// Instruction address 0x0000:0x01ae, size: 5
-				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 10, 0);
+				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), 10, 0);
 
 				// Instruction address 0x0000:0x01c2, size: 5
-				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 0x6824, 2);
+				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), 0x6824, 2);
 
-				this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6824);
-				this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
+				this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6824);
+				this.oCPU.BX.UInt16 = this.oCPU.SHLUInt16(this.oCPU.BX.UInt16, 0x1);
 				// Instruction address 0x0000:0x01d8, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x33a2)));
+				this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x33a2)));
 
 				// Instruction address 0x0000:0x01e8, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " ");
 
 				// Instruction address 0x0000:0x0207, size: 5
-				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e),
-					((14 * (int)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6822))) + 16), 0);
+				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e),
+					((14 * (int)((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6822))) + 16), 0);
 
 				// Instruction address 0x0000:0x021b, size: 5
-				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), (ushort)(this.oCPU.BP.Word - 0x10), 14);
+				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), (ushort)(this.oCPU.BP.UInt16 - 0x10), 14);
 
 				// Instruction address 0x0000:0x022b, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, (ushort)(this.oCPU.BP.Word - 0x10));
+				this.oParent.MSCAPI.strcat(0xba06, (ushort)(this.oCPU.BP.UInt16 - 0x10));
 
 				// Instruction address 0x0000:0x024a, size: 5
-				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e),
-					((12 * (int)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6822))) + 0x80), 0);
+				this.oParent.MSCAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e),
+					((12 * (int)((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6822))) + 0x80), 0);
 
 				// Instruction address 0x0000:0x025e, size: 5
-				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), (ushort)(this.oCPU.BP.Word - 0x10), 0xc);
+				this.oParent.MSCAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), (ushort)(this.oCPU.BP.UInt16 - 0x10), 0xc);
 
 				// Instruction address 0x0000:0x026e, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, ", ");
 
 				// Instruction address 0x0000:0x027e, size: 5
-				this.oParent.MSCAPI.strcat(0xba06, (ushort)(this.oCPU.BP.Word - 0x10));
+				this.oParent.MSCAPI.strcat(0xba06, (ushort)(this.oCPU.BP.UInt16 - 0x10));
 
 				// Instruction address 0x0000:0x028e, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, "/");
 
 				// Instruction address 0x0000:0x02b8, size: 5
 				this.oParent.MSCAPI.strcat(0xba06,
-					this.oParent.MSCAPI.itoa(Math.Abs((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6826)), 10));
+					this.oParent.MSCAPI.itoa(Math.Abs((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6826)), 10));
 
-				if (this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6826) < 0)
+				if (this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x6826) < 0)
 				{
 					// Instruction address 0x0000:0x02d9, size: 5
 					this.oParent.MSCAPI.strcat(0xba06, " BC\n");
@@ -225,59 +225,59 @@ namespace OpenCiv1
 			}
 		
 			// Instruction address 0x0000:0x02e5, size: 5
-			this.oParent.MSCAPI.close((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e));
+			this.oParent.MSCAPI.close((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e));
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681e), 0xffff);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), 0xffff);
 			if (this.oCPU.Flags.E) goto L02f9;
 
 			L02f4:
-			this.oCPU.AX.Word = 0x1;
+			this.oCPU.AX.UInt16 = 0x1;
 			goto L0366;
 
 		L02f9:
-			this.oCPU.AX.Word = 0;
+			this.oCPU.AX.UInt16 = 0;
 			goto L0366;
 
 		L02fd:
-			string path = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr));
+			string path = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr));
 
 			F11_0000_083b_LoadGameData(path);
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6820, 0x1);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6820, 0x1);
 			goto L0340;
 
 		L033c:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6820, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6820)));
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6820, this.oCPU.INCUInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6820)));
 
 		L0340:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6820), 0x8);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6820), 0x8);
 			if (this.oCPU.Flags.L) goto L033c;
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xe168), 0x4);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xe168), 0x4);
 			if (this.oCPU.Flags.GE) goto L0353;
 
-			this.oCPU.AX.Word = 0x1;
+			this.oCPU.AX.UInt16 = 0x1;
 			goto L0356;
 
 		L0353:
-			this.oCPU.AX.Word = 0x2;
+			this.oCPU.AX.UInt16 = 0x2;
 
 		L0356:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdf60, this.oCPU.AX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3484, 0xfffd);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xdf60, this.oCPU.AX.UInt16);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3484, 0xfffd);
 			this.oGameData.SpaceshipFlags &= 0x7ffe;
 			goto L02f4;
 
 		L0366:
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
+			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
+			this.oCPU.BP.UInt16 = this.oCPU.POPUInt16();
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F11_0000_0103_LoadGame");
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -289,19 +289,19 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F11_0000_036a({param1})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x4);
+			this.oCPU.PUSHUInt16(this.oCPU.BP.UInt16);
+			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
+			this.oCPU.SP.UInt16 = this.oCPU.SUBUInt16(this.oCPU.SP.UInt16, 0x4);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681c, 0);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x681a, 0);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x681c, 0);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x681a, 0);
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
 			F11_0000_05f8();
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
+			this.oCPU.CMPUInt16(this.oCPU.AX.UInt16, 0xffff);
 			if (this.oCPU.Flags.NE) goto L0391;
 			goto L04d0;
 
@@ -309,50 +309,50 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0399, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "\x008cSelect Save File...\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x0);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x0);
 
 		L03a6:
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
-			this.oCPU.AX.Low = this.oCPU.ADD_UInt8(this.oCPU.AX.Low, 0x30);
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x41cd, this.oCPU.AX.Low);
+			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
+			this.oCPU.AX.LowUInt8 = this.oCPU.ADDUInt8(this.oCPU.AX.LowUInt8, 0x30);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x41cd, this.oCPU.AX.LowUInt8);
 
 			F11_0000_0103_LoadGame(0x41c6, 1);
 			
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x4);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 
+				this.oCPU.INCUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x4);
 			if (this.oCPU.Flags.L) goto L03a6;
 
 			// Instruction address 0x0000:0x03d3, size: 5
-			this.oParent.Var_2f9a = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xe168), 0, 3);
+			this.oParent.Var_2f9a = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xe168), 0, 3);
 
-			this.oCPU.CMP_UInt16(param1, 0xffff);
+			this.oCPU.CMPUInt16(param1, 0xffff);
 			if (this.oCPU.Flags.NE) goto L0405;
 
 			// Instruction address 0x0000:0x03f5, size: 5
 			param1 = this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 48, 33, 1);
 
 		L0405:
-			this.oCPU.CMP_UInt16(param1, 0xffff);
+			this.oCPU.CMPUInt16(param1, 0xffff);
 			if (this.oCPU.Flags.NE) goto L040e;
 			goto L04d0;
 
 		L040e:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xe168, param1);
-			this.oCPU.AX.Low = (byte)param1;
-			this.oCPU.AX.Low = this.oCPU.ADD_UInt8(this.oCPU.AX.Low, 0x30);
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x41cd, this.oCPU.AX.Low);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xe168, param1);
+			this.oCPU.AX.LowUInt8 = (byte)param1;
+			this.oCPU.AX.LowUInt8 = this.oCPU.ADDUInt8(this.oCPU.AX.LowUInt8, 0x30);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x41cd, this.oCPU.AX.LowUInt8);
 
 			F11_0000_04ef_SaveGame(0x41c6);
 			
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
+			this.oCPU.AX.UInt16 = this.oCPU.ORUInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L042e;
 			goto L04d0;
 
 		L042e:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681c);
+			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681c);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-			this.oCPU.DX.Word = this.oCPU.OR_UInt16(this.oCPU.DX.Word, this.oCPU.AX.Word);
+			this.oCPU.DX.UInt16 = this.oCPU.ORUInt16(this.oCPU.DX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L0448;
 
 			// Instruction address 0x0000:0x043e, size: 5
@@ -365,17 +365,17 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, " Game NOT saved.\n");
 
 			// Instruction address 0x0000:0x0470, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 64, 127, 192, 34, 12);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 64, 127, 192, 34, 12);
 
 		L0478:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681c), 0xd);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681c), 0xd);
 			if (this.oCPU.Flags.NE) goto L048f;
 
 			// Instruction address 0x0000:0x0487, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " Write access denied.\n");
 
 		L048f:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681c), 0x1c);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681c), 0x1c);
 			if (this.oCPU.Flags.NE) goto L04a6;
 
 			// Instruction address 0x0000:0x049e, size: 5
@@ -393,8 +393,8 @@ namespace OpenCiv1
 		L04d0:
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
+			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
+			this.oCPU.BP.UInt16 = this.oCPU.POPUInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F11_0000_036a");
 		}
@@ -409,9 +409,9 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F11_0000_04ef_SaveGame(0x{filenamePtr:x4})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x8);
+			this.oCPU.PUSHUInt16(this.oCPU.BP.UInt16);
+			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
+			this.oCPU.SP.UInt16 = this.oCPU.SUBUInt16(this.oCPU.SP.UInt16, 0x8);
 
 			this.oParent.Var_db38 = 1;
 
@@ -424,10 +424,10 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0522, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\n ");
 
-			this.oCPU.BX.Word = (ushort)((short)this.oGameData.DifficultyLevel);
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
+			this.oCPU.BX.UInt16 = (ushort)((short)this.oGameData.DifficultyLevel);
+			this.oCPU.BX.UInt16 = this.oCPU.SHLUInt16(this.oCPU.BX.UInt16, 0x1);
 			// Instruction address 0x0000:0x0538, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x33a2)));
+			this.oParent.MSCAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x33a2)));
 
 			// Instruction address 0x0000:0x0548, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " ");
@@ -455,17 +455,17 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x05c3, size: 5
 			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 64, 86, 1);
 
-			string path = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.Word, filenamePtr));
+			string path = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr));
 			F11_0000_08f6_SaveGameData(path);
 
-			this.oCPU.AX.Word = 0x1;
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
+			this.oCPU.AX.UInt16 = 0x1;
+			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
+			this.oCPU.BP.UInt16 = this.oCPU.POPUInt16();
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F11_0000_04ef_SaveGame");
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -477,30 +477,30 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F11_0000_05f8()");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x6);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x4384), 0xffff);
+			this.oCPU.PUSHUInt16(this.oCPU.BP.UInt16);
+			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
+			this.oCPU.SP.UInt16 = this.oCPU.SUBUInt16(this.oCPU.SP.UInt16, 0x6);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x4384), 0xffff);
 			if (this.oCPU.Flags.NE) goto L0615;
 
 			// Instruction address 0x0000:0x0609, size: 5
 			this.oParent.MSCAPI._dos_getdrive(0x4384);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x4384,
-				this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x4384)));
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384,
+				this.oCPU.DECUInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x4384)));
 
 		L0615:
 			// Instruction address 0x0000:0x0629, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 15);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 15);
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681a), 0x0);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681a), 0x0);
 			if (this.oCPU.Flags.NE) goto L063d;
 
 			// Instruction address 0x0000:0x0638, size: 5
 			this.oParent.Segment_1866.F0_1866_260e();
 
 		L063d:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x681a), 0x0);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681a), 0x0);
 			if (this.oCPU.Flags.E) goto L0649;
 			// Instruction address 0x0000:0x0651, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "  Which drive contains your\n    saved game files?\n\n            ");
@@ -514,10 +514,10 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x065d, size: 5
 			this.oParent.MSCAPI.strlen(0xba06);
 
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x4384);
-			this.oCPU.AX.Low = this.oCPU.ADD_UInt8(this.oCPU.AX.Low, 0x41);
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba05), this.oCPU.AX.Low);
+			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
+			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x4384);
+			this.oCPU.AX.LowUInt8 = this.oCPU.ADDUInt8(this.oCPU.AX.LowUInt8, 0x41);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0xba05), this.oCPU.AX.LowUInt8);
 
 			// Instruction address 0x0000:0x0678, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ":\n\n    Press drive letter and\nReturn when disk is inserted.\n");
@@ -531,85 +531,85 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x06a7, size: 5
 			this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x41);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
+			this.oCPU.CMPUInt16(this.oCPU.AX.UInt16, 0x41);
 			if (this.oCPU.Flags.E) goto L06b9;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x61);
+			this.oCPU.CMPUInt16(this.oCPU.AX.UInt16, 0x61);
 			if (this.oCPU.Flags.NE) goto L06bf;
 
 		L06b9:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x4384, 0x0);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384, 0x0);
 
 		L06bf:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x42);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x42);
 			if (this.oCPU.Flags.E) goto L06cb;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x62);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x62);
 			if (this.oCPU.Flags.NE) goto L06d1;
 
 			L06cb:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x4384, 0x1);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384, 0x1);
 
 		L06d1:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x43);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x43);
 			if (this.oCPU.Flags.E) goto L06dd;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x63);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x63);
 			if (this.oCPU.Flags.NE) goto L06e3;
 
 		L06dd:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x4384, 0x2);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384, 0x2);
 
 		L06e3:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x44);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x44);
 			if (this.oCPU.Flags.E) goto L06ef;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x64);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x64);
 			if (this.oCPU.Flags.NE) goto L06f5;
 
 		L06ef:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x4384, 0x3);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384, 0x3);
 
 		L06f5:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x45);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x45);
 			if (this.oCPU.Flags.E) goto L0701;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x65);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x65);
 			if (this.oCPU.Flags.NE) goto L0707;
 
 		L0701:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x4384, 0x4);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384, 0x4);
 
 		L0707:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x46);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x46);
 			if (this.oCPU.Flags.E) goto L0713;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x66);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x66);
 			if (this.oCPU.Flags.NE) goto L0719;
 
 		L0713:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x4384, 0x5);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384, 0x5);
 
 		L0719:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x1b);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x1b);
 			if (this.oCPU.Flags.NE) goto L0725;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x4384, 0xffff);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384, 0xffff);
 
 		L0725:
 			// Instruction address 0x0000:0x073d, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 80, 88, 160, 24, 15);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 80, 88, 160, 24, 15);
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0xd);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0xd);
 			if (this.oCPU.Flags.E) goto L0754;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x1b);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x1b);
 			if (this.oCPU.Flags.E) goto L0754;
 			goto L063d;
 
 		L0754:
 			// Instruction address 0x0000:0x0769, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 8, 8, 304, 184, 15);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 8, 8, 304, 184, 15);
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x4384), 0xffff);
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x4384), 0xffff);
 			if (this.oCPU.Flags.E) goto L07c7;
 
-			F11_0000_07d6(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x4384));
+			F11_0000_07d6(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x4384));
 
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
+			this.oCPU.AX.UInt16 = this.oCPU.ORUInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L07c7;
 
 			// Instruction address 0x0000:0x078f, size: 5
@@ -618,31 +618,31 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x079b, size: 5
 			this.oParent.MSCAPI.strlen(0xba06);
 
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x4384);
-			this.oCPU.AX.Low = this.oCPU.ADD_UInt8(this.oCPU.AX.Low, 0x41);
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba03), this.oCPU.AX.Low);
+			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
+			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x4384);
+			this.oCPU.AX.LowUInt8 = this.oCPU.ADDUInt8(this.oCPU.AX.LowUInt8, 0x41);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0xba03), this.oCPU.AX.LowUInt8);
 
 			// Instruction address 0x0000:0x07ba, size: 5
 			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 100, 80, 1);
 
-			this.oCPU.AX.Word = 0xffff;
+			this.oCPU.AX.UInt16 = 0xffff;
 			goto L07d2;
 
 		L07c7:
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x4384);
-			this.oCPU.AX.Low = this.oCPU.ADD_UInt8(this.oCPU.AX.Low, 0x61);
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x41c6, this.oCPU.AX.Low);
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x4384);
+			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x4384);
+			this.oCPU.AX.LowUInt8 = this.oCPU.ADDUInt8(this.oCPU.AX.LowUInt8, 0x61);
+			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x41c6, this.oCPU.AX.LowUInt8);
+			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x4384);
 
 		L07d2:
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
+			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
+			this.oCPU.BP.UInt16 = this.oCPU.POPUInt16();
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F11_0000_05f8");
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -655,49 +655,49 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F11_0000_07d6({param1})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x12);
-			this.oCPU.CMP_UInt16(param1, 0x1);
+			this.oCPU.PUSHUInt16(this.oCPU.BP.UInt16);
+			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
+			this.oCPU.SP.UInt16 = this.oCPU.SUBUInt16(this.oCPU.SP.UInt16, 0x12);
+			this.oCPU.CMPUInt16(param1, 0x1);
 			if (this.oCPU.Flags.LE) goto L07e7;
 
 		L07e2:
-			this.oCPU.AX.Word = 0x1;
+			this.oCPU.AX.UInt16 = 0x1;
 			goto L0837;
 
 		L07e7:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), param1);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 0x2);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 0x1);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x0);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), param1);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0x0);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), 0x0);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), 0x2);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), 0x1);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x0);
 
 		L0806:
 			// Instruction address 0x0000:0x080e, size: 5
-			this.oParent.MSCAPI._bios_disk(4, (ushort)(this.oCPU.BP.Word - 0x12));
+			this.oParent.MSCAPI._bios_disk(4, (ushort)(this.oCPU.BP.UInt16 - 0x12));
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
-			this.oCPU.TEST_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), 0xff00);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
+			this.oCPU.TESTUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 0xff00);
 			if (this.oCPU.Flags.E) goto L07e2;
 
 			// Instruction address 0x0000:0x0824, size: 5
 			this.oParent.MSCAPI._bios_disk(0, 0);
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2),
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x3);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2),
+				this.oCPU.INCUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
+			this.oCPU.CMPUInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x3);
 			if (this.oCPU.Flags.L) goto L0806;
-			this.oCPU.AX.Word = 0;
+			this.oCPU.AX.UInt16 = 0;
 
 		L0837:
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
+			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
+			this.oCPU.BP.UInt16 = this.oCPU.POPUInt16();
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F11_0000_07d6");
 
-			return this.oCPU.AX.Word;
+			return this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -1190,7 +1190,7 @@ namespace OpenCiv1
 		private void ReadData(Stream reader, ushort bufferPtr, ushort length)
 		{
 			reader.Read(this.oCPU.Memory.MemoryContent,
-				(int)VCPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr), length);
+				(int)VCPU.ToLinearAddress(this.oCPU.DS.UInt16, bufferPtr), length);
 		}
 
 		/// <summary>
@@ -1786,7 +1786,7 @@ namespace OpenCiv1
 		private void WriteData(Stream writer, ushort bufferPtr, ushort length)
 		{
 			writer.Write(this.oCPU.Memory.MemoryContent,
-				(int)VCPU.ToLinearAddress(this.oCPU.DS.Word, bufferPtr), length);
+				(int)VCPU.ToLinearAddress(this.oCPU.DS.UInt16, bufferPtr), length);
 		}
 
 		/// <summary>
