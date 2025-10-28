@@ -4054,7 +4054,7 @@ namespace OpenCiv1
 				local_d2 = this.oParent.CityOffsets[local_e8].Y + local_e4;
 
 				// Instruction address 0x1d12:0x6581, size: 5
-				if ((this.oParent.Segment_2aea.F0_2aea_1585(local_c6, local_d2) & 0x40) == 0) goto L6590;
+				if (!this.oParent.Segment_2aea.F0_2aea_1585_GetTerrainImprovements(local_c6, local_d2).HasFlag(TerrainImprovements.Pollution)) goto L6590;
 				goto L6640;
 
 			L6590:
@@ -4064,7 +4064,7 @@ namespace OpenCiv1
 
 			L65a8:
 				// Instruction address 0x1d12:0x65b0, size: 5
-				if ((this.oParent.Segment_2aea.F0_2aea_1585(local_c6, local_d2) & 0x1) == 0) goto L65bf;
+				if (!this.oParent.Segment_2aea.F0_2aea_1585_GetTerrainImprovements(local_c6, local_d2).HasFlag(TerrainImprovements.City)) goto L65bf;
 				goto L6640;
 
 			L65bf:
@@ -4442,7 +4442,7 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x1d12:0x6b26, size: 5
-				local_4 = (short)this.oParent.Segment_2aea.F0_2aea_1585(xPos, yPos);
+				local_4 = (short)this.oParent.Segment_2aea.F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
 
 				if ((this.oParent.CivState.DebugFlags & 0x2) == 0)
 				{
@@ -4631,10 +4631,10 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x1d12:0x6d3c, size: 5
-			if ((this.oParent.Segment_2aea.F0_2aea_1585(xPos, yPos) & 0x40) == 0)
+			if (!this.oParent.Segment_2aea.F0_2aea_1585_GetTerrainImprovements(xPos, yPos).HasFlag(TerrainImprovements.Pollution))
 			{
 				// Instruction address 0x1d12:0x6d52, size: 5
-				this.oParent.Segment_2aea.F0_2aea_1653(0x40, xPos, yPos);
+				this.oParent.Segment_2aea.F0_2aea_1653_SetTerrainImprovements(TerrainImprovements.Pollution, xPos, yPos);
 
 				// Instruction address 0x1d12:0x6d60, size: 5
 				this.oParent.Segment_2aea.F0_2aea_1601(xPos, yPos);

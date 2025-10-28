@@ -225,7 +225,7 @@ namespace OpenCiv1
 			this.oParent.CivState.Cities[cityID].StatusFlag = 0xff;
 
 			// Instruction address 0x1ade:0x01fe, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1653(0, xPos, yPos);
+			this.oParent.Segment_2aea.F0_2aea_1653_SetTerrainImprovements(TerrainImprovements.None, xPos, yPos);
 
 			this.oCPU.AX.Word = this.oParent.CivState.MapVisibility[xPos, yPos];
 			
