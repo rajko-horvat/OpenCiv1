@@ -4462,12 +4462,11 @@ namespace OpenCiv1
 				}
 			}
 
-			if (resourceType == ResourceType.Production && (terrainID == (int)TerrainEnum.Grassland || terrainID == (int)TerrainEnum.River))
+			if (resourceType == ResourceType.Production
+				&& (terrainID == (int)TerrainEnum.Grassland || terrainID == (int)TerrainEnum.River)
+				&& (((xPos * 7) + (yPos * 11)) & 0x2) != 0)
 			{
-				if ((((xPos * 7) + (yPos * 11)) & 0x2) != 0)
-				{
-					resourceCount = 0;
-				}
+				resourceCount = 0;
 			}
 
 			// Instruction address 0x1d12:0x6be7, size: 3
