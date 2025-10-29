@@ -683,14 +683,12 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_2c84_06e4_WorldMenu()");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x4);
-			this.oCPU.TEST_UInt16((ushort)this.oParent.CivState.SpaceshipFlags, 0xfe00);
-			if (this.oCPU.Flags.NE) goto L06f8;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, 0x20);
+			if (((ushort)this.oParent.CivState.SpaceshipFlags & 0xfe00) == 0)
+			{
+				// Disable 'SpaceShips' option
+				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, 0x20);
+			}
 
-		L06f8:
 			// Instruction address 0x2c84:0x0700, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, " Wonders of the World (F7)\n Top 5 Cities (F8)\n Civilization Score (F9)\n");
 
@@ -698,9 +696,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, " World Map (F10)\n Demographics\n SpaceShips\n");
 
 			// Instruction address 0x2c84:0x0724, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 144, 8, 0);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
+			ushort selectedOption = this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 144, 8, 0);
 
 			// Instruction address 0x2c84:0x072f, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
@@ -711,52 +707,34 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x654a, 0xffff);
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L0766;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x1);
-			if (this.oCPU.Flags.E) goto L078f;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x2);
-			if (this.oCPU.Flags.E) goto L077b;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x3);
-			if (this.oCPU.Flags.E) goto L0796;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x4);
-			if (this.oCPU.Flags.E) goto L076d;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x5);
-			if (this.oCPU.Flags.E) goto L07a6;
-			goto L07ab;
 
-		L0766:
-			this.oParent.WorldMap.F12_0000_080d();
+			switch (selectedOption)
+			{
+				case 0: // Wonders of the World
+					this.oParent.WorldMap.F12_0000_080d_WondersOfTheWorld();
+					break;
 
-			goto L07ab;
+				case 1: // Top 5 Cities
+					this.oParent.HallOfFame.F3_0000_09ac_TopFiveCities();
+					break;
 
-		L076d:
-			this.oParent.WorldMap.F12_0000_0d6d(this.oParent.CivState.HumanPlayerID);
+				case 2: // Civilization Score
+					this.oParent.Overlay_20.F20_0000_0ca9_CivilizationScore(this.oParent.CivState.HumanPlayerID, true);
+					break;
 
-			goto L07ab;
+				case 3: // World Map
+					this.oParent.WorldMap.F12_0000_0000_WorldMap(1);
+					break;
 
-		L077b:
-			this.oParent.Overlay_20.F20_0000_0ca9(this.oParent.CivState.HumanPlayerID, true);
+				case 4: // Demographics
+					this.oParent.WorldMap.F12_0000_0d6d_Demographics(this.oParent.CivState.HumanPlayerID);
+					break;
 
-			goto L07ab;
+				case 5: // SpaceShips
+					this.oParent.Overlay_18.F18_0000_1527_ShowSpaceshipNationDialog();
+					break;
+			}
 
-		L078f:
-			this.oParent.HallOfFame.F3_0000_09ac();
-
-			goto L07ab;
-
-		L0796:
-			this.oParent.WorldMap.F12_0000_0000(1);
-			
-			goto L07ab;
-
-		L07a6:
-			this.oParent.Overlay_18.F18_0000_1527();
-
-		L07ab:
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2c84_06e4_WorldMenu");
 		}

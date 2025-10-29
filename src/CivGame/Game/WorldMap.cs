@@ -15,12 +15,12 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows World Map window
 		/// </summary>
 		/// <param name="flag"></param>
-		public void F12_0000_0000(ushort flag)
+		public void F12_0000_0000_WorldMap(ushort flag)
 		{
-			this.oCPU.Log.EnterBlock($"F12_0000_0000({flag})");
+			this.oCPU.Log.EnterBlock($"F12_0000_0000_WorldMap({flag})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -378,7 +378,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F12_0000_0000");
+			this.oCPU.Log.ExitBlock("F12_0000_0000_WorldMap");
 		}
 
 		/// <summary>
@@ -773,11 +773,11 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows Wonders of the World window
 		/// </summary>
-		public void F12_0000_080d()
+		public void F12_0000_080d_WondersOfTheWorld()
 		{
-			this.oCPU.Log.EnterBlock("F12_0000_080d()");
+			this.oCPU.Log.EnterBlock("F12_0000_080d_WondersOfTheWorld()");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -929,7 +929,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F12_0000_080d");
+			this.oCPU.Log.ExitBlock("F12_0000_080d_WondersOfTheWorld");
 		}
 
 		/// <summary>
@@ -1251,12 +1251,12 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows Demographics window.
 		/// </summary>
 		/// <param name="playerID"></param>
-		public void F12_0000_0d6d(short playerID)
+		public void F12_0000_0d6d_Demographics(short playerID)
 		{
-			this.oCPU.Log.EnterBlock($"F12_0000_0d6d({playerID})");
+			this.oCPU.Log.EnterBlock($"F12_0000_0d6d_Demographics({playerID})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -2114,7 +2114,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F12_0000_0d6d");
+			this.oCPU.Log.ExitBlock("F12_0000_0d6d_Demographics");
 		}
 
 		/// <summary>
