@@ -15,43 +15,39 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows one of the Civilopedia windows and handles player input.
 		/// </summary>
-		/// <param name="param1"></param>
-		public void F8_0000_0000(ushort param1)
+		/// <param name="windowIndex">window index to show</param>
+		public void F8_0000_0000_ShowCivilopedia(ushort windowIndex)
 		{
-			this.oCPU.Log.EnterBlock($"F8_0000_0000({param1})");
+			this.oCPU.Log.EnterBlock($"F8_0000_0000_ShowCivilopedia({windowIndex})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x4);
-
 			// Instruction address 0x0000:0x0006, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
 			// Instruction address 0x0000:0x000b, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0x0);
+			ushort var1 = 0;
+			ushort var2;
 
-		L0015:
-			F8_0000_0066(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), param1);
-			
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
-			if (this.oCPU.Flags.NE) goto L003c;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6808), 0x0);
-			if (this.oCPU.Flags.E) goto L0037;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), 0x4e));
-			goto L003c;
+			do
+			{
+				var2 = F8_0000_0066_ShowCivilopediaWindow(var1, windowIndex);
 
-		L0037:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0x0);
-
-		L003c:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0xfffe);
-			if (this.oCPU.Flags.NE) goto L0015;
+				if (var2 == 0xffff)
+				{
+					if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6808) == 0)
+					{
+						var1 = 0;
+					}
+					else
+					{
+						var1 += 0x4e;
+					}
+				}
+			} while (var2 != 0xfffe);
 
 			// Instruction address 0x0000:0x004b, size: 5
 			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
@@ -65,21 +61,19 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x005d, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F8_0000_0000");
+			this.oCPU.Log.ExitBlock("F8_0000_0000_ShowCivilopedia");
 		}
 
 		/// <summary>
-		/// ?
+		/// Show specified civilopedia window.
 		/// </summary>
 		/// <param name="param1"></param>
-		/// <param name="param2"></param>
+		/// <param name="windowIndex">window to show</param>
 		/// <returns></returns>
-		public ushort F8_0000_0066(ushort param1, ushort param2)
+		private ushort F8_0000_0066_ShowCivilopediaWindow(ushort param1, ushort windowIndex)
 		{
-			this.oCPU.Log.EnterBlock($"F8_0000_0066({param1}, {param2})");
+			this.oCPU.Log.EnterBlock($"F8_0000_0066({param1}, {windowIndex})");
 
 			// function body
 			string sTemp1, sTemp2, sTemp3;
@@ -108,7 +102,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x00f9, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("EXIT", 286, 4, 12);
 			
-			this.oCPU.CMP_UInt16(param2, 0xffff);
+			this.oCPU.CMP_UInt16(windowIndex, 0xffff);
 			if (this.oCPU.Flags.NE) goto L011f;
 
 			// Instruction address 0x0000:0x0117, size: 5
@@ -118,7 +112,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0137, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 2, 14, 316, 184, 15);
 
-			this.oCPU.CMP_UInt16(param2, 0x0);
+			this.oCPU.CMP_UInt16(windowIndex, 0x0);
 			if (this.oCPU.Flags.G) goto L014a;
 			this.oCPU.AX.Word = 0x64;
 			goto L014d;
@@ -138,9 +132,9 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x5a), 0xffff);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x34), 0xffff);
-			this.oCPU.CMP_UInt16(param2, 0x0);
+			this.oCPU.CMP_UInt16(windowIndex, 0x0);
 			if (this.oCPU.Flags.E) goto L0185;
-			this.oCPU.CMP_UInt16(param2, 0xffff);
+			this.oCPU.CMP_UInt16(windowIndex, 0xffff);
 			if (this.oCPU.Flags.NE) goto L01d9;
 
 		L0185:
@@ -178,9 +172,9 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L018a;
 
 		L01d9:
-			this.oCPU.CMP_UInt16(param2, 0x1);
+			this.oCPU.CMP_UInt16(windowIndex, 0x1);
 			if (this.oCPU.Flags.E) goto L01e5;
-			this.oCPU.CMP_UInt16(param2, 0xffff);
+			this.oCPU.CMP_UInt16(windowIndex, 0xffff);
 			if (this.oCPU.Flags.NE) goto L0239;
 
 		L01e5:
@@ -211,9 +205,9 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.LE) goto L01ea;
 
 		L0239:
-			this.oCPU.CMP_UInt16(param2, 0x2);
+			this.oCPU.CMP_UInt16(windowIndex, 0x2);
 			if (this.oCPU.Flags.E) goto L0245;
-			this.oCPU.CMP_UInt16(param2, 0xffff);
+			this.oCPU.CMP_UInt16(windowIndex, 0xffff);
 			if (this.oCPU.Flags.NE) goto L0299;
 
 		L0245:
@@ -244,9 +238,9 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L024a;
 
 		L0299:
-			this.oCPU.CMP_UInt16(param2, 0x3);
+			this.oCPU.CMP_UInt16(windowIndex, 0x3);
 			if (this.oCPU.Flags.E) goto L02a5;
-			this.oCPU.CMP_UInt16(param2, 0xffff);
+			this.oCPU.CMP_UInt16(windowIndex, 0xffff);
 			if (this.oCPU.Flags.NE) goto L02f9;
 
 		L02a5:
@@ -284,9 +278,9 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L02aa;
 
 		L02f9:
-			this.oCPU.CMP_UInt16(param2, 0x4);
+			this.oCPU.CMP_UInt16(windowIndex, 0x4);
 			if (this.oCPU.Flags.E) goto L0305;
-			this.oCPU.CMP_UInt16(param2, 0xffff);
+			this.oCPU.CMP_UInt16(windowIndex, 0xffff);
 			if (this.oCPU.Flags.NE) goto L0359;
 
 		L0305:
