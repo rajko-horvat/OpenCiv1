@@ -806,7 +806,7 @@ namespace OpenCiv1
 			goto L08e4;
 
 		L0846:
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x40);
+			if (!this.oParent.CivState.GameSettingFlags.CivilopediaText) goto L089c;
 			if (this.oCPU.Flags.E) goto L089c;
 
 			// Instruction address 0x0000:0x0855, size: 5
