@@ -1522,7 +1522,7 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd760), 0x0);
 			if (this.oCPU.Flags.NE) goto L0f08;
 
-			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DefenseMinister;
+			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DefenseMinister;
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 

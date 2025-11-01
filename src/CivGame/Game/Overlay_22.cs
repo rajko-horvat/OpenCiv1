@@ -274,7 +274,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0294, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.SpiesReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.SpiesReport;
 
 			// Instruction address 0x0000:0x02ab, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -400,7 +400,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0420, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.SpiesReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.SpiesReport;
 
 			// Instruction address 0x0000:0x0437, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -486,7 +486,7 @@ namespace OpenCiv1
 			}
 
 		L054b:
-			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.SpiesReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.SpiesReport;
 
 			// Instruction address 0x0000:0x055d, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -716,7 +716,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0876, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "!\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.SpiesReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.SpiesReport;
 
 			// Instruction address 0x0000:0x0890, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 40);
@@ -1215,12 +1215,13 @@ namespace OpenCiv1
 			goto L0d52;
 
 		L0e52:
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.GameSettingFlags.Value;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18), this.oCPU.AX.Word);
+			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x18), (ushort)this.oParent.CivState.GameSettingFlags.Value);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x28bc, 0x1);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeba), 0x1);
-			if (this.oCPU.Flags.G) goto L0e6a;
-			this.oParent.CivState.GameSettingFlags.Value &= 0x7ff7;
+
+			if (this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xdeba) > 1) goto L0e6a;
+
+			//this.oParent.CivState.GameSettingFlags.Value &= 0x7ff7;
+			this.oParent.CivState.GameSettingFlags.Animations = false;
 
 		L0e6a:
 			// Instruction address 0x0000:0x0e76, size: 5

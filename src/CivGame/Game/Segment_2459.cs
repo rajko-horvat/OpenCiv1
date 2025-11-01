@@ -330,8 +330,7 @@ namespace OpenCiv1
 			// Instruction address 0x2459:0x035d, size: 5
 			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(this.oParent.CivState.Nations[this.oParent.CivState.Players[playerID].NationalityID].ShortTune, 0);
 
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x8);
-			if (this.oCPU.Flags.E) goto L03b7;
+			if (!this.oParent.CivState.GameSettingFlags.Animations) goto L03b7;
 
 			// Instruction address 0x2459:0x036c, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
@@ -399,7 +398,7 @@ namespace OpenCiv1
 				goto L04bc;
 
 		L041a:
-			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.SpiesReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.SpiesReport;
 
 			// Instruction address 0x2459:0x0428, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Spies report:\n");

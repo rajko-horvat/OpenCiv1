@@ -427,7 +427,7 @@ namespace OpenCiv1
 
 							if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID)
 							{
-								this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
+								this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DomesticAdvisor;
 
 								this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -602,7 +602,7 @@ namespace OpenCiv1
 							// Instruction address 0x1d12:0x0e41, size: 5
 							this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-							this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
+							this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DomesticAdvisor;
 
 							// Instruction address 0x1d12:0x0e5b, size: 5
 							this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -1012,7 +1012,7 @@ namespace OpenCiv1
 										// Instruction address 0x1d12:0x1b3e, size: 5
 										this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-										this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DefenseMinister;
+										this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DefenseMinister;
 
 										// Instruction address 0x1d12:0x1b58, size: 5
 										this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -1101,8 +1101,10 @@ namespace OpenCiv1
 									this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
 									// Instruction address 0x1d12:0x1dbe, size: 5
-									if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID && this.oParent.CivState.GameSettingFlags.Animations && (local_e8 <= 21 || local_e8 > 24) &&
-										(city.StatusFlag & 0x10) == 0 && local_e8 != 1 && this.oParent.Segment_11a8.F0_11a8_02a4(1, 0) != 0)
+									if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID && 
+										this.oParent.CivState.GameSettingFlags.Animations && 
+										(local_e8 <= 21 || local_e8 > 24) && (city.StatusFlag & 0x10) == 0 && 
+										local_e8 != 1 && this.oParent.Segment_11a8.F0_11a8_02a4(1, 0) != 0)
 									{
 										this.oParent.CityView.F19_0000_0000(cityID, (short)local_e8);
 									}
@@ -1213,7 +1215,7 @@ namespace OpenCiv1
 											// Instruction address 0x1d12:0x2097, size: 5
 											this.oParent.MSCAPI.strcpy(0xba06, "Diplomats report:\n");
 
-											this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DiplomatsReport;
+											this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DiplomatsReport;
 										}
 
 										// Instruction address 0x1d12:0x20b3, size: 5
@@ -1228,7 +1230,7 @@ namespace OpenCiv1
 										// Instruction address 0x1d12:0x20de, size: 5
 										this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-										this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.ForeignMinister;
+										this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.ForeignMinister;
 
 										// Instruction address 0x1d12:0x20f8, size: 5
 										this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -1953,7 +1955,7 @@ namespace OpenCiv1
 										// Instruction address 0x1d12:0x363d, size: 5
 										this.oParent.MSCAPI.strcat(0xba06, ".\n Unit Disbanded.\n");
 
-										this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DefenseMinister;
+										this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DefenseMinister;
 
 										// Instruction address 0x1d12:0x3657, size: 5
 										this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -3631,7 +3633,7 @@ namespace OpenCiv1
 				goto L5db9;
 
 			L5d9f:
-				this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
+				this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DomesticAdvisor;
 
 				// Instruction address 0x1d12:0x5db1, size: 5
 				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -3731,7 +3733,7 @@ namespace OpenCiv1
 				goto L5fc2;
 
 			L5f7a:
-				this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
+				this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DomesticAdvisor;
 
 				// Instruction address 0x1d12:0x5f88, size: 5
 				this.oParent.MSCAPI.strcpy(0xba06, "Order restored\nin ");
@@ -4073,7 +4075,7 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x65f3, size: 5
 				this.oParent.MapManagement.F0_2aea_11d4(local_c6, local_d2);
 
-				this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.ScienceAdvisor;
+				this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.ScienceAdvisor;
 
 				// Instruction address 0x1d12:0x6609, size: 5
 				this.oParent.MSCAPI.strcpy(0xba06, "Pollution near ");
@@ -4213,7 +4215,7 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x688d, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-				this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
+				this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DomesticAdvisor;
 
 				// Instruction address 0x1d12:0x68a7, size: 5
 				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);

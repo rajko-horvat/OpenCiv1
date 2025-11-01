@@ -242,10 +242,20 @@ namespace OpenCiv1
 			goto L02ca;
 
 		L02f7:
-			this.oParent.CivState.GameSettingFlags.Value = 0xfa;
+			//this.oParent.CivState.GameSettingFlags.Value = 0xfa;
+			this.oParent.CivState.GameSettingFlags.InstantAdvice = false;
+			this.oParent.CivState.GameSettingFlags.AutoSave = true;
+			this.oParent.CivState.GameSettingFlags.EndOfTurn = false;
+			this.oParent.CivState.GameSettingFlags.Animations = true;
+			this.oParent.CivState.GameSettingFlags.Sound= true;
+			this.oParent.CivState.GameSettingFlags.EnemyMoves= true;
+			this.oParent.CivState.GameSettingFlags.CivilopediaText = true;
+			this.oParent.CivState.GameSettingFlags.Palace = true;
+
 			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x1a30), 0x4e);
 			if (this.oCPU.Flags.NE) goto L0309;
-			this.oParent.CivState.GameSettingFlags.Value &= 0x7fef;
+
+			this.oParent.CivState.GameSettingFlags.Sound = false; // &= 0x7fef;
 
 		L0309:
 			// Instruction address 0x0000:0x0311, size: 5
@@ -1281,18 +1291,17 @@ namespace OpenCiv1
 
 			if ((this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Diplomacy[playerID] & 0x40) != 0)
 			{
-				this.oCPU.AX.Word = 0x5;
+				this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.ForeignMinister;
 			}
 			else
 			{
-				this.oCPU.AX.Word = 0x2;
+				this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.TravelersReport;
 			}
-		
-			this.oParent.Var_2f9e_MessageBoxStyle = (MsgBoxStyleEnum)this.oCPU.AX.Word;
+	
 
 			if (playerID1 == this.oParent.CivState.HumanPlayerID)
 			{
-				this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DefenseMinister;
+				this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DefenseMinister;
 			}
 
 			// Instruction address 0x0000:0x0f32, size: 5

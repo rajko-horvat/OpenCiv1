@@ -377,8 +377,8 @@ namespace OpenCiv1
 
 		L039a:
 			this.oParent.CivState.GameSettingFlags.Sound ^= true;
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x10);
-			if (this.oCPU.Flags.E) goto L03a9;
+
+			if (!this.oParent.CivState.GameSettingFlags.Sound) goto L03a9;
 			goto L0217;
 
 		L03a9:
@@ -455,7 +455,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9c, 0x0);
 
 		L0456:
-			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.Default;
+			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.Default;
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, 0xffff);
 
@@ -645,8 +645,7 @@ namespace OpenCiv1
 			goto L075b;
 
 		L05ed:
-			this.oCPU.CMP_UInt16((ushort)this.oParent.Var_2f9e_MessageBoxStyle, 0xffff);
-			if (this.oCPU.Flags.NE) goto L0613;
+			if (this.oParent.Var_2f9e_MessageBoxStyle != CivMessageBoxStyleEnum.Default) goto L0613;
 
 			// Instruction address 0x2d05:0x060d, size: 3
 			F0_2d05_096c_FillRectangleWithDoubleShadow(xPos, yPos,
@@ -655,13 +654,13 @@ namespace OpenCiv1
 			goto L075b;
 
 		L0613:
-			this.oCPU.BX.Word = (ushort)this.oParent.Var_2f9e_MessageBoxStyle;
+			this.oCPU.BX.Word = (ushort)((short)this.oParent.Var_2f9e_MessageBoxStyle);
 			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
 			// Instruction address 0x2d05:0x0621, size: 5
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.BP.Word - 0x50), this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x2fa6)));
 
-			this.oCPU.CMP_UInt16((ushort)this.oParent.Var_2f9e_MessageBoxStyle, 0x2);
-			if (this.oCPU.Flags.G) goto L0640;
+			if (this.oParent.Var_2f9e_MessageBoxStyle == CivMessageBoxStyleEnum.DefenseMinister || this.oParent.Var_2f9e_MessageBoxStyle == CivMessageBoxStyleEnum.DomesticAdvisor ||
+				this.oParent.Var_2f9e_MessageBoxStyle == CivMessageBoxStyleEnum.ForeignMinister || this.oParent.Var_2f9e_MessageBoxStyle == CivMessageBoxStyleEnum.ScienceAdvisor) goto L0640;
 
 			// Instruction address 0x2d05:0x0638, size: 5
 			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x50), " report:");
@@ -692,12 +691,12 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = (ushort)(this.oCPU.SI.Word - 0x34);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x58), this.oCPU.AX.Word);
 
-			this.oCPU.CMP_UInt16((ushort)this.oParent.Var_2f9e_MessageBoxStyle, 0x2);
-			if (this.oCPU.Flags.G) goto L06d2;
+			if (this.oParent.Var_2f9e_MessageBoxStyle == CivMessageBoxStyleEnum.DefenseMinister || this.oParent.Var_2f9e_MessageBoxStyle == CivMessageBoxStyleEnum.DomesticAdvisor ||
+				this.oParent.Var_2f9e_MessageBoxStyle == CivMessageBoxStyleEnum.ForeignMinister || this.oParent.Var_2f9e_MessageBoxStyle == CivMessageBoxStyleEnum.ScienceAdvisor) goto L06d2;
 			
 			// Instruction address 0x2d05:0x06c8, size: 5
 			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, xPos - 40, yPos - 5,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(((ushort)this.oParent.Var_2f9e_MessageBoxStyle << 1) + 0xdf62)));
+				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(0xdf62 + ((int)this.oParent.Var_2f9e_MessageBoxStyle * 2))));
 			goto L0715;
 
 		L06d2:
@@ -706,7 +705,7 @@ namespace OpenCiv1
 			{
 				// Instruction address 0x2d05:0x070d, size: 5
 				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-					(40 * (short)this.oParent.Var_2f9e_MessageBoxStyle) + 40, 140, 40, 60,
+					(40 * (int)this.oParent.Var_2f9e_MessageBoxStyle) + 40, 140, 40, 60,
 					this.oParent.Var_aa_Rectangle,
 					xPos - 40, ((this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x58)) - 1) + yPos) - 6);
 			}
@@ -714,7 +713,7 @@ namespace OpenCiv1
 			{
 				// Instruction address 0x2d05:0x070d, size: 5
 				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-					(40 * (short)this.oParent.Var_2f9e_MessageBoxStyle) + 40, 140, 40, 60,
+					(40 * (int)this.oParent.Var_2f9e_MessageBoxStyle) + 40, 140, 40, 60,
 					this.oParent.Var_aa_Rectangle, xPos - 40, yPos - 6);
 			}
 

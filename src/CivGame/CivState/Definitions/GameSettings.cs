@@ -4,12 +4,10 @@
 	{
 		private short value = 2;
 
+		// represents bit value 0x1
 		public bool InstantAdvice
 		{
-			get
-			{
-				return (value & (1 << 0)) != 0;
-			}
+			get => (value & (1 << 0)) != 0;
 			set
 			{
 				this.value |= (1 << 0);
@@ -18,12 +16,10 @@
 			}
 		}
 
-		public bool Autosave
+		// represents bit value 0x2
+		public bool AutoSave
 		{
-			get
-			{
-				return (value & (1 << 1)) != 0;
-			}
+			get => (value & (1 << 1)) != 0;
 			set
 			{
 				this.value |= (1 << 1);
@@ -32,12 +28,10 @@
 			}
 		}
 
+		// represents bit value 0x4
 		public bool EndOfTurn
 		{
-			get
-			{
-				return (value & (1 << 2)) != 0;
-			}
+			get => (value & (1 << 2)) != 0;
 			set
 			{
 				this.value |= (1 << 2);
@@ -46,12 +40,10 @@
 			}
 		}
 
+		// represents bit value 0x8
 		public bool Animations
 		{
-			get
-			{
-				return (value & (1 << 3)) != 0;
-			}
+			get => (value & (1 << 3)) != 0;
 			set
 			{
 				this.value |= (1 << 3);
@@ -60,12 +52,10 @@
 			}
 		}
 
+		// represents bit value 0x10
 		public bool Sound
 		{
-			get
-			{
-				return (value & (1 << 4)) != 0;
-			}
+			get => (value & (1 << 4)) != 0;
 			set
 			{
 				this.value |= (1 << 4);
@@ -74,12 +64,10 @@
 			}
 		}
 
+		// represents bit value 0x20
 		public bool EnemyMoves
 		{
-			get
-			{
-				return (value & (1 << 5)) != 0;
-			}
+			get => (value & (1 << 5)) != 0;
 			set
 			{
 				this.value |= (1 << 5);
@@ -88,12 +76,10 @@
 			}
 		}
 
+		// represents bit value 0x40
 		public bool CivilopediaText
 		{
-			get
-			{
-				return (value & (1 << 6)) != 0;
-			}
+			get => (value & (1 << 6)) != 0;
 			set
 			{
 				this.value |= (1 << 6);
@@ -102,12 +88,10 @@
 			}
 		}
 
+		// represents bit value 0x80
 		public bool Palace
 		{
-			get
-			{
-				return (value & (1 << 7)) != 0;
-			}
+			get => (value & (1 << 7)) != 0;
 			set
 			{
 				this.value |= (1 << 7);

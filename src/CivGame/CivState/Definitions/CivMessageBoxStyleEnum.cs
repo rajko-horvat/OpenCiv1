@@ -1,7 +1,11 @@
 ﻿namespace OpenCiv1
 {
-	public enum MsgBoxStyleEnum : ushort
+	public enum CivMessageBoxStyleEnum
 	{
+		/// <summary>
+		/// No title or image
+		/// </summary>
+		Default = -1,
 		/// <summary>
 		/// Message box title: 'Spies report:', spy image on the left
 		/// </summary>
@@ -29,10 +33,6 @@
 		/// <summary>
 		/// Message box title: 'Science Advisor:', advisor image on the left
 		/// </summary>
-		ScienceAdvisor = 6,
-		/// <summary>
-		/// No title or image
-		/// </summary>
-		Default = 0xffff
+		ScienceAdvisor = 6
 	}
 }

@@ -2641,11 +2641,11 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x16);
 			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-			this.oCPU.AX.Word = (ushort)playerID;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x67f2, this.oCPU.AX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x67f0, 0x0);
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x8);
-			if (this.oCPU.Flags.E) goto L1d49;
+
+			this.oCPU.WriteInt16(this.oCPU.DS.Word, 0x67f2, playerID);
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x67f0, 0);
+
+			if (!this.oParent.CivState.GameSettingFlags.Animations) goto L1d49;
 			goto L1e2c;
 
 		L1d49:

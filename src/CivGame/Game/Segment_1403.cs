@@ -2450,8 +2450,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x25, 0);
 
 		L1ea4:
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x1);
-			if (this.oCPU.Flags.NE) goto L1eae;
+			if (this.oParent.CivState.GameSettingFlags.InstantAdvice) goto L1eae;
 			goto L1eba;
 
 		L1eae:
@@ -3425,8 +3424,7 @@ namespace OpenCiv1
 				goto L2cdd;
 
 		L2c94:
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x20);
-			if (this.oCPU.Flags.E) goto L2c9e;
+			if (!this.oParent.CivState.GameSettingFlags.EnemyMoves) goto L2c9e;
 			goto L2ca9;
 
 		L2c9e:
@@ -3786,8 +3784,7 @@ namespace OpenCiv1
 			if (playerID == this.oParent.CivState.HumanPlayerID)
 				goto L31dc;
 
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x20);
-			if (this.oCPU.Flags.NE) goto L31dc;
+			if (this.oParent.CivState.GameSettingFlags.EnemyMoves) goto L31dc;
 			goto L3220;
 
 		L31dc:
@@ -5041,8 +5038,7 @@ namespace OpenCiv1
 			goto L3e8f;
 
 		L3e85:
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x4);
-			if (this.oCPU.Flags.NE) goto L3e8f;
+			if (this.oParent.CivState.GameSettingFlags.EndOfTurn) goto L3e8f;
 			goto L3ea1;
 
 		L3e8f:

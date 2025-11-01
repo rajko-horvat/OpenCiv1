@@ -806,26 +806,23 @@ namespace OpenCiv1
 			goto L08e4;
 
 		L0846:
-			if (!this.oParent.CivState.GameSettingFlags.CivilopediaText) goto L089c;
-			if (this.oCPU.Flags.E) goto L089c;
+			if (this.oParent.CivState.GameSettingFlags.CivilopediaText)
+			{
+				// Instruction address 0x0000:0x0855, size: 5
+				if ((short)this.oParent.Segment_2f4d.F0_2f4d_01ad(0x3fa4, (ushort)(this.oCPU.BP.Word - 0x2c)) != -1)
+				{
+					// Instruction address 0x0000:0x0870, size: 5
+					this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(37, 12, 76, 1);
 
-			// Instruction address 0x0000:0x0855, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x3fa4, (ushort)(this.oCPU.BP.Word - 0x2c));
+					// Instruction address 0x0000:0x0878, size: 5
+					this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 
-			this.oCPU.AX.Word = this.oCPU.INC_UInt16(this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L089c;
+					// Instruction address 0x0000:0x0894, size: 5
+					this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 8, 76, 304, 116,
+						this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
+				}
+			}
 
-			// Instruction address 0x0000:0x0870, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(37, 12, 76, 1);
-
-			// Instruction address 0x0000:0x0878, size: 5
-			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
-
-			// Instruction address 0x0000:0x0894, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 8, 76, 304, 116,
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
-
-		L089c:
 			// Instruction address 0x0000:0x08a4, size: 5
 			this.oParent.MSCAPI.strcat((ushort)(this.oCPU.BP.Word - 0x2c), "2");
 
