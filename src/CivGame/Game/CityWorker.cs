@@ -427,7 +427,7 @@ namespace OpenCiv1
 
 							if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID)
 							{
-								this.oParent.Var_2f9e_Unknown = 0x4;
+								this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
 
 								this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -602,7 +602,7 @@ namespace OpenCiv1
 							// Instruction address 0x1d12:0x0e41, size: 5
 							this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-							this.oParent.Var_2f9e_Unknown = 0x4;
+							this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
 
 							// Instruction address 0x1d12:0x0e5b, size: 5
 							this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -1012,7 +1012,7 @@ namespace OpenCiv1
 										// Instruction address 0x1d12:0x1b3e, size: 5
 										this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-										this.oParent.Var_2f9e_Unknown = 0x3;
+										this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DefenseMinister;
 
 										// Instruction address 0x1d12:0x1b58, size: 5
 										this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -1101,7 +1101,7 @@ namespace OpenCiv1
 									this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
 									// Instruction address 0x1d12:0x1dbe, size: 5
-									if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID && (this.oParent.CivState.GameSettingFlags & 0x8) != 0 && (local_e8 <= 21 || local_e8 > 24) &&
+									if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID && this.oParent.CivState.GameSettingFlags.Animations && (local_e8 <= 21 || local_e8 > 24) &&
 										(city.StatusFlag & 0x10) == 0 && local_e8 != 1 && this.oParent.Segment_11a8.F0_11a8_02a4(1, 0) != 0)
 									{
 										this.oParent.CityView.F19_0000_0000(cityID, (short)local_e8);
@@ -1213,7 +1213,7 @@ namespace OpenCiv1
 											// Instruction address 0x1d12:0x2097, size: 5
 											this.oParent.MSCAPI.strcpy(0xba06, "Diplomats report:\n");
 
-											this.oParent.Var_2f9e_Unknown = 0x1;
+											this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DiplomatsReport;
 										}
 
 										// Instruction address 0x1d12:0x20b3, size: 5
@@ -1228,7 +1228,7 @@ namespace OpenCiv1
 										// Instruction address 0x1d12:0x20de, size: 5
 										this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-										this.oParent.Var_2f9e_Unknown = 0x5;
+										this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.ForeignMinister;
 
 										// Instruction address 0x1d12:0x20f8, size: 5
 										this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -1953,7 +1953,7 @@ namespace OpenCiv1
 										// Instruction address 0x1d12:0x363d, size: 5
 										this.oParent.MSCAPI.strcat(0xba06, ".\n Unit Disbanded.\n");
 
-										this.oParent.Var_2f9e_Unknown = 0x3;
+										this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DefenseMinister;
 
 										// Instruction address 0x1d12:0x3657, size: 5
 										this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -2591,20 +2591,20 @@ namespace OpenCiv1
 						// Instruction address 0x1d12:0x4994, size: 5
 						this.oParent.Segment_11a8.F0_11a8_0250();
 
-						while (this.oParent.Var_db3a != 0)
+						while (this.oParent.Var_db3a_MouseButton != 0)
 						{
 							// Instruction address 0x1d12:0x49a3, size: 5
-							this.oParent.Segment_11a8.F0_11a8_0223();
+							this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 						}
 
-						while (this.oParent.Var_db3a == 0)
+						while (this.oParent.Var_db3a_MouseButton == 0)
 						{
 							// Instruction address 0x1d12:0x49b5, size: 5
 							if (this.oParent.MSCAPI.kbhit() != 0 || local_b8 != 0)
 								break;
 
 							// Instruction address 0x1d12:0x49cc, size: 5
-							this.oParent.Segment_11a8.F0_11a8_0223();
+							this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
 							if (local_c0 != 0)
 							{
@@ -2647,16 +2647,16 @@ namespace OpenCiv1
 							// Instruction address 0x1d12:0x4a61, size: 5
 							local_f0 = this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey();
 
-							this.oParent.Var_db3e = 0;
-							this.oParent.Var_db3c = 0;
+							this.oParent.Var_db3e_MouseYPos = 0;
+							this.oParent.Var_db3c_MouseXPos = 0;
 						}
 
 						// Instruction address 0x1d12:0x4a86, size: 5
 						this.oParent.Segment_11a8.F0_11a8_0268();
 
-						if ((this.oParent.Var_db3a == 2 &&
-							this.oParent.Var_db3c >= 230 && this.oParent.Var_db3c < 270 &&
-							this.oParent.Var_db3e >= 106 && this.oParent.Var_db3e <= 116) ||
+						if ((this.oParent.Var_db3a_MouseButton == 2 &&
+							this.oParent.Var_db3c_MouseXPos >= 230 && this.oParent.Var_db3c_MouseXPos < 270 &&
+							this.oParent.Var_db3e_MouseYPos >= 106 && this.oParent.Var_db3e_MouseYPos <= 116) ||
 							local_f0 == 65)
 						{
 							city.StatusFlag ^= 0x10;
@@ -2702,19 +2702,19 @@ namespace OpenCiv1
 						if (local_f0 != -1)
 							goto L4be2;
 
-						if (this.oParent.Var_db3a == 1) goto L4bce;
+						if (this.oParent.Var_db3a_MouseButton == 1) goto L4bce;
 						goto L4ff5;
 
 					L4bce:
-						if (this.oParent.Var_db3e >= 106) goto L4bd8;
+						if (this.oParent.Var_db3e_MouseYPos >= 106) goto L4bd8;
 						goto L4ff5;
 
 					L4bd8:
-						if (this.oParent.Var_db3e <= 116) goto L4be2;
+						if (this.oParent.Var_db3e_MouseYPos <= 116) goto L4be2;
 						goto L4ff5;
 
 					L4be2:
-						if (this.oParent.Var_db3c < 296) goto L4bed;
+						if (this.oParent.Var_db3c_MouseXPos < 296) goto L4bed;
 						goto L4bf7;
 
 					L4bed:
@@ -2809,7 +2809,7 @@ namespace OpenCiv1
 						goto L045f;
 
 					L4e80:
-						if ((this.oParent.Var_db3c >= 230 && this.oParent.Var_db3c < 270) || local_f0 == (int)'c')
+						if ((this.oParent.Var_db3c_MouseXPos >= 230 && this.oParent.Var_db3c_MouseXPos < 270) || local_f0 == (int)'c')
 						{
 							city.StatusFlag &= 0xef;
 
@@ -2867,11 +2867,11 @@ namespace OpenCiv1
 						goto L4faf;
 
 					L4f83:
-						if (this.oParent.Var_db3c >= 96 && this.oParent.Var_db3c < 224) goto L4f98;
+						if (this.oParent.Var_db3c_MouseXPos >= 96 && this.oParent.Var_db3c_MouseXPos < 224) goto L4f98;
 						goto L4ff5;
 
 					L4f98:
-						this.Var_2496 = (this.oParent.Var_db3c - 96) / 32;
+						this.Var_2496 = (this.oParent.Var_db3c_MouseXPos - 96) / 32;
 
 					L4faf:
 						this.oParent.Var_70da_Arr[1] = local_10a;
@@ -3263,19 +3263,19 @@ namespace OpenCiv1
 						goto L56a6;
 
 					L567b:
-						if (this.oParent.Var_db3a == 1) goto L5685;
+						if (this.oParent.Var_db3a_MouseButton == 1) goto L5685;
 						goto L56c8;
 
 					L5685:
-						if (this.oParent.Var_db3c >= 231) goto L5690;
+						if (this.oParent.Var_db3c_MouseXPos >= 231) goto L5690;
 						goto L56c8;
 
 					L5690:
-						if (this.oParent.Var_db3e > 190) goto L569b;
+						if (this.oParent.Var_db3e_MouseYPos > 190) goto L569b;
 						goto L56c8;
 
 					L569b:
-						if (this.oParent.Var_db3c < 270) goto L56a6;
+						if (this.oParent.Var_db3c_MouseXPos < 270) goto L56a6;
 						goto L56c8;
 
 					L56a6:
@@ -3284,26 +3284,26 @@ namespace OpenCiv1
 
 						this.oParent.Var_aa_Rectangle.FontID = 1;
 
-						this.oParent.Overlay_23.F23_0000_0000(cityID);
+						this.oParent.Overlay_23.F23_0000_0000_CityNameDialog(cityID);
 
 						this.oParent.Var_6b64 = 1;
 
 						goto L045f;
 
 					L56c8:
-						if (this.oParent.Var_db3a == 1) goto L56d2;
+						if (this.oParent.Var_db3a_MouseButton == 1) goto L56d2;
 						goto L5cc2;
 
 					L56d2:
-						if (this.oParent.Var_db3c >= 288) goto L56dd;
+						if (this.oParent.Var_db3c_MouseXPos >= 288) goto L56dd;
 						goto L5719;
 
 					L56dd:
-						if (this.oParent.Var_db3e < 96) goto L56e7;
+						if (this.oParent.Var_db3e_MouseYPos < 96) goto L56e7;
 						goto L5719;
 
 					L56e7:
-						if (this.oParent.Var_db3e > 88) goto L56f1;
+						if (this.oParent.Var_db3e_MouseYPos > 88) goto L56f1;
 						goto L5719;
 
 					L56f1:
@@ -3318,15 +3318,15 @@ namespace OpenCiv1
 						goto L12c2;
 
 					L5719:
-						if (this.oParent.Var_db3c >= 300) goto L5724;
+						if (this.oParent.Var_db3c_MouseXPos >= 300) goto L5724;
 						goto L58ac;
 
 					L5724:
-						if (this.oParent.Var_db3e < 94) goto L572e;
+						if (this.oParent.Var_db3e_MouseYPos < 94) goto L572e;
 						goto L58ac;
 
 					L572e:
-						local_106 = ((this.oParent.Var_db3e - 2) / 6) - local_40;
+						local_106 = ((this.oParent.Var_db3e_MouseYPos - 2) / 6) - local_40;
 
 					L5740:
 						local_bc = local_da;
@@ -3394,11 +3394,11 @@ namespace OpenCiv1
 						goto L045f;
 
 					L58ac:
-						if (this.oParent.Var_db3c < 200) goto L58b7;
+						if (this.oParent.Var_db3c_MouseXPos < 200) goto L58b7;
 						goto L596b;
 
 					L58b7:
-						if (this.oParent.Var_db3e < 20) goto L58c1;
+						if (this.oParent.Var_db3e_MouseYPos < 20) goto L58c1;
 						goto L596b;
 
 					L58c1:
@@ -3406,7 +3406,7 @@ namespace OpenCiv1
 						goto L5953;
 
 					L58d3:
-						local_ea = (this.oParent.Var_db3c - 16) / local_f4;
+						local_ea = (this.oParent.Var_db3c_MouseXPos - 16) / local_f4;
 						local_ea -= city.ActualSize - local_50;
 
 						if (local_ea < 0)
@@ -3447,19 +3447,19 @@ namespace OpenCiv1
 						goto L12c2;
 
 					L596b:
-						if (this.oParent.Var_db3c >= 100) goto L5975;
+						if (this.oParent.Var_db3c_MouseXPos >= 100) goto L5975;
 						goto L5a60;
 
 					L5975:
-						if (this.oParent.Var_db3c < 9600) goto L5980;
+						if (this.oParent.Var_db3c_MouseXPos < 9600) goto L5980;
 						goto L5a60;
 
 					L5980:
-						if (this.oParent.Var_db3e >= 116) goto L598a;
+						if (this.oParent.Var_db3e_MouseYPos >= 116) goto L598a;
 						goto L5a60;
 
 					L598a:
-						local_106 = (((this.oParent.Var_db3e - 116) / 16) * 6) + ((this.oParent.Var_db3c - 100) / 16);
+						local_106 = (((this.oParent.Var_db3e_MouseYPos - 116) / 16) * 6) + ((this.oParent.Var_db3c_MouseXPos - 100) / 16);
 
 						if (local_106 >= local_4e)
 							goto L5a60;
@@ -3480,16 +3480,16 @@ namespace OpenCiv1
 						goto L12c2;
 
 					L5a60:
-						if (this.oParent.Var_db3e >= 24) goto L5a6a;
+						if (this.oParent.Var_db3e_MouseYPos >= 24) goto L5a6a;
 						goto L5cc2;
 
 					L5a6a:
-						if (this.oParent.Var_db3e < 104) goto L5a74;
+						if (this.oParent.Var_db3e_MouseYPos < 104) goto L5a74;
 						goto L5cc2;
 
 					L5a74:
-						local_f6 = (this.oParent.Var_db3c / 16) - 10;
-						local_fc = ((this.oParent.Var_db3e - 24) / 16) - 2;
+						local_f6 = (this.oParent.Var_db3c_MouseXPos / 16) - 10;
+						local_fc = ((this.oParent.Var_db3e_MouseYPos - 24) / 16) - 2;
 
 					L5aa6:
 						// Instruction address 0x1d12:0x5aae, size: 5
@@ -3605,7 +3605,7 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x5d3b, size: 5
 				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x24, 0);
 
-				if ((this.oParent.CivState.GameSettingFlags & 0x8) != 0) goto L5d4d;
+				if (this.oParent.CivState.GameSettingFlags.Animations) goto L5d4d;
 				goto L5d9f;
 
 			L5d4d:
@@ -3631,7 +3631,7 @@ namespace OpenCiv1
 				goto L5db9;
 
 			L5d9f:
-				this.oParent.Var_2f9e_Unknown = 0x4;
+				this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
 
 				// Instruction address 0x1d12:0x5db1, size: 5
 				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -3646,7 +3646,7 @@ namespace OpenCiv1
 			L5dd7:
 				this.oParent.Var_b1e8 = 1;
 
-				if ((this.oParent.CivState.GameSettingFlags & 0x1) != 0) goto L5de7;
+				if (this.oParent.CivState.GameSettingFlags.InstantAdvice) goto L5de7;
 				goto L5df3;
 
 			L5de7:
@@ -3731,7 +3731,7 @@ namespace OpenCiv1
 				goto L5fc2;
 
 			L5f7a:
-				this.oParent.Var_2f9e_Unknown = 0x4;
+				this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
 
 				// Instruction address 0x1d12:0x5f88, size: 5
 				this.oParent.MSCAPI.strcpy(0xba06, "Order restored\nin ");
@@ -3822,7 +3822,7 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x6143, size: 5
 				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(0x22, 0);
 
-				if ((this.oParent.CivState.GameSettingFlags & 0x8) != 0)
+				if (this.oParent.CivState.GameSettingFlags.Animations)
 				{
 					this.oParent.CityView.F19_0000_0000(cityID, -2);
 
@@ -4073,7 +4073,7 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x65f3, size: 5
 				this.oParent.MapManagement.F0_2aea_11d4(local_c6, local_d2);
 
-				this.oParent.Var_2f9e_Unknown = 0x6;
+				this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.ScienceAdvisor;
 
 				// Instruction address 0x1d12:0x6609, size: 5
 				this.oParent.MSCAPI.strcpy(0xba06, "Pollution near ");
@@ -4213,7 +4213,7 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x688d, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, ".\n");
 
-				this.oParent.Var_2f9e_Unknown = 0x4;
+				this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
 
 				// Instruction address 0x1d12:0x68a7, size: 5
 				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);

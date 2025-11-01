@@ -171,9 +171,9 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Updates current mouse position and pressed button state.
 		/// </summary>
-		public void F0_11a8_0223()
+		public void F0_11a8_0223_UpdateMouse()
 		{
 			// function body
 			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1a3c) != 0)
@@ -182,17 +182,17 @@ namespace OpenCiv1
 				this.oParent.Segment_1000.F0_1000_16d4();
 
 				this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5872));
-				this.oParent.Var_db3a = this.oCPU.AX.Word;
-				this.oParent.Var_db3c = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e);
+				this.oParent.Var_db3a_MouseButton = this.oCPU.AX.Word;
+				this.oParent.Var_db3c_MouseXPos = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e);
 				this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5870);
-				this.oParent.Var_db3e = this.oCPU.AX.Word;
+				this.oParent.Var_db3e_MouseYPos = this.oCPU.AX.Word;
 			}
 			else
 			{
 				this.oCPU.AX.Word = 0;
-				this.oParent.Var_db3e = 0;
-				this.oParent.Var_db3c = 0;
-				this.oParent.Var_db3a = 0;
+				this.oParent.Var_db3e_MouseYPos = 0;
+				this.oParent.Var_db3c_MouseXPos = 0;
+				this.oParent.Var_db3a_MouseButton = 0;
 			}
 		}
 

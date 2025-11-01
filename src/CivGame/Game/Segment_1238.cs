@@ -16,12 +16,17 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows message box. Size of message box is determined by its text contents.
+		/// Text can be formatted in order to show list of options to choose for the player.
+		/// Each option should take a single line and start with one or multiple spaces.
+		/// Option lines shouldn't be mixed with non-option lines in order for selection to render properly.
+		/// Value at address 0xb276 (ushort) can be used as a bitmask indicating disabled options.
 		/// </summary>
-		/// <param name="stringPtr"></param>
+		/// <param name="stringPtr">Address of a message string</param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		public void F0_1238_001e_ShowDialog(ushort stringPtr, int xPos, int yPos)
+		/// <returns>Index of selected option in AX register or 0xffff if no options provided</returns>
+		public ushort F0_1238_001e_ShowDialog(ushort stringPtr, int xPos, int yPos)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1238_001e_ShowDialog(0x{stringPtr:x4}, {xPos}, {yPos})");
 
@@ -58,6 +63,8 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1238_001e_ShowDialog");
+
+			return this.oCPU.AX.Word;
 		}
 
 		/// <summary>
@@ -332,7 +339,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x034f, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f(0x1c2a);
 
-			this.oParent.Var_2f9e_Unknown = 0x4;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
 
 			// Instruction address 0x1238:0x0367, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -396,7 +403,7 @@ namespace OpenCiv1
 			goto L055e;
 			
 		L0416:
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x2);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x2);
 			if (this.oCPU.Flags.E) goto L0439;
 
 			this.oParent.GameLoadAndSave.F11_0000_036a((ushort)((((this.oParent.CivState.TurnCount / 50) - 1) % 6) + 4));
@@ -568,7 +575,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L05f0;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 0x0);
 			if (this.oCPU.Flags.E) goto L066e;
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags & 0xff), 0x80);
+			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x80);
 			if (this.oCPU.Flags.E) goto L066e;
 			this.oCPU.TEST_UInt16((ushort)this.oParent.CivState.SpaceshipFlags, 0x100);
 			if (this.oCPU.Flags.NE) goto L066e;
@@ -1137,7 +1144,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x0ca4, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "!\n");
 
-			this.oParent.Var_2f9e_Unknown = 0x2;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.TravelersReport;
 
 			// Instruction address 0x1238:0x0cbf, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 32);
@@ -1735,7 +1742,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x147d, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "00,000 citizens.\n");
 
-			this.oParent.Var_2f9e_Unknown = 0x4;
+			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
 
 			// Instruction address 0x1238:0x1498, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -2103,7 +2110,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x2;
 
 		L17f2:
-			this.oParent.Var_2f9e_Unknown = this.oCPU.AX.Word;
+			this.oParent.Var_2f9e_MessageBoxStyle = (MsgBoxStyleEnum)this.oCPU.AX.Word;
 
 			// Instruction address 0x1238:0x1802, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 80);

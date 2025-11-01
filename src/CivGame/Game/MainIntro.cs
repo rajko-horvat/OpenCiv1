@@ -257,7 +257,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.LE) goto L0308;
 
 		L031c:
-			this.oParent.CivState.GameSettingFlags |= 0x10;
+			this.oParent.CivState.GameSettingFlags.Sound = true;
 
 			// Instruction address 0x0000:0x0329, size: 5
 			this.oParent.MSCAPI.fopen("credits.txt", "rt");

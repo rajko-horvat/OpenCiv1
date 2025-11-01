@@ -14,103 +14,105 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows popup dialog allowing player to enter a custom name for a city.
+		/// Updates name of a city with specified ID.
 		/// </summary>
 		/// <param name="cityID"></param>
-		/// <returns></returns>
-		public ushort F23_0000_0000(short cityID)
+		/// <returns>1 if player entered custom city name, 0 in case of rejected input</returns>
+		public ushort F23_0000_0000_CityNameDialog(short cityID)
 		{
-			this.oCPU.Log.EnterBlock($"F23_0000_0000({cityID})");
+			this.oCPU.Log.EnterBlock($"F23_0000_0000_CityNameDialog({cityID})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x4);
-
 			// Instruction address 0x0000:0x0006, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
+			// Save main screen graphics before showing popup dialog
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
-		L0010:
-			// Instruction address 0x0000:0x0025, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 80, 80, 160, 32, 15);
+			ushort editBoxResult;
+			ushort nameLength = 0;
 
-			// Instruction address 0x0000:0x003e, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(80, 80, 160, 32, 11);
-
-			// Instruction address 0x0000:0x0055, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("City Name...", 88, 82, 0);
-
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
-			
-			// Instruction address 0x0000:0x0065, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
-			
-			F23_0000_0414(0x58, 0x60, 0xc);
-			
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-
-			// Instruction address 0x0000:0x0087, size: 5
-			this.oParent.MSCAPI.strlen(0xba06);
-
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L0096;
-			goto L0010;
-
-		L0096:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x0);
-			if (this.oCPU.Flags.E) goto L00c5;
-
-			uint uiCityNameID = this.oParent.CivState.Cities[cityID].NameID;
-			char[] acCityName = this.oParent.CivState.CityNames[uiCityNameID].ToCharArray();
-
-			for (int i = 0; i < 0xd; i++)
+			do
 			{
-				acCityName[i] = (char)this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i));
-			}
-			this.oParent.CivState.CityNames[uiCityNameID] = new string(acCityName);
+				// Dialog background
+				// Instruction address 0x0000:0x0025, size: 5
+				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 80, 80, 160, 32, 15);
 
-		L00c5:
+				// Borders
+				// Instruction address 0x0000:0x003e, size: 5
+				this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(80, 80, 160, 32, 11);
+
+				// Title
+				// Instruction address 0x0000:0x0055, size: 5
+				this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("City Name...", 88, 82, 0);
+
+				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+
+				// Instruction address 0x0000:0x0065, size: 5
+				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+
+				editBoxResult = F23_0000_0414_EditBox(88, 96, 12);
+
+				// Instruction address 0x0000:0x0087, size: 5
+				nameLength = this.oParent.MSCAPI.strlen(0xba06);
+			} while (nameLength == 0);
+
+			if (editBoxResult != 0)
+			{
+				uint nameID = this.oParent.CivState.Cities[cityID].NameID;
+				char[] cityName = this.oParent.CivState.CityNames[nameID].ToCharArray();
+				
+				for (int i = 0; i < 13; i++)
+				{
+					cityName[i] = (char)this.oCPU.ReadUInt8(this.oCPU.DS.Word, (ushort)(0xba06 + i));
+				}
+				
+				this.oParent.CivState.CityNames[nameID] = new string(cityName);
+			}
+
+			// Restore main screen graphics, 'hide' popup dialog
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x00ca, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
-
 			// Far return
-			this.oCPU.Log.ExitBlock("F23_0000_0000");
+			this.oCPU.Log.ExitBlock("F23_0000_0000_CityNameDialog");
 
-			return this.oCPU.AX.Word;
+			this.oCPU.AX.Word = editBoxResult;
+
+			return editBoxResult;
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows dialog allowing player to enter its name.
+		/// Updates human player name.
 		/// </summary>
-		public void F23_0000_00d6()
+		public void F23_0000_00d6_PlayerNameDialog()
 		{
-			this.oCPU.Log.EnterBlock("F23_0000_00d6()");
+			this.oCPU.Log.EnterBlock("F23_0000_00d6_PlayerNameDialog()");
 
 			// function body
 			// Instruction address 0x0000:0x00d6, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
+			// Dialog background
 			// Instruction address 0x0000:0x00f3, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 158, 88, 160, 32, 15);
 
+			// Borders
 			// Instruction address 0x0000:0x010f, size: 5
 			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
 
+			// Title
 			// Instruction address 0x0000:0x0126, size: 5
 			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Your Name...", 166, 90, 0);
 
 			// Instruction address 0x0000:0x013c, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Name);
 
-			F23_0000_0414(0xa6, 0x68, 0xd);
+			F23_0000_0414_EditBox(166, 104, 13);
 
 			// Instruction address 0x0000:0x0165, size: 5
 			this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Name = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
@@ -119,7 +121,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F23_0000_00d6");
+			this.oCPU.Log.ExitBlock("F23_0000_00d6_PlayerNameDialog");
 		}
 
 		/// <summary>
@@ -149,7 +151,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x01df, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Nation);
 
-			F23_0000_0414(0xa6, 0x68, 0xb);
+			F23_0000_0414_EditBox(0xa6, 0x68, 0xb);
 
 			// Instruction address 0x0000:0x0208, size: 5
 			this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Nation = this.oCPU.ReadString(this.oCPU.DS.Word, 0xba06);
@@ -178,46 +180,42 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows find city dialog. Handles city name input and search.
+		/// Centers camera on a city if found and city is visible to the player.
 		/// </summary>
-		public void F23_0000_025b()
+		public void F23_0000_025b_FindCityDialog()
 		{
-			this.oCPU.Log.EnterBlock("F23_0000_025b()");
+			this.oCPU.Log.EnterBlock("F23_0000_025b_FindCityDialog()");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x2);
-			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-
 			// Instruction address 0x0000:0x0263, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
+			// Save main screen graphics before showing popup dialog
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
-			F23_0000_0319(0x53ce);
+			ushort cityID = F23_0000_0319_FindCityEditBox("Where in the heck is ... (city name)");
+			if (cityID != 0xffff)
+			{
+				City city = this.oParent.CivState.Cities[cityID];
+				ushort visibilityMask = this.oParent.CivState.MapVisibility[city.Position.X, city.Position.Y];
+				var playerMask = 1 << (this.oParent.CivState.HumanPlayerID & 0xff);
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
-			if (this.oCPU.Flags.E) goto L02cd;
+				if ((visibilityMask & playerMask) != 0)
+				{
+					// Center camera at the city
+					// Instruction address 0x0000:0x02c3, size: 5
+					this.oParent.MapManagement.F0_2aea_0008(this.oParent.CivState.HumanPlayerID, city.Position.X - 7, city.Position.Y - 6);
+					// Instruction address 0x0000:0x030e, size: 5
+					this.oParent.Segment_11a8.F0_11a8_0250();
+					// Far return
+					this.oCPU.Log.ExitBlock("F23_0000_025b_FindCityDialog");
+					return;
+				}
+			}
 
-			this.oCPU.AX.Word = this.oParent.CivState.MapVisibility[this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.X,
-				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.Y];			
-			this.oCPU.DX.Word = 0x1;
-			this.oCPU.CX.Low = (byte)(this.oParent.CivState.HumanPlayerID & 0xff);
-			this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-			if (this.oCPU.Flags.E) goto L02cd;
+			// Could not find city or it is not visible
 
-			// Instruction address 0x0000:0x02c3, size: 5
-			this.oParent.MapManagement.F0_2aea_0008(this.oParent.CivState.HumanPlayerID,
-				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.X - 7,
-				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.Y - 6);
-
-			goto L030e;
-
-		L02cd:
 			// Instruction address 0x0000:0x02e5, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 64, 78, 224, 10, 15);
 
@@ -227,28 +225,25 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0304, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 
+			// Restore main screen graphics, 'hide' dialog
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
-		L030e:
 			// Instruction address 0x0000:0x030e, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
-			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.DI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F23_0000_025b");
+			this.oCPU.Log.ExitBlock("F23_0000_025b_FindCityDialog");
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows popup dialog, handles edit box and searches for a city by name
 		/// </summary>
-		/// <param name="stringPtr"></param>
-		/// <returns></returns>
-		public ushort F23_0000_0319(ushort stringPtr)
+		/// <param name="title">Popup dialog title string</param>
+		/// <returns>city ID or 0xffff if not found</returns>
+		private ushort F23_0000_0319_FindCityEditBox(string title)
 		{
-			this.oCPU.Log.EnterBlock($"F23_0000_0319(0x{stringPtr:x4})");
+			this.oCPU.Log.EnterBlock($"F23_0000_0319_FindCityEditBox({title})");
+
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -256,18 +251,21 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x14);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 
+			// Dialog background
 			// Instruction address 0x0000:0x0338, size: 5
 			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 64, 78, 224, 24, 15);
 
+			// Borders
 			// Instruction address 0x0000:0x0353, size: 5
 			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(64, 78, 224, 24, 0);
 
+			// Title
 			// Instruction address 0x0000:0x0369, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(stringPtr, 66, 80, 0);
+			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(title, 66, 80, 0);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
-			F23_0000_0414(0x42, 0x59, 0x10);
+			F23_0000_0414_EditBox(66, 89, 16);
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14), 0x0);
 			goto L03bc;
@@ -325,21 +323,22 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F23_0000_0319");
+			this.oCPU.Log.ExitBlock("F23_0000_0319_FindCityEditBox");
 
 			return this.oCPU.AX.Word;
 		}
 
 		/// <summary>
-		/// ?
+		/// Draws and handles edit box logic which allows player to enter and edit a single line of text.
+		/// Default text as well as a result are passed and retrieved using 0xba06 buffer.
 		/// </summary>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <param name="width"></param>
-		/// <returns></returns>
-		public ushort F23_0000_0414(short xPos, short yPos, ushort width)
+		/// <param name="lengthMax">Maximum permitted length of text, determines width of edit box on the screen</param>
+		/// <returns>1 if player has finished editing by pressing enter, 0 in case of rejected input (player pressed escape).</returns>
+		public ushort F23_0000_0414_EditBox(short xPos, short yPos, ushort lengthMax)
 		{
-			this.oCPU.Log.EnterBlock($"F23_0000_0414({xPos}, {yPos}, {width})");
+			this.oCPU.Log.EnterBlock($"F23_0000_0414_EditBox({xPos}, {yPos}, {lengthMax})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -348,10 +347,10 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 
 			// Instruction address 0x0000:0x0434, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos, yPos, (7 * width), 11, 15);
+			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos, yPos, (7 * lengthMax), 11, 15);
 
 			// Instruction address 0x0000:0x0456, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(xPos, yPos - 1, width * 8 + 8, 13, 0);
+			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(xPos, yPos - 1, lengthMax * 8 + 8, 13, 0);
 
 			this.oParent.Var_aa_Rectangle.BackColor = 0xf;
 
@@ -370,7 +369,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44))));
 
 		L048e:
-			this.oCPU.AX.Word = width;
+			this.oCPU.AX.Word = lengthMax;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)), this.oCPU.AX.Word);
 			if (this.oCPU.Flags.L) goto L0483;
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
@@ -382,7 +381,7 @@ namespace OpenCiv1
 			goto L0525;
 
 		L04b2:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.NE) goto L052e;
 
 			// Instruction address 0x0000:0x04d6, size: 5
@@ -390,6 +389,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x68d0),	yPos + 1,
 				this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x68ce), 10, 15, 11);
 
+			// Text cursor blink time
 			// Instruction address 0x0000:0x04e2, size: 5
 			this.oParent.Segment_1000.F0_1182_0134_WaitTimer(10);
 
@@ -409,7 +409,7 @@ namespace OpenCiv1
 
 		L0520:
 			// Instruction address 0x0000:0x0520, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223();
+			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
 		L0525:
 			// Instruction address 0x0000:0x0525, size: 5
@@ -419,7 +419,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L04b2;
 
 		L052e:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.E) goto L053c;
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48), 0xd);
 			goto L0544;
@@ -445,7 +445,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0565;
 
 		L055b:
-			this.oCPU.AX.Word = width;
+			this.oCPU.AX.Word = lengthMax;
 			this.oCPU.AX.Word = this.oCPU.DEC_UInt16(this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44), this.oCPU.AX.Word);
 			goto L069d;
@@ -467,7 +467,7 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48)), 0xcd);
 			if (this.oCPU.Flags.NE) goto L0599;
 
-			this.oCPU.AX.Word = width;
+			this.oCPU.AX.Word = lengthMax;
 			this.oCPU.AX.Word = this.oCPU.DEC_UInt16(this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x68cc));
 			if (this.oCPU.Flags.LE) goto L0599;
@@ -489,7 +489,7 @@ namespace OpenCiv1
 
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x68cc);
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba06), 0x20);
-			this.oCPU.BX.Word = width;
+			this.oCPU.BX.Word = lengthMax;
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba06), 0x0);
 
 		L05d7:
@@ -501,7 +501,7 @@ namespace OpenCiv1
 
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x68cc);
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba06), 0x20);
-			this.oCPU.BX.Word = width;
+			this.oCPU.BX.Word = lengthMax;
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba05), 0x20);
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba06), 0x0);
 
@@ -514,7 +514,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0625, size: 5
 			this.oParent.MSCAPI.strcpy((ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x68cc) + 0xba05), (ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x68cc) + 0xba06));
 
-			this.oCPU.BX.Word = width;
+			this.oCPU.BX.Word = lengthMax;
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba05), 0x20);
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba06), 0x0);
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x68cc, this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x68cc)));
@@ -535,7 +535,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44))));
 
 		L0663:
-			this.oCPU.AX.Word = width;
+			this.oCPU.AX.Word = lengthMax;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)), this.oCPU.AX.Word);
 			if (this.oCPU.Flags.L) goto L0658;
 
@@ -543,7 +543,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x68cc);
 			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48));
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xba06), this.oCPU.AX.Low);
-			this.oCPU.AX.Word = width;
+			this.oCPU.AX.Word = lengthMax;
 			this.oCPU.AX.Word = this.oCPU.DEC_UInt16(this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, this.oCPU.BX.Word);
 			if (this.oCPU.Flags.LE) goto L0682;
@@ -552,7 +552,7 @@ namespace OpenCiv1
 		L0682:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42), 0x0);
 
-			F23_0000_06c1(xPos, yPos, width);
+			F23_0000_06c1(xPos, yPos, lengthMax);
 			
 			goto L0525;
 
@@ -578,7 +578,7 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F23_0000_0414");
+			this.oCPU.Log.ExitBlock("F23_0000_0414_EditBox");
 
 			return this.oCPU.AX.Word;
 		}
