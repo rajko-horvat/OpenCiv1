@@ -32,10 +32,10 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 
 			// Instruction address 0x0000:0x000e, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1601(xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_1601(xPos, yPos);
 
 			// Instruction address 0x0000:0x001c, size: 5
-			this.oParent.Segment_2aea.F0_2aea_11d4(xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_11d4(xPos, yPos);
 			
 			this.oCPU.SI.Word = (ushort)playerID;
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
@@ -2037,7 +2037,7 @@ namespace OpenCiv1
 				goto L170d;
 
 			// Instruction address 0x0000:0x1705, size: 5
-			this.oParent.Segment_2aea.F0_2aea_0008(oParent.CivState.HumanPlayerID, xPos - 8, yPos - 2);
+			this.oParent.MapManagement.F0_2aea_0008(oParent.CivState.HumanPlayerID, xPos - 8, yPos - 2);
 
 		L170d:
 			// Instruction address 0x0000:0x1715, size: 5

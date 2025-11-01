@@ -142,7 +142,7 @@ namespace OpenCiv1
 				else
 				{
 					// Instruction address 0x2e31:0x02c8, size: 5
-					this.oParent.Segment_2aea.F0_2aea_1585(
+					this.oParent.MapManagement.F0_2aea_1585(
 						this.oParent.CivState.Players[playerID].Units[unitID].Position.X, this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
 
 					this.oCPU.AX.Word = this.oCPU.AND_UInt16(this.oCPU.AX.Word, 0x8);
@@ -222,14 +222,14 @@ namespace OpenCiv1
 
 				L03b1:
 					// Instruction address 0x2e31:0x03b7, size: 5
-					this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(
+					this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
 					this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a), this.oCPU.AX.Word);
 
 					// Instruction address 0x2e31:0x03c8, size: 5
-					this.oParent.Segment_2aea.F0_2aea_14e0(
+					this.oParent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -278,7 +278,7 @@ namespace OpenCiv1
 
 				L0455:
 					// Instruction address 0x2e31:0x045b, size: 5
-					this.oParent.Segment_2aea.F0_2aea_1585(
+					this.oParent.MapManagement.F0_2aea_1585(
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -288,7 +288,7 @@ namespace OpenCiv1
 
 				L046a:
 					// Instruction address 0x2e31:0x0470, size: 5
-					this.oParent.Segment_2aea.F0_2aea_1369_MapGetCityOwner(
+					this.oParent.MapManagement.F0_2aea_1369_GetCityOwner(
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -301,7 +301,7 @@ namespace OpenCiv1
 					if (this.oCPU.Flags.NE) goto L049c;
 
 					// Instruction address 0x2e31:0x048c, size: 5
-					this.oParent.Segment_2aea.F0_2aea_195d(
+					this.oParent.MapManagement.F0_2aea_195d(
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -314,7 +314,7 @@ namespace OpenCiv1
 					if (this.oCPU.Flags.E) goto L04b4;
 
 					// Instruction address 0x2e31:0x04a8, size: 5
-					this.oParent.Segment_2aea.F0_2aea_1585(
+					this.oParent.MapManagement.F0_2aea_1585(
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -773,7 +773,7 @@ namespace OpenCiv1
 					this.Var_6592_YPos = (short)(((this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a)) + direction.Y) * 4) + 1);
 
 					// Instruction address 0x2e31:0x09ba, size: 5
-					this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(this.Var_6590_XPos, this.Var_6592_YPos);
+					this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(this.Var_6590_XPos, this.Var_6592_YPos);
 
 					this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
 					if (this.oCPU.Flags.NE) goto L09cc;
@@ -790,7 +790,7 @@ namespace OpenCiv1
 					this.Var_6590_XPos++;
 
 					// Instruction address 0x2e31:0x09df, size: 5
-					this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(this.Var_6590_XPos, this.Var_6592_YPos);
+					this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(this.Var_6590_XPos, this.Var_6592_YPos);
 
 					this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
 					if (this.oCPU.Flags.NE) goto L09f1;
@@ -992,7 +992,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), this.oCPU.AX.Word);
 
 			// Instruction address 0x2e31:0x0b69, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(
+			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
 
@@ -1009,7 +1009,7 @@ namespace OpenCiv1
 				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))));
 
 			// Instruction address 0x2e31:0x0b88, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(
+			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
 
@@ -1029,7 +1029,7 @@ namespace OpenCiv1
 				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))));
 
 			// Instruction address 0x2e31:0x0bad, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(
+			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
 
@@ -1049,7 +1049,7 @@ namespace OpenCiv1
 				this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))));
 
 			// Instruction address 0x2e31:0x0bd2, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(
+			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
 
@@ -1258,7 +1258,7 @@ namespace OpenCiv1
 			F0_2e31_119b_AdjustXPosition(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)));
 
 			// Instruction address 0x2e31:0x0db6, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1570(
+			this.oParent.MapManagement.F0_2aea_1570(
 				(short)this.oCPU.AX.Word,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x36)));
 
@@ -1276,7 +1276,7 @@ namespace OpenCiv1
 
 		L0dd2:
 			// Instruction address 0x2e31:0x0dd8, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1585(
+			this.oParent.MapManagement.F0_2aea_1585(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)));
 
@@ -1322,7 +1322,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L0de7;
 
 			// Instruction address 0x2e31:0x0e45, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1326_CheckMapBounds(
+			this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)));
 
@@ -1330,7 +1330,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0de7;
 
 			// Instruction address 0x2e31:0x0e57, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(
+			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)));
 
@@ -1348,7 +1348,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0e8e;
 
 			// Instruction address 0x2e31:0x0e7c, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1570(
+			this.oParent.MapManagement.F0_2aea_1570(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)));
 
@@ -1473,7 +1473,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L0f26;
 
 			// Instruction address 0x2e31:0x0f95, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a_GetTerrainID(
+			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)));
 
@@ -1481,7 +1481,7 @@ namespace OpenCiv1
 				goto L0fec;
 
 			// Instruction address 0x2e31:0x0fdd, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1585(
+			this.oParent.MapManagement.F0_2aea_1585(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)));
 
@@ -1513,7 +1513,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16), this.oCPU.AX.Word);
 
 			// Instruction address 0x2e31:0x1025, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1458(
+			this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)));
 
@@ -1551,7 +1551,7 @@ namespace OpenCiv1
 
 		L1079:
 			// Instruction address 0x2e31:0x107f, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1458(
+			this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)));
 
