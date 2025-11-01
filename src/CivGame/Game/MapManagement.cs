@@ -1833,7 +1833,9 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock($"F0_2aea_134a_GetTerrainID({xPos}, {yPos})");
 			// function body
 			// Instruction address 0x2aea:0x1357, size: 5
-			return this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(0x2ba6 + (this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos) * 2)));
+			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(0x2ba6 + (this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos) * 2)));
+
+			return this.oCPU.AX.Word;
 		}
 
 		/// <summary>
