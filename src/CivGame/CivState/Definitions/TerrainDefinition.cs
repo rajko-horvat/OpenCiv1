@@ -8,7 +8,7 @@ namespace OpenCiv1
 {
 	public class TerrainDefinition
 	{
-		int ID;
+		readonly TerrainTypeEnum TerrainType;
 
 		// Total size: 19 bytes
 		public string Name; // (12 bytes)
@@ -20,9 +20,10 @@ namespace OpenCiv1
 		public sbyte Unknown1;
 		public sbyte Unknown2;
 
-		public TerrainDefinition(int id, string name, sbyte movementCost, sbyte defenseBonus, sbyte food, sbyte production, sbyte trade, sbyte unknown1, sbyte unknown2)
+		public TerrainDefinition(TerrainTypeEnum terrainType, string name, sbyte movementCost, sbyte defenseBonus, 
+			sbyte food, sbyte production, sbyte trade, sbyte unknown1, sbyte unknown2)
 		{
-			this.ID = id;
+			this.TerrainType = terrainType;
 			this.Name = name;
 			this.MovementCost = movementCost;
 			this.DefenseBonus = defenseBonus;
