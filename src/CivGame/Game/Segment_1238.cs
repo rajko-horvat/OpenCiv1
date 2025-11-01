@@ -339,7 +339,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x034f, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f(0x1c2a);
 
-			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
+			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DomesticAdvisor;
 
 			// Instruction address 0x1238:0x0367, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -403,8 +403,7 @@ namespace OpenCiv1
 			goto L055e;
 			
 		L0416:
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x2);
-			if (this.oCPU.Flags.E) goto L0439;
+			if (!this.oParent.CivState.GameSettingFlags.AutoSave) goto L0439;
 
 			this.oParent.GameLoadAndSave.F11_0000_036a((ushort)((((this.oParent.CivState.TurnCount / 50) - 1) % 6) + 4));
 
@@ -575,8 +574,9 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L05f0;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 0x0);
 			if (this.oCPU.Flags.E) goto L066e;
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x80);
-			if (this.oCPU.Flags.E) goto L066e;
+
+			if (!this.oParent.CivState.GameSettingFlags.Palace) goto L066e;
+
 			this.oCPU.TEST_UInt16((ushort)this.oParent.CivState.SpaceshipFlags, 0x100);
 			if (this.oCPU.Flags.NE) goto L066e;
 
@@ -883,7 +883,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), this.oCPU.AX.Word);
 
 			// Instruction address 0x1238:0x09dd, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a(
+			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -891,7 +891,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L09b8;
 
 			// Instruction address 0x1238:0x09f0, size: 5
-			this.oParent.Segment_2aea.F0_2aea_14e0(
+			this.oParent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -899,7 +899,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L09b8;
 
 			// Instruction address 0x1238:0x0a01, size: 5
-			this.oParent.Segment_2aea.F0_2aea_195d(
+			this.oParent.MapManagement.F0_2aea_195d(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -1046,7 +1046,7 @@ namespace OpenCiv1
 
 		L0b92:
 			// Instruction address 0x1238:0x0b98, size: 5
-			this.oParent.Segment_2aea.F0_2aea_134a(
+			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -1056,7 +1056,7 @@ namespace OpenCiv1
 
 		L0ba8:
 			// Instruction address 0x1238:0x0bae, size: 5
-			this.oParent.Segment_2aea.F0_2aea_14e0(
+			this.oParent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -1070,14 +1070,14 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1238:0x0bd0, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942(
 				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14))].Position.X,
 				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14))].Position.Y);
 
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1238:0x0be0, size: 5
-			this.oParent.Segment_2aea.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -1109,7 +1109,7 @@ namespace OpenCiv1
 
 		L0c33:
 			// Instruction address 0x1238:0x0c4b, size: 5
-			this.oParent.Segment_2aea.F0_2aea_0008(this.oParent.CivState.HumanPlayerID,
+			this.oParent.MapManagement.F0_2aea_0008(this.oParent.CivState.HumanPlayerID,
 				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14))].Position.X - 8,
 				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14))].Position.Y - 6);
 
@@ -1144,7 +1144,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x0ca4, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "!\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.TravelersReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.TravelersReport;
 
 			// Instruction address 0x1238:0x0cbf, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 32);
@@ -1201,7 +1201,7 @@ namespace OpenCiv1
 				goto L0d72;
 
 			// Instruction address 0x1238:0x0d6a, size: 5
-			this.oParent.Segment_2aea.F0_2aea_11d4(
+			this.oParent.MapManagement.F0_2aea_11d4(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -1742,7 +1742,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x147d, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "00,000 citizens.\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = MsgBoxStyleEnum.DomesticAdvisor;
+			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DomesticAdvisor;
 
 			// Instruction address 0x1238:0x1498, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -2107,11 +2107,9 @@ namespace OpenCiv1
 			goto L18a0;
 
 		L17ef:
-			this.oCPU.AX.Word = 0x2;
+			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.TravelersReport;
 
 		L17f2:
-			this.oParent.Var_2f9e_MessageBoxStyle = (MsgBoxStyleEnum)this.oCPU.AX.Word;
-
 			// Instruction address 0x1238:0x1802, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
@@ -2380,7 +2378,8 @@ namespace OpenCiv1
 			if ((this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Diplomacy[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))] & 0x40) == 0)
 				goto L17ef;
 
-			this.oCPU.AX.Word = 0x5;
+			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.ForeignMinister;
+
 			goto L17f2;
 
 		L1b3e:
@@ -2413,7 +2412,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
 			// Instruction address 0x1238:0x1b7f, size: 5
-			this.oParent.Segment_2aea.F0_2aea_0008(this.oParent.CivState.HumanPlayerID,
+			this.oParent.MapManagement.F0_2aea_0008(this.oParent.CivState.HumanPlayerID,
 				this.oParent.Var_d4cc_XPos,
 				this.oParent.Var_d75e_YPos);
 

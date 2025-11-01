@@ -221,11 +221,9 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0261, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.HumanPlayerID;
-			this.oCPU.CMP_UInt16((ushort)playerID, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L0275;
-			this.oCPU.TEST_UInt8((byte)(this.oParent.CivState.GameSettingFlags.Value & 0xff), 0x20);
-			if (this.oCPU.Flags.E) goto L027a;
+			if (playerID == this.oParent.CivState.HumanPlayerID) goto L0275;
+
+			if (!this.oParent.CivState.GameSettingFlags.EnemyMoves) goto L027a;
 
 		L0275:
 			this.oCPU.AX.Word = 0x1;

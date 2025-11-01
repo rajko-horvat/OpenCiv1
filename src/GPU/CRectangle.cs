@@ -40,7 +40,7 @@ namespace OpenCiv1.GPU
 		/// <returns>A string that represents this CRectangle</returns>
 		public override string ToString()
 		{
-			return $"{{ID={this.ScreenID}, Left={this.Left}, Top={this.Top}, Width={this.Width}, Height={this.Height}}}";
+			return $"{{Screen={this.ScreenID}, Left={this.Left}, Top={this.Top}, Width={this.Width}, Height={this.Height}}}";
 		}
 	}
 }

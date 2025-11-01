@@ -24,10 +24,8 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_2c84_0000_ShowTopMenu({playerID}, {unitID}, {menuIndex})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0xffff);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x654a, 0x0);
+			this.oCPU.WriteInt16(this.oCPU.DS.Word, 0xd4ca, -1);
+			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x654a, 0);
 
 			if (menuIndex == -1)
 			{
@@ -74,29 +72,20 @@ namespace OpenCiv1
 			// Instruction address 0x2c84:0x0082, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x654a);
-			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x1);
-			if (this.oCPU.Flags.NE) goto L0099;
-			this.oCPU.DX.Word = this.oCPU.OR_UInt16(this.oCPU.DX.Word, this.oCPU.DX.Word);
-			if (this.oCPU.Flags.NE) goto L0099;
-
-			// Instruction address 0x2c84:0x0094, size: 5
-			this.oParent.Segment_1238.F0_1238_1b44();
-
-		L0099:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x654a);
-			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-			this.oCPU.DX.Word = this.oCPU.OR_UInt16(this.oCPU.DX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L00a6;
-
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
-
-		L00a6:
+			if (this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x654a) == 1)
+			{
+				// Instruction address 0x2c84:0x0094, size: 5
+				this.oParent.Segment_1238.F0_1238_1b44();
+			}
+		
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x654a) == 0)
+			{
+				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+			}
+		
 			// Instruction address 0x2c84:0x00a6, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2c84_0000_ShowTopMenu");
 		}
@@ -130,7 +119,7 @@ namespace OpenCiv1
 			// Instruction address 0x2c84:0x00ff, size: 5
 			this.oParent.Segment_1403.F0_1403_4545();
 
-			switch(selectedOption)
+			switch (selectedOption)
 			{
 				case 0: // Tax Rate
 					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0x3d);
@@ -149,14 +138,14 @@ namespace OpenCiv1
 						// Instruction address 0x2c84:0x0143, size: 5
 						this.oParent.MSCAPI.strcpy(0xba06, "Options:\n Instant Advice\n AutoSave\n End of Turn\n Animations\n Sound\n Enemy Moves\n Civilopedia Text\n Palace\n");
 
-						ushort index;
+						short index;
 						do
 						{
 							// Write current flags to show as checkmarks in options submenu
 							this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd7f2, (ushort)this.oParent.CivState.GameSettingFlags.Value);
-							// Process options submenu, return selected option index or 0xffff if selection was rejected
-							index = this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 24, 16, 0);
-							if (index == 0xffff)
+							// Process options submenu, return selected option index or -1 if selection was rejected
+							index = (short)this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 24, 16, 0);
+							if (index == -1)
 							{
 								continue;
 							}
@@ -166,19 +155,23 @@ namespace OpenCiv1
 								oParent.CivState.GameSettingFlags.Value ^= (short)(1 << index);
 							}
 
-							this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x2f9a, index);
+							if (index != -1)
+							{
+								this.oCPU.WriteInt16(this.oCPU.DS.Word, 0x2f9a, index);
+							}
+						}
+						while (index != -1 || this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2f9c) != 0);
 
-						} while (index != 0xffff || this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x2f9c) != 0);
 
-						break;
 					}
+					break;
 
 				case 4: // Save Game
 					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0x53);
 					break;
 
 				case 5: // Revolution
-					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0xfffe);
+					this.oCPU.WriteInt16(this.oCPU.DS.Word, 0xd4ca, -2);
 					break;
 
 				case 6: // Empty option line
@@ -227,10 +220,10 @@ namespace OpenCiv1
 			ushort yPos = (ushort)unit.Position.Y;
 
 			// Instruction address 0x2c84:0x0221, size: 5
-			TerrainImprovements improvements = this.oParent.Segment_2aea.F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
+			TerrainImprovements improvements = this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
 
 			// Instruction address 0x2c84:0x0232, size: 5
-			ushort terrainID = this.oParent.Segment_2aea.F0_2aea_134a(xPos, yPos);
+			ushort terrainID = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
 
 			int ordersTotal = 0;
 			char[] orders = new char[15];
