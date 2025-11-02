@@ -220,7 +220,7 @@ namespace OpenCiv1
 			ushort yPos = (ushort)unit.Position.Y;
 
 			// Instruction address 0x2c84:0x0221, size: 5
-			TerrainImprovements improvements = this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
+			TerrainImprovementFlagsEnum improvements = this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
 
 			// Instruction address 0x2c84:0x0232, size: 5
 			ushort terrainID = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
@@ -237,7 +237,7 @@ namespace OpenCiv1
 
 			if (unit.TypeID == (short)UnitEnum.Settlers)
 			{
-				if (improvements.HasFlag(TerrainImprovements.City))
+				if (improvements.HasFlag(TerrainImprovementFlagsEnum.City))
 				{
 					// Instruction address 0x2c84:0x027a, size: 5
 					this.oParent.MSCAPI.strcat(0xba06, " Add to City \x008fb\n");
@@ -250,7 +250,7 @@ namespace OpenCiv1
 
 				orders[ordersTotal++] = 'b';
 
-				if (!improvements.HasFlag(TerrainImprovements.Road))
+				if (!improvements.HasFlag(TerrainImprovementFlagsEnum.Road))
 				{
 					// Instruction address 0x2c84:0x029a, size: 5
 					this.oParent.MSCAPI.strcat(0xba06, " Build Road \x008fr\n");
@@ -259,7 +259,7 @@ namespace OpenCiv1
 				else
 				{
 					// Instruction address 0x2c84:0x02bb, size: 5
-					if (!improvements.HasFlag(TerrainImprovements.RailRoad) && this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Railroad) != 0)
+					if (!improvements.HasFlag(TerrainImprovementFlagsEnum.RailRoad) && this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Railroad) != 0)
 					{
 						// Instruction address 0x2c84:0x02cf, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " Build RailRoad \x008fr\n");
@@ -267,7 +267,7 @@ namespace OpenCiv1
 					}
 				}
 
-				if (!improvements.HasFlag(TerrainImprovements.Irrigation))
+				if (!improvements.HasFlag(TerrainImprovementFlagsEnum.Irrigation))
 				{
 					if (this.oParent.CivState.TerrainMultipliers[terrainID].Multi1 == -2)
 					{
@@ -303,7 +303,7 @@ namespace OpenCiv1
 					}
 				}
 
-				if (!improvements.HasFlag(TerrainImprovements.Mines))
+				if (!improvements.HasFlag(TerrainImprovementFlagsEnum.Mines))
 				{
 					if (this.oParent.CivState.TerrainMultipliers[terrainID].Multi3 <= -2)
 					{
@@ -331,7 +331,7 @@ namespace OpenCiv1
 					}
 				}
 
-				if (improvements.HasFlag(TerrainImprovements.Pollution))
+				if (improvements.HasFlag(TerrainImprovementFlagsEnum.Pollution))
 				{
 					// Instruction address 0x2c84:0x041b, size: 5
 					this.oParent.MSCAPI.strcat(0xba06, " Clean up Pollution \x008fp\n");
@@ -372,14 +372,14 @@ namespace OpenCiv1
 			orders[ordersTotal++] = 's';
 			orders[ordersTotal++] = 'g';
 
-			if (((ushort)improvements & (ushort)TerrainImprovements.PillageMask) != 0 && unit.TypeID < (short)UnitEnum.Diplomat && unit.TypeID != (short)UnitEnum.Fighter)
+			if (((ushort)improvements & (ushort)TerrainImprovementFlagsEnum.PillageMask) != 0 && unit.TypeID < (short)UnitEnum.Diplomat && unit.TypeID != (short)UnitEnum.Fighter)
 			{
 				// Instruction address 0x2c84:0x0528, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " Pillage \x008fP\n");
 				orders[ordersTotal++] = 'P';
 			}
 
-			if (improvements.HasFlag(TerrainImprovements.City))
+			if (improvements.HasFlag(TerrainImprovementFlagsEnum.City))
 			{
 				// Instruction address 0x2c84:0x0548, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " Home City \x008fh\n");

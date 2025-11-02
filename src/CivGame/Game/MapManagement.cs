@@ -2057,9 +2057,9 @@ namespace OpenCiv1
 		{
 			// function body
 			// Instruction address 0x2aea:0x157a, size: 3
-			TerrainImprovements improvements = F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
+			TerrainImprovementFlagsEnum improvements = F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
 			
-			this.oCPU.AX.Word = (ushort)(improvements.HasFlag(TerrainImprovements.Road) ? 1 : 0);
+			this.oCPU.AX.Word = (ushort)(improvements.HasFlag(TerrainImprovementFlagsEnum.Road) ? 1 : 0);
 
 			return this.oCPU.AX.Word;
 		}
@@ -2070,7 +2070,7 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <returns>Terrain improvements flags</returns>
-		public TerrainImprovements F0_2aea_1585_GetTerrainImprovements(int xPos, int yPos)
+		public TerrainImprovementFlagsEnum F0_2aea_1585_GetTerrainImprovements(int xPos, int yPos)
 		{
 			// function body
 			// Instruction address 0x2aea:0x1597, size: 5
@@ -2082,7 +2082,7 @@ namespace OpenCiv1
 			// Preserve compatibility
 			this.oCPU.AX.Word = (ushort)((improvements2 << 4) | improvements1);
 
-			return (TerrainImprovements)this.oCPU.AX.Word;
+			return (TerrainImprovementFlagsEnum)this.oCPU.AX.Word;
 		}
 
 		/// <summary>
@@ -2147,12 +2147,12 @@ namespace OpenCiv1
 		/// <param name="improvements"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		public void F0_2aea_1653_SetTerrainImprovements(TerrainImprovements improvements, int xPos, int yPos)
+		public void F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum improvements, int xPos, int yPos)
 		{
 			this.oCPU.Log.EnterBlock($"F0_2aea_1653({improvements}, {xPos}, {yPos})");
 
 			// function body
-			if (improvements == TerrainImprovements.None)
+			if (improvements == TerrainImprovementFlagsEnum.None)
 			{
 				// Instruction address 0x2aea:0x16b7, size: 3
 				this.oParent.Segment_1000.F0_1000_104f_SetPixel(2, xPos, yPos + 100, 0);
@@ -2160,7 +2160,7 @@ namespace OpenCiv1
 				// Instruction address 0x2aea:0x16cf, size: 3
 				this.oParent.Segment_1000.F0_1000_104f_SetPixel(2, xPos, yPos + 150, 0);
 			}
-			else if (improvements >= TerrainImprovements.RailRoad)
+			else if (improvements >= TerrainImprovementFlagsEnum.RailRoad)
 			{
 				// Instruction address 0x2aea:0x1691, size: 5
 				ushort current = this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 150);
@@ -2320,7 +2320,7 @@ namespace OpenCiv1
 			else
 			{
 				if (((xPos & 3) * 4 + (yPos & 3)) == ((((xPos / 4) * 13) + ((yPos / 4) * 11) + this.oParent.CivState.RandomSeed + 8) & 0x1f) &&
-					!F0_2aea_1585_GetTerrainImprovements(xPos, yPos).HasFlag(TerrainImprovements.City))
+					!F0_2aea_1585_GetTerrainImprovements(xPos, yPos).HasFlag(TerrainImprovementFlagsEnum.City))
 				{
 					this.oCPU.AX.Word = 1;
 				}

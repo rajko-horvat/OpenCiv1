@@ -1556,7 +1556,7 @@ namespace OpenCiv1
 				goto L1b5e;
 
 			// Instruction address 0x1403:0x13bf, size: 5
-			this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovements.Fortress,
+			this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.Fortress,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 			
@@ -1683,7 +1683,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x1403:0x154b, size: 5
 			this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(
-				((this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x40)) & 8) != 0) ? TerrainImprovements.RailRoad : TerrainImprovements.Road,
+				((this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x40)) & 8) != 0) ? TerrainImprovementFlagsEnum.RailRoad : TerrainImprovementFlagsEnum.Road,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 			
@@ -1846,7 +1846,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 
 			// Instruction address 0x1403:0x1791, size: 5
-			this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovements.Irrigation,
+			this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.Irrigation,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 
@@ -1978,7 +1978,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 
 			// Instruction address 0x1403:0x198c, size: 5
-			this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovements.Mines,
+			this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.Mines,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 

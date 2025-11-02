@@ -147,7 +147,7 @@ namespace OpenCiv1
 			this.oParent.MapManagement.F0_2aea_16ee(0x24, xPos, yPos);
 
 			// Instruction address 0x0000:0x0193, size: 5
-			this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovements.City | TerrainImprovements.Road, xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.City | TerrainImprovementFlagsEnum.Road, xPos, yPos);
 
 			// Instruction address 0x0000:0x01a1, size: 5
 			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
@@ -155,7 +155,7 @@ namespace OpenCiv1
 			if (this.oParent.CivState.TerrainMultipliers[this.oCPU.AX.Word].Multi1 < -1)
 			{
 				// Instruction address 0x0000:0x01c1, size: 5
-				this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovements.Irrigation, xPos, yPos);
+				this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.Irrigation, xPos, yPos);
 			}
 		
 			this.oCPU.AX.Word = 0x1c;

@@ -1,7 +1,7 @@
 ﻿namespace OpenCiv1
 {
 	[Flags]
-	public enum TerrainImprovements
+	public enum TerrainImprovementFlagsEnum
 	{
 		None = 0x0,
 		City = 0x1,
