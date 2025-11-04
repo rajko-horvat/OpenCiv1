@@ -1162,9 +1162,9 @@ namespace OpenCiv1
 		/// <param name="playerID"></param>
 		/// <param name="flag"></param>
 		/// <returns></returns>
-		public ushort F20_0000_0ca9_CivilizationScore(short playerID, bool flag)
+		public ushort F20_0000_0ca9_ShowCivilizationScorePopup(short playerID, bool flag)
 		{
-			this.oCPU.Log.EnterBlock($"F20_0000_0ca9_CivilizationScore({playerID}, {flag})");
+			this.oCPU.Log.EnterBlock($"F20_0000_0ca9_ShowCivilizationScorePopup({playerID}, {flag})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -1678,7 +1678,7 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F20_0000_0ca9_CivilizationScore");
+			this.oCPU.Log.ExitBlock("F20_0000_0ca9_ShowCivilizationScorePopup");
 
 			return this.oCPU.AX.Word;
 		}

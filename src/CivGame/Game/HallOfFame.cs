@@ -802,9 +802,9 @@ namespace OpenCiv1
 		/// <summary>
 		/// Shows Top Five Cities in the World window
 		/// </summary>
-		public void F3_0000_09ac_TopFiveCities()
+		public void F3_0000_09ac_ShowTopFiveCitiesPopup()
 		{
-			this.oCPU.Log.EnterBlock("F3_0000_09ac_TopFiveCities()");
+			this.oCPU.Log.EnterBlock("F3_0000_09ac_ShowTopFiveCitiesPopup()");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -1034,7 +1034,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F3_0000_09ac_TopFiveCities");
+			this.oCPU.Log.ExitBlock("F3_0000_09ac_ShowTopFiveCitiesPopup");
 		}
 	}
 }

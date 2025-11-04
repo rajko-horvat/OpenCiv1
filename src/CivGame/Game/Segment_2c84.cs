@@ -60,7 +60,7 @@ namespace OpenCiv1
 
 				case 3:
 					// Instruction address 0x2c84:0x0079, size: 3
-					F0_2c84_06e4_WorldMenu();
+					F0_2c84_06e4_ShowWorldMenu();
 					break;
 
 				case 4:
@@ -678,12 +678,12 @@ namespace OpenCiv1
 		/// <summary>
 		/// Shows world menu
 		/// </summary>
-		private void F0_2c84_06e4_WorldMenu()
+		private void F0_2c84_06e4_ShowWorldMenu()
 		{
-			this.oCPU.Log.EnterBlock("F0_2c84_06e4_WorldMenu()");
+			this.oCPU.Log.EnterBlock("F0_2c84_06e4_ShowWorldMenu()");
 
 			// function body
-			if (((ushort)this.oParent.CivState.SpaceshipFlags & 0xfe00) == 0)
+			if ((this.oParent.CivState.SpaceshipFlags & 0xfe00) == 0)
 			{
 				// Disable 'SpaceShips' option
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, 0x20);
@@ -711,23 +711,23 @@ namespace OpenCiv1
 			switch (selectedOption)
 			{
 				case 0: // Wonders of the World
-					this.oParent.WorldMap.F12_0000_080d_WondersOfTheWorld();
+					this.oParent.WorldMap.F12_0000_080d_ShowWondersOfTheWorldPopup();
 					break;
 
 				case 1: // Top 5 Cities
-					this.oParent.HallOfFame.F3_0000_09ac_TopFiveCities();
+					this.oParent.HallOfFame.F3_0000_09ac_ShowTopFiveCitiesPopup();
 					break;
 
 				case 2: // Civilization Score
-					this.oParent.Overlay_20.F20_0000_0ca9_CivilizationScore(this.oParent.CivState.HumanPlayerID, true);
+					this.oParent.Overlay_20.F20_0000_0ca9_ShowCivilizationScorePopup(this.oParent.CivState.HumanPlayerID, true);
 					break;
 
 				case 3: // World Map
-					this.oParent.WorldMap.F12_0000_0000_WorldMap(1);
+					this.oParent.WorldMap.F12_0000_0000_ShowWorldMapPopup(1);
 					break;
 
 				case 4: // Demographics
-					this.oParent.WorldMap.F12_0000_0d6d_Demographics(this.oParent.CivState.HumanPlayerID);
+					this.oParent.WorldMap.F12_0000_0d6d_ShowsDemographicsPopup(this.oParent.CivState.HumanPlayerID);
 					break;
 
 				case 5: // SpaceShips
@@ -736,7 +736,7 @@ namespace OpenCiv1
 			}
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_2c84_06e4_WorldMenu");
+			this.oCPU.Log.ExitBlock("F0_2c84_06e4_ShowWorldMenu");
 		}
 
 		/// <summary>

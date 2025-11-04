@@ -18,9 +18,9 @@ namespace OpenCiv1
 		/// Shows World Map window
 		/// </summary>
 		/// <param name="flag"></param>
-		public void F12_0000_0000_WorldMap(ushort flag)
+		public void F12_0000_0000_ShowWorldMapPopup(ushort flag)
 		{
-			this.oCPU.Log.EnterBlock($"F12_0000_0000_WorldMap({flag})");
+			this.oCPU.Log.EnterBlock($"F12_0000_0000_ShowWorldMapPopup({flag})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -378,7 +378,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F12_0000_0000_WorldMap");
+			this.oCPU.Log.ExitBlock("F12_0000_0000_ShowWorldMapPopup");
 		}
 
 		/// <summary>
@@ -775,9 +775,9 @@ namespace OpenCiv1
 		/// <summary>
 		/// Shows Wonders of the World window
 		/// </summary>
-		public void F12_0000_080d_WondersOfTheWorld()
+		public void F12_0000_080d_ShowWondersOfTheWorldPopup()
 		{
-			this.oCPU.Log.EnterBlock("F12_0000_080d_WondersOfTheWorld()");
+			this.oCPU.Log.EnterBlock("F12_0000_080d_ShowWondersOfTheWorldPopup()");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -929,7 +929,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F12_0000_080d_WondersOfTheWorld");
+			this.oCPU.Log.ExitBlock("F12_0000_080d_ShowWondersOfTheWorldPopup");
 		}
 
 		/// <summary>
@@ -1254,9 +1254,9 @@ namespace OpenCiv1
 		/// Shows Demographics window.
 		/// </summary>
 		/// <param name="playerID"></param>
-		public void F12_0000_0d6d_Demographics(short playerID)
+		public void F12_0000_0d6d_ShowsDemographicsPopup(short playerID)
 		{
-			this.oCPU.Log.EnterBlock($"F12_0000_0d6d_Demographics({playerID})");
+			this.oCPU.Log.EnterBlock($"F12_0000_0d6d_ShowsDemographicsPopup({playerID})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -2114,7 +2114,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F12_0000_0d6d_Demographics");
+			this.oCPU.Log.ExitBlock("F12_0000_0d6d_ShowsDemographicsPopup");
 		}
 
 		/// <summary>

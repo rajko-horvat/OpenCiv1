@@ -4038,7 +4038,7 @@ namespace OpenCiv1
 			goto L343f;
 
 		L343a:
-			this.oParent.WorldMap.F12_0000_080d_WondersOfTheWorld();
+			this.oParent.WorldMap.F12_0000_080d_ShowWondersOfTheWorldPopup();
 
 		L343f:
 			goto L3c40;
@@ -4056,7 +4056,7 @@ namespace OpenCiv1
 			goto L345e;
 
 		L3459:
-			this.oParent.HallOfFame.F3_0000_09ac_TopFiveCities();
+			this.oParent.HallOfFame.F3_0000_09ac_ShowTopFiveCitiesPopup();
 
 		L345e:
 			goto L3c40;
@@ -4072,12 +4072,12 @@ namespace OpenCiv1
 			goto L3c40;
 
 		L3473:
-			this.oParent.Overlay_20.F20_0000_0ca9_CivilizationScore(this.oParent.CivState.HumanPlayerID, true);
+			this.oParent.Overlay_20.F20_0000_0ca9_ShowCivilizationScorePopup(this.oParent.CivState.HumanPlayerID, true);
 
 			goto L3c40;
 
 		L348a:
-			this.oParent.WorldMap.F12_0000_0000_WorldMap(1);
+			this.oParent.WorldMap.F12_0000_0000_ShowWorldMapPopup(1);
 
 			goto L3c40;
 

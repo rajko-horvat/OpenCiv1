@@ -585,7 +585,7 @@ namespace OpenCiv1
 
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oParent.Overlay_20.F20_0000_0ca9_CivilizationScore(this.oParent.CivState.HumanPlayerID, false);
+			this.oParent.Overlay_20.F20_0000_0ca9_ShowCivilizationScorePopup(this.oParent.CivState.HumanPlayerID, false);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, this.oCPU.SI.Word);
 			if (this.oCPU.Flags.L) goto L066e;
@@ -785,7 +785,7 @@ namespace OpenCiv1
 			if ((this.oParent.CivState.SpaceshipFlags & 0x100) == 0)
 			{
 				this.oParent.HallOfFame.F3_0000_065d((ushort)((this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceLevel >> 1) - 1),
-					this.oParent.Overlay_20.F20_0000_0ca9_CivilizationScore(this.oParent.CivState.HumanPlayerID, true));
+					this.oParent.Overlay_20.F20_0000_0ca9_ShowCivilizationScorePopup(this.oParent.CivState.HumanPlayerID, true));
 
 				this.oParent.HallOfFame.F3_0000_002b();
 
