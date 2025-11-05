@@ -7,6 +7,9 @@ namespace OpenCiv1
 		private CivGame oParent;
 		private VCPU oCPU;
 
+		// Local variables used exclusively inside this section
+		private short Var_654a = 0;
+
 		public Segment_2c84(CivGame parent)
 		{
 			this.oParent = parent;
@@ -25,9 +28,9 @@ namespace OpenCiv1
 
 			// function body
 			this.oCPU.WriteInt16(this.oCPU.DS.Word, 0xd4ca, -1);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x654a, 0);
+			this.Var_654a = 0;
 
-			if (menuIndex == -1)
+            if (menuIndex == -1)
 			{
 				// Instruction address 0x2c84:0x0026, size: 5
 				menuIndex = (short)this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange((short)this.oParent.Var_db3c_MouseXPos / 60, 0, 4);
@@ -72,13 +75,13 @@ namespace OpenCiv1
 			// Instruction address 0x2c84:0x0082, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			if (this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x654a) == 1)
+			if (this.Var_654a == 1)
 			{
 				// Instruction address 0x2c84:0x0094, size: 5
 				this.oParent.Segment_1238.F0_1238_1b44();
 			}
 		
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x654a) == 0)
+			if (this.Var_654a == 0)
 			{
 				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 			}
@@ -436,7 +439,7 @@ namespace OpenCiv1
 			// Instruction address 0x2c84:0x065c, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x654a, 0xffff);
+			Var_654a = -1;
 
 			switch (selectedOption)
 			{
@@ -548,10 +551,6 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_2c84_07af_CivilopediaMenu()");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x2);
-
 			// Instruction address 0x2c84:0x07bd, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, " Complete\n Civilization Advances\n City Improvements\n Military Units\n Terrain Types\n");
 
@@ -559,24 +558,17 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, " Miscellaneous\n");
 
 			// Instruction address 0x2c84:0x07e1, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 182, 8, 0);
+			short selectedOption = (short)this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 182, 8, 0);
+			if (selectedOption < 0)
+			{
+				this.Var_654a = 1;
+			}
+			else
+			{
+				this.oParent.Civilopedia.F8_0000_0000_ShowCivilopedia((short)(selectedOption - 1));
+				this.Var_654a = -1;
+			}
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
-			if (this.oCPU.Flags.E) goto L0806;
-
-			this.oCPU.AX.Word = this.oCPU.DEC_UInt16(this.oCPU.AX.Word);
-			this.oParent.Civilopedia.F8_0000_0000(this.oCPU.AX.Word);
-
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x654a, 0xffff);
-			goto L080c;
-
-		L0806:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x654a, 0x1);
-
-		L080c:
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2c84_07af_CivilopediaMenu");
 		}
