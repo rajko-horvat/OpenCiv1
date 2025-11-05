@@ -779,14 +779,14 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcat(0xba06, " Miscellaneous\n");
 
 			// Instruction address 0x2c84:0x07e1, size: 5
-			ushort selectedOption = this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 182, 8, 0);
-			if (selectedOption == 0xffff)
+			short selectedOption = (short)this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 182, 8, 0);
+			if (selectedOption < 0)
 			{
 				this.Var_654a = 1;
 			}
 			else
 			{
-				this.oParent.Civilopedia.F8_0000_0000_ShowCivilopedia((ushort)(selectedOption - 1));
+				this.oParent.Civilopedia.F8_0000_0000_ShowCivilopedia((short)(selectedOption - 1));
 				this.Var_654a = -1;
 			}
 
