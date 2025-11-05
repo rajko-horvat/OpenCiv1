@@ -238,7 +238,7 @@ namespace OpenCiv1
 			// All orders are enabled by default
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, 0x0);
 
-			if (unit.TypeID == (short)UnitEnum.Settlers)
+			if (unit.TypeID == (short)UnitTypeEnum.Settlers)
 			{
 				if (improvements.HasFlag(TerrainImprovementFlagsEnum.City))
 				{
@@ -339,7 +339,7 @@ namespace OpenCiv1
 				}
 			}
 
-			if (unit.TypeID == (short)UnitEnum.Settlers)
+			if (unit.TypeID == (short)UnitTypeEnum.Settlers)
 			{
 				// Instruction address 0x2c84:0x044c, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " Build Fortress \x008ff\n");
@@ -369,7 +369,7 @@ namespace OpenCiv1
 			orders[orderCount++] = 's';
 			orders[orderCount++] = 'g';
 
-			if (((ushort)improvements & (ushort)TerrainImprovementFlagsEnum.PillageMask) != 0 && unit.TypeID < (short)UnitEnum.Diplomat && unit.TypeID != (short)UnitEnum.Fighter)
+			if (((ushort)improvements & (ushort)TerrainImprovementFlagsEnum.PillageMask) != 0 && unit.TypeID < (short)UnitTypeEnum.Diplomat && unit.TypeID != (short)UnitTypeEnum.Fighter)
 			{
 				// Instruction address 0x2c84:0x0528, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " Pillage \x008fP\n");
@@ -384,7 +384,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x2c84:0x05a4, size: 5
-			if ((this.oParent.CivState.UnitDefinitions[unit.TypeID].UnitCategory == 5 || unit.TypeID == (short)UnitEnum.Carrier) && unit.NextUnitID != -1)
+			if ((this.oParent.CivState.UnitDefinitions[unit.TypeID].UnitCategory == 5 || unit.TypeID == (short)UnitTypeEnum.Carrier) && unit.NextUnitID != -1)
 			{
 				// Instruction address 0x2c84:0x05a4, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " Unload \x008fu\n");

@@ -239,7 +239,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x026a, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f((ushort)((playerID == this.oParent.CivState.HumanPlayerID) ? 0x4a18 : 0x4a20));
 
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.ForeignMinister;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ForeignMinister;
 
 			// Instruction address 0x0000:0x0281, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);

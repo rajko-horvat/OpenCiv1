@@ -1,6 +1,6 @@
 ﻿namespace OpenCiv1
 {
-	public enum CivMessageBoxStyleEnum
+	public enum ReportTypeEnum
 	{
 		/// <summary>
 		/// No title or image

@@ -339,7 +339,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x034f, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f(0x1c2a);
 
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DomesticAdvisor;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DomesticAdvisor;
 
 			// Instruction address 0x1238:0x0367, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -1144,7 +1144,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x0ca4, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "!\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.TravelersReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.TravelersReport;
 
 			// Instruction address 0x1238:0x0cbf, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 32);
@@ -1430,7 +1430,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.CivState.HumanPlayerID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ActiveUnits[(int)UnitEnum.Nuclear] != 0 ||
+			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ActiveUnits[(int)UnitTypeEnum.Nuclear] != 0 ||
 				oParent.CivState.TurnCount <= 200) goto L0fe4;
 
 			this.oParent.Var_8078 = 1;
@@ -1742,7 +1742,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x147d, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "00,000 citizens.\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DomesticAdvisor;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DomesticAdvisor;
 
 			// Instruction address 0x1238:0x1498, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -2107,7 +2107,7 @@ namespace OpenCiv1
 			goto L18a0;
 
 		L17ef:
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.TravelersReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.TravelersReport;
 
 		L17f2:
 			// Instruction address 0x1238:0x1802, size: 3
@@ -2378,7 +2378,7 @@ namespace OpenCiv1
 			if ((this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Diplomacy[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))] & 0x40) == 0)
 				goto L17ef;
 
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.ForeignMinister;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ForeignMinister;
 
 			goto L17f2;
 

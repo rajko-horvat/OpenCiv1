@@ -67,7 +67,7 @@ namespace OpenCiv1
 		/// <summary>
 		/// Allows to customize dialog shown by F0_1238_001e_ShowDialog().
 		/// </summary>
-		public CivMessageBoxStyleEnum Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.Default;
+		public ReportTypeEnum Var_2f9e_MessageBoxStyle = ReportTypeEnum.Default;
 
 		// 0x652e - after this offset the default values are set to 0
 		public int Var_6b64 = 0;

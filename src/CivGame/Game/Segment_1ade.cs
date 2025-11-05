@@ -1420,7 +1420,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.Players[playerID].UnitsInProduction[(int)UnitEnum.Caravan] > 0)
+			if (this.oParent.CivState.Players[playerID].UnitsInProduction[(int)UnitTypeEnum.Caravan] > 0)
 				goto L0ed5;
 
 			// Instruction address 0x1ade:0x0e04, size: 5
@@ -1666,7 +1666,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			
-			if (this.oParent.CivState.Players[playerID].ActiveUnits[(int)UnitEnum.Settlers] != 0x0)
+			if (this.oParent.CivState.Players[playerID].ActiveUnits[(int)UnitTypeEnum.Settlers] != 0x0)
 				goto L0f53;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x11a)), 0x1);
@@ -1686,10 +1686,10 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 			
-			if (this.oParent.CivState.Players[playerID].ActiveUnits[(int)UnitEnum.Nuclear] >= 4)
+			if (this.oParent.CivState.Players[playerID].ActiveUnits[(int)UnitTypeEnum.Nuclear] >= 4)
 				goto L0f53;
 
-			if (this.oParent.CivState.Players[playerID].UnitsInProduction[(int)UnitEnum.Nuclear] >= 2)
+			if (this.oParent.CivState.Players[playerID].UnitsInProduction[(int)UnitTypeEnum.Nuclear] >= 2)
 				goto L0f53;
 
 		L1009:
@@ -1707,7 +1707,7 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
 			//this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0xb3dc));
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ActiveUnits[(int)UnitEnum.Bomber];
+			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ActiveUnits[(int)UnitTypeEnum.Bomber];
 
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
@@ -2790,7 +2790,7 @@ namespace OpenCiv1
 			goto L1b8f;
 
 		L1c52:
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.ScienceAdvisor;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ScienceAdvisor;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)), 0x0);
 			if (this.oCPU.Flags.E) goto L1cca;
@@ -3042,12 +3042,12 @@ namespace OpenCiv1
 
 			if (playerID == this.oParent.CivState.HumanPlayerID) goto L1f2a;
 
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.SpiesReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.SpiesReport;
 
 			goto L1f30;
 
 		L1f2a:
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.ScienceAdvisor;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ScienceAdvisor;
 
 		L1f30:
 			// Instruction address 0x1ade:0x1f3c, size: 5
@@ -3179,7 +3179,7 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x20b2, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " agree to\nan exchange of ambassadors.\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DiplomatsReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DiplomatsReport;
 
 			// Instruction address 0x1ade:0x20cc, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 100);
@@ -3214,7 +3214,7 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x2152, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\nmakes existing Barracks\nobsolete.\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DefenseMinister;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DefenseMinister;
 
 			// Instruction address 0x1ade:0x216c, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 100);

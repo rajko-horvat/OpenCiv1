@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace OpenCiv1
 {
-	public enum UnitEnum
+	public enum UnitTypeEnum
 	{
-		None=-1,
+		None = -1,
 		Settlers = 0,
 		Militia = 1,
 		Phalanx = 2,

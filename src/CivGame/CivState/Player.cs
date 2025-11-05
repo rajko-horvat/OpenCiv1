@@ -37,11 +37,11 @@ namespace OpenCiv1
 		// Units
 		public short UnitCount = 0;
 		public short SettlerCount = 0;
-		public short[] ActiveUnits = new short[(int)UnitEnum.Max];
+		public short[] ActiveUnits = new short[(int)UnitTypeEnum.Max];
 		public short[] UnitsDestroyed = new short[8];
 		public Unit[] Units = new Unit[129];
-		public short[] UnitsInProduction = new short[(int)UnitEnum.Max];
-		public short[] LostUnits = new short[(int)UnitEnum.Max];
+		public short[] UnitsInProduction = new short[(int)UnitTypeEnum.Max];
+		public short[] LostUnits = new short[(int)UnitTypeEnum.Max];
 
 		// Strategic locations
 		public StrategicLocation[] StrategicLocations = new StrategicLocation[16];

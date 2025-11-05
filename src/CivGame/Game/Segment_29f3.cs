@@ -824,7 +824,7 @@ namespace OpenCiv1
 				goto L07e2;
 
 		L0782:
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DefenseMinister;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DefenseMinister;
 
 			// Instruction address 0x29f3:0x0790, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Sneak attack by\n");
@@ -876,7 +876,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L087a;
 
 		L0816:
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.ForeignMinister;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ForeignMinister;
 
 			// Instruction address 0x29f3:0x0829, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.Players[playerID2].Nation);
@@ -1290,7 +1290,7 @@ namespace OpenCiv1
 			// Instruction address 0x29f3:0x0ce1, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "!\n Cancel action.\n Break treaty.\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.ForeignMinister;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ForeignMinister;
 
 			// Instruction address 0x29f3:0x0cf8, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -1308,7 +1308,7 @@ namespace OpenCiv1
 			// Instruction address 0x29f3:0x0d1f, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "Overruled by\nthe Senate.\nAction canceled.\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DomesticAdvisor;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DomesticAdvisor;
 
 			// Instruction address 0x29f3:0x0d39, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -1350,7 +1350,7 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16((ushort)playerID, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0d9b;
 
-			this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DefenseMinister;
+			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DefenseMinister;
 
 			// Instruction address 0x29f3:0x0d6f, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.Players[playerID].Nation);

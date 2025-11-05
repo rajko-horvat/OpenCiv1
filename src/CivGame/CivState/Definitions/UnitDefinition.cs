@@ -5,7 +5,7 @@ namespace OpenCiv1
 	public class UnitDefinition
 	{
 		// Total size: 34 bytes
-		public UnitEnum UnitType = UnitEnum.None;
+		public UnitTypeEnum UnitType = UnitTypeEnum.None;
 		public string Name = ""; // (12 bytes)
 		public TechnologyEnum CancelTechnology = TechnologyEnum.None;
 		public short TerrainCategory = 0;
@@ -22,7 +22,7 @@ namespace OpenCiv1
 		public UnitDefinition()
 		{ }
 
-		public UnitDefinition(UnitEnum unitType, string name, TechnologyEnum cancelTechnology, short terrainCategory,
+		public UnitDefinition(UnitTypeEnum unitType, string name, TechnologyEnum cancelTechnology, short terrainCategory,
 			short moveCount, short turnsOutside, short attackStrength, short defenceStrength,
 			short cost, short sightRange, short transportCapacity, short unitCategory,
 			TechnologyEnum requiredTechnology)

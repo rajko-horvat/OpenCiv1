@@ -1291,17 +1291,17 @@ namespace OpenCiv1
 
 			if ((this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Diplomacy[playerID] & 0x40) != 0)
 			{
-				this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.ForeignMinister;
+				this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ForeignMinister;
 			}
 			else
 			{
-				this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.TravelersReport;
+				this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.TravelersReport;
 			}
 	
 
 			if (playerID1 == this.oParent.CivState.HumanPlayerID)
 			{
-				this.oParent.Var_2f9e_MessageBoxStyle = CivMessageBoxStyleEnum.DefenseMinister;
+				this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DefenseMinister;
 			}
 
 			// Instruction address 0x0000:0x0f32, size: 5
