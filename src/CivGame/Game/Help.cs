@@ -180,7 +180,7 @@ namespace OpenCiv1
 			this.oParent.MapManagement.F0_2aea_0008(this.oParent.CivState.HumanPlayerID,
 				this.oParent.CivState.Players[playerID].Units[unitID].Position.X - 7, this.oParent.CivState.Players[playerID].Units[unitID].Position.Y - 6);
 
-			F4_0000_02d3(0x34bb);
+			F4_0000_02d3_ShowInstantAdvicePopup(0x34bb);
 
 			goto L02cd;
 
@@ -231,7 +231,7 @@ namespace OpenCiv1
 			this.oCPU.TEST_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)), 0x6);
 			if (this.oCPU.Flags.NE) goto L025f;
 
-			F4_0000_02d3(0x34c6);
+			F4_0000_02d3_ShowInstantAdvicePopup(0x34c6);
 
 		L025f:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x1);
@@ -252,7 +252,7 @@ namespace OpenCiv1
 			this.oCPU.TEST_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)), 0x6);
 			if (this.oCPU.Flags.NE) goto L0298;
 
-			F4_0000_02d3(0x34ce);
+			F4_0000_02d3_ShowInstantAdvicePopup(0x34ce);
 
 			goto L02cd;
 
@@ -275,7 +275,7 @@ namespace OpenCiv1
 			if (this.oParent.CivState.Players[playerID].ActiveUnits[0] >= 2)
 				goto L02cd;
 
-			F4_0000_02d3(0x34d8);
+			F4_0000_02d3_ShowInstantAdvicePopup(0x34d8);
 
 		L02cd:
 			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
@@ -287,12 +287,12 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows instant advice message.
 		/// </summary>
 		/// <param name="stringPtr"></param>
-		public void F4_0000_02d3(ushort stringPtr)
+		public void F4_0000_02d3_ShowInstantAdvicePopup(ushort stringPtr)
 		{
-			this.oCPU.Log.EnterBlock($"F4_0000_02d3(0x{stringPtr:x4})");
+			this.oCPU.Log.EnterBlock($"F4_0000_02d3_ShowInstantAdvicePopup(0x{stringPtr:x4})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -358,16 +358,16 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F4_0000_02d3");
+			this.oCPU.Log.ExitBlock("F4_0000_02d3_ShowInstantAdvicePopup");
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows civilization note warning message
 		/// </summary>
 		/// <param name="stringPtr"></param>
-		public void F4_0000_03aa(ushort stringPtr)
+		public void F4_0000_03aa_ShowInstantWarningPopup(ushort stringPtr)
 		{
-			this.oCPU.Log.EnterBlock($"F4_0000_03aa(0x{stringPtr:x4})");
+			this.oCPU.Log.EnterBlock($"F4_0000_03aa_ShowInstantWarningPopup(0x{stringPtr:x4})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -429,7 +429,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F4_0000_03aa");
+			this.oCPU.Log.ExitBlock("F4_0000_03aa_ShowInstantWarningPopup");
 		}
 	}
 }

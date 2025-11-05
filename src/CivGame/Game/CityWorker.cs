@@ -3652,7 +3652,7 @@ namespace OpenCiv1
 				goto L5df3;
 
 			L5de7:
-				this.oParent.Help.F4_0000_02d3(0x2708);
+				this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x2708);
 
 			L5df3:
 				if ((city.StatusFlag & 0x1) == 0) goto L5e05;

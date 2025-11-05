@@ -302,7 +302,7 @@ namespace OpenCiv1
 
 			if (playerID != this.oParent.CivState.HumanPlayerID) goto L0385;
 
-			this.oParent.Help.F4_0000_02d3(0x4f66);
+			this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x4f66);
 
 		L0385:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 0x0);

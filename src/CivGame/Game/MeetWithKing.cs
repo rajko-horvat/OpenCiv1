@@ -1951,7 +1951,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30ba),
 				this.oParent.CivState.Players[playerID].Nation);
 
-			this.oParent.Help.F4_0000_02d3(0x392b);
+			this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x392b);
 
 		L165d:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3934), 0xffff);
