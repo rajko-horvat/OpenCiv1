@@ -225,12 +225,12 @@ namespace OpenCiv1
 			// Instruction address 0x2c84:0x0232, size: 5
 			ushort terrainID = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
 
-			int ordersTotal = 0;
+			int orderCount = 0;
 			char[] orders = new char[15];
 
 			// Instruction address 0x2c84:0x0245, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " No Orders \x008fspace\n");
-			orders[ordersTotal++] = ' ';
+			orders[orderCount++] = ' ';
 
 			// All orders are enabled by default
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, 0x0);
@@ -248,13 +248,13 @@ namespace OpenCiv1
 					this.oParent.MSCAPI.strcat(0xba06, " Found New City \x008fb\n");
 				}
 
-				orders[ordersTotal++] = 'b';
+				orders[orderCount++] = 'b';
 
 				if (!improvements.HasFlag(TerrainImprovementFlagsEnum.Road))
 				{
 					// Instruction address 0x2c84:0x029a, size: 5
 					this.oParent.MSCAPI.strcat(0xba06, " Build Road \x008fr\n");
-					orders[ordersTotal++] = 'r';
+					orders[orderCount++] = 'r';
 				}
 				else
 				{
@@ -263,7 +263,7 @@ namespace OpenCiv1
 					{
 						// Instruction address 0x2c84:0x02cf, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " Build RailRoad \x008fr\n");
-						orders[ordersTotal++] = 'r';
+						orders[orderCount++] = 'r';
 					}
 				}
 
@@ -278,7 +278,7 @@ namespace OpenCiv1
 						if (this.oParent.Segment_1403.F0_1403_3fd0(xPos, yPos) == 0)
 						{
 							// Disable 'Build Irrigation' option
-							this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb276), (ushort)(1 << ordersTotal)));
+							this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb276), (ushort)(1 << orderCount)));
 						}
 					}
 					else
@@ -299,7 +299,7 @@ namespace OpenCiv1
 					{
 						// Instruction address 0x2c84:0x0386, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " \x008fi\n");
-						orders[ordersTotal++] = 'i';
+						orders[orderCount++] = 'i';
 					}
 				}
 
@@ -310,24 +310,21 @@ namespace OpenCiv1
 						// Instruction address 0x2c84:0x03dc, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " Build Mines");
 					}
-					else
+					else if (this.oParent.CivState.TerrainMultipliers[terrainID].Multi3 >= 0)
 					{
-						if (this.oParent.CivState.TerrainMultipliers[terrainID].Multi3 >= 0)
-						{
-							// Instruction address 0x2c84:0x03c1, size: 5
-							this.oParent.MSCAPI.strcat(0xba06, " Change to ");
+						// Instruction address 0x2c84:0x03c1, size: 5
+						this.oParent.MSCAPI.strcat(0xba06, " Change to ");
 
-							// Instruction address 0x2c84:0x03dc, size: 5
-							this.oParent.MSCAPI.strcat(0xba06,
-								this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x2ba6 + this.oParent.CivState.TerrainMultipliers[terrainID].Multi3 * 2))].Name);
-						}
+						// Instruction address 0x2c84:0x03dc, size: 5
+						this.oParent.MSCAPI.strcat(0xba06,
+							this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x2ba6 + this.oParent.CivState.TerrainMultipliers[terrainID].Multi3 * 2))].Name);
 					}
 
 					if (this.oParent.CivState.TerrainMultipliers[terrainID].Multi3 != -1)
 					{
 						// Instruction address 0x2c84:0x0405, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " \x008fm\n");
-						orders[ordersTotal++] = 'm';
+						orders[orderCount++] = 'm';
 					}
 				}
 
@@ -335,7 +332,7 @@ namespace OpenCiv1
 				{
 					// Instruction address 0x2c84:0x041b, size: 5
 					this.oParent.MSCAPI.strcat(0xba06, " Clean up Pollution \x008fp\n");
-					orders[ordersTotal++] = 'p';
+					orders[orderCount++] = 'p';
 				}
 			}
 
@@ -348,42 +345,39 @@ namespace OpenCiv1
 				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Construction) == 0)
 				{
 					// Disable 'Build Fortress' option
-					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb276), (ushort)(1 << ordersTotal)));
+					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb276), (ushort)(1 << orderCount)));
 				}
 			}
-			else
+			else if (this.oParent.CivState.UnitDefinitions[unit.TypeID].TerrainCategory == 0)
 			{
-				if (this.oParent.CivState.UnitDefinitions[unit.TypeID].TerrainCategory == 0)
-				{
-					// Instruction address 0x2c84:0x049c, size: 5
-					this.oParent.MSCAPI.strcat(0xba06, " Fortify \x008ff\n");
-				}
+				// Instruction address 0x2c84:0x049c, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, " Fortify \x008ff\n");
 			}
 
 			if (this.oParent.CivState.UnitDefinitions[unit.TypeID].TerrainCategory == 0)
 			{
-				orders[ordersTotal++] = 'f';
+				orders[orderCount++] = 'f';
 			}
 
 			// Instruction address 0x2c84:0x04d5, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " Wait \x008fw\n Sentry \x008fs\n GoTo\n");
 
-			orders[ordersTotal++] = 'w';
-			orders[ordersTotal++] = 's';
-			orders[ordersTotal++] = 'g';
+			orders[orderCount++] = 'w';
+			orders[orderCount++] = 's';
+			orders[orderCount++] = 'g';
 
 			if (((ushort)improvements & (ushort)TerrainImprovementFlagsEnum.PillageMask) != 0 && unit.TypeID < (short)UnitEnum.Diplomat && unit.TypeID != (short)UnitEnum.Fighter)
 			{
 				// Instruction address 0x2c84:0x0528, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " Pillage \x008fP\n");
-				orders[ordersTotal++] = 'P';
+				orders[orderCount++] = 'P';
 			}
 
 			if (improvements.HasFlag(TerrainImprovementFlagsEnum.City))
 			{
 				// Instruction address 0x2c84:0x0548, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " Home City \x008fh\n");
-				orders[ordersTotal++] = 'h';
+				orders[orderCount++] = 'h';
 			}
 
 			// Instruction address 0x2c84:0x05a4, size: 5
@@ -391,26 +385,26 @@ namespace OpenCiv1
 			{
 				// Instruction address 0x2c84:0x05a4, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " Unload \x008fu\n");
-				orders[ordersTotal++] = 'u';
+				orders[orderCount++] = 'u';
 			}
 
 			// Instruction address 0x2c84:0x05be, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " \n Disband Unit \x008fD\n");
 
 			// Empty option line does not use hotkey
-			orders[ordersTotal++] = '\0';
-			orders[ordersTotal++] = 'D';
+			orders[orderCount++] = '\0';
+			orders[orderCount++] = 'D';
 
 			// Instruction address 0x2c84:0x05e6, size: 5
-			ushort orderIndex = this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 72, 8, 0);
+			short selectedOrder = (short)this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 72, 8, 0);
 
-			if (orderIndex == 0xffff || orderIndex >= ordersTotal)
+			if (selectedOrder < 0 || selectedOrder >= orderCount)
 			{
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, 0xffff);
+				this.oCPU.WriteInt16(this.oCPU.DS.Word, 0xd4ca, -1);
 			}
 			else
 			{
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd4ca, orders[orderIndex]);
+				this.oCPU.WriteInt16(this.oCPU.DS.Word, 0xd4ca, (short)orders[selectedOrder]);
 			}
 
 			// Far return

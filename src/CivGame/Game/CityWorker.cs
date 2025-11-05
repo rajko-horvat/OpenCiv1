@@ -4434,16 +4434,9 @@ namespace OpenCiv1
 
 			if ((this.oParent.CivState.DebugFlags & 0x2) == 0)
 			{
-				if (terrainType == (int)TerrainTypeEnum.Desert
+				improvements = (terrainType == (int)TerrainTypeEnum.Desert
 					|| terrainType == (int)TerrainTypeEnum.Plains
-					|| terrainType == (int)TerrainTypeEnum.Grassland)
-				{
-					improvements = TerrainImprovementFlagsEnum.Irrigation;
-				}
-				else
-				{
-					improvements = TerrainImprovementFlagsEnum.Mines;
-                }
+					|| terrainType == (int)TerrainTypeEnum.Grassland) ? TerrainImprovementFlagsEnum.Irrigation : TerrainImprovementFlagsEnum.Mines;
 
 				improvements |= (terrainType != (int)TerrainTypeEnum.Plains) ? TerrainImprovementFlagsEnum.Road : TerrainImprovementFlagsEnum.None;
 			}
