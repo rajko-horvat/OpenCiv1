@@ -15,12 +15,12 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows World Map window
 		/// </summary>
 		/// <param name="flag"></param>
-		public void F12_0000_0000(ushort flag)
+		public void F12_0000_0000_ShowWorldMapPopup(ushort flag)
 		{
-			this.oCPU.Log.EnterBlock($"F12_0000_0000({flag})");
+			this.oCPU.Log.EnterBlock($"F12_0000_0000_ShowWorldMapPopup({flag})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -185,7 +185,7 @@ namespace OpenCiv1
 
 		L01a8:
 			// Instruction address 0x0000:0x01ae, size: 5
-			this.oParent.MapManagement.F0_2aea_1585(
+			this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)));
 
@@ -378,7 +378,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F12_0000_0000");
+			this.oCPU.Log.ExitBlock("F12_0000_0000_ShowWorldMapPopup");
 		}
 
 		/// <summary>
@@ -773,11 +773,11 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows Wonders of the World window
 		/// </summary>
-		public void F12_0000_080d()
+		public void F12_0000_080d_ShowWondersOfTheWorldPopup()
 		{
-			this.oCPU.Log.EnterBlock("F12_0000_080d()");
+			this.oCPU.Log.EnterBlock("F12_0000_080d_ShowWondersOfTheWorldPopup()");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -929,7 +929,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F12_0000_080d");
+			this.oCPU.Log.ExitBlock("F12_0000_080d_ShowWondersOfTheWorldPopup");
 		}
 
 		/// <summary>
@@ -1251,12 +1251,12 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows Demographics window.
 		/// </summary>
 		/// <param name="playerID"></param>
-		public void F12_0000_0d6d(short playerID)
+		public void F12_0000_0d6d_ShowsDemographicsPopup(short playerID)
 		{
-			this.oCPU.Log.EnterBlock($"F12_0000_0d6d({playerID})");
+			this.oCPU.Log.EnterBlock($"F12_0000_0d6d_ShowsDemographicsPopup({playerID})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -2114,7 +2114,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
 			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F12_0000_0d6d");
+			this.oCPU.Log.ExitBlock("F12_0000_0d6d_ShowsDemographicsPopup");
 		}
 
 		/// <summary>
