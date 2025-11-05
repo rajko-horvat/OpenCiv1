@@ -111,19 +111,19 @@ namespace OpenCiv1
 			new TerrainDefinition(TerrainTypeEnum.ResourceFish, "Fish", 1, 2, 3, 0, 2, 0, 1),
 			new TerrainDefinition(TerrainTypeEnum.ResourceRiver, "River", 1, 3, 2, 1, 1, 2, 9)};
 
-		private TerrainMultiplier[] aTerrainMultipliers = new TerrainMultiplier[] {
-			new TerrainMultiplier(0, -2, 5, -2, 5, 0, 0),
-			new TerrainMultiplier(1, -2, 5, 2, 15, 1, 1),
-			new TerrainMultiplier(2, -2, 5, 2, 10, 0, 1),
-			new TerrainMultiplier(3, 6, 5, -1, 5, 0, 0),
-			new TerrainMultiplier(4, -2, 10, -4, 10, 1, 1),
-			new TerrainMultiplier(5, -1, 0, -2, 10, 0, 0),
-			new TerrainMultiplier(6, -1, 0, -1, 0, 0, 0),
-			new TerrainMultiplier(7, -1, 0, -1, 0, 0, 0),
-			new TerrainMultiplier(8, 10, 15, 2, 15, 0, 0),
-			new TerrainMultiplier(9, 10, 15, 2, 15, 0, 0),
-			new TerrainMultiplier(10, -1, 0, -1, 0, 0, 0),
-			new TerrainMultiplier(11, -2, 5, -1, 0, 0, 1) };
+		private TerrainModification[] aTerrainModifications = new TerrainModification[] {
+			new TerrainModification(TerrainTypeEnum.Desert, -2, 5, -2, 5, 0, 0),
+			new TerrainModification(TerrainTypeEnum.Plains, -2, 5, 2, 15, 1, 1),
+			new TerrainModification(TerrainTypeEnum.Grassland, -2, 5, 2, 10, 0, 1),
+			new TerrainModification(TerrainTypeEnum.Forest, 6, 5, -1, 5, 0, 0),
+			new TerrainModification(TerrainTypeEnum.Hills, -2, 10, -4, 10, 1, 1),
+			new TerrainModification(TerrainTypeEnum.Mountains, -1, 0, -2, 10, 0, 0),
+			new TerrainModification(TerrainTypeEnum.Tundra, -1, 0, -1, 0, 0, 0),
+			new TerrainModification(TerrainTypeEnum.Arctic, -1, 0, -1, 0, 0, 0),
+			new TerrainModification(TerrainTypeEnum.Swamp, 10, 15, 2, 15, 0, 0),
+			new TerrainModification(TerrainTypeEnum.Jungle, 10, 15, 2, 15, 0, 0),
+			new TerrainModification(TerrainTypeEnum.Ocean, -1, 0, -1, 0, 0, 0),
+			new TerrainModification(TerrainTypeEnum.River, -2, 5, -1, 0, 0, 1) };
 
 		// Graphs
 		public byte[] ScoreGraphData = new byte[1200];
@@ -473,9 +473,9 @@ namespace OpenCiv1
 			get => this.aTerrains;
 		}
 
-		public TerrainMultiplier[] TerrainMultipliers
+		public TerrainModification[] TerrainModifications
 		{
-			get => this.aTerrainMultipliers;
+			get => this.aTerrainModifications;
 		}
 
 		public UnitDefinition[] UnitDefinitions

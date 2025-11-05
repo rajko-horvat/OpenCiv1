@@ -4445,12 +4445,12 @@ namespace OpenCiv1
 			{
 				if (resourceType == CityResourceTypeEnum.Food && improvements.HasFlag(TerrainImprovementFlagsEnum.Irrigation))
 				{
-					resourceCount += -1 - this.oParent.CivState.TerrainMultipliers[terrainType].Multi1;
+					resourceCount += -1 - this.oParent.CivState.TerrainModifications[terrainType].IrrigationEffect;
 				}
 
 				if (resourceType == CityResourceTypeEnum.Production && improvements.HasFlag(TerrainImprovementFlagsEnum.Mines))
 				{
-					resourceCount += -1 - this.oParent.CivState.TerrainMultipliers[terrainType].Multi3;
+					resourceCount += -1 - this.oParent.CivState.TerrainModifications[terrainType].MiningEffect;
 				}
 
 				if (resourceType == CityResourceTypeEnum.Trade
