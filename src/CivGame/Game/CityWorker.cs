@@ -4052,7 +4052,7 @@ namespace OpenCiv1
 				local_d2 = this.oParent.CityOffsets[local_e8].Y + local_e4;
 
 				// Instruction address 0x1d12:0x6581, size: 5
-				if ((this.oParent.MapManagement.F0_2aea_1585(local_c6, local_d2) & 0x40) == 0) goto L6590;
+				if (!this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(local_c6, local_d2).HasFlag(TerrainImprovementFlagsEnum.Pollution)) goto L6590;
 				goto L6640;
 
 			L6590:
@@ -4062,7 +4062,7 @@ namespace OpenCiv1
 
 			L65a8:
 				// Instruction address 0x1d12:0x65b0, size: 5
-				if ((this.oParent.MapManagement.F0_2aea_1585(local_c6, local_d2) & 0x1) == 0) goto L65bf;
+				if (!this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(local_c6, local_d2).HasFlag(TerrainImprovementFlagsEnum.City)) goto L65bf;
 				goto L6640;
 
 			L65bf:
@@ -4430,28 +4430,34 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x1d12:0x6b26, size: 5
-			int local_4 = (short)this.oParent.MapManagement.F0_2aea_1585(xPos, yPos);
+			TerrainImprovementFlagsEnum improvements = this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
 
 			if ((this.oParent.CivState.DebugFlags & 0x2) == 0)
 			{
-				local_4 = (terrainType == (int)TerrainTypeEnum.Desert || terrainType == (int)TerrainTypeEnum.Plains || terrainType == (int)TerrainTypeEnum.Grassland) ? 2 : 4;
-				local_4 |= (terrainType != (int)TerrainTypeEnum.Plains) ? 8 : 0;
+				improvements = (terrainType == (int)TerrainTypeEnum.Desert
+					|| terrainType == (int)TerrainTypeEnum.Plains
+					|| terrainType == (int)TerrainTypeEnum.Grassland) ? TerrainImprovementFlagsEnum.Irrigation : TerrainImprovementFlagsEnum.Mines;
+
+				improvements |= (terrainType != (int)TerrainTypeEnum.Plains) ? TerrainImprovementFlagsEnum.Road : TerrainImprovementFlagsEnum.None;
 			}
 
 			if (terrainType != (int)TerrainTypeEnum.Ocean)
 			{
-				if (resourceType == CityResourceTypeEnum.Food && (local_4 & 0x2) != 0)
+				if (resourceType == CityResourceTypeEnum.Food && improvements.HasFlag(TerrainImprovementFlagsEnum.Irrigation))
 				{
 					resourceCount += -1 - this.oParent.CivState.TerrainMultipliers[terrainType].Multi1;
 				}
 
-				if (resourceType == CityResourceTypeEnum.Production && (local_4 & 0x4) != 0)
+				if (resourceType == CityResourceTypeEnum.Production && improvements.HasFlag(TerrainImprovementFlagsEnum.Mines))
 				{
 					resourceCount += -1 - this.oParent.CivState.TerrainMultipliers[terrainType].Multi3;
 				}
 
-				if (resourceType == CityResourceTypeEnum.Trade && (local_4 & 0x8) != 0 && 
-					(terrainType == (int)TerrainTypeEnum.Desert || terrainType == (int)TerrainTypeEnum.Plains || terrainType == (int)TerrainTypeEnum.Grassland))
+				if (resourceType == CityResourceTypeEnum.Trade
+					&& improvements.HasFlag(TerrainImprovementFlagsEnum.Road)
+					&& (terrainType == (int)TerrainTypeEnum.Desert
+						|| terrainType == (int)TerrainTypeEnum.Plains
+						|| terrainType == (int)TerrainTypeEnum.Grassland))
 				{
 					resourceCount++;
 				}
@@ -4470,7 +4476,7 @@ namespace OpenCiv1
 				resourceCount++;
 			}
 
-			if ((local_4 & 0x10) != 0)
+			if (improvements.HasFlag(TerrainImprovementFlagsEnum.RailRoad))
 			{
 				resourceCount += resourceCount / 2;
 			}
@@ -4511,7 +4517,7 @@ namespace OpenCiv1
 				}
 			}
 
-			if ((local_4 & 0x40) != 0)
+			if (improvements.HasFlag(TerrainImprovementFlagsEnum.Pollution))
 			{
 				resourceCount = (resourceCount + 1) / 2;
 			}
@@ -4618,10 +4624,10 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x1d12:0x6d3c, size: 5
-			if ((this.oParent.MapManagement.F0_2aea_1585(xPos, yPos) & 0x40) == 0)
+			if (!this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(xPos, yPos).HasFlag(TerrainImprovementFlagsEnum.Pollution))
 			{
 				// Instruction address 0x1d12:0x6d52, size: 5
-				this.oParent.MapManagement.F0_2aea_1653(0x40, xPos, yPos);
+				this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.Pollution, xPos, yPos);
 
 				// Instruction address 0x1d12:0x6d60, size: 5
 				this.oParent.MapManagement.F0_2aea_1601(xPos, yPos);

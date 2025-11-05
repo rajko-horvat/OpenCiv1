@@ -147,7 +147,7 @@ namespace OpenCiv1
 			this.oParent.MapManagement.F0_2aea_16ee(0x24, xPos, yPos);
 
 			// Instruction address 0x0000:0x0193, size: 5
-			this.oParent.MapManagement.F0_2aea_1653(9, xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.City | TerrainImprovementFlagsEnum.Road, xPos, yPos);
 
 			// Instruction address 0x0000:0x01a1, size: 5
 			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
@@ -155,7 +155,7 @@ namespace OpenCiv1
 			if (this.oParent.CivState.TerrainMultipliers[this.oCPU.AX.Word].Multi1 < -1)
 			{
 				// Instruction address 0x0000:0x01c1, size: 5
-				this.oParent.MapManagement.F0_2aea_1653(2, xPos, yPos);
+				this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.Irrigation, xPos, yPos);
 			}
 		
 			this.oCPU.AX.Word = 0x1c;
@@ -330,7 +330,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.G) goto L040e;
 
 			// Instruction address 0x0000:0x03d3, size: 5
-			this.oParent.MapManagement.F0_2aea_1585(
+			this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
 
