@@ -18,10 +18,10 @@ namespace OpenCiv1
 		public sbyte Production;
 		public sbyte Trade;
 		public sbyte Unknown1;
-		public sbyte Unknown2;
+		public sbyte TerrainChangeID;
 
 		public TerrainDefinition(TerrainTypeEnum terrainType, string name, sbyte movementCost, sbyte defenseBonus, 
-			sbyte food, sbyte production, sbyte trade, sbyte unknown1, sbyte unknown2)
+			sbyte food, sbyte production, sbyte trade, sbyte unknown1, sbyte terrainChangeID)
 		{
 			this.TerrainType = terrainType;
 			this.Name = name;
@@ -31,7 +31,7 @@ namespace OpenCiv1
 			this.Production = production;
 			this.Trade = trade;
 			this.Unknown1 = unknown1;
-			this.Unknown2 = unknown2;
+			this.TerrainChangeID = terrainChangeID;
 		}
 	}
 }

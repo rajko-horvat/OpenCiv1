@@ -1413,7 +1413,7 @@ namespace OpenCiv1
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x8));
 
 			if (this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Food == 0 &&
-				this.oParent.CivState.TerrainMultipliers[id].Multi1 >= -1)
+				this.oParent.CivState.TerrainModifications[id].IrrigationEffect >= -1)
 				goto L131e;
 
 			// Instruction address 0x0000:0x1233, size: 5
@@ -1437,7 +1437,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, id);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.TerrainMultipliers[id].Multi1 < -1)
+			if (this.oParent.CivState.TerrainModifications[id].IrrigationEffect < -1)
 			{
 				// Instruction address 0x0000:0x1296, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " (");
@@ -1449,7 +1449,7 @@ namespace OpenCiv1
 				// Instruction address 0x0000:0x12c6, size: 5
 				this.oParent.MSCAPI.strcat(0xba06,
 					this.oParent.MSCAPI.itoa(this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Food -
-						this.oParent.CivState.TerrainMultipliers[id].Multi1 - 1, 10));
+						this.oParent.CivState.TerrainModifications[id].IrrigationEffect - 1, 10));
 
 				if (this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Food >= 2)
 				{
@@ -1478,7 +1478,7 @@ namespace OpenCiv1
 			if (this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Production != 0)
 				goto L133f;
 
-			if (this.oParent.CivState.TerrainMultipliers[id].Multi3 >= -1)
+			if (this.oParent.CivState.TerrainModifications[id].MiningEffect >= -1)
 				goto L1433;
 
 		L133f:
@@ -1507,7 +1507,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, id);
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.TerrainMultipliers[id].Multi3 >= -1)
+			if (this.oParent.CivState.TerrainModifications[id].MiningEffect >= -1)
 				goto L1408;
 
 			// Instruction address 0x0000:0x13b1, size: 5
@@ -1516,11 +1516,11 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x13d5, size: 5
 			this.oParent.MSCAPI.strcat(0xba06,
 				this.oParent.MSCAPI.itoa(this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Production -
-						this.oParent.CivState.TerrainMultipliers[id].Multi3 - 1, 10));
+						this.oParent.CivState.TerrainModifications[id].MiningEffect - 1, 10));
 
 			this.oCPU.AX.Low = (byte)this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Production;
 			this.oCPU.CBW(this.oCPU.AX);
-			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.TerrainMultipliers[id].Multi3);
+			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.TerrainModifications[id].MiningEffect);
 			this.oCPU.AX.Word = this.oCPU.DEC_UInt16(this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x3);
 			if (this.oCPU.Flags.L) goto L13f8;

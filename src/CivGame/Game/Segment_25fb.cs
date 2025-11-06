@@ -3367,11 +3367,11 @@ namespace OpenCiv1
 
 			if (this.oCPU.AX.Word == 0)
 			{
-				this.oCPU.SI.Word = (ushort)this.oParent.CivState.TerrainMultipliers[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42))].Multi5;
+				this.oCPU.SI.Word = (ushort)this.oParent.CivState.TerrainModifications[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42))].AICanImproveBeforeMonarchy;
 			}
 			else
 			{
-				this.oCPU.SI.Word = (ushort)this.oParent.CivState.TerrainMultipliers[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42))].Multi6;
+				this.oCPU.SI.Word = (ushort)this.oParent.CivState.TerrainModifications[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42))].AICanImproveAfterMonarchy;
 			}
 		
 			if (this.oCPU.SI.Word != 0)
@@ -3594,11 +3594,11 @@ namespace OpenCiv1
 			// Instruction address 0x25fb:0x21ea, size: 5
 			if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Monarchy) == 0)
 			{
-				this.oCPU.BX.Word = (ushort)this.oParent.CivState.TerrainMultipliers[this.oCPU.SI.Word].Multi5;
+				this.oCPU.BX.Word = (ushort)this.oParent.CivState.TerrainModifications[this.oCPU.SI.Word].AICanImproveBeforeMonarchy;
 			}
 			else
 			{
-				this.oCPU.BX.Word = (ushort)this.oParent.CivState.TerrainMultipliers[this.oCPU.SI.Word].Multi6;
+				this.oCPU.BX.Word = (ushort)this.oParent.CivState.TerrainModifications[this.oCPU.SI.Word].AICanImproveAfterMonarchy;
 			}
 					
 			if (this.oCPU.BX.Word == 0)

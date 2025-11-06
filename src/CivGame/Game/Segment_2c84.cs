@@ -272,7 +272,7 @@ namespace OpenCiv1
 
 				if (!improvements.HasFlag(TerrainImprovementFlagsEnum.Irrigation))
 				{
-					if (this.oParent.CivState.TerrainMultipliers[terrainID].Multi1 == -2)
+					if (this.oParent.CivState.TerrainModifications[terrainID].IrrigationEffect == -2)
 					{
 						// Instruction address 0x2c84:0x0301, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " Build Irrigation");
@@ -286,7 +286,7 @@ namespace OpenCiv1
 					}
 					else
 					{
-						if (this.oParent.CivState.TerrainMultipliers[terrainID].Multi1 >= 0)
+						if (this.oParent.CivState.TerrainModifications[terrainID].IrrigationEffect >= 0)
 						{
 							// Instruction address 0x2c84:0x0342, size: 5
 							this.oParent.MSCAPI.strcat(0xba06, " Change to ");
@@ -294,11 +294,11 @@ namespace OpenCiv1
 							// Instruction address 0x2c84:0x035d, size: 5
 							this.oParent.MSCAPI.strcat(0xba06,
 								this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.DS.Word,
-									(ushort)(0x2ba6 + this.oParent.CivState.TerrainMultipliers[terrainID].Multi1 * 2))].Name);
+									(ushort)(0x2ba6 + this.oParent.CivState.TerrainModifications[terrainID].IrrigationEffect * 2))].Name);
 						}
 					}
 
-					if (this.oParent.CivState.TerrainMultipliers[terrainID].Multi1 != -1)
+					if (this.oParent.CivState.TerrainModifications[terrainID].IrrigationEffect != -1)
 					{
 						// Instruction address 0x2c84:0x0386, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " \x008fi\n");
@@ -308,22 +308,22 @@ namespace OpenCiv1
 
 				if (!improvements.HasFlag(TerrainImprovementFlagsEnum.Mines))
 				{
-					if (this.oParent.CivState.TerrainMultipliers[terrainID].Multi3 <= -2)
+					if (this.oParent.CivState.TerrainModifications[terrainID].MiningEffect <= -2)
 					{
 						// Instruction address 0x2c84:0x03dc, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " Build Mines");
 					}
-					else if (this.oParent.CivState.TerrainMultipliers[terrainID].Multi3 >= 0)
+					else if (this.oParent.CivState.TerrainModifications[terrainID].MiningEffect >= 0)
 					{
 						// Instruction address 0x2c84:0x03c1, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " Change to ");
 
 						// Instruction address 0x2c84:0x03dc, size: 5
 						this.oParent.MSCAPI.strcat(0xba06,
-							this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x2ba6 + this.oParent.CivState.TerrainMultipliers[terrainID].Multi3 * 2))].Name);
+							this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x2ba6 + this.oParent.CivState.TerrainModifications[terrainID].MiningEffect * 2))].Name);
 					}
 
-					if (this.oParent.CivState.TerrainMultipliers[terrainID].Multi3 != -1)
+					if (this.oParent.CivState.TerrainModifications[terrainID].MiningEffect != -1)
 					{
 						// Instruction address 0x2c84:0x0405, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " \x008fm\n");

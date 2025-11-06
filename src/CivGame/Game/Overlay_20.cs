@@ -152,7 +152,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x01a1, size: 5
 			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
 
-			if (this.oParent.CivState.TerrainMultipliers[this.oCPU.AX.Word].Multi1 < -1)
+			if (this.oParent.CivState.TerrainModifications[this.oCPU.AX.Word].IrrigationEffect < -1)
 			{
 				// Instruction address 0x0000:0x01c1, size: 5
 				this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.Irrigation, xPos, yPos);
