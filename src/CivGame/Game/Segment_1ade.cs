@@ -2581,7 +2581,7 @@ namespace OpenCiv1
 		L19d4:
 			if (this.oParent.CivState.Players[playerID].DiscoveredTechnologyCount <= 1)
 			{
-				this.oParent.Help.F4_0000_02d3(0x231d);
+				this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x231d);
 			}
 
 			// Instruction address 0x1ade:0x19ec, size: 5
@@ -3142,7 +3142,7 @@ namespace OpenCiv1
 			if (technologyID != 0x5)
 				goto L20d9;
 
-			this.oParent.Help.F4_0000_02d3(0x2414);
+			this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x2414);
 			
 			goto L20d9;
 

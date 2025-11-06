@@ -39,12 +39,12 @@ namespace OpenCiv1
 
 				if (this.oParent.CivState.TurnCount == 20 || this.oParent.CivState.TurnCount == 60)
 				{
-					this.oParent.Help.F4_0000_02d3(0x1e60);
+					this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x1e60);
 				}
 
 				if (this.oParent.CivState.TurnCount == 40 || this.oParent.CivState.TurnCount == 80)
 				{
-					this.oParent.Help.F4_0000_02d3(0x1e67);
+					this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x1e67);
 				}
 			}
 
@@ -446,7 +446,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30b8),
 				this.oParent.CivState.Players[playerID].Nation);
 
-			this.oParent.Help.F4_0000_02d3(0x1e6e);
+			this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x1e6e);
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), 0x1);
 
@@ -1126,7 +1126,7 @@ namespace OpenCiv1
 
 		L0dd9:
 			// Instruction address 0x1403:0x0ddd, size: 5
-			F0_1403_461c(0x1e83);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1e83);
 
 			goto L1b5e;
 
@@ -1403,7 +1403,7 @@ namespace OpenCiv1
 				goto L11a9;
 
 			// Instruction address 0x1403:0x119e, size: 5
-			F0_1403_461c(0x1e8c);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1e8c);
 
 			goto L1b5e;
 
@@ -1579,7 +1579,7 @@ namespace OpenCiv1
 				goto L1429;
 
 			// Instruction address 0x1403:0x141e, size: 5
-			F0_1403_461c(0x1e96);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1e96);
 
 			goto L1b5e;
 
@@ -1728,7 +1728,7 @@ namespace OpenCiv1
 				goto L15ff;
 
 			// Instruction address 0x1403:0x15f4, size: 5
-			F0_1403_461c(0x1ea0);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1ea0);
 
 			goto L1614;
 
@@ -1766,7 +1766,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 
 			// Instruction address 0x1403:0x166a, size: 5
-			F0_1403_461c(0x1eaa);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1eaa);
 
 			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].Status &= 0xbf;
 
@@ -1793,7 +1793,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 
 			// Instruction address 0x1403:0x16be, size: 5
-			F0_1403_461c(0x1eb1);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1eb1);
 
 			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].Status &= 0xbf;
 
@@ -1882,7 +1882,7 @@ namespace OpenCiv1
 				goto L182d;
 
 			// Instruction address 0x1403:0x1822, size: 5
-			F0_1403_461c(0x1eba);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1eba);
 
 			goto L1842;
 
@@ -1920,7 +1920,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 
 			// Instruction address 0x1403:0x1898, size: 5
-			F0_1403_461c(0x1ec4);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1ec4);
 
 			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].Status &= 0x7f;
 
@@ -1996,7 +1996,7 @@ namespace OpenCiv1
 				goto L19e8;
 
 			// Instruction address 0x1403:0x19dd, size: 5
-			F0_1403_461c(0x1ecc);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1ecc);
 
 			goto L1b5e;
 
@@ -2060,7 +2060,7 @@ namespace OpenCiv1
 
 		L1a83:
 			// Instruction address 0x1403:0x1a87, size: 5
-			F0_1403_461c(0x1ed6);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1ed6);
 
 		L1a8f:
 			goto L1b5e;
@@ -2455,7 +2455,7 @@ namespace OpenCiv1
 
 		L1eae:
 			// Instruction address 0x1403:0x1eb2, size: 5
-			F0_1403_461c(0x1edf);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1edf);
 
 		L1eba:
 			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].GoToPosition.X = -1;
@@ -2703,7 +2703,7 @@ namespace OpenCiv1
 				goto L225c;
 
 			// Instruction address 0x1403:0x224c, size: 5
-			F0_1403_461c(0x1f28);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1f28);
 
 			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].GoToPosition.X = -1;
 
@@ -2743,7 +2743,7 @@ namespace OpenCiv1
 
 		L2315:
 			// Instruction address 0x1403:0x2319, size: 5
-			F0_1403_461c(0x1f30);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1f30);
 
 			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].GoToPosition.X = -1;
 
@@ -3021,7 +3021,7 @@ namespace OpenCiv1
 				goto L2719;
 
 			// Instruction address 0x1403:0x2706, size: 5
-			F0_1403_461c(0x1f62);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1f62);
 
 			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].GoToPosition.X = -1;
 
@@ -4401,9 +4401,9 @@ namespace OpenCiv1
 			goto L3c40;
 
 		L389b:
-			this.oParent.Help.F4_0000_02d3(0x2029);
+			this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x2029);
 			
-			this.oParent.Help.F4_0000_02d3(0x2030);
+			this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x2030);
 			
 			goto L3c40;
 
@@ -4935,7 +4935,7 @@ namespace OpenCiv1
 				this.oParent.Segment_1866.F0_1866_0f10(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
 
 				// Instruction address 0x1403:0x3d69, size: 5
-				F0_1403_461c(0x2070);
+				F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x2070);
 			}
 
 		L3d71:
@@ -4992,7 +4992,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1866.F0_1866_0f10(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
 			
 			// Instruction address 0x1403:0x3e24, size: 5
-			F0_1403_461c(0x2076);
+			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x2076);
 
 		L3e2c:
 			this.oCPU.AX.Word = 0x1;
@@ -5824,21 +5824,21 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows civilization note warning message if current player is human
 		/// </summary>
 		/// <param name="stringPtr"></param>
-		public void F0_1403_461c(ushort stringPtr)
+		public void F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(ushort stringPtr)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1403_461c(0x{stringPtr:x4})");
+			this.oCPU.Log.EnterBlock($"F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x{stringPtr:x4})");
 
 			// function body
 			if (this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6b90) == this.oParent.CivState.HumanPlayerID)
 			{
-				this.oParent.Help.F4_0000_03aa(stringPtr);
+				this.oParent.Help.F4_0000_03aa_ShowInstantWarningPopup(stringPtr);
 			}
 		
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_1403_461c");
+			this.oCPU.Log.ExitBlock("F0_1403_461c_ShowInstantWarningPopupToHumanPlayer");
 		}
 	}
 }

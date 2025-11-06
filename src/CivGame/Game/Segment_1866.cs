@@ -1504,12 +1504,12 @@ namespace OpenCiv1
 
 			if (this.oParent.CivState.Players[playerID].UnitCount != 0) goto L0eab;
 
-			this.oParent.Help.F4_0000_02d3(0x210e);
+			this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x210e);
 
 		L0eab:
 			if (this.oParent.CivState.Players[playerID].UnitCount != 1) goto L0ec3;
 
-			this.oParent.Help.F4_0000_02d3(0x211a);
+			this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x211a);
 
 		L0ec3:
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
