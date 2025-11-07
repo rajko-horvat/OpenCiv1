@@ -384,7 +384,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x2c84:0x05a4, size: 5
-			if ((this.oParent.CivState.UnitDefinitions[unit.TypeID].UnitCategory == 5 || unit.TypeID == (short)UnitTypeEnum.Carrier) && unit.NextUnitID != -1)
+			if ((this.oParent.CivState.UnitDefinitions[unit.TypeID].AIRole == UnitAIRoleEnum.SeaTransport || unit.TypeID == (short)UnitTypeEnum.Carrier) && unit.NextUnitID != -1)
 			{
 				// Instruction address 0x2c84:0x05a4, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " Unload \x008fu\n");

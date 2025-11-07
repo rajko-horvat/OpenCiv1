@@ -1323,7 +1323,7 @@ namespace OpenCiv1
 						local_104 = this.oParent.CivState.Players[this.oParent.MapManagement.F0_2aea_1942(local_d8, local_e4) & 0x7].Continents[this.Var_6548_PlayerID].Strategy;
 
 						if ((local_104 == 1 || local_104 == 2 || local_104 == 5) && local_e8 != 0 && city.CurrentProductionID >= 0 &&
-							this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].UnitCategory == local_104)
+							(int)this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].AIRole == local_104)
 						{
 							local_cc = this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 64;
 						}

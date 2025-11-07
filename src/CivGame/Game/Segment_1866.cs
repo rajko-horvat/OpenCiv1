@@ -676,7 +676,7 @@ namespace OpenCiv1
 			if ((this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd7f0)].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Status & 0x8) == 0)
 				goto L0686;
 
-			if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd7f0)].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID].UnitCategory == 2)
+			if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd7f0)].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID].AIRole == UnitAIRoleEnum.Defense)
 				goto L068b;
 
 		L0686:
@@ -2059,7 +2059,7 @@ namespace OpenCiv1
 			if (unitID >= this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6538))
 				goto L132e;
 			
-			if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].UnitCategory != 2)
+			if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].AIRole != UnitAIRoleEnum.Defense)
 				goto L132e;
 
 		L132a:
@@ -2153,7 +2153,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_1866_13a9({playerID}, {unitID})");
 
 			// function body
-			if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].UnitCategory == this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x653a))
+			if ((short)this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].AIRole == this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x653a))
 			{
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x653c, 
 					this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x653c)));
@@ -2205,7 +2205,7 @@ namespace OpenCiv1
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x653c, this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x653c)));
 			}
 
-			if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].UnitCategory == 5)
+			if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].AIRole == UnitAIRoleEnum.SeaTransport)
 			{
 				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x653c, this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x653c),
 					(ushort)((short)this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TransportCapacity)));
