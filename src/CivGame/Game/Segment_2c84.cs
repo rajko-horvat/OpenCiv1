@@ -351,13 +351,13 @@ namespace OpenCiv1
 					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb276), (ushort)(1 << orderCount)));
 				}
 			}
-			else if (this.oParent.CivState.UnitDefinitions[unit.TypeID].TerrainCategory == 0)
+			else if (this.oParent.CivState.UnitDefinitions[unit.TypeID].TerrainCategory == UnitCategoryEnum.Land)
 			{
 				// Instruction address 0x2c84:0x049c, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, " Fortify \x008ff\n");
 			}
 
-			if (this.oParent.CivState.UnitDefinitions[unit.TypeID].TerrainCategory == 0)
+			if (this.oParent.CivState.UnitDefinitions[unit.TypeID].TerrainCategory == UnitCategoryEnum.Land)
 			{
 				orders[orderCount++] = 'f';
 			}

@@ -58,7 +58,7 @@ namespace OpenCiv1
 			else
 			{
 				// !!! Illegal memory access
-				if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory == 1)
+				if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory == UnitCategoryEnum.Air)
 				{
 					this.Var_6590_XPos = (short)this.oParent.CivState.Players[playerID].Units[unitID].GoToPosition.X;
 					this.Var_6592_YPos = (short)this.oParent.CivState.Players[playerID].Units[unitID].GoToPosition.Y;
@@ -246,7 +246,7 @@ namespace OpenCiv1
 				L03e0:
 					// !!! Illegal memory access
 					if (this.oParent.CivState.Players[playerID].Units[unitID].TypeID == -1 ||
-						this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != 2)
+						this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != UnitCategoryEnum.Ocean)
 					{
 						this.oCPU.AX.Word = 0;
 					}
@@ -273,7 +273,7 @@ namespace OpenCiv1
 				L0436:
 					// !!! Illegal memory access
 					if (this.oParent.CivState.Players[playerID].Units[unitID].TypeID != -1 &&
-						this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory == 1)
+						this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory == UnitCategoryEnum.Air)
 						goto L0480;
 
 				L0455:
@@ -462,7 +462,7 @@ namespace OpenCiv1
 				F0_2e31_0a2c(
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x36)),
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a)),
-					(ushort)((this.oParent.CivState.Players[playerID].Units[unitID].TypeID == -1 || this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != 2) ? 0 : 1));
+					(ushort)((this.oParent.CivState.Players[playerID].Units[unitID].TypeID == -1 || this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != UnitCategoryEnum.Ocean) ? 0 : 1));
 
 				if (this.oCPU.AX.Word == 0)
 				{
@@ -478,7 +478,7 @@ namespace OpenCiv1
 					F0_2e31_0a2c(
 						this.oParent.CivState.Players[playerID].Units[unitID].GoToPosition.X,
 						this.oParent.CivState.Players[playerID].Units[unitID].GoToPosition.Y,
-						(ushort)((this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != 0x2) ? 0 : 1));
+						(ushort)((this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != UnitCategoryEnum.Ocean) ? 0 : 1));
 
 					// Instruction address 0x2e31:0x06b8, size: 5
 					this.oParent.MSCAPI.memset(0xd816, 0, 0x104);
@@ -505,7 +505,7 @@ namespace OpenCiv1
 
 					this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 0x0);
 
-					if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != 2)
+					if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != UnitCategoryEnum.Ocean)
 					{
 						this.oCPU.AX.Word = 0;
 					}
@@ -654,7 +654,7 @@ namespace OpenCiv1
 					this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.CivState.Players[playerID].Units[unitID].TypeID));
 					this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-					if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != 2)
+					if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != UnitCategoryEnum.Ocean)
 						goto L085e;
 
 					this.oCPU.AX.Word = 0xd;
@@ -1174,7 +1174,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6794, param3);
 
 			if (this.oParent.CivState.Players[playerID].Units[unitID].TypeID != -1 &&
-				this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != 2)
+				this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != UnitCategoryEnum.Ocean)
 			{
 				this.oCPU.AX.Word = 0;
 			}
@@ -1477,7 +1477,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)));
 
-			if (((this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != 2) ? 0 : 1) == ((this.oCPU.AX.Word != 0xa) ? 0 : 1))
+			if (((this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != UnitCategoryEnum.Ocean) ? 0 : 1) == ((this.oCPU.AX.Word != 0xa) ? 0 : 1))
 				goto L0fec;
 
 			// Instruction address 0x2e31:0x0fdd, size: 5

@@ -490,7 +490,7 @@ namespace OpenCiv1
 
 							if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].AttackStrength != 0)
 							{
-								if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].TerrainCategory == 1)
+								if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].TerrainCategory == UnitCategoryEnum.Air)
 								{
 									this.Var_6546++;
 								}
@@ -1927,7 +1927,7 @@ namespace OpenCiv1
 										this.oParent.Var_db42 = -999; // 0xfc19
 									}
 									else if (local_c8 > 0 &&
-										this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].TypeID].TerrainCategory == 0 &&
+										this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].TypeID].TerrainCategory == UnitCategoryEnum.Land &&
 										this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].TypeID != 0)
 									{
 										// Instruction address 0x1d12:0x35c9, size: 5
@@ -2009,7 +2009,7 @@ namespace OpenCiv1
 									{
 										if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].AttackStrength != 0 &&
 											local_e8 != 0 &&
-											(this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].TerrainCategory == 1 ||
+											(this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].TerrainCategory == UnitCategoryEnum.Air ||
 												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].Position.X != city.Position.X ||
 												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].Position.Y != city.Position.Y))
 										{
