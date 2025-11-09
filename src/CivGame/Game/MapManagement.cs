@@ -346,7 +346,7 @@ namespace OpenCiv1
 			int local_0x20 = 0;
 			int local_0x1c = 0;
 			int local_0x18 = 0;
-			int local_0x14 = 0;
+			TerrainImprovementFlagsEnum local_0x14 = 0;
 			int local_0x12 = 0;
 			int local_0xe = 0;
 			int local_0xc = 0;
@@ -406,12 +406,12 @@ namespace OpenCiv1
 			local_0x18 = F0_2aea_134a_GetTerrainType(xPos, yPos);
 
 			// Instruction address 0x2aea:0x048c, size: 3
-			local_0x14 = F0_2aea_15c1(xPos, yPos);
+			local_0x14 = (TerrainImprovementFlagsEnum)F0_2aea_15c1(xPos, yPos);
 
 			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806) != 0)
 			{
 				// Instruction address 0x2aea:0x04a3, size: 3
-				local_0x14 = (int)F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
+				local_0x14 = F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
 			}
 
 			// Instruction address 0x2aea:0x04ac, size: 5
@@ -586,23 +586,21 @@ namespace OpenCiv1
 						local_0xa);
 				}
 			}
+			
+			if (local_0x14.HasFlag(TerrainImprovementFlagsEnum.Irrigation)
+				&& local_0x18 != (int)TerrainTypeEnum.Ocean
+				&& this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdcfc) == 0
+				&& !local_0x14.HasFlag(TerrainImprovementFlagsEnum.City))
+			{
+				// Draw irrigation
 
-			this.oCPU.TEST_UInt8((byte)local_0x14, 0x2);
-			if (this.oCPU.Flags.E) goto L0800;
-			this.oCPU.CMP_UInt16((ushort)local_0x18, 0xa);
-			if (this.oCPU.Flags.E) goto L0800;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdcfc), 0x0);
-			if (this.oCPU.Flags.NE) goto L0800;
-			this.oCPU.TEST_UInt8((byte)local_0x14, 0x1);
-			if (this.oCPU.Flags.NE) goto L0800;
+				// Instruction address 0x2aea:0x07f8, size: 5
+				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+					local_0x6,
+					local_0xa,
+					this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((4 << 1) + 0xd4ce)));
+			}
 
-			// Instruction address 0x2aea:0x07f8, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((4 << 1) + 0xd4ce)));
-
-		L0800:
 			this.oCPU.CMP_UInt16((ushort)local_0x18, 0xb);
 			if (this.oCPU.Flags.E) goto L0809;
 			goto L088d;
