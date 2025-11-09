@@ -426,6 +426,7 @@ namespace OpenCiv1
 
 			local_0x12 = 0;
 
+			// Check VGA mode ?
 			if (this.oParent.Var_d762 == 0)
 			{
 				for (local_0xc = 1; local_0xc < 9; local_0xc += 2)
@@ -470,67 +471,31 @@ namespace OpenCiv1
 			}
 
 			local_0xe = local_0x12;
-			local_0x12 = ((local_0x12 >> 6) & 0x3) + (local_0x12 << 2);
-			local_0xc = 0x0;
-			goto L05ff;
+			local_0x12 = ((local_0x12 >> 6) & 3) + (local_0x12 << 2);
 
-		L05be:
-			this.oCPU.SI.Word = (ushort)local_0x12;
-			this.oCPU.CX.Low = (byte)local_0xc;
-			this.oCPU.CX.Low = this.oCPU.SHL_UInt8(this.oCPU.CX.Low, 0x1);
-			this.oCPU.SI.Word = this.oCPU.SAR_UInt16(this.oCPU.SI.Word, this.oCPU.CX.Low);
-			this.oCPU.SI.Word = this.oCPU.AND_UInt16(this.oCPU.SI.Word, 0x7);
-			this.oCPU.CX.Low = 0x3;
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, this.oCPU.CX.Low);
-			this.oCPU.BX.Word = (ushort)local_0xc;
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
-			this.oCPU.PUSH_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0xd294)));
-			this.oCPU.AX.Word = (ushort)local_0xa;
-			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x8);
-			this.oCPU.PUSH_UInt16(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = (ushort)local_0x6;
-			this.oCPU.DX.Word = (ushort)local_0xc;
-			this.oCPU.DX.Word = this.oCPU.AND_UInt16(this.oCPU.DX.Word, 0x1);
-			this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x8);
-
-		L05ef:
-			// Instruction address 0x2aea:0x05f4, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-				(short)this.oCPU.AX.Word, (short)this.oCPU.POP_UInt16(), this.oCPU.POP_UInt16());
-
-			local_0xc = this.oCPU.INC_UInt16((ushort)local_0xc);
-
-		L05ff:
-			if (local_0xc >= 4)
+			for (local_0xc = 0x0; local_0xc < 4; ++local_0xc)
 			{
-				goto L0635;
+				int offset = local_0xc * 2 + (((local_0x12 >> ((byte)local_0xc * 2)) & 7) << 3);
+				ushort bitmapPtr = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(offset + 0xd294));
+
+				int px;
+				int py;
+
+				if (local_0xc >= 2)
+				{
+					px = local_0x6 - ((local_0xc & 1) << 3) + 8;
+					py = local_0xa + 8;
+				}
+				else
+				{
+					px = local_0x6 + ((local_0xc & 1) << 3);
+					py = local_0xa;
+				}
+
+				// Instruction address 0x2aea:0x05f4, size: 5
+				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, px, py, bitmapPtr);
 			}
 
-			if (local_0xc >= 2)
-			{
-				goto L05be;
-			}
-
-			this.oCPU.SI.Word = (ushort)local_0x12;
-			this.oCPU.CX.Low = (byte)local_0xc;
-			this.oCPU.CX.Low = this.oCPU.SHL_UInt8(this.oCPU.CX.Low, 0x1);
-			this.oCPU.SI.Word = this.oCPU.SAR_UInt16(this.oCPU.SI.Word, this.oCPU.CX.Low);
-			this.oCPU.SI.Word = this.oCPU.AND_UInt16(this.oCPU.SI.Word, 0x7);
-			this.oCPU.CX.Low = 0x3;
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, this.oCPU.CX.Low);
-			this.oCPU.BX.Word = (ushort)local_0xc;
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
-			this.oCPU.PUSH_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0xd294)));
-			this.oCPU.PUSH_UInt16((ushort)local_0xa);
-			this.oCPU.AX.Word = (ushort)local_0xc;
-			this.oCPU.AX.Word = this.oCPU.AND_UInt16(this.oCPU.AX.Word, 0x1);
-			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, (ushort)local_0x6);
-			goto L05ef;
-
-		L0635:
 			if (local_0xe == 0x1c)
 			{
 				// Instruction address 0x2aea:0x0656, size: 5
