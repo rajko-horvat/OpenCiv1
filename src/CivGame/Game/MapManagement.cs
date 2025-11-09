@@ -446,7 +446,7 @@ namespace OpenCiv1
 
 				// Instruction address 0x2aea:0x053e, size: 5
 				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19fc_Rectangle,
-					local_0x12 << 4, 64, 16, 16,
+					local_0x12 * 16, 64, 16, 16,
 					this.oParent.Var_aa_Rectangle,
 					local_0x6,
 					local_0xa);
@@ -469,16 +469,8 @@ namespace OpenCiv1
 				}
 			}
 
-			this.oCPU.AX.Word = (ushort)local_0x12;
-			local_0xe = this.oCPU.AX.Word;
-			this.oCPU.CX.Low = 0x6;
-			this.oCPU.AX.Word = this.oCPU.SAR_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.AX.Word = this.oCPU.AND_UInt16(this.oCPU.AX.Word, 0x3);
-			this.oCPU.CX.Word = (ushort)local_0x12;
-			this.oCPU.CX.Word = this.oCPU.SHL_UInt16(this.oCPU.CX.Word, 0x1);
-			this.oCPU.CX.Word = this.oCPU.SHL_UInt16(this.oCPU.CX.Word, 0x1);
-			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Word);
-			local_0x12 = this.oCPU.AX.Word;
+			local_0xe = local_0x12;
+			local_0x12 = ((local_0x12 >> 6) & 0x3) + (local_0x12 << 2);
 			local_0xc = 0x0;
 			goto L05ff;
 
@@ -511,10 +503,16 @@ namespace OpenCiv1
 			local_0xc = this.oCPU.INC_UInt16((ushort)local_0xc);
 
 		L05ff:
-			this.oCPU.CMP_UInt16((ushort)local_0xc, 0x4);
-			if (this.oCPU.Flags.GE) goto L0635;
-			this.oCPU.CMP_UInt16((ushort)local_0xc, 0x2);
-			if (this.oCPU.Flags.GE) goto L05be;
+			if (local_0xc >= 4)
+			{
+				goto L0635;
+			}
+
+			if (local_0xc >= 2)
+			{
+				goto L05be;
+			}
+
 			this.oCPU.SI.Word = (ushort)local_0x12;
 			this.oCPU.CX.Low = (byte)local_0xc;
 			this.oCPU.CX.Low = this.oCPU.SHL_UInt8(this.oCPU.CX.Low, 0x1);
@@ -533,66 +531,60 @@ namespace OpenCiv1
 			goto L05ef;
 
 		L0635:
-			this.oCPU.CMP_UInt16((ushort)local_0xe, 0x1c);
-			if (this.oCPU.Flags.NE) goto L065e;
+			if (local_0xe == 0x1c)
+			{
+				// Instruction address 0x2aea:0x0656, size: 5
+				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+					224, 100, 16, 16, this.oParent.Var_aa_Rectangle,
+					local_0x6,
+					local_0xa);
+			}
 
-			// Instruction address 0x2aea:0x0656, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-				224, 100, 16, 16, this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa);
+			if (local_0xe == 0xc1)
+			{
+				// Instruction address 0x2aea:0x0680, size: 5
+				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+					240, 100, 16, 16, this.oParent.Var_aa_Rectangle,
+					local_0x6,
+					local_0xa);
+			}
 
-		L065e:
-			this.oCPU.CMP_UInt16((ushort)local_0xe, 0xc1);
-			if (this.oCPU.Flags.NE) goto L0688;
+			if (local_0xe == 7)
+			{
+				// Instruction address 0x2aea:0x06a9, size: 5
+				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+					256, 100, 16, 16, this.oParent.Var_aa_Rectangle,
+					local_0x6,
+					local_0xa);
+			}
 
-			// Instruction address 0x2aea:0x0680, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-				240, 100, 16, 16, this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa);
+			if (local_0xe == 0x70)
+			{
+				// Instruction address 0x2aea:0x06d2, size: 5
+				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+					272, 100, 16, 16, this.oParent.Var_aa_Rectangle,
+					local_0x6,
+					local_0xa);
+			}
 
-		L0688:
-			this.oCPU.CMP_UInt16((ushort)local_0xe, 0x7);
-			if (this.oCPU.Flags.NE) goto L06b1;
+			if (local_0xe == 0x8f)
+			{
+				// Instruction address 0x2aea:0x06fc, size: 5
+				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+					288, 100, 16, 16, this.oParent.Var_aa_Rectangle,
+					local_0x6,
+					local_0xa);
+			}
 
-			// Instruction address 0x2aea:0x06a9, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-				256, 100, 16, 16, this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa);
+			if (local_0xe == 0xf8)
+			{
+				// Instruction address 0x2aea:0x0726, size: 5
+				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+					304, 100, 16, 16, this.oParent.Var_aa_Rectangle,
+					local_0x6,
+					local_0xa);
+			}
 
-		L06b1:
-			this.oCPU.CMP_UInt16((ushort)local_0xe, 0x70);
-			if (this.oCPU.Flags.NE) goto L06da;
-
-			// Instruction address 0x2aea:0x06d2, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-				272, 100, 16, 16, this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa);
-
-		L06da:
-			this.oCPU.CMP_UInt16((ushort)local_0xe, 0x8f);
-			if (this.oCPU.Flags.NE) goto L0704;
-
-			// Instruction address 0x2aea:0x06fc, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-				288, 100, 16, 16, this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa);
-
-		L0704:
-			this.oCPU.CMP_UInt16((ushort)local_0xe, 0xf8);
-			if (this.oCPU.Flags.NE) goto L072e;
-
-			// Instruction address 0x2aea:0x0726, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-				304, 100, 16, 16, this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa);
-
-		L072e:
 			local_0xc = 0x1;
 
 		L0733:
