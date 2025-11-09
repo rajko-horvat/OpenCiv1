@@ -359,46 +359,36 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x26);
 			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb278), 0x1);
-			if (this.oCPU.Flags.NE) goto L0430;
 
-			// Instruction address 0x2aea:0x03d0, size: 3
-			F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb278) == 1)
+			{
+				// Instruction address 0x2aea:0x03d0, size: 3
+				if (F0_2aea_1585_GetTerrainImprovements(xPos, yPos).HasFlag(TerrainImprovementFlagsEnum.City))
+				{
+					// Instruction address 0x2aea:0x03e1, size: 3
+					ushort ownerID = F0_2aea_1369_GetCityOwner(xPos, yPos);
+					// Instruction address 0x2aea:0x0408, size: 5
+					this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos * 4, yPos * 4, 4, 4,
+						this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(ownerID * 2 + 0x1946)));
 
-			this.oCPU.TEST_UInt8(this.oCPU.AX.Low, 0x1);
-			if (this.oCPU.Flags.E) goto L0413;
+					goto exit;
+				}
 
-			// Instruction address 0x2aea:0x03e1, size: 3
-			F0_2aea_1369_GetCityOwner(xPos, yPos);
+				// Instruction address 0x2aea:0x041a, size: 3
+				if ((TerrainTypeEnum)F0_2aea_134a_GetTerrainType(xPos, yPos) == TerrainTypeEnum.Ocean)
+				{
+					// Instruction address 0x2aea:0x0408, size: 5
+					this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos * 4, yPos * 4, 4, 4, 1);
+					goto exit;
+				}
 
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
-			// Instruction address 0x2aea:0x0408, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos * 4, yPos * 4, 4, 4,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x1946)));
+				this.oCPU.AX.Word = 0x2;
+				// Instruction address 0x2aea:0x0408, size: 5
+				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos * 4, yPos * 4, 4, 4, 2);
 
-			goto L0e23;
+				goto exit;
+			}
 
-		L0413:
-			// Instruction address 0x2aea:0x041a, size: 3
-			F0_2aea_134a_GetTerrainType(xPos, yPos);
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L042a;
-
-			// Instruction address 0x2aea:0x0408, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos * 4, yPos * 4, 4, 4, 1);
-
-			goto L0e23;
-
-		L042a:
-			this.oCPU.AX.Word = 0x2;
-			// Instruction address 0x2aea:0x0408, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos * 4, yPos * 4, 4, 4, 2);
-
-			goto L0e23;
-
-		L0430:
 			// Instruction address 0x2aea:0x0438, size: 5
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos - this.oParent.Var_d4cc_XPos);
 
@@ -426,7 +416,7 @@ namespace OpenCiv1
 
 			L0470:
 			this.oCPU.AX.Word = 0;
-			goto L0e23;
+			goto exit;
 
 		L0475:
 			// Instruction address 0x2aea:0x047c, size: 3
@@ -1285,7 +1275,7 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = 0x1;
 
-		L0e23:
+		exit:
 
 			// Draw grid lines
 			//this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, local_0x6 + 15, local_0xa, local_0x6 + 15, local_0xa + 15, 8);
