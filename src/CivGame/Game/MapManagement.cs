@@ -417,164 +417,160 @@ namespace OpenCiv1
 			// Instruction address 0x2aea:0x04ac, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			if (local_0x18 != (int)TerrainTypeEnum.Ocean)
+			// Draw ocean, coastal cells and river deltas
+			if (local_0x18 == (int)TerrainTypeEnum.Ocean)
 			{
-				goto L0789;
-			}
+				local_0x12 = 0;
 
-			// Draw ocean and coastal cells
-
-			local_0x12 = 0;
-
-			// Check VGA mode ?
-			if (this.oParent.Var_d762 == 0)
-			{
-				for (local_0xc = 1; local_0xc < 9; local_0xc += 2)
+				// Check VGA mode ?
+				if (this.oParent.Var_d762 == 0)
 				{
-					local_0x12 >>= 1;
-					direction = this.oParent.MoveOffsets[local_0xc];
-					// Instruction address 0x2aea:0x04e6, size: 5
-					xWrapped = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
-
-					// Instruction address 0x2aea:0x04f0, size: 3
-					if (F0_2aea_134a_GetTerrainType(xWrapped, yPos + direction.Y) != (ushort)TerrainTypeEnum.Ocean
-						// Instruction address 0x2aea:0x0507, size: 3
-						&& F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y) != 0)
+					for (local_0xc = 1; local_0xc < 9; local_0xc += 2)
 					{
-						local_0x12 |= 8;
+						local_0x12 >>= 1;
+						direction = this.oParent.MoveOffsets[local_0xc];
+						// Instruction address 0x2aea:0x04e6, size: 5
+						xWrapped = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+
+						// Instruction address 0x2aea:0x04f0, size: 3
+						if (F0_2aea_134a_GetTerrainType(xWrapped, yPos + direction.Y) != (ushort)TerrainTypeEnum.Ocean
+							// Instruction address 0x2aea:0x0507, size: 3
+							&& F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y) != 0)
+						{
+							local_0x12 |= 8;
+						}
 					}
-				}
 
-				// Instruction address 0x2aea:0x053e, size: 5
-				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19fc_Rectangle,
-					local_0x12 * 16, 64, 16, 16,
-					this.oParent.Var_aa_Rectangle,
-					local_0x6,
-					local_0xa);
-
-				goto L0789;
-			}
-
-			for (local_0xc = 1; local_0xc < 9; ++local_0xc)
-			{
-				direction = this.oParent.MoveOffsets[local_0xc];
-				// Instruction address 0x2aea:0x0566, size: 5
-				xWrapped = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
-
-				// Instruction address 0x2aea:0x0570, size: 3
-				if (F0_2aea_134a_GetTerrainType(xWrapped, yPos + direction.Y) != (ushort)TerrainTypeEnum.Ocean
-					// Instruction address 0x2aea:0x0587, size: 3
-					&& F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y) != 0)
-				{
-					local_0x12 |= 1 << (local_0xc - 1);
-				}
-			}
-
-			local_0xe = local_0x12;
-			local_0x12 = ((local_0x12 >> 6) & 3) + (local_0x12 << 2);
-
-			for (local_0xc = 0x0; local_0xc < 4; ++local_0xc)
-			{
-				int offset = local_0xc * 2 + (((local_0x12 >> ((byte)local_0xc * 2)) & 7) << 3);
-				ushort bitmapPtr = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(offset + 0xd294));
-
-				int px;
-				int py;
-
-				if (local_0xc >= 2)
-				{
-					px = local_0x6 - ((local_0xc & 1) << 3) + 8;
-					py = local_0xa + 8;
+					// Instruction address 0x2aea:0x053e, size: 5
+					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19fc_Rectangle,
+						local_0x12 * 16, 64, 16, 16,
+						this.oParent.Var_aa_Rectangle,
+						local_0x6,
+						local_0xa);
 				}
 				else
 				{
-					px = local_0x6 + ((local_0xc & 1) << 3);
-					py = local_0xa;
+					for (local_0xc = 1; local_0xc < 9; ++local_0xc)
+					{
+						direction = this.oParent.MoveOffsets[local_0xc];
+						// Instruction address 0x2aea:0x0566, size: 5
+						xWrapped = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+
+						// Instruction address 0x2aea:0x0570, size: 3
+						if (F0_2aea_134a_GetTerrainType(xWrapped, yPos + direction.Y) != (ushort)TerrainTypeEnum.Ocean
+							// Instruction address 0x2aea:0x0587, size: 3
+							&& F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y) != 0)
+						{
+							local_0x12 |= 1 << (local_0xc - 1);
+						}
+					}
+
+					local_0xe = local_0x12;
+					local_0x12 = ((local_0x12 >> 6) & 3) + (local_0x12 << 2);
+
+					for (local_0xc = 0x0; local_0xc < 4; ++local_0xc)
+					{
+						int offset = local_0xc * 2 + (((local_0x12 >> ((byte)local_0xc * 2)) & 7) << 3);
+						ushort bitmapPtr = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(offset + 0xd294));
+
+						int px;
+						int py;
+
+						if (local_0xc >= 2)
+						{
+							px = local_0x6 - ((local_0xc & 1) << 3) + 8;
+							py = local_0xa + 8;
+						}
+						else
+						{
+							px = local_0x6 + ((local_0xc & 1) << 3);
+							py = local_0xa;
+						}
+
+						// Instruction address 0x2aea:0x05f4, size: 5
+						this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, px, py, bitmapPtr);
+					}
+
+					if (local_0xe == 0x1c)
+					{
+						// Instruction address 0x2aea:0x0656, size: 5
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+							224, 100, 16, 16, this.oParent.Var_aa_Rectangle,
+							local_0x6,
+							local_0xa);
+					}
+
+					if (local_0xe == 0xc1)
+					{
+						// Instruction address 0x2aea:0x0680, size: 5
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+							240, 100, 16, 16, this.oParent.Var_aa_Rectangle,
+							local_0x6,
+							local_0xa);
+					}
+
+					if (local_0xe == 7)
+					{
+						// Instruction address 0x2aea:0x06a9, size: 5
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+							256, 100, 16, 16, this.oParent.Var_aa_Rectangle,
+							local_0x6,
+							local_0xa);
+					}
+
+					if (local_0xe == 0x70)
+					{
+						// Instruction address 0x2aea:0x06d2, size: 5
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+							272, 100, 16, 16, this.oParent.Var_aa_Rectangle,
+							local_0x6,
+							local_0xa);
+					}
+
+					if (local_0xe == 0x8f)
+					{
+						// Instruction address 0x2aea:0x06fc, size: 5
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+							288, 100, 16, 16, this.oParent.Var_aa_Rectangle,
+							local_0x6,
+							local_0xa);
+					}
+
+					if (local_0xe == 0xf8)
+					{
+						// Instruction address 0x2aea:0x0726, size: 5
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+							304, 100, 16, 16, this.oParent.Var_aa_Rectangle,
+							local_0x6,
+							local_0xa);
+					}
+
+					// Draw river deltas on top of coastal cells
+					for (local_0xc = 0x1; local_0xc < 9; local_0xc += 2)
+					{
+						direction = this.oParent.MoveOffsets[local_0xc];
+
+						// Instruction address 0x2aea:0x0748, size: 5
+						xWrapped = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+
+						// Instruction address 0x2aea:0x0752, size: 3
+						if (F0_2aea_134a_GetTerrainType(xWrapped, yPos + direction.Y) == (ushort)TerrainTypeEnum.River)
+						{
+							int offset = (local_0xc >> 1) << 1;
+
+							// Instruction address 0x2aea:0x0777, size: 5
+							this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+								local_0x6,
+								local_0xa,
+								this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(offset + 0xd2d4)));
+						}
+					}
 				}
-
-				// Instruction address 0x2aea:0x05f4, size: 5
-				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, px, py, bitmapPtr);
 			}
-
-			if (local_0xe == 0x1c)
+			else
 			{
-				// Instruction address 0x2aea:0x0656, size: 5
-				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-					224, 100, 16, 16, this.oParent.Var_aa_Rectangle,
-					local_0x6,
-					local_0xa);
-			}
-
-			if (local_0xe == 0xc1)
-			{
-				// Instruction address 0x2aea:0x0680, size: 5
-				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-					240, 100, 16, 16, this.oParent.Var_aa_Rectangle,
-					local_0x6,
-					local_0xa);
-			}
-
-			if (local_0xe == 7)
-			{
-				// Instruction address 0x2aea:0x06a9, size: 5
-				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-					256, 100, 16, 16, this.oParent.Var_aa_Rectangle,
-					local_0x6,
-					local_0xa);
-			}
-
-			if (local_0xe == 0x70)
-			{
-				// Instruction address 0x2aea:0x06d2, size: 5
-				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-					272, 100, 16, 16, this.oParent.Var_aa_Rectangle,
-					local_0x6,
-					local_0xa);
-			}
-
-			if (local_0xe == 0x8f)
-			{
-				// Instruction address 0x2aea:0x06fc, size: 5
-				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-					288, 100, 16, 16, this.oParent.Var_aa_Rectangle,
-					local_0x6,
-					local_0xa);
-			}
-
-			if (local_0xe == 0xf8)
-			{
-				// Instruction address 0x2aea:0x0726, size: 5
-				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-					304, 100, 16, 16, this.oParent.Var_aa_Rectangle,
-					local_0x6,
-					local_0xa);
-			}
-
-			// Draw river deltas on top of coastal cells
-			for (local_0xc = 0x1; local_0xc < 9; local_0xc += 2)
-			{
-				direction = this.oParent.MoveOffsets[local_0xc];
-
-				// Instruction address 0x2aea:0x0748, size: 5
-				xWrapped = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
-
-				// Instruction address 0x2aea:0x0752, size: 3
-				if (F0_2aea_134a_GetTerrainType(xWrapped, yPos + direction.Y) == (ushort)TerrainTypeEnum.River)
-				{
-					int offset = (local_0xc >> 1) << 1;
-
-					// Instruction address 0x2aea:0x0777, size: 5
-					this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-						local_0x6,
-						local_0xa,
-						this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(offset + 0xd2d4)));
-				}
-			}
-
-		L0789:
-			if ((ushort)local_0x18 != 0xa)
-			{
-				if (this.oParent.Var_d762 == 0x0)
+				// Draw grassland background for land cells
+				if (this.oParent.Var_d762 == 0)
 				{
 					// Instruction address 0x2aea:0x07cd, size: 5
 					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19fc_Rectangle, 0, 80, 16, 16, this.oParent.Var_aa_Rectangle,
