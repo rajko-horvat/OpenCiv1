@@ -352,6 +352,7 @@ namespace OpenCiv1
 			int local_0xc = 0;
 			int local_0xa = 0;
 			int local_0x6 = 0;
+			GPoint direction;
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -390,138 +391,84 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x2aea:0x0438, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos - this.oParent.Var_d4cc_XPos);
+			int xWrapped = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos - this.oParent.Var_d4cc_XPos);
 
-			this.oCPU.CX.Low = 0x4;
-			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x50);
+			local_0x6 = 80 + xWrapped * 16;
+			local_0xa = 8 + (yPos - this.oParent.Var_d75e_YPos) * 16;
 
-			local_0x6 = this.oCPU.AX.Word;
+			if (local_0x6 < 80 || local_0x6 >= 320 || local_0xa < 8 || local_0xa > 192)
+			{
+				this.oCPU.AX.Word = 0;
+				goto exit;
+			}
 
-			this.oCPU.AX.Word = (ushort)yPos;
-			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.Var_d75e_YPos);
-			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x8);
-
-			local_0xa = this.oCPU.AX.Word;
-
-			this.oCPU.CMP_UInt16((ushort)local_0x6, 0x50);
-			if (this.oCPU.Flags.L) goto L0470;
-			this.oCPU.CMP_UInt16((ushort)local_0x6, 0x140);
-			if (this.oCPU.Flags.GE) goto L0470;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x8);
-			if (this.oCPU.Flags.L) goto L0470;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xc0);
-			if (this.oCPU.Flags.LE) goto L0475;
-
-			L0470:
-			this.oCPU.AX.Word = 0;
-			goto exit;
-
-		L0475:
 			// Instruction address 0x2aea:0x047c, size: 3
-			F0_2aea_134a_GetTerrainType(xPos, yPos);
-
-			local_0x18 = this.oCPU.AX.Word;
+			local_0x18 = F0_2aea_134a_GetTerrainType(xPos, yPos);
 
 			// Instruction address 0x2aea:0x048c, size: 3
-			F0_2aea_15c1(xPos, yPos);
+			local_0x14 = F0_2aea_15c1(xPos, yPos);
 
-			local_0x14 = this.oCPU.AX.Word;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806), 0x0);
-			if (this.oCPU.Flags.E) goto L04ac;
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806) != 0)
+			{
+				// Instruction address 0x2aea:0x04a3, size: 3
+				local_0x14 = (int)F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
+			}
 
-			// Instruction address 0x2aea:0x04a3, size: 3
-			F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
-
-			local_0x14 = (int)this.oCPU.AX.Word;
-
-		L04ac:
 			// Instruction address 0x2aea:0x04ac, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oCPU.CMP_UInt16((ushort)local_0x18, 0xa);
-			if (this.oCPU.Flags.E) goto L04ba;
-			goto L0789;
+			if (local_0x18 != (int)TerrainTypeEnum.Ocean)
+			{
+				goto L0789;
+			}
 
-		L04ba:
+			// Draw ocean and coastal cells
+
 			local_0x12 = 0;
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
-			if (this.oCPU.Flags.E) goto L04c9;
-			goto L0549;
 
-		L04c9:
-			local_0xc = 1;
+			if (this.oParent.Var_d762 == 0)
+			{
+				for (local_0xc = 1; local_0xc < 9; local_0xc += 2)
+				{
+					local_0x12 >>= 1;
+					direction = this.oParent.MoveOffsets[local_0xc];
+					// Instruction address 0x2aea:0x04e6, size: 5
+					xWrapped = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
-		L04ce:
-			local_0x12 = this.oCPU.SAR_UInt16((ushort)local_0x12, 0x1);
+					// Instruction address 0x2aea:0x04f0, size: 3
+					if (F0_2aea_134a_GetTerrainType(xWrapped, yPos + direction.Y) != (ushort)TerrainTypeEnum.Ocean
+						// Instruction address 0x2aea:0x0507, size: 3
+						&& F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y) != 0)
+					{
+						local_0x12 |= 8;
+					}
+				}
 
-			this.oCPU.SI.Word = (ushort)local_0xc;
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
+				// Instruction address 0x2aea:0x053e, size: 5
+				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19fc_Rectangle,
+					local_0x12 << 4, 64, 16, 16,
+					this.oParent.Var_aa_Rectangle,
+					local_0x6,
+					local_0xa);
 
-			GPoint direction = this.oParent.MoveOffsets[(ushort)local_0xc];
+				goto L0789;
+			}
 
-			// Instruction address 0x2aea:0x04e6, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+			for (local_0xc = 1; local_0xc < 9; ++local_0xc)
+			{
+				direction = this.oParent.MoveOffsets[local_0xc];
+				// Instruction address 0x2aea:0x0566, size: 5
+				xWrapped = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
-			// Instruction address 0x2aea:0x04f0, size: 3
-			F0_2aea_134a_GetTerrainType((short)this.oCPU.AX.Word, yPos + direction.Y);
+				// Instruction address 0x2aea:0x0570, size: 3
+				if (F0_2aea_134a_GetTerrainType(xWrapped, yPos + direction.Y) != (ushort)TerrainTypeEnum.Ocean
+					// Instruction address 0x2aea:0x0587, size: 3
+					&& F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y) != 0)
+				{
+					local_0x12 |= 1 << (local_0xc - 1);
+				}
+			}
 
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.E) goto L0515;
-
-			// Instruction address 0x2aea:0x0507, size: 3
-			F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y);
-
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L0515;
-			local_0x12 = this.oCPU.OR_UInt8((byte)local_0x12, 0x8);
-
-		L0515:
-			local_0xc = this.oCPU.ADD_UInt16((ushort)local_0xc, 0x2);
-			this.oCPU.CMP_UInt16((ushort)local_0xc, 0x9);
-			if (this.oCPU.Flags.L) goto L04ce;
-
-			// Instruction address 0x2aea:0x053e, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19fc_Rectangle,
-				local_0x12 << 4, 64, 16, 16,
-				this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa);
-
-			goto L0789;
-
-		L0549:
-			local_0xc = 0x1;
-
-		L054e:
-			local_0x12 = this.oCPU.SAR_UInt16((ushort)local_0x12, 0x1);
-
-			this.oCPU.SI.Word = (ushort)local_0xc;
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
-
-			direction = this.oParent.MoveOffsets[(ushort)local_0xc];
-
-			// Instruction address 0x2aea:0x0566, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
-
-			// Instruction address 0x2aea:0x0570, size: 3
-			F0_2aea_134a_GetTerrainType((short)this.oCPU.AX.Word, yPos + direction.Y);
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.E) goto L0595;
-
-			// Instruction address 0x2aea:0x0587, size: 3
-			F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y);
-
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L0595;
-			local_0x12 = this.oCPU.OR_UInt8((byte)local_0x12, 0x80);
-
-		L0595:
-			local_0xc = this.oCPU.INC_UInt16((ushort)local_0xc);
-			this.oCPU.CMP_UInt16((ushort)local_0xc, 0x9);
-			if (this.oCPU.Flags.L) goto L054e;
 			this.oCPU.AX.Word = (ushort)local_0x12;
 			local_0xe = this.oCPU.AX.Word;
 			this.oCPU.CX.Low = 0x6;
