@@ -601,61 +601,40 @@ namespace OpenCiv1
 					this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((4 << 1) + 0xd4ce)));
 			}
 
-			this.oCPU.CMP_UInt16((ushort)local_0x18, 0xb);
-			if (this.oCPU.Flags.E) goto L0809;
-			goto L088d;
+			if (local_0x18 == (int)TerrainTypeEnum.River)
+			{
+				// Draw rivers
+				local_0x12 = 0x0;
 
-		L0809:
-			local_0x12 = 0x0;
-			local_0xc = 0x1;
+				for (local_0xc = 1; local_0xc < 9; local_0xc += 2)
+				{
+					local_0x12 >>= 1;
+					direction = this.oParent.MoveOffsets[local_0xc];
+					xWrapped = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
-		L0813:
-			local_0x12 = this.oCPU.SAR_UInt16((ushort)local_0x12, 0x1);
+					// Instruction address 0x2aea:0x082c, size: 3
+					TerrainTypeEnum neighborTerrain = (TerrainTypeEnum)F0_2aea_134a_GetTerrainType(xWrapped, yPos + direction.Y);
+					if (neighborTerrain == TerrainTypeEnum.River || neighborTerrain == TerrainTypeEnum.Ocean)
+					{
+						local_0x12 |= 8;
+					}
+				}
 
-			this.oCPU.SI.Word = (ushort)local_0xc;
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
+				if (this.oParent.Var_d762 == 0
+					// Instruction address 0x2aea:0x0862, size: 5
+					|| (this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 150) & 0xff) != 8)
+				{
+					local_0x12 += 16;
+				}
 
-			direction = this.oParent.MoveOffsets[(ushort)local_0xc];
+				// Instruction address 0x2aea:0x0885, size: 5
+				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+					local_0x6,
+					local_0xa,
+					this.oCPU.ReadUInt16(this.oCPU.DS.Word,
+						(ushort)(((ushort)local_0x12 << 1) + 0x6dfe)));
+			}
 
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
-
-			// Instruction address 0x2aea:0x082c, size: 3
-			F0_2aea_134a_GetTerrainType((short)this.oCPU.AX.Word, yPos + direction.Y);
-
-			int local_0x4 = this.oCPU.AX.Word;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xb);
-			if (this.oCPU.Flags.E) goto L083f;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L0843;
-
-			L083f:
-			local_0x12 = this.oCPU.OR_UInt8((byte)local_0x12, 0x8);
-
-		L0843:
-			local_0xc = this.oCPU.ADD_UInt16((ushort)local_0xc, 0x2);
-			this.oCPU.CMP_UInt16((ushort)local_0xc, 0x9);
-			if (this.oCPU.Flags.L) goto L0813;
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
-			if (this.oCPU.Flags.E) goto L086e;
-
-			// Instruction address 0x2aea:0x0862, size: 5
-			this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 150);
-
-			this.oCPU.TEST_UInt8(this.oCPU.AX.Low, 0x8);
-			if (this.oCPU.Flags.E) goto L0872;
-
-			L086e:
-			local_0x12 = this.oCPU.ADD_UInt16((ushort)local_0x12, 0x10);
-
-		L0872:
-			// Instruction address 0x2aea:0x0885, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word,
-					(ushort)(((ushort)local_0x12 << 1) + 0x6dfe)));
-
-		L088d:
 			this.oCPU.CMP_UInt16((ushort)local_0x18, 0xa);
 			if (this.oCPU.Flags.NE) goto L0896;
 			goto L099e;
