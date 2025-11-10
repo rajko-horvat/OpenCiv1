@@ -417,9 +417,9 @@ namespace OpenCiv1
 			// Instruction address 0x2aea:0x04ac, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			// Draw ocean, coastal cells and river deltas
 			if (local_0x18 == (int)TerrainTypeEnum.Ocean)
 			{
+				// Draw ocean, coastal cells and river deltas
 				local_0x12 = 0;
 
 				// Check VGA mode ?
@@ -635,115 +635,64 @@ namespace OpenCiv1
 						(ushort)(((ushort)local_0x12 << 1) + 0x6dfe)));
 			}
 
-			this.oCPU.CMP_UInt16((ushort)local_0x18, 0xa);
-			if (this.oCPU.Flags.NE) goto L0896;
-			goto L099e;
+			if (local_0x18 != (int)TerrainTypeEnum.Ocean
+				&& local_0x18 != (int)TerrainTypeEnum.River)
+			{
+				// Blend seams between cells with the same terrain types
+				if (this.oParent.Var_d762 != 0)
+				{
+					local_0x12 = 0x0;
 
-		L0896:
-			this.oCPU.CMP_UInt16((ushort)local_0x18, 0xb);
-			if (this.oCPU.Flags.NE) goto L089f;
-			goto L099e;
+					for (local_0xc = 1; local_0xc < 9; local_0xc += 2)
+					{
+						local_0x12 >>= 1;
+						direction = this.oParent.MoveOffsets[local_0xc];
 
-		L089f:
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
-			if (this.oCPU.Flags.NE) goto L08a9;
-			goto L0955;
+						// Instruction address 0x2aea:0x08cb, size: 5
+						xWrapped = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
 
-		L08a9:
-			local_0x12 = 0x0;
-			local_0xc = 0x1;
+						// Instruction address 0x2aea:0x08d5, size: 3
+						if (F0_2aea_134a_GetTerrainType(xWrapped, yPos + direction.Y) == local_0x18
+							// Instruction address 0x2aea:0x08ec, size: 3
+							&& F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y) != 0)
+						{
 
-		L08b3:
-			local_0x12 = this.oCPU.SAR_UInt16((ushort)local_0x12, 0x1);
+							local_0x12 |= 8;
+						}
+					}
 
-			this.oCPU.SI.Word = (ushort)local_0xc;
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
+					// Instruction address 0x2aea:0x091e, size: 5
+					this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+						local_0x6,
+						local_0xa,
+						this.oCPU.ReadUInt16(this.oCPU.DS.Word,
+							(ushort)(local_0x12 * 2 + (local_0x18 << 5) + 0xb886)));
 
-			direction = this.oParent.MoveOffsets[(ushort)local_0xc];
+					if (local_0x18 == (int)TerrainTypeEnum.Grassland && ((xPos * 7 + yPos * 11) & 2) == 0)
+					{
+						// Draw grassland tiles with production bonus
 
-			// Instruction address 0x2aea:0x08cb, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+						// Instruction address 0x2aea:0x0996, size: 5
+						this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+							local_0x6 + 4,
+							local_0xa + 4,
+							this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb880));
+					}
+				}
+				else
+				{
+					int index = local_0x18 == (int)TerrainTypeEnum.Grassland
+						? ((xPos * 7 + yPos * 11) & 2) >> 1
+						: (xPos + yPos) & 1;
+					
+					ushort bitmapPtr = this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(index * 2 + (local_0x18 << 5) + 0xb886));
 
-			// Instruction address 0x2aea:0x08d5, size: 3
-			F0_2aea_134a_GetTerrainType((short)this.oCPU.AX.Word, yPos + direction.Y);
+					// Instruction address 0x2aea:0x0996, size: 5
+					this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+						local_0x6, local_0xa, bitmapPtr);
+				}
+			}
 
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, (ushort)local_0x18);
-			if (this.oCPU.Flags.NE) goto L08fa;
-
-			// Instruction address 0x2aea:0x08ec, size: 3
-			F0_2aea_1326_CheckMapBounds(0, yPos + direction.Y);
-
-			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L08fa;
-			local_0x12 = this.oCPU.OR_UInt8((byte)local_0x12, 0x8);
-
-		L08fa:
-			local_0xc = this.oCPU.ADD_UInt16((ushort)local_0xc, 0x2);
-			this.oCPU.CMP_UInt16((ushort)local_0xc, 0x9);
-			if (this.oCPU.Flags.L) goto L08b3;
-
-			// Instruction address 0x2aea:0x091e, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word,
-					(ushort)(((ushort)local_0x12 << 1) +
-					((ushort)local_0x18 << 5) + 0xb886)));
-
-			this.oCPU.CMP_UInt16((ushort)local_0x18, 0x2);
-			if (this.oCPU.Flags.NE) goto L099e;
-			this.oCPU.AX.Word = 0x7;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)xPos);
-			this.oCPU.CX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0xb;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)yPos);
-			this.oCPU.CX.Low = this.oCPU.ADD_UInt8(this.oCPU.CX.Low, this.oCPU.AX.Low);
-			this.oCPU.TEST_UInt8(this.oCPU.CX.Low, 0x2);
-			if (this.oCPU.Flags.NE) goto L099e;
-			this.oCPU.PUSH_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb880));
-			this.oCPU.AX.Word = (ushort)local_0xa;
-			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x4);
-			this.oCPU.PUSH_UInt16(this.oCPU.AX.Word);
-			this.oCPU.AX.Word = (ushort)local_0x6;
-			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x4);
-			this.oCPU.PUSH_UInt16(this.oCPU.AX.Word);
-			goto L0992;
-
-		L0955:
-			this.oCPU.CMP_UInt16((ushort)local_0x18, 0x2);
-			if (this.oCPU.Flags.NE) goto L0976;
-			this.oCPU.AX.Word = 0xb;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)yPos);
-			this.oCPU.CX.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0x7;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)xPos);
-			this.oCPU.AX.Low = this.oCPU.ADD_UInt8(this.oCPU.AX.Low, this.oCPU.CX.Low);
-			this.oCPU.AX.High = 0;
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.SI.Word = this.oCPU.AND_UInt16(this.oCPU.SI.Word, 0x2);
-			this.oCPU.SI.Word = this.oCPU.SHR_UInt16(this.oCPU.SI.Word, 0x1);
-			goto L097f;
-
-		L0976:
-			this.oCPU.SI.Word = (ushort)xPos;
-			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, (ushort)yPos);
-			this.oCPU.SI.Word = this.oCPU.AND_UInt16(this.oCPU.SI.Word, 0x1);
-
-		L097f:
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
-			this.oCPU.BX.Word = (ushort)local_0x18;
-			this.oCPU.CX.Low = 0x5;
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, this.oCPU.CX.Low);
-			this.oCPU.PUSH_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + this.oCPU.SI.Word + 0xb886)));
-			this.oCPU.PUSH_UInt16((ushort)local_0xa);
-			this.oCPU.PUSH_UInt16((ushort)local_0x6);
-
-		L0992:
-			// Instruction address 0x2aea:0x0996, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-				(short)this.oCPU.POP_UInt16(), (short)this.oCPU.POP_UInt16(), this.oCPU.POP_UInt16());
-
-		L099e:
 			this.oCPU.TEST_UInt8((byte)local_0x14, 0x40);
 			if (this.oCPU.Flags.NE) goto L09a7;
 			goto L0a40;
