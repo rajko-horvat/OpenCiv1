@@ -532,7 +532,7 @@ namespace OpenCiv1
 			this.oCPU.TEST_UInt8(this.oParent.CivState.Cities[cityID].StatusFlag, 0x2);
 			if (this.oCPU.Flags.NE) goto L04e7;
 
-			if (this.oParent.CivState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].TerrainCategory == UnitCategoryEnum.Ocean)
+			if (this.oParent.CivState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].UnitCategory == UnitCategoryEnum.Ocean)
 				goto L05c1;
 
 		L04e7:
@@ -1734,7 +1734,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].TerrainCategory != UnitCategoryEnum.Land)
+			if (this.oParent.CivState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].UnitCategory != UnitCategoryEnum.Land)
 				goto L1075;
 
 			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46));
@@ -1905,7 +1905,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46)));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.UnitDefinitions[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].TerrainCategory != UnitCategoryEnum.Air)
+			if (this.oParent.CivState.UnitDefinitions[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].UnitCategory != UnitCategoryEnum.Air)
 				goto L11d9;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x134), this.oCPU.SHL_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x134)), 0x1));
