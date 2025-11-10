@@ -693,47 +693,45 @@ namespace OpenCiv1
 				}
 			}
 
-			this.oCPU.TEST_UInt8((byte)local_0x14, 0x40);
-			if (this.oCPU.Flags.NE) goto L09a7;
-			goto L0a40;
+			if (local_0x14.HasFlag(TerrainImprovementFlagsEnum.Pollution))
+			{
+				// Draw pollution
+				if (this.oParent.Var_d762 != 0)
+				{
+					// Instruction address 0x2aea:0x09bc, size: 5
+					this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+						local_0x6,
+						local_0xa,
+						this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd4da));
+				}
+				else
+				{
+					// Instruction address 0x2aea:0x09dc, size: 5
+					this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
+						local_0x6,
+						local_0xa,
+						16, 16, 2, 0);
 
-		L09a7:
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
-			if (this.oCPU.Flags.E) goto L09c6;
+					// Instruction address 0x2aea:0x09fb, size: 5
+					this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
+						local_0x6,
+						local_0xa,
+						16, 16, 10, 15);
 
-			// Instruction address 0x2aea:0x09bc, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd4da));
-			goto L0a40;
+					// Instruction address 0x2aea:0x0a1a, size: 5
+					this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
+						local_0x6,
+						local_0xa,
+						16, 16, 9, 8);
 
-		L09c6:
-			// Instruction address 0x2aea:0x09dc, size: 5
-			this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa,
-				16, 16, 2, 0);
+					// Instruction address 0x2aea:0x0a38, size: 5
+					this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
+						local_0x6,
+						local_0xa,
+						16, 16, 11, 0);
+				}
+			}
 
-			// Instruction address 0x2aea:0x09fb, size: 5
-			this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa,
-				16, 16, 10, 15);
-
-			// Instruction address 0x2aea:0x0a1a, size: 5
-			this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa,
-				16, 16, 9, 8);
-
-			// Instruction address 0x2aea:0x0a38, size: 5
-			this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-				local_0x6,
-				local_0xa,
-				16, 16, 11, 0);
-
-		L0a40:
 			this.oCPU.TEST_UInt8((byte)local_0x14, 0x8);
 			if (this.oCPU.Flags.NE) goto L0a49;
 			goto L0ae8;
