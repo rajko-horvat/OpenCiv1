@@ -309,34 +309,34 @@ namespace OpenCiv1
 
 		// Unit definitions
 		private UnitDefinition[] aUnitDefinitions = new UnitDefinition[] {
-			new UnitDefinition(UnitTypeEnum.Settlers, "Settlers", TechnologyEnum.NewFutureTechnology, 0, 1, 0, 0, 1, 4, 0, 0, 0, TechnologyEnum.None),	// 0
-			new UnitDefinition(UnitTypeEnum.Militia, "Militia", TechnologyEnum.Gunpowder, 0, 1, 0, 1, 1, 1, 0, 0, 2, TechnologyEnum.None),	// 1
-			new UnitDefinition(UnitTypeEnum.Phalanx, "Phalanx", TechnologyEnum.Gunpowder, 0, 1, 0, 1, 2, 2, 0, 0, 2, TechnologyEnum.BronzeWorking),	// 2
-			new UnitDefinition(UnitTypeEnum.Legion, "Legion", TechnologyEnum.Conscription, 0, 1, 0, 3, 1, 2, 0, 0, 1, TechnologyEnum.IronWorking),	// 3
-			new UnitDefinition(UnitTypeEnum.Musketeers, "Musketeers", TechnologyEnum.Conscription, 0, 1, 0, 2, 3, 3, 0, 0, 2, TechnologyEnum.Gunpowder),	// 4
-			new UnitDefinition(UnitTypeEnum.Riflemen, "Riflemen", TechnologyEnum.NewFutureTechnology, 0, 1, 0, 3, 5, 3, 0, 0, 2, TechnologyEnum.Conscription),	// 5
-			new UnitDefinition(UnitTypeEnum.Cavalry, "Cavalry", TechnologyEnum.Conscription, 0, 2, 0, 2, 1, 2, 0, 0, 1, TechnologyEnum.HorsebackRiding),	// 6
-			new UnitDefinition(UnitTypeEnum.Knights, "Knights", TechnologyEnum.Automobile, 0, 2, 0, 4, 2, 4, 0, 0, 1, TechnologyEnum.Chivalry),	// 7
-			new UnitDefinition(UnitTypeEnum.Catapult, "Catapult", TechnologyEnum.Metallurgy, 0, 1, 0, 6, 1, 4, 0, 0, 1, TechnologyEnum.Mathematics),	// 8
-			new UnitDefinition(UnitTypeEnum.Cannon, "Cannon", TechnologyEnum.Robotics, 0, 1, 0, 8, 1, 4, 0, 0, 1, TechnologyEnum.Metallurgy),	// 9
-			new UnitDefinition(UnitTypeEnum.Chariot, "Chariot", TechnologyEnum.Chivalry, 0, 2, 0, 4, 1, 4, 0, 0, 1, TechnologyEnum.TheWheel),	// 10
-			new UnitDefinition(UnitTypeEnum.Armor, "Armor", TechnologyEnum.NewFutureTechnology, 0, 3, 0, 10, 5, 8, 0, 0, 1, TechnologyEnum.Automobile),	// 11
-			new UnitDefinition(UnitTypeEnum.MechanicInfantry, "Mech. Inf.", TechnologyEnum.NewFutureTechnology, 0, 3, 0, 6, 6, 5, 0, 0, 2, TechnologyEnum.LaborUnion),	// 12
-			new UnitDefinition(UnitTypeEnum.Artillery, "Artillery", TechnologyEnum.NewFutureTechnology, 0, 2, 0, 12, 2, 6, 0, 0, 1, TechnologyEnum.Robotics),	// 13
-			new UnitDefinition(UnitTypeEnum.Fighter, "Fighter", TechnologyEnum.NewFutureTechnology, 1, 10, 1, 4, 2, 6, 2, 0, 4, TechnologyEnum.Flight),	// 14
-			new UnitDefinition(UnitTypeEnum.Bomber, "Bomber", TechnologyEnum.NewFutureTechnology, 1, 8, 2, 12, 1, 12, 2, 0, 1, TechnologyEnum.AdvancedFlight),	// 15
-			new UnitDefinition(UnitTypeEnum.Trireme, "Trireme", TechnologyEnum.Navigation, 2, 3, 0, 1, 0, 4, 0, 2, 5, TechnologyEnum.Mapmaking),	// 16
-			new UnitDefinition(UnitTypeEnum.Sail, "Sail", TechnologyEnum.Magnetism, 2, 3, 0, 1, 1, 4, 0, 3, 5, TechnologyEnum.Navigation),	// 17
-			new UnitDefinition(UnitTypeEnum.Frigate, "Frigate", TechnologyEnum.Industrialization, 2, 3, 0, 2, 2, 4, 0, 4, 5, TechnologyEnum.Magnetism),	// 18
-			new UnitDefinition(UnitTypeEnum.Ironclad, "Ironclad", TechnologyEnum.Combustion, 2, 4, 0, 4, 4, 6, 0, 0, 3, TechnologyEnum.SteamEngine),	// 19
-			new UnitDefinition(UnitTypeEnum.Cruiser, "Cruiser", TechnologyEnum.NewFutureTechnology, 2, 6, 0, 6, 6, 8, 3, 0, 3, TechnologyEnum.Combustion),	// 20
-			new UnitDefinition(UnitTypeEnum.Battleship, "Battleship", TechnologyEnum.NewFutureTechnology, 2, 4, 0, 18, 12, 16, 3, 0, 3, TechnologyEnum.Steel),	// 21
-			new UnitDefinition(UnitTypeEnum.Submarine, "Submarine", TechnologyEnum.NewFutureTechnology, 2, 3, 0, 8, 2, 5, 3, 0, 3, TechnologyEnum.MassProduction),	// 22
-			new UnitDefinition(UnitTypeEnum.Carrier, "Carrier", TechnologyEnum.NewFutureTechnology, 2, 5, 0, 1, 12, 16, 3, 0, 3, TechnologyEnum.AdvancedFlight),	// 23
-			new UnitDefinition(UnitTypeEnum.Transport, "Transport", TechnologyEnum.NewFutureTechnology, 2, 4, 0, 0, 3, 5, 0, 8, 5, TechnologyEnum.Industrialization),	// 24
-			new UnitDefinition(UnitTypeEnum.Nuclear, "Nuclear", TechnologyEnum.NewFutureTechnology, 1, 16, 1, 99, 0, 16, 0, 0, 1, TechnologyEnum.Rocketry),	// 25
-			new UnitDefinition(UnitTypeEnum.Diplomat, "Diplomat", TechnologyEnum.NewFutureTechnology, 0, 2, 0, 0, 0, 3, 0, 0, 6, TechnologyEnum.Writing),	// 26
-			new UnitDefinition(UnitTypeEnum.Caravan, "Caravan", TechnologyEnum.NewFutureTechnology, 0, 1, 0, 0, 1, 5, 0, 0, 6, TechnologyEnum.Trade)}; // 27
+			new UnitDefinition(UnitTypeEnum.Settlers, "Settlers", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Land, 1, 0, 0, 1, 4, 0, 0, UnitAIRoleEnum.Settler, TechnologyEnum.None),	// 0
+			new UnitDefinition(UnitTypeEnum.Militia, "Militia", TechnologyEnum.Gunpowder, UnitCategoryEnum.Land, 1, 0, 1, 1, 1, 0, 0, UnitAIRoleEnum.Defense, TechnologyEnum.None),	// 1
+			new UnitDefinition(UnitTypeEnum.Phalanx, "Phalanx", TechnologyEnum.Gunpowder, UnitCategoryEnum.Land, 1, 0, 1, 2, 2, 0, 0, UnitAIRoleEnum.Defense, TechnologyEnum.BronzeWorking),	// 2
+			new UnitDefinition(UnitTypeEnum.Legion, "Legion", TechnologyEnum.Conscription, UnitCategoryEnum.Land, 1, 0, 3, 1, 2, 0, 0, UnitAIRoleEnum.LandAttack, TechnologyEnum.IronWorking),	// 3
+			new UnitDefinition(UnitTypeEnum.Musketeers, "Musketeers", TechnologyEnum.Conscription, UnitCategoryEnum.Land, 1, 0, 2, 3, 3, 0, 0, UnitAIRoleEnum.Defense, TechnologyEnum.Gunpowder),	// 4
+			new UnitDefinition(UnitTypeEnum.Riflemen, "Riflemen", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Land, 1, 0, 3, 5, 3, 0, 0, UnitAIRoleEnum.Defense, TechnologyEnum.Conscription),	// 5
+			new UnitDefinition(UnitTypeEnum.Cavalry, "Cavalry", TechnologyEnum.Conscription, UnitCategoryEnum.Land, 2, 0, 2, 1, 2, 0, 0, UnitAIRoleEnum.LandAttack, TechnologyEnum.HorsebackRiding),	// 6
+			new UnitDefinition(UnitTypeEnum.Knights, "Knights", TechnologyEnum.Automobile, UnitCategoryEnum.Land, 2, 0, 4, 2, 4, 0, 0, UnitAIRoleEnum.LandAttack, TechnologyEnum.Chivalry),	// 7
+			new UnitDefinition(UnitTypeEnum.Catapult, "Catapult", TechnologyEnum.Metallurgy, UnitCategoryEnum.Land, 1, 0, 6, 1, 4, 0, 0, UnitAIRoleEnum.LandAttack, TechnologyEnum.Mathematics),	// 8
+			new UnitDefinition(UnitTypeEnum.Cannon, "Cannon", TechnologyEnum.Robotics, UnitCategoryEnum.Land, 1, 0, 8, 1, 4, 0, 0, UnitAIRoleEnum.LandAttack, TechnologyEnum.Metallurgy),	// 9
+			new UnitDefinition(UnitTypeEnum.Chariot, "Chariot", TechnologyEnum.Chivalry, UnitCategoryEnum.Land, 2, 0, 4, 1, 4, 0, 0, UnitAIRoleEnum.LandAttack, TechnologyEnum.TheWheel),	// 10
+			new UnitDefinition(UnitTypeEnum.Armor, "Armor", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Land, 3, 0, 10, 5, 8, 0, 0, UnitAIRoleEnum.LandAttack, TechnologyEnum.Automobile),	// 11
+			new UnitDefinition(UnitTypeEnum.MechanicInfantry, "Mech. Inf.", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Land, 3, 0, 6, 6, 5, 0, 0, UnitAIRoleEnum.Defense, TechnologyEnum.LaborUnion),	// 12
+			new UnitDefinition(UnitTypeEnum.Artillery, "Artillery", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Land, 2, 0, 12, 2, 6, 0, 0, UnitAIRoleEnum.LandAttack, TechnologyEnum.Robotics),	// 13
+			new UnitDefinition(UnitTypeEnum.Fighter, "Fighter", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Air, 10, 1, 4, 2, 6, 2, 0, UnitAIRoleEnum.AirAttack, TechnologyEnum.Flight),	// 14
+			new UnitDefinition(UnitTypeEnum.Bomber, "Bomber", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Air, 8, 2, 12, 1, 12, 2, 0, UnitAIRoleEnum.LandAttack, TechnologyEnum.AdvancedFlight),	// 15
+			new UnitDefinition(UnitTypeEnum.Trireme, "Trireme", TechnologyEnum.Navigation, UnitCategoryEnum.Ocean, 3, 0, 1, 0, 4, 0, 2, UnitAIRoleEnum.SeaTransport, TechnologyEnum.Mapmaking),	// 16
+			new UnitDefinition(UnitTypeEnum.Sail, "Sail", TechnologyEnum.Magnetism, UnitCategoryEnum.Ocean, 3, 0, 1, 1, 4, 0, 3, UnitAIRoleEnum.SeaTransport, TechnologyEnum.Navigation),	// 17
+			new UnitDefinition(UnitTypeEnum.Frigate, "Frigate", TechnologyEnum.Industrialization, UnitCategoryEnum.Ocean, 3, 0, 2, 2, 4, 0, 4, UnitAIRoleEnum.SeaTransport, TechnologyEnum.Magnetism),	// 18
+			new UnitDefinition(UnitTypeEnum.Ironclad, "Ironclad", TechnologyEnum.Combustion, UnitCategoryEnum.Ocean, 4, 0, 4, 4, 6, 0, 0, UnitAIRoleEnum.SeaAttack, TechnologyEnum.SteamEngine),	// 19
+			new UnitDefinition(UnitTypeEnum.Cruiser, "Cruiser", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Ocean, 6, 0, 6, 6, 8, 3, 0, UnitAIRoleEnum.SeaAttack, TechnologyEnum.Combustion),	// 20
+			new UnitDefinition(UnitTypeEnum.Battleship, "Battleship", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Ocean, 4, 0, 18, 12, 16, 3, 0, UnitAIRoleEnum.SeaAttack, TechnologyEnum.Steel),	// 21
+			new UnitDefinition(UnitTypeEnum.Submarine, "Submarine", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Ocean, 3, 0, 8, 2, 5, 3, 0, UnitAIRoleEnum.SeaAttack, TechnologyEnum.MassProduction),	// 22
+			new UnitDefinition(UnitTypeEnum.Carrier, "Carrier", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Ocean, 5, 0, 1, 12, 16, 3, 0, UnitAIRoleEnum.SeaAttack, TechnologyEnum.AdvancedFlight),	// 23
+			new UnitDefinition(UnitTypeEnum.Transport, "Transport", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Ocean, 4, 0, 0, 3, 5, 0, 8, UnitAIRoleEnum.SeaTransport, TechnologyEnum.Industrialization),	// 24
+			new UnitDefinition(UnitTypeEnum.Nuclear, "Nuclear", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Air, 16, 1, 99, 0, 16, 0, 0, UnitAIRoleEnum.LandAttack, TechnologyEnum.Rocketry),	// 25
+			new UnitDefinition(UnitTypeEnum.Diplomat, "Diplomat", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Land, 2, 0, 0, 0, 3, 0, 0, UnitAIRoleEnum.Civilian, TechnologyEnum.Writing),	// 26
+			new UnitDefinition(UnitTypeEnum.Caravan, "Caravan", TechnologyEnum.NewFutureTechnology, UnitCategoryEnum.Land, 1, 0, 0, 1, 5, 0, 0, UnitAIRoleEnum.Civilian, TechnologyEnum.Trade)}; // 27
 
 		private ImprovementDefinition[] aImprovementDefinitions = new ImprovementDefinition[] {
 			new ImprovementDefinition(0, "NONE", 8, 0, TechnologyEnum.None, TechnologyEnum.None),
