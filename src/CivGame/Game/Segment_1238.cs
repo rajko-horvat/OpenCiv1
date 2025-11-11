@@ -87,64 +87,62 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x009f, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0626();
 
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Coins;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a), this.oCPU.AX.Word);
+			short playerCoins = this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Coins;
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd760, 0);
 			this.oParent.Var_6b92 = 0;
 			this.oParent.CivState.MaximumTechnologyCount = 0;
+
+			// Active players = 0
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xde20, 0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0);
 
-		L00c2:
-			this.oCPU.AX.Word = 0x1;
-			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
-			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.ActiveCivilizations);
-			if (this.oCPU.Flags.E) goto L00e7;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xde20, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xde20)));
-			this.oCPU.SI.Word = (ushort)this.oParent.CivState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].DiscoveredTechnologyCount;
+			short playerID = 0;
 
-			if (this.oParent.CivState.MaximumTechnologyCount < (short)this.oCPU.SI.Word)
+			for (playerID = 0; playerID < 8; ++playerID)
 			{
-				this.oParent.CivState.MaximumTechnologyCount = (short)this.oCPU.SI.Word;
+				if ((this.oParent.CivState.ActiveCivilizations & (1 << playerID)) == 0)
+				{
+					continue;
+				}
+
+				// Count active players
+				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xde20, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xde20)));
+
+				short discoveredCount = this.oParent.CivState.Players[playerID].DiscoveredTechnologyCount;
+				if (this.oParent.CivState.MaximumTechnologyCount < discoveredCount)
+				{
+					this.oParent.CivState.MaximumTechnologyCount = discoveredCount;
+				}
 			}
 
-		L00e7:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x8);
-			if (this.oCPU.Flags.L) goto L00c2;
-			if (this.oParent.CivState.TurnCount != 0) goto L0147;
+			if (this.oParent.CivState.TurnCount == 0)
+			{
+				Player humanPlayer = this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID];
+				Unit startingUnit = humanPlayer.Units[0];
+
+				// Center camera on starting unit
+				this.oParent.Var_d4cc_XPos = (short)(startingUnit.Position.X - 7);
+				this.oParent.Var_d75e_YPos = (short)(startingUnit.Position.Y - 6);
+
+				// Instruction address 0x1238:0x0119, size: 3
+				F0_1238_1b44();
+
+				if (this.oParent.CivState.DifficultyLevel == 0)
+				{
+					// Instruction address 0x1238:0x012a, size: 5
+					this.oParent.Segment_1403.F0_1403_4060(this.oParent.CivState.HumanPlayerID, 0);
+
+					// Show UI help on first turn
+					this.oParent.MainIntro.F2_0000_17d9();
+
+					// Instruction address 0x1238:0x0138, size: 3
+					F0_1238_1b44();
+				}
 			
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.CivState.HumanPlayerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
+				// Instruction address 0x1238:0x013f, size: 5
+				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
+			}
 
-			this.oParent.Var_d4cc_XPos = 
-				(short)(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Units[0].Position.X - 7);
-
-			this.oParent.Var_d75e_YPos = 
-				(short)(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Units[0].Position.Y - 6);
-
-			// Instruction address 0x1238:0x0119, size: 3
-			F0_1238_1b44();
-			
-			if (this.oParent.CivState.DifficultyLevel != 0) goto L013b;
-
-			// Instruction address 0x1238:0x012a, size: 5
-			this.oParent.Segment_1403.F0_1403_4060(this.oParent.CivState.HumanPlayerID, 0);
-
-			this.oParent.MainIntro.F2_0000_17d9();
-
-			// Instruction address 0x1238:0x0138, size: 3
-			F0_1238_1b44();
-
-		L013b:
-			// Instruction address 0x1238:0x013f, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
-
-		L0147:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x0);
 			goto L026a;
 
@@ -324,7 +322,7 @@ namespace OpenCiv1
 				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Coins >= 100) goto L036d;
 
 			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Coins;
-			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1a)));
+			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)playerCoins);
 			this.oCPU.CX.Word = 0xa;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
 			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Coins);
