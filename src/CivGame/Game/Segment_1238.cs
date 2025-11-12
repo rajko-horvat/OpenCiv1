@@ -143,136 +143,127 @@ namespace OpenCiv1
 				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 			}
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x0);
-			goto L026a;
-
-		L014f:
-			// Instruction address 0x1238:0x0164, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 2, 192, 6, 6, 8);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16), 0x0);
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.HumanPlayerID;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L0183;
-
-			// Instruction address 0x1238:0x0179, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16), 0x1);
-
-		L0183:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdf60), 0x0);
-			if (this.oCPU.Flags.NE) goto L0195;
-			
-			// Instruction address 0x1238:0x018d, size: 5
-			this.oParent.Segment_1ade.F0_1ade_0006(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
-			
-		L0195:
-			if (this.oParent.CivState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Coins > 0x7530)
+			for (playerID = 0; playerID < 8; ++playerID)
 			{
-				this.oParent.CivState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Coins = 0x7530;
+				this.oParent.CivState.Players[playerID].Score = 0;
+
+				if ((this.oParent.CivState.ActiveCivilizations & (1 << playerID)) == 0)
+				{
+					continue;
+				}
+
+				if (playerID < this.oParent.CivState.HumanPlayerID && this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdf60) != 0)
+				{
+					continue;
+				}
+
+				// Blink 'wait' status at the bottom left corner of the screen
+				// Instruction address 0x1238:0x0164, size: 5
+				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 2, 192, 6, 6, 8); 
+
+				bool playerIsHuman = false;
+
+				if (this.oParent.CivState.HumanPlayerID == playerID)
+				{
+					// Instruction address 0x1238:0x0179, size: 5
+					this.oParent.Segment_11a8.F0_11a8_0250();
+
+					playerIsHuman = true;
+				}
+
+				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdf60) == 0)
+				{
+					// Instruction address 0x1238:0x018d, size: 5
+					this.oParent.Segment_1ade.F0_1ade_0006(playerID);
+				}
+
+				if (this.oParent.CivState.Players[playerID].Coins > 30000)
+				{
+					this.oParent.CivState.Players[playerID].Coins = 30000;
+				}
+
+				// Instruction address 0x1238:0x01ab, size: 5
+				this.oParent.Segment_2517.F0_2517_0004(playerID);
+
+				// Instruction address 0x1238:0x01b6, size: 5
+				this.oParent.Segment_25fb.F0_25fb_0004(playerID);
+
+				// Instruction address 0x1238:0x01c1, size: 5
+				this.oParent.Segment_25fb.F0_25fb_2fd7(playerID);
+
+				// Blink 'wait' status
+				// Instruction address 0x1238:0x01de, size: 5
+				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 2, 192, 6, 6, 15); 
+
+				if (playerID == this.oParent.CivState.HumanPlayerID)
+				{
+					// Instruction address 0x1238:0x01ef, size: 3
+					F0_1238_107e();
+
+					if (this.oParent.CivState.Players[playerID].CityCount == 0 && this.oParent.CivState.Players[playerID].SettlerCount == 0)
+					{
+						// Human player lost the game
+
+						// Instruction address 0x1238:0x0205, size: 5
+						this.oParent.Segment_11a8.F0_11a8_0268();
+
+						this.oParent.MainIntro.F2_0000_152a();
+
+						// game state = player lost
+						this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, 0xffff);
+
+						// Instruction address 0x1238:0x0215, size: 5
+						this.oParent.Segment_11a8.F0_11a8_0250();
+					}
+
+					if (this.oParent.CivState.Year > 0)
+					{
+						oParent.CivState.PeaceTurnCount++;
+					}
+				}
+
+				// Check if game continues
+				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48) == 0)
+				{
+					// Handles player turn.
+					// Handles human player input and waits for end of turn if option selected
+
+					// Instruction address 0x1238:0x022f, size: 5
+					this.oParent.Segment_1403.F0_1403_000e(playerID);
+				}
+
+				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdf60, 0x0);
+
+				if (!playerIsHuman)
+				{
+					// Instruction address 0x1238:0x0243, size: 5
+					this.oParent.Segment_11a8.F0_11a8_0268();
+				}
+
+				// Check if game should continue with the next player
+				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48) == 0 || this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb884) != 0)
+				{
+					continue;
+				}
+
+				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48) == 2)
+				{
+					// Human player decided to retire
+					// Show power graph, civilization score and hall of fame
+
+					// Instruction address 0x1238:0x0261, size: 3
+					F0_1238_08a0();
+
+					goto showAds;
+				}
+
+				goto exit;
 			}
-
-			// Instruction address 0x1238:0x01ab, size: 5
-			this.oParent.Segment_2517.F0_2517_0004(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
-
-			// Instruction address 0x1238:0x01b6, size: 5
-			this.oParent.Segment_25fb.F0_25fb_0004(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
-
-			// Instruction address 0x1238:0x01c1, size: 5
-			this.oParent.Segment_25fb.F0_25fb_2fd7(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
-
-			// Instruction address 0x1238:0x01de, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 2, 192, 6, 6, 15);
-
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.HumanPlayerID;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L0225;
-
-			// Instruction address 0x1238:0x01ef, size: 3
-			F0_1238_107e();
-
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
 			
-			if (this.oParent.CivState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].CityCount != 0 ||
-				this.oParent.CivState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].SettlerCount != 0)
-				goto L021a;
-
-			// Instruction address 0x1238:0x0205, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
-			this.oParent.MainIntro.F2_0000_152a();
-
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, 0xffff);
-
-			// Instruction address 0x1238:0x0215, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
-		L021a:
-			if (this.oParent.CivState.Year <= 0) goto L0225;
-			oParent.CivState.PeaceTurnCount++;
-
-		L0225:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48), 0x0);
-			if (this.oCPU.Flags.NE) goto L0237;
-
-			// Instruction address 0x1238:0x022f, size: 5
-			this.oParent.Segment_1403.F0_1403_000e(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
-
-		L0237:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdf60, 0x0);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16)), 0x0);
-			if (this.oCPU.Flags.E) goto L0248;
-
-			// Instruction address 0x1238:0x0243, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
-		L0248:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48), 0x0);
-			if (this.oCPU.Flags.E) goto L0267;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb884), 0x0);
-			if (this.oCPU.Flags.NE) goto L0267;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48), 0x2);
-			if (this.oCPU.Flags.E) goto L0260;
-			goto L089a;
-
-		L0260:
-			// Instruction address 0x1238:0x0261, size: 3
-			F0_1238_08a0();
-
-			goto L0896;
-
-		L0267:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
-
-		L026a:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x8);
-			if (this.oCPU.Flags.GE) goto L02a0;
-			this.oParent.CivState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Score = 0;
-			this.oCPU.AX.Word = 0x1;
-			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
-			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.ActiveCivilizations);
-			if (this.oCPU.Flags.E) goto L0267;
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.HumanPlayerID;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.L) goto L0294;
-			goto L014f;
-
-		L0294:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdf60), 0x0);
-			if (this.oCPU.Flags.NE) goto L029e;
-			goto L014f;
-
-		L029e:
-			goto L0267;
-
-		L02a0:
 			// Instruction address 0x1238:0x02a0, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
+			// Process barbarian raids
 			// Instruction address 0x1238:0x02a6, size: 3
 			F0_1238_0980();
 
@@ -652,7 +643,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x834);
 			this.oCPU.AX.Word = this.oCPU.NEG_UInt16(this.oCPU.AX.Word);
 			if ((short)this.oCPU.AX.Word == this.oParent.CivState.Year) goto L073b;
-			goto L089a;
+			goto exit;
 
 		L073b:
 			// Instruction address 0x1238:0x073b, size: 5
@@ -747,13 +738,13 @@ namespace OpenCiv1
 
 		L088f:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48), 0x0);
-			if (this.oCPU.Flags.E) goto L089a;
+			if (this.oCPU.Flags.E) goto exit;
 
-		L0896:
+		showAds:
 			// Instruction address 0x1238:0x0897, size: 3
 			F0_1238_090a();
 
-		L089a:
+		exit:
 			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
 			this.oCPU.DI.Word = this.oCPU.POP_UInt16();
 			this.oCPU.SP.Word = this.oCPU.BP.Word;
