@@ -489,7 +489,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
 			// Instruction address 0x29f3:0x0407, size: 5
-			this.oParent.MapManagement.F0_2aea_03ba(this.oParent.CivState.Players[playerID1].Units[unitID1].Position.X, this.oParent.CivState.Players[playerID1].Units[unitID1].Position.Y);
+			this.oParent.MapManagement.F0_2aea_03ba_DrawCell(this.oParent.CivState.Players[playerID1].Units[unitID1].Position.X, this.oParent.CivState.Players[playerID1].Units[unitID1].Position.Y);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L0416;

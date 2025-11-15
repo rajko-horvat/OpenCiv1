@@ -299,7 +299,7 @@ namespace OpenCiv1
 					this.oParent.Var_d75e_YPos = (short)(city.Position.Y - 3);
 
 					// Instruction address 0x1d12:0x05cd, size: 5
-					this.oParent.MapManagement.F0_2aea_03ba(city.Position.X, city.Position.Y);
+					this.oParent.MapManagement.F0_2aea_03ba_DrawCell(city.Position.X, city.Position.Y);
 
 					for (int i = 0; i < this.Var_6540_CityOffsetCount; i++)
 					{
@@ -320,7 +320,7 @@ namespace OpenCiv1
 							else
 							{
 								// Instruction address 0x1d12:0x06a1, size: 5
-								this.oParent.MapManagement.F0_2aea_03ba(local_c6, local_d2);
+								this.oParent.MapManagement.F0_2aea_03ba_DrawCell(local_c6, local_d2);
 
 								if (Arr_a6[this.oParent.CityOffsets[i].X + 2, this.oParent.CityOffsets[i].Y + 2] != 0)
 								{
@@ -3558,7 +3558,7 @@ namespace OpenCiv1
 
 					L5c45:
 						// Instruction address 0x1d12:0x5c69, size: 5
-						this.oParent.MapManagement.F0_2aea_03ba(
+						this.oParent.MapManagement.F0_2aea_03ba_DrawCell(
 							city.Position.X + this.oParent.CityOffsets[local_ea].X,
 							city.Position.Y + this.oParent.CityOffsets[local_ea].Y);
 
@@ -4297,7 +4297,7 @@ namespace OpenCiv1
 			if (flag == 1)
 			{
 				// Instruction address 0x1d12:0x696f, size: 5
-				this.oParent.MapManagement.F0_2aea_03ba(local_6, local_a);
+				this.oParent.MapManagement.F0_2aea_03ba_DrawCell(local_6, local_a);
 
 				local_10 = 0;
 

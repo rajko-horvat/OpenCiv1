@@ -331,14 +331,14 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Draws map cell with its terrain features, improvements, fog of war, goody huts and city if present.
 		/// </summary>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <returns></returns>
-		public ushort F0_2aea_03ba(int xPos, int yPos)
+		public ushort F0_2aea_03ba_DrawCell(int xPos, int yPos)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_03ba({xPos}, {yPos})");
+			this.oCPU.Log.EnterBlock($"F0_2aea_03ba_DrawCell({xPos}, {yPos})");
 
 			// function body
 
@@ -355,7 +355,7 @@ namespace OpenCiv1
 
 					this.oCPU.AX.Word = ownerID;
 					// Far return
-					this.oCPU.Log.ExitBlock("F0_2aea_03ba");
+					this.oCPU.Log.ExitBlock("F0_2aea_03ba_DrawCell");
 					return this.oCPU.AX.Word;
 				}
 
@@ -367,7 +367,7 @@ namespace OpenCiv1
 
 					this.oCPU.AX.Word = 10;
 					// Far return
-					this.oCPU.Log.ExitBlock("F0_2aea_03ba");
+					this.oCPU.Log.ExitBlock("F0_2aea_03ba_DrawCell");
 					return this.oCPU.AX.Word;
 				}
 
@@ -376,7 +376,7 @@ namespace OpenCiv1
 
 				this.oCPU.AX.Word = 2;
 				// Far return
-				this.oCPU.Log.ExitBlock("F0_2aea_03ba");
+				this.oCPU.Log.ExitBlock("F0_2aea_03ba_DrawCell");
 				return this.oCPU.AX.Word;
 			}
 
@@ -389,7 +389,7 @@ namespace OpenCiv1
 			{
 				this.oCPU.AX.Word = 0;
 				// Far return
-				this.oCPU.Log.ExitBlock("F0_2aea_03ba");
+				this.oCPU.Log.ExitBlock("F0_2aea_03ba_DrawCell");
 				return this.oCPU.AX.Word;
 			}
 
@@ -984,7 +984,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = 0x1;
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_2aea_03ba");
+			this.oCPU.Log.ExitBlock("F0_2aea_03ba_DrawCell");
 
 			return this.oCPU.AX.Word;
 		}
@@ -1362,7 +1362,7 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 
 			// Instruction address 0x2aea:0x11e2, size: 3
-			F0_2aea_03ba(xPos, yPos);
+			F0_2aea_03ba_DrawCell(xPos, yPos);
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdcfc), 0x0);
 			if (this.oCPU.Flags.NE) goto L1256;

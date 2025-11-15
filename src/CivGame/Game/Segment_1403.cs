@@ -3446,7 +3446,7 @@ namespace OpenCiv1
 
 		L2ccf:
 			// Instruction address 0x1403:0x2cd5, size: 5
-			this.oParent.MapManagement.F0_2aea_03ba(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)),
+			this.oParent.MapManagement.F0_2aea_03ba_DrawCell(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 
 		L2cdd:			

@@ -302,7 +302,7 @@ namespace OpenCiv1
 			}
 		
 			// Instruction address 0x2459:0x02d9, size: 5
-			this.oParent.MapManagement.F0_2aea_03ba(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
+			this.oParent.MapManagement.F0_2aea_03ba_DrawCell(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
 
 			this.oCPU.SI.Word = (ushort)playerID;
