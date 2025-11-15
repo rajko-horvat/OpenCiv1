@@ -270,37 +270,27 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x02aa, size: 3
 			F0_1238_1767();
 
-			if (this.oParent.CivState.TurnCount <= 50) goto L0306;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x0);
-			goto L02c9;
+			if (this.oParent.CivState.TurnCount > 50)
+			{
+				for (short cityID = 0; cityID < 2; ++cityID)
+				{
+					// Instruction address 0x1238:0x02d3, size: 5
+					cityID = (short)this.oParent.MSCAPI.RNG.Next(128);
 
-		L02bb:
-			this.oParent.Overlay_20.F20_0000_0540(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
+					if (this.oParent.CivState.Cities[cityID].StatusFlag == 0xff ||
+						this.oParent.CivState.Players[this.oParent.CivState.Cities[cityID].PlayerID].CityCount <= 1)
+					{
+						continue;
+					}
 
-		L02c6:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
+					if (this.oParent.CivState.Cities[cityID].ActualSize >= 5)
+					{
+						// Process city disasters and riots
+						this.oParent.Overlay_20.F20_0000_0540(cityID);
+					}
+				}
+			}
 
-		L02c9:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x2);
-			if (this.oCPU.Flags.GE) goto L0306;
-
-			// Instruction address 0x1238:0x02d3, size: 5
-			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(128));
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);
-
-			this.oCPU.AX.Word = 0x1c;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			
-			if (this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].StatusFlag == 0xff ||
-				this.oParent.CivState.Players[this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].PlayerID].CityCount <= 1)
-				goto L02c6;
-
-			if (this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].ActualSize >= 5) goto L02bb;
-			goto L02c6;
-
-		L0306:
 			// Instruction address 0x1238:0x0307, size: 3
 			F0_1238_0da1();
 
