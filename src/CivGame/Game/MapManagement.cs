@@ -353,7 +353,10 @@ namespace OpenCiv1
 					this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos * 4, yPos * 4, 4, 4,
 						this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(ownerID * 2 + 0x1946)));
 
-					goto exit;
+					this.oCPU.AX.Word = ownerID;
+					// Far return
+					this.oCPU.Log.ExitBlock("F0_2aea_03ba");
+					return this.oCPU.AX.Word;
 				}
 
 				// Instruction address 0x2aea:0x041a, size: 3
@@ -361,14 +364,20 @@ namespace OpenCiv1
 				{
 					// Instruction address 0x2aea:0x0408, size: 5
 					this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos * 4, yPos * 4, 4, 4, 1);
-					goto exit;
+
+					this.oCPU.AX.Word = 10;
+					// Far return
+					this.oCPU.Log.ExitBlock("F0_2aea_03ba");
+					return this.oCPU.AX.Word;
 				}
 
-				this.oCPU.AX.Word = 0x2;
 				// Instruction address 0x2aea:0x0408, size: 5
 				this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos * 4, yPos * 4, 4, 4, 2);
 
-				goto exit;
+				this.oCPU.AX.Word = 2;
+				// Far return
+				this.oCPU.Log.ExitBlock("F0_2aea_03ba");
+				return this.oCPU.AX.Word;
 			}
 
 			// Tile position in screen coordinates
@@ -379,7 +388,9 @@ namespace OpenCiv1
 			if (xPosScreen < 80 || xPosScreen >= 320 || yPosScreen < 8 || yPosScreen > 192)
 			{
 				this.oCPU.AX.Word = 0;
-				goto exit;
+				// Far return
+				this.oCPU.Log.ExitBlock("F0_2aea_03ba");
+				return this.oCPU.AX.Word;
 			}
 
 			// Instruction address 0x2aea:0x047c, size: 3
@@ -972,7 +983,6 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = 0x1;
 
-		exit:
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2aea_03ba");
 
