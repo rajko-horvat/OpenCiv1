@@ -413,7 +413,6 @@ namespace OpenCiv1
 				// Draw ocean, coastal cells and river deltas
 				int mask = 0;
 
-				// Check VGA mode ?
 				if (this.oParent.Var_d762 == 0)
 				{
 					for (int i = 1; i < 9; i += 2)
@@ -540,7 +539,7 @@ namespace OpenCiv1
 					}
 
 					// Draw river deltas on top of coastal cells
-					for (int i = 0x1; i < 9; i += 2)
+					for (int i = 1; i < 9; i += 2)
 					{
 						GPoint direction = this.oParent.MoveOffsets[i];
 
@@ -981,7 +980,7 @@ namespace OpenCiv1
 			// Instruction address 0x2aea:0x0e1b, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
-			this.oCPU.AX.Word = 0x1;
+			this.oCPU.AX.Word = 1;
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2aea_03ba_DrawCell");
