@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Avalonia.Media;
 using IRB.VirtualCPU;
 
@@ -87,7 +88,8 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x009f, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0626();
 
-			short playerCoins = this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Coins;
+			Player humanPlayer = this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID];
+			short initialCoins = humanPlayer.Coins;
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd760, 0);
 			this.oParent.Var_6b92 = 0;
@@ -117,7 +119,6 @@ namespace OpenCiv1
 
 			if (this.oParent.CivState.TurnCount == 0)
 			{
-				Player humanPlayer = this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID];
 				Unit startingUnit = humanPlayer.Units[0];
 
 				// Center camera on starting unit
@@ -276,14 +277,14 @@ namespace OpenCiv1
 				{
 					// Instruction address 0x1238:0x02d3, size: 5
 					cityID = (short)this.oParent.MSCAPI.RNG.Next(128);
+					City city = this.oParent.CivState.Cities[cityID];
 
-					if (this.oParent.CivState.Cities[cityID].StatusFlag == 0xff ||
-						this.oParent.CivState.Players[this.oParent.CivState.Cities[cityID].PlayerID].CityCount <= 1)
+					if (city.StatusFlag == 0xff || this.oParent.CivState.Players[city.PlayerID].CityCount <= 1)
 					{
 						continue;
 					}
 
-					if (this.oParent.CivState.Cities[cityID].ActualSize >= 5)
+					if (city.ActualSize >= 5)
 					{
 						// Process city disasters and riots
 						this.oParent.Overlay_20.F20_0000_0540(cityID);
@@ -294,36 +295,24 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x0307, size: 3
 			F0_1238_0da1();
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48), 0x0);
-			if (this.oCPU.Flags.NE) goto L036d;
-			this.oCPU.SI.Word = (ushort)this.oParent.CivState.HumanPlayerID;
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
-			
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CityCount <= 1 ||
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Coins >= 100) goto L036d;
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48) == 0
+				&& humanPlayer.CityCount > 1 && humanPlayer.Coins < 100
+				&& (humanPlayer.Coins - initialCoins) * 10 + humanPlayer.Coins < 0
+				&& (this.oParent.CivState.PlayerFlags & (1 << this.oParent.CivState.HumanPlayerID)) != 0)
+			{
+				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Coins;
-			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)playerCoins);
-			this.oCPU.CX.Word = 0xa;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
-			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Coins);
-			if (this.oCPU.Flags.NS) goto L036d;
-			this.oCPU.AX.Word = 0x1;
-			this.oCPU.CX.Low = (byte)(this.oParent.CivState.HumanPlayerID & 0xff);
-			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.PlayerFlags);
-			if (this.oCPU.Flags.E) goto L036d;
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+				// Warning: Funds are running low...
 
-			// Instruction address 0x1238:0x034f, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x1c2a);
+				// Instruction address 0x1238:0x034f, size: 5
+				this.oParent.Segment_2f4d.F0_2f4d_044f(0x1c2a);
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DomesticAdvisor;
+				this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DomesticAdvisor;
 
-			// Instruction address 0x1238:0x0367, size: 3
-			F0_1238_001e_ShowDialog(0xba06, 80, 80);
+				// Instruction address 0x1238:0x0367, size: 3
+				F0_1238_001e_ShowDialog(0xba06, 80, 80);
+			}
 
-		L036d:
 			oParent.CivState.TurnCount++;
 			if (this.oParent.CivState.Year >= 1000) goto L0380;
 			this.oParent.CivState.Year += 20;
@@ -1217,7 +1206,7 @@ namespace OpenCiv1
 		/// <summary>
 		/// ?
 		/// </summary>
-		public void F0_1238_0da1()
+		private void F0_1238_0da1()
 		{
 			this.oCPU.Log.EnterBlock("F0_1238_0da1()");
 
