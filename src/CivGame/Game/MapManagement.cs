@@ -903,15 +903,9 @@ namespace OpenCiv1
 						5,
 						(byte)this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(colorIndex + 0x1956)));
 
-					int citySize;
-					if (city.PlayerID == this.oParent.CivState.HumanPlayerID)
-					{
-						citySize = city.ActualSize;
-					}
-					else
-					{
-						citySize = this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806) == 0 ? city.VisibleSize : city.ActualSize;
-					}
+					int citySize = (city.PlayerID == this.oParent.CivState.HumanPlayerID || this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806) != 0)
+						? city.ActualSize
+						: city.VisibleSize;
 
 					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
