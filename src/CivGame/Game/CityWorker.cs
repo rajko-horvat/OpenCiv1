@@ -490,7 +490,7 @@ namespace OpenCiv1
 
 							if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].AttackStrength != 0)
 							{
-								if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].TerrainCategory == 1)
+								if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].UnitCategory == UnitCategoryEnum.Air)
 								{
 									this.Var_6546++;
 								}
@@ -1323,7 +1323,7 @@ namespace OpenCiv1
 						local_104 = this.oParent.CivState.Players[this.oParent.MapManagement.F0_2aea_1942(local_d8, local_e4) & 0x7].Continents[this.Var_6548_PlayerID].Strategy;
 
 						if ((local_104 == 1 || local_104 == 2 || local_104 == 5) && local_e8 != 0 && city.CurrentProductionID >= 0 &&
-							this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].UnitCategory == local_104)
+							(int)this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].AIRole == local_104)
 						{
 							local_cc = this.oParent.CivState.Players[this.Var_6548_PlayerID].Coins / 64;
 						}
@@ -1927,7 +1927,7 @@ namespace OpenCiv1
 										this.oParent.Var_db42 = -999; // 0xfc19
 									}
 									else if (local_c8 > 0 &&
-										this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].TypeID].TerrainCategory == 0 &&
+										this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].TypeID].UnitCategory == UnitCategoryEnum.Land &&
 										this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].TypeID != 0)
 									{
 										// Instruction address 0x1d12:0x35c9, size: 5
@@ -2009,7 +2009,7 @@ namespace OpenCiv1
 									{
 										if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].AttackStrength != 0 &&
 											local_e8 != 0 &&
-											(this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].TerrainCategory == 1 ||
+											(this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].TypeID].UnitCategory == UnitCategoryEnum.Air ||
 												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].Position.X != city.Position.X ||
 												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].Position.Y != city.Position.Y))
 										{
