@@ -7,6 +7,22 @@ namespace OpenCiv1
 {
 	public class MapManagement
 	{
+		// The Map is currently kept as a bitmap, the layer number, description and position table following:
+		// Layer 1: Terrain data (TerrainTypeEnum), 0:0
+		// Layer 2: Per-Civ land occupation, 80:0
+		//
+		// Layer 3: Area segmentation, with identifiers for separate land masses and inner seas, 0:50
+		// Layer 4: Terrain-based land appeal for the computer to build cities, 80:50
+		//
+		// Layer 5: Same as layer 6, but only what's visible to the player, 0:100
+		// Layer 6: Terrain improvements(irrigation, mining, roads), 80:100
+		//
+		// Layer 7: Same as layer 8, but only what's visible to the player, 0:150
+		// Layer 8: Railroads, roads, rivers, fortresses, 80:150
+		//
+		// Layer 9: Per-Civ land exploration and active units, 160:0
+		// Layer 10: Mini-map render, 240:0
+
 		private CivGame oParent;
 		private VCPU oCPU;
 
