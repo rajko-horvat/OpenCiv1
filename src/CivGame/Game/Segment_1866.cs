@@ -2328,7 +2328,7 @@ namespace OpenCiv1
 			}
 			else
 			{
-				if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TerrainCategory != 0)
+				if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].UnitCategory != 0)
 				{
 					this.oParent.CivState.Players[playerID].Units[unitID].Status &= 0xfe;
 				}
