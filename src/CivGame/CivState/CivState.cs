@@ -95,7 +95,7 @@ namespace OpenCiv1
 			new TerrainDefinition(TerrainTypeEnum.Arctic, "Arctic", 2, 2, 0, 0, 0, 0, 15),
 			new TerrainDefinition(TerrainTypeEnum.Swamp, "Swamp", 2, 3, 1, 0, 0, 0, 3),
 			new TerrainDefinition(TerrainTypeEnum.Jungle, "Jungle", 2, 3, 1, 0, 0, 0, 11),
-			new TerrainDefinition(TerrainTypeEnum.Ocean, "Ocean", 1, 2, 1, 0, 2, 0, 1),
+			new TerrainDefinition(TerrainTypeEnum.Water, "Ocean", 1, 2, 1, 0, 2, 0, 1),
 			new TerrainDefinition(TerrainTypeEnum.River, "River", 1, 3, 2, 1, 1, 2, 9),
 			// Terrain with Special Resources
 			new TerrainDefinition(TerrainTypeEnum.ResourceOasis, "Oasis", 1, 2, 3, 1, 0, 1, 14),
@@ -122,7 +122,7 @@ namespace OpenCiv1
 			new TerrainModification(TerrainTypeEnum.Arctic, -1, 0, -1, 0, 0, 0),
 			new TerrainModification(TerrainTypeEnum.Swamp, 10, 15, 2, 15, 0, 0),
 			new TerrainModification(TerrainTypeEnum.Jungle, 10, 15, 2, 15, 0, 0),
-			new TerrainModification(TerrainTypeEnum.Ocean, -1, 0, -1, 0, 0, 0),
+			new TerrainModification(TerrainTypeEnum.Water, -1, 0, -1, 0, 0, 0),
 			new TerrainModification(TerrainTypeEnum.River, -2, 5, -1, 0, 0, 1) };
 
 		// Graphs

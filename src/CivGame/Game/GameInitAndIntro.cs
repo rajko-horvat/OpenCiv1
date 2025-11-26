@@ -1877,9 +1877,9 @@ namespace OpenCiv1
 
 		L1078:
 			// Instruction address 0x0000:0x1081, size: 5
-			this.oParent.MapManagement.F0_2aea_1836_CellHasSpecialResource(
+			this.oCPU.AX.Word = (ushort)(this.oParent.MapManagement.F0_2aea_1836_CellHasSpecialResource(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a)));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a))) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L1091;

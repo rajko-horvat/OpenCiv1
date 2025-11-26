@@ -80,6 +80,7 @@ namespace OpenCiv1
 		public int Var_70e6 = 0;
 		public int Var_8078 = 0;
 		public int Var_b1e8 = 0;
+		//public int Var_b278 = 0; This was some kind of experiment, Always 0, can be safely removed througout entire code
 		public int Var_b882 = 0;
 		public ushort Var_b2ba = 0;
 		public int Var_d2de = 0;
@@ -89,6 +90,7 @@ namespace OpenCiv1
 		public short Var_d75e_YPos = 0;
 		public ushort Var_d762 = 0;
 		public ushort Var_d768 = 0;
+		public bool Var_d806_DebugFlag = false;
 
 		// Currently pressed mouse button: 0 - nothing, 1 - left button, 2 - right button
 		public ushort Var_db3a_MouseButton = 0;

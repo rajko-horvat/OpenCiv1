@@ -12,7 +12,7 @@
 		Arctic = 7,
 		Swamp = 8,
 		Jungle = 9,
-		Ocean = 10,
+		Water = 10,
 		River = 11,
 
 		// Terrain with Special Resources

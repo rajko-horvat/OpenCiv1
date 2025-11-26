@@ -267,7 +267,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0349;
 
 			// Instruction address 0x0000:0x0327, size: 5
-			this.oParent.MapManagement.F0_2aea_195d(xPos + direction.X, yPos + direction.Y);
+			this.oParent.MapManagement.F0_2aea_195d_GetMapGroupSize(xPos + direction.X, yPos + direction.Y);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x100);
 			if (this.oCPU.Flags.G) goto L033c;
@@ -330,7 +330,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.G) goto L040e;
 
 			// Instruction address 0x0000:0x03d3, size: 5
-			this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(
+			this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
 

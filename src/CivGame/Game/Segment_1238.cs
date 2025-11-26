@@ -899,7 +899,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L09b8;
 
 			// Instruction address 0x1238:0x0a01, size: 5
-			this.oParent.MapManagement.F0_2aea_195d(
+			this.oParent.MapManagement.F0_2aea_195d_GetMapGroupSize(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -1526,11 +1526,7 @@ namespace OpenCiv1
 			this.oCPU.BP.Word = this.oCPU.SP.Word;
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x8);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb278), 0x1);
-			if (this.oCPU.Flags.NE) goto L108f;
-			goto L149e;
-
-		L108f:
+			
 			// Instruction address 0x1238:0x109f, size: 3
 			F0_1238_1bb2_FillRectangleWithShadow(0, 58, 80, 39);
 
@@ -1549,8 +1545,8 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x110c, size: 3
 			F0_1238_14a3(this.oParent.CivState.HumanPlayerID, this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceLevel, 8, 58);
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806), 0x0);
-			if (this.oCPU.Flags.E) goto L115d;
+			if (!this.oParent.Var_d806_DebugFlag) goto L115d;
+
 			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
 			this.oCPU.PUSH_UInt16(0x111e); // stack management - push return offset
 			// Instruction address 0x1238:0x1119, size: 5
@@ -2121,7 +2117,6 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x1823, size: 5
 			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 
-		L182b:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 0xe);
 			if (this.oCPU.Flags.NE) goto L184d;
 
@@ -2362,10 +2357,6 @@ namespace OpenCiv1
 					this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].ShieldsCount);
 
 			this.oParent.CivState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))].Coins -= (short)this.oCPU.AX.Word;
-
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb278), 0x1);
-			if (this.oCPU.Flags.E)
-				goto L182b;
 
 			// Instruction address 0x1238:0x1b1e, size: 5
 			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(
