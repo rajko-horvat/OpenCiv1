@@ -196,25 +196,25 @@ namespace OpenCiv1
 				if (!city.HasImprovement(ImprovementEnum.MassTransit))
 				{
 					// Instruction address 0x1d12:0x035e, size: 5
-					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Industrialization) != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Industrialization))
 					{
 						this.oParent.Var_b882++;
 					}
 
 					// Instruction address 0x1d12:0x037a, size: 5
-					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Automobile) != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Automobile))
 					{
 						this.oParent.Var_b882++;
 					}
 
 					// Instruction address 0x1d12:0x0396, size: 5
-					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.MassProduction) != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.MassProduction))
 					{
 						this.oParent.Var_b882++;
 					}
 
 					// Instruction address 0x1d12:0x03b2, size: 5
-					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Plastics) != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Plastics))
 					{
 						this.oParent.Var_b882++;
 					}
@@ -793,7 +793,7 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x1d12:0x13f9, size: 5
-				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.HooverDam) != 0)
+				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.HooverDam))
 				{
 					// Instruction address 0x1d12:0x1428, size: 5
 					// Instruction address 0x1d12:0x1442, size: 5
@@ -1159,7 +1159,7 @@ namespace OpenCiv1
 												goto L1feb;
 
 											// Instruction address 0x1d12:0x1f5d, size: 5
-											if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, (int)TechnologyEnum.SpaceFlight) == 0)
+											if (!this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, TechnologyEnum.SpaceFlight))
 												goto L2010;
 
 											if (this.oParent.CivState.AISpaceshipSuccessRate > 75)
@@ -1505,7 +1505,7 @@ namespace OpenCiv1
 					local_e8 += this.oParent.Var_70e6 / 2;
 
 					// Instruction address 0x1d12:0x2a6e, size: 5
-					if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.IsaacNewtonsCollege) != 0)
+					if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.IsaacNewtonsCollege))
 					{
 						local_e8 += this.oParent.Var_70e6 / 3;
 					}
@@ -1516,7 +1516,7 @@ namespace OpenCiv1
 					local_e8 += this.oParent.Var_70e6 / 2;
 
 					// Instruction address 0x1d12:0x2ab2, size: 5
-					if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.IsaacNewtonsCollege) != 0)
+					if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.IsaacNewtonsCollege))
 					{
 						local_e8 += this.oParent.Var_70e6 / 3;
 					}
@@ -1605,12 +1605,12 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x1d12:0x2d27, size: 5
-				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Religion) != 0)
+				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Religion))
 				{
 					if (city.HasImprovement(ImprovementEnum.Cathedral))
 					{
 						// Instruction address 0x1d12:0x2d52, size: 5
-						if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.MichelangelosChapel) != 0)
+						if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.MichelangelosChapel))
 						{
 							this.oParent.Var_70e4 -= 6;
 						}
@@ -1632,24 +1632,24 @@ namespace OpenCiv1
 				if (city.HasImprovement(ImprovementEnum.Temple))
 				{
 					// Instruction address 0x1d12:0x2dd6, size: 5
-					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Mysticism) != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Mysticism))
 					{
 						this.oParent.Var_70e4 -= 2;
 					}
 					else
 					{
 						// Instruction address 0x1d12:0x2df6, size: 5
-						if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.CeremonialBurial) != 0)
+						if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.CeremonialBurial))
 						{
 							this.oParent.Var_70e4--;
 						}
 					}
 				
 					// Instruction address 0x1d12:0x2e12, size: 5
-					if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.Oracle) != 0)
+					if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.Oracle))
 					{
 						// Instruction address 0x1d12:0x2e2a, size: 5
-						if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Mysticism) != 0)
+						if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Mysticism))
 						{
 							this.oParent.Var_70e4 -= 2;
 						}
@@ -1745,7 +1745,7 @@ namespace OpenCiv1
 				else
 				{
 					// Instruction address 0x1d12:0x3090, size: 5
-					local_e8 = ((short)F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.WomensSuffrage) < 1) ? 1 : 0;
+					local_e8 = F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.WomensSuffrage) ? 1 : 0;
 
 					if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType == 5)
 					{
@@ -1788,13 +1788,13 @@ namespace OpenCiv1
 				local_e8 = this.oParent.Var_70e2 - this.oParent.Var_70e4;
 
 				// Instruction address 0x1d12:0x319e, size: 5
-				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.HangingGardens) != 0)
+				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.HangingGardens))
 				{
 					this.oParent.Var_70e2++;
 				}
 			
 				// Instruction address 0x1d12:0x31ba, size: 5
-				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.CureForCancer) != 0)
+				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.CureForCancer))
 				{
 					this.oParent.Var_70e2++;
 				}
@@ -1806,7 +1806,7 @@ namespace OpenCiv1
 				}
 			
 				// Instruction address 0x1d12:0x31f0, size: 5
-				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.JSBachsCathedral) != 0)
+				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.JSBachsCathedral))
 				{
 					// Instruction address 0x1d12:0x3229, size: 5
 					// Instruction address 0x1d12:0x3217, size: 5
@@ -1998,7 +1998,7 @@ namespace OpenCiv1
 								else
 								{
 									// Instruction address 0x1d12:0x3732, size: 5
-									local_e8 = ((short)F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.WomensSuffrage) < 1) ? 1 : 0;
+									local_e8 = F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.WomensSuffrage) ? 1 : 0;
 
 									if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType == 5)
 									{
@@ -3920,19 +3920,19 @@ namespace OpenCiv1
 				if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
 					goto L635d;
 
-				if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID != -1) goto L62f5;
+				if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID != -1) goto L62f5;
 				goto L630d;
 
 			L62f5:
 				// Instruction address 0x1d12:0x62fd, size: 5
-				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID,
-					this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID) == 0)
+				if (!this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID,
+					(TechnologyEnum)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID))
 					goto L630d;
 
 				goto L6327;
 
 			L630d:
-				if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID == -1) goto L6317;
+				if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID == -1) goto L6317;
 				goto L635d;
 
 			L6317:
@@ -3940,7 +3940,7 @@ namespace OpenCiv1
 				goto L635d;
 
 			L6327:
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID = -1;
+				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID = -1;
 
 				if ((this.oParent.CivState.DebugFlags & 0x8) != 0) goto L6337;
 				goto L6351;
@@ -3968,15 +3968,15 @@ namespace OpenCiv1
 
 				if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID && this.oParent.CivState.DifficultyLevel == 0)
 				{
-					if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID >= 0 &&
-						(this.oParent.CivState.TechnologyFirstDiscoveredBy[this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID] & 7) != 0)
+					if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID >= 0 &&
+						(this.oParent.CivState.TechnologyFirstDiscoveredBy[this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID] & 7) != 0)
 					{
 						this.oParent.CivState.Players[this.Var_6548_PlayerID].ResearchProgress += (short)local_e8;
 					}
 				}
 
 				// Instruction address 0x1d12:0x63c2, size: 5
-				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.SETIProgram) != 0) goto L63d2;
+				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.SETIProgram)) goto L63d2;
 				goto L63e5;
 
 			L63d2:
@@ -4104,7 +4104,7 @@ namespace OpenCiv1
 
 			L6679:
 				// Instruction address 0x1d12:0x6681, size: 5
-				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.FusionPower) == 0)
+				if (!this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.FusionPower))
 					goto L6691;
 
 				goto L672d;
@@ -4174,7 +4174,7 @@ namespace OpenCiv1
 
 			L67c7:
 				// Instruction address 0x1d12:0x67cf, size: 5
-				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Gunpowder) != 0)
+				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Gunpowder))
 					goto L67df;
 
 				goto L67e9;
@@ -4184,7 +4184,7 @@ namespace OpenCiv1
 
 			L67e9:
 				// Instruction address 0x1d12:0x67f1, size: 5
-				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Combustion) != 0)
+				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Combustion))
 					goto L6801;
 
 				goto L680b;
@@ -4536,11 +4536,11 @@ namespace OpenCiv1
 		/// Tests if player has built a Wonder and if the Wonder is not obsolete
 		/// </summary>
 		/// <param name="playerID"></param>
-		/// <param name="wonderID"></param>
+		/// <param name="wonderType"></param>
 		/// <returns></returns>
-		public ushort F0_1d12_6c97_PlayerHasWonder(short playerID, short wonderID)
+		public bool F0_1d12_6c97_PlayerHasWonder(short playerID, WonderEnum wonderType)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1d12_6c97_PlayerHasWonder({playerID}, {wonderID})");
+			//this.oCPU.Log.EnterBlock($"F0_1d12_6c97_PlayerHasWonder({playerID}, {wonderType})");
 
 			// function body
 			int i;
@@ -4548,29 +4548,24 @@ namespace OpenCiv1
 			for (i = 1; i < 8; i++)
 			{
 				// Instruction address 0x1d12:0x6cb9, size: 5
-				ImprovementDefinition wonder = this.oParent.CivState.WonderDefinitions[wonderID];
+				ImprovementDefinition wonder = this.oParent.CivState.WonderDefinitions[(int)wonderType];
 
 				if (wonder.ObsoletesAfterTechnology != TechnologyEnum.None &&
-					this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology((short)i, (int)wonder.ObsoletesAfterTechnology) != 0)
+					this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(i, wonder.ObsoletesAfterTechnology))
 				{
 					break;
 				}
 			}
 
-			if (i < 8 || this.oParent.CivState.WonderCityID[wonderID] == -1 ||
-				this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[wonderID]].PlayerID != playerID)
+			if (i < 8 || this.oParent.CivState.WonderCityID[(int)wonderType] == -1 ||
+				this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[(int)wonderType]].PlayerID != playerID)
 			{
-				this.oCPU.AX.Word = 0;
+				return false;
 			}
 			else
 			{
-				this.oCPU.AX.Word = 0x1;
+				return true;
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1d12_6c97_PlayerHasWonder");
-
-			return this.oCPU.AX.Word;
 		}
 
 		/// <summary>
@@ -4589,7 +4584,7 @@ namespace OpenCiv1
 			{
 				// Instruction address 0x1d12:0x6d15, size: 5
 				if (this.oParent.CivState.WonderDefinitions[wonderID].ObsoletesAfterTechnology != TechnologyEnum.None &&
-					this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology((short)i, (int)this.oParent.CivState.WonderDefinitions[wonderID].ObsoletesAfterTechnology) != 0)
+					this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology((short)i, this.oParent.CivState.WonderDefinitions[wonderID].ObsoletesAfterTechnology))
 				{
 					break;
 				}

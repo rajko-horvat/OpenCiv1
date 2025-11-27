@@ -771,7 +771,7 @@ namespace OpenCiv1
 				this.oParent.CivState.Year = ReadInt16(reader);
 				this.oParent.CivState.DifficultyLevel = ReadInt16(reader);
 				this.oParent.CivState.ActiveCivilizations = ReadInt16(reader);
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID = ReadInt16(reader);
+				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID = ReadInt16(reader);
 
 				for (int i = 0; i < 8; i++)
 				{
@@ -1368,7 +1368,7 @@ namespace OpenCiv1
 				WriteInt16(writer, this.oParent.CivState.Year);
 				WriteInt16(writer, this.oParent.CivState.DifficultyLevel);
 				WriteInt16(writer, this.oParent.CivState.ActiveCivilizations);
-				WriteInt16(writer, this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID);
+				WriteInt16(writer, this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID);
 
 				for (int i = 0; i < 8; i++)
 				{

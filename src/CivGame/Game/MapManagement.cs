@@ -124,7 +124,7 @@ namespace OpenCiv1
 			int mapYOffset;
 
 			// Instruction address 0x2aea:0x01b9, size: 5
-			if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Navigation) != 0)
+			if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.Navigation))
 			{
 				yMap = 0;
 			}

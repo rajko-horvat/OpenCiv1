@@ -262,7 +262,7 @@ namespace OpenCiv1
 				else
 				{
 					// Instruction address 0x2c84:0x02bb, size: 5
-					if (!improvements.HasFlag(TerrainImprovementFlagsEnum.RailRoad) && this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Railroad) != 0)
+					if (!improvements.HasFlag(TerrainImprovementFlagsEnum.RailRoad) && this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.Railroad))
 					{
 						// Instruction address 0x2c84:0x02cf, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " Build RailRoad \x008fr\n");
@@ -345,7 +345,7 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.strcat(0xba06, " Build Fortress \x008ff\n");
 
 				// Instruction address 0x2c84:0x045b, size: 5
-				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Construction) == 0)
+				if (!this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.Construction))
 				{
 					// Disable 'Build Fortress' option
 					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb276), (ushort)(1 << orderCount)));
