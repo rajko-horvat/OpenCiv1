@@ -902,19 +902,16 @@ namespace OpenCiv1
 				{
 					short playerID = this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd20a);
 
-					if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806) == 0)
+					if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806) == 0 && playerID != this.oParent.CivState.HumanPlayerID)
 					{
-						if (playerID != this.oParent.CivState.HumanPlayerID)
-						{
-							int mask = 1 << (this.oParent.CivState.HumanPlayerID & 0xff);
+						int mask = 1 << (this.oParent.CivState.HumanPlayerID & 0xff);
 
-							if ((mask & this.oParent.CivState.Players[playerID].Units[unitID].VisibleByPlayer) == 0)
-							{
-								// Unit is not visible by human player, skip
-								// Far return
-								this.oCPU.Log.ExitBlock("F0_2aea_11d4_DrawCellWithUnit");
-								return;
-							}
+						if ((mask & this.oParent.CivState.Players[playerID].Units[unitID].VisibleByPlayer) == 0)
+						{
+							// Unit is not visible by human player, skip
+							// Far return
+							this.oCPU.Log.ExitBlock("F0_2aea_11d4_DrawCellWithUnit");
+							return;
 						}
 					}
 
@@ -945,7 +942,7 @@ namespace OpenCiv1
 			Unit unit = player.Units[unitID];
 
 			// Instruction address 0x2aea:0x127f, size: 3
-			if ((TerrainTypeEnum)F0_2aea_134a_GetTerrainType(unit.Position.X, unit.Position.Y) == TerrainTypeEnum.Water
+			if (F0_2aea_134a_GetTerrainType(unit.Position.X, unit.Position.Y) == TerrainTypeEnum.Water
 				&& unit.NextUnitID != -1
 				&& this.oParent.CivState.UnitDefinitions[unit.TypeID].UnitCategory != UnitCategoryEnum.Ocean)
 			{
