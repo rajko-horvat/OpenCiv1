@@ -2037,7 +2037,7 @@ namespace OpenCiv1
 				goto L170d;
 
 			// Instruction address 0x0000:0x1705, size: 5
-			this.oParent.MapManagement.F0_2aea_0008(oParent.CivState.HumanPlayerID, xPos - 8, yPos - 2);
+			this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(oParent.CivState.HumanPlayerID, xPos - 8, yPos - 2);
 
 		L170d:
 			// Instruction address 0x0000:0x1715, size: 5

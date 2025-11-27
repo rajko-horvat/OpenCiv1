@@ -205,7 +205,7 @@ namespace OpenCiv1
 				{
 					// Center camera at the city
 					// Instruction address 0x0000:0x02c3, size: 5
-					this.oParent.MapManagement.F0_2aea_0008(this.oParent.CivState.HumanPlayerID, city.Position.X - 7, city.Position.Y - 6);
+					this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(this.oParent.CivState.HumanPlayerID, city.Position.X - 7, city.Position.Y - 6);
 					// Instruction address 0x0000:0x030e, size: 5
 					this.oParent.Segment_11a8.F0_11a8_0250();
 					// Far return

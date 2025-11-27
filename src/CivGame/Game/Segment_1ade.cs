@@ -3309,7 +3309,7 @@ namespace OpenCiv1
 		/// <param name="playerID"></param>
 		/// <param name="technologyID"></param>
 		/// <returns></returns>
-		public ushort F0_1ade_22b5_PlayerHasTechnology(short playerID, int technologyID)
+		public ushort F0_1ade_22b5_PlayerHasTechnology(int playerID, int technologyID)
 		{
 			// Everyone has TechnologyEnum.None (-1) technology,
 			// PlayerID == 0 (Barbarians can't have any technology)

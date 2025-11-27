@@ -177,7 +177,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x01b5, size: 5
-			this.oParent.MapManagement.F0_2aea_0008(this.oParent.CivState.HumanPlayerID,
+			this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(this.oParent.CivState.HumanPlayerID,
 				this.oParent.CivState.Players[playerID].Units[unitID].Position.X - 7, this.oParent.CivState.Players[playerID].Units[unitID].Position.Y - 6);
 
 			F4_0000_02d3_ShowInstantAdvicePopup(0x34bb);

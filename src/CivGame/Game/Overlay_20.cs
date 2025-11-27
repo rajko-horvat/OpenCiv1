@@ -1143,7 +1143,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 64);
 
 			// Instruction address 0x0000:0x0c9b, size: 5
-			this.oParent.MapManagement.F0_2aea_0008(oParent.CivState.HumanPlayerID,
+			this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(oParent.CivState.HumanPlayerID,
 				this.oParent.CivState.Cities[cityID].Position.X - 10,
 				this.oParent.CivState.Cities[cityID].Position.Y - 6);
 
