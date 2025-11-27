@@ -25,9 +25,9 @@ namespace OpenCiv1
 
 		private struct CityInfo
 		{
-			public int XPosScreen = 0;
-			public int YPosScreen = 0;
-			public short CityID = -1;
+			public readonly int XPosScreen = 0;
+			public readonly int YPosScreen = 0;
+			public readonly short CityID = -1;
 			public CityInfo(int xPos, int yPos, short cityID)
 			{
 				this.XPosScreen = xPos;
@@ -43,8 +43,7 @@ namespace OpenCiv1
 
 		/// <summary>Number of cities currently visible on the screen</summary>
 		private int Var_6c96_VisibleCityCount = 0;
-		private CityInfo[] VisibleCities = new CityInfo[32];
-
+		private readonly CityInfo[] VisibleCities = new CityInfo[32];
 
 		public MapManagement(CivGame parent)
 		{
