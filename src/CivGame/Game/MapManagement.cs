@@ -510,8 +510,9 @@ namespace OpenCiv1
 						{
 							roadIcon = -1;
 
-							if ((!terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.City) && !terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.RailRoad)) || 
-								(!terrainImprovements1.HasFlag(TerrainImprovementFlagsEnum.City) && terrainImprovements1.HasFlag(TerrainImprovementFlagsEnum.RailRoad)))
+							TerrainImprovementFlagsEnum railRoadOrCity = TerrainImprovementFlagsEnum.RailRoad | TerrainImprovementFlagsEnum.City;
+
+							if ((terrainImprovements & railRoadOrCity) == 0 || (terrainImprovements1 & railRoadOrCity) == 0)
 							{
 								// Instruction address 0x2aea:0x0a73, size: 5
 								this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
