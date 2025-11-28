@@ -25,13 +25,14 @@ namespace OpenCiv1
 
 		private struct CityInfo
 		{
-			public readonly int XPosScreen = 0;
-			public readonly int YPosScreen = 0;
+			public readonly int X = 0;
+			public readonly int Y = 0;
 			public readonly short CityID = -1;
+
 			public CityInfo(int xPos, int yPos, short cityID)
 			{
-				this.XPosScreen = xPos;
-				this.YPosScreen = yPos;
+				this.X = xPos;
+				this.Y = yPos;
 				this.CityID = cityID;
 			}
 		}
@@ -118,7 +119,7 @@ namespace OpenCiv1
 			for (int i = 0; i < Var_6c96_VisibleCityCount; i++)
 			{
 				CityInfo cityInfo = this.VisibleCities[i];
-				if (cityInfo.YPosScreen >= 184)
+				if (cityInfo.Y >= 184)
 				{
 					continue;
 				}
@@ -129,12 +130,12 @@ namespace OpenCiv1
 				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityInfo.CityID);
 
 				// Instruction address 0x2aea:0x015c, size: 5
-				this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, (ushort)(327 - cityInfo.XPosScreen));
+				this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, (ushort)(327 - cityInfo.X));
 
 				// Instruction address 0x2aea:0x018d, size: 5
 				this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0xba06,
-					this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(cityInfo.XPosScreen - 8, 80, 999),
-					cityInfo.YPosScreen + 16,
+					this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(cityInfo.X - 8, 80, 999),
+					cityInfo.Y + 16,
 					11);
 			}
 
