@@ -1198,7 +1198,7 @@ namespace OpenCiv1
 				goto L0d72;
 
 			// Instruction address 0x1238:0x0d6a, size: 5
-			this.oParent.MapManagement.F0_2aea_11d4(
+			this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 

@@ -315,7 +315,7 @@ namespace OpenCiv1
 							if (local_e8 != -1 && local_e8 != this.Var_6548_PlayerID)
 							{
 								// Instruction address 0x1d12:0x068e, size: 5
-								this.oParent.MapManagement.F0_2aea_11d4(local_c6, local_d2);
+								this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(local_c6, local_d2);
 							}
 							else
 							{
@@ -2064,7 +2064,7 @@ namespace OpenCiv1
 						this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].Position.Y == local_e4)
 					{
 						// Instruction address 0x1d12:0x3969, size: 5
-						this.oParent.MapManagement.F0_2aea_0fb3(this.Var_6548_PlayerID, (short)i, local_fa, local_100);
+						this.oParent.MapManagement.F0_2aea_0fb3_DrawUnit(this.Var_6548_PlayerID, (short)i, local_fa, local_100);
 
 						this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -2920,7 +2920,7 @@ namespace OpenCiv1
 							this.oParent.Segment_1000.F0_1182_0134_WaitTimer(10);
 
 							// Instruction address 0x1d12:0x50b1, size: 5
-							this.oParent.MapManagement.F0_2aea_0fb3(this.Var_6548_PlayerID, (short)Arr_74[local_106], local_fa, local_100);
+							this.oParent.MapManagement.F0_2aea_0fb3_DrawUnit(this.Var_6548_PlayerID, (short)Arr_74[local_106], local_fa, local_100);
 
 							// Instruction address 0x1d12:0x50bd, size: 5
 							this.oParent.Segment_1000.F0_1182_0134_WaitTimer(10);
@@ -4073,7 +4073,7 @@ namespace OpenCiv1
 				this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(this.oParent.CivState.HumanPlayerID, local_c6 - 8, local_d2 - 6);
 
 				// Instruction address 0x1d12:0x65f3, size: 5
-				this.oParent.MapManagement.F0_2aea_11d4(local_c6, local_d2);
+				this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(local_c6, local_d2);
 
 				this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ScienceAdvisor;
 

@@ -35,7 +35,7 @@ namespace OpenCiv1
 			this.oParent.MapManagement.F0_2aea_1601(xPos, yPos);
 
 			// Instruction address 0x0000:0x001c, size: 5
-			this.oParent.MapManagement.F0_2aea_11d4(xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(xPos, yPos);
 			
 			this.oCPU.SI.Word = (ushort)playerID;
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
