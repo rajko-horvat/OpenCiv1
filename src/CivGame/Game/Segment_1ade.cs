@@ -301,7 +301,7 @@ namespace OpenCiv1
 				if (this.oParent.CivState.Players[this.oParent.CivState.Cities[cityID].PlayerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))].HomeCityID == cityID)
 				{
 					// Instruction address 0x1ade:0x02ce, size: 5
-					this.oParent.Segment_1866.F0_1866_0f10((short)this.oCPU.SI.Word,
+					this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit((short)this.oCPU.SI.Word,
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
 				}
 			}

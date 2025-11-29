@@ -471,7 +471,7 @@ namespace OpenCiv1
 				(this.oParent.CivState.Cities[cityID].ActualSize == 0))
 			{
 				// Instruction address 0x2459:0x0529, size: 5
-				this.oParent.Segment_1866.F0_1866_0f10(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)),
+				this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)),
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)));
 			}
 
@@ -1083,7 +1083,7 @@ namespace OpenCiv1
 
 		L0b23:
 			// Instruction address 0x2459:0x0b29, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10(playerID, unitID);
+			this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(playerID, unitID);
 			
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);

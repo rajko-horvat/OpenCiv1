@@ -382,7 +382,7 @@ namespace OpenCiv1
 						if (local_e8 != -1)
 						{
 							// Instruction address 0x1d12:0x080e, size: 5
-							this.oParent.Segment_1866.F0_1866_0f10(this.Var_6548_PlayerID, (short)local_e8);
+							this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(this.Var_6548_PlayerID, (short)local_e8);
 						}
 						else
 						{
@@ -850,7 +850,7 @@ namespace OpenCiv1
 								if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID || city.CurrentProductionID != 0x1a)
 								{
 									// Instruction address 0x1d12:0x15fa, size: 5
-									local_ba = (short)this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
+									local_ba = this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
 								}
 
 								if ((this.oParent.CivState.TechnologyFirstDiscoveredBy[city.CurrentProductionID] & 0x8) == 0)
@@ -876,7 +876,7 @@ namespace OpenCiv1
 										this.oParent.Segment_1ade.F0_1ade_018e(cityID, city.Position.X, city.Position.Y);
 
 										// Instruction address 0x1d12:0x1727, size: 5
-										this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
+										this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
 
 										this.oParent.StartGameMenu.F5_0000_0e6c(this.Var_6548_PlayerID, 0);
 
@@ -968,7 +968,7 @@ namespace OpenCiv1
 										else
 										{
 											// Instruction address 0x1d12:0x19f9, size: 5
-											local_ba = (short)this.oParent.Segment_1866.F0_1866_0cf5(
+											local_ba = this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
 												this.Var_6548_PlayerID,
 												0x1a,
 												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].Position.X,
@@ -1931,7 +1931,7 @@ namespace OpenCiv1
 										this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].TypeID != 0)
 									{
 										// Instruction address 0x1d12:0x35c9, size: 5
-										this.oParent.Segment_1866.F0_1866_0f10(this.Var_6548_PlayerID, (short)local_108);
+										this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(this.Var_6548_PlayerID, (short)local_108);
 
 										city.StatusFlag &= 0xfe;
 									}
@@ -1962,7 +1962,7 @@ namespace OpenCiv1
 									}
 
 									// Instruction address 0x1d12:0x3667, size: 5
-									this.oParent.Segment_1866.F0_1866_0f10(this.Var_6548_PlayerID, (short)local_108);
+									this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(this.Var_6548_PlayerID, (short)local_108);
 
 									goto L32e0;
 								}

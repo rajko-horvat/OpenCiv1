@@ -2372,7 +2372,7 @@ namespace OpenCiv1
 					this.oParent.Var_6c9a <= 2)
 				{
 					// Instruction address 0x0000:0x1b1c, size: 5
-					this.oParent.Segment_1866.F0_1866_0f10(playerID,
+					this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(playerID,
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
 				}
 			}
