@@ -23,8 +23,28 @@ namespace OpenCiv1
 		// Layer 9: Per-Civ land exploration and active units, 160:0
 		// Layer 10: Mini-map render, 240:0
 
+		private struct CityInfo
+		{
+			public readonly int X = 0;
+			public readonly int Y = 0;
+			public readonly short CityID = -1;
+
+			public CityInfo(int xPos, int yPos, short cityID)
+			{
+				this.X = xPos;
+				this.Y = yPos;
+				this.CityID = cityID;
+			}
+		}
+
 		private CivGame oParent;
 		private VCPU oCPU;
+
+		// Local variables used exclusively inside this section
+
+		/// <summary>Number of cities currently visible on the screen</summary>
+		private int Var_6c96_VisibleCityCount = 0;
+		private readonly CityInfo[] VisibleCities = new CityInfo[32];
 
 		public MapManagement(CivGame parent)
 		{
@@ -60,7 +80,7 @@ namespace OpenCiv1
 			// Visibility Mask and that conflicts with other code which expects playerID.
 			int mapPlayerVisibilityMask = (0x1 << playerID);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6c96, 0x0);
+			Var_6c96_VisibleCityCount = 0;
 
 			// redraw Visible Map on screen
 			int cellXPos;
@@ -96,23 +116,27 @@ namespace OpenCiv1
 			}
 
 			// Draw city names
-			for (int i = 0; i < this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6c96); i++)
+			for (int i = 0; i < Var_6c96_VisibleCityCount; i++)
 			{
-				if (this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x6e3e + (i * 2))) < 184)
+				CityInfo cityInfo = this.VisibleCities[i];
+				if (cityInfo.Y >= 184)
 				{
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
-
-					// Instruction address 0x2aea:0x0148, size: 5
-					this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0xdf20 + (i * 2))));
-
-					// Instruction address 0x2aea:0x015c, size: 5
-					this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, (ushort)(327 - this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(0x6dac + (i * 2)))));
-
-					// Instruction address 0x2aea:0x018d, size: 5
-					this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0xba06,
-						this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x6dac + (i * 2))) - 8, 80, 999),
-						this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x6e3e + (i * 2))) + 16, 11);
+					continue;
 				}
+
+				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+
+				// Instruction address 0x2aea:0x0148, size: 5
+				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityInfo.CityID);
+
+				// Instruction address 0x2aea:0x015c, size: 5
+				this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, (ushort)(327 - cityInfo.X));
+
+				// Instruction address 0x2aea:0x018d, size: 5
+				this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0xba06,
+					this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(cityInfo.X - 8, 80, 999),
+					cityInfo.Y + 16,
+					11);
 			}
 
 			int xMap = x - 32;
@@ -683,13 +707,10 @@ namespace OpenCiv1
 									this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(0xd4ce + (0x1d << 1))));
 							}
 
-							if (this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6c96) < 32)
+							if (Var_6c96_VisibleCityCount < this.VisibleCities.Length)
 							{
-								this.oCPU.WriteInt16(this.oCPU.DS.Word, (ushort)(0x6dac + this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6c96) * 2), (short)scrX);
-								this.oCPU.WriteInt16(this.oCPU.DS.Word, (ushort)(0x6e3e + this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6c96) * 2), (short)scrY);
-								this.oCPU.WriteInt16(this.oCPU.DS.Word, (ushort)(0xdf20 + this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6c96) * 2), (short)cityID);
-
-								this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6c96, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6c96)));
+								this.VisibleCities[Var_6c96_VisibleCityCount] = new CityInfo(scrX, scrY, (short)cityID);
+								Var_6c96_VisibleCityCount++;
 							}
 						}
 					}
