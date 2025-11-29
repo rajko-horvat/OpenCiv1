@@ -70,8 +70,8 @@ namespace OpenCiv1
 
 			int tempValue = this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd20a);
 
-			this.oParent.Var_d4cc_MapXCenter = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x);
-			this.oParent.Var_d75e_MapYCenter = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(y, 0, 38);
+			this.oParent.Var_d4cc_MapViewX = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x);
+			this.oParent.Var_d75e_MapViewY = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(y, 0, 38);
 
 			// Another error, the code modified first parameter (playerID) to a
 			// Visibility Mask and that conflicts with other code which expects playerID.
@@ -92,11 +92,11 @@ namespace OpenCiv1
 				if (cellYPos < 12 && cellXPos < 15)
 				{
 					if (this.oParent.Var_d806_DebugFlag ||
-						(this.oParent.CivState.MapVisibility[this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(cellXPos + this.oParent.Var_d4cc_MapXCenter),
-							cellYPos + this.oParent.Var_d75e_MapYCenter] & mapPlayerVisibilityMask) != 0)
+						(this.oParent.CivState.MapVisibility[this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(cellXPos + this.oParent.Var_d4cc_MapViewX),
+							cellYPos + this.oParent.Var_d75e_MapViewY] & mapPlayerVisibilityMask) != 0)
 					{
 						// Instruction address 0x2aea:0x0122, size: 3
-						F0_2aea_11d4(this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(cellXPos + this.oParent.Var_d4cc_MapXCenter), cellYPos + this.oParent.Var_d75e_MapYCenter);
+						F0_2aea_11d4(this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(cellXPos + this.oParent.Var_d4cc_MapViewX), cellYPos + this.oParent.Var_d75e_MapViewY);
 					}
 					else
 					{
@@ -253,8 +253,8 @@ namespace OpenCiv1
 
 			// function body
 			// Tile position in screen coordinates
-			int scrX = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x - this.oParent.Var_d4cc_MapXCenter) * 16 + 80;
-			int scrY = (y - this.oParent.Var_d75e_MapYCenter) * 16 + 8;
+			int scrX = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x - this.oParent.Var_d4cc_MapViewX) * 16 + 80;
+			int scrY = (y - this.oParent.Var_d75e_MapViewY) * 16 + 8;
 
 			if (scrX < 80 || scrX >= 320 || scrY < 8 || scrY > 192)
 			{
@@ -740,14 +740,14 @@ namespace OpenCiv1
 
 			// Instruction address 0x2aea:0x0ecd, size: 5
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
-				this.oParent.CivState.Players[playerID].Units[unitID].Position.X - this.oParent.Var_d4cc_MapXCenter);
+				this.oParent.CivState.Players[playerID].Units[unitID].Position.X - this.oParent.Var_d4cc_MapViewX);
 
 			this.oCPU.CX.Low = 0x4;
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 
 			this.oCPU.AX.Word = (ushort)((short)this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
-			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)((short)this.oParent.Var_d75e_MapYCenter));
+			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)((short)this.oParent.Var_d75e_MapViewY));
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x8);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);
