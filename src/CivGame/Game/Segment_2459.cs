@@ -852,22 +852,20 @@ namespace OpenCiv1
 		/// Appends buffer at 0xba06 with city name
 		/// </summary>
 		/// <param name="cityID"></param>
-		public void F0_2459_08c6_GetCityName(short cityID)
+		public void F0_2459_08c6_GetCityName(int cityID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2459_08c6_GetCityName({cityID})");
+			//this.oCPU.Log.EnterBlock($"F0_2459_08c6_GetCityName({cityID})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-
 			if (cityID != -1)
 			{
-				byte ubCityNameID = this.oParent.CivState.Cities[cityID].NameID;
-				ushort usStringOffset = (ushort)(0xba06 + this.oParent.MSCAPI.strlen(0xba06));
+				byte cityNameID = this.oParent.CivState.Cities[cityID].NameID;
+				ushort stringPtr = (ushort)(0xba06 + this.oParent.MSCAPI.strlen(0xba06));
 
-				for (int i = 0; i < 0xd; i++)
+				// 13 is maximum city name size to copy
+				for (int i = 0; i < 13; i++)
 				{
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(usStringOffset + i), (byte)this.oParent.CivState.CityNames[ubCityNameID][i]);
+					this.oCPU.WriteUInt8(this.oCPU.DS.Word, (ushort)(stringPtr + i), (byte)this.oParent.CivState.CityNames[cityNameID][i]);
 				}
 			}
 			else
@@ -875,11 +873,6 @@ namespace OpenCiv1
 				// Instruction address 0x2459:0x08d7, size: 5
 				this.oParent.MSCAPI.strcat(0xba06, "NONE");
 			}
-
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2459_08c6_GetCityName");
 		}
 
 		/// <summary>
