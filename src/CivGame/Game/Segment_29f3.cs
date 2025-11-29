@@ -1106,7 +1106,7 @@ namespace OpenCiv1
 
 		L0ad2:
 			// Instruction address 0x29f3:0x0ad8, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10(playerID2, unitID2);
+			this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(playerID2, unitID2);
 			
 			this.oCPU.SI.Word = (ushort)playerID1;
 			this.oCPU.CX.Low = 0x4;
@@ -1149,7 +1149,7 @@ namespace OpenCiv1
 			this.oParent.CivState.Players[playerID2].UnitsDestroyed[playerID1]++;
 
 			// Instruction address 0x29f3:0x0b31, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10(playerID1, unitID1);
+			this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(playerID1, unitID1);
 
 			// Instruction address 0x29f3:0x0b3d, size: 5
 			this.oCPU.AX.Word = (ushort)(this.oParent.MSCAPI.RNG.Next(2));

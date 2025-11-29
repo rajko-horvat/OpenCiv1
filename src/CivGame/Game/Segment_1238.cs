@@ -910,7 +910,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16), this.oCPU.AX.Word);
 
 			// Instruction address 0x1238:0x0a43, size: 5
-			this.oParent.Segment_1866.F0_1866_0cf5(
+			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
 				0,
 				(short)((this.oCPU.AX.Word < 3) ? 0x11 : 0x12),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
@@ -930,7 +930,7 @@ namespace OpenCiv1
 
 		L0a64:
 			// Instruction address 0x1238:0x0a70, size: 5
-			this.oParent.Segment_1866.F0_1866_0cf5(
+			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
 				0,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
@@ -1180,7 +1180,7 @@ namespace OpenCiv1
 
 		L0d1e:
 			// Instruction address 0x1238:0x0d2a, size: 5
-			this.oParent.Segment_1866.F0_1866_0cf5(
+			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
 				0,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),

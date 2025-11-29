@@ -37,7 +37,7 @@ namespace OpenCiv1
 				if (this.oParent.CivState.Cities[cityID].Unknown[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))] != -1)
 				{
 					// Instruction address 0x1866:0x005e, size: 3
-					F0_1866_0cf5(
+					F0_1866_0cf5_CreateUnit(
 						this.oParent.CivState.Cities[cityID].PlayerID,
 						(short)(this.oParent.CivState.Cities[cityID].Unknown[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))] & 0x3f),
 						this.oParent.CivState.Cities[cityID].Position.X,
@@ -133,7 +133,7 @@ namespace OpenCiv1
 
 			L0136:
 				// Instruction address 0x1866:0x013d, size: 3
-				F0_1866_0f10(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
+				F0_1866_0f10_DeleteUnit(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 
 			L0143:
@@ -1344,343 +1344,208 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Creates unit of specified type.
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitTypeID"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <returns></returns>
-		public ushort F0_1866_0cf5(short playerID, short unitTypeID, int xPos, int yPos)
+		/// <returns>ID of newly created unit or -1 if unit can not be created</returns>
+		public short F0_1866_0cf5_CreateUnit(short playerID, short unitTypeID, int xPos, int yPos)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_0cf5({playerID}, {unitTypeID}, {xPos}, {yPos})");
+			this.oCPU.Log.EnterBlock($"F0_1866_0cf5_CreateUnit({playerID}, {unitTypeID}, {xPos}, {yPos})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x4);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x0);
-			goto L0d06;
+			Player player = this.oParent.CivState.Players[playerID];
+			short unitID = 0;
 
-		L0d03:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))));
+			// Find free unit ID
+			for (; unitID < 127 && player.Units[unitID].TypeID != -1; ++unitID)
+			{
+				;
+			}
 
-		L0d06:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0x7f);
-			if (this.oCPU.Flags.L) goto L0d0f;
-			goto L0ec8;
+			if (unitID >= 127)
+			{
+				if (playerID == this.oParent.CivState.HumanPlayerID && this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd760) == 0)
+				{
+					this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DefenseMinister;
 
-		L0d0f:
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
-			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
+					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
-			if (this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID != -1)
-				goto L0d03;
+					// Instruction address 0x1866:0x0ee6, size: 5
+					this.oParent.Segment_2f4d.F0_2f4d_044f(0x2126);
 
-			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.X = -1;
-			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].NextUnitID = -1;
+					// Instruction address 0x1866:0x0efa, size: 5
+					this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 64);
+
+					// Show message to the human player only once per turn
+					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd760, 0x1);
+				}
+
+				this.oCPU.AX.Word = 0xffff;
+				this.oCPU.Log.ExitBlock("F0_1866_0cf5_CreateUnit");
+				
+				return (short)this.oCPU.AX.Word;
+			}
+
+			Unit unit = player.Units[unitID];
+			unit.Position.X = -1;
+			unit.NextUnitID = -1;
 
 			// Instruction address 0x1866:0x0d39, size: 5
 			this.oParent.MapManagement.F0_2aea_138c_SetCityOwner(playerID, xPos, yPos);
 
 			// Instruction address 0x1866:0x0d4d, size: 5
-			this.oParent.MapManagement.F0_2aea_13cb(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), xPos, yPos);
-
-			this.oCPU.AX.Word = 0x1;
-			this.oCPU.CX.Low = (byte)playerID;
-			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
+			this.oParent.MapManagement.F0_2aea_13cb(playerID, unitID, xPos, yPos);
 
 			this.oParent.CivState.MapVisibility[xPos, yPos] |= (ushort)(1 << playerID);
 
-			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Status = 0;
-			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position = new GPoint(xPos, yPos);
-			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID = unitTypeID;
-			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].VisibleByPlayer = (ushort)(1 << playerID);
-			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].GoToPosition.X = -1;
-			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].GoToNextDirection = -1;
-
-			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].SpecialMoves =
-				this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID].TurnsOutside;
+			unit.Status = 0;
+			unit.Position = new GPoint(xPos, yPos);
+			unit.TypeID = unitTypeID;
+			unit.VisibleByPlayer = (ushort)(1 << playerID);
+			unit.GoToPosition.X = -1;
+			unit.GoToNextDirection = -1;
+			unit.SpecialMoves = this.oParent.CivState.UnitDefinitions[unit.TypeID].TurnsOutside;
 
 			// Instruction address 0x1866:0x0db6, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0102(xPos, yPos);
+			unit.HomeCityID = (short)this.oParent.Segment_2dc4.F0_2dc4_0102(xPos, yPos);
 
-			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].HomeCityID = (short)this.oCPU.AX.Word;
+			short cityOwnerID = (short)((unit.HomeCityID < 128 && unit.HomeCityID != -1) ? this.oParent.CivState.Cities[unit.HomeCityID].PlayerID : -1);
 
-			// !!! Illegal memory access
-			if (this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].HomeCityID < 128 &&
-				this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].HomeCityID != -1)
+			if (cityOwnerID != playerID)
 			{
-				this.oCPU.AX.Word = (ushort)((short)this.oParent.CivState.Cities[this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].HomeCityID].PlayerID);
-			}
-			else
-			{
-				this.oCPU.AX.Word = 0xffff;
+				unit.HomeCityID = -1;
 			}
 
-			if ((short)this.oCPU.AX.Word != playerID)
+			if (unit.SpecialMoves != 0)
 			{
-				this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].HomeCityID = -1;
+				unit.SpecialMoves--;
 			}
 
-			if (this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].SpecialMoves != 0)
+			player.ActiveUnits[unitTypeID]++;
+
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4) == 0)
 			{
-				this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].SpecialMoves--;
+				if (!this.oParent.Var_d806_DebugFlag)
+				{
+					if (playerID == this.oParent.CivState.HumanPlayerID)
+					{
+						goto L0e3d;
+					}
+
+					if ((unit.VisibleByPlayer & (1 << (this.oParent.CivState.HumanPlayerID & 0xff))) == 0)
+					{
+						goto L0e64;
+					}
+				}
+
+			L0e3d:
+
+				// Instruction address 0x1866:0x0e5c, size: 5
+				this.oParent.MapManagement.F0_2aea_11d4(unit.Position.X, unit.Position.Y);
+
+			L0e64:
+				// Instruction address 0x1866:0x0e77, size: 3
+				F0_1866_01dc(xPos, yPos, playerID, unitID, 1);
 			}
 
-			this.oCPU.AX.Word = 0x38;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
+			if (playerID == this.oParent.CivState.HumanPlayerID
+				&& this.oParent.CivState.TurnCount != 0
+				&& (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4) == 0))
+			{
+				if (player.UnitCount == 0)
+				{
+					this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x210e);
+				}
 
-			this.oCPU.BX.Word = (ushort)unitTypeID;
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
+				if (player.UnitCount == 1)
+				{
+					this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x211a);
+				}
+			}
 
-			this.oParent.CivState.Players[playerID].ActiveUnits[unitTypeID]++;
-
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4), 0x0);
-			if (this.oCPU.Flags.NE) goto L0e7d;
-			
-			if (this.oParent.Var_d806_DebugFlag) goto L0e3d;
-
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.HumanPlayerID;
-			this.oCPU.CMP_UInt16((ushort)playerID, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L0e3d;
-			
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-
-			this.oCPU.AX.Word = this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].VisibleByPlayer;
-			
-			this.oCPU.DX.Word = 0x1;
-			this.oCPU.CX.Low = (byte)(this.oParent.CivState.HumanPlayerID & 0xff);
-			this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-			if (this.oCPU.Flags.E) goto L0e64;
-
-		L0e3d:
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
-			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
-
-			// Instruction address 0x1866:0x0e5c, size: 5
-			this.oParent.MapManagement.F0_2aea_11d4(
-				this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.X,
-				this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.Y);
-
-		L0e64:
-			// Instruction address 0x1866:0x0e77, size: 3
-			F0_1866_01dc(
-				xPos,
-				yPos,
-				playerID,
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
-				1);
-
-		L0e7d:
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.HumanPlayerID;
-			this.oCPU.CMP_UInt16((ushort)playerID, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L0ec3;
-			if (this.oParent.CivState.TurnCount == 0) goto L0ec3;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4), 0x0);
-			if (this.oCPU.Flags.NE) goto L0ec3;
-
-			if (this.oParent.CivState.Players[playerID].UnitCount != 0) goto L0eab;
-
-			this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x210e);
-
-		L0eab:
-			if (this.oParent.CivState.Players[playerID].UnitCount != 1) goto L0ec3;
-
-			this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x211a);
-
-		L0ec3:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
-			goto L0f0b;
-
-		L0ec8:
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.HumanPlayerID;
-			this.oCPU.CMP_UInt16((ushort)playerID, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L0f08;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd760), 0x0);
-			if (this.oCPU.Flags.NE) goto L0f08;
-
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DefenseMinister;
-
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
-
-			// Instruction address 0x1866:0x0ee6, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x2126);
-
-			// Instruction address 0x1866:0x0efa, size: 5
-			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 64);
-
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd760, 0x1);
-
-		L0f08:
-			this.oCPU.AX.Word = 0xffff;
-
-		L0f0b:
-			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
+			this.oCPU.AX.Word = (ushort)unitID;
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_1866_0cf5");
+			this.oCPU.Log.ExitBlock("F0_1866_0cf5_CreateUnit");
 
-			return this.oCPU.AX.Word;
+			return (short)this.oCPU.AX.Word;
 		}
 
 		/// <summary>
-		/// ?
+		/// Deletes unit counting it as lost.
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_0f10(short playerID, short unitID)
+		public void F0_1866_0f10_DeleteUnit(short playerID, short unitID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_0f10({playerID}, {unitID})");
+			this.oCPU.Log.EnterBlock($"F0_1866_0f10_DeleteUnit({playerID}, {unitID})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
+			Player player = this.oParent.CivState.Players[playerID];
+			Unit unit = player.Units[unitID];
 
-			// !!! Illegal memory access this.oParent.GameState.Players[playerID].Units[unitID].TypeID == -1
-			if (this.oParent.CivState.Players[playerID].Units[unitID].TypeID != -1)
+			if (unit.TypeID == -1)
 			{
-				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x70d8) != 0)
-				{
-					this.oParent.CivState.Players[playerID].LostUnits[this.oParent.CivState.Players[playerID].Units[unitID].TypeID]++;
-				}
+				// Far return
+				this.oCPU.Log.ExitBlock("F0_1866_0f10_DeleteUnit");
+				return;
+			}
 
-				this.oCPU.AX.Word = 0x600;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-				this.oCPU.SI.Word = this.oCPU.AX.Word;
-				this.oCPU.AX.Word = 0xc;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-				this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x70d8) != 0)
+			{
+				player.LostUnits[unit.TypeID]++;
+			}
 
-				this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.CivState.Players[playerID].Units[unitID].TypeID));
-				this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-				if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].TransportCapacity == 0 ||
-					this.oParent.CivState.Players[playerID].Units[unitID].NextUnitID == -1)
-					goto L0f9a;
-
+			if (this.oParent.CivState.UnitDefinitions[unit.TypeID].TransportCapacity != 0 && unit.NextUnitID != -1
 				// Instruction address 0x1866:0x0f78, size: 5
-				this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
-					this.oParent.CivState.Players[playerID].Units[unitID].Position.X,
-					this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
-
-				this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-				if (this.oCPU.Flags.NE) goto L0f9a;
+				&& this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(unit.Position.X, unit.Position.Y) == TerrainTypeEnum.Water)
+			{
+				// Delete land units aboard the ship
 
 				// Instruction address 0x1866:0x0f94, size: 3
 				F0_1866_144b(playerID, unitID, 0x1610);
+			}
 
-			L0f9a:
-				this.oCPU.AX.Word = 0x600;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-				this.oCPU.SI.Word = this.oCPU.AX.Word;
-				this.oCPU.AX.Word = 0xc;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-				this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
-
-				if (this.oParent.CivState.Players[playerID].Units[unitID].TypeID != 23)
-					goto L0fe6;
-
-				if (this.oParent.CivState.Players[playerID].Units[unitID].NextUnitID == -1)
-					goto L0fe6;
-
+			if (unit.TypeID == (short)UnitTypeEnum.Carrier && unit.NextUnitID != -1
 				// Instruction address 0x1866:0x0fc4, size: 5
-				this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
-					this.oParent.CivState.Players[playerID].Units[unitID].Position.X,
-					this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
-
-				this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-				if (this.oCPU.Flags.NE) goto L0fe6;
+				&& this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(unit.Position.X, unit.Position.Y) == TerrainTypeEnum.Water)
+			{
+				// Delete air units along with aircraft carrier
 
 				// Instruction address 0x1866:0x0fe0, size: 3
 				F0_1866_144b(playerID, unitID, 0x1676);
-
-			L0fe6:
-				this.oCPU.AX.Word = 0x600;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-				this.oCPU.SI.Word = this.oCPU.AX.Word;
-				this.oCPU.AX.Word = 0xc;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-				this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
-
-				this.oCPU.DI.Word = (ushort)((short)this.oParent.CivState.Players[playerID].Units[unitID].TypeID);
-				this.oCPU.DI.Word = this.oCPU.SHL_UInt16(this.oCPU.DI.Word, 0x1);
-
-				if (this.oParent.CivState.Players[playerID].Units[unitID].TypeID != -1)
-					this.oParent.CivState.Players[playerID].ActiveUnits[this.oParent.CivState.Players[playerID].Units[unitID].TypeID]--;
-
-				this.oParent.CivState.Players[playerID].Units[unitID].TypeID = -1;
-				this.oParent.CivState.Players[playerID].Units[unitID].RemainingMoves = 0;
-
-				// Instruction address 0x1866:0x1027, size: 5
-				this.oParent.MapManagement.F0_2aea_1412(playerID, unitID,
-					this.oParent.CivState.Players[playerID].Units[unitID].Position.X,
-					this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
-
-				this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4), 0x0);
-				if (this.oCPU.Flags.NE) goto L1085;
-				this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3936), 0xffff);
-				if (this.oCPU.Flags.NE) goto L1085;
-				
-				if (this.oParent.Var_d806_DebugFlag) goto L105e;
-
-				if (playerID == this.oParent.CivState.HumanPlayerID)
-					goto L105e;
-
-				this.oCPU.AX.Word = this.oParent.CivState.Players[playerID].Units[unitID].VisibleByPlayer;
-
-				this.oCPU.DX.Word = 0x1;
-				this.oCPU.CX.Low = (byte)(this.oParent.CivState.HumanPlayerID & 0xff);
-				this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-				this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				if (this.oCPU.Flags.E) goto L1085;
-
-				L105e:
-				this.oCPU.AX.Word = 0x600;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-				this.oCPU.SI.Word = this.oCPU.AX.Word;
-				this.oCPU.AX.Word = 0xc;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-				this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
-
-				// Instruction address 0x1866:0x107d, size: 5
-				this.oParent.MapManagement.F0_2aea_11d4(
-					this.oParent.CivState.Players[playerID].Units[unitID].Position.X,
-					this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
 			}
 
-		L1085:
-			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.DI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
+			if (unit.TypeID != -1)
+			{
+				player.ActiveUnits[unit.TypeID]--;
+			}
+
+			unit.TypeID = -1;
+			unit.RemainingMoves = 0;
+
+			// Instruction address 0x1866:0x1027, size: 5
+			this.oParent.MapManagement.F0_2aea_1412(playerID, unitID, unit.Position.X, unit.Position.Y);
+
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4) == 0 && this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x3936) == -1)
+			{
+				if (!this.oParent.Var_d806_DebugFlag && playerID != this.oParent.CivState.HumanPlayerID
+					&& (unit.VisibleByPlayer & (1 << (this.oParent.CivState.HumanPlayerID & 0xff))) == 0)
+				{
+					// Far return
+					this.oCPU.Log.ExitBlock("F0_1866_0f10_DeleteUnit");
+					return;
+				}
+
+				// Instruction address 0x1866:0x107d, size: 5
+				this.oParent.MapManagement.F0_2aea_11d4(unit.Position.X, unit.Position.Y);
+			}
+
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_1866_0f10");
+			this.oCPU.Log.ExitBlock("F0_1866_0f10_DeleteUnit");
 		}
 
 		/// <summary>
@@ -2245,7 +2110,7 @@ namespace OpenCiv1
 				switch (fnPtr)
 				{
 					case 0xf10:
-						F0_1866_0f10(playerID, oldUnitID);
+						F0_1866_0f10_DeleteUnit(playerID, oldUnitID);
 						break;
 
 					case 0x1169:
@@ -2474,7 +2339,7 @@ namespace OpenCiv1
 			if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].UnitCategory == UnitCategoryEnum.Land)
 			{
 				// Instruction address 0x1866:0x163a, size: 3
-				F0_1866_0f10(playerID, unitID);
+				F0_1866_0f10_DeleteUnit(playerID, unitID);
 			}
 
 			// Far return
@@ -2496,7 +2361,7 @@ namespace OpenCiv1
 				if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].UnitCategory != UnitCategoryEnum.Land)
 				{
 					// Instruction address 0x1866:0x166d, size: 3
-					F0_1866_0f10(playerID, unitID);
+					F0_1866_0f10_DeleteUnit(playerID, unitID);
 				}
 			}
 
@@ -2520,7 +2385,7 @@ namespace OpenCiv1
 			if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].UnitCategory == UnitCategoryEnum.Air)
 			{
 				// Instruction address 0x1866:0x16a0, size: 3
-				F0_1866_0f10(playerID, unitID);
+				F0_1866_0f10_DeleteUnit(playerID, unitID);
 			}
 
 			// Far return
@@ -3119,7 +2984,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 
 			// Instruction address 0x1866:0x1c43, size: 3
-			F0_1866_0cf5(
+			F0_1866_0cf5_CreateUnit(
 				0,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
@@ -3213,7 +3078,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
 			// Instruction address 0x1866:0x1d2d, size: 3
-			F0_1866_0cf5(
+			F0_1866_0cf5_CreateUnit(
 				playerID,
 				(short)((this.oParent.MSCAPI.RNG.Next(2) != 0) ? 3 : 6),
 				this.oParent.CivState.Players[playerID].Units[unitID].Position.X,
