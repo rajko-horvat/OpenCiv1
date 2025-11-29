@@ -179,8 +179,8 @@ namespace OpenCiv1
 
 				Arr_a6[2, 2] = 0;
 				this.Var_6548_PlayerID = city.PlayerID;
-				local_c2 = this.oParent.Var_d4cc_MapXCenter;
-				local_d0 = this.oParent.Var_d75e_MapYCenter;
+				local_c2 = this.oParent.Var_d4cc_MapViewX;
+				local_d0 = this.oParent.Var_d75e_MapViewY;
 
 				if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType <= 1)
 				{
@@ -295,8 +295,8 @@ namespace OpenCiv1
 					// Instruction address 0x1d12:0x0587, size: 5
 					F0_1d12_70cb_FillRectangleWithPattern(127, 23, 208, 104);
 
-					this.oParent.Var_d4cc_MapXCenter = city.Position.X - 5;
-					this.oParent.Var_d75e_MapYCenter = city.Position.Y - 3;
+					this.oParent.Var_d4cc_MapViewX = city.Position.X - 5;
+					this.oParent.Var_d75e_MapViewY = city.Position.Y - 3;
 
 					// Instruction address 0x1d12:0x05cd, size: 5
 					this.oParent.MapManagement.F0_2aea_03ba_DrawCell(city.Position.X, city.Position.Y);
@@ -326,7 +326,7 @@ namespace OpenCiv1
 								{
 									// Instruction address 0x1d12:0x06f6, size: 5
 									this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(
-										(local_c6 - this.oParent.Var_d4cc_MapXCenter) * 16 + 80, (local_d2 - this.oParent.Var_d75e_MapYCenter) * 16 + 8, 15, 15, 12);
+										(local_c6 - this.oParent.Var_d4cc_MapViewX) * 16 + 80, (local_d2 - this.oParent.Var_d75e_MapViewY) * 16 + 8, 15, 15, 12);
 								}
 							}
 						}
@@ -3577,8 +3577,8 @@ namespace OpenCiv1
 					this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 
 				L5cc2:
-					this.oParent.Var_d4cc_MapXCenter = local_c2;
-					this.oParent.Var_d75e_MapYCenter = local_d0;
+					this.oParent.Var_d4cc_MapViewX = local_c2;
+					this.oParent.Var_d75e_MapViewY = local_d0;
 				}
 
 				if (flag != 0)

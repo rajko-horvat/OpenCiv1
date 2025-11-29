@@ -86,8 +86,10 @@ namespace OpenCiv1
 		public int Var_d2de = 0;
 		public int Var_d2e0 = 0;
 		public int Var_d2f6 = 0;
-		public int Var_d4cc_MapXCenter = 0;
-		public int Var_d75e_MapYCenter = 0;
+		/// <summary>X coordinate of the top left cell in map view</summary>
+		public int Var_d4cc_MapViewX = 0;
+		/// <summary>Y coordinate of the top left cell in map view</summary>
+		public int Var_d75e_MapViewY = 0;
 		public ushort Var_d762 = 0;
 		public ushort Var_d768 = 0;
 		public bool Var_d806_DebugFlag = false;

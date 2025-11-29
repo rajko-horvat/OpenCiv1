@@ -844,14 +844,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L099f;
 
 			// Instruction address 0x0000:0x09f0, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos - this.oParent.Var_d4cc_MapXCenter);
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos - this.oParent.Var_d4cc_MapViewX);
 
 			this.oCPU.CX.Low = 0x4;
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x42);
 			xPos = (short)this.oCPU.AX.Word;
 			this.oCPU.AX.Word = (ushort)((short)yPos);
-			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)((short)this.oParent.Var_d75e_MapYCenter));
+			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, (ushort)((short)this.oParent.Var_d75e_MapViewY));
 			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x6);
 			yPos = (short)this.oCPU.AX.Word;
