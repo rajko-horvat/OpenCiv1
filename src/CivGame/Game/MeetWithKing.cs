@@ -32,7 +32,7 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 
 			// Instruction address 0x0000:0x000e, size: 5
-			this.oParent.MapManagement.F0_2aea_1601(xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(xPos, yPos);
 
 			// Instruction address 0x0000:0x001c, size: 5
 			this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(xPos, yPos);

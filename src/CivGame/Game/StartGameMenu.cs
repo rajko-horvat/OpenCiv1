@@ -989,7 +989,7 @@ namespace OpenCiv1
 
 			L0ba2:
 				// Instruction address 0x0000:0x0ba8, size: 5
-				this.oParent.MapManagement.F0_2aea_1942(
+				this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
 
@@ -1016,7 +1016,7 @@ namespace OpenCiv1
 					goto L0bf7;
 
 				// Instruction address 0x0000:0x0be2, size: 5
-				this.oParent.MapManagement.F0_2aea_1942(
+				this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
 
@@ -1170,9 +1170,7 @@ namespace OpenCiv1
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
 
 				// Instruction address 0x0000:0x0dcb, size: 5
-				this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
-					playerID,
-					0,
+				this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(playerID, 0,
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
 				
@@ -1417,7 +1415,7 @@ namespace OpenCiv1
 				this.oCPU.DI.Word = this.oCPU.SUB_UInt16(this.oCPU.DI.Word, 0x5a);
 
 				// Instruction address 0x0000:0x103d, size: 5
-				this.oParent.MapManagement.F0_2aea_1942(
+				this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 					this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].Position.X,
 					this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].Position.Y);
 
@@ -1649,14 +1647,14 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.ADD_UInt16(this.oCPU.DI.Word, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x1274, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48))].Units[0].Position.X,
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x48))].Units[0].Position.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x5e), this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x128b, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].Position.X,
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26))].Position.Y);
 
@@ -1809,14 +1807,13 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.SUB_UInt16(this.oCPU.DI.Word, 0x1c);
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x24));
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.DS.Word, this.oCPU.DI.Word));
+
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x3);
 			if (this.oCPU.Flags.LE) goto L1444;
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, this.oCPU.DI.Word, this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, this.oCPU.DI.Word), 0x3));
 			
 			// Instruction address 0x0000:0x142c, size: 5
-			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
-				0,
+			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)), 0,
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[0].Position.X,
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[0].Position.Y);
 

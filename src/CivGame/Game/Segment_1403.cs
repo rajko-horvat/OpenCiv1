@@ -1183,7 +1183,7 @@ namespace OpenCiv1
 				goto L0eb5;
 
 			// Instruction address 0x1403:0x0ead, size: 5
-			this.oParent.MapManagement.F0_2aea_1601(
+			this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 
@@ -1441,7 +1441,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 
 			// Instruction address 0x1403:0x124c, size: 5
-			this.oParent.MapManagement.F0_2aea_1601(
+			this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 			
@@ -2340,7 +2340,7 @@ namespace OpenCiv1
 
 		L1d62:
 			// Instruction address 0x1403:0x1d68, size: 5
-			this.oParent.MapManagement.F0_2aea_1601(
+			this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 
@@ -2539,12 +2539,12 @@ namespace OpenCiv1
 
 		L2021:
 			// Instruction address 0x1403:0x2047, size: 5
-			ushort usTemp = this.oParent.MapManagement.F0_2aea_1942(
+			ushort usTemp = this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oParent.CivState.Cities[this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].HomeCityID].Position.X,
 				this.oParent.CivState.Cities[this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].HomeCityID].Position.Y);
 
 			// Instruction address 0x1403:0x2057, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26)));
 
@@ -2957,7 +2957,7 @@ namespace OpenCiv1
 
 		L262e:
 			// Instruction address 0x1403:0x2634, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x26)));
 

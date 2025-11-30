@@ -904,15 +904,12 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L09b8;
 
 			// Instruction address 0x1238:0x0a21, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				(this.oParent.CivState.TurnCount / 150) + 1, 1, 3);
+			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange((this.oParent.CivState.TurnCount / 150) + 1, 1, 3);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16), this.oCPU.AX.Word);
 
 			// Instruction address 0x1238:0x0a43, size: 5
-			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
-				0,
-				(short)((this.oCPU.AX.Word < 3) ? 0x11 : 0x12),
+			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(0, (short)((this.oCPU.AX.Word < 3) ? 0x11 : 0x12),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 			
@@ -930,11 +927,10 @@ namespace OpenCiv1
 
 		L0a64:
 			// Instruction address 0x1238:0x0a70, size: 5
-			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
-				0,
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(0,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))));
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c), this.oCPU.AX.Word);
 
@@ -1067,14 +1063,14 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1238:0x0bd0, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14))].Position.X,
 				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14))].Position.Y);
 
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1238:0x0be0, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -1180,15 +1176,18 @@ namespace OpenCiv1
 
 		L0d1e:
 			// Instruction address 0x1238:0x0d2a, size: 5
-			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
-				0,
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(0,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
-			
-			this.oParent.CivState.Players[0].Units[(short)this.oCPU.AX.Word].VisibleByPlayer |=
-				this.oParent.CivState.MapVisibility[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
-					this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))];
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))));
+
+			// In case our unit count has reached capacity
+			if (this.oCPU.AX.Word != 0xffff)
+			{
+				this.oParent.CivState.Players[0].Units[(short)this.oCPU.AX.Word].VisibleByPlayer |=
+					this.oParent.CivState.MapVisibility[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
+						this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))];
+			}
 
 			this.oCPU.AX.Word = 0x1c;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)));

@@ -350,7 +350,7 @@ namespace OpenCiv1
 			this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].VisibleSize = 1;
 			
 			// Instruction address 0x0000:0x0406, size: 5
-			this.oParent.MapManagement.F0_2aea_1601(xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(xPos, yPos);
 
 		L040e:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc))));
@@ -427,7 +427,7 @@ namespace OpenCiv1
 			this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].VisibleSize = 1;
 
 			// Instruction address 0x0000:0x04f5, size: 5
-			this.oParent.MapManagement.F0_2aea_1601(
+			this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(
 				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.X,
 				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Position.Y);
 

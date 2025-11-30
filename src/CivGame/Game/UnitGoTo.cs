@@ -1258,9 +1258,8 @@ namespace OpenCiv1
 			F0_2e31_119b_AdjustXPosition(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x1c)));
 
 			// Instruction address 0x2e31:0x0db6, size: 5
-			this.oParent.MapManagement.F0_2aea_1570(
-				(short)this.oCPU.AX.Word,
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x36)));
+			this.oCPU.AX.Word = (ushort)(this.oParent.MapManagement.F0_2aea_1570_CheckCellHasRoadBuilt((short)this.oCPU.AX.Word,
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x36))) ? 1 : 0);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3c), 0x1);
@@ -1348,9 +1347,9 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0e8e;
 
 			// Instruction address 0x2e31:0x0e7c, size: 5
-			this.oParent.MapManagement.F0_2aea_1570(
+			this.oCPU.AX.Word = (ushort)(this.oParent.MapManagement.F0_2aea_1570_CheckCellHasRoadBuilt(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44)));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44))) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L0e8e;

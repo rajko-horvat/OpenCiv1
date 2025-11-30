@@ -797,8 +797,8 @@ namespace OpenCiv1
 				{
 					// Instruction address 0x1d12:0x1428, size: 5
 					// Instruction address 0x1d12:0x1442, size: 5
-					if (this.oParent.MapManagement.F0_2aea_1942(city.Position.X, city.Position.Y) ==
-						this.oParent.MapManagement.F0_2aea_1942(
+					if (this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(city.Position.X, city.Position.Y) ==
+						this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 						this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[(int)WonderEnum.HooverDam]].Position.X,
 						this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[(int)WonderEnum.HooverDam]].Position.Y))
 					{
@@ -939,9 +939,9 @@ namespace OpenCiv1
 
 													// Instruction address 0x1d12:0x1956, size: 5
 													// Instruction address 0x1d12:0x1970, size: 5
-													if (terrainType != TerrainTypeEnum.Water && this.oParent.MapManagement.F0_2aea_1942(
+													if (terrainType != TerrainTypeEnum.Water && this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 														this.oParent.CivState.Cities[i].Position.X,	this.oParent.CivState.Cities[i].Position.Y) ==
-														this.oParent.MapManagement.F0_2aea_1942(
+														this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
 														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y))
 													{
@@ -969,8 +969,7 @@ namespace OpenCiv1
 										{
 											// Instruction address 0x1d12:0x19f9, size: 5
 											local_ba = this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
-												this.Var_6548_PlayerID,
-												0x1a,
+												this.Var_6548_PlayerID, 0x1a,
 												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].Position.X,
 												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].Position.Y);
 
@@ -1268,7 +1267,7 @@ namespace OpenCiv1
 												this.oParent.CivState.Cities[i].Position.Y] |= (ushort)(1 << this.Var_6548_PlayerID);
 
 											// Instruction address 0x1d12:0x2204, size: 5
-											this.oParent.MapManagement.F0_2aea_1601(
+											this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(
 												this.oParent.CivState.Cities[i].Position.X, this.oParent.CivState.Cities[i].Position.Y);
 										}
 									}
@@ -1320,7 +1319,7 @@ namespace OpenCiv1
 
 						// Instruction address 0x1d12:0x2344, size: 5
 						// !!! Added & 0x7 to prevent owerflow, need to investigate why this happens
-						local_104 = this.oParent.CivState.Players[this.oParent.MapManagement.F0_2aea_1942(local_d8, local_e4) & 0x7].Continents[this.Var_6548_PlayerID].Strategy;
+						local_104 = this.oParent.CivState.Players[this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(local_d8, local_e4) & 0x7].Continents[this.Var_6548_PlayerID].Strategy;
 
 						if ((local_104 == 1 || local_104 == 2 || local_104 == 5) && local_e8 != 0 && city.CurrentProductionID >= 0 &&
 							(int)this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].AIRole == local_104)
@@ -1810,8 +1809,8 @@ namespace OpenCiv1
 				{
 					// Instruction address 0x1d12:0x3229, size: 5
 					// Instruction address 0x1d12:0x3217, size: 5
-					if (this.oParent.MapManagement.F0_2aea_1942(local_d8, local_e4) == 
-						this.oParent.MapManagement.F0_2aea_1942(
+					if (this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(local_d8, local_e4) == 
+						this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 							this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[(int)WonderEnum.JSBachsCathedral]].Position.X,
 							this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[(int)WonderEnum.JSBachsCathedral]].Position.Y))
 					{
@@ -4612,7 +4611,7 @@ namespace OpenCiv1
 				this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.Pollution, xPos, yPos);
 
 				// Instruction address 0x1d12:0x6d60, size: 5
-				this.oParent.MapManagement.F0_2aea_1601(xPos, yPos);
+				this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(xPos, yPos);
 
 				this.oParent.CivState.PollutedSquareCount++;
 			}

@@ -744,11 +744,9 @@ namespace OpenCiv1
 			this.oParent.CivState.Players[playerID].ActiveUnits[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))]--;
 
 			// Instruction address 0x0000:0x08e1, size: 5
-			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
-				playerID1,
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(playerID1, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				this.oParent.CivState.Players[playerID].Units[unitID].Position.X,
-				this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
+				this.oParent.CivState.Players[playerID].Units[unitID].Position.Y));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
@@ -1184,11 +1182,10 @@ namespace OpenCiv1
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16))].Position.Y);
 
 			// Instruction address 0x0000:0x0e13, size: 5
-			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
-				playerID,
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(playerID,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16))].Position.X,
-				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16))].Position.Y);
+				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x16))].Position.Y));
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);

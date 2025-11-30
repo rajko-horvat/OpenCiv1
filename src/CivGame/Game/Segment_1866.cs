@@ -37,17 +37,14 @@ namespace OpenCiv1
 				if (this.oParent.CivState.Cities[cityID].Unknown[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))] != -1)
 				{
 					// Instruction address 0x1866:0x005e, size: 3
-					F0_1866_0cf5_CreateUnit(
-						this.oParent.CivState.Cities[cityID].PlayerID,
+					this.oCPU.AX.Word = (ushort)((short)F0_1866_0cf5_CreateUnit(this.oParent.CivState.Cities[cityID].PlayerID,
 						(short)(this.oParent.CivState.Cities[cityID].Unknown[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))] & 0x3f),
-						this.oParent.CivState.Cities[cityID].Position.X,
-						this.oParent.CivState.Cities[cityID].Position.Y);
+						this.oParent.CivState.Cities[cityID].Position.X, this.oParent.CivState.Cities[cityID].Position.Y));
 
 					this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 					this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
 					if (this.oCPU.Flags.NE)
 					{
-
 						this.oParent.CivState.Players[this.oParent.CivState.Cities[cityID].PlayerID].Units[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Status |= 8;
 
 						if ((this.oParent.CivState.Cities[cityID].Unknown[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))] & 0x40) != 0)
@@ -291,7 +288,7 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12))] |= (ushort)(1 << playerID);
 
 			// Instruction address 0x1866:0x029b, size: 5
-			this.oParent.MapManagement.F0_2aea_1601(
+			this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)));
 
@@ -1348,16 +1345,16 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitTypeID"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <returns>ID of newly created unit or -1 if unit can not be created</returns>
-		public short F0_1866_0cf5_CreateUnit(short playerID, short unitTypeID, int xPos, int yPos)
+		public int F0_1866_0cf5_CreateUnit(int playerID, short unitTypeID, int x, int y)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_1866_0cf5_CreateUnit({playerID}, {unitTypeID}, {xPos}, {yPos})");
 
 			// function body
 			Player player = this.oParent.CivState.Players[playerID];
-			short unitID;
+			int unitID;
 
 			// Find free unit ID
 			for (unitID = 0; unitID < 127 && player.Units[unitID].TypeID != -1; unitID++)
@@ -1380,80 +1377,78 @@ namespace OpenCiv1
 					// Show message to the human player only once per turn
 					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd760, 0x1);
 				}
-
-				this.oCPU.AX.Word = 0xffff;
-				
-				return (short)this.oCPU.AX.Word;
 			}
-
-			Unit unit = player.Units[unitID];
-			unit.Position.X = -1;
-			unit.NextUnitID = -1;
-
-			// Instruction address 0x1866:0x0d39, size: 5
-			this.oParent.MapManagement.F0_2aea_138c_SetCityOwner(playerID, xPos, yPos);
-
-			// Instruction address 0x1866:0x0d4d, size: 5
-			this.oParent.MapManagement.F0_2aea_13cb(playerID, unitID, xPos, yPos);
-
-			this.oParent.CivState.MapVisibility[xPos, yPos] |= (ushort)(1 << playerID);
-
-			unit.Status = 0;
-			unit.Position = new GPoint(xPos, yPos);
-			unit.TypeID = unitTypeID;
-			unit.VisibleByPlayer = (ushort)(1 << playerID);
-			unit.GoToPosition.X = -1;
-			unit.GoToNextDirection = -1;
-			unit.SpecialMoves = this.oParent.CivState.UnitDefinitions[unit.TypeID].TurnsOutside;
-
-			// Instruction address 0x1866:0x0db6, size: 5
-			unit.HomeCityID = (short)this.oParent.Segment_2dc4.F0_2dc4_0102(xPos, yPos);
-
-			short cityOwnerID = (short)((unit.HomeCityID < 128 && unit.HomeCityID != -1) ? this.oParent.CivState.Cities[unit.HomeCityID].PlayerID : -1);
-
-			if (cityOwnerID != playerID)
+			else
 			{
-				unit.HomeCityID = -1;
-			}
+				Unit unit = player.Units[unitID];
+				unit.Position.X = -1;
+				unit.NextUnitID = -1;
 
-			if (unit.SpecialMoves != 0)
-			{
-				unit.SpecialMoves--;
-			}
+				// Instruction address 0x1866:0x0d39, size: 5
+				this.oParent.MapManagement.F0_2aea_138c_SetCityOwner((short)playerID, x, y);
 
-			player.ActiveUnits[unitTypeID]++;
+				// Instruction address 0x1866:0x0d4d, size: 5
+				this.oParent.MapManagement.F0_2aea_13cb((short)playerID, (short)unitID, x, y);
 
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4) == 0)
-			{
-				if (!this.oParent.Var_d806_DebugFlag || playerID == this.oParent.CivState.HumanPlayerID ||
-					(unit.VisibleByPlayer & (1 << this.oParent.CivState.HumanPlayerID)) != 0)
+				this.oParent.CivState.MapVisibility[x, y] |= (ushort)(1 << playerID);
+
+				unit.Status = 0;
+				unit.Position = new GPoint(x, y);
+				unit.TypeID = unitTypeID;
+				unit.VisibleByPlayer = (ushort)(1 << playerID);
+				unit.GoToPosition.X = -1;
+				unit.GoToNextDirection = -1;
+				unit.SpecialMoves = this.oParent.CivState.UnitDefinitions[unit.TypeID].TurnsOutside;
+
+				// Instruction address 0x1866:0x0db6, size: 5
+				unit.HomeCityID = (short)this.oParent.Segment_2dc4.F0_2dc4_0102(x, y);
+
+				short cityOwnerID = (short)((unit.HomeCityID < 128 && unit.HomeCityID != -1) ? this.oParent.CivState.Cities[unit.HomeCityID].PlayerID : -1);
+
+				if (cityOwnerID != playerID)
 				{
-					// Instruction address 0x1866:0x0e5c, size: 5
-					this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(unit.Position.X, unit.Position.Y);
-				}
-								
-				// Instruction address 0x1866:0x0e77, size: 3
-				F0_1866_01dc(xPos, yPos, playerID, unitID, 1);
-			}
-
-			if (playerID == this.oParent.CivState.HumanPlayerID
-				&& this.oParent.CivState.TurnCount != 0
-				&& (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4) == 0))
-			{
-				if (player.UnitCount == 0)
-				{
-					this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x210e);
+					unit.HomeCityID = -1;
 				}
 
-				if (player.UnitCount == 1)
+				if (unit.SpecialMoves != 0)
 				{
-					this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x211a);
+					unit.SpecialMoves--;
 				}
+
+				player.ActiveUnits[unitTypeID]++;
+
+				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4) == 0)
+				{
+					if (!this.oParent.Var_d806_DebugFlag || playerID == this.oParent.CivState.HumanPlayerID ||
+						(unit.VisibleByPlayer & (1 << this.oParent.CivState.HumanPlayerID)) != 0)
+					{
+						// Instruction address 0x1866:0x0e5c, size: 5
+						this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(unit.Position.X, unit.Position.Y);
+					}
+
+					// Instruction address 0x1866:0x0e77, size: 3
+					F0_1866_01dc(x, y, (short)playerID, (short)unitID, 1);
+				}
+
+				if (playerID == this.oParent.CivState.HumanPlayerID
+					&& this.oParent.CivState.TurnCount != 0
+					&& (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4) == 0))
+				{
+					if (player.UnitCount == 0)
+					{
+						this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x210e);
+					}
+
+					if (player.UnitCount == 1)
+					{
+						this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x211a);
+					}
+				}
+
+				return unitID;
 			}
 
-			this.oCPU.AX.Word = (ushort)unitID;
-
-			return (short)this.oCPU.AX.Word;
+			return -1;
 		}
 
 		/// <summary>
@@ -2595,7 +2590,7 @@ namespace OpenCiv1
 			this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].VisibleSize = (sbyte)this.oCPU.AX.Low;
 			
 			// Instruction address 0x1866:0x188f, size: 5
-			this.oParent.MapManagement.F0_2aea_1601(
+			this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
 
@@ -2954,13 +2949,16 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 
 			// Instruction address 0x1866:0x1c43, size: 3
-			F0_1866_0cf5_CreateUnit(
-				0,
+			this.oCPU.AX.Word = (ushort)((short)F0_1866_0cf5_CreateUnit(0,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
-			
-			this.oParent.CivState.Players[0].Units[this.oCPU.AX.Word].VisibleByPlayer |= (ushort)(1 << playerID);
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))));
+
+			// In case our unit count has reached capacity
+			if (this.oCPU.AX.Word != 0xffff)
+			{
+				this.oParent.CivState.Players[0].Units[this.oCPU.AX.Word].VisibleByPlayer |= (ushort)(1 << playerID);
+			}
 
 			if (playerID == this.oParent.CivState.HumanPlayerID)
 			{
@@ -3048,9 +3046,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
 			// Instruction address 0x1866:0x1d2d, size: 3
-			F0_1866_0cf5_CreateUnit(
-				playerID,
-				(short)((this.oParent.MSCAPI.RNG.Next(2) != 0) ? 3 : 6),
+			F0_1866_0cf5_CreateUnit(playerID, (short)((this.oParent.MSCAPI.RNG.Next(2) != 0) ? 3 : 6),
 				this.oParent.CivState.Players[playerID].Units[unitID].Position.X,
 				this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
 
@@ -3058,7 +3054,8 @@ namespace OpenCiv1
 			if (playerID == this.oParent.CivState.HumanPlayerID)
 			{
 				// Instruction address 0x1866:0x1d47, size: 5
-				this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(this.oParent.CivState.Players[playerID].Units[unitID].Position.X, this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
+				this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(this.oParent.CivState.Players[playerID].Units[unitID].Position.X, 
+					this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
 			}
 
 		L1d4f:

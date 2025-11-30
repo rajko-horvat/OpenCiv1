@@ -1,7 +1,5 @@
 using IRB.VirtualCPU;
 using OpenCiv1.GPU;
-using System;
-using System.Threading.Tasks;
 
 namespace OpenCiv1
 {
@@ -11,7 +9,7 @@ namespace OpenCiv1
 		// Layer 1: Terrain data (TerrainTypeEnum), 0:0
 		// Layer 2: Per-Civ land occupation, 80:0
 		//
-		// Layer 3: Area segmentation, with identifiers for separate land masses and inner seas, 0:50
+		// Layer 3: Terrain groups, the land and water cells have separate group arrays, 0:50
 		// Layer 4: Terrain-based land appeal for the computer to build cities, 80:50
 		//
 		// Layer 5: Same as layer 6, but only what's visible to the player, 0:100
@@ -933,12 +931,7 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock($"F0_2aea_1326_CheckMapBounds({xPos}, {yPos})");
 
 			// function body
-			if (x >= 0 && x < 80 && y >= 0 && y < 50)
-			{
-				return true;
-			}
-
-			return false;
+			return x >= 0 && x < 80 && y >= 0 && y < 50;
 		}
 
 		/// <summary>
@@ -992,39 +985,28 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Adjusts currently active unit on map cell
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		public void F0_2aea_13cb(short playerID, short unitID, int xPos, int yPos)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		public void F0_2aea_13cb(int playerID, int unitID, int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_13cb({playerID}, {unitID}, {xPos}, {yPos})");
+			//this.oCPU.Log.EnterBlock($"F0_2aea_13cb({playerID}, {unitID}, {xPos}, {yPos})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x2);
-
 			// Instruction address 0x2aea:0x13d8, size: 3
-			this.oCPU.AX.Word = (ushort)((short)F0_2aea_1458_GetCellActiveUnitID(xPos, yPos));
+			int activeUnitID = F0_2aea_1458_GetCellActiveUnitID(x, y);
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
-			if (this.oCPU.Flags.E) goto L13f5;
-
-			// Instruction address 0x2aea:0x13ed, size: 5
-			this.oParent.Segment_29f3.F0_29f3_0b66(playerID, unitID, (short)this.oCPU.AX.Word);
-
-		L13f5:
+			if (activeUnitID != -1)
+			{
+				// Instruction address 0x2aea:0x13ed, size: 5
+				this.oParent.Segment_29f3.F0_29f3_0b66((short)playerID, (short)unitID, (short)activeUnitID);
+			}
+		
 			// Instruction address 0x2aea:0x140b, size: 3
-			this.oParent.Segment_1000.F0_1000_104f_SetPixel(2, xPos + 160, yPos, (ushort)(playerID + 8));
-
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2aea_13cb");
+			this.oParent.Segment_1000.F0_1000_104f_SetPixel(2, x + 160, y, (ushort)(playerID | 0x8));
 		}
 
 		/// <summary>
@@ -1122,28 +1104,21 @@ namespace OpenCiv1
 		public void F0_2aea_1511_ActiveUnitSetFlag8(int xPos, int yPos)
 		{
 			// function body
-			// Instruction address 0x2aea:0x1525, size: 5
-			this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos + 160, yPos);
-
 			// Instruction address 0x2aea:0x1539, size: 3
-			this.oParent.Graphics.F0_VGA_0550_SetPixel(2, xPos + 160, yPos, (byte)((this.oCPU.AX.Word & 0x7) | 0x8), 0);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(2, xPos + 160, yPos, (byte)((this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos + 160, yPos) & 0x7) | 0x8), 0);
 		}
 
 		/// <summary>
-		/// ?
+		/// Checks if this map cell has road improvement built
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <returns></returns>
-		public ushort F0_2aea_1570(int xPos, int yPos)
+		public bool F0_2aea_1570_CheckCellHasRoadBuilt(int x, int y)
 		{
 			// function body
 			// Instruction address 0x2aea:0x157a, size: 3
-			TerrainImprovementFlagsEnum improvements = F0_2aea_1585_GetVisibleTerrainImprovements(xPos, yPos);
-			
-			this.oCPU.AX.Word = (ushort)(improvements.HasFlag(TerrainImprovementFlagsEnum.Road) ? 1 : 0);
-
-			return this.oCPU.AX.Word;
+			return F0_2aea_1585_GetVisibleTerrainImprovements(x, y).HasFlag(TerrainImprovementFlagsEnum.Road);			
 		}
 
 		/// <summary>
@@ -1179,24 +1154,18 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Updates the map cell status for human player
 		/// </summary>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		public void F0_2aea_1601(int xPos, int yPos)
+		public void F0_2aea_1601_UpdateVisbleCellStatus(int xPos, int yPos)
 		{
 			// function body			
-			// Instruction address 0x2aea:0x161b, size: 5
-			this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 100);
-
 			// Instruction address 0x2aea:0x1627, size: 3
-			this.oParent.Graphics.F0_VGA_0550_SetPixel(2, xPos + 80, yPos + 100, (byte)this.oCPU.AX.Word, 0);
-
-			// Instruction address 0x2aea:0x163d, size: 5
-			this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 150);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(2, xPos + 80, yPos + 100, (byte)this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 100), 0);
 
 			// Instruction address 0x2aea:0x1649, size: 3
-			this.oParent.Graphics.F0_VGA_0550_SetPixel(2, xPos + 80, yPos + 150, (byte)this.oCPU.AX.Word, 0);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(2, xPos + 80, yPos + 150, (byte)this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 150), 0);
 		}
 
 		/// <summary>
@@ -1238,7 +1207,7 @@ namespace OpenCiv1
 			if (this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6b90) == this.oParent.CivState.HumanPlayerID)
 			{
 				// Instruction address 0x2aea:0x16e5, size: 3
-				F0_2aea_1601(xPos, yPos);
+				F0_2aea_1601_UpdateVisbleCellStatus(xPos, yPos);
 			}
 		
 			// Far return
@@ -1376,12 +1345,12 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Gets map cell group ID
 		/// </summary>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <returns></returns>
-		public ushort F0_2aea_1942(int xPos, int yPos)
+		public ushort F0_2aea_1942_GetCellGroupID(int xPos, int yPos)
 		{
 			// Instruction address 0x2aea:0x1953, size: 5
 			this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 50);
@@ -1404,7 +1373,7 @@ namespace OpenCiv1
 			if (F0_2aea_134a_GetTerrainType(x, y) != TerrainTypeEnum.Water)
 			{
 				// Instruction address 0x2aea:0x1979, size: 3
-				F0_2aea_1942(x, y);
+				F0_2aea_1942_GetCellGroupID(x, y);
 
 				// Land
 				this.oCPU.AX.Word = (ushort)this.oParent.CivState.Continents[this.oCPU.AX.Word].Size;
@@ -1412,7 +1381,7 @@ namespace OpenCiv1
 			else
 			{
 				// Instruction address 0x2aea:0x1990, size: 3
-				F0_2aea_1942(x, y);
+				F0_2aea_1942_GetCellGroupID(x, y);
 
 				// Oceans
 				this.oCPU.AX.Word = (ushort)this.oParent.CivState.Oceans[this.oCPU.AX.Word].Size;
