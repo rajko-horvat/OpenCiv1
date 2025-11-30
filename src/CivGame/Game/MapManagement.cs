@@ -291,7 +291,7 @@ namespace OpenCiv1
 
 							// Instruction address 0x2aea:0x04f0, size: 3
 							if (F0_2aea_134a_GetTerrainType(this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X), y + direction.Y) != TerrainTypeEnum.Water &&
-								F0_2aea_1326_CheckMapBounds(0, y + direction.Y) != 0)
+								F0_2aea_1326_CheckMapCoordinates(0, y + direction.Y))
 							{
 								mask |= 0x8;
 							}
@@ -310,7 +310,7 @@ namespace OpenCiv1
 
 							// Instruction address 0x2aea:0x0570, size: 3
 							if (F0_2aea_134a_GetTerrainType(this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X), y + direction.Y) != TerrainTypeEnum.Water &&
-								F0_2aea_1326_CheckMapBounds(0, y + direction.Y) != 0)
+								F0_2aea_1326_CheckMapCoordinates(0, y + direction.Y))
 							{
 								mask |= 0x80;
 							}
@@ -452,7 +452,7 @@ namespace OpenCiv1
 							GPoint direction = this.oParent.MoveOffsets[i];
 
 							if (F0_2aea_134a_GetTerrainType(this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X), y + direction.Y) == terrainType &&
-								F0_2aea_1326_CheckMapBounds(0, y + direction.Y) != 0)
+								F0_2aea_1326_CheckMapCoordinates(0, y + direction.Y))
 							{
 								mask |= 0x8;
 							}
@@ -686,7 +686,7 @@ namespace OpenCiv1
 							}
 
 							// Instruction address 0x2aea:0x0d9c, size: 3
-							if ((short)F0_2aea_1458_GetCellActiveUnitID(x, y) != -1 || city.Unknown[0] != -1)
+							if (F0_2aea_1458_GetCellActiveUnitID(x, y) != -1 || city.Unknown[0] != -1)
 							{
 								// Draw city defenders
 
@@ -716,28 +716,16 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Draws unit(s) located on the currently visible map
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		/// <returns></returns>
-		public ushort F0_2aea_0e29(short playerID, short unitID)
+		/// <returns>true if unit is drawn, otherwise false</returns>
+		public bool F0_2aea_0e29_DrawUnit(int playerID, int unitID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_0e29({playerID}, {unitID})");
+			//this.oCPU.Log.EnterBlock($"F0_2aea_0e29({playerID}, {unitID})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0xe);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
-
 			// Instruction address 0x2aea:0x0ecd, size: 5
 			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
 				this.oParent.CivState.Players[playerID].Units[unitID].Position.X - this.oParent.Var_d4cc_MapViewX);
@@ -799,423 +787,206 @@ namespace OpenCiv1
 			// Instruction address 0x2aea:0x0f57, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			if (this.oParent.CivState.Players[playerID].Units[unitID].NextUnitID != -1)
-			{
-				// Instruction address 0x2aea:0x0f8b, size: 5
-				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) + 1,
-					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)) + 1,
-					this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((((playerID << 5) +
-						this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)) + 0x40) << 1) + 0xd4ce)));
+					if (unit.NextUnitID != -1)
+					{
+						// There are multiple units stacked
+
+						this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, x + 1, y + 1,
+							this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(0xd4ce + (((playerID * 32) + unit.TypeID + 64) * 2))));
+					}
+
+					// Instruction address 0x2aea:0x0fa0, size: 3
+					F0_2aea_0fb3_DrawUnitWithStatus(playerID, unitID, x, y);
+
+					// Instruction address 0x2aea:0x0fa6, size: 5
+					this.oParent.Segment_11a8.F0_11a8_0250();
+
+					return true;
+				}
 			}
 
-			// Instruction address 0x2aea:0x0fa0, size: 3
-			F0_2aea_0fb3(playerID, unitID, 
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
-
-			// Instruction address 0x2aea:0x0fa6, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
-
-			this.oCPU.AX.Word = 0x1;
-
-		L0fae:
-			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2aea_0e29");
-
-			return this.oCPU.AX.Word;
+			return false;
 		}
 
 		/// <summary>
-		/// ?
+		/// Draws unit and its statuses (Unit(s) in city production screen are drawn by other function)
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		public void F0_2aea_0fb3(short playerID, short unitID, int xPos, int yPos)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		public void F0_2aea_0fb3_DrawUnitWithStatus(int playerID, int unitID, int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_0fb3({playerID}, {unitID}, {xPos}, {yPos})");
+			//this.oCPU.Log.EnterBlock($"F0_2aea_0fb3({playerID}, {unitID}, {xPos}, {yPos})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x4);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
+			Unit unit = this.oParent.CivState.Players[playerID].Units[unitID];
 
 			// Instruction address 0x2aea:0x0fe2, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-				xPos, yPos,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word,
-					(ushort)(((this.oParent.CivState.Players[playerID].Units[unitID].TypeID + (playerID << 5) + 0x40) << 1) + 0xd4ce)));
+			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, x, y,
+				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(0xd4ce + (((playerID * 32) + unit.TypeID + 64) * 2))));
 
-			if ((this.oParent.CivState.Players[playerID].Units[unitID].Status & 0x8) == 0)
-				goto L1005;
-
-			// Instruction address 0x2aea:0x0ffb, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-				xPos, yPos,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)((0x1d << 1) + 0xd4ce)));
-			goto L1045;
-
-		L1005:
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-
-			if ((this.oParent.CivState.Players[playerID].Units[unitID].Status & 0x4) == 0)
-				goto L1045;
-
-			if (playerID != 1)
-				goto L1027;
-
-			this.oCPU.AX.Word = 0x9;
-			goto L102a;
-
-		L1027:
-			this.oCPU.AX.Word = 0xf;
-
-		L102a:
-			// Instruction address 0x2aea:0x103d, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("F", xPos + 4, yPos + 7, this.oCPU.AX.Low);
-
-		L1045:
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.HumanPlayerID;
-			this.oCPU.CMP_UInt16((ushort)playerID, this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L108d;
-
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-
-			if (this.oParent.CivState.Players[playerID].Units[unitID].GoToPosition.X != -1)
+			if ((unit.Status & 0x8) != 0)
 			{
-				if (playerID == 1)
-				{
-					this.oCPU.AX.Word = 0x9;
-				}
-				else
-				{
-					this.oCPU.AX.Word = 0xf;
-				}
 
+				// Instruction address 0x2aea:0x0ffb, size: 5
+				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, x, y,
+					this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(0xd4ce + (29 * 2))));
+			}
+			else
+			{
+				if ((unit.Status & 0x4) != 0)
+				{
+					// Instruction address 0x2aea:0x103d, size: 5
+					this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("F", x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
+				}
+			}
+
+			if (playerID == this.oParent.CivState.HumanPlayerID && unit.GoToPosition.X != -1)
+			{
 				// Instruction address 0x2aea:0x1085, size: 5
-				this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("G", xPos + 4, yPos + 7, this.oCPU.AX.Low);
+				this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("G", x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
 			}
 
-		L108d:
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
-
-			if ((this.oParent.CivState.Players[playerID].Units[unitID].Status & 0xc2) == 0)
-				goto L117a;
-
-			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.CivState.Players[playerID].Units[unitID].TypeID));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].UnitCategory == UnitCategoryEnum.Air)
-				goto L117a;
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x52);
-
-			if ((this.oParent.CivState.Players[playerID].Units[unitID].Status & 0x40) == 0)
-				goto L10d7;
-
-			if (this.oParent.CivState.Players[playerID].Units[unitID].TypeID == 0)
-				goto L10d1;
-
-			this.oCPU.AX.Word = 0x3f;
-
-			goto L10d4;
-
-		L10d1:
-			this.oCPU.AX.Word = 0x49;
-
-		L10d4:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-
-		L10d7:
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-
-			if ((this.oParent.CivState.Players[playerID].Units[unitID].Status & 0x80) != 0)
+			if (((UnitStatusEnum)unit.Status & UnitStatusEnum.SettlerBuildMask) != 0 && this.oParent.CivState.UnitDefinitions[unit.TypeID].UnitCategory != UnitCategoryEnum.Air)
 			{
-				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x4d);
+				string status = "R";
 
-				if ((this.oParent.CivState.Players[playerID].Units[unitID].Status & 0x40) != 0)
+				if ((unit.Status & 0x40) != 0)
 				{
-					this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x46);
+					status = (unit.TypeID != (int)UnitTypeEnum.Settlers) ? "?" : "I";
 				}
 
-				this.oCPU.AX.Word = 0xc;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-				this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-				this.oCPU.AX.Word = 0x600;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-				this.oCPU.SI.Word = this.oCPU.AX.Word;
-
-				if ((this.oParent.CivState.Players[playerID].Units[unitID].Status & 0x2) != 0)
+				if ((unit.Status & 0x80) != 0)
 				{
-					this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x50);
+					status = "M";
+
+					if ((unit.Status & 0x40) != 0)
+					{
+						status = "F";
+					}
+
+					if ((unit.Status & 0x2) != 0)
+					{
+						status = "P";
+					}
 				}
+
+				// Instruction address 0x2aea:0x1157, size: 5
+				this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(status, x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
+
+				// Instruction address 0x2aea:0x1172, size: 5
+				this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(x - 1, y - 1, 15, 15, 7);
 			}
-
-			// Instruction address 0x2aea:0x1128, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, " ");
-
-			this.oCPU.AX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, this.oCPU.AX.Low);
-			this.oCPU.CMP_UInt16((ushort)playerID, 0x1);
-			if (this.oCPU.Flags.NE) goto L1141;
-			this.oCPU.AX.Word = 0x9;
-			goto L1144;
-
-		L1141:
-			this.oCPU.AX.Word = 0xf;
-
-		L1144:
-			// Instruction address 0x2aea:0x1157, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0xba06, xPos + 4, yPos + 7, this.oCPU.AX.Low);
-
-			// Instruction address 0x2aea:0x1172, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(xPos - 1, yPos - 1, 15, 15, 7);
-
-		L117a:
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-
-			if ((this.oParent.CivState.Players[playerID].Units[unitID].Status & 0x1) != 0)
+		
+			if ((unit.Status & 0x1) != 0)
 			{
 				// Instruction address 0x2aea:0x11a8, size: 5
-				this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, xPos, yPos, 16, 16, 5, 7);
+				this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, x, y, 16, 16, 5, 7);
 
 				// Instruction address 0x2aea:0x11c7, size: 5
-				this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, xPos, yPos, 16, 16, 8, 7);
+				this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, x, y, 16, 16, 8, 7);
 			}
-
-			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2aea_0fb3");
 		}
 
 		/// <summary>
-		/// ?
+		/// Draws map cell with a unit on it if it exists and is visible to the human player
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		public void F0_2aea_11d4(int xPos, int yPos)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		public void F0_2aea_11d4(int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_11d4({xPos}, {yPos})");
+			// this.oCPU.Log.EnterBlock($"F0_2aea_11d4({x}, {y})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x2);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-
 			// Instruction address 0x2aea:0x11e2, size: 3
-			F0_2aea_03ba_DrawCell(xPos, yPos);
+			F0_2aea_03ba_DrawCell(x, y);
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdcfc), 0x0);
-			if (this.oCPU.Flags.NE) goto L1256;
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdcfc) == 0)
+			{
+				// Instruction address 0x2aea:0x11f6, size: 3
+				int unitID = F0_2aea_1458_GetCellActiveUnitID(x, y);
 
-			// Instruction address 0x2aea:0x11f6, size: 3
-			F0_2aea_1458_GetCellActiveUnitID(xPos, yPos);
+				if (unitID != -1)
+				{
+					int playerID = this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd20a);
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
-			if (this.oCPU.Flags.E) goto L1256;
-			
-			if (this.oParent.Var_d806_DebugFlag) goto L1237;
-
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.HumanPlayerID;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd20a), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.E) goto L1237;
-			
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd20a));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-
-			this.oCPU.AX.Word = this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd20a)].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].VisibleByPlayer;
-			
-			this.oCPU.DX.Word = 0x1;
-			this.oCPU.CX.Low = (byte)(this.oParent.CivState.HumanPlayerID & 0xff);
-			this.oCPU.DX.Word = this.oCPU.SHL_UInt16(this.oCPU.DX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-			if (this.oCPU.Flags.E) goto L1256;
-
-		L1237:
-			// Instruction address 0x2aea:0x123e, size: 3
-			F0_2aea_1585_GetVisibleTerrainImprovements(xPos, yPos);
-
-			this.oCPU.TEST_UInt8(this.oCPU.AX.Low, 0x1);
-			if (this.oCPU.Flags.NE) goto L1256;
-
-			// Instruction address 0x2aea:0x1250, size: 3
-			F0_2aea_125b(this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd20a),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
-
-		L1256:
-			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2aea_11d4");
+					if (this.oParent.Var_d806_DebugFlag || playerID == this.oParent.CivState.HumanPlayerID ||
+						(this.oParent.CivState.Players[playerID].Units[unitID].VisibleByPlayer & (0x1 << this.oParent.CivState.HumanPlayerID)) != 0)
+					{
+						// Instruction address 0x2aea:0x123e, size: 3
+						if (!F0_2aea_1585_GetVisibleTerrainImprovements(x, y).HasFlag(TerrainImprovementFlagsEnum.City))
+						{
+							// Instruction address 0x2aea:0x1250, size: 3
+							F0_2aea_125b((short)playerID, (short)unitID);
+						}
+					}
+				}
+			}
 		}
 
 		/// <summary>
-		/// ?
+		/// Draws stack of units or first found water carrier in unit stack on water terrain
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
 		public void F0_2aea_125b(short playerID, short unitID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_125b({playerID}, {unitID})");
+			//this.oCPU.Log.EnterBlock($"F0_2aea_125b({playerID}, {unitID})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x6);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
-			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
-
 			// Instruction address 0x2aea:0x127f, size: 3
-			F0_2aea_134a_GetTerrainType(this.oParent.CivState.Players[playerID].Units[unitID].Position.X, this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
+			Unit unit = this.oParent.CivState.Players[playerID].Units[unitID];
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xa);
-			if (this.oCPU.Flags.NE) goto L1308;
+			if (unit.NextUnitID != -1 && F0_2aea_134a_GetTerrainType(unit.Position.X, unit.Position.Y) == TerrainTypeEnum.Water &&
+				this.oParent.CivState.UnitDefinitions[unit.TypeID].UnitCategory != UnitCategoryEnum.Water)
+			{
+				int currentUnitID = unitID;
 
-			if (this.oParent.CivState.Players[playerID].Units[unitID].NextUnitID == -1)
-				goto L1308;
-			
-			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.CivState.Players[playerID].Units[unitID].TypeID));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
+				do
+				{
+					currentUnitID = this.oParent.CivState.Players[playerID].Units[currentUnitID].NextUnitID;
 
-			if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].UnitCategory == UnitCategoryEnum.Ocean)
-				goto L1308;
+					if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[currentUnitID].TypeID].UnitCategory == UnitCategoryEnum.Water)
+					{
+						// Instruction address 0x2aea:0x12e2, size: 3
+						F0_2aea_0e29_DrawUnit(playerID, currentUnitID);
 
-			this.oCPU.AX.Word = (ushort)unitID;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
+						currentUnitID = -1;
+					}
+				}
+				while (currentUnitID != -1 || currentUnitID != unitID);
 
-		L12ac:
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-
-			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 
-				(short)this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].NextUnitID);
-
-			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID));
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-
-			if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].TypeID].UnitCategory != UnitCategoryEnum.Ocean)
-				goto L12ed;
-
-			// Instruction address 0x2aea:0x12e2, size: 3
-			F0_2aea_0e29(playerID,
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0xffff);
-
-		L12ed:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), 0xffff);
-			if (this.oCPU.Flags.E) goto L12fb;
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L12ac;
-
-		L12fb:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L1321;
-
-			// Instruction address 0x2aea:0x131b, size: 3
-			F0_2aea_0e29(playerID, unitID);
-
-			goto L1321;
-
-		L1308:
-			// Instruction address 0x2aea:0x131b, size: 3
-			F0_2aea_0e29(playerID, (short)this.oParent.Segment_1866.F0_1866_1122(playerID, unitID));
-
-		L1321:
-			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2aea_125b");
+				if (currentUnitID == unitID)
+				{
+					// Instruction address 0x2aea:0x131b, size: 3
+					F0_2aea_0e29_DrawUnit(playerID, unitID);
+				}
+			}
+			else
+			{
+				// Instruction address 0x2aea:0x131b, size: 3
+				F0_2aea_0e29_DrawUnit(playerID, (short)this.oParent.Segment_1866.F0_1866_1122(playerID, unitID));
+			}
 		}
 
 		/// <summary>
-		/// ?
+		/// Check if the given coordinates are within map bounds
 		/// </summary>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <returns></returns>
-		public ushort F0_2aea_1326_CheckMapBounds(int xPos, int yPos)
+		public bool F0_2aea_1326_CheckMapCoordinates(int xPos, int yPos)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_1326_CheckMapBounds({xPos}, {yPos})");
+			//this.oCPU.Log.EnterBlock($"F0_2aea_1326_CheckMapBounds({xPos}, {yPos})");
 
 			// function body
-			if (xPos < 0 || xPos >= 80 || yPos < 0 || yPos >= 50)
+			if (xPos >= 0 && xPos < 80 && yPos >= 0 && yPos < 50)
 			{
-				this.oCPU.AX.Word = 0;
-			}
-			else
-			{
-				this.oCPU.AX.Word = 1;
+				return true;
 			}
 
-			this.oCPU.Log.ExitBlock("F0_2aea_1326_CheckMapBounds");
-
-			return this.oCPU.AX.Word;
+			return false;
 		}
 
 		/// <summary>
@@ -1285,7 +1056,7 @@ namespace OpenCiv1
 			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x2);
 
 			// Instruction address 0x2aea:0x13d8, size: 3
-			F0_2aea_1458_GetCellActiveUnitID(xPos, yPos);
+			this.oCPU.AX.Word = (ushort)((short)F0_2aea_1458_GetCellActiveUnitID(xPos, yPos));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
@@ -1332,101 +1103,63 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Gets the active unit on this map cell
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		/// <returns></returns>
-		public ushort F0_2aea_1458_GetCellActiveUnitID(int xPos, int yPos)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns>Unit ID if the unit is present, otherwise -1</returns>
+		public int F0_2aea_1458_GetCellActiveUnitID(int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_1458_GetCellActiveUnitID({xPos}, {yPos})");
+			//this.oCPU.Log.EnterBlock($"F0_2aea_1458_GetCellActiveUnitID({x}, {y})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x4);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-
 			// Instruction address 0x2aea:0x1466, size: 3
-			F0_2aea_14e0_GetCellUnitPlayerID(xPos, yPos);
+			int playerID = F0_2aea_14e0_GetCellUnitPlayerID(x, y);
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), this.oCPU.AX.Word);
-			this.oCPU.AX.Word = this.oCPU.INC_UInt16(this.oCPU.AX.Word);
-			if (this.oCPU.Flags.NE) goto L1477;
+			if (playerID != -1)
+			{
+				for (int i = 0; i < 128; i++)
+				{
+					Unit unit = this.oParent.CivState.Players[playerID].Units[i];
 
-		L1472:
-			this.oCPU.AX.Word = 0xffff;
-			goto L14db;
+					if (unit.TypeID != -1 && unit.Position.X == x && unit.Position.Y == y)
+					{
+						this.oCPU.WriteInt16(this.oCPU.DS.Word, 0xd7f0, (short)playerID);
+						this.oCPU.WriteInt16(this.oCPU.DS.Word, 0xd20a, (short)playerID);
 
-		L1477:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 0x0);
-			goto L1481;
+						return i;
+					}
+				}
 
-		L147e:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))));
+				// Instruction address 0x2aea:0x14d3, size: 3
+				this.oParent.Segment_1000.F0_1000_104f_SetPixel(2, x + 160, y, 0);
+			}
 
-		L1481:
-			if (this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)) >= 128)
-				goto L14c1;
-
-			this.oCPU.AX.Word = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-			this.oCPU.AX.Word = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
-			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
-
-			if (this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)) == -1 ||
-				(this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].TypeID == -1) ||
-				(this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Position.X != xPos) ||
-				(this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Position.Y != yPos))
-				goto L147e;
-
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd7f0, this.oCPU.AX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xd20a, this.oCPU.AX.Word);
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4));
-			goto L14db;
-
-		L14c1:
-			// Instruction address 0x2aea:0x14d3, size: 3
-			this.oParent.Segment_1000.F0_1000_104f_SetPixel(2, xPos + 160, yPos, 0);
-
-			goto L1472;
-
-		L14db:
-			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2aea_1458_GetCellActiveUnitID");
-
-			return this.oCPU.AX.Word;
+			return -1;
 		}
 
 		/// <summary>
-		/// ?
+		/// Gets the PlayerID of the active unit on this map cell
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		/// <returns></returns>
-		public ushort F0_2aea_14e0_GetCellUnitPlayerID(int xPos, int yPos)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns>Player ID of the active unit present, otherwise -1</returns>
+		public int F0_2aea_14e0_GetCellUnitPlayerID(int x, int y)
 		{
 			// function body
 			// Instruction address 0x2aea:0x14f4, size: 5
-			this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos + 160, yPos);
+			int value = this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x + 160, y);
 
-			if ((this.oCPU.AX.Word & 8) != 0)
+			if ((value & 8) != 0)
 			{
-				this.oCPU.AX.Word = this.oCPU.AND_UInt16(this.oCPU.AX.Word, 0x7);
+				value &= 0x7;
 			}
 			else
 			{
-				this.oCPU.AX.Word = 0xffff;
+				value = -1;
 			}
 
-			return this.oCPU.AX.Word;
+			return value;
 		}
 
 		/// <summary>

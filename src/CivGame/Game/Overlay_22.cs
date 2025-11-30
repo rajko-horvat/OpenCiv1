@@ -526,7 +526,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x0000:0x05ce, size: 5
-			this.oParent.MapManagement.F0_2aea_11d4(this.oParent.CivState.Cities[cityID].Position.X, this.oParent.CivState.Cities[cityID].Position.Y);
+			this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(this.oParent.CivState.Cities[cityID].Position.X, this.oParent.CivState.Cities[cityID].Position.Y);
 
 			// Instruction address 0x0000:0x05dc, size: 5
 			this.oParent.Segment_1866.F0_1866_0f10(playerID, unitID);
@@ -784,7 +784,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x0948, size: 5
-			this.oParent.MapManagement.F0_2aea_11d4(this.oParent.CivState.Players[playerID].Units[unitID].Position.X, this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
+			this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(this.oParent.CivState.Players[playerID].Units[unitID].Position.X, this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
 
 			// Instruction address 0x0000:0x0950, size: 5
 			this.oParent.Segment_1238.F0_1238_107e();

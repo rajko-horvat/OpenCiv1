@@ -134,7 +134,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L016c;
 
 			// Instruction address 0x2459:0x011f, size: 5
-			short unitIDTemp = (short)this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(
+			int unitID = this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
 
@@ -146,10 +146,10 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.CivState.Players[playerID].Units[unitIDTemp].TypeID));
+			this.oCPU.AX.Word = (ushort)((short)(0x22 * this.oParent.CivState.Players[playerID].Units[unitID].TypeID));
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitIDTemp].TypeID].AttackStrength > 2)
+			if (this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[unitID].TypeID].AttackStrength > 2)
 				goto L016c;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x28bc), 0x0);
@@ -859,8 +859,8 @@ namespace OpenCiv1
 			// function body
 			if (cityID != -1)
 			{
-				byte cityNameID = this.oParent.CivState.Cities[cityID].NameID;
-				ushort stringPtr = (ushort)(0xba06 + this.oParent.MSCAPI.strlen(0xba06));
+				byte ubCityNameID = this.oParent.CivState.Cities[cityID].NameID;
+				ushort usStringOffset = (ushort)(0xba06 + this.oParent.MSCAPI.strlen(0xba06));
 
 				// 13 is maximum city name size to copy
 				for (int i = 0; i < 13; i++)
