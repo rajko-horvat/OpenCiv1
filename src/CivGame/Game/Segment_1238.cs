@@ -121,8 +121,8 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.CivState.HumanPlayerID);
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			this.oParent.Var_d4cc_MapXCenter = this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Units[0].Position.X - 7;
-			this.oParent.Var_d75e_MapYCenter = this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Units[0].Position.Y - 6;
+			this.oParent.Var_d4cc_MapViewX = this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Units[0].Position.X - 7;
+			this.oParent.Var_d75e_MapViewY = this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Units[0].Position.Y - 6;
 
 			// Instruction address 0x1238:0x0119, size: 3
 			F0_1238_1b44();
@@ -2400,7 +2400,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
 			// Instruction address 0x1238:0x1b7f, size: 5
-			this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(this.oParent.CivState.HumanPlayerID, this.oParent.Var_d4cc_MapXCenter, this.oParent.Var_d75e_MapYCenter);
+			this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(this.oParent.CivState.HumanPlayerID, this.oParent.Var_d4cc_MapViewX, this.oParent.Var_d75e_MapViewY);
 
 			// Instruction address 0x1238:0x1b97, size: 3
 			F0_1238_1bb2_FillRectangleWithShadow(0, 97, 80, 103);

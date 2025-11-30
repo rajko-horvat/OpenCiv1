@@ -23,8 +23,25 @@ namespace OpenCiv1
 		// Layer 9: Per-Civ land exploration and active units, 160:0
 		// Layer 10: Mini-map render, 240:0
 
+		private struct CityInfo
+		{
+			public readonly GPoint ScreenPos;
+			public readonly int CityID;
+
+			public CityInfo(int x, int y, int cityID)
+			{
+				this.ScreenPos = new GPoint(x, y);
+				this.CityID = cityID;
+			}
+		}
+
 		private CivGame oParent;
 		private VCPU oCPU;
+
+		// Local variables used exclusively inside this section
+
+		/// <summary>Number of cities currently visible on the screen</summary>
+		private List<CityInfo> VisibleCities = new List<CityInfo>();
 
 		public MapManagement(CivGame parent)
 		{
@@ -53,14 +70,14 @@ namespace OpenCiv1
 
 			int tempValue = this.oCPU.ReadInt16(this.oCPU.DS.Word, 0xd20a);
 
-			this.oParent.Var_d4cc_MapXCenter = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x);
-			this.oParent.Var_d75e_MapYCenter = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(y, 0, 38);
+			this.oParent.Var_d4cc_MapViewX = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x);
+			this.oParent.Var_d75e_MapViewY = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(y, 0, 38);
 
 			// Another error, the code modified first parameter (playerID) to a
 			// Visibility Mask and that conflicts with other code which expects playerID.
 			int mapPlayerVisibilityMask = (0x1 << playerID);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6c96, 0x0);
+			this.VisibleCities.Clear();
 
 			// redraw Visible Map on screen
 			int cellXPos;
@@ -75,11 +92,11 @@ namespace OpenCiv1
 				if (cellYPos < 12 && cellXPos < 15)
 				{
 					if (this.oParent.Var_d806_DebugFlag ||
-						(this.oParent.CivState.MapVisibility[this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(cellXPos + this.oParent.Var_d4cc_MapXCenter),
-							cellYPos + this.oParent.Var_d75e_MapYCenter] & mapPlayerVisibilityMask) != 0)
+						(this.oParent.CivState.MapVisibility[this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(cellXPos + this.oParent.Var_d4cc_MapViewX),
+							cellYPos + this.oParent.Var_d75e_MapViewY] & mapPlayerVisibilityMask) != 0)
 					{
 						// Instruction address 0x2aea:0x0122, size: 3
-						F0_2aea_11d4_DrawCellWithUnit(this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(cellXPos + this.oParent.Var_d4cc_MapXCenter), cellYPos + this.oParent.Var_d75e_MapYCenter);
+						F0_2aea_11d4_DrawCellWithUnit(this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(cellXPos + this.oParent.Var_d4cc_MapViewX), cellYPos + this.oParent.Var_d75e_MapViewY);
 					}
 					else
 					{
@@ -96,23 +113,26 @@ namespace OpenCiv1
 			}
 
 			// Draw city names
-			for (int i = 0; i < this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6c96); i++)
+			for (int i = 0; i < this.VisibleCities.Count; i++)
 			{
-				if (this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x6e3e + (i * 2))) < 184)
+				CityInfo cityInfo = this.VisibleCities[i];
+
+				if (cityInfo.ScreenPos.Y >= 184)
 				{
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
-
-					// Instruction address 0x2aea:0x0148, size: 5
-					this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0xdf20 + (i * 2))));
-
-					// Instruction address 0x2aea:0x015c, size: 5
-					this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, (ushort)(327 - this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(0x6dac + (i * 2)))));
-
-					// Instruction address 0x2aea:0x018d, size: 5
-					this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0xba06,
-						this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x6dac + (i * 2))) - 8, 80, 999),
-						this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x6e3e + (i * 2))) + 16, 11);
+					continue;
 				}
+
+				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
+
+				// Instruction address 0x2aea:0x0148, size: 5
+				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityInfo.CityID);
+
+				// Instruction address 0x2aea:0x015c, size: 5
+				this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, (ushort)(327 - cityInfo.ScreenPos.X));
+
+				// Instruction address 0x2aea:0x018d, size: 5
+				this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0xba06,
+					this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(cityInfo.ScreenPos.X - 8, 80, 999), cityInfo.ScreenPos.Y + 16, 11);
 			}
 
 			int xMap = x - 32;
@@ -233,8 +253,8 @@ namespace OpenCiv1
 
 			// function body
 			// Tile position in screen coordinates
-			int scrX = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x - this.oParent.Var_d4cc_MapXCenter) * 16 + 80;
-			int scrY = (y - this.oParent.Var_d75e_MapYCenter) * 16 + 8;
+			int scrX = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x - this.oParent.Var_d4cc_MapViewX) * 16 + 80;
+			int scrY = (y - this.oParent.Var_d75e_MapViewY) * 16 + 8;
 
 			if (scrX < 80 || scrX >= 320 || scrY < 8 || scrY > 192)
 			{
@@ -510,8 +530,9 @@ namespace OpenCiv1
 						{
 							roadIcon = -1;
 
-							if ((!terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.City) && !terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.RailRoad)) || 
-								(!terrainImprovements1.HasFlag(TerrainImprovementFlagsEnum.City) && terrainImprovements1.HasFlag(TerrainImprovementFlagsEnum.RailRoad)))
+							TerrainImprovementFlagsEnum railRoadOrCity = TerrainImprovementFlagsEnum.RailRoad | TerrainImprovementFlagsEnum.City;
+
+							if ((terrainImprovements & railRoadOrCity) == 0 || (terrainImprovements1 & railRoadOrCity) == 0)
 							{
 								// Instruction address 0x2aea:0x0a73, size: 5
 								this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
@@ -682,14 +703,7 @@ namespace OpenCiv1
 									this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(0xd4ce + (0x1d << 1))));
 							}
 
-							if (this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6c96) < 32)
-							{
-								this.oCPU.WriteInt16(this.oCPU.DS.Word, (ushort)(0x6dac + this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6c96) * 2), (short)scrX);
-								this.oCPU.WriteInt16(this.oCPU.DS.Word, (ushort)(0x6e3e + this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6c96) * 2), (short)scrY);
-								this.oCPU.WriteInt16(this.oCPU.DS.Word, (ushort)(0xdf20 + this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x6c96) * 2), (short)cityID);
-
-								this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x6c96, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x6c96)));
-							}
+							this.VisibleCities.Add(new CityInfo(scrX, scrY, cityID));
 						}
 					}
 				}
@@ -748,8 +762,8 @@ namespace OpenCiv1
 				// +80 to skip info panel at the left
 				// +8 to skip menu bar at the top
 				// Instruction address 0x2aea:0x0ecd, size: 5
-				int xPosScreen = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(unit.Position.X - this.oParent.Var_d4cc_MapXCenter) * 16 + 80;
-				int yPosScreen = (unit.Position.Y - this.oParent.Var_d75e_MapYCenter) * 16 + 8;
+				int xPosScreen = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(unit.Position.X - this.oParent.Var_d4cc_MapViewX) * 16 + 80;
+				int yPosScreen = (unit.Position.Y - this.oParent.Var_d75e_MapViewY) * 16 + 8;
 
 				if (xPosScreen < 80 || xPosScreen >= 320 || yPosScreen < 8 || yPosScreen > 192)
 				{

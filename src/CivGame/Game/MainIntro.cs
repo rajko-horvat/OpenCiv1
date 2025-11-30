@@ -1780,11 +1780,11 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x17e0, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_d4cc_MapXCenter);
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_d4cc_MapViewX);
 			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x7);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Word);
 
-			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_d75e_MapYCenter);
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_d75e_MapViewY);
 			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x6);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Word);
 
