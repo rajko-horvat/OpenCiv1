@@ -859,8 +859,8 @@ namespace OpenCiv1
 			// function body
 			if (cityID != -1)
 			{
-				byte ubCityNameID = this.oParent.CivState.Cities[cityID].NameID;
-				ushort usStringOffset = (ushort)(0xba06 + this.oParent.MSCAPI.strlen(0xba06));
+				byte cityNameID = this.oParent.CivState.Cities[cityID].NameID;
+				ushort stringPtr = (ushort)(0xba06 + this.oParent.MSCAPI.strlen(0xba06));
 
 				// 13 is maximum city name size to copy
 				for (int i = 0; i < 13; i++)
