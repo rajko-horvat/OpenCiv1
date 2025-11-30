@@ -1353,17 +1353,15 @@ namespace OpenCiv1
 		/// <returns>ID of newly created unit or -1 if unit can not be created</returns>
 		public short F0_1866_0cf5_CreateUnit(short playerID, short unitTypeID, int xPos, int yPos)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_0cf5_CreateUnit({playerID}, {unitTypeID}, {xPos}, {yPos})");
+			//this.oCPU.Log.EnterBlock($"F0_1866_0cf5_CreateUnit({playerID}, {unitTypeID}, {xPos}, {yPos})");
 
 			// function body
 			Player player = this.oParent.CivState.Players[playerID];
-			short unitID = 0;
+			short unitID;
 
 			// Find free unit ID
-			for (; unitID < 127 && player.Units[unitID].TypeID != -1; ++unitID)
-			{
-				;
-			}
+			for (unitID = 0; unitID < 127 && player.Units[unitID].TypeID != -1; unitID++)
+			{ }
 
 			if (unitID >= 127)
 			{
@@ -1384,7 +1382,6 @@ namespace OpenCiv1
 				}
 
 				this.oCPU.AX.Word = 0xffff;
-				this.oCPU.Log.ExitBlock("F0_1866_0cf5_CreateUnit");
 				
 				return (short)this.oCPU.AX.Word;
 			}
@@ -1428,25 +1425,13 @@ namespace OpenCiv1
 
 			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4) == 0)
 			{
-				if (!this.oParent.Var_d806_DebugFlag)
+				if (!this.oParent.Var_d806_DebugFlag || playerID == this.oParent.CivState.HumanPlayerID ||
+					(unit.VisibleByPlayer & (1 << this.oParent.CivState.HumanPlayerID)) != 0)
 				{
-					if (playerID == this.oParent.CivState.HumanPlayerID)
-					{
-						goto L0e3d;
-					}
-
-					if ((unit.VisibleByPlayer & (1 << (this.oParent.CivState.HumanPlayerID & 0xff))) == 0)
-					{
-						goto L0e64;
-					}
+					// Instruction address 0x1866:0x0e5c, size: 5
+					this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(unit.Position.X, unit.Position.Y);
 				}
-
-			L0e3d:
-
-				// Instruction address 0x1866:0x0e5c, size: 5
-				this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(unit.Position.X, unit.Position.Y);
-
-			L0e64:
+								
 				// Instruction address 0x1866:0x0e77, size: 3
 				F0_1866_01dc(xPos, yPos, playerID, unitID, 1);
 			}
@@ -1468,9 +1453,6 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = (ushort)unitID;
 
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1866_0cf5_CreateUnit");
-
 			return (short)this.oCPU.AX.Word;
 		}
 
@@ -1481,71 +1463,59 @@ namespace OpenCiv1
 		/// <param name="unitID"></param>
 		public void F0_1866_0f10_DeleteUnit(short playerID, short unitID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_0f10_DeleteUnit({playerID}, {unitID})");
+			//this.oCPU.Log.EnterBlock($"F0_1866_0f10_DeleteUnit({playerID}, {unitID})");
 
 			// function body
 			Player player = this.oParent.CivState.Players[playerID];
 			Unit unit = player.Units[unitID];
 
-			if (unit.TypeID == -1)
-			{
-				// Far return
-				this.oCPU.Log.ExitBlock("F0_1866_0f10_DeleteUnit");
-				return;
-			}
-
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x70d8) != 0)
-			{
-				player.LostUnits[unit.TypeID]++;
-			}
-
-			if (this.oParent.CivState.UnitDefinitions[unit.TypeID].TransportCapacity != 0 && unit.NextUnitID != -1
-				// Instruction address 0x1866:0x0f78, size: 5
-				&& this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(unit.Position.X, unit.Position.Y) == TerrainTypeEnum.Water)
-			{
-				// Delete land units aboard the ship
-
-				// Instruction address 0x1866:0x0f94, size: 3
-				F0_1866_144b(playerID, unitID, 0x1610);
-			}
-
-			if (unit.TypeID == (short)UnitTypeEnum.Carrier && unit.NextUnitID != -1
-				// Instruction address 0x1866:0x0fc4, size: 5
-				&& this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(unit.Position.X, unit.Position.Y) == TerrainTypeEnum.Water)
-			{
-				// Delete air units along with aircraft carrier
-
-				// Instruction address 0x1866:0x0fe0, size: 3
-				F0_1866_144b(playerID, unitID, 0x1676);
-			}
-
 			if (unit.TypeID != -1)
 			{
-				player.ActiveUnits[unit.TypeID]--;
-			}
-
-			unit.TypeID = -1;
-			unit.RemainingMoves = 0;
-
-			// Instruction address 0x1866:0x1027, size: 5
-			this.oParent.MapManagement.F0_2aea_1412(playerID, unitID, unit.Position.X, unit.Position.Y);
-
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4) == 0 && this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x3936) == -1)
-			{
-				if (!this.oParent.Var_d806_DebugFlag && playerID != this.oParent.CivState.HumanPlayerID
-					&& (unit.VisibleByPlayer & (1 << (this.oParent.CivState.HumanPlayerID & 0xff))) == 0)
+				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x70d8) != 0)
 				{
-					// Far return
-					this.oCPU.Log.ExitBlock("F0_1866_0f10_DeleteUnit");
-					return;
+					player.LostUnits[unit.TypeID]++;
 				}
-
-				// Instruction address 0x1866:0x107d, size: 5
-				this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(unit.Position.X, unit.Position.Y);
-			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1866_0f10_DeleteUnit");
+	
+				if (this.oParent.CivState.UnitDefinitions[unit.TypeID].TransportCapacity != 0 && unit.NextUnitID != -1 && 
+					this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(unit.Position.X, unit.Position.Y) == TerrainTypeEnum.Water)
+				{
+					// Delete land units aboard the ship
+	
+					// Instruction address 0x1866:0x0f94, size: 3
+					F0_1866_144b(playerID, unitID, 0x1610);
+				}
+	
+				if (unit.TypeID == (short)UnitTypeEnum.Carrier && unit.NextUnitID != -1
+					// Instruction address 0x1866:0x0fc4, size: 5
+					&& this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(unit.Position.X, unit.Position.Y) == TerrainTypeEnum.Water)
+				{
+					// Delete air unit(s) along with aircraft carrier
+	
+					// Instruction address 0x1866:0x0fe0, size: 3
+					F0_1866_144b(playerID, unitID, 0x1676);
+				}
+	
+				if (unit.TypeID != -1)
+				{
+					player.ActiveUnits[unit.TypeID]--;
+				}
+	
+				unit.TypeID = -1;
+				unit.RemainingMoves = 0;
+	
+				// Instruction address 0x1866:0x1027, size: 5
+				this.oParent.MapManagement.F0_2aea_1412(playerID, unitID, unit.Position.X, unit.Position.Y);
+	
+				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x20f4) == 0 && this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x3936) == -1)
+				{
+					if (this.oParent.Var_d806_DebugFlag || playerID == this.oParent.CivState.HumanPlayerID ||
+						(unit.VisibleByPlayer & (1 << this.oParent.CivState.HumanPlayerID)) != 0)
+					{	
+						// Instruction address 0x1866:0x107d, size: 5
+						this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(unit.Position.X, unit.Position.Y);
+					}
+				}
+			}			
 		}
 
 		/// <summary>
