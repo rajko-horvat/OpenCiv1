@@ -1089,7 +1089,7 @@ namespace OpenCiv1
 			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].RemainingMoves = 0;
 
 			// Instruction address 0x1403:0x0d90, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
+			this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
 			
 			goto L1b5e;
 
@@ -1386,7 +1386,7 @@ namespace OpenCiv1
 			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].RemainingMoves = 0;
 
 			// Instruction address 0x1403:0x1175, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
+			this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
 
 			goto L1b5e;
 
@@ -2043,7 +2043,7 @@ namespace OpenCiv1
 			this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].RemainingMoves = 0;
 
 			// Instruction address 0x1403:0x1a6a, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
+			this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
 			
 			// Instruction address 0x1403:0x1a78, size: 5
 			F0_1403_3f13(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
@@ -2073,7 +2073,7 @@ namespace OpenCiv1
 
 		L1acb:
 			// Instruction address 0x1403:0x1ad1, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
+			this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
 
 			// Instruction address 0x1403:0x1adf, size: 5
 			F0_1403_3f13(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
@@ -2614,7 +2614,7 @@ namespace OpenCiv1
 				(short)(10 * this.oParent.CivState.UnitDefinitions[this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].TypeID].Cost);
 			
 			// Instruction address 0x1403:0x2149, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
+			this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
 
 			goto L3365;
 
@@ -3020,7 +3020,7 @@ namespace OpenCiv1
 
 		L2719:
 			// Instruction address 0x1403:0x271f, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
+			this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
 			
 			// Instruction address 0x1403:0x2730, size: 5
 			this.oParent.Segment_29f3.F0_29f3_0d4d(playerID,
@@ -4902,7 +4902,7 @@ namespace OpenCiv1
 			if (this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32))].SpecialMoves < 0)
 			{
 				// Instruction address 0x1403:0x3d5d, size: 5
-				this.oParent.Segment_1866.F0_1866_0f10(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
+				this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
 
 				// Instruction address 0x1403:0x3d69, size: 5
 				F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x2070);
@@ -4959,7 +4959,7 @@ namespace OpenCiv1
 
 		L3e12:
 			// Instruction address 0x1403:0x3e18, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
+			this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x32)));
 			
 			// Instruction address 0x1403:0x3e24, size: 5
 			F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x2076);

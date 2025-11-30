@@ -1170,7 +1170,7 @@ namespace OpenCiv1
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
 
 				// Instruction address 0x0000:0x0dcb, size: 5
-				this.oParent.Segment_1866.F0_1866_0cf5(
+				this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
 					playerID,
 					0,
 					this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
@@ -1200,7 +1200,7 @@ namespace OpenCiv1
 				if (this.oCPU.Flags.G) goto L0e20;
 				
 				// Instruction address 0x0000:0x0e18, size: 5
-				this.oParent.Segment_1866.F0_1866_0f10(0, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
+				this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(0, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
 
 			L0e20:
 				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), 
@@ -1327,7 +1327,7 @@ namespace OpenCiv1
 				goto L0f85;
 			
 			// Instruction address 0x0000:0x0f7d, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
+			this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)));
 
 		L0f85:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))));
@@ -1814,7 +1814,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.Word, this.oCPU.DI.Word, this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, this.oCPU.DI.Word), 0x3));
 			
 			// Instruction address 0x0000:0x142c, size: 5
-			this.oParent.Segment_1866.F0_1866_0cf5(
+			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)),
 				0,
 				this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))].Units[0].Position.X,
