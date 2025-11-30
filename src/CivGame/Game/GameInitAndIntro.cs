@@ -2590,9 +2590,9 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L160a;
 
 			// Instruction address 0x0000:0x15fe, size: 5
-			this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(
+			this.oCPU.AX.Word = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L160d;
@@ -2612,9 +2612,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L1631;
 
 			// Instruction address 0x0000:0x1625, size: 5
-			this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(
-				(short)this.oCPU.SI.Word,
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
+			this.oCPU.AX.Word = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates((short)this.oCPU.SI.Word,
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L1634;
@@ -2634,9 +2633,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L1658;
 
 			// Instruction address 0x0000:0x164c, size: 5
-			this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
-				(short)this.oCPU.SI.Word);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates(
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), (short)this.oCPU.SI.Word) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L165b;
@@ -2656,7 +2654,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L167f;
 
 			// Instruction address 0x0000:0x1673, size: 5
-			this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds((short)this.oCPU.SI.Word, (short)this.oCPU.DI.Word);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates((short)this.oCPU.SI.Word, (short)this.oCPU.DI.Word) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L1682;
@@ -3254,7 +3252,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L1cac;
 
 			// Instruction address 0x0000:0x1ca4, size: 5
-			this.oParent.MapManagement.F0_2aea_11d4(
+			this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 
