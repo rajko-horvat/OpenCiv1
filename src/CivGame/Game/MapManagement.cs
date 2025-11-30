@@ -870,7 +870,7 @@ namespace OpenCiv1
 						if (!F0_2aea_1585_GetVisibleTerrainImprovements(x, y).HasFlag(TerrainImprovementFlagsEnum.City))
 						{
 							// Instruction address 0x2aea:0x1250, size: 3
-							F0_2aea_125b((short)playerID, (short)unitID);
+							F0_2aea_125b_DrawWaterUnits((short)playerID, (short)unitID);
 						}
 					}
 				}
@@ -882,7 +882,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_2aea_125b(short playerID, short unitID)
+		public void F0_2aea_125b_DrawWaterUnits(int playerID, int unitID)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_2aea_125b({playerID}, {unitID})");
 
@@ -918,22 +918,22 @@ namespace OpenCiv1
 			else
 			{
 				// Instruction address 0x2aea:0x131b, size: 3
-				F0_2aea_0e29_DrawUnit(playerID, (short)this.oParent.Segment_1866.F0_1866_1122(playerID, unitID));
+				F0_2aea_0e29_DrawUnit(playerID, (short)this.oParent.Segment_1866.F0_1866_1122((short)playerID, (short)unitID));
 			}
 		}
 
 		/// <summary>
 		/// Check if the given coordinates are within map bounds
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <returns></returns>
-		public bool F0_2aea_1326_CheckMapCoordinates(int xPos, int yPos)
+		public bool F0_2aea_1326_CheckMapCoordinates(int x, int y)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_2aea_1326_CheckMapBounds({xPos}, {yPos})");
 
 			// function body
-			if (xPos >= 0 && xPos < 80 && yPos >= 0 && yPos < 50)
+			if (x >= 0 && x < 80 && y >= 0 && y < 50)
 			{
 				return true;
 			}
