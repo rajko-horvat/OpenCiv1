@@ -870,7 +870,7 @@ namespace OpenCiv1
 						if (!F0_2aea_1585_GetVisibleTerrainImprovements(x, y).HasFlag(TerrainImprovementFlagsEnum.City))
 						{
 							// Instruction address 0x2aea:0x1250, size: 3
-							F0_2aea_125b_DrawWaterUnits((short)playerID, (short)unitID);
+							F0_2aea_125b_DrawWaterUnit((short)playerID, (short)unitID);
 						}
 					}
 				}
@@ -882,7 +882,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_2aea_125b_DrawWaterUnits(int playerID, int unitID)
+		public void F0_2aea_125b_DrawWaterUnit(int playerID, int unitID)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_2aea_125b({playerID}, {unitID})");
 
