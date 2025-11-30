@@ -784,7 +784,7 @@ namespace OpenCiv1
 			if (playerID != this.oParent.CivState.HumanPlayerID) goto L0839;
 
 			// Instruction address 0x0000:0x082f, size: 5
-			this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(this.oParent.CivState.HumanPlayerID, this.oParent.Var_d4cc_MapXCenter, this.oParent.Var_d75e_MapYCenter);
+			this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(this.oParent.CivState.HumanPlayerID, this.oParent.Var_d4cc_MapViewX, this.oParent.Var_d75e_MapViewY);
 
 			goto L0876;
 
