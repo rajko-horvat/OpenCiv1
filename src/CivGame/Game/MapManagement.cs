@@ -907,7 +907,7 @@ namespace OpenCiv1
 						currentUnitID = -1;
 					}
 				}
-				while (currentUnitID != -1 || currentUnitID != unitID);
+				while (currentUnitID != -1 && currentUnitID != unitID);
 
 				if (currentUnitID == unitID)
 				{
