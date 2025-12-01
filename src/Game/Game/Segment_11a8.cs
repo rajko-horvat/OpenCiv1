@@ -471,7 +471,7 @@ namespace OpenCiv1
 			goto L04bb;
 
 		L0810:
-			this.oParent.StartGameMenu.F5_0000_1455_LoadSprites();
+			this.oParent.StartGameMenu.F5_0000_1455_LoadBitmaps();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f98, 0x1);
 

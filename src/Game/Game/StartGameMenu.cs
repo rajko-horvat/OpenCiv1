@@ -697,11 +697,11 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Loads images and extracts bitmaps from them
 		/// </summary>
-		public void F5_0000_1455_LoadSprites()
+		public void F5_0000_1455_LoadBitmaps()
 		{
-			this.oCPU.Log.EnterBlock("F5_0000_1455_LoadSprites()");
+			this.oCPU.Log.EnterBlock("F5_0000_1455_LoadBitmaps()");
 
 			// function body
 			// Instruction address 0x0000:0x147c, size: 5
@@ -880,7 +880,7 @@ namespace OpenCiv1
 			}
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F5_0000_1455_LoadSprites");
+			this.oCPU.Log.ExitBlock("F5_0000_1455_LoadBitmaps");
 		}
 
 		/// <summary>
