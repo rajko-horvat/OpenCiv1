@@ -379,113 +379,33 @@ namespace OpenCiv1
 					(byte)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CityCount,
 					(byte)((population & 0xff00) >> 8),
 					(byte)(population & 0xff));
-
-				int playerID = 0;
-				int[] array = new int[4];
-			//this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x0);
-
-			L04d5:
-				array[playerID] = 0;
-				//this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
-				//this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
-				//this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0x14), 0x0);
-
-				playerID++;
-				//this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
-
-				if (playerID < 4)
+				
+				ushort[] rankings = new ushort[4];
+				Array.Fill(rankings, (ushort)0);
+				
+				for (ushort playerID = 1; playerID < 8; ++playerID)
 				{
-					goto L04d5;
-				}
-
-				//this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x4);
-				//if (this.oCPU.Flags.L) goto L04d5;
-
-				playerID = 1;
-				//this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x1);
-				goto L050a;
-
-			L04ef:
-				this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Ranking;
-				this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-				this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-				this.oCPU.AX.Word = this.oCPU.SAR_UInt16(this.oCPU.AX.Word, 0x1);
-				this.oCPU.SI.Word = this.oCPU.AX.Word;
-				this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
-				this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
-				this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0x14),
-					this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.SI.Word - 0x14)), this.oCPU.AX.Word));
-
-			L0507:
-				playerID++;
-				//this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
-
-			L050a:
-				if (playerID < 8)
-				{
-					//this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x8);
-					//if (this.oCPU.Flags.GE) goto L0542;
-
-					//this.oCPU.AX.Word = 0x1;
-					//this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
-					//this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-
 					if (((1 << playerID) & this.oParent.CivState.ActiveCivilizations) == 0)
 					{
-						// continue;
-						goto L0507;
+						continue;
 					}
 
-					//this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.ActiveCivilizations);
-					//if (this.oCPU.Flags.E) goto L0507;
+					int index = this.oParent.CivState.Players[playerID].Ranking >> 1;
 
 					if ((this.oParent.CivState.Players[playerID].Ranking & 1) == 0)
 					{
-						goto L04ef;
+						rankings[index] |= playerID;
 					}
-
-					//this.oCPU.SI.Word = (ushort)this.oParent.CivState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].Ranking;
-					//this.oCPU.AX.Word = this.oCPU.SI.Word;
-					//this.oCPU.TEST_UInt8(this.oCPU.AX.Low, 0x1);
-					//if (this.oCPU.Flags.E) goto L04ef;
-
-					// TODO: what is this logic?
-					this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[playerID].Ranking;
-					this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-					this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
-					this.oCPU.AX.Word = this.oCPU.SAR_UInt16(this.oCPU.AX.Word, 0x1);
-
-					// TODO: check if this is the same as the asm above
-					int rankning = this.oParent.CivState.Players[playerID].Ranking;
-					if (rankning < 0)
+					else
 					{
-						// ranking = ranking - (-1)
-						rankning += 1;
+						rankings[index] |= (ushort)(playerID << 4);
 					}
-
-					rankning >>= 1;
-
-
-					this.oCPU.DI.Word = this.oCPU.AX.Word;
-					this.oCPU.DI.Word = this.oCPU.SHL_UInt16(this.oCPU.DI.Word, 0x1);
-					this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
-					this.oCPU.CX.Low = 0x4;
-					this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-					this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.DI.Word - 0x14),
-						this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word + this.oCPU.DI.Word - 0x14)), this.oCPU.AX.Word));
-					goto L0507;
 				}
 
-			//L0542:
 				// Instruction address 0x1238:0x0556, size: 5
-				this.oParent.Segment_1866.F0_1866_250e_AddReplayData(12,
-					this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe)),
-					this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x10)),
-					this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12)),
-					this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)));
+				this.oParent.Segment_1866.F0_1866_250e_AddReplayData(12, (byte)rankings[3], (byte)rankings[2], (byte)rankings[1], (byte)rankings[0]);
 			}
 
-		//L055e:
 			if (this.oParent.CivState.TurnCount >= this.oParent.CivState.NextAnthologyTurn)
 			{
 				// Instruction address 0x1238:0x056b, size: 5
