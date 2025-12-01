@@ -29,7 +29,7 @@ namespace OpenCiv1
 		public short ScienceTaxRate = 0;
 		public short ResearchProgress = 0;
 		public short DiscoveredTechnologyCount = 0;
-		public short CurrentResearchID = 0;
+		public short ResearchTechnologyID = -1; // None
 		public short FutureTechnologyCount = 0;
 		public ushort[] DiscoveredTechnologyFlags = new ushort[5];
 		public short[] TechnologyAcquiredFrom = new short[72];

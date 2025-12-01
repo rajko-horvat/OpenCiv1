@@ -1625,8 +1625,8 @@ namespace OpenCiv1
 
 		L15f6:
 			// Instruction address 0x0000:0x15fd, size: 5
-			this.oCPU.AX.Word = this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, 
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
+			this.oCPU.AX.Word = (ushort)(this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID,
+				(TechnologyEnum)this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L161f;
@@ -1780,11 +1780,11 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x17e0, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oCPU.AX.Word = (ushort)this.oParent.Var_d4cc_XPos;
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_d4cc_MapViewX);
 			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x7);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Word);
 
-			this.oCPU.AX.Word = (ushort)this.oParent.Var_d75e_YPos;
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.Var_d75e_MapViewY);
 			this.oCPU.AX.Word = this.oCPU.ADD_UInt16(this.oCPU.AX.Word, 0x6);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Word);
 
@@ -1821,9 +1821,9 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))].Name);
 
 			// Instruction address 0x0000:0x184e, size: 5
-			this.oParent.MapManagement.F0_2aea_1836_CellHasSpecialResource(
+			this.oCPU.AX.Word = (ushort)(this.oParent.MapManagement.F0_2aea_1836_CellHasSpecialResource(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L186c;
@@ -1833,10 +1833,10 @@ namespace OpenCiv1
 
 		L186c:
 			// Instruction address 0x0000:0x1875, size: 5
-			this.oParent.MapManagement.F0_2aea_1894(
-				this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
+			this.oCPU.AX.Word = (ushort)(this.oParent.MapManagement.F0_2aea_1894_CellHasMinorTribeHut(
+				(TerrainTypeEnum)this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L1891;

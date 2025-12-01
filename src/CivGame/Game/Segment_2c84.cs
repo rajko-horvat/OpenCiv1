@@ -223,10 +223,10 @@ namespace OpenCiv1
 			ushort yPos = (ushort)unit.Position.Y;
 
 			// Instruction address 0x2c84:0x0221, size: 5
-			TerrainImprovementFlagsEnum improvements = this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
+			TerrainImprovementFlagsEnum improvements = this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(xPos, yPos);
 
 			// Instruction address 0x2c84:0x0232, size: 5
-			ushort terrainID = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
+			TerrainTypeEnum terrainType = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
 
 			int orderCount = 0;
 			char[] orders = new char[15];
@@ -262,7 +262,7 @@ namespace OpenCiv1
 				else
 				{
 					// Instruction address 0x2c84:0x02bb, size: 5
-					if (!improvements.HasFlag(TerrainImprovementFlagsEnum.RailRoad) && this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Railroad) != 0)
+					if (!improvements.HasFlag(TerrainImprovementFlagsEnum.RailRoad) && this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.Railroad))
 					{
 						// Instruction address 0x2c84:0x02cf, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " Build RailRoad \x008fr\n");
@@ -272,7 +272,7 @@ namespace OpenCiv1
 
 				if (!improvements.HasFlag(TerrainImprovementFlagsEnum.Irrigation))
 				{
-					if (this.oParent.CivState.TerrainModifications[terrainID].IrrigationEffect == -2)
+					if (this.oParent.CivState.TerrainModifications[(int)terrainType].IrrigationEffect == -2)
 					{
 						// Instruction address 0x2c84:0x0301, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " Build Irrigation");
@@ -286,7 +286,7 @@ namespace OpenCiv1
 					}
 					else
 					{
-						if (this.oParent.CivState.TerrainModifications[terrainID].IrrigationEffect >= 0)
+						if (this.oParent.CivState.TerrainModifications[(int)terrainType].IrrigationEffect >= 0)
 						{
 							// Instruction address 0x2c84:0x0342, size: 5
 							this.oParent.MSCAPI.strcat(0xba06, " Change to ");
@@ -294,11 +294,11 @@ namespace OpenCiv1
 							// Instruction address 0x2c84:0x035d, size: 5
 							this.oParent.MSCAPI.strcat(0xba06,
 								this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.DS.Word,
-									(ushort)(0x2ba6 + this.oParent.CivState.TerrainModifications[terrainID].IrrigationEffect * 2))].Name);
+									(ushort)(0x2ba6 + this.oParent.CivState.TerrainModifications[(int)terrainType].IrrigationEffect * 2))].Name);
 						}
 					}
 
-					if (this.oParent.CivState.TerrainModifications[terrainID].IrrigationEffect != -1)
+					if (this.oParent.CivState.TerrainModifications[(int)terrainType].IrrigationEffect != -1)
 					{
 						// Instruction address 0x2c84:0x0386, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " \x008fi\n");
@@ -308,22 +308,22 @@ namespace OpenCiv1
 
 				if (!improvements.HasFlag(TerrainImprovementFlagsEnum.Mines))
 				{
-					if (this.oParent.CivState.TerrainModifications[terrainID].MiningEffect <= -2)
+					if (this.oParent.CivState.TerrainModifications[(int)terrainType].MiningEffect <= -2)
 					{
 						// Instruction address 0x2c84:0x03dc, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " Build Mines");
 					}
-					else if (this.oParent.CivState.TerrainModifications[terrainID].MiningEffect >= 0)
+					else if (this.oParent.CivState.TerrainModifications[(int)terrainType].MiningEffect >= 0)
 					{
 						// Instruction address 0x2c84:0x03c1, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " Change to ");
 
 						// Instruction address 0x2c84:0x03dc, size: 5
 						this.oParent.MSCAPI.strcat(0xba06,
-							this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x2ba6 + this.oParent.CivState.TerrainModifications[terrainID].MiningEffect * 2))].Name);
+							this.oParent.CivState.Terrains[this.oCPU.ReadInt16(this.oCPU.DS.Word, (ushort)(0x2ba6 + this.oParent.CivState.TerrainModifications[(int)terrainType].MiningEffect * 2))].Name);
 					}
 
-					if (this.oParent.CivState.TerrainModifications[terrainID].MiningEffect != -1)
+					if (this.oParent.CivState.TerrainModifications[(int)terrainType].MiningEffect != -1)
 					{
 						// Instruction address 0x2c84:0x0405, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " \x008fm\n");
@@ -345,7 +345,7 @@ namespace OpenCiv1
 				this.oParent.MSCAPI.strcat(0xba06, " Build Fortress \x008ff\n");
 
 				// Instruction address 0x2c84:0x045b, size: 5
-				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Construction) == 0)
+				if (!this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.Construction))
 				{
 					// Disable 'Build Fortress' option
 					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb276), (ushort)(1 << orderCount)));
@@ -448,7 +448,7 @@ namespace OpenCiv1
 					break;
 
 				case 1: // Military Advisor
-					if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xd806) == 0)
+					if (!this.oParent.Var_d806_DebugFlag)
 					{
 						this.oParent.Overlay_14.F14_0000_03ad_MilitaryStatus(this.oParent.CivState.HumanPlayerID);
 					}

@@ -177,7 +177,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.ADD_UInt16(this.oCPU.SI.Word, this.oCPU.AX.Word);
 
 			// Instruction address 0x0000:0x01b5, size: 5
-			this.oParent.MapManagement.F0_2aea_0008(this.oParent.CivState.HumanPlayerID,
+			this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(this.oParent.CivState.HumanPlayerID,
 				this.oParent.CivState.Players[playerID].Units[unitID].Position.X - 7, this.oParent.CivState.Players[playerID].Units[unitID].Position.Y - 6);
 
 			F4_0000_02d3_ShowInstantAdvicePopup(0x34bb);
@@ -215,7 +215,7 @@ namespace OpenCiv1
 
 		L0211:
 			// Instruction address 0x0000:0x021d, size: 5
-			this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(this.oParent.CivState.Players[playerID].Units[unitID].Position.X, this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
+			this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(this.oParent.CivState.Players[playerID].Units[unitID].Position.X, this.oParent.CivState.Players[playerID].Units[unitID].Position.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), this.oCPU.AX.Word);
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);

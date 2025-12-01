@@ -132,9 +132,9 @@ namespace OpenCiv1
 
 			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].XStart;
 			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x7);
-			this.oParent.Var_d4cc_XPos = (short)this.oCPU.AX.Word;
+			this.oParent.Var_d4cc_MapViewX = (short)this.oCPU.AX.Word;
 
-			this.oParent.Var_d75e_YPos = 19;
+			this.oParent.Var_d75e_MapViewY = 19;
 
 			// Instruction address 0x11a8:0x016a, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();

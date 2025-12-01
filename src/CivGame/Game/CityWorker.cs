@@ -179,8 +179,8 @@ namespace OpenCiv1
 
 				Arr_a6[2, 2] = 0;
 				this.Var_6548_PlayerID = city.PlayerID;
-				local_c2 = this.oParent.Var_d4cc_XPos;
-				local_d0 = this.oParent.Var_d75e_YPos;
+				local_c2 = this.oParent.Var_d4cc_MapViewX;
+				local_d0 = this.oParent.Var_d75e_MapViewY;
 
 				if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType <= 1)
 				{
@@ -196,25 +196,25 @@ namespace OpenCiv1
 				if (!city.HasImprovement(ImprovementEnum.MassTransit))
 				{
 					// Instruction address 0x1d12:0x035e, size: 5
-					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Industrialization) != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Industrialization))
 					{
 						this.oParent.Var_b882++;
 					}
 
 					// Instruction address 0x1d12:0x037a, size: 5
-					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Automobile) != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Automobile))
 					{
 						this.oParent.Var_b882++;
 					}
 
 					// Instruction address 0x1d12:0x0396, size: 5
-					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.MassProduction) != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.MassProduction))
 					{
 						this.oParent.Var_b882++;
 					}
 
 					// Instruction address 0x1d12:0x03b2, size: 5
-					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Plastics) != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Plastics))
 					{
 						this.oParent.Var_b882++;
 					}
@@ -295,11 +295,11 @@ namespace OpenCiv1
 					// Instruction address 0x1d12:0x0587, size: 5
 					F0_1d12_70cb_FillRectangleWithPattern(127, 23, 208, 104);
 
-					this.oParent.Var_d4cc_XPos = (short)(city.Position.X - 5);
-					this.oParent.Var_d75e_YPos = (short)(city.Position.Y - 3);
+					this.oParent.Var_d4cc_MapViewX = city.Position.X - 5;
+					this.oParent.Var_d75e_MapViewY = city.Position.Y - 3;
 
 					// Instruction address 0x1d12:0x05cd, size: 5
-					this.oParent.MapManagement.F0_2aea_03ba(city.Position.X, city.Position.Y);
+					this.oParent.MapManagement.F0_2aea_03ba_DrawCell(city.Position.X, city.Position.Y);
 
 					for (int i = 0; i < this.Var_6540_CityOffsetCount; i++)
 					{
@@ -310,23 +310,23 @@ namespace OpenCiv1
 							(this.oParent.CivState.MapVisibility[local_c6, local_d2] & (1 << this.Var_6548_PlayerID)) != 0)
 						{
 							// Instruction address 0x1d12:0x0664, size: 5
-							local_e8 = (short)this.oParent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(local_c6, local_d2);
+							local_e8 = this.oParent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(local_c6, local_d2);
 
 							if (local_e8 != -1 && local_e8 != this.Var_6548_PlayerID)
 							{
 								// Instruction address 0x1d12:0x068e, size: 5
-								this.oParent.MapManagement.F0_2aea_11d4(local_c6, local_d2);
+								this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(local_c6, local_d2);
 							}
 							else
 							{
 								// Instruction address 0x1d12:0x06a1, size: 5
-								this.oParent.MapManagement.F0_2aea_03ba(local_c6, local_d2);
+								this.oParent.MapManagement.F0_2aea_03ba_DrawCell(local_c6, local_d2);
 
 								if (Arr_a6[this.oParent.CityOffsets[i].X + 2, this.oParent.CityOffsets[i].Y + 2] != 0)
 								{
 									// Instruction address 0x1d12:0x06f6, size: 5
 									this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(
-										(local_c6 - this.oParent.Var_d4cc_XPos) * 16 + 80, (local_d2 - this.oParent.Var_d75e_YPos) * 16 + 8, 15, 15, 12);
+										(local_c6 - this.oParent.Var_d4cc_MapViewX) * 16 + 80, (local_d2 - this.oParent.Var_d75e_MapViewY) * 16 + 8, 15, 15, 12);
 								}
 							}
 						}
@@ -382,7 +382,7 @@ namespace OpenCiv1
 						if (local_e8 != -1)
 						{
 							// Instruction address 0x1d12:0x080e, size: 5
-							this.oParent.Segment_1866.F0_1866_0f10(this.Var_6548_PlayerID, (short)local_e8);
+							this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(this.Var_6548_PlayerID, (short)local_e8);
 						}
 						else
 						{
@@ -527,7 +527,7 @@ namespace OpenCiv1
 					}
 
 					// Instruction address 0x1d12:0x0bf4, size: 5
-					local_e8 = (short)this.oParent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(local_c6, local_d2);
+					local_e8 = this.oParent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(local_c6, local_d2);
 
 					if (local_e8 != -1 && local_e8 != this.Var_6548_PlayerID)
 					{
@@ -793,12 +793,12 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x1d12:0x13f9, size: 5
-				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.HooverDam) != 0)
+				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.HooverDam))
 				{
 					// Instruction address 0x1d12:0x1428, size: 5
 					// Instruction address 0x1d12:0x1442, size: 5
-					if (this.oParent.MapManagement.F0_2aea_1942(city.Position.X, city.Position.Y) ==
-						this.oParent.MapManagement.F0_2aea_1942(
+					if (this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(city.Position.X, city.Position.Y) ==
+						this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 						this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[(int)WonderEnum.HooverDam]].Position.X,
 						this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[(int)WonderEnum.HooverDam]].Position.Y))
 					{
@@ -850,7 +850,7 @@ namespace OpenCiv1
 								if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID || city.CurrentProductionID != 0x1a)
 								{
 									// Instruction address 0x1d12:0x15fa, size: 5
-									local_ba = (short)this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
+									local_ba = this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
 								}
 
 								if ((this.oParent.CivState.TechnologyFirstDiscoveredBy[city.CurrentProductionID] & 0x8) == 0)
@@ -876,7 +876,7 @@ namespace OpenCiv1
 										this.oParent.Segment_1ade.F0_1ade_018e(cityID, city.Position.X, city.Position.Y);
 
 										// Instruction address 0x1d12:0x1727, size: 5
-										this.oParent.Segment_1866.F0_1866_0cf5(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
+										this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(this.Var_6548_PlayerID, city.CurrentProductionID, city.Position.X, city.Position.Y);
 
 										this.oParent.StartGameMenu.F5_0000_0e6c(this.Var_6548_PlayerID, 0);
 
@@ -933,15 +933,15 @@ namespace OpenCiv1
 												if (local_c8 > this.oParent.Var_6c9a || (local_c8 == this.oParent.Var_6c9a && this.oParent.MSCAPI.RNG.Next(++local_106) == 0))
 												{
 													// Instruction address 0x1d12:0x191e, size: 5
-													TerrainTypeEnum terrainType = (TerrainTypeEnum)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+													TerrainTypeEnum terrainType = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
 														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y);
 
 													// Instruction address 0x1d12:0x1956, size: 5
 													// Instruction address 0x1d12:0x1970, size: 5
-													if (terrainType != TerrainTypeEnum.Ocean && this.oParent.MapManagement.F0_2aea_1942(
+													if (terrainType != TerrainTypeEnum.Water && this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 														this.oParent.CivState.Cities[i].Position.X,	this.oParent.CivState.Cities[i].Position.Y) ==
-														this.oParent.MapManagement.F0_2aea_1942(
+														this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
 														this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y))
 													{
@@ -968,9 +968,8 @@ namespace OpenCiv1
 										else
 										{
 											// Instruction address 0x1d12:0x19f9, size: 5
-											local_ba = (short)this.oParent.Segment_1866.F0_1866_0cf5(
-												this.Var_6548_PlayerID,
-												0x1a,
+											local_ba = this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
+												this.Var_6548_PlayerID, 0x1a,
 												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].Position.X,
 												this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].Position.Y);
 
@@ -1159,7 +1158,7 @@ namespace OpenCiv1
 												goto L1feb;
 
 											// Instruction address 0x1d12:0x1f5d, size: 5
-											if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, (int)TechnologyEnum.SpaceFlight) == 0)
+											if (!this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, TechnologyEnum.SpaceFlight))
 												goto L2010;
 
 											if (this.oParent.CivState.AISpaceshipSuccessRate > 75)
@@ -1268,7 +1267,7 @@ namespace OpenCiv1
 												this.oParent.CivState.Cities[i].Position.Y] |= (ushort)(1 << this.Var_6548_PlayerID);
 
 											// Instruction address 0x1d12:0x2204, size: 5
-											this.oParent.MapManagement.F0_2aea_1601(
+											this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(
 												this.oParent.CivState.Cities[i].Position.X, this.oParent.CivState.Cities[i].Position.Y);
 										}
 									}
@@ -1320,7 +1319,7 @@ namespace OpenCiv1
 
 						// Instruction address 0x1d12:0x2344, size: 5
 						// !!! Added & 0x7 to prevent owerflow, need to investigate why this happens
-						local_104 = this.oParent.CivState.Players[this.oParent.MapManagement.F0_2aea_1942(local_d8, local_e4) & 0x7].Continents[this.Var_6548_PlayerID].Strategy;
+						local_104 = this.oParent.CivState.Players[this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(local_d8, local_e4) & 0x7].Continents[this.Var_6548_PlayerID].Strategy;
 
 						if ((local_104 == 1 || local_104 == 2 || local_104 == 5) && local_e8 != 0 && city.CurrentProductionID >= 0 &&
 							(int)this.oParent.CivState.UnitDefinitions[city.CurrentProductionID].AIRole == local_104)
@@ -1343,8 +1342,8 @@ namespace OpenCiv1
 						}
 
 						// Instruction address 0x1d12:0x24bb, size: 5
-						this.oParent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(local_d8, local_e4);
-						if (((short)this.oCPU.AX.Word == -1 || (city.StatusFlag & 0x10) != 0) && city.CurrentProductionID >= 0 && city.ShieldsCount != 0)
+						if ((this.oParent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(local_d8, local_e4) == -1 || 
+							(city.StatusFlag & 0x10) != 0) && city.CurrentProductionID >= 0 && city.ShieldsCount != 0)
 						{
 							// Instruction address 0x1d12:0x2530, size: 5
 							local_cc = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
@@ -1505,7 +1504,7 @@ namespace OpenCiv1
 					local_e8 += this.oParent.Var_70e6 / 2;
 
 					// Instruction address 0x1d12:0x2a6e, size: 5
-					if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.IsaacNewtonsCollege) != 0)
+					if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.IsaacNewtonsCollege))
 					{
 						local_e8 += this.oParent.Var_70e6 / 3;
 					}
@@ -1516,7 +1515,7 @@ namespace OpenCiv1
 					local_e8 += this.oParent.Var_70e6 / 2;
 
 					// Instruction address 0x1d12:0x2ab2, size: 5
-					if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.IsaacNewtonsCollege) != 0)
+					if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.IsaacNewtonsCollege))
 					{
 						local_e8 += this.oParent.Var_70e6 / 3;
 					}
@@ -1605,12 +1604,12 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x1d12:0x2d27, size: 5
-				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Religion) != 0)
+				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Religion))
 				{
 					if (city.HasImprovement(ImprovementEnum.Cathedral))
 					{
 						// Instruction address 0x1d12:0x2d52, size: 5
-						if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.MichelangelosChapel) != 0)
+						if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.MichelangelosChapel))
 						{
 							this.oParent.Var_70e4 -= 6;
 						}
@@ -1632,24 +1631,24 @@ namespace OpenCiv1
 				if (city.HasImprovement(ImprovementEnum.Temple))
 				{
 					// Instruction address 0x1d12:0x2dd6, size: 5
-					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Mysticism) != 0)
+					if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Mysticism))
 					{
 						this.oParent.Var_70e4 -= 2;
 					}
 					else
 					{
 						// Instruction address 0x1d12:0x2df6, size: 5
-						if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.CeremonialBurial) != 0)
+						if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.CeremonialBurial))
 						{
 							this.oParent.Var_70e4--;
 						}
 					}
 				
 					// Instruction address 0x1d12:0x2e12, size: 5
-					if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.Oracle) != 0)
+					if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.Oracle))
 					{
 						// Instruction address 0x1d12:0x2e2a, size: 5
-						if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Mysticism) != 0)
+						if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Mysticism))
 						{
 							this.oParent.Var_70e4 -= 2;
 						}
@@ -1691,7 +1690,7 @@ namespace OpenCiv1
 					local_e6 = 0;
 
 					// Instruction address 0x1d12:0x2f1a, size: 5
-					local_e8 = (short)this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(local_d8, local_e4);
+					local_e8 = this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(local_d8, local_e4);
 					local_ba = local_e8;
 
 					while (local_ba != -1)
@@ -1745,7 +1744,7 @@ namespace OpenCiv1
 				else
 				{
 					// Instruction address 0x1d12:0x3090, size: 5
-					local_e8 = ((short)F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.WomensSuffrage) < 1) ? 1 : 0;
+					local_e8 = F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.WomensSuffrage) ? 1 : 0;
 
 					if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType == 5)
 					{
@@ -1788,13 +1787,13 @@ namespace OpenCiv1
 				local_e8 = this.oParent.Var_70e2 - this.oParent.Var_70e4;
 
 				// Instruction address 0x1d12:0x319e, size: 5
-				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.HangingGardens) != 0)
+				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.HangingGardens))
 				{
 					this.oParent.Var_70e2++;
 				}
 			
 				// Instruction address 0x1d12:0x31ba, size: 5
-				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.CureForCancer) != 0)
+				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.CureForCancer))
 				{
 					this.oParent.Var_70e2++;
 				}
@@ -1806,12 +1805,12 @@ namespace OpenCiv1
 				}
 			
 				// Instruction address 0x1d12:0x31f0, size: 5
-				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.JSBachsCathedral) != 0)
+				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.JSBachsCathedral))
 				{
 					// Instruction address 0x1d12:0x3229, size: 5
 					// Instruction address 0x1d12:0x3217, size: 5
-					if (this.oParent.MapManagement.F0_2aea_1942(local_d8, local_e4) == 
-						this.oParent.MapManagement.F0_2aea_1942(
+					if (this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(local_d8, local_e4) == 
+						this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 							this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[(int)WonderEnum.JSBachsCathedral]].Position.X,
 							this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[(int)WonderEnum.JSBachsCathedral]].Position.Y))
 					{
@@ -1931,7 +1930,7 @@ namespace OpenCiv1
 										this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[local_108].TypeID != 0)
 									{
 										// Instruction address 0x1d12:0x35c9, size: 5
-										this.oParent.Segment_1866.F0_1866_0f10(this.Var_6548_PlayerID, (short)local_108);
+										this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(this.Var_6548_PlayerID, (short)local_108);
 
 										city.StatusFlag &= 0xfe;
 									}
@@ -1962,7 +1961,7 @@ namespace OpenCiv1
 									}
 
 									// Instruction address 0x1d12:0x3667, size: 5
-									this.oParent.Segment_1866.F0_1866_0f10(this.Var_6548_PlayerID, (short)local_108);
+									this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(this.Var_6548_PlayerID, (short)local_108);
 
 									goto L32e0;
 								}
@@ -1998,7 +1997,7 @@ namespace OpenCiv1
 								else
 								{
 									// Instruction address 0x1d12:0x3732, size: 5
-									local_e8 = ((short)F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.WomensSuffrage) < 1) ? 1 : 0;
+									local_e8 = F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.WomensSuffrage) ? 1 : 0;
 
 									if (this.oParent.CivState.Players[this.Var_6548_PlayerID].GovernmentType == 5)
 									{
@@ -2064,7 +2063,7 @@ namespace OpenCiv1
 						this.oParent.CivState.Players[this.Var_6548_PlayerID].Units[i].Position.Y == local_e4)
 					{
 						// Instruction address 0x1d12:0x3969, size: 5
-						this.oParent.MapManagement.F0_2aea_0fb3(this.Var_6548_PlayerID, (short)i, local_fa, local_100);
+						this.oParent.MapManagement.F0_2aea_0fb3_DrawUnitWithStatus(this.Var_6548_PlayerID, (short)i, local_fa, local_100);
 
 						this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
@@ -2920,7 +2919,7 @@ namespace OpenCiv1
 							this.oParent.Segment_1000.F0_1182_0134_WaitTimer(10);
 
 							// Instruction address 0x1d12:0x50b1, size: 5
-							this.oParent.MapManagement.F0_2aea_0fb3(this.Var_6548_PlayerID, (short)Arr_74[local_106], local_fa, local_100);
+							this.oParent.MapManagement.F0_2aea_0fb3_DrawUnitWithStatus(this.Var_6548_PlayerID, (short)Arr_74[local_106], local_fa, local_100);
 
 							// Instruction address 0x1d12:0x50bd, size: 5
 							this.oParent.Segment_1000.F0_1182_0134_WaitTimer(10);
@@ -3558,7 +3557,7 @@ namespace OpenCiv1
 
 					L5c45:
 						// Instruction address 0x1d12:0x5c69, size: 5
-						this.oParent.MapManagement.F0_2aea_03ba(
+						this.oParent.MapManagement.F0_2aea_03ba_DrawCell(
 							city.Position.X + this.oParent.CityOffsets[local_ea].X,
 							city.Position.Y + this.oParent.CityOffsets[local_ea].Y);
 
@@ -3577,8 +3576,8 @@ namespace OpenCiv1
 					this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 
 				L5cc2:
-					this.oParent.Var_d4cc_XPos = (short)local_c2;
-					this.oParent.Var_d75e_YPos = (short)local_d0;
+					this.oParent.Var_d4cc_MapViewX = local_c2;
+					this.oParent.Var_d75e_MapViewY = local_d0;
 				}
 
 				if (flag != 0)
@@ -3920,19 +3919,19 @@ namespace OpenCiv1
 				if (this.Var_6548_PlayerID != this.oParent.CivState.HumanPlayerID)
 					goto L635d;
 
-				if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID != -1) goto L62f5;
+				if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID != -1) goto L62f5;
 				goto L630d;
 
 			L62f5:
 				// Instruction address 0x1d12:0x62fd, size: 5
-				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID,
-					this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID) == 0)
+				if (!this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID,
+					(TechnologyEnum)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID))
 					goto L630d;
 
 				goto L6327;
 
 			L630d:
-				if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID == -1) goto L6317;
+				if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID == -1) goto L6317;
 				goto L635d;
 
 			L6317:
@@ -3940,7 +3939,7 @@ namespace OpenCiv1
 				goto L635d;
 
 			L6327:
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID = -1;
+				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID = -1;
 
 				if ((this.oParent.CivState.DebugFlags & 0x8) != 0) goto L6337;
 				goto L6351;
@@ -3968,15 +3967,15 @@ namespace OpenCiv1
 
 				if (this.Var_6548_PlayerID == this.oParent.CivState.HumanPlayerID && this.oParent.CivState.DifficultyLevel == 0)
 				{
-					if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID >= 0 &&
-						(this.oParent.CivState.TechnologyFirstDiscoveredBy[this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID] & 7) != 0)
+					if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID >= 0 &&
+						(this.oParent.CivState.TechnologyFirstDiscoveredBy[this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID] & 7) != 0)
 					{
 						this.oParent.CivState.Players[this.Var_6548_PlayerID].ResearchProgress += (short)local_e8;
 					}
 				}
 
 				// Instruction address 0x1d12:0x63c2, size: 5
-				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, (int)WonderEnum.SETIProgram) != 0) goto L63d2;
+				if (F0_1d12_6c97_PlayerHasWonder(this.Var_6548_PlayerID, WonderEnum.SETIProgram)) goto L63d2;
 				goto L63e5;
 
 			L63d2:
@@ -4052,17 +4051,17 @@ namespace OpenCiv1
 				local_d2 = this.oParent.CityOffsets[local_e8].Y + local_e4;
 
 				// Instruction address 0x1d12:0x6581, size: 5
-				if (!this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(local_c6, local_d2).HasFlag(TerrainImprovementFlagsEnum.Pollution)) goto L6590;
+				if (!this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_c6, local_d2).HasFlag(TerrainImprovementFlagsEnum.Pollution)) goto L6590;
 				goto L6640;
 
 			L6590:
 				// Instruction address 0x1d12:0x6598, size: 5
-				if ((TerrainTypeEnum)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_c6, local_d2) != TerrainTypeEnum.Ocean) goto L65a8;
+				if (this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_c6, local_d2) != TerrainTypeEnum.Water) goto L65a8;
 				goto L6640;
 
 			L65a8:
 				// Instruction address 0x1d12:0x65b0, size: 5
-				if (!this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(local_c6, local_d2).HasFlag(TerrainImprovementFlagsEnum.City)) goto L65bf;
+				if (!this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_c6, local_d2).HasFlag(TerrainImprovementFlagsEnum.City)) goto L65bf;
 				goto L6640;
 
 			L65bf:
@@ -4070,10 +4069,10 @@ namespace OpenCiv1
 				F0_1d12_6d33(local_c6, local_d2);
 
 				// Instruction address 0x1d12:0x65e3, size: 5
-				this.oParent.MapManagement.F0_2aea_0008(this.oParent.CivState.HumanPlayerID, local_c6 - 8, local_d2 - 6);
+				this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(this.oParent.CivState.HumanPlayerID, local_c6 - 8, local_d2 - 6);
 
 				// Instruction address 0x1d12:0x65f3, size: 5
-				this.oParent.MapManagement.F0_2aea_11d4(local_c6, local_d2);
+				this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(local_c6, local_d2);
 
 				this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ScienceAdvisor;
 
@@ -4104,14 +4103,14 @@ namespace OpenCiv1
 
 			L6679:
 				// Instruction address 0x1d12:0x6681, size: 5
-				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.FusionPower) == 0)
+				if (!this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.FusionPower))
 					goto L6691;
 
 				goto L672d;
 
 			L6691:
 				// Instruction address 0x1d12:0x66a5, size: 5
-				this.oParent.MapManagement.F0_2aea_0008(this.oParent.CivState.HumanPlayerID, local_d8 - 8, local_e4 - 6);
+				this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(this.oParent.CivState.HumanPlayerID, local_d8 - 8, local_e4 - 6);
 
 				this.oParent.Overlay_22.F22_0000_0967(local_d8, local_e4);
 
@@ -4174,7 +4173,7 @@ namespace OpenCiv1
 
 			L67c7:
 				// Instruction address 0x1d12:0x67cf, size: 5
-				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Gunpowder) != 0)
+				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Gunpowder))
 					goto L67df;
 
 				goto L67e9;
@@ -4184,7 +4183,7 @@ namespace OpenCiv1
 
 			L67e9:
 				// Instruction address 0x1d12:0x67f1, size: 5
-				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, (int)TechnologyEnum.Combustion) != 0)
+				if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(this.Var_6548_PlayerID, TechnologyEnum.Combustion))
 					goto L6801;
 
 				goto L680b;
@@ -4297,7 +4296,7 @@ namespace OpenCiv1
 			if (flag == 1)
 			{
 				// Instruction address 0x1d12:0x696f, size: 5
-				this.oParent.MapManagement.F0_2aea_03ba(local_6, local_a);
+				this.oParent.MapManagement.F0_2aea_03ba_DrawCell(local_6, local_a);
 
 				local_10 = 0;
 
@@ -4378,172 +4377,159 @@ namespace OpenCiv1
 		/// <summary>
 		/// Gets City resource count by resource type
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <param name="resourceType"></param>
 		/// <returns></returns>
-		public int F0_1d12_6abc_GetCityResourceCount(int playerID, int cityID, int xPos, int yPos, CityResourceTypeEnum resourceType)
+		public int F0_1d12_6abc_GetCityResourceCount(int playerID, int cityID, int x, int y, CityResourceTypeEnum resourceType)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1d12_6abc_GetCityResourceCount({playerID}, {cityID}, {xPos}, {yPos}, {resourceType})");
+			//this.oCPU.Log.EnterBlock($"F0_1d12_6abc_GetCityResourceCount({playerID}, {cityID}, {x}, {y}, {resourceType})");
 
 			// function body
 			// Instruction address 0x1d12:0x6ac9, size: 5
-			if (this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(xPos, yPos) == 0)
+			if (this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates(x, y))
 			{
-				this.oCPU.AX.Word = 0;
+				// Instruction address 0x1d12:0x6ade, size: 5
+				TerrainTypeEnum terrainType = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(x, y);
+				int terrainIndex = (int)terrainType;
 
-				// Far return
-				this.oCPU.Log.ExitBlock("F0_1d12_6abc_GetCityResourceCount");
-
-				return 0;
-			}
-
-			// Instruction address 0x1d12:0x6ade, size: 5
-			int terrainType = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
-			int index = terrainType;
-
-			// Instruction address 0x1d12:0x6af0, size: 5
-			if (this.oParent.MapManagement.F0_2aea_1836_CellHasSpecialResource(xPos, yPos) != 0)
-			{
-				// Access addon terrains
-				index += 12;
-			}
-
-			int resourceCount = 0;
-
-			switch (resourceType)
-			{
-				case CityResourceTypeEnum.Food:
-					resourceCount = this.oParent.CivState.Terrains[index].Food;
-					break;
-
-				case CityResourceTypeEnum.Production:
-					resourceCount = this.oParent.CivState.Terrains[index].Production;
-					break;
-
-				case CityResourceTypeEnum.Trade:
-					resourceCount = this.oParent.CivState.Terrains[index].Trade;
-					break;
-
-				default:
-					throw new Exception("Unknown terrain field");
-			}
-
-			// Instruction address 0x1d12:0x6b26, size: 5
-			TerrainImprovementFlagsEnum improvements = this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(xPos, yPos);
-
-			if ((this.oParent.CivState.DebugFlags & 0x2) == 0)
-			{
-				improvements = (terrainType == (int)TerrainTypeEnum.Desert
-					|| terrainType == (int)TerrainTypeEnum.Plains
-					|| terrainType == (int)TerrainTypeEnum.Grassland) ? TerrainImprovementFlagsEnum.Irrigation : TerrainImprovementFlagsEnum.Mines;
-
-				improvements |= (terrainType != (int)TerrainTypeEnum.Plains) ? TerrainImprovementFlagsEnum.Road : TerrainImprovementFlagsEnum.None;
-			}
-
-			if (terrainType != (int)TerrainTypeEnum.Ocean)
-			{
-				if (resourceType == CityResourceTypeEnum.Food && improvements.HasFlag(TerrainImprovementFlagsEnum.Irrigation))
+				// Instruction address 0x1d12:0x6af0, size: 5
+				if (this.oParent.MapManagement.F0_2aea_1836_CellHasSpecialResource(x, y))
 				{
-					resourceCount += -1 - this.oParent.CivState.TerrainModifications[terrainType].IrrigationEffect;
+					// Access addon terrains
+					terrainIndex += 12;
 				}
 
-				if (resourceType == CityResourceTypeEnum.Production && improvements.HasFlag(TerrainImprovementFlagsEnum.Mines))
+				int resourceCount = 0;
+
+				switch (resourceType)
 				{
-					resourceCount += -1 - this.oParent.CivState.TerrainModifications[terrainType].MiningEffect;
+					case CityResourceTypeEnum.Food:
+						resourceCount = this.oParent.CivState.Terrains[terrainIndex].Food;
+						break;
+
+					case CityResourceTypeEnum.Production:
+						resourceCount = this.oParent.CivState.Terrains[terrainIndex].Production;
+						break;
+
+					case CityResourceTypeEnum.Trade:
+						resourceCount = this.oParent.CivState.Terrains[terrainIndex].Trade;
+						break;
+
+					default:
+						throw new Exception("Unknown terrain field");
 				}
 
-				if (resourceType == CityResourceTypeEnum.Trade
-					&& improvements.HasFlag(TerrainImprovementFlagsEnum.Road)
-					&& (terrainType == (int)TerrainTypeEnum.Desert
-						|| terrainType == (int)TerrainTypeEnum.Plains
-						|| terrainType == (int)TerrainTypeEnum.Grassland))
+				// Instruction address 0x1d12:0x6b26, size: 5
+				TerrainImprovementFlagsEnum improvements = this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(x, y);
+
+				if ((this.oParent.CivState.DebugFlags & 0x2) == 0)
+				{
+					improvements = (terrainType == TerrainTypeEnum.Desert || terrainType == TerrainTypeEnum.Plains ||
+						terrainType == TerrainTypeEnum.Grassland) ? TerrainImprovementFlagsEnum.Irrigation : TerrainImprovementFlagsEnum.Mines;
+
+					improvements |= (terrainType != TerrainTypeEnum.Plains) ? TerrainImprovementFlagsEnum.Road : TerrainImprovementFlagsEnum.None;
+				}
+
+				if (terrainType != TerrainTypeEnum.Water)
+				{
+					if (resourceType == CityResourceTypeEnum.Food && improvements.HasFlag(TerrainImprovementFlagsEnum.Irrigation))
+					{
+						resourceCount += -1 - this.oParent.CivState.TerrainModifications[(int)terrainType].IrrigationEffect;
+					}
+
+					if (resourceType == CityResourceTypeEnum.Production && improvements.HasFlag(TerrainImprovementFlagsEnum.Mines))
+					{
+						resourceCount += -1 - this.oParent.CivState.TerrainModifications[(int)terrainType].MiningEffect;
+					}
+
+					if (resourceType == CityResourceTypeEnum.Trade &&
+						improvements.HasFlag(TerrainImprovementFlagsEnum.Road) &&
+						(terrainType == TerrainTypeEnum.Desert || terrainType == TerrainTypeEnum.Plains || terrainType == TerrainTypeEnum.Grassland))
+					{
+						resourceCount++;
+					}
+				}
+
+				if (resourceType == CityResourceTypeEnum.Production &&
+					(terrainType == TerrainTypeEnum.Grassland || terrainType == TerrainTypeEnum.River) &&
+					(((x * 7) + (y * 11)) & 0x2) != 0)
+				{
+					resourceCount = 0;
+				}
+
+				// Instruction address 0x1d12:0x6be7, size: 3
+				if (resourceCount != 0 && resourceType == CityResourceTypeEnum.Trade && F0_1d12_6cf3_GetWonderCityID((int)WonderEnum.Colossus) == cityID)
 				{
 					resourceCount++;
 				}
-			}
 
-			if (resourceType == CityResourceTypeEnum.Production &&
-				(terrainType == (int)TerrainTypeEnum.Grassland || terrainType == (int)TerrainTypeEnum.River) &&
-				(((xPos * 7) + (yPos * 11)) & 0x2) != 0)
-			{
-				resourceCount = 0;
-			}
-
-			// Instruction address 0x1d12:0x6be7, size: 3
-			if (resourceCount != 0 && resourceType == CityResourceTypeEnum.Trade && F0_1d12_6cf3_GetWonderCityID((int)WonderEnum.Colossus) == cityID)
-			{
-				resourceCount++;
-			}
-
-			if (improvements.HasFlag(TerrainImprovementFlagsEnum.RailRoad))
-			{
-				resourceCount += resourceCount / 2;
-			}
-
-			if (resourceCount > 2 && (this.oParent.CivState.Cities[cityID].StatusFlag & 0x40) == 0)
-			{
-				if (this.oParent.CivState.Players[playerID].GovernmentType <= 1)
+				if (improvements.HasFlag(TerrainImprovementFlagsEnum.RailRoad))
 				{
-					resourceCount--;
+					resourceCount += resourceCount / 2;
 				}
 
-				if (this.Var_2494 != 0)
+				if (resourceCount > 2 && (this.oParent.CivState.Cities[cityID].StatusFlag & 0x40) == 0)
 				{
-					this.oParent.Var_e3c2 -= 2;
-				}
-			}
-
-			if (resourceCount != 0 && resourceType == CityResourceTypeEnum.Trade)
-			{
-				if (this.Var_2494 != 0)
-				{
-					this.oParent.Var_db42++;
-				}
-
-				if ((this.oParent.CivState.Cities[cityID].StatusFlag & 0x40) != 0)
-				{
-					if (this.oParent.CivState.Players[playerID].GovernmentType >= 2)
+					if (this.oParent.CivState.Players[playerID].GovernmentType <= 1)
 					{
-						resourceCount++;
+						resourceCount--;
+					}
+
+					if (this.Var_2494 != 0)
+					{
+						this.oParent.Var_e3c2 -= 2;
 					}
 				}
-				else
+
+				if (resourceCount != 0 && resourceType == CityResourceTypeEnum.Trade)
 				{
-					if (this.oParent.CivState.Players[playerID].GovernmentType >= 4)
+					if (this.Var_2494 != 0)
 					{
-						resourceCount++;
+						this.oParent.Var_db42++;
+					}
+
+					if ((this.oParent.CivState.Cities[cityID].StatusFlag & 0x40) != 0)
+					{
+						if (this.oParent.CivState.Players[playerID].GovernmentType >= 2)
+						{
+							resourceCount++;
+						}
+					}
+					else
+					{
+						if (this.oParent.CivState.Players[playerID].GovernmentType >= 4)
+						{
+							resourceCount++;
+						}
 					}
 				}
+
+				if (improvements.HasFlag(TerrainImprovementFlagsEnum.Pollution))
+				{
+					resourceCount = (resourceCount + 1) / 2;
+				}
+
+				if (resourceCount < 0)
+				{
+					resourceCount = 0;
+				}
+
+				return resourceCount;
 			}
 
-			if (improvements.HasFlag(TerrainImprovementFlagsEnum.Pollution))
-			{
-				resourceCount = (resourceCount + 1) / 2;
-			}
-				
-			if (resourceCount < 0)
-			{
-				resourceCount = 0;
-			}
-			
-			this.oCPU.AX.Word = (ushort)((short)resourceCount);
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1d12_6abc_GetCityResourceCount");
-
-			return resourceCount;
+			return 0;
 		}
 
 		/// <summary>
 		/// Tests if player has built a Wonder and if the Wonder is not obsolete
 		/// </summary>
 		/// <param name="playerID"></param>
-		/// <param name="wonderID"></param>
+		/// <param name="wonderType"></param>
 		/// <returns></returns>
-		public ushort F0_1d12_6c97_PlayerHasWonder(short playerID, short wonderID)
+		public bool F0_1d12_6c97_PlayerHasWonder(short playerID, WonderEnum wonderType)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1d12_6c97_PlayerHasWonder({playerID}, {wonderID})");
+			//this.oCPU.Log.EnterBlock($"F0_1d12_6c97_PlayerHasWonder({playerID}, {wonderType})");
 
 			// function body
 			int i;
@@ -4551,29 +4537,24 @@ namespace OpenCiv1
 			for (i = 1; i < 8; i++)
 			{
 				// Instruction address 0x1d12:0x6cb9, size: 5
-				ImprovementDefinition wonder = this.oParent.CivState.WonderDefinitions[wonderID];
+				ImprovementDefinition wonder = this.oParent.CivState.WonderDefinitions[(int)wonderType];
 
 				if (wonder.ObsoletesAfterTechnology != TechnologyEnum.None &&
-					this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology((short)i, (int)wonder.ObsoletesAfterTechnology) != 0)
+					this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(i, wonder.ObsoletesAfterTechnology))
 				{
 					break;
 				}
 			}
 
-			if (i < 8 || this.oParent.CivState.WonderCityID[wonderID] == -1 ||
-				this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[wonderID]].PlayerID != playerID)
+			if (i < 8 || this.oParent.CivState.WonderCityID[(int)wonderType] == -1 ||
+				this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[(int)wonderType]].PlayerID != playerID)
 			{
-				this.oCPU.AX.Word = 0;
+				return false;
 			}
 			else
 			{
-				this.oCPU.AX.Word = 0x1;
+				return true;
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1d12_6c97_PlayerHasWonder");
-
-			return this.oCPU.AX.Word;
 		}
 
 		/// <summary>
@@ -4592,7 +4573,7 @@ namespace OpenCiv1
 			{
 				// Instruction address 0x1d12:0x6d15, size: 5
 				if (this.oParent.CivState.WonderDefinitions[wonderID].ObsoletesAfterTechnology != TechnologyEnum.None &&
-					this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology((short)i, (int)this.oParent.CivState.WonderDefinitions[wonderID].ObsoletesAfterTechnology) != 0)
+					this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology((short)i, this.oParent.CivState.WonderDefinitions[wonderID].ObsoletesAfterTechnology))
 				{
 					break;
 				}
@@ -4624,13 +4605,13 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x1d12:0x6d3c, size: 5
-			if (!this.oParent.MapManagement.F0_2aea_1585_GetTerrainImprovements(xPos, yPos).HasFlag(TerrainImprovementFlagsEnum.Pollution))
+			if (!this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(xPos, yPos).HasFlag(TerrainImprovementFlagsEnum.Pollution))
 			{
 				// Instruction address 0x1d12:0x6d52, size: 5
 				this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.Pollution, xPos, yPos);
 
 				// Instruction address 0x1d12:0x6d60, size: 5
-				this.oParent.MapManagement.F0_2aea_1601(xPos, yPos);
+				this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(xPos, yPos);
 
 				this.oParent.CivState.PollutedSquareCount++;
 			}
@@ -5028,7 +5009,7 @@ namespace OpenCiv1
 						int rectYPos = ((yPos / 2) * 3) + this.oCPU.ReadInt8(this.oCPU.DS.Word, (ushort)(local_10 + 0x2810)) + 118;
 
 						// Instruction address 0x1d12:0x73a3, size: 5
-						if ((TerrainTypeEnum)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(mapXPos, mapYPos) != TerrainTypeEnum.Ocean)
+						if (this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(mapXPos, mapYPos) != TerrainTypeEnum.Water)
 						{
 							// Instruction address 0x1d12:0x72f7, size: 5
 							this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, rectXPos, rectYPos, 2, 2, 2);

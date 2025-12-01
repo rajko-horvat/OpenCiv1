@@ -56,54 +56,35 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Tests if city is present at given coordinates
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		/// <returns></returns>
-		public ushort F0_2dc4_00ba(int xPos, int yPos)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns>City ID, otherwise -1</returns>
+		public int F0_2dc4_00ba_GetCityID(int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2dc4_00ba({xPos}, {yPos})");
+			this.oCPU.Log.EnterBlock($"F0_2dc4_00ba({x}, {y})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x2);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x0);
-			goto L00cb;
+			int retval = -1;
 
-		L00c8:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))));
+			for (int i = 0; i < 128; i++)
+			{
+				City city = this.oParent.CivState.Cities[i];
 
-		L00cb:
-			if (this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)) >= 128)
-				goto L00fa;
+				if (city.StatusFlag != 0xff && city.Position.X == x && city.Position.Y == y)
+				{
+					retval = i;
+					break;
+				}
+			}
 
-			this.oCPU.AX.Word = 0x1c;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
+			this.oCPU.AX.Word = (ushort)((short)retval);
 
-			if (this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].StatusFlag == 0xff ||
-				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.X != xPos ||
-				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].Position.Y != yPos)
-				goto L00c8;
-
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2));
-			goto L00fd;
-
-		L00fa:
-			this.oCPU.AX.Word = 0xffff;
-
-		L00fd:
-			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2dc4_00ba");
 
-			return this.oCPU.AX.Word;
+			return retval;
 		}
 
 		/// <summary>

@@ -1877,9 +1877,9 @@ namespace OpenCiv1
 
 		L1078:
 			// Instruction address 0x0000:0x1081, size: 5
-			this.oParent.MapManagement.F0_2aea_1836_CellHasSpecialResource(
+			this.oCPU.AX.Word = (ushort)(this.oParent.MapManagement.F0_2aea_1836_CellHasSpecialResource(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a)));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3a))) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L1091;
@@ -2016,7 +2016,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L11d4;
 
 			// Instruction address 0x0000:0x11c3, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				(short)this.oCPU.SI.Word,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
 
@@ -2036,7 +2036,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L1262;
 
 			// Instruction address 0x0000:0x11ec, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
 				(short)this.oCPU.SI.Word);
 
@@ -2082,7 +2082,7 @@ namespace OpenCiv1
 
 		L1243:
 			// Instruction address 0x0000:0x1249, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)));
 
@@ -2107,7 +2107,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L1200;
 
 			// Instruction address 0x0000:0x127a, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				(short)this.oCPU.SI.Word,
 				(short)this.oCPU.DI.Word);
 
@@ -2132,7 +2132,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L12be;
 
 			// Instruction address 0x0000:0x12ad, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				(short)this.oCPU.SI.Word,
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
 
@@ -2154,7 +2154,7 @@ namespace OpenCiv1
 
 		L12d5:
 			// Instruction address 0x0000:0x12d9, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				(short)this.oCPU.SI.Word);
 
@@ -2204,7 +2204,7 @@ namespace OpenCiv1
 
 		L133d:
 			// Instruction address 0x0000:0x1343, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
 
@@ -2231,7 +2231,7 @@ namespace OpenCiv1
 
 		L1375:
 			// Instruction address 0x0000:0x1377, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				(short)this.oCPU.SI.Word,
 				(short)this.oCPU.DI.Word);
 
@@ -2590,9 +2590,9 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L160a;
 
 			// Instruction address 0x0000:0x15fe, size: 5
-			this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(
+			this.oCPU.AX.Word = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L160d;
@@ -2612,9 +2612,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L1631;
 
 			// Instruction address 0x0000:0x1625, size: 5
-			this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(
-				(short)this.oCPU.SI.Word,
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
+			this.oCPU.AX.Word = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates((short)this.oCPU.SI.Word,
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4))) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L1634;
@@ -2634,9 +2633,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L1658;
 
 			// Instruction address 0x0000:0x164c, size: 5
-			this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
-				(short)this.oCPU.SI.Word);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates(
+				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)), (short)this.oCPU.SI.Word) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L165b;
@@ -2656,7 +2654,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L167f;
 
 			// Instruction address 0x0000:0x1673, size: 5
-			this.oParent.MapManagement.F0_2aea_1326_CheckMapBounds((short)this.oCPU.SI.Word, (short)this.oCPU.DI.Word);
+			this.oCPU.AX.Word = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates((short)this.oCPU.SI.Word, (short)this.oCPU.DI.Word) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L1682;
@@ -3254,7 +3252,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L1cac;
 
 			// Instruction address 0x0000:0x1ca4, size: 5
-			this.oParent.MapManagement.F0_2aea_11d4(
+			this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
 

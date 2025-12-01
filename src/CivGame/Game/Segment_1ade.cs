@@ -156,7 +156,7 @@ namespace OpenCiv1
 			this.oParent.CivState.Players[playerID].ScienceTaxRate++;
 
 		L0156:
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Robotics);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.Robotics) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 			{
@@ -236,7 +236,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0236;
 
 			// Instruction address 0x1ade:0x022e, size: 5
-			this.oParent.MapManagement.F0_2aea_1601(xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(xPos, yPos);
 
 		L0236:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), 0x0);
@@ -301,7 +301,7 @@ namespace OpenCiv1
 				if (this.oParent.CivState.Players[this.oParent.CivState.Cities[cityID].PlayerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa))].HomeCityID == cityID)
 				{
 					// Instruction address 0x1ade:0x02ce, size: 5
-					this.oParent.Segment_1866.F0_1866_0f10((short)this.oCPU.SI.Word,
+					this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit((short)this.oCPU.SI.Word,
 						this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa)));
 				}
 			}
@@ -313,7 +313,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L029b;
 
 			// Instruction address 0x1ade:0x02e6, size: 5
-			this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(xPos, yPos);
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(xPos, yPos));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
@@ -513,15 +513,15 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1ade:0x04ac, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, 
-				(int)this.oParent.CivState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].RequiredTechnology);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID,
+				this.oParent.CivState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].RequiredTechnology) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L05c1;
 
 			// Instruction address 0x1ade:0x04c1, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID,
-				(int)this.oParent.CivState.UnitDefinitions[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].CancelTechnology);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID,
+				this.oParent.CivState.UnitDefinitions[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].CancelTechnology) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 				goto L05c1;
@@ -532,7 +532,7 @@ namespace OpenCiv1
 			this.oCPU.TEST_UInt8(this.oParent.CivState.Cities[cityID].StatusFlag, 0x2);
 			if (this.oCPU.Flags.NE) goto L04e7;
 
-			if (this.oParent.CivState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].UnitCategory == UnitCategoryEnum.Ocean)
+			if (this.oParent.CivState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].UnitCategory == UnitCategoryEnum.Water)
 				goto L05c1;
 
 		L04e7:
@@ -591,7 +591,7 @@ namespace OpenCiv1
 			if (this.oParent.CivState.WonderCityID[17] == -1) goto L05c1;
 
 			// Instruction address 0x1ade:0x05e5, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.NuclearFission);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.NuclearFission) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L05f2;
@@ -612,7 +612,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x0);
 
 			// Instruction address 0x1ade:0x0617, size: 5
-			this.oParent.CityWorker.F0_1d12_6c97_PlayerHasWonder(playerID, (int)WonderEnum.HooverDam);
+			this.oCPU.AX.Word = (ushort)(this.oParent.CityWorker.F0_1d12_6c97_PlayerHasWonder(playerID, WonderEnum.HooverDam) ? 1 : 0);
 			
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) goto L066b;
@@ -624,14 +624,14 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1ade:0x0640, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[15]].Position.X,
 				this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[15]].Position.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x146), this.oCPU.AX.Word);
 
 			// Instruction address 0x1ade:0x0658, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oParent.CivState.Cities[cityID].Position.X,
 				this.oParent.CivState.Cities[cityID].Position.Y);
 
@@ -678,8 +678,8 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1ade:0x06be, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, 
-				(int)this.oParent.CivState.ImprovementDefinitions(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))).RequiresTechnology);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID,
+				this.oParent.CivState.ImprovementDefinitions(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))).RequiresTechnology) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L069f;
@@ -724,9 +724,10 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[cityID].ImprovementFlags0, 0x10);
 			if (this.oCPU.Flags.NE) goto L074e;
-	
+
 			// Instruction address 0x1ade:0x0741, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, (int)this.oParent.CivState.ImprovementDefinitions((int)ImprovementEnum.MarketPlace).RequiresTechnology);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID, 
+				this.oParent.CivState.ImprovementDefinitions((int)ImprovementEnum.MarketPlace).RequiresTechnology) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L074e;
@@ -741,9 +742,10 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[cityID].ImprovementFlags0, 0x20);
 			if (this.oCPU.Flags.NE) goto L0779;
-	
+
 			// Instruction address 0x1ade:0x076c, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, (int)this.oParent.CivState.ImprovementDefinitions((int)ImprovementEnum.Library).RequiresTechnology);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID,
+				this.oParent.CivState.ImprovementDefinitions((int)ImprovementEnum.Library).RequiresTechnology) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L0779;
@@ -829,8 +831,8 @@ namespace OpenCiv1
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1ade:0x0846, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID,
-				(int)this.oParent.CivState.ImprovementDefinitions(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))).RequiresTechnology);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID,
+				this.oParent.CivState.ImprovementDefinitions(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))).RequiresTechnology) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L08cf;
@@ -926,7 +928,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1ade:0x0963, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oParent.CivState.Cities[cityID].Position.X,
 				this.oParent.CivState.Cities[cityID].Position.Y);
 
@@ -1000,7 +1002,7 @@ namespace OpenCiv1
 				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4a))].PlayerID != playerID) goto L0aa5;
 
 			// Instruction address 0x1ade:0x0a3e, size: 5
-			this.oParent.MapManagement.F0_2aea_1942(
+			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4a))].Position.X,
 				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4a))].Position.Y);
 
@@ -1067,7 +1069,7 @@ namespace OpenCiv1
 				this.oParent.CivState.Players[playerID].UnitCount++;
 
 				// Instruction address 0x1ade:0x0ae5, size: 5
-				this.oParent.MapManagement.F0_2aea_1942(
+				this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 					this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].Position.X,
 					this.oParent.CivState.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0))].Position.Y);
 
@@ -1113,7 +1115,7 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1ade:0x0b63, size: 5
-			this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(this.oParent.CivState.Cities[cityID].Position.X, this.oParent.CivState.Cities[cityID].Position.Y);
+			this.oCPU.AX.Word = (ushort)((short)this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(this.oParent.CivState.Cities[cityID].Position.X, this.oParent.CivState.Cities[cityID].Position.Y));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xe0), this.oCPU.AX.Word);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xffff);
@@ -2277,7 +2279,7 @@ namespace OpenCiv1
 
 		L15aa:
 			// Instruction address 0x1ade:0x15b1, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46)));
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID, (TechnologyEnum)this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 				goto L162c;
@@ -2287,16 +2289,16 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1ade:0x15cd, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, 
-				(int)this.oParent.CivState.TechnologyDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].RequiresTechnology1);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID,
+				this.oParent.CivState.TechnologyDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].RequiresTechnology1) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L162c;
 
 			// Instruction address 0x1ade:0x15e1, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, 
-				(int)this.oParent.CivState.TechnologyDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].RequiresTechnology2);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID,
+				this.oParent.CivState.TechnologyDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].RequiresTechnology2) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) 
@@ -2315,7 +2317,7 @@ namespace OpenCiv1
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x3c));
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x40)), this.oCPU.AX.Word);
 			if (this.oCPU.Flags.LE) goto L162c;
-			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID;
+			this.oCPU.AX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46)), this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) goto L1620;
 			
@@ -2346,8 +2348,8 @@ namespace OpenCiv1
 			if (this.oParent.CivState.DifficultyLevel != 0) goto L167a;
 
 			// Instruction address 0x1ade:0x165d, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, 
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)));
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID,
+				(TechnologyEnum)this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14))) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE) 
 				goto L167a;
@@ -2364,9 +2366,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L169f;
 
 			// Instruction address 0x1ade:0x168a, size: 3
-			F0_1ade_1d2e(playerID,
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)),
-				playerID1);
+			F0_1ade_1d2e(playerID, (TechnologyEnum)this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)), playerID1);
 			
 			// Instruction address 0x1ade:0x1697, size: 5
 			this.oParent.Segment_25fb.F0_25fb_3459(playerID, 0xffff);
@@ -2376,16 +2376,16 @@ namespace OpenCiv1
 			goto L1d29;
 
 		L16a5:
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID != -1) goto L16af;
+			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID != -1) goto L16af;
 			goto L19d4;
 
 		L16af:
-			this.oParent.Civilopedia.F8_0000_16c4((ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID);
+			this.oParent.Civilopedia.F8_0000_16c4((ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID);
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x44), this.oCPU.AX.Word);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x42), 0x0);
 			
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID == 71) goto L16f1;
+			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID == 71) goto L16f1;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdeba), 0x3);
 			if (this.oCPU.Flags.LE) goto L16f1;
 
@@ -2414,7 +2414,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x12), 0x0);
 
 			// Instruction address 0x1ade:0x171d, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, (int)TechnologyEnum.Electricity);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, TechnologyEnum.Electricity) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E) 
 				goto L1730;
@@ -2443,7 +2443,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.Players[playerID].Nationality);
 
 			// Instruction address 0x1ade:0x17aa, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, (int)TechnologyEnum.Invention);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, TechnologyEnum.Invention) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 			{
@@ -2461,9 +2461,9 @@ namespace OpenCiv1
 
 			// Instruction address 0x1ade:0x17e8, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, 
-				this.oParent.CivState.TechnologyDefinitions[this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID].Name);
+				this.oParent.CivState.TechnologyDefinitions[this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID].Name);
 
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID != 71) goto L182c;
+			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID != 71) goto L182c;
 
 			// Instruction address 0x1ade:0x17ff, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, " ");
@@ -2569,14 +2569,12 @@ namespace OpenCiv1
 
 		L19b1:
 			// Instruction address 0x1ade:0x19bc, size: 3
-			F0_1ade_1d2e(playerID,
-				this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID,
-				playerID1);
+			F0_1ade_1d2e(playerID, (TechnologyEnum)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID, playerID1);
 			
 			// Instruction address 0x1ade:0x19c6, size: 5
 			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
 
-			this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID = -1;
+			this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID = -1;
 
 		L19d4:
 			if (this.oParent.CivState.Players[playerID].DiscoveredTechnologyCount <= 1)
@@ -2695,7 +2693,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, "Which discovery should our\n");
 
 			// Instruction address 0x1ade:0x1b56, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, (int)TechnologyEnum.Invention);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, TechnologyEnum.Invention) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 			{
@@ -2716,7 +2714,7 @@ namespace OpenCiv1
 
 		L1b8f:
 			// Instruction address 0x1ade:0x1b96, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46)));
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID, (TechnologyEnum)this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L1ba3;
@@ -2729,8 +2727,8 @@ namespace OpenCiv1
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
 			// Instruction address 0x1ade:0x1bb5, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, 
-				(int)this.oParent.CivState.TechnologyDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].RequiresTechnology1);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID,
+				this.oParent.CivState.TechnologyDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].RequiresTechnology1) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
@@ -2740,8 +2738,8 @@ namespace OpenCiv1
 
 		L1bc2:
 			// Instruction address 0x1ade:0x1bcc, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID,
-				(int)this.oParent.CivState.TechnologyDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].RequiresTechnology2);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID,
+				this.oParent.CivState.TechnologyDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46))].RequiresTechnology2) ? 1 : 0);
 
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
@@ -2831,7 +2829,7 @@ namespace OpenCiv1
 
 		L1cc2:
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46));
-			this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID = (short)this.oCPU.AX.Word;
+			this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID = (short)this.oCPU.AX.Word;
 			goto L1d26;
 
 		L1cca:
@@ -2848,7 +2846,7 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x1d18, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
-			this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CurrentResearchID = 71;
+			this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].ResearchTechnologyID = 71;
 
 		L1d26:
 			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x46));
@@ -2867,11 +2865,11 @@ namespace OpenCiv1
 		/// ?
 		/// </summary>
 		/// <param name="playerID"></param>
-		/// <param name="technologyID"></param>
+		/// <param name="technology"></param>
 		/// <param name="playerID1"></param>
-		public void F0_1ade_1d2e(short playerID, short technologyID, short playerID1)
+		public void F0_1ade_1d2e(short playerID, TechnologyEnum technology, short playerID1)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1ade_1d2e({playerID}, {technologyID}, {playerID1})");
+			this.oCPU.Log.EnterBlock($"F0_1ade_1d2e({playerID}, {technology}, {playerID1})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
@@ -2881,7 +2879,7 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
 
 			// Instruction address 0x1ade:0x1d3d, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, technologyID);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID, technology) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L1d4a;
@@ -2889,9 +2887,9 @@ namespace OpenCiv1
 			goto L22af;
 
 		L1d4a:
-			if (technologyID == 0x47) goto L1d9e;
+			if (technology == TechnologyEnum.FutureTechnology5) goto L1d9e;
 
-			this.oCPU.AX.Word = (ushort)technologyID;
+			this.oCPU.AX.Word = (ushort)technology;
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.Word = 0x10;
 			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.Word);
@@ -2904,7 +2902,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
 			this.oCPU.BX.Word = this.oCPU.AX.Word;
 
-			this.oCPU.AX.Word = (ushort)technologyID;
+			this.oCPU.AX.Word = (ushort)technology;
 			this.oCPU.SI.Word = this.oCPU.CX.Word;
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.AX.Word = this.oCPU.XOR_UInt16(this.oCPU.AX.Word, this.oCPU.DX.Word);
@@ -2917,7 +2915,7 @@ namespace OpenCiv1
 			this.oCPU.DI.Word = this.oCPU.SHL_UInt16(this.oCPU.DI.Word, 0x1);
 
 			this.oParent.CivState.Players[playerID].DiscoveredTechnologyFlags[this.oCPU.AX.Word] |= this.oCPU.SI.Word;
-			this.oParent.CivState.Players[playerID].TechnologyAcquiredFrom[technologyID] = playerID1;
+			this.oParent.CivState.Players[playerID].TechnologyAcquiredFrom[(int)technology] = playerID1;
 
 		L1d9e:
 			if (this.oParent.CivState.TurnCount == 0)
@@ -2956,7 +2954,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x1ade:0x1e17, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.TechnologyDefinitions[technologyID].Name);
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.TechnologyDefinitions[(int)technology].Name);
 
 			if (playerID == playerID1) goto L1e5c;
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
@@ -2989,7 +2987,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			if ((int)this.oParent.CivState.ImprovementDefinitions(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))).RequiresTechnology != technologyID)
+			if (this.oParent.CivState.ImprovementDefinitions(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))).RequiresTechnology != technology)
 				goto L1eaf;
 
 			// Instruction address 0x1ade:0x1e97, size: 5
@@ -3010,7 +3008,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)));
 			this.oCPU.SI.Word = this.oCPU.AX.Word;
 
-			if (this.oParent.CivState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].RequiredTechnology == (TechnologyEnum)technologyID)
+			if (this.oParent.CivState.UnitDefinitions[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2))].RequiredTechnology == (TechnologyEnum)technology)
 			{
 				// Instruction address 0x1ade:0x1ed8, size: 5
 				this.oParent.MSCAPI.strcat(0xba06,
@@ -3056,13 +3054,12 @@ namespace OpenCiv1
 			goto L2013;
 
 		L1f47:
-			this.oCPU.TEST_UInt8((byte)this.oParent.CivState.TechnologyFirstDiscoveredBy[technologyID], 0x7);
-			if (this.oCPU.Flags.E) goto L1f5b;
+			if ((this.oParent.CivState.TechnologyFirstDiscoveredBy[(int)technology] & 0x7) == 0) goto L1f5b;
 			goto L2013;
 
 		L1f5b:
 			// Instruction address 0x1ade:0x1f63, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(playerID, (int)TechnologyEnum.Navigation);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.Navigation) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 				goto L1f70;
@@ -3071,7 +3068,7 @@ namespace OpenCiv1
 
 		L1f70:
 			// Instruction address 0x1ade:0x1f78, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, technologyID);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology(this.oParent.CivState.HumanPlayerID, technology) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
 				goto L1f85;
@@ -3099,8 +3096,7 @@ namespace OpenCiv1
 				this.oParent.CivState.Players[playerID].Nation);
 
 			// Instruction address 0x1ade:0x1fda, size: 5
-			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30be),
-				this.oParent.CivState.TechnologyDefinitions[technologyID].Name);
+			this.oParent.MSCAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x30be), this.oParent.CivState.TechnologyDefinitions[(int)technology].Name);
 
 			// Instruction address 0x1ade:0x1fe6, size: 5
 			this.oParent.Segment_2f4d.F0_2f4d_044f(0x240e);
@@ -3118,12 +3114,12 @@ namespace OpenCiv1
 		L2013:
 			if (playerID != this.oParent.CivState.HumanPlayerID) goto L2065;
 
-			if (technologyID == 0x47) goto L202f;
+			if (technology == TechnologyEnum.FutureTechnology5) goto L202f;
 
-			this.oParent.Civilopedia.F8_0000_062a((ushort)technologyID, 0);
+			this.oParent.Civilopedia.F8_0000_062a((ushort)technology, 0);
 
 		L202f:
-			if (technologyID != 0x14) goto L203f;
+			if (technology != TechnologyEnum.Invention) goto L203f;
 
 			this.oParent.StartGameMenu.F5_0000_1af6();
 
@@ -3139,7 +3135,7 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x2049, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
 			
-			if (technologyID != 0x5)
+			if (technology != TechnologyEnum.Monarchy)
 				goto L20d9;
 
 			this.oParent.Help.F4_0000_02d3_ShowInstantAdvicePopup(0x2414);
@@ -3147,8 +3143,7 @@ namespace OpenCiv1
 			goto L20d9;
 
 		L2065:
-			if (this.oParent.CivState.DifficultyLevel != 0 ||
-				technologyID != 0x16) goto L20d9;
+			if (this.oParent.CivState.DifficultyLevel != 0 || technology != TechnologyEnum.Writing) goto L20d9;
 
 			this.oCPU.SI.Word = (ushort)playerID;
 			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
@@ -3187,7 +3182,7 @@ namespace OpenCiv1
 			this.oParent.Overlay_14.F14_0000_0d43_IntelligenceReport();
 
 		L20d9:
-			if (technologyID != 0x22 && technologyID != 0x25)
+			if (technology != TechnologyEnum.Gunpowder && technology != TechnologyEnum.Combustion)
 				goto L2174;
 
 			for (int i = 0; i < 128; i++)
@@ -3209,7 +3204,7 @@ namespace OpenCiv1
 			this.oParent.MSCAPI.strcpy(0xba06, "Development of ");
 
 			// Instruction address 0x1ade:0x2142, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.TechnologyDefinitions[technologyID].Name);
+			this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.TechnologyDefinitions[(int)technology].Name);
 
 			// Instruction address 0x1ade:0x2152, size: 5
 			this.oParent.MSCAPI.strcat(0xba06, "\nmakes existing Barracks\nobsolete.\n");
@@ -3220,25 +3215,25 @@ namespace OpenCiv1
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 100);
 
 		L2174:
-			this.oCPU.TEST_UInt8((byte)this.oParent.CivState.TechnologyFirstDiscoveredBy[technologyID], 0x7);
+			this.oCPU.TEST_UInt8((byte)this.oParent.CivState.TechnologyFirstDiscoveredBy[(int)technology], 0x7);
 			if (this.oCPU.Flags.E) goto L2188;
 			goto L2234;
 
 		L2188:
-			this.oParent.CivState.TechnologyFirstDiscoveredBy[technologyID] = playerID;
+			this.oParent.CivState.TechnologyFirstDiscoveredBy[(int)technology] = playerID;
 
 			// Instruction address 0x1ade:0x21a1, size: 5
-			this.oParent.Segment_1866.F0_1866_250e_AddReplayData(5, (byte)playerID, (byte)technologyID);
+			this.oParent.Segment_1866.F0_1866_250e_AddReplayData(5, (byte)playerID, (byte)technology);
 
 			for (int i = 1; i < 22; i++)
 			{
 				if (this.oParent.CivState.WonderCityID[i] != -1 &&
-					this.oParent.CivState.WonderDefinitions[i].ObsoletesAfterTechnology == (TechnologyEnum)technologyID)
+					this.oParent.CivState.WonderDefinitions[i].ObsoletesAfterTechnology == (TechnologyEnum)technology)
 				{
 					if (this.oParent.CivState.Cities[this.oParent.CivState.WonderCityID[i]].PlayerID == this.oParent.CivState.HumanPlayerID)
 					{
 						// Instruction address 0x1ade:0x21de, size: 5
-						this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.TechnologyDefinitions[technologyID].Name);
+						this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.TechnologyDefinitions[(int)technology].Name);
 
 						// Instruction address 0x1ade:0x21ee, size: 5
 						this.oParent.MSCAPI.strcat(0xba06, " cancels\nthe effect of\n");
@@ -3265,13 +3260,13 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), this.oCPU.AX.Word);
 
 			// Instruction address 0x1ade:0x2254, size: 3
-			this.oCPU.AX.Word = F0_1ade_22b5_PlayerHasTechnology((short)this.oCPU.AX.Word, technologyID);
+			this.oCPU.AX.Word = (ushort)(F0_1ade_22b5_PlayerHasTechnology((short)this.oCPU.AX.Word, technology) ? 1 : 0);
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.NE)
 				goto L22af;
 
 			// Instruction address 0x1ade:0x2265, size: 5
-			this.oParent.CityWorker.F0_1d12_6c97_PlayerHasWonder(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), (int)WonderEnum.GreatLibrary);
+			this.oCPU.AX.Word = (ushort)(this.oParent.CityWorker.F0_1d12_6c97_PlayerHasWonder(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), WonderEnum.GreatLibrary) ? 1 : 0);
 			
 			this.oCPU.AX.Word = this.oCPU.OR_UInt16(this.oCPU.AX.Word, this.oCPU.AX.Word);
 			if (this.oCPU.Flags.E)
@@ -3282,7 +3277,7 @@ namespace OpenCiv1
 			for (int i = 1; i < 8; i++)
 			{
 				// Instruction address 0x1ade:0x2282, size: 3
-				if (F0_1ade_22b5_PlayerHasTechnology((short)i, technologyID) != 0)
+				if (F0_1ade_22b5_PlayerHasTechnology(i, technology))
 				{
 					iCount++;
 				}
@@ -3291,7 +3286,7 @@ namespace OpenCiv1
 			if (iCount >= 2)
 			{
 				// Instruction address 0x1ade:0x22a9, size: 3
-				F0_1ade_1d2e(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), technologyID, -2);
+				F0_1ade_1d2e(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), technology, -2);
 			}
 
 		L22af:
@@ -3307,18 +3302,18 @@ namespace OpenCiv1
 		/// ?
 		/// </summary>
 		/// <param name="playerID"></param>
-		/// <param name="technologyID"></param>
+		/// <param name="technology"></param>
 		/// <returns></returns>
-		public ushort F0_1ade_22b5_PlayerHasTechnology(short playerID, int technologyID)
+		public bool F0_1ade_22b5_PlayerHasTechnology(int playerID, TechnologyEnum technology)
 		{
 			// Everyone has TechnologyEnum.None (-1) technology,
 			// PlayerID == 0 (Barbarians can't have any technology)
 			// TechnologyID can be in the range [0-70]
 			// DiscoveredTechnologyFlags holds the bit if technology is discovered
 
-			return (ushort)((technologyID == -1 ||
-				(playerID != 0 && (technologyID >= 0 && technologyID < 71) &&
-					(this.oParent.CivState.Players[playerID].DiscoveredTechnologyFlags[technologyID >> 4] & (1 << (technologyID & 0xf))) != 0)) ? 1 : 0);
+			return (technology == TechnologyEnum.None ||
+				(playerID != 0 && technology != TechnologyEnum.None && technology != TechnologyEnum.NewFutureTechnology &&
+					(this.oParent.CivState.Players[playerID].DiscoveredTechnologyFlags[(int)technology >> 4] & (1 << ((int)technology & 0xf))) != 0)) ? true : false;
 
 			//return (ushort)((technologyID == -1 || (technologyID >= 0 && (technologyID >= 71 || playerID == 0 ||
 			//	(this.oParent.CivState.Players[playerID].DiscoveredTechnologyFlags[technologyID >> 4] & (1 << (technologyID & 0xf))) == 0))) ? 0 : 1);
