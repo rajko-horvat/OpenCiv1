@@ -415,42 +415,29 @@ namespace OpenCiv1
 				this.oParent.WorldMap.F12_0000_09e2();
 			}
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x1);
+			for (WonderEnum wonderID = WonderEnum.Pyramids; wonderID <= WonderEnum.CureForCancer; ++wonderID)
+			{
+				int wonderCityID = this.oParent.CivState.WonderCityID[(int)wonderID];
+				if (wonderCityID != -1 && wonderCityID != 128)
+				{
+					this.oParent.CivState.Players[this.oParent.CivState.Cities[wonderCityID].PlayerID].Score += 25;
+				}
+			}
 
-		L0587:
-			this.oCPU.SI.Word = (ushort)this.oParent.CivState.WonderCityID[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))];
-			this.oCPU.CMP_UInt16(this.oCPU.SI.Word, 0xffff);
-			if (this.oCPU.Flags.E) goto L05b0;
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3484) == 0xfffd)
+			{
+				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3484, 0xfffe);
+			}
+			else
+			{
+				humanPlayer.Score -= (short)(this.oParent.CivState.PollutedSquareCount * 10);
+				
+				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3484) == 0xfffe)
+				{
+					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3484, 0x0);
+				}
+			}
 
-			this.oCPU.CMP_UInt16(this.oCPU.SI.Word, 0x80);
-			if (this.oCPU.Flags.E) goto L05b0;
-
-			this.oCPU.AX.Word = 0x1c;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.SI.Word);
-			this.oCPU.BX.Word = this.oCPU.AX.Word;
-			this.oParent.CivState.Players[this.oParent.CivState.Cities[this.oCPU.SI.Word].PlayerID].Score += 25;
-
-		L05b0:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x15);
-			if (this.oCPU.Flags.LE) goto L0587;
-
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3484), 0xfffd);
-			if (this.oCPU.Flags.NE) goto L05c8;
-
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3484, 0xfffe);
-			goto L05e6;
-
-		L05c8:
-			this.oCPU.AX.Word = 0xa;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.CivState.PollutedSquareCount);
-			this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Score -= (short)this.oCPU.AX.Word;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3484), 0xfffe);
-			if (this.oCPU.Flags.NE) goto L05e6;
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3484, 0x0);
-
-		L05e6:
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), 0x0);
 			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x0);
 
