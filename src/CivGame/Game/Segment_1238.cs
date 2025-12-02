@@ -76,12 +76,6 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_1238_0092()");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0x1a);
-			this.oCPU.PUSH_UInt16(this.oCPU.DI.Word);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-
 			// Instruction address 0x1238:0x009a, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
@@ -95,18 +89,12 @@ namespace OpenCiv1
 			this.oParent.Var_6b92 = 0;
 			this.oParent.CivState.MaximumTechnologyCount = 0;
 
-			// Active players = 0
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xde20, 0);
-
 			for (int playerID = 0; playerID < 8; ++playerID)
 			{
 				if ((this.oParent.CivState.ActiveCivilizations & (1 << playerID)) == 0)
 				{
 					continue;
 				}
-
-				// Count active players
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xde20, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xde20)));
 
 				short discoveredCount = this.oParent.CivState.Players[playerID].DiscoveredTechnologyCount;
 				if (this.oParent.CivState.MaximumTechnologyCount < discoveredCount)
@@ -118,7 +106,7 @@ namespace OpenCiv1
 			if (this.oParent.CivState.TurnCount == 0)
 			{
 				Unit startingUnit = humanPlayer.Units[0];
-				// Center camera on starting unit
+				// Show map around starting unit
 				this.oParent.Var_d4cc_MapViewX = (short)(startingUnit.Position.X - 7);
 				this.oParent.Var_d75e_MapViewY = (short)(startingUnit.Position.Y - 6);
 
@@ -143,14 +131,11 @@ namespace OpenCiv1
 
 			for (short playerID = 0; playerID < 8; ++playerID)
 			{
-				this.oParent.CivState.Players[playerID].Score = 0;
+				Player player = this.oParent.CivState.Players[playerID];
+				player.Score = 0;
 
-				if ((this.oParent.CivState.ActiveCivilizations & (1 << playerID)) == 0)
-				{
-					continue;
-				}
-
-				if (playerID < this.oParent.CivState.HumanPlayerID && this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdf60) != 0)
+				if (((this.oParent.CivState.ActiveCivilizations & (1 << playerID)) == 0)
+					|| (playerID < this.oParent.CivState.HumanPlayerID && this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdf60) != 0))
 				{
 					continue;
 				}
@@ -175,9 +160,9 @@ namespace OpenCiv1
 					this.oParent.Segment_1ade.F0_1ade_0006(playerID);
 				}
 
-				if (this.oParent.CivState.Players[playerID].Coins > 30000)
+				if (player.Coins > 30000)
 				{
-					this.oParent.CivState.Players[playerID].Coins = 30000;
+					player.Coins = 30000;
 				}
 
 				// Instruction address 0x1238:0x01ab, size: 5
@@ -198,16 +183,15 @@ namespace OpenCiv1
 					// Instruction address 0x1238:0x01ef, size: 3
 					F0_1238_107e();
 
-					if (this.oParent.CivState.Players[playerID].CityCount == 0 && this.oParent.CivState.Players[playerID].SettlerCount == 0)
+					if (player.CityCount == 0 && player.SettlerCount == 0)
 					{
 						// Human player lost the game
-
 						// Instruction address 0x1238:0x0205, size: 5
 						this.oParent.Segment_11a8.F0_11a8_0268();
 
 						this.oParent.MainIntro.F2_0000_152a();
 
-						// game state = player lost
+						// Game state = player lost (-1)
 						this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, 0xffff);
 
 						// Instruction address 0x1238:0x0215, size: 5
@@ -225,7 +209,6 @@ namespace OpenCiv1
 				{
 					// Handles player turn.
 					// Handles human player input and waits for end of turn if option selected
-
 					// Instruction address 0x1238:0x022f, size: 5
 					this.oParent.Segment_1403.F0_1403_000e(playerID);
 				}
@@ -248,11 +231,16 @@ namespace OpenCiv1
 				{
 					// Human player decided to retire
 					// Show power graph, civilization score and hall of fame
-
 					// Instruction address 0x1238:0x0261, size: 3
 					F0_1238_08a0();
 
-					goto showAds;
+					// Show advertisements
+					// Instruction address 0x1238:0x0897, size: 3
+					F0_1238_090a();
+
+					// Far return
+					this.oCPU.Log.ExitBlock("F0_1238_0092");
+					return;
 				}
 
 				goto exit;
@@ -300,7 +288,6 @@ namespace OpenCiv1
 				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
 				// Warning: Funds are running low...
-
 				// Instruction address 0x1238:0x034f, size: 5
 				this.oParent.Segment_2f4d.F0_2f4d_044f(0x1c2a);
 
@@ -379,10 +366,10 @@ namespace OpenCiv1
 					(byte)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].CityCount,
 					(byte)((population & 0xff00) >> 8),
 					(byte)(population & 0xff));
-				
+
 				ushort[] rankings = new ushort[4];
 				Array.Fill(rankings, (ushort)0);
-				
+
 				for (ushort playerID = 1; playerID < 8; ++playerID)
 				{
 					if (((1 << playerID) & this.oParent.CivState.ActiveCivilizations) == 0)
@@ -431,221 +418,194 @@ namespace OpenCiv1
 			else
 			{
 				humanPlayer.Score -= (short)(this.oParent.CivState.PollutedSquareCount * 10);
-				
+
 				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x3484) == 0xfffe)
 				{
 					this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x3484, 0x0);
 				}
 			}
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x0);
+			bool humanPlayerHasPalace = false;
 
-		L05f0:
-			this.oCPU.AX.Word = 0x1c;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)));
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
+			for (int cityID = 0; cityID < 128; ++cityID)
+			{
+				City city = this.oParent.CivState.Cities[cityID];
 
-			if (this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].StatusFlag == 0xff ||
-				this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].PlayerID != this.oParent.CivState.HumanPlayerID)
-				goto L0616;
-			this.oCPU.TEST_UInt16(this.oParent.CivState.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].ImprovementFlags0, 0x1);
-			if (this.oCPU.Flags.E) goto L0616;
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), 0x1);
+				if (city.StatusFlag != 0xff && city.PlayerID == this.oParent.CivState.HumanPlayerID && (city.ImprovementFlags0 & 1) != 0)
+				{
+					humanPlayerHasPalace = true;
+					// No need to check further
+					break;
+				}
+			}
 
-		L0616:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x80);
-			if (this.oCPU.Flags.L) goto L05f0;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 0x0);
-			if (this.oCPU.Flags.E) goto L066e;
+			if (humanPlayerHasPalace && this.oParent.CivState.GameSettingFlags.Palace && (this.oParent.CivState.SpaceshipFlags & 0x100) == 0)
+			{
+				// Instruction address 0x1238:0x063b, size: 3
+				ushort value1 = F0_1238_16e7((short)(humanPlayer.PalaceLevel + 1));
+				ushort value2 = this.oParent.Overlay_20.F20_0000_0ca9_ShowCivilizationScorePopup(this.oParent.CivState.HumanPlayerID, false);
 
-			if (!this.oParent.CivState.GameSettingFlags.Palace) goto L066e;
+				if (value2 >= value1)
+				{
+					humanPlayer.PalaceLevel++;
 
-			this.oCPU.TEST_UInt16((ushort)this.oParent.CivState.SpaceshipFlags, 0x100);
-			if (this.oCPU.Flags.NE) goto L066e;
+					if (humanPlayer.PalaceLevel <= 37)
+					{
+						this.oParent.Palace.F17_0000_0000();
+					}
+				}
+			}
 
-			// Instruction address 0x1238:0x063b, size: 3
-			F0_1238_16e7((short)(this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceLevel + 1));
-
-			this.oCPU.SI.Word = this.oCPU.AX.Word;
-
-			this.oParent.Overlay_20.F20_0000_0ca9_ShowCivilizationScorePopup(this.oParent.CivState.HumanPlayerID, false);
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, this.oCPU.SI.Word);
-			if (this.oCPU.Flags.L) goto L066e;
-
-			this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceLevel++;
-			if (this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].PalaceLevel > 37)
-				goto L066e;
-			
-			this.oParent.Palace.F17_0000_0000();
-
-		L066e:
 			// Instruction address 0x1238:0x066f, size: 3
 			F0_1238_107e();
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x1cf6, 0xffff);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), 0x1);
+			// ID of player that reached Alpha Centauri
+			int spaceVictoryPlayerID = -1;
 
-		L067d:
-			this.oCPU.AX.Word = 0x1;
-			this.oCPU.CX.Low = this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
-			this.oCPU.AX.Word = this.oCPU.SHL_UInt16(this.oCPU.AX.Word, this.oCPU.CX.Low);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.Word, (ushort)this.oParent.CivState.SpaceshipFlags);
-			if (this.oCPU.Flags.E) goto L069f;
-
-			if (this.oParent.CivState.Players[this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))].SpaceshipETAYear == this.oParent.CivState.Year)
+			for (int playerID = 1; playerID < 8; ++playerID)
 			{
-				this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6));
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x1cf6, this.oCPU.AX.Word);
+				if (((1 << playerID) & this.oParent.CivState.SpaceshipFlags) != 0
+					&& this.oParent.CivState.Players[playerID].SpaceshipETAYear == this.oParent.CivState.Year)
+				{
+					spaceVictoryPlayerID = playerID;
+				}
 			}
 
-		L069f:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0x8);
-			if (this.oCPU.Flags.L) goto L067d;
-			this.oCPU.AX.Word = 0x14;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.CivState.DifficultyLevel);
-			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x820);
-			this.oCPU.AX.Word = this.oCPU.NEG_UInt16(this.oCPU.AX.Word);
-			if ((short)this.oCPU.AX.Word != this.oParent.CivState.Year) goto L0718;
+			int retirementYear = 2080 - this.oParent.CivState.DifficultyLevel * 20;
 
-			this.oCPU.BX.Word = (ushort)this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].GovernmentType;
-			this.oCPU.BX.Word = this.oCPU.SHL_UInt16(this.oCPU.BX.Word, 0x1);
-			// Instruction address 0x1238:0x06ce, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(this.oCPU.BX.Word + 0x19b2)));
+			if (retirementYear == this.oParent.CivState.Year)
+			{
+				// Instruction address 0x1238:0x06ce, size: 5
+				this.oParent.MSCAPI.strcpy(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(humanPlayer.GovernmentType * 2 + 0x19b2)));
 
-			// Instruction address 0x1238:0x06de, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, " ");
+				// Instruction address 0x1238:0x06de, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, " ");
 
-			// Instruction address 0x1238:0x06f4, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Name);
+				// Instruction address 0x1238:0x06f4, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, humanPlayer.Name);
 
-			// Instruction address 0x1238:0x0704, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, "\nplans retirement\nin 20 years.\n");
+				// Instruction address 0x1238:0x0704, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, "\nplans retirement\nin 20 years.\n");
 
-			this.oParent.Overlay_21.F21_0000_0000(-1);
+				this.oParent.Overlay_21.F21_0000_0000(-1);
+			}
 
-		L0718:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1cf6), 0xffff);
-			if (this.oCPU.Flags.NE) goto L073b;
+			int dynastyEndYear = 2100 - this.oParent.CivState.DifficultyLevel * 20;
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb884), 0x0);
-			if (this.oCPU.Flags.NE) goto L073b;
+			if (spaceVictoryPlayerID == -1
+				&& this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb884) == 0
+				&& dynastyEndYear != this.oParent.CivState.Year)
+			{
+				// Far return
+				//this.oCPU.Log.ExitBlock("F0_1238_0092");
+				//return;
+			}
 
-			this.oCPU.AX.Word = 0x14;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.CivState.DifficultyLevel);
-			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x834);
-			this.oCPU.AX.Word = this.oCPU.NEG_UInt16(this.oCPU.AX.Word);
-			if ((short)this.oCPU.AX.Word == this.oParent.CivState.Year) goto L073b;
-			goto exit;
-
-		L073b:
 			// Instruction address 0x1238:0x073b, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
 			// Instruction address 0x1238:0x0748, size: 5
 			this.oParent.MSCAPI.strcpy(0xba06, "*** GAME OVER ***\n");
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb884), 0x0);
-			if (this.oCPU.Flags.E) goto L077e;
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb884) != 0)
+			{
+				// Instruction address 0x1238:0x075f, size: 5
+				this.oParent.MSCAPI.strcpy(0xba06, "Your civilization\nhas conquered\nthe entire planet!\n");
 
-			// Instruction address 0x1238:0x075f, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, "Your civilization\nhas conquered\nthe entire planet!\n");
+				// Conquest victory, don't care about space race
+				spaceVictoryPlayerID = -1;
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0x1cf6, 0xffff);
+				this.oParent.Overlay_21.F21_0000_0000(-1);
 
-			this.oParent.Overlay_21.F21_0000_0000(-1);
+				this.oParent.GameReplay.F9_0000_0dde();
+			}
 
-			this.oParent.GameReplay.F9_0000_0dde();
+			if (spaceVictoryPlayerID != -1)
+			{
+				this.oParent.MainIntro.F2_0000_0bd7((short)spaceVictoryPlayerID);
 
-		L077e:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x1cf6), 0xffff);
-			if (this.oCPU.Flags.E) goto L07c7;
+				// Instruction address 0x1238:0x0792, size: 3
+				F0_1238_1b44();
 
-			this.oParent.MainIntro.F2_0000_0bd7(this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x1cf6));
+				// Instruction address 0x1238:0x07a3, size: 5
+				this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.Players[spaceVictoryPlayerID].Nationality);
 
-			// Instruction address 0x1238:0x0792, size: 3
-			F0_1238_1b44();
+				// Instruction address 0x1238:0x07b3, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, " spaceship\narrives at Alpha Centauri.\n");
 
-			// Instruction address 0x1238:0x07a3, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.Players[this.oCPU.ReadInt16(this.oCPU.DS.Word, 0x1cf6)].Nationality);
+				this.oParent.Overlay_21.F21_0000_0000(-1);
+			}
 
-			// Instruction address 0x1238:0x07b3, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, " spaceship\narrives at Alpha Centauri.\n");
+			if (dynastyEndYear == this.oParent.CivState.Year)
+			{
+				// Instruction address 0x1238:0x07e7, size: 5
+				this.oParent.MSCAPI.strcpy(0xba06, humanPlayer.Name);
 
-			this.oParent.Overlay_21.F21_0000_0000(-1);
+				// Instruction address 0x1238:0x07f7, size: 5
+				this.oParent.MSCAPI.strcat(0xba06, " dynasty\nends after glorious\n6000 year reign!\n");
 
-		L07c7:
-			this.oCPU.AX.Word = 0x14;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.CivState.DifficultyLevel);
-			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x834);
-			this.oCPU.AX.Word = this.oCPU.NEG_UInt16(this.oCPU.AX.Word);
-			if ((short)this.oCPU.AX.Word != this.oParent.CivState.Year) goto L0836;
+				// Instruction address 0x1238:0x0816, size: 5
+				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(
+					this.oParent.CivState.Nations[humanPlayer.NationalityID].LongTune, 3);
 
-			// Instruction address 0x1238:0x07e7, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].Name);
+				this.oParent.Overlay_21.F21_0000_0000(-1);
 
-			// Instruction address 0x1238:0x07f7, size: 5
-			this.oParent.MSCAPI.strcat(0xba06, " dynasty\nends after glorious\n6000 year reign!\n");
+				// Instruction address 0x1238:0x082e, size: 5
+				this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
+			}
 
-			// Instruction address 0x1238:0x0816, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(
-				this.oParent.CivState.Nations[this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID].NationalityID].LongTune, 3);
-
-			this.oParent.Overlay_21.F21_0000_0000(-1);
-			
-			// Instruction address 0x1238:0x082e, size: 5
-			this.oParent.Segment_1000.F0_1000_0a32_PlayTune(1, 0);
-
-		L0836:
 			// Instruction address 0x1238:0x0836, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
-			this.oCPU.TEST_UInt16((ushort)this.oParent.CivState.SpaceshipFlags, 0x100);
-			if (this.oCPU.Flags.NE) goto L084e;
+			if ((this.oParent.CivState.SpaceshipFlags & 0x100) == 0)
+			{
+				// Shows civilization powergraph
 
-			// Instruction address 0x1238:0x0848, size: 3
-			F0_1238_08a0();
+				// Instruction address 0x1238:0x0848, size: 3
+				F0_1238_08a0();
+			}
 
-		L084e:
 			// Instruction address 0x1238:0x084f, size: 3
 			F0_1238_1b44();
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x4cd9, this.oCPU.OR_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x4cd9), 0x1));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb884), 0x0);
-			if (this.oCPU.Flags.NE) goto L0889;
-			this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
-			// Instruction address 0x1238:0x0867, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x1cf0);
-			
-			// Instruction address 0x1238:0x0879, size: 3
-			F0_1238_001e_ShowDialog(0xba06, 80, 80);
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb884) == 0)
+			{
+				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
-			this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x1);
-			this.oCPU.AX.Word = this.oCPU.NEG_UInt16(this.oCPU.AX.Word);
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, this.oCPU.AX.Word);
-			goto L088f;
+				// Your final score has entered 
 
-		L0889:
-			this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, 0x1);
+				// Instruction address 0x1238:0x0867, size: 5
+				this.oParent.Segment_2f4d.F0_2f4d_044f(0x1cf0);
 
-		L088f:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48), 0x0);
-			if (this.oCPU.Flags.E) goto exit;
+				// Instruction address 0x1238:0x0879, size: 3
+				ushort selectedOption = F0_1238_001e_ShowDialog(0xba06, 80, 80);
 
-		showAds:
-			// Instruction address 0x1238:0x0897, size: 3
-			F0_1238_090a();
+				this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x1);
+				this.oCPU.AX.Word = this.oCPU.NEG_UInt16(this.oCPU.AX.Word);
+
+				var val = (ushort)((0x10000 - (ushort)(selectedOption - 1)) & 0xffff);
+
+				// option 0 --> writing value 1
+				// option 1 --> writing value 0
+
+				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, /*this.oCPU.AX.Word*/val);
+			}
+			else
+			{
+				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, 0x1);
+			}
+
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48) != 0)
+			{
+				// Show advertisements
+
+				// Instruction address 0x1238:0x0897, size: 3
+				F0_1238_090a();
+			}
 
 		exit:
-			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.DI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1238_0092");
 		}
