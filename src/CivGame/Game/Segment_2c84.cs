@@ -278,7 +278,7 @@ namespace OpenCiv1
 						this.oParent.MSCAPI.strcat(0xba06, " Build Irrigation");
 
 						// Instruction address 0x2c84:0x030f, size: 5
-						if (this.oParent.Segment_1403.F0_1403_3fd0(xPos, yPos) == 0)
+						if (this.oParent.Segment_1403.F0_1403_3fd0_CanIrrigateCell(xPos, yPos) == 0)
 						{
 							// Disable 'Build Irrigation' option
 							this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xb276, this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb276), (ushort)(1 << orderCount)));
