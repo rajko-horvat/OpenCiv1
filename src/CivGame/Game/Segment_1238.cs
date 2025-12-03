@@ -69,11 +69,12 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Handles a single game turn.
+		/// Performs active player's turns, checks for disasters, victory and loss conditions.
 		/// </summary>
-		public void F0_1238_0092()
+		public void F0_1238_0092_GameTurn()
 		{
-			this.oCPU.Log.EnterBlock("F0_1238_0092()");
+			this.oCPU.Log.EnterBlock("F0_1238_0092_GameTurn()");
 
 			// function body
 			// Instruction address 0x1238:0x009a, size: 5
@@ -222,7 +223,8 @@ namespace OpenCiv1
 				}
 
 				// Check if game should continue with the next player
-				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48) == 0 || this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb884) != 0)
+				if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48) == 0
+					|| this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xb884) != 0)
 				{
 					continue;
 				}
@@ -234,16 +236,13 @@ namespace OpenCiv1
 					// Instruction address 0x1238:0x0261, size: 3
 					F0_1238_08a0();
 
-					// Show advertisements
 					// Instruction address 0x1238:0x0897, size: 3
-					F0_1238_090a();
-
-					// Far return
-					this.oCPU.Log.ExitBlock("F0_1238_0092");
-					return;
+					F0_1238_090a_ShowAdvertisementsPopup();
 				}
-
-				goto exit;
+			
+				// Far return
+				this.oCPU.Log.ExitBlock("F0_1238_0092_GameTurn");
+				return;
 			}
 
 			// Instruction address 0x1238:0x02a0, size: 5
@@ -497,8 +496,8 @@ namespace OpenCiv1
 				&& dynastyEndYear != this.oParent.CivState.Year)
 			{
 				// Far return
-				//this.oCPU.Log.ExitBlock("F0_1238_0092");
-				//return;
+				this.oCPU.Log.ExitBlock("F0_1238_0092_GameTurn");
+				return;
 			}
 
 			// Instruction address 0x1238:0x073b, size: 5
@@ -559,8 +558,7 @@ namespace OpenCiv1
 
 			if ((this.oParent.CivState.SpaceshipFlags & 0x100) == 0)
 			{
-				// Shows civilization powergraph
-
+				// Show power graph, civilization score and hall of fame
 				// Instruction address 0x1238:0x0848, size: 3
 				F0_1238_08a0();
 			}
@@ -574,23 +572,15 @@ namespace OpenCiv1
 			{
 				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0xba06, 0x0);
 
-				// Your final score has entered 
-
+				// Your final score has entered the Hall of Fame.
+				// Do you want to keep playing ?
 				// Instruction address 0x1238:0x0867, size: 5
 				this.oParent.Segment_2f4d.F0_2f4d_044f(0x1cf0);
 
 				// Instruction address 0x1238:0x0879, size: 3
-				ushort selectedOption = F0_1238_001e_ShowDialog(0xba06, 80, 80);
+				int selectedOption = F0_1238_001e_ShowDialog(0xba06, 80, 80);
 
-				this.oCPU.AX.Word = this.oCPU.SUB_UInt16(this.oCPU.AX.Word, 0x1);
-				this.oCPU.AX.Word = this.oCPU.NEG_UInt16(this.oCPU.AX.Word);
-
-				var val = (ushort)((0x10000 - (ushort)(selectedOption - 1)) & 0xffff);
-
-				// option 0 --> writing value 1
-				// option 1 --> writing value 0
-
-				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, /*this.oCPU.AX.Word*/val);
+				this.oCPU.WriteUInt16(this.oCPU.DS.Word, 0xdc48, (ushort)(-(selectedOption - 1)));
 			}
 			else
 			{
@@ -599,15 +589,12 @@ namespace OpenCiv1
 
 			if (this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0xdc48) != 0)
 			{
-				// Show advertisements
-
 				// Instruction address 0x1238:0x0897, size: 3
-				F0_1238_090a();
+				F0_1238_090a_ShowAdvertisementsPopup();
 			}
 
-		exit:
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_1238_0092");
+			this.oCPU.Log.ExitBlock("F0_1238_0092_GameTurn");
 		}
 
 		/// <summary>
@@ -648,11 +635,11 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Shows popup with Microprose game advertisements.
 		/// </summary>
-		public void F0_1238_090a()
+		public void F0_1238_090a_ShowAdvertisementsPopup()
 		{
-			this.oCPU.Log.EnterBlock("F0_1238_090a()");
+			this.oCPU.Log.EnterBlock("F0_1238_090a_ShowAdvertisementsPopup()");
 
 			// function body
 			// Instruction address 0x1238:0x090a, size: 5
@@ -680,7 +667,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_1238_090a");
+			this.oCPU.Log.ExitBlock("F0_1238_090a_ShowAdvertisementsPopup");
 		}
 
 		/// <summary>
