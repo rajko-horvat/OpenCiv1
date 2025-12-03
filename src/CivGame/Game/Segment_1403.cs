@@ -1771,7 +1771,7 @@ namespace OpenCiv1
 
 		L1693:
 			// Instruction address 0x1403:0x1699, size: 5
-			F0_1403_3fd0(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)),
+			F0_1403_3fd0_CanIrrigateCell(this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2c)),
 				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x30)));
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0x0);
@@ -5144,7 +5144,7 @@ namespace OpenCiv1
 					else
 					{
 						// Instruction address 0x1403:0x3fbf, size: 3
-						if (F0_1403_3fd0(xPos, yPos) == 0)
+						if (F0_1403_3fd0_CanIrrigateCell(xPos, yPos) == 0)
 						{
 							this.oCPU.AX.Word = 0;
 						}
@@ -5163,85 +5163,58 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Checks whether map cell can be irrigated.
 		/// </summary>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		/// <returns></returns>
-		public ushort F0_1403_3fd0(int xPos, int yPos)
+		/// <returns>1 if cell can be irrigated, 0 otherwise</returns>
+		public ushort F0_1403_3fd0_CanIrrigateCell(int xPos, int yPos)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1403_3fd0({xPos}, {yPos})");
+			this.oCPU.Log.EnterBlock($"F0_1403_3fd0_CanIrrigateCell({xPos}, {yPos})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.Word);
-			this.oCPU.BP.Word = this.oCPU.SP.Word;
-			this.oCPU.SP.Word = this.oCPU.SUB_UInt16(this.oCPU.SP.Word, 0xc);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.Word);
-
 			// Instruction address 0x1403:0x3fdd, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
+			if (this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos) == TerrainTypeEnum.River)
+			{
+				this.oCPU.AX.Word = 1;
+				// Far return
+				this.oCPU.Log.ExitBlock("F0_1403_3fd0_CanIrrigateCell");
 
-			this.oCPU.CMP_UInt16(this.oCPU.AX.Word, 0xb);
-			if (this.oCPU.Flags.NE) goto L3fef;
+				return this.oCPU.AX.Word;
+			}
 
-		L3fea:
-			this.oCPU.AX.Word = 0x1;
-			goto L405b;
+			for (int i = 1; i <= 8; ++i)
+			{
+				GPoint direction = this.oParent.MoveOffsets[i];
+				int neighborX = xPos + direction.X;
+				int neighborY = yPos + direction.Y;
 
-		L3fef:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), 0x1);
-			goto L4005;
+				// Instruction address 0x1403:0x4028, size: 5
+				TerrainTypeEnum terrain = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(neighborX, neighborY);
 
-		L3ffb:
-			this.oCPU.TEST_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x2);
-			if (this.oCPU.Flags.NE) goto L3fea;
+				// Instruction address 0x1403:0x4039, size: 5
+				TerrainImprovementFlagsEnum improvements = this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(neighborX, neighborY);
+				
+				if (improvements.HasFlag(TerrainImprovementFlagsEnum.City))
+				{
+					continue;
+				}
 
-		L4001:
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8), this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 0x2));
+				if (terrain == TerrainTypeEnum.River 
+					|| terrain == TerrainTypeEnum.Water
+					|| improvements.HasFlag(TerrainImprovementFlagsEnum.Irrigation))
+				{
+					this.oCPU.AX.Word = 1;
+					// Far return
+					this.oCPU.Log.ExitBlock("F0_1403_3fd0_CanIrrigateCell");
 
-		L4005:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8)), 0x8);
-			if (this.oCPU.Flags.G) goto L4058;
+					return this.oCPU.AX.Word;
+				}
+			}
 
-			this.oCPU.SI.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8));
-			this.oCPU.SI.Word = this.oCPU.SHL_UInt16(this.oCPU.SI.Word, 0x1);
-
-			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x8))];
-
-			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2), (short)(xPos + direction.X));
-			this.oCPU.WriteInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4), (short)(yPos + direction.Y));
-
-			// Instruction address 0x1403:0x4028, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6), this.oCPU.AX.Word);
-
-			// Instruction address 0x1403:0x4039, size: 5
-			this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x4)));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc), this.oCPU.AX.Word);
-			this.oCPU.TEST_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xc)), 0x1);
-			if (this.oCPU.Flags.NE) goto L4001;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0xb);
-			if (this.oCPU.Flags.E) goto L3fea;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x6)), 0xa);
-			if (this.oCPU.Flags.NE) goto L3ffb;
-			goto L3fea;
-
-		L4058:
-			this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0xa));
-
-		L405b:
-			this.oCPU.SI.Word = this.oCPU.POP_UInt16();
-			this.oCPU.SP.Word = this.oCPU.BP.Word;
-			this.oCPU.BP.Word = this.oCPU.POP_UInt16();
+			this.oCPU.AX.Word = 0;
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_1403_3fd0");
+			this.oCPU.Log.ExitBlock("F0_1403_3fd0_CanIrrigateCell");
 
 			return this.oCPU.AX.Word;
 		}
