@@ -12,7 +12,7 @@
 			this.uiValue = value;
 		}
 
-		public byte Low
+		public byte LowUInt8
 		{
 			get
 			{
@@ -24,7 +24,19 @@
 			}
 		}
 
-		public byte High
+		public sbyte LowInt8
+		{
+			get
+			{
+				return (sbyte)(this.uiValue & 0xff);
+			}
+			set
+			{
+				this.uiValue = (uint)((this.uiValue & 0xffffff00) | (byte)value);
+			}
+		}
+
+		public byte HighUInt8
 		{
 			get
 			{
@@ -36,7 +48,19 @@
 			}
 		}
 
-		public ushort Word
+		public sbyte HighInt8
+		{
+			get
+			{
+				return (sbyte)((this.uiValue & 0xff00) >> 8);
+			}
+			set
+			{
+				this.uiValue = (uint)((this.uiValue & 0xffff00ff) | ((uint)value << 8));
+			}
+		}
+
+		public ushort UInt16
 		{
 			get
 			{
@@ -48,7 +72,20 @@
 			}
 		}
 
-		public ushort HighWord
+		public short Int16
+		{
+			get
+			{
+				return (short)((ushort)(this.uiValue & 0xffff));
+			}
+			set
+			{
+				this.uiValue = (uint)((this.uiValue & 0xffff0000) | (ushort)value);
+			}
+		}
+
+
+		public ushort HighUInt16
 		{
 			get
 			{
@@ -60,7 +97,19 @@
 			}
 		}
 
-		public uint DWord
+		public short HighInt16
+		{
+			get
+			{
+				return (short)((ushort)((this.uiValue & 0xffff0000) >> 16));
+			}
+			set
+			{
+				this.uiValue = (uint)((this.uiValue & 0xffff) | ((uint)value << 16));
+			}
+		}
+
+		public uint UInt32
 		{
 			get
 			{
@@ -72,9 +121,21 @@
 			}
 		}
 
+		public int Int32
+		{
+			get
+			{
+				return (int)this.uiValue;
+			}
+			set
+			{
+				this.uiValue = (uint)value;
+			}
+		}
+
 		public override string ToString()
 		{
-			return $"0x{this.HighWord:x4}:0x{this.Word:x4}";
+			return $"0x{this.UInt32:x8}";
 		}
 	}
 }

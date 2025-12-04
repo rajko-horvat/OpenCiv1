@@ -1,10 +1,9 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
 using OpenCiv1;
 using IRB.Collections.Generic;
-using IRB.VirtualCPU.MZ;
-using OpenCiv1.GPU;
+using OpenCiv1.Graphics;
+using Disassembler.Formats.MZ;
 
 namespace IRB.VirtualCPU
 {
@@ -45,6 +44,7 @@ namespace IRB.VirtualCPU
 		private Timer oTimer;
 
 		// Keyboard
+		public static readonly object KeyboardLock = new();
 		private Queue<int> aKeys = new Queue<int>();
 
 		// Mouse
@@ -52,6 +52,9 @@ namespace IRB.VirtualCPU
 		private GPoint oOldMouseLocation = new GPoint(-1, -1);
 		private MouseButtonsEnum oMouseButtons = MouseButtonsEnum.None;
 		private MouseButtonsEnum oOldMouseButtons = MouseButtonsEnum.None;
+
+		// Graphics
+		public static readonly object GraphicsLock = new();
 
 		// DOS file stuff
 		private uint uiDOSDTA = 0;
@@ -61,7 +64,7 @@ namespace IRB.VirtualCPU
 		private short sFileHandleCount = 0x20;
 		private BDictionary<short, FileStreamItem> aOpenFiles = new BDictionary<short, FileStreamItem>();
 
-		private OpenCiv1.CivGame oParent;
+		private OpenCiv1Game oParent;
 		private LogWrapper oLog;
 
 		public static string AssemblyPath;
@@ -90,7 +93,7 @@ namespace IRB.VirtualCPU
 #endif
 		}
 
-		public VCPU(OpenCiv1.CivGame parent, LogWrapper log)
+		public VCPU(OpenCiv1.OpenCiv1Game parent, LogWrapper log)
 		{
 			this.oParent = parent;
 			this.oLog = log;
@@ -103,7 +106,7 @@ namespace IRB.VirtualCPU
 			}
 		}
 
-		public OpenCiv1.CivGame Parent
+		public OpenCiv1.OpenCiv1Game Parent
 		{
 			get { return this.oParent; }
 		}
@@ -164,6 +167,12 @@ namespace IRB.VirtualCPU
 		}
 
 		#region Interrupts and events
+		public void PauseCPU()
+		{
+			this.bPause = true;
+			this.DoEvents();
+		}
+
 		public void STI()
 		{
 			this.bEnableInterrupt = true;
@@ -203,63 +212,63 @@ namespace IRB.VirtualCPU
 						this.oLog.WriteLine($"Mouse buttons changed from {this.oOldMouseButtons} to {this.oMouseButtons}");
 					}*/
 
-					this.PUSH_UInt16(this.oAX.Word);
-					this.PUSH_UInt16(this.oCX.Word);
-					this.PUSH_UInt16(this.oDX.Word);
-					this.PUSH_UInt16(this.oBX.Word);
-					this.PUSH_UInt16(this.oBP.Word);
-					this.PUSH_UInt16(this.oSI.Word);
-					this.PUSH_UInt16(this.oDI.Word);
-					this.PUSH_UInt16(this.oDS.Word);
-					this.PUSH_UInt16(this.oES.Word);
+					this.PUSH_UInt16(this.oAX.UInt16);
+					this.PUSH_UInt16(this.oCX.UInt16);
+					this.PUSH_UInt16(this.oDX.UInt16);
+					this.PUSH_UInt16(this.oBX.UInt16);
+					this.PUSH_UInt16(this.oBP.UInt16);
+					this.PUSH_UInt16(this.oSI.UInt16);
+					this.PUSH_UInt16(this.oDI.UInt16);
+					this.PUSH_UInt16(this.oDS.UInt16);
+					this.PUSH_UInt16(this.oES.UInt16);
 					this.PUSHF_UInt16();
 
-					this.oAX.Word = 0;
+					this.oAX.UInt16 = 0;
 					if (this.oOldMouseLocation != this.oMouseLocation)
 					{
-						this.oAX.Word |= 1;
+						this.oAX.UInt16 |= 1;
 					}
-					this.oCX.Word = (ushort)this.oMouseLocation.X;
-					this.oDX.Word = (ushort)this.oMouseLocation.Y;
+					this.oCX.UInt16 = (ushort)this.oMouseLocation.X;
+					this.oDX.UInt16 = (ushort)this.oMouseLocation.Y;
 
-					this.oBX.Word = 0;
+					this.oBX.UInt16 = 0;
 					ushort usLeft = (ushort)((this.oMouseButtons & MouseButtonsEnum.Left) == MouseButtonsEnum.Left ? 1 : 0);
-					this.oBX.Word |= usLeft;
+					this.oBX.UInt16 |= usLeft;
 
 					if ((this.oOldMouseButtons & MouseButtonsEnum.Left) != (this.oMouseButtons & MouseButtonsEnum.Left))
 					{
 						if (usLeft != 0)
-							this.oAX.Word |= 2;
+							this.oAX.UInt16 |= 2;
 						else
-							this.oAX.Word |= 4;
+							this.oAX.UInt16 |= 4;
 					}
 
 					ushort usRight = (ushort)((this.oMouseButtons & MouseButtonsEnum.Right) == MouseButtonsEnum.Right ? 2 : 0);
-					this.oBX.Word |= usRight;
+					this.oBX.UInt16 |= usRight;
 
 					if ((this.oOldMouseButtons & MouseButtonsEnum.Right) != (this.oMouseButtons & MouseButtonsEnum.Right))
 					{
 						if (usRight != 0)
-							this.oAX.Word |= 8;
+							this.oAX.UInt16 |= 8;
 						else
-							this.oAX.Word |= 0x10;
+							this.oAX.UInt16 |= 0x10;
 					}
 
 					this.oOldMouseLocation = this.oMouseLocation;
 					this.oOldMouseButtons = this.oMouseButtons;
 
-					this.oParent.Segment_1000.F0_1000_17db_MouseEvent();
+					this.oParent.CommonTools.F0_1000_17db_MouseEvent();
 
 					this.POPF_UInt16();
-					this.oES.Word = this.POP_UInt16();
-					this.oDS.Word = this.POP_UInt16();
-					this.oDI.Word = this.POP_UInt16();
-					this.oSI.Word = this.POP_UInt16();
-					this.oBP.Word = this.POP_UInt16();
-					this.oBX.Word = this.POP_UInt16();
-					this.oDX.Word = this.POP_UInt16();
-					this.oCX.Word = this.POP_UInt16();
-					this.oAX.Word = this.POP_UInt16();
+					this.oES.UInt16 = this.POP_UInt16();
+					this.oDS.UInt16 = this.POP_UInt16();
+					this.oDI.UInt16 = this.POP_UInt16();
+					this.oSI.UInt16 = this.POP_UInt16();
+					this.oBP.UInt16 = this.POP_UInt16();
+					this.oBX.UInt16 = this.POP_UInt16();
+					this.oDX.UInt16 = this.POP_UInt16();
+					this.oCX.UInt16 = this.POP_UInt16();
+					this.oAX.UInt16 = this.POP_UInt16();
 				}
 
 				/*LogWrapper oLogTemp = this.oLog;
@@ -352,55 +361,14 @@ namespace IRB.VirtualCPU
 		#region Conversion functions
 		public void UInt32ToTwoUInt16(VCPURegister regLow, VCPURegister regHigh, uint value)
 		{
-			regLow.Word = (ushort)(value & 0xffff);
-			regHigh.Word = (ushort)((value & 0xffff0000) >> 16);
+			regLow.UInt16 = (ushort)(value & 0xffff);
+			regHigh.UInt16 = (ushort)((value & 0xffff0000) >> 16);
 		}
 
 		public uint TwoUInt16ToUInt32(ushort lowValue, ushort highValue)
 		{
 			return ((uint)highValue << 16) | (uint)lowValue;
 		}
-
-		/*public static ushort ToUInt16(int value)
-		{
-			if (value < 0 || value > UInt16.MaxValue)
-				throw new Exception($"ReturnValue {value} out of range for UInt16");
-
-			return (ushort)value;
-		}
-
-		public static ushort ToUInt16(sbyte value)
-		{
-			return (ushort)((short)value);
-		}
-
-		public static short ToInt16(int value)
-		{
-			if (value < Int16.MinValue || value > Int16.MaxValue)
-				throw new Exception($"ReturnValue {value} out of range for Int16");
-
-			return (short)value;
-		}
-
-		public static byte ForceUInt8(int value)
-		{
-			return (byte)(value & 0xff);
-		}
-
-		public static sbyte ForceInt8(int value)
-		{
-			return (sbyte)((byte)(value & 0xff));
-		}
-
-		public static ushort ForceUInt16(int value)
-		{
-			return (ushort)(value & 0xffff);
-		}
-
-		public static short ForceInt16(int value)
-		{
-			return (short)((ushort)(value & 0xffff));
-		}*/
 		#endregion
 
 		#region Memory
@@ -537,6 +505,20 @@ namespace IRB.VirtualCPU
 			return sb.ToString();
 		}
 
+		public void WriteString(uint address, string text)
+		{
+			if (address == 0)
+				return;
+
+			for (int i = 0; i < text.Length; i++)
+			{
+				this.oMemory.WriteUInt8(address, (byte)text[i]);
+				address++;
+			}
+
+			this.oMemory.WriteUInt8(address, 0);
+		}
+
 		public void WriteString(uint address, string text, int maxLength)
 		{
 			if (address == 0)
@@ -568,15 +550,15 @@ namespace IRB.VirtualCPU
 		#region CPU stack
 		public void PUSHA_UInt16()
 		{
-			ushort uiTemp = this.oSP.Word;
-			this.PUSH_UInt16(this.oAX.Word);
-			this.PUSH_UInt16(this.oCX.Word);
-			this.PUSH_UInt16(this.oDX.Word);
-			this.PUSH_UInt16(this.oBX.Word);
+			ushort uiTemp = this.oSP.UInt16;
+			this.PUSH_UInt16(this.oAX.UInt16);
+			this.PUSH_UInt16(this.oCX.UInt16);
+			this.PUSH_UInt16(this.oDX.UInt16);
+			this.PUSH_UInt16(this.oBX.UInt16);
 			this.PUSH_UInt16(uiTemp);
-			this.PUSH_UInt16(this.oBP.Word);
-			this.PUSH_UInt16(this.oSI.Word);
-			this.PUSH_UInt16(this.oDI.Word);
+			this.PUSH_UInt16(this.oBP.UInt16);
+			this.PUSH_UInt16(this.oSI.UInt16);
+			this.PUSH_UInt16(this.oDI.UInt16);
 		}
 
 		public void PUSHF_UInt16()
@@ -586,44 +568,44 @@ namespace IRB.VirtualCPU
 
 		public void PUSH_UInt16(ushort value)
 		{
-			if ((int)this.oSP.Word - 2 < 0)
+			if ((int)this.oSP.UInt16 - 2 < 0)
 			{
 				throw new Exception("Stack overflow");
 				//return;
 			}
-			this.oSP.Word -= 1;
-			this.oMemory.WriteUInt8(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff00) >> 8));
-			this.oSP.Word -= 1;
-			this.oMemory.WriteUInt8(this.oSS.Word, this.oSP.Word, (byte)(value & 0xff));
+			this.oSP.UInt16 -= 1;
+			this.oMemory.WriteUInt8(this.oSS.UInt16, this.oSP.UInt16, (byte)((value & 0xff00) >> 8));
+			this.oSP.UInt16 -= 1;
+			this.oMemory.WriteUInt8(this.oSS.UInt16, this.oSP.UInt16, (byte)(value & 0xff));
 		}
 
 		public void PUSH_UInt32(uint value)
 		{
-			if ((int)this.oSP.Word - 4 < 0)
+			if ((int)this.oSP.UInt16 - 4 < 0)
 			{
 				throw new Exception("Stack overflow");
 				//return;
 			}
-			this.oSP.Word -= 1;
-			this.oMemory.WriteUInt8(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff000000) >> 24));
-			this.oSP.Word -= 1;
-			this.oMemory.WriteUInt8(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff0000) >> 16));
-			this.oSP.Word -= 1;
-			this.oMemory.WriteUInt8(this.oSS.Word, this.oSP.Word, (byte)((value & 0xff00) >> 8));
-			this.oSP.Word -= 1;
-			this.oMemory.WriteUInt8(this.oSS.Word, this.oSP.Word, (byte)(value & 0xff));
+			this.oSP.UInt16 -= 1;
+			this.oMemory.WriteUInt8(this.oSS.UInt16, this.oSP.UInt16, (byte)((value & 0xff000000) >> 24));
+			this.oSP.UInt16 -= 1;
+			this.oMemory.WriteUInt8(this.oSS.UInt16, this.oSP.UInt16, (byte)((value & 0xff0000) >> 16));
+			this.oSP.UInt16 -= 1;
+			this.oMemory.WriteUInt8(this.oSS.UInt16, this.oSP.UInt16, (byte)((value & 0xff00) >> 8));
+			this.oSP.UInt16 -= 1;
+			this.oMemory.WriteUInt8(this.oSS.UInt16, this.oSP.UInt16, (byte)(value & 0xff));
 		}
 
 		public void POPA_UInt16()
 		{
-			this.oDI.Word = this.POP_UInt16();
-			this.oSI.Word = this.POP_UInt16();
-			this.oBP.Word = this.POP_UInt16();
+			this.oDI.UInt16 = this.POP_UInt16();
+			this.oSI.UInt16 = this.POP_UInt16();
+			this.oBP.UInt16 = this.POP_UInt16();
 			this.POP_UInt16();
-			this.oBX.Word = this.POP_UInt16();
-			this.oDX.Word = this.POP_UInt16();
-			this.oCX.Word = this.POP_UInt16();
-			this.oAX.Word = this.POP_UInt16();
+			this.oBX.UInt16 = this.POP_UInt16();
+			this.oDX.UInt16 = this.POP_UInt16();
+			this.oCX.UInt16 = this.POP_UInt16();
+			this.oAX.UInt16 = this.POP_UInt16();
 		}
 
 		public void POPF_UInt16()
@@ -633,28 +615,28 @@ namespace IRB.VirtualCPU
 
 		public ushort POP_UInt16()
 		{
-			if ((int)this.oSP.Word + 2 >= 0x10000)
+			if ((int)this.oSP.UInt16 + 2 >= 0x10000)
 			{
 				throw new Exception("Stack underflow");
 				//return 0;
 			}
 
-			return (ushort)((ushort)this.oMemory.ReadUInt8(this.oSS.Word, this.oSP.Word++) |
-				((ushort)this.oMemory.ReadUInt8(this.oSS.Word, this.oSP.Word++) << 8));
+			return (ushort)((ushort)this.oMemory.ReadUInt8(this.oSS.UInt16, this.oSP.UInt16++) |
+				((ushort)this.oMemory.ReadUInt8(this.oSS.UInt16, this.oSP.UInt16++) << 8));
 		}
 
 		public uint POP_UInt32()
 		{
-			if ((int)this.oSP.Word + 4 >= 0x10000)
+			if ((int)this.oSP.UInt16 + 4 >= 0x10000)
 			{
 				throw new Exception("Stack underflow");
 				//return 0;
 			}
 
-			return (uint)(((uint)this.oMemory.ReadUInt8(this.oSS.Word, this.oSP.Word++)) |
-				((uint)this.oMemory.ReadUInt8(this.oSS.Word, this.oSP.Word++) << 8) |
-				((uint)this.oMemory.ReadUInt8(this.oSS.Word, this.oSP.Word++) << 16) |
-				((uint)this.oMemory.ReadUInt8(this.oSS.Word, this.oSP.Word++) << 24));
+			return (uint)(((uint)this.oMemory.ReadUInt8(this.oSS.UInt16, this.oSP.UInt16++)) |
+				((uint)this.oMemory.ReadUInt8(this.oSS.UInt16, this.oSP.UInt16++) << 8) |
+				((uint)this.oMemory.ReadUInt8(this.oSS.UInt16, this.oSP.UInt16++) << 16) |
+				((uint)this.oMemory.ReadUInt8(this.oSS.UInt16, this.oSP.UInt16++) << 24));
 		}
 		#endregion
 
@@ -755,26 +737,26 @@ namespace IRB.VirtualCPU
 
 		public void CMPS_UInt8(VCPURegister regES, VCPURegister regDI, VCPURegister sReg, VCPURegister regSI)
 		{
-			CMP_UInt8(this.oMemory.ReadUInt8(regES.Word, regDI.Word), this.oMemory.ReadUInt8(sReg.Word, regSI.Word));
+			CMP_UInt8(this.oMemory.ReadUInt8(regES.UInt16, regDI.UInt16), this.oMemory.ReadUInt8(sReg.UInt16, regSI.UInt16));
 
 			if (this.oFlags.D)
 			{
-				this.oSI.Word--;
-				this.oDI.Word--;
+				this.oSI.UInt16--;
+				this.oDI.UInt16--;
 			}
 			else
 			{
-				this.oSI.Word++;
-				this.oDI.Word++;
+				this.oSI.UInt16++;
+				this.oDI.UInt16++;
 			}
 		}
 
 		public void REPE_CMPS_UInt8(VCPURegister regES, VCPURegister regDI, VCPURegister sReg, VCPURegister regSI)
 		{
-			while (this.oCX.Word != 0)
+			while (this.oCX.UInt16 != 0)
 			{
 				CMPS_UInt8(regES, regDI, sReg, regSI);
-				this.oCX.Word--;
+				this.oCX.UInt16--;
 
 				if (this.oFlags.Z)
 					break;
@@ -783,41 +765,41 @@ namespace IRB.VirtualCPU
 
 		public void CBW(VCPURegister regAX)
 		{
-			if ((regAX.Low & 0x80) != 0)
-				regAX.High = 0xff;
+			if ((regAX.LowUInt8 & 0x80) != 0)
+				regAX.HighUInt8 = 0xff;
 			else
-				regAX.High = 0;
+				regAX.HighUInt8 = 0;
 		}
 
 		public void CWD(VCPURegister regAX, VCPURegister regDX)
 		{
-			if ((regAX.Word & 0x8000) != 0)
-				regDX.Word = 0xffff;
+			if ((regAX.UInt16 & 0x8000) != 0)
+				regDX.UInt16 = 0xffff;
 			else
-				regDX.Word = 0;
+				regDX.UInt16 = 0;
 		}
 
 		public void DAS_UInt8()
 		{
-			byte osigned = (byte)(this.oAX.Low & 0x80);
-			if (((this.oAX.Low & 0x0f) > 9))
+			byte osigned = (byte)(this.oAX.LowUInt8 & 0x80);
+			if (((this.oAX.LowUInt8 & 0x0f) > 9))
 			{
-				if ((this.oAX.Low > 0x99) || this.oFlags.C)
+				if ((this.oAX.LowUInt8 > 0x99) || this.oFlags.C)
 				{
-					this.oAX.Low -= 0x60;
+					this.oAX.LowUInt8 -= 0x60;
 					this.oFlags.C = true;
 				}
 				else
 				{
-					this.oFlags.C = this.oAX.Low <= 0x05;
+					this.oFlags.C = this.oAX.LowUInt8 <= 0x05;
 				}
-				this.oAX.Low -= 6;
+				this.oAX.LowUInt8 -= 6;
 			}
 			else
 			{
-				if ((this.oAX.Low > 0x99) || this.oFlags.C)
+				if ((this.oAX.LowUInt8 > 0x99) || this.oFlags.C)
 				{
-					this.oAX.Low -= 0x60;
+					this.oAX.LowUInt8 -= 0x60;
 					this.oFlags.C = true;
 				}
 				else
@@ -825,9 +807,9 @@ namespace IRB.VirtualCPU
 					this.oFlags.C = false;
 				}
 			}
-			this.oFlags.O = osigned != 0 && (this.oAX.Low & 0x80) == 0;
-			this.oFlags.S = (this.oAX.Low & 0x80) != 0;
-			this.oFlags.Z = this.oAX.Low == 0;
+			this.oFlags.O = osigned != 0 && (this.oAX.LowUInt8 & 0x80) == 0;
+			this.oFlags.S = (this.oAX.LowUInt8 & 0x80) != 0;
+			this.oFlags.Z = this.oAX.LowUInt8 == 0;
 		}
 
 		public byte DEC_UInt8(byte value1)
@@ -856,14 +838,14 @@ namespace IRB.VirtualCPU
 		{
 			if (value == 0)
 				throw new Exception("Division by zero");
-			uint num = ((uint)regDX.Word << 16) | (uint)regAX.Word;
+			uint num = ((uint)regDX.UInt16 << 16) | (uint)regAX.UInt16;
 			uint quo = num / value;
 			ushort rem = (ushort)(num % value);
 			ushort quo16 = (ushort)(quo & 0xffff);
 			if (quo != quo16)
 				throw new Exception("Division error");
-			regDX.Word = rem;
-			regAX.Word = quo16;
+			regDX.UInt16 = rem;
+			regAX.UInt16 = quo16;
 		}
 
 		public void IDIV_UInt8(VCPURegister regAX, byte value)
@@ -871,14 +853,14 @@ namespace IRB.VirtualCPU
 			if (value == 0)
 				throw new Exception("Division by zero");
 			short valuea = (sbyte)value;
-			short num = (short)regAX.Word;
+			short num = (short)regAX.UInt16;
 			short quo = (short)(num / valuea);
 			sbyte rem = (sbyte)(num % valuea);
 			sbyte quo8 = (sbyte)((ushort)quo & 0xff);
 			if (quo != quo8)
 				throw new Exception("Division error");
-			regAX.High = (byte)rem;
-			regAX.Low = (byte)quo8;
+			regAX.HighUInt8 = (byte)rem;
+			regAX.LowUInt8 = (byte)quo8;
 		}
 
 		public void IDIV_UInt16(VCPURegister regAX, VCPURegister regDX, ushort value)
@@ -886,20 +868,20 @@ namespace IRB.VirtualCPU
 			if (value == 0)
 				throw new Exception("Division by zero");
 			int valuea = (short)value;
-			int num = (int)(((uint)regDX.Word << 16) | (uint)regAX.Word);
+			int num = (int)(((uint)regDX.UInt16 << 16) | (uint)regAX.UInt16);
 			int quo = num / valuea;
 			short rem = (short)(num % valuea);
 			short quo16 = (short)((uint)quo & 0xffff);
 			if (quo != quo16)
 				throw new Exception("Division error");
-			regDX.Word = (ushort)rem;
-			regAX.Word = (ushort)quo16;
+			regDX.UInt16 = (ushort)rem;
+			regAX.UInt16 = (ushort)quo16;
 		}
 
 		public void IMUL_UInt8(VCPURegister regAX, byte value1)
 		{
-			ushort res = (ushort)((short)((sbyte)regAX.Low) * (short)((sbyte)value1));
-			regAX.Word = res;
+			ushort res = (ushort)((short)((sbyte)regAX.LowUInt8) * (short)((sbyte)value1));
+			regAX.UInt16 = res;
 
 			if ((res & 0xff80) == 0xff80 || (res & 0xff80) == 0x0)
 			{
@@ -915,9 +897,9 @@ namespace IRB.VirtualCPU
 
 		public void IMUL_UInt16(VCPURegister regAX, VCPURegister regDX, ushort value1)
 		{
-			uint res = (uint)((int)((short)regAX.Word) * (int)((short)value1));
-			regAX.Word = (ushort)(res & 0xffff);
-			regDX.Word = (ushort)((res & 0xffff0000) >> 16);
+			uint res = (uint)((int)((short)regAX.UInt16) * (int)((short)value1));
+			regAX.UInt16 = (ushort)(res & 0xffff);
+			regDX.UInt16 = (ushort)((res & 0xffff0000) >> 16);
 
 			if ((res & 0xffff8000) == 0xffff8000 || (res & 0xffff8000) == 0x0)
 			{
@@ -971,11 +953,11 @@ namespace IRB.VirtualCPU
 			return res;
 		}
 
-		public bool Loop(VCPURegister regCX)
+		public bool Loop_UInt16(VCPURegister regCX)
 		{
-			regCX.Word--;
+			regCX.UInt16--;
 
-			return regCX.Word != 0;
+			return regCX.UInt16 != 0;
 		}
 
 		/// <summary>
@@ -983,16 +965,16 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		public void LODS_UInt8()
 		{
-			this.oAX.Low = oMemory.ReadUInt8(this.oDS.Word, this.oSI.Word);
+			this.oAX.LowUInt8 = oMemory.ReadUInt8(this.oDS.UInt16, this.oSI.UInt16);
 
 			// Modifies flags: None
 			if (this.oFlags.D)
 			{
-				this.oSI.Word--;
+				this.oSI.UInt16--;
 			}
 			else
 			{
-				this.oSI.Word++;
+				this.oSI.UInt16++;
 			}
 		}
 
@@ -1001,16 +983,16 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		public void LODS_UInt16()
 		{
-			this.oAX.Word = oMemory.ReadUInt16(this.oDS.Word, this.oSI.Word);
+			this.oAX.UInt16 = oMemory.ReadUInt16(this.oDS.UInt16, this.oSI.UInt16);
 
 			// Modifies flags: None
 			if (this.oFlags.D)
 			{
-				this.oSI.Word -= 2;
+				this.oSI.UInt16 -= 2;
 			}
 			else
 			{
-				this.oSI.Word += 2;
+				this.oSI.UInt16 += 2;
 			}
 		}
 
@@ -1047,17 +1029,17 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		public void MOVS_UInt8(VCPURegister sReg, VCPURegister regSI, VCPURegister regES, VCPURegister regDI)
 		{
-			oMemory.WriteUInt8(regES.Word, regDI.Word, oMemory.ReadUInt8(sReg.Word, regSI.Word));
+			oMemory.WriteUInt8(regES.UInt16, regDI.UInt16, oMemory.ReadUInt8(sReg.UInt16, regSI.UInt16));
 			// Modifies flags: None
 			if (this.oFlags.D)
 			{
-				regSI.Word--;
-				regDI.Word--;
+				regSI.UInt16--;
+				regDI.UInt16--;
 			}
 			else
 			{
-				regSI.Word++;
-				regDI.Word++;
+				regSI.UInt16++;
+				regDI.UInt16++;
 			}
 		}
 
@@ -1066,11 +1048,11 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		public void REPE_MOVS_UInt8(VCPURegister sReg, VCPURegister regSI, VCPURegister regES, VCPURegister regDI, VCPURegister regCX)
 		{
-			while (regCX.Word != 0)
+			while (regCX.UInt16 != 0)
 			{
 				MOVS_UInt8(sReg, regSI, regES, regDI);
 
-				regCX.Word--;
+				regCX.UInt16--;
 			}
 		}
 
@@ -1079,17 +1061,17 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		public void MOVS_UInt16(VCPURegister sReg, VCPURegister regSI, VCPURegister regES, VCPURegister regDI)
 		{
-			oMemory.WriteUInt16(regES.Word, regDI.Word, oMemory.ReadUInt16(sReg.Word, regSI.Word));
+			oMemory.WriteUInt16(regES.UInt16, regDI.UInt16, oMemory.ReadUInt16(sReg.UInt16, regSI.UInt16));
 			// Modifies flags: None
 			if (this.oFlags.D)
 			{
-				regSI.Word -= 2;
-				regDI.Word -= 2;
+				regSI.UInt16 -= 2;
+				regDI.UInt16 -= 2;
 			}
 			else
 			{
-				regSI.Word += 2;
-				regDI.Word += 2;
+				regSI.UInt16 += 2;
+				regDI.UInt16 += 2;
 			}
 		}
 
@@ -1098,19 +1080,19 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		public void REPE_MOVS_UInt16(VCPURegister sReg, VCPURegister regSI, VCPURegister regES, VCPURegister regDI, VCPURegister regCX)
 		{
-			while (regCX.Word != 0)
+			while (regCX.UInt16 != 0)
 			{
 				MOVS_UInt16(sReg, regSI, regES, regDI);
 
-				regCX.Word--;
+				regCX.UInt16--;
 			}
 		}
 
 		public void MUL_UInt8(VCPURegister regAX, byte value)
 		{
-			regAX.Word = (ushort)((ushort)regAX.Low * (ushort)value);
-			oFlags.Z = regAX.Low == 0;
-			if (regAX.High != 0)
+			regAX.UInt16 = (ushort)((ushort)regAX.LowUInt8 * (ushort)value);
+			oFlags.Z = regAX.LowUInt8 == 0;
+			if (regAX.HighUInt8 != 0)
 			{
 				oFlags.C = true;
 				oFlags.O = true;
@@ -1124,11 +1106,11 @@ namespace IRB.VirtualCPU
 
 		public void MUL_UInt16(VCPURegister regDX, VCPURegister regAX, ushort value)
 		{
-			uint tempu = (uint)regAX.Word * (uint)value;
-			regAX.Word = (ushort)(tempu & 0xfffful);
-			regDX.Word = (ushort)((tempu & 0xffff0000ul) >> 16);
-			oFlags.Z = regAX.Word == 0;
-			if (regDX.Word != 0)
+			uint tempu = (uint)regAX.UInt16 * (uint)value;
+			regAX.UInt16 = (ushort)(tempu & 0xfffful);
+			regDX.UInt16 = (ushort)((tempu & 0xffff0000ul) >> 16);
+			oFlags.Z = regAX.UInt16 == 0;
+			if (regDX.UInt16 != 0)
 			{
 				oFlags.C = true;
 				oFlags.O = true;
@@ -1416,31 +1398,31 @@ namespace IRB.VirtualCPU
 
 		public void SCAS_UInt8()
 		{
-			CMP_UInt8(this.oAX.Low, oMemory.ReadUInt8(this.oES.Word, this.oDI.Word));
+			CMP_UInt8(this.oAX.LowUInt8, oMemory.ReadUInt8(this.oES.UInt16, this.oDI.UInt16));
 			if (this.oFlags.D)
 			{
-				this.oDI.Word--;
+				this.oDI.UInt16--;
 			}
 			else
 			{
-				this.oDI.Word++;
+				this.oDI.UInt16++;
 			}
 		}
 
 		public void REPNE_SCAS_UInt8()
 		{
-			while (this.oCX.Word != 0)
+			while (this.oCX.UInt16 != 0)
 			{
-				CMP_UInt8(this.oAX.Low, oMemory.ReadUInt8(this.oES.Word, this.oDI.Word));
+				CMP_UInt8(this.oAX.LowUInt8, oMemory.ReadUInt8(this.oES.UInt16, this.oDI.UInt16));
 				if (this.oFlags.D)
 				{
-					this.oDI.Word--;
+					this.oDI.UInt16--;
 				}
 				else
 				{
-					this.oDI.Word++;
+					this.oDI.UInt16++;
 				}
-				this.oCX.Word--;
+				this.oCX.UInt16--;
 
 				if (!this.oFlags.Z)
 					break;
@@ -1527,15 +1509,15 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		public void STOS_UInt8()
 		{
-			oMemory.WriteUInt8(this.oES.Word, this.oDI.Word, this.oAX.Low);
+			oMemory.WriteUInt8(this.oES.UInt16, this.oDI.UInt16, this.oAX.LowUInt8);
 			// Modifies flags: None
 			if (this.oFlags.D)
 			{
-				this.oDI.Word--;
+				this.oDI.UInt16--;
 			}
 			else
 			{
-				this.oDI.Word++;
+				this.oDI.UInt16++;
 			}
 		}
 
@@ -1544,10 +1526,10 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		public void REPE_STOS_UInt8()
 		{
-			while (this.oCX.Word != 0)
+			while (this.oCX.UInt16 != 0)
 			{
 				STOS_UInt8();
-				this.oCX.Word--;
+				this.oCX.UInt16--;
 			}
 		}
 
@@ -1556,15 +1538,15 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		public void STOS_UInt16()
 		{
-			oMemory.WriteUInt16(this.oES.Word, this.oDI.Word, this.oAX.Word);
+			oMemory.WriteUInt16(this.oES.UInt16, this.oDI.UInt16, this.oAX.UInt16);
 			// Modifies flags: None
 			if (this.oFlags.D)
 			{
-				this.oDI.Word -= 2;
+				this.oDI.UInt16 -= 2;
 			}
 			else
 			{
-				this.oDI.Word += 2;
+				this.oDI.UInt16 += 2;
 			}
 		}
 
@@ -1573,10 +1555,10 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		public void REPE_STOS_UInt16()
 		{
-			while (this.oCX.Word != 0)
+			while (this.oCX.UInt16 != 0)
 			{
 				STOS_UInt16();
-				this.oCX.Word--;
+				this.oCX.UInt16--;
 			}
 		}
 
@@ -1626,7 +1608,7 @@ namespace IRB.VirtualCPU
 
 		public byte XLAT_UInt8(VCPURegister sReg)
 		{
-			return this.oMemory.ReadUInt8(sReg.Word, (ushort)(this.oBX.Word + this.oAX.Low));
+			return this.oMemory.ReadUInt8(sReg.UInt16, (ushort)(this.oBX.UInt16 + this.oAX.LowUInt8));
 		}
 
 		public byte XOR_UInt8(byte value1, byte value2)
@@ -1793,10 +1775,10 @@ namespace IRB.VirtualCPU
 
 		public void REPE_OUTS_UInt8(VCPURegister regSeg, VCPURegister regSI, VCPURegister regCX)
 		{
-			while (this.oCX.Word != 0)
+			while (this.oCX.UInt16 != 0)
 			{
-				OUT_UInt8(this.oDX.Word, this.oMemory.ReadUInt8(regSeg.Word, regSI.Word));
-				this.oCX.Word--;
+				OUT_UInt8(this.oDX.UInt16, this.oMemory.ReadUInt8(regSeg.UInt16, regSI.UInt16));
+				this.oCX.UInt16--;
 			}
 		}
 		#endregion
@@ -1819,27 +1801,22 @@ namespace IRB.VirtualCPU
 			//System.Windows.Forms.Application.Exit();
 		}
 
-		public void Call(ushort offset)
+		public void Call_UInt16(ushort offset)
 		{
-			this.oLog.WriteLine($"Trying to call function at 0x{this.oCS.Word:x4}:0x{offset:x4}");
+			this.oLog.WriteLine($"Trying to call function at 0x{this.oCS.UInt16:x4}:0x{offset:x4}");
 		}
 
-		public void Call(ushort segment, ushort offset)
-		{
-			this.oLog.WriteLine($"Trying to call function at 0x{segment:x4}:0x{offset:x4}");
-		}
-
-		public void CallF(uint address)
+		public void Call_UInt32(uint address)
 		{
 			this.oLog.WriteLine($"Trying to call function at 0x{address:x8}");
 		}
 
-		public void Jmp(ushort offset)
+		public void Jmp_UInt16(ushort offset)
 		{
-			this.oLog.WriteLine($"Trying to jump to 0x{this.CS.Word:x4}:0x{offset:x4}");
+			this.oLog.WriteLine($"Trying to jump to 0x{this.CS.UInt16:x4}:0x{offset:x4}");
 		}
 
-		public void JmpF(uint address)
+		public void Jmp_UInt32(uint address)
 		{
 			this.oLog.WriteLine($"Trying to jump to 0x{address:x8}");
 		}
@@ -1848,7 +1825,7 @@ namespace IRB.VirtualCPU
 		#region Interrupt instruction
 		private byte bVGAMode = 3;
 
-		public void INT(byte value)
+		public void INT_UInt8(byte value)
 		{
 			int iCount;
 			int iLeft;
@@ -1857,27 +1834,27 @@ namespace IRB.VirtualCPU
 			switch (value)
 			{
 				case 0x10:
-					switch (this.oAX.High)
+					switch (this.oAX.HighUInt8)
 					{
 						case 0x0:
-							this.bVGAMode = this.oAX.Low;
+							this.bVGAMode = this.oAX.LowUInt8;
 							this.oFlags.C = false;
 							break;
 
 						case 0x2:
-							Console.CursorLeft = this.oDX.Low;
-							Console.CursorTop = this.oDX.High;
+							Console.CursorLeft = this.oDX.LowUInt8;
+							Console.CursorTop = this.oDX.HighUInt8;
 							this.oFlags.C = false;
 							break;
 
 						case 0x9:
 							iLeft = Console.CursorLeft;
 							iTop = Console.CursorTop;
-							iCount = this.oCX.Word;
+							iCount = this.oCX.UInt16;
 							for (; iCount > 0; iCount--)
 							{
 								//this.oGPU.PrintStdOut((char)this.oAX.Low, this.oBX.Low);
-								Console.Write((char)this.oAX.Low);
+								Console.Write((char)this.oAX.LowUInt8);
 							}
 							Console.CursorLeft = iLeft;
 							Console.CursorTop = iTop;
@@ -1885,62 +1862,62 @@ namespace IRB.VirtualCPU
 							break;
 
 						case 0xe:
-							Console.Write((char)this.oAX.Low);
+							Console.Write((char)this.oAX.LowUInt8);
 							this.oFlags.C = false;
 							break;
 
 						case 0xf:
-							this.oAX.High = 80;
-							this.oAX.Low = this.bVGAMode;
-							this.oBX.High = 0;
+							this.oAX.HighUInt8 = 80;
+							this.oAX.LowUInt8 = this.bVGAMode;
+							this.oBX.HighUInt8 = 0;
 							this.oFlags.C = false;
 							break;
 
 						default:
-							throw new Exception($"Unknown 0x10 interrupt 0x{this.oAX.High:x2}");
+							throw new Exception($"Unknown 0x10 interrupt 0x{this.oAX.HighUInt8:x2}");
 					}
 					break;
 
 				case 0x11:
-					this.oAX.Word = 0x22;
+					this.oAX.UInt16 = 0x22;
 					break;
 
 				case 0x16:
-					switch (this.oAX.High)
+					switch (this.oAX.HighUInt8)
 					{
 						case 0:
-							this.oParent.MSCAPI.getch();
-							if (this.oAX.Word == 0)
+							this.oParent.CAPI.getch();
+							if (this.oAX.UInt16 == 0)
 							{
-								this.oParent.MSCAPI.getch();
-								switch (this.oAX.Word)
+								this.oParent.CAPI.getch();
+								switch (this.oAX.UInt16)
 								{
 									case 0x4b:
-										this.oAX.Word = 0x4b00; // Left
+										this.oAX.UInt16 = 0x4b00; // Left
 										break;
 
 									case 0x48:
-										this.oAX.Word = 0x4800; // Up
+										this.oAX.UInt16 = 0x4800; // Up
 										break;
 
 									case 0x4d:
-										this.oAX.Word = 0x4d00; // Right
+										this.oAX.UInt16 = 0x4d00; // Right
 										break;
 
 									case 0x50:
-										this.oAX.Word = 0x5000; // Down
+										this.oAX.UInt16 = 0x5000; // Down
 										break;
 								}
 							}
 							break;
 
 						default:
-							throw new Exception($"Unknown 0x16 interrupt 0x{this.oAX.High:x2}");
+							throw new Exception($"Unknown 0x16 interrupt 0x{this.oAX.HighUInt8:x2}");
 					}
 					break;
 
 				case 0x21:
-					switch (this.oAX.High)
+					switch (this.oAX.HighUInt8)
 					{
 						case 0:
 							DOSTerminateProcess();
@@ -1967,7 +1944,7 @@ namespace IRB.VirtualCPU
 							break;
 
 						case 0xe:
-							this.oAX.Low = 3;
+							this.oAX.LowUInt8 = 3;
 							break;
 
 						case 0xf:
@@ -2016,7 +1993,7 @@ namespace IRB.VirtualCPU
 
 						case 0x30:
 							// DOS version 6.33
-							this.oAX.Word = 0x1606;
+							this.oAX.UInt16 = 0x1606;
 							this.oFlags.C = false;
 							break;
 
@@ -2077,7 +2054,7 @@ namespace IRB.VirtualCPU
 							break;
 
 						default:
-							throw new Exception($"Unknown 0x21 interrupt 0x{this.oAX.High:x2}");
+							throw new Exception($"Unknown 0x21 interrupt 0x{this.oAX.HighUInt8:x2}");
 					}
 					break;
 
@@ -2097,33 +2074,33 @@ namespace IRB.VirtualCPU
 				this.DoEvents();
 			}
 
-			lock (this.oParent.Graphics.GLock)
+			lock (VCPU.KeyboardLock)
 			{
 				int iTemp = this.aKeys.Dequeue();
 				if (iTemp < 0x80)
 				{
-					this.oAX.Low = (byte)(iTemp & 0xff);
-					Console.Write((char)this.oAX.Low);
+					this.oAX.LowUInt8 = (byte)(iTemp & 0xff);
+					Console.Write((char)this.oAX.LowUInt8);
 				}
 				else
 				{
-					this.oAX.Low = 0;
+					this.oAX.LowUInt8 = 0;
 				}
 			}
 		}
 
 		private void DOSLoadOrExecuteProgram()
 		{
-			if (this.oAX.Low == 3)
+			if (this.oAX.LowUInt8 == 3)
 			{
-				string sName = MSCAPI.GetDOSFileName(this.ReadString(VCPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper());
+				string sName = CAPI.GetDOSFileName(this.ReadString(VCPU.ToLinearAddress(this.DS.UInt16, this.DX.UInt16)).ToUpper());
 				string sPath = $"{VCPU.DefaultCIVPath}{sName}";
-				ushort usSegment = ReadUInt16(this.oES.Word, this.oBX.Word);
-				ushort usRelocationSegment = ReadUInt16(this.oES.Word, (ushort)(this.oBX.Word + 2));
+				ushort usSegment = ReadUInt16(this.oES.UInt16, this.oBX.UInt16);
+				ushort usRelocationSegment = ReadUInt16(this.oES.UInt16, (ushort)(this.oBX.UInt16 + 2));
 
 				this.oLog.WriteLine($"Loading overlay '{sPath}' at segment 0x{usSegment:x4}");
 				MZExecutable oOverlay = new MZExecutable(sPath);
-				oOverlay.ApplyRelocations(usRelocationSegment);
+				//oOverlay.ApplyRelocations(usRelocationSegment);
 				this.oMemory.WriteBlock(usSegment, 0, oOverlay.Data, 0, oOverlay.Data.Length);
 				this.oFlags.C = false;
 			}
@@ -2135,15 +2112,15 @@ namespace IRB.VirtualCPU
 
 		private void DOSSetInterruptVector()
 		{
-			this.oLog.WriteLine($"Setting interrupt vector 0x{this.oAX.Low:x2} to address 0x{this.oDS.Word:x4}:0x{this.oDX.Word:x4}");
+			this.oLog.WriteLine($"Setting interrupt vector 0x{this.oAX.LowUInt8:x2} to address 0x{this.oDS.UInt16:x4}:0x{this.oDX.UInt16:x4}");
 			this.oFlags.C = false;
 		}
 
 		private void DOSGetInterruptVector()
 		{
-			this.oLog.WriteLine($"Getting interrupt vector 0x{this.oAX.Low:x2} address");
-			this.oES.Word = 0;
-			this.oBX.Word = 0;
+			this.oLog.WriteLine($"Getting interrupt vector 0x{this.oAX.LowUInt8:x2} address");
+			this.oES.UInt16 = 0;
+			this.oBX.UInt16 = 0;
 			this.oFlags.C = false;
 		}
 
@@ -2157,7 +2134,7 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		private void DOSPrintChar()
 		{
-			Console.Write((char)this.oDX.Low);
+			Console.Write((char)this.oDX.LowUInt8);
 			this.oFlags.C = false;
 		}
 
@@ -2176,30 +2153,30 @@ namespace IRB.VirtualCPU
 		private void DOSIOControlForDevices()
 		{
 			// I/O Control for Devices
-			if (this.oAX.Low == 0)
+			if (this.oAX.LowUInt8 == 0)
 			{
-				this.oLog.WriteLine($"Get Device Information for handle 0x{this.oBX.Word:x4}");
-				switch (this.oBX.Word)
+				this.oLog.WriteLine($"Get Device Information for handle 0x{this.oBX.UInt16:x4}");
+				switch (this.oBX.UInt16)
 				{
 					case 0:
 					case 1:
 					case 2:
-						this.oDX.Word = 0x80d3;
+						this.oDX.UInt16 = 0x80d3;
 						this.oFlags.C = false;
 						break;
 
 					case 3:
-						this.oDX.Word = 0x80c0;
+						this.oDX.UInt16 = 0x80c0;
 						this.oFlags.C = false;
 						break;
 
 					case 4:
-						this.oDX.Word = 0xa8c0;
+						this.oDX.UInt16 = 0xa8c0;
 						this.oFlags.C = false;
 						break;
 
 					default:
-						this.oDX.Word = 0xa8c0;
+						this.oDX.UInt16 = 0xa8c0;
 						this.oFlags.C = false;
 						break;
 				}
@@ -2220,25 +2197,25 @@ namespace IRB.VirtualCPU
 		///</summary>
 		private void DOSDirectConsoleIO()
 		{
-			if (this.oDX.Low != 0xff)
+			if (this.oDX.LowUInt8 != 0xff)
 			{
-				Console.Write((char)this.oDX.Low);
+				Console.Write((char)this.oDX.LowUInt8);
 			}
 			else
 			{
 				if (this.aKeys.Count > 0)
 				{
 					oFlags.Z = false;
-					lock (this.oParent.Graphics.GLock)
+					lock (VCPU.KeyboardLock)
 					{
 						int iTemp = this.aKeys.Dequeue();
 						if (iTemp < 0x80)
 						{
-							this.oAX.Low = (byte)(iTemp & 0xff);
+							this.oAX.LowUInt8 = (byte)(iTemp & 0xff);
 						}
 						else
 						{
-							this.oAX.Low = 0;
+							this.oAX.LowUInt8 = 0;
 						}
 					}
 				}
@@ -2260,7 +2237,7 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		private void DOSPrintString()
 		{
-			string sTemp = this.ReadDosString(VCPU.ToLinearAddress(this.oDS.Word, this.oDX.Word));
+			string sTemp = this.ReadDosString(VCPU.ToLinearAddress(this.oDS.UInt16, this.oDX.UInt16));
 			if (sTemp.Length > 0)
 			{
 				Console.Write(sTemp);
@@ -2271,7 +2248,7 @@ namespace IRB.VirtualCPU
 		private void DOSCreateFileUsingHandle()
 		{
 			// open file
-			string sName = MSCAPI.GetDOSFileName(this.ReadString(VCPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper());
+			string sName = CAPI.GetDOSFileName(this.ReadString(VCPU.ToLinearAddress(this.DS.UInt16, this.DX.UInt16)).ToUpper());
 			string sPath = $"{VCPU.DefaultCIVPath}{sName}";
 			FileAccess access = FileAccess.ReadWrite;
 
@@ -2303,7 +2280,7 @@ namespace IRB.VirtualCPU
 				{
 					this.oLog.WriteLine($"Creating file '{sPath}'");
 					this.aOpenFiles.Add(this.sFileHandleCount, new FileStreamItem(new FileStream(sPath, FileMode.Create, access), FileStreamTypeEnum.Binary));
-					this.oAX.Word = (ushort)this.sFileHandleCount;
+					this.oAX.UInt16 = (ushort)this.sFileHandleCount;
 					this.sFileHandleCount++;
 					this.oFlags.C = false;
 				}
@@ -2316,11 +2293,11 @@ namespace IRB.VirtualCPU
 
 		private void DOSWriteFileUsingHandle()
 		{
-			if (this.aOpenFiles.ContainsKey((short)this.oBX.Word))
+			if (this.aOpenFiles.ContainsKey((short)this.oBX.UInt16))
 			{
-				FileStreamItem fileItem = this.aOpenFiles.GetValueByKey((short)this.oBX.Word);
-				ushort length = this.oCX.Word;
-				uint address = VCPU.ToLinearAddress(this.oDS.Word, this.oDX.Word);
+				FileStreamItem fileItem = this.aOpenFiles.GetValueByKey((short)this.oBX.UInt16);
+				ushort length = this.oCX.UInt16;
+				uint address = VCPU.ToLinearAddress(this.oDS.UInt16, this.oDX.UInt16);
 
 				for (int i = 0; i < length; i++)
 				{
@@ -2328,7 +2305,7 @@ namespace IRB.VirtualCPU
 					address++;
 				}
 
-				this.oAX.Word = length;
+				this.oAX.UInt16 = length;
 				this.oFlags.C = false;
 			}
 			else
@@ -2339,12 +2316,12 @@ namespace IRB.VirtualCPU
 
 		private void DOSMoveFilePointerUsingHandle()
 		{
-			if (this.aOpenFiles.ContainsKey((short)this.oBX.Word))
+			if (this.aOpenFiles.ContainsKey((short)this.oBX.UInt16))
 			{
-				FileStreamItem fileItem = this.aOpenFiles.GetValueByKey((short)this.oBX.Word);
+				FileStreamItem fileItem = this.aOpenFiles.GetValueByKey((short)this.oBX.UInt16);
 				SeekOrigin origin = SeekOrigin.Begin;
 
-				switch (this.oAX.Low)
+				switch (this.oAX.LowUInt8)
 				{
 					case 0:
 						origin = SeekOrigin.Begin;
@@ -2359,12 +2336,12 @@ namespace IRB.VirtualCPU
 						break;
 				}
 
-				int position = (int)(((uint)this.oCX.Word << 16) | (uint)this.oDX.Word);
+				int position = (int)(((uint)this.oCX.UInt16 << 16) | (uint)this.oDX.UInt16);
 
 				fileItem.Stream.Seek(position, origin);
 
-				this.oDX.Word = (ushort)((fileItem.Stream.Position & 0xffff0000) >> 16);
-				this.oAX.Word = (ushort)(fileItem.Stream.Position & 0xffff);
+				this.oDX.UInt16 = (ushort)((fileItem.Stream.Position & 0xffff0000) >> 16);
+				this.oAX.UInt16 = (ushort)(fileItem.Stream.Position & 0xffff);
 				this.oFlags.C = false;
 			}
 			else
@@ -2376,11 +2353,11 @@ namespace IRB.VirtualCPU
 		private void DOSOpenFileUsingHandle()
 		{
 			// open file
-			string sName = this.ReadString(VCPU.ToLinearAddress(this.DS.Word, this.DX.Word)).ToUpper();
+			string sName = this.ReadString(VCPU.ToLinearAddress(this.DS.UInt16, this.DX.UInt16)).ToUpper();
 			string sPath = $"{VCPU.DefaultCIVPath}{sName}";
 			FileAccess access = FileAccess.Read;
 
-			switch (this.oAX.Low & 0x7)
+			switch (this.oAX.LowUInt8 & 0x7)
 			{
 				case 0:
 					access = FileAccess.Read;
@@ -2408,7 +2385,7 @@ namespace IRB.VirtualCPU
 				{
 					this.oLog.WriteLine($"Opening file '{sPath}'");
 					this.aOpenFiles.Add(this.sFileHandleCount, new FileStreamItem(new FileStream(sPath, FileMode.Open, access), FileStreamTypeEnum.Binary));
-					this.oAX.Word = (ushort)this.sFileHandleCount;
+					this.oAX.UInt16 = (ushort)this.sFileHandleCount;
 					this.sFileHandleCount++;
 					this.oFlags.C = false;
 				}
@@ -2421,7 +2398,7 @@ namespace IRB.VirtualCPU
 
 		private void DOSCloseFileUsingHandle()
 		{
-			short handle = (short)this.oBX.Word;
+			short handle = (short)this.oBX.UInt16;
 			if (this.aOpenFiles.ContainsKey(handle))
 			{
 				this.aOpenFiles.GetValueByKey(handle).Stream.Close();
@@ -2437,15 +2414,15 @@ namespace IRB.VirtualCPU
 
 		private void DOSReadFromFileOrDeviceUsingHandle()
 		{
-			short handle = (short)this.oBX.Word;
+			short handle = (short)this.oBX.UInt16;
 			if (this.aOpenFiles.ContainsKey(handle))
 			{
-				byte[] aBuffer = new byte[this.oCX.Word];
+				byte[] aBuffer = new byte[this.oCX.UInt16];
 				int iReadBytes = this.aOpenFiles.GetValueByKey(handle).Stream.Read(aBuffer, 0, aBuffer.Length);
 				if (iReadBytes >= 0)
 				{
-					this.oMemory.WriteBlock(this.oDS.Word, this.oDX.Word, aBuffer, 0, iReadBytes);
-					this.oAX.Word = (ushort)iReadBytes;
+					this.oMemory.WriteBlock(this.oDS.UInt16, this.oDX.UInt16, aBuffer, 0, iReadBytes);
+					this.oAX.UInt16 = (ushort)iReadBytes;
 					this.oFlags.C = false;
 				}
 				else
@@ -2475,13 +2452,13 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		private void DOSOpenFile()
 		{
-			if (DOS_FCBOpen(this.oDS.Word, this.oDX.Word))
+			if (DOS_FCBOpen(this.oDS.UInt16, this.oDX.UInt16))
 			{
-				this.oAX.Low = 0;
+				this.oAX.LowUInt8 = 0;
 			}
 			else
 			{
-				this.oAX.Low = 0xff;
+				this.oAX.LowUInt8 = 0xff;
 			}
 		}
 
@@ -2489,18 +2466,18 @@ namespace IRB.VirtualCPU
 		{
 			// Force C drive
 			//string sTemp = Path.GetPathRoot(sDefaultCIVPath).ToUpper();
-			this.oAX.Low = 2; // (byte)(sTemp[0] - 'A');
+			this.oAX.LowUInt8 = 2; // (byte)(sTemp[0] - 'A');
 			this.oFlags.C = false;
 		}
 
 		private void DosGetCurrentDirectory()
 		{
-			if (this.oDX.Low != 0 && this.oDX.Low != 2)
+			if (this.oDX.LowUInt8 != 0 && this.oDX.LowUInt8 != 2)
 			{
-				this.oLog.WriteLine($"Wrong drive number {this.oDX.Low}");
+				this.oLog.WriteLine($"Wrong drive number {this.oDX.LowUInt8}");
 			}
 			string sTemp = VCPU.DefaultCIVPath.Substring(3).ToUpper();
-			this.WriteString(VCPU.ToLinearAddress(this.oDS.Word, this.oSI.Word), sTemp, sTemp.Length);
+			this.WriteString(VCPU.ToLinearAddress(this.oDS.UInt16, this.oSI.UInt16), sTemp);
 			this.oFlags.C = false;
 		}
 
@@ -2561,21 +2538,21 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		private void DOSCloseFile()
 		{
-			if (DOS_FCBClose(this.oDS.Word, this.oDX.Word))
+			if (DOS_FCBClose(this.oDS.UInt16, this.oDX.UInt16))
 			{
-				this.oAX.Low = 0;
+				this.oAX.LowUInt8 = 0;
 			}
 			else
 			{
-				this.oAX.Low = 0xff;
+				this.oAX.LowUInt8 = 0xff;
 			}
 			this.oFlags.C = false;
 		}
 
 		void DOSParseAFilenameForFCB()
 		{
-			DOS_FCB fcb = new DOS_FCB(this.oMemory, this.oES.Word, this.oDI.Word);
-			string sFilename = MSCAPI.GetDOSFileName(this.ReadString(VCPU.ToLinearAddress(this.oDS.Word, this.oSI.Word)).ToUpper());
+			DOS_FCB fcb = new DOS_FCB(this.oMemory, this.oES.UInt16, this.oDI.UInt16);
+			string sFilename = CAPI.GetDOSFileName(this.ReadString(VCPU.ToLinearAddress(this.oDS.UInt16, this.oSI.UInt16)).ToUpper());
 			string sName = Path.GetFileNameWithoutExtension(sFilename);
 			string sExtension = Path.GetExtension(sFilename).Substring(1);
 			string sPath = $"{VCPU.DefaultCIVPath}{sFilename}";
@@ -2584,31 +2561,31 @@ namespace IRB.VirtualCPU
 			{
 				fcb.SetName(2, ref sName, ref sExtension);
 
-				this.oSI.Word = (ushort)(this.oSI.Word + sFilename.Length);
-				this.oAX.Low = 0;
+				this.oSI.UInt16 = (ushort)(this.oSI.UInt16 + sFilename.Length);
+				this.oAX.LowUInt8 = 0;
 			}
 			else
 			{
 				sName = "";
 				fcb.SetName(2, ref sName, ref sExtension);
-				this.oSI.Word = (ushort)(this.oSI.Word + sFilename.Length);
-				this.oAX.Low = 0;
+				this.oSI.UInt16 = (ushort)(this.oSI.UInt16 + sFilename.Length);
+				this.oAX.LowUInt8 = 0;
 			}
 		}
 
 		void DOSSearchForFirstEntryUsingFCB()
 		{
-			DOS_FCB fcb = new DOS_FCB(this.oMemory, this.oDS.Word, this.oDX.Word);
+			DOS_FCB fcb = new DOS_FCB(this.oMemory, this.oDS.UInt16, this.oDX.UInt16);
 			string sFileName = fcb.GetName();
 			string sPath = $"{VCPU.DefaultCIVPath}{sFileName.ToUpper()}";
 
 			if (File.Exists(sPath))
 			{
-				this.oAX.Low = 0;
+				this.oAX.LowUInt8 = 0;
 			}
 			else
 			{
-				this.oAX.Low = 0xff;
+				this.oAX.LowUInt8 = 0xff;
 			}
 		}
 
@@ -2663,7 +2640,7 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		private void DOSSetFileTransferArea()
 		{
-			this.uiDOSDTA = VCPU.ToLinearAddress(this.oDS.Word, this.oDX.Word);
+			this.uiDOSDTA = VCPU.ToLinearAddress(this.oDS.UInt16, this.oDX.UInt16);
 		}
 
 		/// <summary>
@@ -2682,7 +2659,7 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		private void DOSRandomFileRead()
 		{
-			this.oAX.Low = DOS_FCBRandomRead(this.oDS.Word, this.oDX.Word, 1, true);
+			this.oAX.LowUInt8 = DOS_FCBRandomRead(this.oDS.UInt16, this.oDX.UInt16, 1, true);
 		}
 
 		byte DOS_FCBRandomRead(ushort seg, ushort offset, ushort numRec, bool restore)
@@ -2801,10 +2778,10 @@ namespace IRB.VirtualCPU
 		private void DOSGetCurrentTime()
 		{
 			DateTime value = DateTime.Now;
-			this.oCX.High = (byte)value.Hour;
-			this.oCX.Low = (byte)value.Minute;
-			this.oDX.High = (byte)value.Second;
-			this.oDX.Low = (byte)(value.Millisecond / 10);
+			this.oCX.HighUInt8 = (byte)value.Hour;
+			this.oCX.LowUInt8 = (byte)value.Minute;
+			this.oDX.HighUInt8 = (byte)value.Second;
+			this.oDX.LowUInt8 = (byte)(value.Millisecond / 10);
 			this.oFlags.C = false;
 		}
 
@@ -2823,21 +2800,21 @@ namespace IRB.VirtualCPU
 		private void DOSAllocateBlock()
 		{
 			ushort usTemp;
-			if (this.oBX.Word == 0xffff)
+			if (this.oBX.UInt16 == 0xffff)
 			{
-				this.oBX.Word = (ushort)((this.oMemory.FreeMemory.Size >> 4) & 0xffff);
+				this.oBX.UInt16 = (ushort)((this.oMemory.FreeMemory.Size >> 4) & 0xffff);
 				this.oFlags.C = true;
 			}
-			else if (this.oMemory.AllocateMemoryBlock(this.oBX.Word, out usTemp))
+			else if (this.oMemory.AllocateMemoryBlock(this.oBX.UInt16, out usTemp))
 			{
 				oFlags.C = false;
-				this.oAX.Word = usTemp;
+				this.oAX.UInt16 = usTemp;
 			}
 			else
 			{
 				oFlags.C = true;
-				this.oBX.Word = usTemp;
-				this.oAX.Word = 8; // Insufficient memory
+				this.oBX.UInt16 = usTemp;
+				this.oAX.UInt16 = 8; // Insufficient memory
 			}
 		}
 
@@ -2857,14 +2834,14 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		private void DOSFreeBlock()
 		{
-			if (this.oMemory.FreeMemoryBlock(this.oES.Word))
+			if (this.oMemory.FreeMemoryBlock(this.oES.UInt16))
 			{
 				oFlags.C = false;
 			}
 			else
 			{
 				oFlags.C = true;
-				this.oAX.Word = 9; // Invalid memory block address
+				this.oAX.UInt16 = 9; // Invalid memory block address
 			}
 		}
 
@@ -2881,22 +2858,22 @@ namespace IRB.VirtualCPU
 		/// </summary>
 		private void DOSAdjustBlockSize()
 		{
-			if (this.oMemory.ResizeMemoryBlock(this.oES.Word, this.oBX.Word))
+			if (this.oMemory.ResizeMemoryBlock(this.oES.UInt16, this.oBX.UInt16))
 			{
 				oFlags.C = false;
-				this.oAX.Word = 0;
+				this.oAX.UInt16 = 0;
 			}
 			else
 			{
 				oFlags.C = true;
-				this.oAX.Word = 8;
-				this.oBX.Word = 0;
+				this.oAX.UInt16 = 8;
+				this.oBX.UInt16 = 0;
 			}
 		}
 
 		private void DOSTerminateProcessWithReturnCode()
 		{
-			this.Exit(this.oAX.Low);
+			this.Exit(this.oAX.LowUInt8);
 		}
 
 		private void DOSTerminateProcess()

@@ -1,0 +1,21 @@
+- layer 1: terrain data (TerrainTypeEnum), 0:0
+- layer 2: Per-Civ land occupation, 80:0
+
+- layer 3: Map group ID, the terrain is differentiated by water and land tiles which have separate objects, 0:50
+- layer 4: terrain-based land appeal for the computer to build cities, 80:50
+
+- layer 5: same as layer 6, but only what's visible to the player, 0:100
+- layer 6: terrain improvements (irrigation, mining, roads), 80:100
+
+- layer 7: same as layer 8, but only what's visible to the player, 0:150
+- layer 8: railroads, roads, rivers, fortresses, 80:150
+
+- layer 9: Per-Civ land exploration and active units, 160:0
+- layer 10: Mini-map render, 240:0
+
+
+Layer 5/6 - Terrain Improvements
+0x1 - City (Includes Roads/Rails and Irrigation)
+0x2 - Irrigation
+0x4 - Mine
+0x8 - Roads/Rails (Can be combined with Irrigation or Mine, but not both)

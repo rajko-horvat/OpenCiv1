@@ -1,0 +1,99 @@
+- CRectangle structure (18 bytes)
+short ScreenID
+short Left
+short Top
+short Width
+short Height
+ushort Flags (bit 0 - multiline?)
+byte FrontColor
+byte PixelMode (Normal = 0, And = 1, Or = 2, Xor = 3)
+byte BackColor
+byte Undefined0
+short FontID
+
+- City structure (28 bytes)
+ushort BuildingFlags0
+ushort BuildingFlags1
+sbyte XPosition
+sbyte YPosition
+byte StatusFlag
+sbyte ActualSize
+sbyte VisibleSize
+byte CurrentProductionID
+sbyte BaseTrade
+sbyte PlayerID
+short FoodCount
+short ShieldsCount
+ushort WorkersFlag0
+ushort WorkersFlag1
+ushort WorkersFlag2
+byte NameID
+sbyte[] TradeCityIDs[3]
+sbyte[] Unknown[2]
+
+- UnitDefinition structure (34 bytes, 0x22)
+string Name (12 bytes)
+short CancelTechnology
+short TerrainCategory
+short MoveCount
+short TurnsOutside
+short AttackStrength
+short DefenceStrength
+short Cost
+short SightRange
+short TransportCapacity
+short UnitCategory
+short TechnologyRequired
+
+- Unit structure (12 bytes)
+byte StatusFlag
+byte XPosition
+byte YPosition
+byte Type
+byte RemainingMoves
+byte SpecialMoves
+byte GotoX
+byte GotoY
+byte GotoNextDirection
+byte VisibleByFlag
+byte NextUnitInStack
+byte HomeCityID
+
+- BuildingDefinition structure (30 bytes)
+string Name (24 bytes)
+short Price
+short Maintenace
+short RequiredTechnology
+
+- TechnologyDefinition structure (16 bytes)
+string Name (14 bytes)
+byte RequiresTechnology1
+byte RequiresTechnology2
+
+- NationDefinition structure (58 bytes)
+string Leader (16 bytes)
+string Nation (16 bytes)
+string Nationality (16 bytes)
+ushort Unknown1
+ushort Unknown2
+ushort Unknown3
+ushort Unknown4
+ushort Unknown5
+
+- TerrainDefinition structure (19 bytes - 0x13)
+string Name (12 bytes)
+byte MovementCost
+byte DefenseBonus
+byte Food
+byte Production?
+byte Trade
+byte Unknown1
+byte Unknown2
+
+- TerrainMultipliers structure (12 bytes)
+short Multi1
+short Multi2
+short Multi3
+short Multi4
+short Multi5
+short Multi6

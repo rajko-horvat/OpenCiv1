@@ -1,0 +1,1092 @@
+using System;
+using System.IO;
+using System.Text;
+using IRB.VirtualCPU;
+
+namespace OpenCiv1
+{
+	public class CAPI
+	{
+		private OpenCiv1Game oParent;
+		private VCPU oCPU;
+		private RandomMT19937 oRNG = new RandomMT19937();
+
+		public CAPI(OpenCiv1Game parent)
+		{
+			this.oParent = parent;
+			this.oCPU = parent.CPU;
+		}
+
+		public void exit(short code)
+		{
+			this.oCPU.Log.WriteLine($"exit({code})");
+			this.oCPU.Exit(code);
+		}
+
+		#region Keyboard operations
+		public short kbhit()
+		{
+			this.oCPU.AX.UInt16 = (ushort)((this.oCPU.Keys.Count > 0) ? 0xffff : 0);
+
+			return (short)this.oCPU.AX.UInt16;
+		}
+
+		public short getch()
+		{
+			while (this.oCPU.Keys.Count == 0)
+			{
+				Thread.Sleep(200);
+				this.oCPU.DoEvents();
+			}
+
+			lock (VCPU.KeyboardLock)
+			{
+				this.oCPU.AX.UInt16 = (ushort)this.oCPU.Keys.Dequeue();
+			}
+
+			return (short)this.oCPU.AX.UInt16;
+		}
+		#endregion
+
+		#region Memory operations
+		public ushort memcpy(ushort destination, ushort source, ushort count)
+		{
+			this.oCPU.Log.EnterBlock($"memcpy(0x{destination:x4}, 0x{source:x4}, {count})");
+
+			// function body
+			int iDirection = 1;
+			uint uiDestination = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destination);
+			uint uiSource = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, source);
+			int iCount = count;
+
+			if (uiDestination > uiSource && (uiSource + iCount) >= uiDestination)
+			{
+				uiSource = (uint)(uiSource + iCount - 1);
+				uiDestination = (uint)(uiDestination + iCount - 1);
+				iDirection = -1;
+			}
+
+			while (iCount > 0)
+			{
+				this.oCPU.Memory.WriteUInt8(uiDestination, this.oCPU.Memory.ReadUInt8(uiSource));
+				uiDestination = (uint)((long)uiDestination + iDirection);
+				uiSource = (uint)((long)uiSource + iDirection);
+				iCount--;
+			}
+
+			// Far return
+			this.oCPU.Log.ExitBlock("memcpy");
+			this.oCPU.AX.UInt16 = destination; // for compatibility reasons
+			return destination;
+		}
+
+		public ushort memset(ushort destination, byte value, ushort count)
+		{
+			this.oCPU.Log.EnterBlock($"memset(0x{destination:x4}, 0x{value:x2}, {count})");
+
+			// function body
+			uint uiDestination = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destination);
+			int iCount = count;
+
+			while (iCount > 0)
+			{
+				this.oCPU.Memory.WriteUInt8(uiDestination, value);
+				uiDestination++;
+				iCount--;
+			}
+
+			this.oCPU.Log.ExitBlock("memset");
+			this.oCPU.AX.UInt16 = destination; // for compatibility reasons
+			return destination;
+		}
+
+		public void movedata(ushort sourceSegment, ushort sourceOffset, ushort destinationSegment, ushort destinationOffset, ushort count)
+		{
+			this.oCPU.Log.EnterBlock($"movedata(0x{sourceSegment:x4}, 0x{sourceOffset:x4}, 0x{destinationSegment:x4}, 0x{destinationOffset:x4}, {count})");
+
+			// function body
+			int iDirection = 1;
+			uint uiDestination = VCPU.ToLinearAddress(destinationSegment, destinationOffset);
+			uint uiSource = VCPU.ToLinearAddress(sourceSegment, sourceOffset);
+			int iCount = count;
+
+			if (uiDestination > uiSource && (uiSource + iCount) >= uiDestination)
+			{
+				uiSource = (uint)(uiSource + iCount - 1);
+				uiDestination = (uint)(uiDestination + iCount - 1);
+				iDirection = -1;
+			}
+
+			while (iCount > 0)
+			{
+				this.oCPU.Memory.WriteUInt8(uiDestination, this.oCPU.Memory.ReadUInt8(uiSource));
+				uiDestination = (uint)((long)uiDestination + iDirection);
+				uiSource = (uint)((long)uiSource + iDirection);
+				iCount--;
+			}
+
+			this.oCPU.Log.ExitBlock("movedata");
+		}
+
+		public void _dos_freemem(ushort objectPtr)
+		{
+			this.oCPU.Log.EnterBlock($"_dos_freemem(0x{objectPtr:x4})");
+
+			// function body
+			if (objectPtr >= 0xb000)
+			{
+				// this is a graphics bitmap
+				if (this.oParent.Graphics.Bitmaps.ContainsKey(objectPtr))
+				{
+					this.oParent.Graphics.Bitmaps.RemoveByKey(objectPtr);
+
+					this.oCPU.Flags.C = false;
+					this.oCPU.AX.UInt16 = 0;
+				}
+				else
+				{
+					throw new Exception($"The bitmap 0x{objectPtr:x4} is not allocated");
+				}
+			}
+			else
+			{
+				if (this.oCPU.Memory.FreeMemoryBlock(objectPtr))
+				{
+					this.oCPU.Flags.C = false;
+					this.oCPU.AX.UInt16 = 0x0;
+				}
+				else
+				{
+					this.oCPU.Flags.C = true;
+					this.oCPU.AX.UInt16 = 9; // Invalid memory block uiAddress
+				}
+			}
+
+			this.oCPU.Log.ExitBlock("_dos_freemem");
+		}
+		#endregion
+
+		#region File operations
+		public static string GetDOSFileName(string path)
+		{
+			string sPath = path;
+
+			if (sPath.IndexOf(':') == 1)
+			{
+				sPath = sPath.Substring(2);
+			}
+
+			if (sPath.IndexOf('\\') > 0)
+			{
+				sPath = sPath.Substring(sPath.LastIndexOf('\\') + 1);
+			}
+
+			return sPath;
+		}
+
+		public short fopen(ushort filenamePtr, ushort modePtr)
+		{
+			return fopen(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr)),
+				this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, modePtr)));
+		}
+
+		public short fopen(string filename, ushort modePtr)
+		{
+			return fopen(filename,
+				this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, modePtr)));
+		}
+
+		public short fopen(ushort filenamePtr, string mode)
+		{
+			return fopen(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr)), mode);
+		}
+
+		public short fopen(string filename, string mode)
+		{
+			FileMode eMode = FileMode.Open;
+			FileAccess eAccess = FileAccess.Write;
+			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
+
+			mode = mode.Trim().ToLower();
+			for (int i = 0; i < mode.Length; i++)
+			{
+				switch (mode[i])
+				{
+					case 'r':
+						eMode = FileMode.Open;
+						eAccess = FileAccess.Read;
+						break;
+					case 'w':
+						eMode = FileMode.Create;
+						eAccess = FileAccess.Write;
+						break;
+					case 'a':
+						eMode = FileMode.Append;
+						eAccess = FileAccess.Write;
+						break;
+					case '+':
+						eAccess = FileAccess.ReadWrite;
+						break;
+					case 't':
+						eType = FileStreamTypeEnum.Text;
+						break;
+					case 'b':
+						eType = FileStreamTypeEnum.Binary;
+						break;
+					default:
+						throw new Exception($"Unknown file mode '{mode}'");
+				}
+			}
+
+			short sHandle = -1;
+			string sPath = $"{VCPU.DefaultCIVPath}{GetDOSFileName(filename.ToUpper())}";
+			//this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
+
+			try
+			{
+				this.oCPU.Files.Add(this.oCPU.FileHandleCount, new FileStreamItem(new FileStream($"{sPath}", eMode, eAccess), eType));
+				sHandle = this.oCPU.FileHandleCount;
+				this.oCPU.FileHandleCount++;
+			}
+			catch
+			{
+				sHandle = -1;
+			}
+
+			this.oCPU.AX.UInt16 = (ushort)sHandle; // preserve compatibility
+			return sHandle;
+		}
+
+		public short fclose(short handle)
+		{
+			return this.close(handle);
+		}
+
+		public ushort fread(ushort ptr, ushort itemSize, ushort itemCount, short handle)
+		{
+			ushort usItemCount = 0;
+			uint uiAddress = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, ptr);
+
+			if (this.oCPU.Files.ContainsKey(handle))
+			{
+				FileStreamItem fileItem = this.oCPU.Files.GetValueByKey(handle);
+				byte[] aBuffer = new byte[itemSize];
+
+				for (int i = 0; i < itemCount; i++)
+				{
+					int iLength = 0;
+
+					if (fileItem.Type == FileStreamTypeEnum.Binary)
+					{
+						short sUnGetC = fileItem.UnGetC;
+						if (sUnGetC != -1)
+						{
+							aBuffer[0] = (byte)(sUnGetC & 0xff);
+							if (itemSize - 1 > 0)
+							{
+								iLength = fileItem.Stream.Read(aBuffer, 1, itemSize - 1);
+								if (iLength != itemSize - 1)
+									break;
+							}
+						}
+						else
+						{
+							iLength = fileItem.Stream.Read(aBuffer, 0, itemSize);
+							if (iLength != itemSize)
+								break;
+						}
+
+						this.oCPU.Memory.WriteBlock(uiAddress, aBuffer, 0, itemSize);
+						uiAddress += itemSize;
+					}
+					else
+					{
+						iLength = 0;
+						for (int j = 0; j < itemSize; j++)
+						{
+							short ch = fileItem.ReadChar();
+							if (ch < 0)
+								break;
+							aBuffer[j] = (byte)ch;
+							iLength++;
+						}
+
+						if (iLength != itemSize)
+							break;
+
+						this.oCPU.Memory.WriteBlock(uiAddress, aBuffer, 0, itemSize);
+						uiAddress += itemSize;
+					}
+				}
+			}
+			else
+			{
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
+			}
+
+			this.oCPU.AX.UInt16 = usItemCount; // preserve compatibility
+			return usItemCount;
+		}
+
+		public short fscanf(short handle, ushort formatPtr, ushort varPtr)
+		{
+			return fscanf(handle, this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, formatPtr)), varPtr);
+		}
+
+		public short fscanf(short handle, string format, ushort varPtr)
+		{
+			short sCount = -1;
+			uint uiVarAddress = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, varPtr);
+
+			if (this.oCPU.Files.ContainsKey(handle))
+			{
+				sCount = 0;
+				FileStreamItem fileItem = this.oCPU.Files.GetValueByKey(handle);
+				StringBuilder sbResult = new StringBuilder();
+
+				switch (format.ToLower())
+				{
+					case "%[^\n]\n":
+						short ch;
+						while ((ch = fileItem.ReadChar()) != -1 && ch != (short)'\n')
+						{
+							if (ch != (short)'\r')
+							{
+								sbResult.Append((char)ch);
+							}
+						}
+						if (ch != -1 && sbResult.Length > 0)
+						{
+							this.oCPU.WriteString(uiVarAddress, sbResult.ToString());
+							sCount = 1;
+						}
+						else
+						{
+							this.oCPU.WriteString(uiVarAddress, "");
+							sCount = -1;
+						}
+						break;
+
+					default:
+						throw new Exception($"fscanf has undefined format '{format}'");
+				}
+
+				// this.oCPU.Log.WriteLine($"fscanf('%[^\\n]\\n') = '{sbResult.ToString()}'");
+			}
+			else
+			{
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
+			}
+
+			this.oCPU.AX.UInt16 = (ushort)sCount; // preserve compatibility
+			return sCount;
+		}
+
+		public ushort fwrite(ushort ptr, ushort itemSize, ushort itemCount, short handle)
+		{
+			ushort usItemCount = 0;
+			uint uiAddress = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, ptr);
+
+			if (this.oCPU.Files.ContainsKey(handle))
+			{
+				FileStreamItem fileItem = this.oCPU.Files.GetValueByKey(handle);
+				byte[] aBuffer = new byte[itemSize];
+
+				if (fileItem.Type == FileStreamTypeEnum.Binary)
+				{
+					for (int i = 0; i < itemCount; i++)
+					{
+						for (int j = 0; j < itemSize; j++)
+						{
+							aBuffer[j] = this.oCPU.Memory.ReadUInt8(uiAddress);
+							uiAddress++;
+						}
+
+						fileItem.Stream.Write(aBuffer, 0, itemSize);
+						usItemCount++;
+					}
+				}
+				else
+				{
+					bool bLF = false;
+
+					for (int i = 0; i < itemCount; i++)
+					{
+						for (int j = 0; j < itemSize; j++)
+						{
+							aBuffer[j] = this.oCPU.Memory.ReadUInt8(uiAddress);
+							if (aBuffer[j] == (byte)'\n')
+							{
+								if (!bLF)
+								{
+									aBuffer[j] = (byte)'\r';
+									bLF = true;
+								}
+								else
+								{
+									uiAddress++;
+								}
+							}
+							else
+							{
+								uiAddress++;
+							}
+						}
+
+						fileItem.Stream.Write(aBuffer, 0, itemSize);
+						usItemCount++;
+					}
+					if (bLF)
+					{
+						fileItem.Stream.WriteByte((byte)'\n');
+					}
+				}
+			}
+			else
+			{
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
+			}
+
+			this.oCPU.AX.UInt16 = usItemCount; // preserve compatibility
+			return usItemCount;
+		}
+
+		public short fseek(short handle, int offset, short whence)
+		{
+			short sRetVal = -1;
+
+			if (this.oCPU.Files.ContainsKey(handle))
+			{
+				if (whence >= 0 && whence < 3)
+				{
+					FileStreamItem fileItem = this.oCPU.Files.GetValueByKey(handle);
+					short sTemp = fileItem.UnGetC;
+					SeekOrigin origin = SeekOrigin.Begin;
+
+					switch (whence)
+					{
+						case 0:
+							origin = SeekOrigin.Begin;
+							break;
+						case 1:
+							origin = SeekOrigin.Current;
+							break;
+						case 2:
+							origin = SeekOrigin.End;
+							break;
+					}
+
+					fileItem.Stream.Seek(offset, origin);
+					sRetVal = 0;
+				}
+			}
+			else
+			{
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
+			}
+
+			this.oCPU.AX.UInt16 = (ushort)sRetVal; // preserve compatibility
+			return sRetVal;
+		}
+
+		public int ftell(short handle)
+		{
+			int iPosition = -1;
+
+			if (this.oCPU.Files.ContainsKey(handle))
+			{
+				FileStreamItem fileItem = this.oCPU.Files.GetValueByKey(handle);
+				short sTemp = fileItem.UnGetC;
+				iPosition = (int)fileItem.Stream.Position;
+			}
+			else
+			{
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
+			}
+
+			this.oCPU.UInt32ToTwoUInt16(this.oCPU.AX, this.oCPU.DX, (uint)iPosition); // preserve compatibility
+			return iPosition;
+		}
+
+		public int lseek(short handle, int offset, short whence)
+		{
+			int iRetVal = -1;
+
+			if (this.oCPU.Files.ContainsKey(handle))
+			{
+				if (whence >= 0 && whence < 3)
+				{
+					FileStreamItem fileItem = this.oCPU.Files.GetValueByKey(handle);
+					short sTemp = fileItem.UnGetC;
+					SeekOrigin origin = SeekOrigin.Begin;
+
+					switch (whence)
+					{
+						case 0:
+							origin = SeekOrigin.Begin;
+							break;
+						case 1:
+							origin = SeekOrigin.Current;
+							break;
+						case 2:
+							origin = SeekOrigin.End;
+							break;
+					}
+
+					fileItem.Stream.Seek(offset, origin);
+					iRetVal = offset;
+				}
+			}
+			else
+			{
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
+			}
+
+			this.oCPU.UInt32ToTwoUInt16(this.oCPU.AX, this.oCPU.DX, (uint)iRetVal); // preserve compatibility
+			return iRetVal;
+		}
+
+		public short open(ushort filenamePtr, ushort access)
+		{
+			return open(filenamePtr, access, 0);
+		}
+
+		public short open(ushort filenamePtr, ushort access, ushort mode)
+		{
+			return open(this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr)), access, mode);
+		}
+
+		public short open(string filename, ushort access, ushort mode)
+		{
+			FileMode eMode = FileMode.Open;
+			FileAccess eAccess = FileAccess.Read;
+			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
+
+			if ((access & 0x1) == 0x1)
+			{
+				// open for writing only
+				eAccess = FileAccess.Write;
+			}
+			else if ((access & 0x2) == 0x2)
+			{
+				// open for reading and writing
+				eAccess = FileAccess.ReadWrite;
+			}
+
+			if ((access & 0x8) == 0x8)
+			{
+				// append file
+				eMode = FileMode.Append;
+			}
+			else if ((access & 0x100) == 0x100)
+			{
+				// create and open file
+				eMode = FileMode.OpenOrCreate;
+			}
+			else if ((access & 0x200) == 0x200)
+			{
+				// open and truncate
+				eMode = FileMode.Truncate;
+			}
+			else if ((access & 0x400) == 0x400)
+			{
+				// open only if file doesn't already exist
+				eMode = FileMode.Open;
+			}
+
+			if ((access & 0x4000) == 0x4000)
+			{
+				// file mode is text (translated)
+				eType = FileStreamTypeEnum.Text;
+			}
+			else if ((access & 0x8000) == 0x8000)
+			{
+				// file mode is binary (untranslated)
+				eType = FileStreamTypeEnum.Binary;
+			}
+
+			short sHandle = -1;
+			string sPath = $"{VCPU.DefaultCIVPath}{GetDOSFileName(filename.ToUpper())}";
+
+			//this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
+			try
+			{
+				this.oCPU.Files.Add(this.oCPU.FileHandleCount, new FileStreamItem(new FileStream($"{sPath}", eMode, eAccess), eType));
+				sHandle = this.oCPU.FileHandleCount;
+				this.oCPU.FileHandleCount++;
+			}
+			catch
+			{
+				sHandle = -1;
+			}
+
+			this.oCPU.AX.UInt16 = (ushort)sHandle; // preserve compatibility
+			return sHandle;
+		}
+
+		public short close(short handle)
+		{
+			short sTemp = 0;
+
+			if (this.oCPU.Files.ContainsKey(handle))
+			{
+				//this.oCPU.Log.WriteLine($"Closing file handle {handle}");
+				this.oCPU.Files.GetValueByKey(handle).Stream.Close();
+				this.oCPU.Files.RemoveByKey(handle);
+			}
+			else
+			{
+				this.oCPU.Log.WriteLine($"Trying to close unknown handle {handle}");
+				sTemp = -1;
+			}
+
+			this.oCPU.AX.UInt16 = (ushort)sTemp; // preserve compatibility
+			return sTemp;
+		}
+
+		public short read(short handle, ushort bufferPtr, ushort length)
+		{
+			uint address = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, bufferPtr);
+			short sItemCount = -1;
+
+			if (this.oCPU.Files.ContainsKey(handle))
+			{
+				FileStreamItem fileItem = this.oCPU.Files.GetValueByKey(handle);
+
+				for (int i = 0; i < length; i++)
+				{
+					short ch = fileItem.ReadChar();
+					if (ch >= 0)
+					{
+						this.oCPU.Memory.WriteUInt8(address, (byte)ch);
+						address++;
+						sItemCount++;
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+			else
+			{
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
+			}
+
+			this.oCPU.AX.UInt16 = (ushort)sItemCount; // preserve compatibility
+			return sItemCount;
+		}
+
+		public short write(short handle, ushort bufferPtr, ushort length)
+		{
+			uint address = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, bufferPtr);
+			short sItemCount = -1;
+
+			if (this.oCPU.Files.ContainsKey(handle))
+			{
+				FileStreamItem fileItem = this.oCPU.Files.GetValueByKey(handle);
+
+				if (fileItem.Type == FileStreamTypeEnum.Binary)
+				{
+					for (int i = 0; i < length; i++)
+					{
+						fileItem.Stream.WriteByte(this.oCPU.Memory.ReadUInt8(address));
+						address++;
+						sItemCount++;
+					}
+				}
+				else
+				{
+					for (int i = 0; i < length; i++)
+					{
+						byte ch = this.oCPU.Memory.ReadUInt8(address);
+						if (ch == (byte)'\n')
+						{
+							fileItem.Stream.WriteByte((byte)'\r');
+						}
+						fileItem.Stream.WriteByte(ch);
+						address++;
+						sItemCount++;
+					}
+				}
+			}
+			else
+			{
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
+			}
+
+			this.oCPU.AX.UInt16 = (ushort)sItemCount; // preserve compatibility
+			return sItemCount;
+		}
+
+		public short _dos_open(ushort filenamePtr, ushort flags, ushort handlePtr)
+		{
+			uint uiHandleAddress = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, handlePtr);
+			short sRetVal = -1;
+
+			string sName = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr));
+			FileMode eMode = FileMode.Open;
+			FileAccess eAccess = FileAccess.Read;
+			FileStreamTypeEnum eType = FileStreamTypeEnum.Binary;
+
+			if ((flags & 0x1) == 0x1)
+			{
+				// open for writing only
+				eAccess = FileAccess.Write;
+			}
+			if ((flags & 0x2) == 0x2)
+			{
+				// open for reading and writing
+				eAccess = FileAccess.ReadWrite;
+			}
+			if ((flags & 0x8) == 0x8)
+			{
+				// append file
+				eMode = FileMode.Append;
+			}
+			if ((flags & 0x100) == 0x100)
+			{
+				// create and open file
+				eMode = FileMode.OpenOrCreate;
+			}
+			if ((flags & 0x200) == 0x200)
+			{
+				// open and truncate
+				eMode = FileMode.Truncate;
+			}
+			if ((flags & 0x400) == 0x400)
+			{
+				// open only if file doesn't already exist
+				eMode = FileMode.Open;
+			}
+
+			string sPath = $"{VCPU.DefaultCIVPath}{GetDOSFileName(sName.ToUpper())}";
+			if (File.Exists(sPath))
+			{
+				// this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
+				this.oCPU.Files.Add(this.oCPU.FileHandleCount, new FileStreamItem(new FileStream(sPath, eMode, eAccess), eType));
+				short sHandle = this.oCPU.FileHandleCount;
+				this.oCPU.FileHandleCount++;
+				this.oCPU.Memory.WriteUInt16(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, handlePtr), (ushort)sHandle);
+				sRetVal = 0;
+			}
+
+			this.oCPU.AX.UInt16 = (ushort)sRetVal; // preserve compatibility
+			return sRetVal;
+		}
+
+		public ushort _dos_close(short handle)
+		{
+			ushort usRetVal = (ushort)this.close(handle);
+
+			this.oCPU.AX.UInt16 = usRetVal; // preserve compatibility
+			return usRetVal;
+		}
+
+		public ushort _dos_read(short handle, ushort bufferPtr, ushort length, ushort nreadPtr)
+		{
+			uint uiBufferAddress = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, bufferPtr);
+			ushort usRetVal = 1;
+			ushort usItemCount = 0;
+
+			if (this.oCPU.Files.ContainsKey(handle))
+			{
+				FileStreamItem fileItem = this.oCPU.Files.GetValueByKey(handle);
+
+				for (int i = 0; i < length; i++)
+				{
+					short ch = fileItem.ReadChar();
+					if (ch >= 0)
+					{
+						this.oCPU.Memory.WriteUInt8(uiBufferAddress, (byte)ch);
+						uiBufferAddress++;
+						usItemCount++;
+					}
+					else
+					{
+						break;
+					}
+				}
+
+				this.oCPU.Memory.WriteUInt16(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, nreadPtr), usItemCount);
+				usRetVal = 0;
+			}
+			else
+			{
+				this.oCPU.Log.WriteLine($"Can't find file handle {handle}");
+			}
+
+			this.oCPU.AX.UInt16 = usRetVal; // preserve compatibility
+			return usRetVal;
+		}
+
+		public void _bios_disk(ushort command, ushort diskInfoPtr)
+		{
+			this.oCPU.Log.EnterBlock("'_bios_disk'(Cdecl) at 0x3045:0x3062");
+
+			// function body
+			DriveInfo[] driveInfo = DriveInfo.GetDrives();
+			uint uiAddress = VCPU.ToLinearAddress(this.oCPU.DS.UInt16, diskInfoPtr);
+			int iDrive = this.oCPU.Memory.ReadUInt16(uiAddress);
+			char chDrive = (char)((iDrive >= 0x80) ? (iDrive - 0x80 + 'C') : ('A' + iDrive));
+
+			switch (command)
+			{
+				case 0:
+					// reset disk system
+					this.oCPU.AX.HighUInt8 = 0;
+					this.oCPU.Flags.C = false;
+					this.oCPU.Log.ExitBlock("'_bios_disk'");
+					return;
+
+				case 4:
+					// Verify disk sectors
+
+					for (int i = 0; i < driveInfo.Length; i++)
+					{
+						if (driveInfo[i].Name[0] == chDrive)
+						{
+							if (driveInfo[i].IsReady)
+							{
+								this.oCPU.AX.HighUInt8 = 0;
+								this.oCPU.Flags.C = false;
+								this.oCPU.Log.ExitBlock("'_bios_disk'");
+								return;
+							}
+							else
+							{
+								break;
+							}
+						}
+					}
+					break;
+			}
+
+			this.oCPU.AX.HighUInt8 = 0x80;
+			this.oCPU.Flags.C = true;
+
+			this.oCPU.Log.ExitBlock("'_bios_disk'");
+		}
+
+		public void _dos_getdrive(ushort valuePtr)
+		{
+			// function body
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, valuePtr, 3);
+		}
+		#endregion
+
+		#region String operations
+		/// <summary>
+		/// Join two strings together
+		/// </summary>
+		/// <param name="destinationPtr">The destination string ptr</param>
+		/// <param name="sourcePtr">The source string ptr</param>
+		/// <returns></returns>
+		public ushort strcat(ushort destinationPtr, ushort sourcePtr)
+		{
+			string sDest = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destinationPtr));
+			string sSource = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, sourcePtr));
+
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destinationPtr), sDest + sSource);
+
+			this.oCPU.AX.UInt16 = destinationPtr; // preserve compatibility
+			return destinationPtr;
+		}
+
+		public ushort strcat(ushort destinationPtr, string sourceString)
+		{
+			string sDest = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destinationPtr));
+
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destinationPtr), sDest + sourceString);
+
+			this.oCPU.AX.UInt16 = destinationPtr; // preserve compatibility
+			return destinationPtr;
+		}
+
+		public ushort strcpy(ushort destinationPtr, ushort sourcePtr)
+		{
+			string source = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, sourcePtr));
+
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destinationPtr), source);
+
+			this.oCPU.AX.UInt16 = destinationPtr; // preserve compatibility
+			return destinationPtr;
+		}
+
+		public ushort strcpy(ushort destinationPtr, string source)
+		{
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, destinationPtr), source);
+
+			this.oCPU.AX.UInt16 = destinationPtr; // preserve compatibility
+			return destinationPtr;
+		}
+
+		public ushort strlen(string str)
+		{
+			this.oCPU.AX.UInt16 = (ushort)str.Length; // preserve compatibility
+			return (ushort)str.Length;
+		}
+
+		public int strlen(ushort stringPtr)
+		{
+			string sSource = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, stringPtr));
+
+			this.oCPU.AX.UInt16 = (ushort)sSource.Length; // preserve compatibility
+			return sSource.Length;
+		}
+
+		public short stricmp(string string1, ushort string2Ptr)
+		{
+			string sS2 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string2Ptr));
+
+			short sRetVal = (short)string.Compare(string1, sS2, StringComparison.CurrentCultureIgnoreCase);
+
+			this.oCPU.AX.UInt16 = (ushort)sRetVal; // preserve compatibility
+			return sRetVal;
+		}
+
+		public short stricmp(ushort string1Ptr, ushort string2Ptr)
+		{
+			string sS1 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string1Ptr));
+			string sS2 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string2Ptr));
+
+			short sRetVal = (short)string.Compare(sS1, sS2, StringComparison.CurrentCultureIgnoreCase);
+
+			this.oCPU.AX.UInt16 = (ushort)sRetVal; // preserve compatibility
+			return sRetVal;
+		}
+
+		public short strnicmp(ushort string1Ptr, ushort string2Ptr, ushort maxLength)
+		{
+			string sS1 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string1Ptr));
+			string sS2 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string2Ptr));
+
+			if (sS1.Length > maxLength)
+				sS1 = sS1.Substring(0, maxLength);
+
+			if (sS2.Length > maxLength)
+				sS2 = sS2.Substring(0, maxLength);
+
+			short sRetVal = (short)string.Compare(sS1, sS2, StringComparison.CurrentCultureIgnoreCase);
+
+			this.oCPU.AX.UInt16 = (ushort)sRetVal; // preserve compatibility
+			return sRetVal;
+		}
+
+		public ushort strupr(ushort stringPtr)
+		{
+			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, stringPtr)).ToUpper();
+
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, stringPtr), text);
+
+			this.oCPU.AX.UInt16 = stringPtr; // preserve compatibility
+			return stringPtr;
+		}
+
+		public int strstr(ushort string1Ptr, string string2)
+		{
+			string sS1 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string1Ptr));
+
+			short sRetVal = (short)sS1.IndexOf(string2);
+
+			if (sRetVal >= 0) // preserve compatibility
+			{
+				this.oCPU.AX.UInt16 = (ushort)(string1Ptr + sRetVal);
+			}
+			else
+			{
+				this.oCPU.AX.UInt16 = 0;
+			}
+
+			return sRetVal;
+		}
+
+		public int strstr(ushort string1Ptr, ushort string2Ptr)
+		{
+			string sS1 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string1Ptr));
+			string sS2 = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, string2Ptr));
+
+			short sRetVal = (short)sS1.IndexOf(sS2);
+
+			if (sRetVal >= 0) // preserve compatibility
+			{
+				this.oCPU.AX.UInt16 = (ushort)(string1Ptr + sRetVal);
+			}
+			else
+			{
+				this.oCPU.AX.UInt16 = 0;
+			}
+
+			return sRetVal;
+		}
+
+		public ushort itoa(int value, ushort stringPtr, short radix)
+		{
+			string textValue = Convert.ToString(value, radix);
+
+			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, stringPtr), textValue);
+
+			this.oCPU.AX.UInt16 = stringPtr; // preserve compatibility
+			return stringPtr;
+		}
+
+		public string itoa(int value, short radix)
+		{
+			string sValue = Convert.ToString(value, radix);
+
+			return sValue;
+		}
+		#endregion
+
+		#region Time operations
+		public void time()
+		{
+			this.oCPU.UInt32ToTwoUInt16(this.oCPU.AX, this.oCPU.DX, 
+				(uint)time(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.SP.UInt16 + 0x4)))));
+		}
+
+		public int time(uint timePtr)
+		{
+			int iTotalSeconds = (int)Math.Floor((DateTime.Now - (new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds);
+
+			if (timePtr != 0)
+				this.oCPU.Memory.WriteUInt32(timePtr, (uint)iTotalSeconds);
+
+			return iTotalSeconds;
+		}
+		#endregion
+
+		#region Math operations
+		public short abs(short value)
+		{
+			short retval = Math.Abs(value);
+			this.oCPU.AX.UInt16 = (ushort)retval; // for compatibility
+
+			return retval;
+		}
+		#endregion
+
+		#region Random number generator operations
+		public void srand()
+		{
+			srand(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.SP.UInt16 + 0x4)));
+		}
+
+		public void srand(int value)
+		{
+			this.oRNG = new RandomMT19937(value);
+		}
+
+		public short rand()
+		{
+			this.oCPU.AX.UInt16 = (ushort)(this.oRNG.UNext() & 0x7fff);
+			return (short)this.oCPU.AX.UInt16;
+		}
+
+		public RandomMT19937 RNG
+		{
+			get { return this.oRNG; }
+		}
+		#endregion
+	}
+}

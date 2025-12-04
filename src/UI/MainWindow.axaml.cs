@@ -7,7 +7,7 @@ using Avalonia.Platform;
 using Avalonia.Threading;
 using IRB.Collections.Generic;
 using IRB.VirtualCPU;
-using OpenCiv1.GPU;
+using OpenCiv1.Graphics;
 using System.Runtime.InteropServices;
 using ThreadState = System.Threading.ThreadState;
 
@@ -17,7 +17,7 @@ namespace OpenCiv1.UI
 	{
 		private bool bClosing = false;
 
-		private CivGame oCivGame;
+		private OpenCiv1Game oGame;
 		private DispatcherTimer oTimer;
 		private Thread oGameThread;
 		private Exception? oGameException = null;
@@ -55,8 +55,10 @@ namespace OpenCiv1.UI
 				"Warning", MessageBoxIcon.Warning, MessageBoxButtons.OK);
 #endif
 
-			// Initialize Game game state
-			this.oCivGame = new CivGame();
+			Thread.CurrentThread.Name = "OpenCiv1 main thread";
+
+			// Initialize game state
+			this.oGame = new OpenCiv1Game();
 
 			// Main Windows events
 			this.Closing += this.MainWindow_Closing;
@@ -65,7 +67,7 @@ namespace OpenCiv1.UI
 			this.PointerPressed += this.MainWindow_PointerPressed;
 			this.PointerReleased += this.MainWindow_PointerReleased;
 
-			// Initialize Widnows refresh timer
+			// Initialize Window refresh timer
 			this.oTimer = new DispatcherTimer(DispatcherPriority.Normal);
 			this.oTimer.Interval = TimeSpan.FromMilliseconds(20);
 			this.oTimer.Tick += this.Timer_Tick;
@@ -73,6 +75,7 @@ namespace OpenCiv1.UI
 
 			// Initialize game thread where we have all the fun ;)
 			this.oGameThread = new Thread(new ThreadStart(GameThread));
+			this.oGameThread.Name = "OpenCiv1 game thread";
 			this.oGameThread.Start();
 		}
 
@@ -90,7 +93,24 @@ namespace OpenCiv1.UI
 					else
 					{
 						MessageBox.Show(this, "There was an error in the OpenCiv1 game engine, " +
-							"the details about the error should are in the Log.txt file.", "Game engine error", MessageBoxIcon.Error, MessageBoxButtons.OK);
+							"the details about the error will be in the Exception.log file.", "Game engine error", MessageBoxIcon.Error, MessageBoxButtons.OK);
+
+						try
+						{
+							StreamWriter writer = new StreamWriter($"{VCPU.AssemblyPath}Exception.log", true);
+
+							writer.WriteLine("---------------------------");
+							writer.WriteLine($"Mesage: {ex.Message}");
+							writer.WriteLine($"Source: {ex.Source}");
+							writer.WriteLine($"Stack trace: {ex.StackTrace}");
+
+							writer.Close();
+						}
+						catch (Exception ex1)
+						{
+							MessageBox.Show(this, $"Could not write the Exception.log file. The exception (when trying to open a file) was: {ex1.Message}",
+								"Game engine error", MessageBoxIcon.Error, MessageBoxButtons.OK);
+						}
 					}
 				}
 
@@ -100,11 +120,11 @@ namespace OpenCiv1.UI
 
 			if (!this.bClosing)
 			{
-				if (this.oCivGame.Graphics.CPU.Pause && !this.gamePaused.IsVisible)
+				if (this.oGame.Graphics.CPU.Pause && !this.gamePaused.IsVisible)
 				{
 					this.gamePaused.IsVisible = true;
 				}
-				else if (!this.oCivGame.Graphics.CPU.Pause && this.gamePaused.IsVisible)
+				else if (!this.oGame.Graphics.CPU.Pause && this.gamePaused.IsVisible)
 				{
 					this.gamePaused.IsVisible = false;
 				}
@@ -113,9 +133,10 @@ namespace OpenCiv1.UI
 			}
 		}
 
+		#region Keyboard and Mouse events
 		private void MainWindow_KeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
 		{
-			lock (this.oCivGame.Graphics.GLock)
+			lock (VCPU.KeyboardLock)
 			{
 				e.Handled = true;
 
@@ -129,81 +150,89 @@ namespace OpenCiv1.UI
 							break;*/
 
 						case Key.F1:
-							this.oCivGame.CPU.Keys.Enqueue(0x3b00);
+							this.oGame.CPU.Keys.Enqueue(0x3b00);
 							break;
 
 						case Key.F2:
-							this.oCivGame.CPU.Keys.Enqueue(0x3c00);
+							this.oGame.CPU.Keys.Enqueue(0x3c00);
 							break;
 
 						case Key.F3:
-							this.oCivGame.CPU.Keys.Enqueue(0x3d00);
+							this.oGame.CPU.Keys.Enqueue(0x3d00);
 							break;
 
 						case Key.F4:
-							this.oCivGame.CPU.Keys.Enqueue(0x3e00);
+							this.oGame.CPU.Keys.Enqueue(0x3e00);
 							break;
 
 						case Key.F5:
-							this.oCivGame.CPU.Keys.Enqueue(0x3f00);
+							this.oGame.CPU.Keys.Enqueue(0x3f00);
 							break;
 
 						case Key.F6:
-							this.oCivGame.CPU.Keys.Enqueue(0x4000);
+							this.oGame.CPU.Keys.Enqueue(0x4000);
 							break;
 
 						case Key.F7:
-							this.oCivGame.CPU.Keys.Enqueue(0x4100);
+							this.oGame.CPU.Keys.Enqueue(0x4100);
 							break;
 
 						case Key.F8:
-							this.oCivGame.CPU.Keys.Enqueue(0x4200);
+							this.oGame.CPU.Keys.Enqueue(0x4200);
 							break;
 
 						case Key.F9:
-							this.oCivGame.CPU.Keys.Enqueue(0x4300);
+							this.oGame.CPU.Keys.Enqueue(0x4300);
 							break;
 
 						case Key.F10:
-							this.oCivGame.CPU.Keys.Enqueue(0x4400);
+							this.oGame.CPU.Keys.Enqueue(0x4400);
 							break;
 
 						case Key.Down:
-							this.oCivGame.CPU.Keys.Enqueue(0x5000);
+						case Key.NumPad2:
+							this.oGame.CPU.Keys.Enqueue(0x5000);
 							break;
 
 						case Key.Left:
-							this.oCivGame.CPU.Keys.Enqueue(0x4b00);
+						case Key.NumPad4:
+							this.oGame.CPU.Keys.Enqueue(0x4b00);
 							break;
 
 						case Key.Right:
-							this.oCivGame.CPU.Keys.Enqueue(0x4d00);
+						case Key.NumPad6:
+							this.oGame.CPU.Keys.Enqueue(0x4d00);
 							break;
 
 						case Key.Up:
-							this.oCivGame.CPU.Keys.Enqueue(0x4800);
+						case Key.NumPad8:
+							this.oGame.CPU.Keys.Enqueue(0x4800);
 							break;
 
 						case Key.Home:
-							this.oCivGame.CPU.Keys.Enqueue(0x4700);
+						case Key.NumPad7:
+							this.oGame.CPU.Keys.Enqueue(0x4700);
 							break;
 
 						case Key.End:
-							this.oCivGame.CPU.Keys.Enqueue(0x4f00);
+						case Key.NumPad1:
+							this.oGame.CPU.Keys.Enqueue(0x4f00);
 							break;
 
 						case Key.PageUp:
-							this.oCivGame.CPU.Keys.Enqueue(0x4900);
+						case Key.NumPad9:
+							this.oGame.CPU.Keys.Enqueue(0x4900);
 							break;
 
 						case Key.PageDown:
-							this.oCivGame.CPU.Keys.Enqueue(0x5100);
+						case Key.NumPad3:
+							this.oGame.CPU.Keys.Enqueue(0x5100);
 							break;
 
 						default:
 							if (e.KeySymbol != null && e.KeySymbol.Length > 0)
 							{
-								this.oCivGame.CPU.Keys.Enqueue((int)e.KeySymbol[0]);
+								this.oGame.CPU.Keys.Enqueue((int)e.KeySymbol[0]);
 							}
 							else
 							{
@@ -217,41 +246,41 @@ namespace OpenCiv1.UI
 					switch (e.Key)
 					{
 						case Key.Down:
-							this.oCivGame.CPU.Keys.Enqueue(0x5032);
+							this.oGame.CPU.Keys.Enqueue(0x5032);
 							break;
 
 						case Key.Left:
-							this.oCivGame.CPU.Keys.Enqueue(0x4b34);
+							this.oGame.CPU.Keys.Enqueue(0x4b34);
 							break;
 
 						case Key.Right:
-							this.oCivGame.CPU.Keys.Enqueue(0x4d36);
+							this.oGame.CPU.Keys.Enqueue(0x4d36);
 							break;
 
 						case Key.Up:
-							this.oCivGame.CPU.Keys.Enqueue(0x4838);
+							this.oGame.CPU.Keys.Enqueue(0x4838);
 							break;
 
 						case Key.Home:
-							this.oCivGame.CPU.Keys.Enqueue(0x4737);
+							this.oGame.CPU.Keys.Enqueue(0x4737);
 							break;
 
 						case Key.End:
-							this.oCivGame.CPU.Keys.Enqueue(0x4f31);
+							this.oGame.CPU.Keys.Enqueue(0x4f31);
 							break;
 
 						case Key.PageUp:
-							this.oCivGame.CPU.Keys.Enqueue(0x4939);
+							this.oGame.CPU.Keys.Enqueue(0x4939);
 							break;
 
 						case Key.PageDown:
-							this.oCivGame.CPU.Keys.Enqueue(0x5133);
+							this.oGame.CPU.Keys.Enqueue(0x5133);
 							break;
 
 						default:
 							if (e.KeySymbol != null && e.KeySymbol.Length > 0)
 							{
-								this.oCivGame.CPU.Keys.Enqueue((int)e.KeySymbol[0]);
+								this.oGame.CPU.Keys.Enqueue((int)e.KeySymbol[0]);
 							}
 							else
 							{
@@ -277,51 +306,51 @@ namespace OpenCiv1.UI
 							break;
 
 						case Key.A:
-							this.oCivGame.CPU.Keys.Enqueue(0x1e00);
+							this.oGame.CPU.Keys.Enqueue(0x1e00);
 							break;
 
 						case Key.C:
-							this.oCivGame.CPU.Keys.Enqueue(0x2e00);
+							this.oGame.CPU.Keys.Enqueue(0x2e00);
 							break;
 
 						case Key.D:
-							this.oCivGame.CPU.Keys.Enqueue(0x2000);
+							this.oGame.CPU.Keys.Enqueue(0x2000);
 							break;
 
 						case Key.G:
-							this.oCivGame.CPU.Keys.Enqueue(0x2200);
+							this.oGame.CPU.Keys.Enqueue(0x2200);
 							break;
 
 						case Key.H:
-							this.oCivGame.CPU.Keys.Enqueue(0x2300);
+							this.oGame.CPU.Keys.Enqueue(0x2300);
 							break;
 
 						case Key.M:
-							this.oCivGame.CPU.Keys.Enqueue(0x3200);
+							this.oGame.CPU.Keys.Enqueue(0x3200);
 							break;
 
 						case Key.O:
-							this.oCivGame.CPU.Keys.Enqueue(0x1800);
+							this.oGame.CPU.Keys.Enqueue(0x1800);
 							break;
 
 						case Key.P:
-							this.oCivGame.CPU.Pause = !this.oCivGame.CPU.Pause;
+							this.oGame.CPU.Pause = !this.oGame.CPU.Pause;
 							break;
 
 						case Key.Q:
-							this.oCivGame.CPU.Keys.Enqueue(0x1000);
+							this.oGame.CPU.Keys.Enqueue(0x1000);
 							break;
 
 						case Key.R:
-							this.oCivGame.CPU.Keys.Enqueue(0x1300);
+							this.oGame.CPU.Keys.Enqueue(0x1300);
 							break;
 
 						case Key.V:
-							this.oCivGame.CPU.Keys.Enqueue(0x2f00);
+							this.oGame.CPU.Keys.Enqueue(0x2f00);
 							break;
 
 						case Key.W:
-							this.oCivGame.CPU.Keys.Enqueue(0x1100);
+							this.oGame.CPU.Keys.Enqueue(0x1100);
 							break;
 
 						default:
@@ -334,20 +363,17 @@ namespace OpenCiv1.UI
 
 		private void MainWindow_PointerMoved(object? sender, PointerEventArgs e)
 		{
-			lock (this.oCivGame.Graphics.GLock)
+			PointerPoint pointer = e.GetCurrentPoint(this.mainImage);
+			Point point = pointer.Position;
+			GPoint location = new GPoint((int)point.X, (int)point.Y);
+
+			if (this.oMouseRect.Contains(location))
 			{
-				PointerPoint pointer = e.GetCurrentPoint(this.mainImage);
-				Point point = pointer.Position;
-				GPoint location = new GPoint((int)point.X, (int)point.Y);
+				this.oGame.CPU.MouseLocation = new GPoint(location.X / (this.oScreenSize.Width / 320),
+					location.Y / (this.oScreenSize.Height / 200));
 
-				if (this.oMouseRect.Contains(location))
-				{
-					this.oCivGame.CPU.MouseLocation = new GPoint(location.X / (this.oScreenSize.Width / 320),
-						location.Y / (this.oScreenSize.Height / 200));
-
-					this.oCivGame.CPU.MouseButtons = (pointer.Properties.IsLeftButtonPressed ? MouseButtonsEnum.Left : MouseButtonsEnum.None) |
-						(pointer.Properties.IsRightButtonPressed ? MouseButtonsEnum.Right : MouseButtonsEnum.None);
-				}
+				this.oGame.CPU.MouseButtons = (pointer.Properties.IsLeftButtonPressed ? MouseButtonsEnum.Left : MouseButtonsEnum.None) |
+					(pointer.Properties.IsRightButtonPressed ? MouseButtonsEnum.Right : MouseButtonsEnum.None);
 			}
 
 			e.Handled = true;
@@ -355,20 +381,17 @@ namespace OpenCiv1.UI
 
 		private void MainWindow_PointerPressed(object? sender, PointerPressedEventArgs e)
 		{
-			lock (this.oCivGame.Graphics.GLock)
+			PointerPoint pointer = e.GetCurrentPoint(this.mainImage);
+			Point point = pointer.Position;
+			GPoint location = new GPoint((int)point.X, (int)point.Y);
+
+			if (this.oMouseRect.Contains(location))
 			{
-				PointerPoint pointer = e.GetCurrentPoint(this.mainImage);
-				Point point = pointer.Position;
-				GPoint location = new GPoint((int)point.X, (int)point.Y);
+				this.oGame.CPU.MouseLocation = new GPoint(location.X / (this.oScreenSize.Width / 320),
+					location.Y / (this.oScreenSize.Height / 200));
 
-				if (this.oMouseRect.Contains(location))
-				{
-					this.oCivGame.CPU.MouseLocation = new GPoint(location.X / (this.oScreenSize.Width / 320),
-						location.Y / (this.oScreenSize.Height / 200));
-
-					this.oCivGame.CPU.MouseButtons = (pointer.Properties.IsLeftButtonPressed ? MouseButtonsEnum.Left : MouseButtonsEnum.None) |
-						(pointer.Properties.IsRightButtonPressed ? MouseButtonsEnum.Right : MouseButtonsEnum.None);
-				}
+				this.oGame.CPU.MouseButtons = (pointer.Properties.IsLeftButtonPressed ? MouseButtonsEnum.Left : MouseButtonsEnum.None) |
+					(pointer.Properties.IsRightButtonPressed ? MouseButtonsEnum.Right : MouseButtonsEnum.None);
 			}
 
 			e.Handled = true;
@@ -376,24 +399,22 @@ namespace OpenCiv1.UI
 
 		private void MainWindow_PointerReleased(object? sender, PointerReleasedEventArgs e)
 		{
-			lock (this.oCivGame.Graphics.GLock)
+			PointerPoint pointer = e.GetCurrentPoint(this.mainImage);
+			Point point = pointer.Position;
+			GPoint location = new GPoint((int)point.X, (int)point.Y);
+
+			if (this.oMouseRect.Contains(location))
 			{
-				PointerPoint pointer = e.GetCurrentPoint(this.mainImage);
-				Point point = pointer.Position;
-				GPoint location = new GPoint((int)point.X, (int)point.Y);
+				this.oGame.CPU.MouseLocation = new GPoint(location.X / (this.oScreenSize.Width / 320),
+					location.Y / (this.oScreenSize.Height / 200));
 
-				if (this.oMouseRect.Contains(location))
-				{
-					this.oCivGame.CPU.MouseLocation = new GPoint(location.X / (this.oScreenSize.Width / 320),
-						location.Y / (this.oScreenSize.Height / 200));
-
-					this.oCivGame.CPU.MouseButtons = (pointer.Properties.IsLeftButtonPressed ? MouseButtonsEnum.Left : MouseButtonsEnum.None) |
-						(pointer.Properties.IsRightButtonPressed ? MouseButtonsEnum.Right : MouseButtonsEnum.None);
-				}
+				this.oGame.CPU.MouseButtons = (pointer.Properties.IsLeftButtonPressed ? MouseButtonsEnum.Left : MouseButtonsEnum.None) |
+					(pointer.Properties.IsRightButtonPressed ? MouseButtonsEnum.Right : MouseButtonsEnum.None);
 			}
 
 			e.Handled = true;
 		}
+		#endregion
 
 		private void MainWindow_Closing(object? sender, WindowClosingEventArgs e)
 		{
@@ -403,7 +424,7 @@ namespace OpenCiv1.UI
 					MessageBoxIcon.Question, MessageBoxButtons.OKCancel, MessageBoxDefaultButton.Button2) == MessageBoxResult.OK)
 				{
 					this.bClosing = true;
-					this.oCivGame.CPU.OnApplicationExit();
+					this.oGame.CPU.OnApplicationExit();
 				}
 				else
 				{
@@ -414,45 +435,42 @@ namespace OpenCiv1.UI
 
 		private void ResizeWindowAndImage()
 		{
-			lock (this.oCivGame.Graphics.GLock)
+			switch (this.iScreenCount)
 			{
-				switch (this.iScreenCount)
-				{
-					case 0:
-					case 1:
-						this.iScreenColumns = 1;
-						this.iScreenRows = 1;
-						break;
+				case 0:
+				case 1:
+					this.iScreenColumns = 1;
+					this.iScreenRows = 1;
+					break;
 
-					case 2:
-						this.iScreenColumns = 2;
-						this.iScreenRows = 1;
-						break;
+				case 2:
+					this.iScreenColumns = 2;
+					this.iScreenRows = 1;
+					break;
 
-					case 3:
-						this.iScreenColumns = 2;
-						this.iScreenRows = 2;
-						break;
-				}
-				this.oImageSize = new GSize(this.oScreenSize.Width * this.iScreenColumns, this.oScreenSize.Height * this.iScreenRows);
-
-				this.mainImage.Width = this.oImageSize.Width;
-				this.mainImage.Height = this.oImageSize.Height;
-
-				this.oMouseRect = new GRectangle(0, 0, this.oScreenSize);
-
-				this.aBitmaps[0] = new WriteableBitmap(new PixelSize(this.oImageSize.Width, this.oImageSize.Height), new Vector(96, 96), PixelFormat.Bgra8888);
-				this.aBitmaps[1] = new WriteableBitmap(new PixelSize(this.oImageSize.Width, this.oImageSize.Height), new Vector(96, 96), PixelFormat.Bgra8888);
+				case 3:
+					this.iScreenColumns = 2;
+					this.iScreenRows = 2;
+					break;
 			}
+			this.oImageSize = new GSize(this.oScreenSize.Width * this.iScreenColumns, this.oScreenSize.Height * this.iScreenRows);
+
+			this.mainImage.Width = this.oImageSize.Width;
+			this.mainImage.Height = this.oImageSize.Height;
+
+			this.oMouseRect = new GRectangle(0, 0, this.oScreenSize);
+
+			this.aBitmaps[0] = new WriteableBitmap(new PixelSize(this.oImageSize.Width, this.oImageSize.Height), new Vector(96, 96), PixelFormat.Bgra8888);
+			this.aBitmaps[1] = new WriteableBitmap(new PixelSize(this.oImageSize.Width, this.oImageSize.Height), new Vector(96, 96), PixelFormat.Bgra8888);
 		}
 
 		private void ToggleScreen(int screen)
 		{
-			if (this.oCivGame != null)
+			if (this.oGame != null)
 			{
-				if (this.oCivGame.Graphics.Screens.ContainsKey(screen))
+				if (this.oGame.Graphics.Screens.ContainsKey(screen))
 				{
-					GBitmap oScreen = this.oCivGame.Graphics.Screens.GetValueByKey(screen);
+					GBitmap oScreen = this.oGame.Graphics.Screens.GetValueByKey(screen);
 
 					oScreen.Visible = !oScreen.Visible;
 				}
@@ -461,9 +479,9 @@ namespace OpenCiv1.UI
 
 		private void RedrawScreens(bool forceRedraw)
 		{
-			if (this.oCivGame != null)
+			if (this.oGame != null)
 			{
-				lock (this.oCivGame.Graphics.GLock)
+				lock (VCPU.GraphicsLock)
 				{
 					int iColumn = 0;
 					int iRow = 0;
@@ -471,13 +489,13 @@ namespace OpenCiv1.UI
 					int iNewScreenCount = 0;
 					bool bNeedsRedraw = false;
 
-					for (int i = 0; i < this.oCivGame.Graphics.Screens.Count; i++)
+					for (int i = 0; i < this.oGame.Graphics.Screens.Count; i++)
 					{
-						if (this.oCivGame.Graphics.Screens[i].Value.Visible)
+						if (this.oGame.Graphics.Screens[i].Value.Visible)
 						{
 							iNewScreenCount++;
 
-							if (this.oCivGame.Graphics.Screens[i].Value.Modified)
+							if (this.oGame.Graphics.Screens[i].Value.Modified)
 								bNeedsRedraw = true;
 						}
 					}
@@ -497,9 +515,9 @@ namespace OpenCiv1.UI
 
 						using (ILockedFramebuffer l = currentBitmap.Lock())
 						{
-							for (int i = 0; i < this.oCivGame.Graphics.Screens.Count; i++)
+							for (int i = 0; i < this.oGame.Graphics.Screens.Count; i++)
 							{
-								BKeyValuePair<int, GBitmap> item = this.oCivGame.Graphics.Screens[i];
+								BKeyValuePair<int, GBitmap> item = this.oGame.Graphics.Screens[i];
 
 								if (item.Value.Visible)
 								{
@@ -554,7 +572,7 @@ namespace OpenCiv1.UI
 		{
 			try
 			{
-				this.oCivGame.Start();
+				this.oGame.Start();
 			}
 			catch (ApplicationExitException)
 			{
@@ -567,14 +585,6 @@ namespace OpenCiv1.UI
 #if !DEBUG
 			catch (Exception ex)
 			{
-				if (this.oCivGame != null && this.oCivGame.Log != null)
-				{
-					this.oCivGame.Log.WriteLine("");
-					this.oCivGame.Log.WriteLine($"Exception message: {ex.Message}");
-					this.oCivGame.Log.WriteLine($"Exception source: {ex.Source}");
-					this.oCivGame.Log.WriteLine($"Exception stack trace: {ex.StackTrace}");
-				}
-
 				// Show exceptions on UI Thread
 				this.oGameException = ex;
 			}

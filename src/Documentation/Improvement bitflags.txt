@@ -1,0 +1,8 @@
+01 - City
+02 - Irrigation
+04 - Mine
+08 - Roads
+10 - Railroads
+20 - City Walls
+40 - Pollution
+80 - Flag 80?
