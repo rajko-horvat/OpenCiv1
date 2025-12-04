@@ -150,38 +150,29 @@ namespace OpenCiv1
 			// function body
 			F14_0000_0000(0x4762, 1);
 
-			int local_0x2 = 0;
-
-			int local_0xe = (oParent.CivState.DifficultyLevel << 1) + this.oParent.Var_d2de + 6;
+			int multiplier = (oParent.CivState.DifficultyLevel << 1) + this.oParent.Var_d2de + 6;
 
 			Player player = this.oParent.CivState.Players[playerID];
 
-			if (local_0xe < 11 - player.DiscoveredTechnologyCount)
+			if (multiplier < 11 - player.DiscoveredTechnologyCount)
 			{
-				local_0xe = 11 - player.DiscoveredTechnologyCount;
+				multiplier = 11 - player.DiscoveredTechnologyCount;
 			}
 
-			int multiplier = this.oParent.CivState.Year >= 0 ? 2 : 1;
+			int progressTotal = player.DiscoveredTechnologyCount * (this.oParent.CivState.Year >= 0 ? 2 : 1) * multiplier;
 
-			// Lightbulbs total ?
-			int local_0xc = player.DiscoveredTechnologyCount * multiplier * local_0xe;
-
-			// Space between two lightbulbs along x axis, in pixels ?
+			// Space between two lightbulb images along X axis, in pixels
 			// Instruction address 0x0000:0x01be, size: 5
-			int local_0x12 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				2432 / (local_0xc + 1),
-				1, 64);
+			int progressBarSpacing = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(2432 / (progressTotal + 1), 1, 64);
 
-			// progress bar width
 			// Instruction address 0x0000:0x01e9, size: 5
-			int local_0x8 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				((local_0x12 * local_0xc) / 8) + 8,
+			int progressBarWidth = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
+				(progressBarSpacing * progressTotal / 8) + 8,
 				8, 304);
 
-			// progress bar starting x position
-			int local_0x4 = 160 - local_0x8 / 2;
+			int progressBarStartX = 160 - progressBarWidth / 2;
 
-			if (local_0x4 > 40)
+			if (progressBarStartX > 40)
 			{
 				// Show science advisor image
 				// Instruction address 0x0000:0x0226, size: 5
@@ -189,124 +180,59 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x0000:0x0244, size: 5
-			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle,
-				local_0x4,
-				25,
-				local_0x8,
-				16, 9);
+			this.oParent.Segment_1000.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, progressBarStartX, 25, progressBarWidth, 16, 9);
 
-			int local_0x6 = 0;
-			goto L0281;
-
-		L0253:
-			// Instruction address 0x0000:0x0270, size: 5
-			this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-				local_0x2 / 8 + local_0x4,
-				33,
-				this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(24 + 0xd4ce)));
-
-			local_0x2 += local_0x12;
-			local_0x6++;
-
-		L0281:
 			// Instruction address 0x0000:0x0290, size: 5
-			int progress = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-				player.ResearchProgress,
-				0, local_0xc);
-
-			if (progress > local_0x6)
+			int progress = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(player.ResearchProgress, 0, progressTotal);
+			for (int i = 0; i <= progress; ++i)
 			{
-				// Draw lightbulb and go next
-				goto L0253;
+				// Instruction address 0x0000:0x0270, size: 5
+				this.oParent.Segment_1000.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+					progressBarSpacing * i / 8 + progressBarStartX,
+					33,
+					this.oCPU.ReadUInt16(this.oCPU.DS.Word, (ushort)(24 + 0xd4ce)));
 			}
-
-			int local_0xa = 26;
 
 			Player humanPlayer = this.oParent.CivState.Players[this.oParent.CivState.HumanPlayerID];
 			if (humanPlayer.ResearchTechnologyID != -1)
 			{
-				// Instruction address 0x0000:0x02b1, size: 5
-				this.oParent.MSCAPI.strcpy(0xba06, "Researching ");
-
-				// Instruction address 0x0000:0x02c8, size: 5
-				this.oParent.MSCAPI.strcat(0xba06,
-					this.oParent.CivState.TechnologyDefinitions[humanPlayer.ResearchTechnologyID].Name);
-
-				// Show research progress in actual numbers for debug
-				this.oParent.MSCAPI.strcat(0xba06, $"  ({progress}/{local_0xc})");
+				string text = $"Researching {this.oParent.CivState.TechnologyDefinitions[humanPlayer.ResearchTechnologyID].Name}";
 
 				// Instruction address 0x0000:0x02df, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 161, 26, 0);
+				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(text, 161, 26, 0);
 
 				// Instruction address 0x0000:0x02f7, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 26, 15);
+				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(text, 160, 26, 15);
 			}
 
-			// Assumption: text Y coordinate
-			local_0xa = 42;
-			// Text column number. Each column is 100 pixels wide
-			int local_0x10 = 0;
-			// Technology ID
-			local_0x6 = 0;
+			int textY = 42;
+			int column = 0;
 
-			byte stringColor = 11;
-			goto L0355;
-
-		L0310:
-			stringColor = 11;
-
-		L0313:
-			// Instruction address 0x0000:0x032f, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06,
-				((local_0x10 % 3) * 100) + 8,
-				local_0xa,
-				stringColor);
-
-			local_0x10++;
-
-			if (local_0x10 % 3 == 0)
+			for (TechnologyEnum i = TechnologyEnum.Alphabet; i < TechnologyEnum.FutureTechnology5 && textY <= 192; ++i)
 			{
-				// Next line
-				local_0xa += 7;
+				// Instruction address 0x0000:0x0361, size: 5
+				if (!this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, i))
+				{
+					continue;
+				}
+
+				// Instruction address 0x0000:0x037b, size: 5
+				this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.TechnologyDefinitions[(int)i].Name);
+
+				byte color = (byte)(((this.oParent.CivState.TechnologyFirstDiscoveredBy[(int)i] & 0x7) == playerID) ? 15 : 11);
+
+				// Instruction address 0x0000:0x032f, size: 5
+				this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, (column % 3 * 100) + 8, textY, color);
+
+				++column;
+
+				if (column % 3 == 0)
+				{
+					// Advance to the next line
+					textY += 7;
+				}
 			}
 
-			if (local_0xa > 192)
-			{
-				goto L03a4;
-			}
-
-		L0352:
-			local_0x6++;
-
-		L0355:
-			if (local_0x6 >= 72)
-			{
-				// Break from loop
-				goto L03a4;
-			}
-
-			// Instruction address 0x0000:0x0361, size: 5
-			if (!this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, (TechnologyEnum)local_0x6))
-			{
-				// continue;
-				goto L0352;
-			}
-
-			// Instruction address 0x0000:0x037b, size: 5
-			this.oParent.MSCAPI.strcpy(0xba06, this.oParent.CivState.TechnologyDefinitions[local_0x6].Name);
-
-			if ((this.oParent.CivState.TechnologyFirstDiscoveredBy[local_0x6] & 0x7) == playerID)
-			{
-				goto L039e;
-			}
-
-			goto L0310;
-
-		L039e:
-			stringColor = 15;
-			goto L0313;
-
-		L03a4:
 			F14_0000_013b();
 
 			// Far return
