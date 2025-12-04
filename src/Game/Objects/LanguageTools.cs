@@ -2,12 +2,12 @@ using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {
-	public class Segment_2f4d
+	public class LanguageTools
 	{
 		private OpenCiv1Game oParent;
 		private VCPU oCPU;
 
-		public Segment_2f4d(OpenCiv1Game parent)
+		public LanguageTools(OpenCiv1Game parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -159,7 +159,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0xba06), 0x0);
 
 			// Instruction address 0x2f4d:0x013b, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0((ushort)(0xba06 + this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))),
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0((ushort)(0xba06 + this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))),
 				xPos, yPos, frontColor);
 
 			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6));
@@ -192,7 +192,7 @@ namespace OpenCiv1
 				goto L01a6;
 
 			// Instruction address 0x2f4d:0x0198, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0((ushort)(0xba06 + this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))),
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0((ushort)(0xba06 + this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))),
 				xPos, yPos, frontColor);
 
 			yPos += this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
@@ -542,7 +542,7 @@ namespace OpenCiv1
 
 		L0537:
 			// Instruction address 0x2f4d:0x053a, size: 5
-			this.oParent.Segment_1182.F0_1182_00ef_GetStringWidth(stringPtr);
+			this.oParent.DrawStringTools.F0_1182_00ef_GetStringWidth(stringPtr);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, maxWidth);
 			if (this.oCPU.Flags.G) goto L04fd;

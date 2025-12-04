@@ -477,7 +477,7 @@ namespace OpenCiv1
 					this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
 
 					// Instruction address 0x0000:0x0db1, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(0xba06, 160, 2, 15);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(0xba06, 160, 2, 15);
 
 					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
@@ -485,14 +485,14 @@ namespace OpenCiv1
 					this.oParent.Segment_1238.F0_1238_1720_GetCurrentYearAsString();
 
 					// Instruction address 0x0000:0x0de7, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(0xba06, 160, 15, 15);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringWithShadowToScreen0(0xba06, 160, 15, 15);
 				}
 				else
 				{
 					this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xdb38, 0x1);
 
 					// Instruction address 0x0000:0x0e03, size: 5
-					this.oParent.Segment_2d05.F0_2d05_0031((ushort)(this.oCPU.BP.UInt16 - 0x80), 80, 8, 1);
+					this.oParent.ManuBoxDialog.F0_2d05_0031((ushort)(this.oCPU.BP.UInt16 - 0x80), 80, 8, 1);
 				}
 
 				this.oParent.Var_aa_Rectangle.ScreenID = 0;

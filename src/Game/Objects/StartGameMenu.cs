@@ -42,7 +42,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "Difficulty Level...\n Chieftain (easiest)\n Warlord\n Prince\n King\n Emperor (toughest)\n");
 
 			// Instruction address 0x0000:0x0056, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 160, 35, 1);
+			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 160, 35, 1);
 
 			this.oParent.GameData.DifficultyLevel = (short)this.oCPU.AX.UInt16;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c), 0x0);
@@ -113,7 +113,7 @@ namespace OpenCiv1
 
 		L017c:
 			// Instruction address 0x0000:0x0188, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 160, 35, 1);
+			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 160, 35, 1);
 
 			oParent.GameData.AIOpponentCount = (short)this.oCPU.AX.UInt16;
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
@@ -310,7 +310,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x0000:0x03d3, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 160, 35, 1);
+			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 160, 35, 1);
 
 			oParent.GameData.HumanPlayerID = (short)this.oCPU.AX.UInt16;
 
@@ -457,7 +457,7 @@ namespace OpenCiv1
 
 		L0569:
 			// Instruction address 0x0000:0x0587, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(
 				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Nation,
 				46, 92, 15);
 
@@ -552,7 +552,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0695, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x35c3);
+			this.oParent.LanguageTools.F0_2f4d_044f(0x35c3);
 
 			// Instruction address 0x0000:0x06a1, size: 5
 			this.oParent.CAPI.strlen(0xba06);
@@ -619,7 +619,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x0000:0x07b0, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(99, 88, 81, 0);
+			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(99, 88, 81, 0);
 
 			// Instruction address 0x0000:0x07b8, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
@@ -2396,7 +2396,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.FontID = 6;
 
 			// Instruction address 0x0000:0x1c58, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("New Cabinet:", 160, 102, 0);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0("New Cabinet:", 160, 102, 0);
 
 			this.oParent.Var_aa_Rectangle.FontID = 2;
 
@@ -2423,7 +2423,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0xba05), 0x0);
 
 			// Instruction address 0x0000:0x1c7c, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06,
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06,
 				(80 * this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))) + 40,
 				((this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)) & 1) != 0) ? 186 : 180, 0);
 

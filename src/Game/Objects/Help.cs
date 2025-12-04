@@ -39,7 +39,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x003b, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x34b2, (ushort)(this.oCPU.BP.UInt16 - 0x18));
+			this.oParent.LanguageTools.F0_2f4d_01ad(0x34b2, (ushort)(this.oCPU.BP.UInt16 - 0x18));
 
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.E) goto L00a5;
@@ -53,10 +53,10 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 2);
 
 			// Instruction address 0x0000:0x007c, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0((ushort)(this.oCPU.BP.UInt16 - 0x18), 160, 192, 0);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0((ushort)(this.oCPU.BP.UInt16 - 0x18), 160, 192, 0);
 
 			// Instruction address 0x0000:0x008e, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(32, 32, 32, 15);
+			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(32, 32, 32, 15);
 
 			// Instruction address 0x0000:0x0096, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
@@ -311,12 +311,12 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x02fa, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x34de, stringPtr);
+			this.oParent.LanguageTools.F0_2f4d_01ad(0x34de, stringPtr);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x0000:0x0305, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0471();
+			this.oParent.LanguageTools.F0_2f4d_0471();
 
 			// Instruction address 0x0000:0x030a, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
@@ -332,15 +332,15 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 56, 16, 208, (short)this.oCPU.SI.UInt16, 2);
 
 			// Instruction address 0x0000:0x034d, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(56, 16, 208, (short)this.oCPU.SI.UInt16, 10);
+			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(56, 16, 208, (short)this.oCPU.SI.UInt16, 10);
 
 			this.oParent.Var_aa_Rectangle.FontID = 2;
 
 			// Instruction address 0x0000:0x036d, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("--- Civilization Note ---", 160, 19, 0);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0("--- Civilization Note ---", 160, 19, 0);
 
 			// Instruction address 0x0000:0x0385, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(32, 64, 25, 15);
+			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(32, 64, 25, 15);
 
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
@@ -383,12 +383,12 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x03c9, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_01ad(0x3501, stringPtr);
+			this.oParent.LanguageTools.F0_2f4d_01ad(0x3501, stringPtr);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x0000:0x03d4, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0471();
+			this.oParent.LanguageTools.F0_2f4d_0471();
 
 			// Instruction address 0x0000:0x03d9, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
@@ -404,15 +404,15 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 56, 16, 208, (short)this.oCPU.SI.UInt16, 4);
 
 			// Instruction address 0x0000:0x041c, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(56, 16, 208, (short)this.oCPU.SI.UInt16, 12);
+			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(56, 16, 208, (short)this.oCPU.SI.UInt16, 12);
 
 			this.oParent.Var_aa_Rectangle.FontID = 2;
 
 			// Instruction address 0x0000:0x043c, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("--- Civilization Note ---", 160, 19, 0);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0("--- Civilization Note ---", 160, 19, 0);
 
 			// Instruction address 0x0000:0x0454, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(32, 64, 25, 15);
+			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(32, 64, 25, 15);
 
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 

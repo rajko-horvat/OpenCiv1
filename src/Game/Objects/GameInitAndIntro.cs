@@ -62,10 +62,10 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.G) goto L0073;
 
 			// Instruction address 0x0000:0x009f, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(0, 0, 79, 49, 0);
+			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(0, 0, 79, 49, 0);
 
 			// Instruction address 0x0000:0x00b7, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(1, 1, 77, 47, 0);
+			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(1, 1, 77, 47, 0);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), 0x1);
 
@@ -2881,7 +2881,7 @@ namespace OpenCiv1
 
 		L183d:
 			// Instruction address 0x0000:0x1847, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0("BUILDING NEW WORLD...", 160, 160, this.oCPU.AX.LowUInt8);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0("BUILDING NEW WORLD...", 160, 160, this.oCPU.AX.LowUInt8);
 
 		L184f:
 			this.oParent.Var_aa_Rectangle.ScreenID = 1;
@@ -2933,7 +2933,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L18f3;
 
 			// Instruction address 0x0000:0x18df, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 160, 3);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 160, 3);
 
 			// Instruction address 0x0000:0x18eb, size: 5
 			this.oParent.CommonTools.F0_1182_0134_WaitTimer(5);
@@ -2969,13 +2969,13 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1182_0134_WaitTimer(10);
 
 			// Instruction address 0x0000:0x196b, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 160, 3);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 160, 3);
 
 			// Instruction address 0x0000:0x1977, size: 5
 			this.oParent.CommonTools.F0_1182_0134_WaitTimer(5);
 
 			// Instruction address 0x0000:0x198c, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 160, 11);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 160, 11);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6806, 0x0);
 

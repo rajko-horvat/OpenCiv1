@@ -752,7 +752,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 8, 15);
 
 			// Instruction address 0x0000:0x08f3, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 4, 1, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 4, 1, 0);
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x680a), 0x3);
 			if (this.oCPU.Flags.NE) goto L0935;
@@ -773,13 +773,13 @@ namespace OpenCiv1
 
 		L0935:
 			// Instruction address 0x0000:0x093d, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, 312);
+			this.oParent.LanguageTools.F0_2f4d_04f7(0xba06, 312);
 
 			// Instruction address 0x0000:0x0959, size: 5
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 8, 15);
 
 			// Instruction address 0x0000:0x0970, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 4, 1, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 4, 1, 0);
 
 		L0978:
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
@@ -1364,18 +1364,18 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "The entire world hails");
 
 			// Instruction address 0x0000:0x0ea7, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 152, 20);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 152, 20);
 
 			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.NE)
 			{
 				// Instruction address 0x0000:0x0ecb, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 151, 23);
+				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 151, 23);
 			}
 			else
 			{
 				// Instruction address 0x0000:0x0ecb, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 151, 15);
+				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 151, 15);
 			}
 			
 			// Instruction address 0x0000:0x0ee1, size: 5
@@ -1385,18 +1385,18 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " the CONQUEROR!");
 
 			// Instruction address 0x0000:0x0f09, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 168, 20);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 168, 20);
 
 			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.NE)
 			{
 				// Instruction address 0x0000:0x0f2d, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 167, 23);
+				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 167, 23);
 			}
 			else
 			{
 				// Instruction address 0x0000:0x0f2d, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 167, 15);
+				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 167, 15);
 			}
 
 			// Instruction address 0x0000:0x0f35, size: 5
@@ -1709,18 +1709,18 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " destroy");
 
 			// Instruction address 0x0000:0x13f3, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 152, 20);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 152, 20);
 
 			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.NE)
 			{
 				// Instruction address 0x0000:0x1417, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 151, 23);
+				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 151, 23);
 			}
 			else
 			{
 				// Instruction address 0x0000:0x1417, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 151, 15);
+				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 151, 15);
 			}
 			
 			// Instruction address 0x0000:0x1427, size: 5
@@ -1733,18 +1733,18 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " civilization!");
 
 			// Instruction address 0x0000:0x1464, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 168, 20);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 168, 20);
 
 			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.NE)
 			{
 				// Instruction address 0x0000:0x1488, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 167, 23);
+				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 167, 23);
 			}
 			else
 			{
 				// Instruction address 0x0000:0x1488, size: 5
-				this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 167, 15);
+				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 167, 15);
 			}
 
 			// Instruction address 0x0000:0x14ae, size: 5

@@ -1319,7 +1319,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.FontID = 6;
 
 			// Instruction address 0x0000:0x0fc9, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 4, 0);
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 4, 0);
 
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 

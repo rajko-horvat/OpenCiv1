@@ -2,12 +2,12 @@ using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {
-	public class Overlay_15
+	public class Schizm
 	{
 		private OpenCiv1Game oParent;
 		private VCPU oCPU;
 
-		public Overlay_15(OpenCiv1Game parent)
+		public Schizm(OpenCiv1Game parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -237,7 +237,7 @@ namespace OpenCiv1
 				this.oParent.GameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16))].Nationality);
 		
 			// Instruction address 0x0000:0x026a, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f((ushort)((playerID == this.oParent.GameData.HumanPlayerID) ? 0x4a18 : 0x4a20));
+			this.oParent.LanguageTools.F0_2f4d_044f((ushort)((playerID == this.oParent.GameData.HumanPlayerID) ? 0x4a18 : 0x4a20));
 
 			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ForeignMinister;
 

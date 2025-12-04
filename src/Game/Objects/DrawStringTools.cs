@@ -2,12 +2,12 @@ using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {
-	public class Segment_1182
+	public class DrawStringTools
 	{
 		private OpenCiv1Game oParent;
 		private VCPU oCPU;
 
-		public Segment_1182(OpenCiv1Game parent)
+		public DrawStringTools(OpenCiv1Game parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;

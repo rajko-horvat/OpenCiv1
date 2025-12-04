@@ -1215,14 +1215,14 @@ namespace OpenCiv1
 
 		L0bc9:
 			// Instruction address 0x1866:0x0bd9, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("End of Turn", 4, 124, 7);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("End of Turn", 4, 124, 7);
 
 		L0be1:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), 0xffff);
 			if (this.oCPU.Flags.E) goto L0bfb;
 
 			// Instruction address 0x1866:0x0bf3, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(
+			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
 				15, 15, 15);
@@ -1289,14 +1289,14 @@ namespace OpenCiv1
 
 		L0c86:
 			// Instruction address 0x1866:0x0c95, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("End of Turn", 4, 124, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("End of Turn", 4, 124, 0);
 
 		L0c9d:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), 0xffff);
 			if (this.oCPU.Flags.E) goto L0cb9;
 
 			// Instruction address 0x1866:0x0cb1, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(
+			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
 				15, 15, 0);
@@ -1369,7 +1369,7 @@ namespace OpenCiv1
 					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 					// Instruction address 0x1866:0x0ee6, size: 5
-					this.oParent.Segment_2f4d.F0_2f4d_044f(0x2126);
+					this.oParent.LanguageTools.F0_2f4d_044f(0x2126);
 
 					// Instruction address 0x1866:0x0efa, size: 5
 					this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 64);
@@ -3296,7 +3296,7 @@ namespace OpenCiv1
 
 		L1fe2:
 			// Instruction address 0x1866:0x1ffc, size: 5
-			this.oParent.Segment_2d05.F0_2d05_096c_FillRectangleWithDoubleShadow(100, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x22)),
+			this.oParent.ManuBoxDialog.F0_2d05_096c_FillRectangleWithDoubleShadow(100, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x22)),
 				120, (this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x28)) << 4) + 5, 3);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x28), 0x0);
@@ -3330,7 +3330,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x1866:0x2079, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 128, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)), 15);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 128, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)), 15);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 			this.oCPU.AX.UInt16 = 0x600;
@@ -3344,7 +3344,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e))].HomeCityID);
 			
 			// Instruction address 0x1866:0x20b7, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 128, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)) + 8, 14);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 128, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)) + 8, 14);
 
 			short oldUnitID1 = (short)this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e))].NextUnitID;
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e), oldUnitID1);
@@ -3399,7 +3399,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1866:0x2144, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey();
+			this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24), this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x4800);

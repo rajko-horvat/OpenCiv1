@@ -2,12 +2,12 @@ using IRB.VirtualCPU;
 
 namespace OpenCiv1
 {
-	public class Segment_2d05
+	public class MenuBoxDialog
 	{
 		private OpenCiv1Game oParent;
 		private VCPU oCPU;
 
-		public Segment_2d05(OpenCiv1Game parent)
+		public MenuBoxDialog(OpenCiv1Game parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -667,7 +667,7 @@ namespace OpenCiv1
 
 		L0640:
 			// Instruction address 0x2d05:0x0644, size: 5
-			this.oParent.Segment_1182.F0_1182_00ef_GetStringWidth((ushort)(this.oCPU.BP.UInt16 - 0x50));
+			this.oParent.DrawStringTools.F0_1182_00ef_GetStringWidth((ushort)(this.oCPU.BP.UInt16 - 0x50));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x58), this.oCPU.AX.UInt16);
 			this.oCPU.SI.UInt16 = (ushort)xPos;
@@ -719,11 +719,11 @@ namespace OpenCiv1
 
 		L0715:
 			// Instruction address 0x2d05:0x072b, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0((ushort)(this.oCPU.BP.UInt16 - 0x50),
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0((ushort)(this.oCPU.BP.UInt16 - 0x50),
 				xPos + 5, yPos - 4, 15);
 
 			// Instruction address 0x2d05:0x0742, size: 5
-			this.oParent.Segment_1182.F0_1182_00ef_GetStringWidth((ushort)(this.oCPU.BP.UInt16 - 0x50));
+			this.oParent.DrawStringTools.F0_1182_00ef_GetStringWidth((ushort)(this.oCPU.BP.UInt16 - 0x50));
 
 			// Instruction address 0x2d05:0x0753, size: 5
 			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, xPos + 5, yPos + 3, xPos + 5, yPos + 3, 11);
@@ -736,7 +736,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.FontID = 2;
 			
 			// Instruction address 0x2d05:0x0787, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("(HELP AVAILABLE)",
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("(HELP AVAILABLE)",
 				this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xde0e) - 74,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x52)) - 4,
 				10);
@@ -748,7 +748,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L07df;
 
 			// Instruction address 0x2d05:0x07b6, size: 5
-			this.oParent.Segment_1182.F0_1182_002a_DrawString("OK", 
+			this.oParent.DrawStringTools.F0_1182_002a_DrawString("OK", 
 				(ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xde0e) - 0x11),
 				(ushort)(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x52)) - 8),
 				11);
@@ -795,7 +795,7 @@ namespace OpenCiv1
 
 		L081d:
 			// Instruction address 0x2d05:0x0834, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(this.oCPU.DI.UInt16,
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(this.oCPU.DI.UInt16,
 				xPos + 5,
 				(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x56)) * this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x2fa4)) + yPos + 5,
 				(byte)this.oCPU.AX.UInt16);
@@ -815,7 +815,7 @@ namespace OpenCiv1
 			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, 0x1);
 
 			// Instruction address 0x2d05:0x087b, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0((ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x654e)) + stringPtr),
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0((ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x654e)) + stringPtr),
 				xPos + 5,
 				(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x56)) * this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x2fa4)) + yPos + 6,
 				0);
@@ -843,7 +843,7 @@ namespace OpenCiv1
 			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, 0x1);
 
 			// Instruction address 0x2d05:0x08c6, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0((ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x654e)) + stringPtr),
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0((ushort)(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x654e)) + stringPtr),
 				xPos + 5,
 				(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x56)) * this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x2fa4)) + yPos + 5,
 				this.oCPU.AX.LowUInt8);

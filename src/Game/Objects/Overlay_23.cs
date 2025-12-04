@@ -41,11 +41,11 @@ namespace OpenCiv1
 
 				// Borders
 				// Instruction address 0x0000:0x003e, size: 5
-				this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(80, 80, 160, 32, 11);
+				this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(80, 80, 160, 32, 11);
 
 				// Title
 				// Instruction address 0x0000:0x0055, size: 5
-				this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("City Name...", 88, 82, 0);
+				this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("City Name...", 88, 82, 0);
 
 				this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
@@ -103,11 +103,11 @@ namespace OpenCiv1
 
 			// Borders
 			// Instruction address 0x0000:0x010f, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
+			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
 
 			// Title
 			// Instruction address 0x0000:0x0126, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Your Name...", 166, 90, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("Your Name...", 166, 90, 0);
 
 			// Instruction address 0x0000:0x013c, size: 5
 			this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Name);
@@ -143,10 +143,10 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 158, 88, 160, 32, 15);
 
 			// Instruction address 0x0000:0x01b2, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
+			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
 
 			// Instruction address 0x0000:0x01c9, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Name of your Tribe...", 166, 90, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("Name of your Tribe...", 166, 90, 0);
 
 			// Instruction address 0x0000:0x01df, size: 5
 			this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Nation);
@@ -220,7 +220,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 64, 78, 224, 10, 15);
 
 			// Instruction address 0x0000:0x02fc, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Unknown city.", 82, 80, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("Unknown city.", 82, 80, 0);
 
 			// Instruction address 0x0000:0x0304, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
@@ -257,11 +257,11 @@ namespace OpenCiv1
 
 			// Borders
 			// Instruction address 0x0000:0x0353, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(64, 78, 224, 24, 0);
+			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(64, 78, 224, 24, 0);
 
 			// Title
 			// Instruction address 0x0000:0x0369, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(title, 66, 80, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(title, 66, 80, 0);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
@@ -350,7 +350,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos, yPos, (7 * lengthMax), 11, 15);
 
 			// Instruction address 0x0000:0x0456, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(xPos, yPos - 1, lengthMax * 8 + 8, 13, 0);
+			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(xPos, yPos - 1, lengthMax * 8 + 8, 13, 0);
 
 			this.oParent.Var_aa_Rectangle.BackColor = 0xf;
 
@@ -618,7 +618,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0xba07), 0x0);
 
 			// Instruction address 0x0000:0x0722, size: 5
-			this.oParent.Segment_1182.F0_1182_002a_DrawString((ushort)(0xba06 + this.oCPU.BX.UInt16), xPos, yPos, 0);
+			this.oParent.DrawStringTools.F0_1182_002a_DrawString((ushort)(0xba06 + this.oCPU.BX.UInt16), xPos, yPos, 0);
 			
 			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
 			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));

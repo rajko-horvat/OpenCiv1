@@ -78,7 +78,7 @@ namespace OpenCiv1
 				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Ranking >=
 				this.oParent.GameData.Players[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12))].Ranking) goto L00c5;
 
-			this.oParent.Overlay_15.F15_0000_0000(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
+			this.oParent.Schizm.F15_0000_0000(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
 
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L00c5;
@@ -87,7 +87,7 @@ namespace OpenCiv1
 
 			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
 			this.oCPU.PUSH_UInt16(0x00ab); // stack management - push return offset
-			this.oParent.Overlay_15.F15_0000_08ba(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
+			this.oParent.Schizm.F15_0000_08ba(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
 			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);

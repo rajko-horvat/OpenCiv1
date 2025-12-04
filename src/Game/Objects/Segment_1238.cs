@@ -45,7 +45,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x1238:0x0058, size: 3
-			this.oParent.Segment_2d05.F0_2d05_0031(stringPtr, xPos, yPos, 1);
+			this.oParent.ManuBoxDialog.F0_2d05_0031(stringPtr, xPos, yPos, 1);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
 
@@ -334,7 +334,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x1238:0x034f, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x1c2a);
+			this.oParent.LanguageTools.F0_2f4d_044f(0x1c2a);
 
 			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DomesticAdvisor;
 
@@ -731,7 +731,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x1238:0x0867, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_044f(0x1cf0);
+			this.oParent.LanguageTools.F0_2f4d_044f(0x1cf0);
 			
 			// Instruction address 0x1238:0x0879, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -1492,19 +1492,19 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 8, 0);
 
 			// Instruction address 0x1238:0x1015, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("G\x0087AME", 8, 1, 15);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("G\x0087AME", 8, 1, 15);
 
 			// Instruction address 0x1238:0x102d, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("O\x0087RDERS", 64, 1, 15);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("O\x0087RDERS", 64, 1, 15);
 
 			// Instruction address 0x1238:0x1045, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("A\x0087DVISORS", 128, 1, 15);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("A\x0087DVISORS", 128, 1, 15);
 
 			// Instruction address 0x1238:0x105d, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("W\x0087ORLD", 192, 1, 15);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("W\x0087ORLD", 192, 1, 15);
 
 			// Instruction address 0x1238:0x1075, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("C\x0087IVILOPEDIA", 240, 1, 15);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("C\x0087IVILOPEDIA", 240, 1, 15);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1238_0fea");
@@ -1556,7 +1556,7 @@ namespace OpenCiv1
 				this.oParent.CAPI.itoa((short)this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 10));
 
 			// Instruction address 0x1238:0x1155, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 2, 59, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 2, 59, 0);
 
 		L115d:
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
@@ -1573,7 +1573,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L119e;
 
 			// Instruction address 0x1238:0x1196, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 2, 73, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 2, 73, 0);
 
 		L119e:
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
@@ -1582,7 +1582,7 @@ namespace OpenCiv1
 			F0_1238_1720_GetCurrentYearAsString();
 
 			// Instruction address 0x1238:0x11b6, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 2, 81, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 2, 81, 0);
 
 			if (this.oParent.GameData.Year < 0)
 			{
@@ -1660,7 +1660,7 @@ namespace OpenCiv1
 				this.oParent.CAPI.itoa(this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].ScienceTaxRate, 10));
 
 			// Instruction address 0x1238:0x1382, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 2, 89, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 2, 89, 0);
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1c28), 0x0);
 			if (this.oCPU.Flags.E) goto L1394;
@@ -2433,7 +2433,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2dc4.F0_2dc4_03ce_FillRectangleWithPattern(xPos, yPos, width, height);
 
 			// Instruction address 0x1238:0x1be1, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a66_DrawShadowRectangle(xPos, yPos, width - 1, height - 1, 15, 8);
+			this.oParent.ManuBoxDialog.F0_2d05_0a66_DrawShadowRectangle(xPos, yPos, width - 1, height - 1, 15, 8);
 		}
 
 		/// <summary>

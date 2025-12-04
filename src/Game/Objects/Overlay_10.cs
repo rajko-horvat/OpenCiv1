@@ -226,7 +226,7 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
 
 			// Instruction address 0x0000:0x0219, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0xba06,
+			this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadow(0xba06,
 				this.oCPU.ReadInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.SI.UInt16 + 0xe598)) << 2,
 				this.oCPU.ReadInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.SI.UInt16 + 0xe798)) << 2,
 				13);
@@ -286,7 +286,7 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
 
 			// Instruction address 0x0000:0x02a1, size: 5
-			this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0xba06,
+			this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadow(0xba06,
 				this.oParent.GameData.Players[playerID].StrategicLocations[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))].Position.X << 2,
 				this.oParent.GameData.Players[playerID].StrategicLocations[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))].Position.Y << 2,
 				14);
@@ -402,7 +402,7 @@ namespace OpenCiv1
 				this.oParent.CAPI.itoa(this.oParent.GameData.Players[playerID].Continents[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))].Attack, 10));
 
 			// Instruction address 0x0000:0x0447, size: 5
-			this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 2, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 7);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 2, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 7);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 0x6));

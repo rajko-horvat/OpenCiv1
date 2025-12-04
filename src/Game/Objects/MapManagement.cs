@@ -126,10 +126,10 @@ namespace OpenCiv1
 				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityInfo.CityID);
 
 				// Instruction address 0x2aea:0x015c, size: 5
-				this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, (ushort)(327 - cityInfo.ScreenPos.X));
+				this.oParent.LanguageTools.F0_2f4d_04f7(0xba06, (ushort)(327 - cityInfo.ScreenPos.X));
 
 				// Instruction address 0x2aea:0x018d, size: 5
-				this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(0xba06,
+				this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadow(0xba06,
 					this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(cityInfo.ScreenPos.X - 8, 80, 999), cityInfo.ScreenPos.Y + 16, 11);
 			}
 
@@ -225,10 +225,10 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x2aea:0x037c, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a66_DrawShadowRectangle(0, 8, 79, 49, 15, 8);
+			this.oParent.ManuBoxDialog.F0_2d05_0a66_DrawShadowRectangle(0, 8, 79, 49, 15, 8);
 
 			// Instruction address 0x2aea:0x03a2, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(x - xMap - 1, y - yMap + 7, 17, 10, 15);
+			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(x - xMap - 1, y - yMap + 7, 17, 10, 15);
 
 			this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0xd20a, (short)tempValue);
 
@@ -633,12 +633,12 @@ namespace OpenCiv1
 						if (city.PlayerID == this.oParent.GameData.HumanPlayerID || city.VisibleSize > 0 || this.oParent.Var_d806_DebugFlag)
 						{
 							// Instruction address 0x2aea:0x0c4b, size: 5
-							this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(scrX + 1, scrY + 1, 13, 13, 15);
+							this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(scrX + 1, scrY + 1, 13, 13, 15);
 
 							// Draw city dark borders at the top and right sides
 
 							// Instruction address 0x2aea:0x0c7d, size: 5
-							this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(scrX + 2, scrY + 1, 12, 12,
+							this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(scrX + 2, scrY + 1, 12, 12,
 								this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0x1956 + (city.PlayerID * 2))));
 
 							// Draw city main color
@@ -680,7 +680,7 @@ namespace OpenCiv1
 								// Draw city size
 
 								// Instruction address 0x2aea:0x0d8d, size: 5
-								this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, ((citySize < 10) ? 6 : 3) + scrX, scrY + 5, 0);
+								this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, ((citySize < 10) ? 6 : 3) + scrX, scrY + 5, 0);
 							}
 
 							// Instruction address 0x2aea:0x0d9c, size: 3
@@ -689,7 +689,7 @@ namespace OpenCiv1
 								// Draw city defenders
 
 								// Instruction address 0x2aea:0x0dc2, size: 5
-								this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(scrX, scrY, 15, 15, 0);
+								this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(scrX, scrY, 15, 15, 0);
 							}
 
 							if ((city.ImprovementFlags0 & 0x80) != 0)
@@ -788,14 +788,14 @@ namespace OpenCiv1
 				if ((unit.Status & 0x4) != 0)
 				{
 					// Instruction address 0x2aea:0x103d, size: 5
-					this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("F", x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
+					this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadow("F", x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
 				}
 			}
 
 			if (playerID == this.oParent.GameData.HumanPlayerID && unit.GoToDestination.X != -1)
 			{
 				// Instruction address 0x2aea:0x1085, size: 5
-				this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow("G", x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
+				this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadow("G", x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
 			}
 
 			if (((UnitStatusEnum)unit.Status & UnitStatusEnum.SettlerBuildMask) != 0 && this.oParent.GameData.UnitTypes[unit.TypeID].MovementType != UnitMovementTypeEnum.Air)
@@ -823,10 +823,10 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x2aea:0x1157, size: 5
-				this.oParent.Segment_1182.F0_1182_0086_DrawStringWithShadow(status, x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
+				this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadow(status, x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
 
 				// Instruction address 0x2aea:0x1172, size: 5
-				this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(x - 1, y - 1, 15, 15, 7);
+				this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(x - 1, y - 1, 15, 15, 7);
 			}
 		
 			if ((unit.Status & 0x1) != 0)

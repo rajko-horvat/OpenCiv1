@@ -75,7 +75,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x0000:0x0087, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 48, 65, 1);
+			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 48, 65, 1);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xe168, this.oCPU.AX.UInt16);
 
@@ -359,7 +359,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x0000:0x03f5, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 48, 33, 1);
+			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 48, 33, 1);
 
 			param1 = this.oCPU.AX.UInt16;
 
@@ -422,7 +422,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd206, 0x1);
 
 			// Instruction address 0x0000:0x04c8, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 64, 127, 1);
+			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 64, 127, 1);
 
 		L04d0:
 			// Instruction address 0x0000:0x04d9, size: 5
@@ -492,7 +492,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd206, 0x1);
 
 			// Instruction address 0x0000:0x05c3, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 64, 86, 1);
+			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 64, 86, 1);
 
 			string path = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr));
 			F11_0000_08f6_SaveGameData(path);
@@ -565,10 +565,10 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, "    Press Escape to cancel.\n");
 
 			// Instruction address 0x0000:0x069f, size: 5
-			this.oParent.Segment_2f4d.F0_2f4d_0088_DrawTextBlock(99, 80, 72, 0);
+			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(99, 80, 72, 0);
 
 			// Instruction address 0x0000:0x06a7, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey();
+			this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x41);
@@ -663,7 +663,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0xba03), this.oCPU.AX.LowUInt8);
 
 			// Instruction address 0x0000:0x07ba, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 100, 80, 1);
+			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 100, 80, 1);
 
 			this.oCPU.AX.UInt16 = 0xffff;
 			goto L07d2;
@@ -1788,7 +1788,7 @@ namespace OpenCiv1
 			catch (Exception ex)
 			{
 				this.oParent.CAPI.strcpy(0xba06, ex.Message);
-				this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 4, 64, 1);
+				this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 4, 64, 1);
 
 				bSuccess = false;
 			}

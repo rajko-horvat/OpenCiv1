@@ -290,7 +290,7 @@ namespace OpenCiv1
 					this.oParent.CAPI.strcat(0xba06, ")");
 
 					// Instruction address 0x1d12:0x056f, size: 5
-					this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 104, 2, 15);
+					this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 104, 2, 15);
 
 					// Instruction address 0x1d12:0x0587, size: 5
 					F0_1d12_70cb_FillRectangleWithPattern(127, 23, 208, 104);
@@ -325,7 +325,7 @@ namespace OpenCiv1
 								if (Arr_a6[this.oParent.CityOffsets[i].X + 2, this.oParent.CityOffsets[i].Y + 2] != 0)
 								{
 									// Instruction address 0x1d12:0x06f6, size: 5
-									this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(
+									this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(
 										(local_c6 - this.oParent.Var_d4cc_MapViewX) * 16 + 80, (local_d2 - this.oParent.Var_d75e_MapViewY) * 16 + 8, 15, 15, 12);
 								}
 							}
@@ -1827,7 +1827,7 @@ namespace OpenCiv1
 					F0_1d12_6ed4_DrawResources(cityID, 100, local_42, local_8, 92);
 
 					// Instruction address 0x1d12:0x32a5, size: 5
-					this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("WONDERS", 190, local_42 + 5, 15);
+					this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("WONDERS", 190, local_42 + 5, 15);
 
 					local_42 += 16;
 
@@ -2074,7 +2074,7 @@ namespace OpenCiv1
 						this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba0a, 0x0);
 
 						// Instruction address 0x1d12:0x39b4, size: 5
-						this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, local_fa, local_100 + 15, 0);
+						this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, local_fa, local_100 + 15, 0);
 
 						Arr_74[local_4e] = i;
 
@@ -2137,10 +2137,10 @@ namespace OpenCiv1
 								this.oParent.CAPI.strupr(0xba06);
 
 								// Instruction address 0x1d12:0x3b25, size: 5
-								this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, 63);
+								this.oParent.LanguageTools.F0_2f4d_04f7(0xba06, 63);
 
 								// Instruction address 0x1d12:0x3b40, size: 5
-								this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 253, local_e4 + 2, 15);
+								this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 253, local_e4 + 2, 15);
 
 								// Instruction address 0x1d12:0x3b69, size: 5
 								F0_1d12_7045((short)(local_e8 + 1), (short)(((local_106 & 1) != 0) ? 213 : 233), (short)(local_e4 - 2));
@@ -2178,13 +2178,13 @@ namespace OpenCiv1
 								this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.GetImprovementType(i + 1).Name);
 
 								// Instruction address 0x1d12:0x3c22, size: 5
-								this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, 56);
+								this.oParent.LanguageTools.F0_2f4d_04f7(0xba06, 56);
 
 								// Instruction address 0x1d12:0x3c3d, size: 5
 								this.oParent.CAPI.strupr(0xba06);
 
 								// Instruction address 0x1d12:0x3c46, size: 5
-								this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 253, local_e4 + 2, 15);
+								this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 253, local_e4 + 2, 15);
 
 								// Instruction address 0x1d12:0x3c6f, size: 5
 								F0_1d12_7045((short)(i + 1), (short)(((local_106 & 1) != 0) ? 213 : 233), (short)(local_e4 - 2));
@@ -2251,10 +2251,10 @@ namespace OpenCiv1
 						this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.GetImprovementType(-city.CurrentProductionID).Name);
 
 						// Instruction address 0x1d12:0x3ec5, size: 5
-						this.oParent.Segment_2f4d.F0_2f4d_04f7(0xba06, 0x56);
+						this.oParent.LanguageTools.F0_2f4d_04f7(0xba06, 0x56);
 
 						// Instruction address 0x1d12:0x3edd, size: 5
-						this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 274, 100, 15);
+						this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 274, 100, 15);
 					}
 
 					// Instruction address 0x1d12:0x3ef9, size: 5
@@ -2286,7 +2286,7 @@ namespace OpenCiv1
 					this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 2, 106, 91, (local_4a * local_fc) + 12, 1);
 
 					// Instruction address 0x1d12:0x3fcd, size: 5
-					this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("Food Storage", 8, 108, 15);
+					this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("Food Storage", 8, 108, 15);
 
 					// Instruction address 0x1d12:0x3ffc, size: 5
 					F0_1d12_710d_FillRectangleWithPattern(3, 115, (city.ActualSize * local_e8) + 9, (local_4a * local_fc) + 2);
@@ -2318,7 +2318,7 @@ namespace OpenCiv1
 					this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 2, 23, 122, 9, 1);
 
 					// Instruction address 0x1d12:0x4108, size: 5
-					this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0("City Resources", 8, local_fc, 15);
+					this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("City Resources", 8, local_fc, 15);
 
 					local_fc += 8;
 
@@ -2525,7 +2525,7 @@ namespace OpenCiv1
 							if (this.Var_2496 == 0)
 							{
 								// Instruction address 0x1d12:0x4765, size: 5
-								this.oParent.Segment_1182.F0_1182_005c_DrawStringToScreen0(0xba06, 98, (i * 6) + 179, 10);
+								this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 98, (i * 6) + 179, 10);
 							}
 						}
 					}
@@ -2646,7 +2646,7 @@ namespace OpenCiv1
 						else
 						{
 							// Instruction address 0x1d12:0x4a61, size: 5
-							local_f0 = this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey();
+							local_f0 = this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 							this.oParent.Var_db3e_MouseYPos = 0;
 							this.oParent.Var_db3c_MouseXPos = 0;
@@ -2797,7 +2797,7 @@ namespace OpenCiv1
 						this.oParent.Var_aa_Rectangle.FontID = 1;
 
 						// Instruction address 0x1d12:0x4e32, size: 5
-						if (this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 100, 80, 1) == 0 && this.oParent.GameData.Players[this.Var_6548_PlayerID].Coins >= local_e8)
+						if (this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 100, 80, 1) == 0 && this.oParent.GameData.Players[this.Var_6548_PlayerID].Coins >= local_e8)
 						{
 							city.ShieldsCount = (short)(local_106 * 10);
 
@@ -2928,7 +2928,7 @@ namespace OpenCiv1
 						while (this.oParent.CAPI.kbhit() == 0);
 
 						// Instruction address 0x1d12:0x50d2, size: 5
-						local_fc = this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey(); // this.oCPU.AX.Word has navigatio code also!
+						local_fc = this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey(); // this.oCPU.AX.Word has navigatio code also!
 
 						switch (local_fc)
 						{
@@ -3008,7 +3008,7 @@ namespace OpenCiv1
 
 					L52b5:
 						// Instruction address 0x1d12:0x52b5, size: 5
-						local_fc = this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey();
+						local_fc = this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 						goto L52e0;
 
 					L52c5:
@@ -3070,7 +3070,7 @@ namespace OpenCiv1
 
 					L53ad:
 						this.oParent.CAPI.strcpy(0xba06, "A City must have five\npopulation units to support\ntaxmen or scientists.\n");
-						this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 32, 32, 1);
+						this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 32, 32, 1);
 
 						goto L045f;
 
@@ -3099,7 +3099,7 @@ namespace OpenCiv1
 							16, 16, this.oParent.Var_19d4_Rectangle, 0, 0);
 
 						// Instruction address 0x1d12:0x5449, size: 5
-						this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(
+						this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(
 							(local_b6 * 16) + 160, (local_be * 16) + 56,
 							15, 15, 15);
 
@@ -3124,7 +3124,7 @@ namespace OpenCiv1
 						local_fc = local_be;
 
 						// Instruction address 0x1d12:0x54c4, size: 5
-						local_e8 = this.oParent.Segment_2d05.F0_2d05_0ac9_GetNavigationKey();
+						local_e8 = this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 						goto L551f;
 
@@ -3375,7 +3375,7 @@ namespace OpenCiv1
 						this.oParent.Segment_11a8.F0_11a8_0250();
 
 						// Instruction address 0x1d12:0x5834, size: 5
-						if (this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 128, 80, 1) == 1) goto L5844;
+						if (this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 128, 80, 1) == 1) goto L5844;
 						goto L58a1;
 
 					L5844:
@@ -3437,7 +3437,7 @@ namespace OpenCiv1
 
 					L5953:
 						this.oParent.CAPI.strcpy(0xba06, "A City must have five\npopulation units to support\ntaxmen or scientists.\n");
-						this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 32, 32, 1);
+						this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 32, 32, 1);
 
 						goto L045f;
 
@@ -4885,7 +4885,7 @@ namespace OpenCiv1
 			F0_1d12_710d_FillRectangleWithPattern(xPos1, yPos1, iWidth, iHeight);
 
 			// Instruction address 0x1d12:0x7104, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(xPos1, yPos1, iWidth, iHeight, 1);
+			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(xPos1, yPos1, iWidth, iHeight, 1);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1d12_70cb_FillRectangleWithPattern");
@@ -4975,7 +4975,7 @@ namespace OpenCiv1
 				xPos1, yPos, xPos1, yPos1, (ushort)((mode < 0x8) ? 8 : (mode - 8)));
 
 			// Instruction address 0x1d12:0x72ae, size: 5
-			this.oParent.Segment_1182.F0_1182_00b3_DrawCenteredStringToScreen0(stringPtr,
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(stringPtr,
 				((xPos + xPos1) / 2) + 1, ((yPos + yPos1) / 2) - 2, (byte)(mode ^ 8));
 
 			// Far return
@@ -5024,7 +5024,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x1d12:0x73e1, size: 5
-			this.oParent.Segment_2d05.F0_2d05_0a05_DrawRectangle(100, 117, 121, 75, 9);
+			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(100, 117, 121, 75, 9);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1d12_72b7");

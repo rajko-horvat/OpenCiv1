@@ -117,7 +117,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x2c84:0x00f4, size: 5
-			var selectedOption = this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 16, 8, 0);
+			var selectedOption = this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 16, 8, 0);
 
 			// Instruction address 0x2c84:0x00ff, size: 5
 			this.oParent.Segment_1403.F0_1403_4545();
@@ -147,7 +147,7 @@ namespace OpenCiv1
 							// Write current flags to show as checkmarks in options submenu
 							this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd7f2, (ushort)this.oParent.GameData.GameSettingFlags.Value);
 							// Process options submenu, return selected option index or -1 if selection was rejected
-							index = (short)this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 24, 16, 0);
+							index = (short)this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 24, 16, 0);
 							if (index == -1)
 							{
 								continue;
@@ -399,7 +399,7 @@ namespace OpenCiv1
 			orders[orderCount++] = 'D';
 
 			// Instruction address 0x2c84:0x05e6, size: 5
-			short selectedOrder = (short)this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 72, 8, 0);
+			short selectedOrder = (short)this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 72, 8, 0);
 
 			if (selectedOrder < 0 || selectedOrder >= orderCount)
 			{
@@ -429,7 +429,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " Trade Advisor (F5)\n Science Advisor (F6)\n");
 
 			// Instruction address 0x2c84:0x0647, size: 5
-			ushort selectedOption = this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 112, 8, 0);
+			ushort selectedOption = this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 112, 8, 0);
 
 			// Instruction address 0x2c84:0x0652, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
@@ -500,7 +500,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " World Map (F10)\n Demographics\n SpaceShips\n");
 
 			// Instruction address 0x2c84:0x0724, size: 5
-			ushort selectedOption = this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 144, 8, 0);
+			ushort selectedOption = this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 144, 8, 0);
 
 			// Instruction address 0x2c84:0x072f, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
@@ -558,7 +558,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " Miscellaneous\n");
 
 			// Instruction address 0x2c84:0x07e1, size: 5
-			short selectedOption = (short)this.oParent.Segment_2d05.F0_2d05_0031(0xba06, 182, 8, 0);
+			short selectedOption = (short)this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 182, 8, 0);
 			if (selectedOption < 0)
 			{
 				this.Var_654a = 1;
