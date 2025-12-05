@@ -2389,12 +2389,6 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdeba), 0x3);
 			if (this.oCPU.Flags.LE) goto L16f1;
 
-			// Instruction address 0x1ade:0x16d9, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(1, 0);
-
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L16f1;
-
 			if (!this.oParent.GameData.GameSettingFlags.Animations) goto L16f1;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x42), 0x1);
@@ -2517,22 +2511,13 @@ namespace OpenCiv1
 			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.UInt16);
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba0c, this.oCPU.ADD_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xba0c), this.oCPU.AX.LowUInt8));
 
-			// Instruction address 0x1ade:0x18c3, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(3, 1);
-
 			// Instruction address 0x1ade:0x18d3, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0xba06, 0);
-
-			// Instruction address 0x1ade:0x18e4, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
 			this.oParent.Civilopedia.F8_0000_16f7(
 				(ushort)(((this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)) % 3) * 111) + 1),
 				(ushort)((((this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)) % 9) / 3) * 69) + 1),
-				110,
-				68,
-				174,
-				(ushort)(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)) != 0 ? 87 : 96));
+				110, 68, 174, (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)) != 0 ? 87 : 96));
 
 			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L1994;

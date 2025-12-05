@@ -36,15 +36,11 @@ namespace OpenCiv1
 
 			this.oParent.MainIntro.F2_0000_0000();
 
-			// Instruction address 0x11a8:0x004a, size: 3
-			F0_11a8_02a4(0, 1);
-
-			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
-			this.oCPU.PUSH_UInt16(0x0055); // stack management - push return offset
 			// Instruction address 0x11a8:0x0050, size: 5
 			this.oParent.Graphics.F0_VGA_0492_GetFreeMemory();
-			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
+
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6dfc), 0x0);
 			if (this.oCPU.Flags.E) goto L0064;
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), 0x0);
@@ -284,119 +280,6 @@ namespace OpenCiv1
 		/// <summary>
 		/// ?
 		/// </summary>
-		/// <param name="param1"></param>
-		/// <param name="flag"></param>
-		/// <returns></returns>
-		public ushort F0_11a8_02a4(ushort param1, ushort flag)
-		{
-			this.oCPU.Log.EnterBlock($"F0_11a8_02a4({param1}, {flag})");
-
-			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x102);
-			this.oCPU.CMP_UInt16(flag, 0x0);
-			if (this.oCPU.Flags.NE) goto L02d9;
-
-			this.oCPU.BX.UInt16 = param1;
-			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, 0x1);
-
-			// Instruction address 0x11a8:0x02bd, size: 5
-			this.oParent.CommonTools.F0_1000_066a_FileExists(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x1ace)));
-			
-			this.oCPU.AX.UInt16 = this.oCPU.INC_UInt16(this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L02d4;
-			this.oCPU.AX.UInt16 = param1;
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xe17c, this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = 0x1;
-			goto L03d5;
-
-		L02d4:
-			param1 = 0;
-
-		L02d9:
-			this.oCPU.BX.UInt16 = param1;
-			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, 0x1);
-
-			// Instruction address 0x11a8:0x02e5, size: 5
-			this.oParent.CommonTools.F0_1000_066a_FileExists(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x1ace)));
-			
-			this.oCPU.AX.UInt16 = this.oCPU.INC_UInt16(this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L02f9;
-			this.oCPU.CMP_UInt16(flag, 0xffff);
-			if (this.oCPU.Flags.E) goto L02f9;
-			goto L03cc;
-
-		L02f9:
-			// Instruction address 0x11a8:0x02ff, size: 5
-			this.oParent.CommonTools.F0_1000_0846(this.oParent.Var_aa_Rectangle.ScreenID);
-			
-			this.oCPU.CMP_UInt16(flag, 0xffff);
-			if (this.oCPU.Flags.NE) goto L0312;
-
-			flag = 1;
-
-		L0312:
-			// Instruction address 0x11a8:0x0313, size: 3
-			F0_11a8_0268();
-
-			// Instruction address 0x11a8:0x032a, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 15);
-
-			this.oCPU.AX.UInt16 = param1;
-			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-			this.oCPU.CX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdeba);
-			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.UInt16);
-			this.oCPU.AX.LowUInt8 = this.oCPU.ADD_UInt8(this.oCPU.AX.LowUInt8, 0x31);
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x1ade, this.oCPU.AX.LowUInt8);
-
-			// Instruction address 0x11a8:0x034a, size: 5
-			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0x100), "Please insert Disk ");
-
-			// Instruction address 0x11a8:0x035b, size: 5
-			this.oParent.CAPI.strcat((ushort)(this.oCPU.BP.UInt16 - 0x100), "A");
-
-			// Instruction address 0x11a8:0x036c, size: 5
-			this.oParent.CAPI.strcat((ushort)(this.oCPU.BP.UInt16 - 0x100), ".\n \n    Press Return\n    to continue.\n");
-
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x3936);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x102), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0xffff);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd206, 0x1);
-
-			// Instruction address 0x11a8:0x0394, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031((ushort)(this.oCPU.BP.UInt16 - 0x100), 100, 81, 1);
-
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x102));
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, this.oCPU.AX.UInt16);
-
-			// Instruction address 0x11a8:0x03b7, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 15);
-
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x1ae0, 0x1);
-
-			// Instruction address 0x11a8:0x03c6, size: 3
-			F0_11a8_0250();
-
-			goto L02d9;
-
-		L03cc:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xe17c, param1);
-
-			this.oCPU.AX.UInt16 = flag;
-
-		L03d5:
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_11a8_02a4");
-
-			return this.oCPU.AX.UInt16;
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
 		public void F0_11a8_0486_LogoAndMainGameMenu()
 		{
 			this.oCPU.Log.EnterBlock("F0_11a8_0486_LogoAndMainGameMenu()");
@@ -498,17 +381,11 @@ namespace OpenCiv1
 			// Instruction address 0x11a8:0x0576, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 160, 50, 160, 150, this.oParent.Var_19e8_Rectangle, 160, 50);
 
-			// Instruction address 0x11a8:0x0588, size: 3
-			F0_11a8_02a4(0, 1);
-
 			goto L0810;
 
 		L0591:
 			// Instruction address 0x11a8:0x0592, size: 3
 			F0_11a8_0268();
-
-			// Instruction address 0x11a8:0x05a0, size: 3
-			F0_11a8_02a4(7, 1);
 
 			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L05be;
@@ -522,9 +399,6 @@ namespace OpenCiv1
 
 			// Instruction address 0x11a8:0x05e1, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x1b3d, 1);
-
-			// Instruction address 0x11a8:0x05f3, size: 3
-			F0_11a8_02a4(0, 1);
 
 			// Instruction address 0x11a8:0x0611, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
@@ -748,16 +622,10 @@ namespace OpenCiv1
 			// Instruction address 0x11a8:0x08a8, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x1c16, 1);
 
-			// Instruction address 0x11a8:0x08ba, size: 3
-			F0_11a8_02a4(0, 1);
-
 			this.oParent.StartGameMenu.F5_0000_0000();
 
 		L08c5:
 			this.oParent.StartGameMenu.F5_0000_1af6();
-
-			// Instruction address 0x11a8:0x08d4, size: 3
-			F0_11a8_02a4(0, 1);
 
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
 			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();

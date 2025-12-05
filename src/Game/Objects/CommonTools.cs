@@ -421,7 +421,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="fileNamePtr"></param>
 		/// <returns></returns>
-		public ushort F0_1000_066a_FileExists(ushort fileNamePtr)
+		public short F0_1000_066a_FileExists(ushort fileNamePtr)
 		{
 			string fileName = CAPI.GetDOSFileName(this.oParent.CPU.ReadString(VCPU.ToLinearAddress(this.oParent.CPU.DS.UInt16, fileNamePtr)).ToUpper());
 
@@ -440,7 +440,7 @@ namespace OpenCiv1
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1000_066a_FileExists");
 
-			return this.oCPU.AX.UInt16;
+			return this.oCPU.AX.Int16;
 		}
 
 		/// <summary>

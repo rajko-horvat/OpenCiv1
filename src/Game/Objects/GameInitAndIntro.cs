@@ -27,9 +27,6 @@ namespace OpenCiv1
 			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
 			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0xe);
 
-			// Instruction address 0x0000:0x0024, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(7, 1);
-
 			this.oParent.Var_aa_Rectangle.ScreenID = 1;
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x67fc, 0x0);

@@ -809,9 +809,6 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x090a, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			// Instruction address 0x1238:0x0916, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(1, 1);
-
 			// Instruction address 0x1238:0x0926, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x1cf8, 0);
 

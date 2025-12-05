@@ -1410,9 +1410,6 @@ namespace OpenCiv1
 
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
-			// Instruction address 0x0000:0x0f5d, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
-
 			// Instruction address 0x0000:0x0f65, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
@@ -1469,9 +1466,6 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xd), 0x6b);
 
 		L0fd2:
-			// Instruction address 0x0000:0x0fe5, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4((ushort)((this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x32)) / 7) + 4), 1);
-
 			// Instruction address 0x0000:0x0ff5, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0);
 

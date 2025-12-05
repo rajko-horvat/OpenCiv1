@@ -609,9 +609,6 @@ namespace OpenCiv1
 			// Instruction address 0x1403:0x080d, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 
-			// Instruction address 0x1403:0x081e, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
-
 			// Instruction address 0x1403:0x0826, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
 

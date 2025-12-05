@@ -274,9 +274,6 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x08e4, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			// Instruction address 0x0000:0x08f0, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(1, 1);
-
 			F19_0000_137f((ushort)param2, city.PlayerID, cityID);
 
 			int i3 = 0;
@@ -590,9 +587,6 @@ namespace OpenCiv1
 					// Instruction address 0x0000:0x0f94, size: 5
 					this.oParent.CommonTools.F0_1000_042b_StopPaletteCycleSlot(4);
 				}
-
-				// Instruction address 0x0000:0x0fa5, size: 5
-				this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
 				if (this.oParent.Var_d762 != 0)
 				{

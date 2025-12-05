@@ -1851,9 +1851,6 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.DI.UInt16);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 
-			// Instruction address 0x0000:0x1467, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(7, 1);
-
 			// Instruction address 0x0000:0x147c, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x36ff, 0);
 
@@ -2307,9 +2304,6 @@ namespace OpenCiv1
 			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x12);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 
-			// Instruction address 0x0000:0x1b07, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(2, 1);
-
 			// Instruction address 0x0000:0x1b17, size: 5
 			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0x10), "govt0a.pic");
 
@@ -2340,9 +2334,6 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x1b84, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 160, 60, this.oParent.Var_19e8_Rectangle, 160, 140);
-
-			// Instruction address 0x0000:0x1b95, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;

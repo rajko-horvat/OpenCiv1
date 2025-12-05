@@ -386,12 +386,6 @@ namespace OpenCiv1
 			if (playerID != this.oParent.GameData.HumanPlayerID) goto L0499;
 
 			if (!this.oParent.GameData.GameSettingFlags.Animations) goto L0484;
-
-			// Instruction address 0x0000:0x046d, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(1, 0);
-
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L0484;
 			
 			this.oParent.Overlay_22.F22_0000_0eaf(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
 

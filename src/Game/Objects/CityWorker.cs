@@ -1102,8 +1102,7 @@ namespace OpenCiv1
 									// Instruction address 0x1d12:0x1dbe, size: 5
 									if (this.Var_6548_PlayerID == this.oParent.GameData.HumanPlayerID && 
 										this.oParent.GameData.GameSettingFlags.Animations && 
-										(local_e8 <= 21 || local_e8 > 24) && (city.StatusFlag & 0x10) == 0 && 
-										local_e8 != 1 && this.oParent.Segment_11a8.F0_11a8_02a4(1, 0) != 0)
+										(local_e8 <= 21 || local_e8 > 24) && (city.StatusFlag & 0x10) == 0 && local_e8 != 1)
 									{
 										this.oParent.CityView.F19_0000_0000(cityID, (short)local_e8);
 									}
@@ -3622,9 +3621,6 @@ namespace OpenCiv1
 
 				this.oParent.CityView.F19_0000_18c1_CivilDisorderAnimation();
 
-				// Instruction address 0x1d12:0x5d89, size: 5
-				this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
-
 				// Instruction address 0x1d12:0x5d91, size: 5
 				this.oParent.Segment_1238.F0_1238_1b44();
 
@@ -3828,9 +3824,6 @@ namespace OpenCiv1
 					this.oParent.CityView.F19_0000_0000(cityID, -2);
 
 					this.oParent.CityView.F19_0000_1ae1();
-
-					// Instruction address 0x1d12:0x6175, size: 5
-					this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
 					// Instruction address 0x1d12:0x617d, size: 5
 					this.oParent.Segment_1238.F0_1238_1b44();

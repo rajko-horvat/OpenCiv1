@@ -340,13 +340,7 @@ namespace OpenCiv1
 			// Instruction address 0x2459:0x0380, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
-			// Instruction address 0x2459:0x038c, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(1, 1);
-
 			this.oParent.CityView.F19_0000_167b(playerID);
-
-			// Instruction address 0x2459:0x03a8, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
 			// Instruction address 0x2459:0x03b0, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();

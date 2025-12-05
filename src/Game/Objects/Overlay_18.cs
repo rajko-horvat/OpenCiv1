@@ -32,9 +32,6 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x000c, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			// Instruction address 0x0000:0x0018, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(1, 1);
-
 			// Instruction address 0x0000:0x0038, size: 5
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
@@ -152,9 +149,6 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.LE) goto L018f;
 
 		L01a3:
-			// Instruction address 0x0000:0x01ac, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
-
 			// Instruction address 0x0000:0x01bc, size: 5
 			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0x10), "back0a.pal");
 

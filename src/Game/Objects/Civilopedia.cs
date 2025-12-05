@@ -49,9 +49,6 @@ namespace OpenCiv1
 				}
 			} while (var2 != -2);
 
-			// Instruction address 0x0000:0x004b, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
-
 			// Instruction address 0x0000:0x0053, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
 
@@ -606,9 +603,6 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xe17c), 0x3);
 			if (this.oCPU.Flags.E) goto L05eb;
 
-			// Instruction address 0x0000:0x05e3, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(3, 1);
-
 		L05eb:
 			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x56));
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
@@ -677,13 +671,7 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xe17c), 0x3);
 			if (this.oCPU.Flags.E) goto L066d;
 
-			// Instruction address 0x0000:0x0658, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(3, 0);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.NE) goto L066d;
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3c62, 0x1);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), 1);
 
 		L066d:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0xf);
@@ -856,14 +844,6 @@ namespace OpenCiv1
 			goto L1636;
 
 		L08ea:
-			// Instruction address 0x0000:0x08f2, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(1, 0);
-
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.NE) goto L0904;
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3c62, 0x1);
-
-		L0904:
 			this.oCPU.CMP_UInt16(id, 0x1);
 			if (this.oCPU.Flags.G) goto L090d;
 			goto L09a5;
@@ -1705,9 +1685,6 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L168b;
 			this.oCPU.DX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.DX.UInt16, this.oCPU.DX.UInt16);
 			if (this.oCPU.Flags.NE) goto L168b;
-
-			// Instruction address 0x0000:0x1683, size: 5
-			this.oParent.Segment_11a8.F0_11a8_02a4(0, 1);
 
 		L168b:
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3c62, 0x0);
