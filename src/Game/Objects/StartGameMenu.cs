@@ -53,13 +53,10 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x006f, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3c_MouseXPos, 0x87);
-			if (this.oCPU.Flags.GE) goto L009b;
+			if (this.oParent.Var_db3c_MouseXPos >= 135) goto L009b;
 
 			// Instruction address 0x0000:0x0090, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(((short)this.oParent.Var_db3e_MouseYPos - 12) / 35, 0, 4);
-
-			this.oParent.GameData.DifficultyLevel = (short)this.oCPU.AX.UInt16;
+			this.oParent.GameData.DifficultyLevel = (short)this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange((this.oParent.Var_db3e_MouseYPos - 12) / 35, 0, 4);
 
 		L009b:
 			if (oParent.GameData.DifficultyLevel != -1) goto L00a8;

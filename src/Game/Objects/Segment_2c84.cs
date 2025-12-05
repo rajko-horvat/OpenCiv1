@@ -22,7 +22,7 @@ namespace OpenCiv1
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
 		/// <param name="menuIndex">Index of specific menu to show or -1 to select menu using current mouse X coordinate</param>
-		public void F0_2c84_0000_ShowTopMenu(short playerID, short unitID, short menuIndex)
+		public void F0_2c84_0000_ShowTopMenu(short playerID, short unitID, int menuIndex)
 		{
 			this.oCPU.Log.EnterBlock($"F0_2c84_0000_ShowTopMenu({playerID}, {unitID}, {menuIndex})");
 
@@ -33,7 +33,7 @@ namespace OpenCiv1
             if (menuIndex == -1)
 			{
 				// Instruction address 0x2c84:0x0026, size: 5
-				menuIndex = (short)this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange((short)this.oParent.Var_db3c_MouseXPos / 60, 0, 4);
+				menuIndex = (short)this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.Var_db3c_MouseXPos / 60, 0, 4);
 			}
 		
 			// Instruction address 0x2c84:0x0031, size: 5

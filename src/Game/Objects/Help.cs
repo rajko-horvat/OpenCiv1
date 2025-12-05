@@ -374,9 +374,8 @@ namespace OpenCiv1
 			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
 			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x2);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
-			this.oCPU.AX.UInt16 = (ushort)this.oParent.GameData.HumanPlayerID;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6b90), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L03bd;
+			
+			if (this.oParent.Var_6b90 == this.oParent.GameData.HumanPlayerID) goto L03bd;
 			goto L0474;
 
 		L03bd:

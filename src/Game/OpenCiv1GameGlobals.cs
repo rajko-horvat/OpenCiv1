@@ -64,6 +64,8 @@ namespace OpenCiv1
 		// !!! This should not be used at all as screen 3 doesn't exist
 		public CRectangle Var_19fc_Rectangle = new CRectangle(3, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 
+		public int Var_1ae0 = 0;
+
 		/// <summary>
 		/// Allows to customize dialog shown by F0_1238_001e_ShowDialog().
 		/// </summary>
@@ -71,18 +73,22 @@ namespace OpenCiv1
 
 		// 0x652e - after this offset the default values are set to 0
 		public int Var_6b64 = 0;
+		public int Var_6b90 = 0;
 		public int Var_6b92 = 0;
 		public int Var_6c98 = 0;
 		public int Var_6c9a = 0;
+		public int Var_6ed6 = 0;
 		public int[] Var_70da_Arr = new int[4];
 		public int Var_70e2 = 0;
 		public int Var_70e4 = 0;
 		public int Var_70e6 = 0;
+		public int Var_70ea = 0;
 		public int Var_8078 = 0;
 		public int Var_b1e8 = 0;
 		//public int Var_b278 = 0; This was some kind of experiment, Always 0, can be safely removed througout entire code
 		public int Var_b882 = 0;
 		public ushort Var_b2ba = 0;
+		public int Var_d20a = 0;
 		public int Var_d2de = 0;
 		public int Var_d2e0 = 0;
 		public int Var_d2f6 = 0;
@@ -97,10 +103,11 @@ namespace OpenCiv1
 		// Currently pressed mouse button: 0 - nothing, 1 - left button, 2 - right button
 		public ushort Var_db3a_MouseButton = 0;
 		// Current mouse position, in pixels. Position (0, 0) is the top-left corner
-		public ushort Var_db3c_MouseXPos = 0;
-		public ushort Var_db3e_MouseYPos = 0;
+		public int Var_db3c_MouseXPos = 0;
+		public int Var_db3e_MouseYPos = 0;
 
 		public int Var_db42 = 0;
+		public int Var_dcfc = 0;
 		public int Var_deb8 = 0;
 		public int Var_e17a = 0;
 		public int Var_e3c2 = 0;

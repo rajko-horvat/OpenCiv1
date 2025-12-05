@@ -21,18 +21,6 @@ namespace OpenCiv1
 		// Layer 9: Per-Civ land exploration and active units, 160:0
 		// Layer 10: Mini-map render, 240:0
 
-		private struct CityInfo
-		{
-			public readonly GPoint ScreenPos;
-			public readonly int CityID;
-
-			public CityInfo(int x, int y, int cityID)
-			{
-				this.ScreenPos = new GPoint(x, y);
-				this.CityID = cityID;
-			}
-		}
-
 		private OpenCiv1Game oParent;
 		private VCPU oCPU;
 
@@ -55,18 +43,18 @@ namespace OpenCiv1
 		/// <param name="y"></param>
 		public void F0_2aea_0008_DrawVisibleMap(int playerID, int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_0008({playerID}, {x}, {y})");
+			//this.oCPU.Log.EnterBlock($"F0_2aea_0008({playerID}, {x}, {y})");
 
 			// function body
 			// Instruction address 0x2aea:0x000f, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x1ae0, 0x0);
+			this.oParent.Var_1ae0 = 0;
 
 			this.oParent.Segment_1238.F0_1238_0fea();
 			this.oParent.Segment_1238.F0_1238_107e();
 
-			int tempValue = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xd20a);
+			int tempValue = this.oParent.Var_d20a;
 
 			this.oParent.Var_d4cc_MapViewX = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x);
 			this.oParent.Var_d75e_MapViewY = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(y, 0, 38);
@@ -172,8 +160,8 @@ namespace OpenCiv1
 				mapYDst -= yMap;
 			}
 
-			this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0x6ed6, (short)xMap);
-			this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0x70ea, (short)yMap);
+			this.oParent.Var_6ed6 = xMap;
+			this.oParent.Var_70ea = yMap;
 
 			// Instruction address 0x2aea:0x0233, size: 5
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 8, 80, 50, 0);
@@ -182,11 +170,11 @@ namespace OpenCiv1
 			{
 				// Instruction address 0x2aea:0x024c, size: 5
 				xMap = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(xMap, 0, 16);
-				this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0x6ed6, (short)xMap);
+				this.oParent.Var_6ed6 = xMap;
 
 				// Instruction address 0x2aea:0x0264, size: 5
 				yMap = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(yMap, 0, 65530);
-				this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0x70ea, (short)yMap);
+				this.oParent.Var_70ea = yMap;
 
 				// Instruction address 0x2aea:0x02da, size: 5
 				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, xMap, yMap, 80, 50, this.oParent.Var_aa_Rectangle, 0, 8);
@@ -230,13 +218,10 @@ namespace OpenCiv1
 			// Instruction address 0x2aea:0x03a2, size: 5
 			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(x - xMap - 1, y - yMap + 7, 17, 10, 15);
 
-			this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0xd20a, (short)tempValue);
+			this.oParent.Var_d20a = tempValue;
 
 			// Instruction address 0x2aea:0x03b0, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2aea_0008");
 		}
 
 		/// <summary>
@@ -397,10 +382,8 @@ namespace OpenCiv1
 					}
 				}
 
-				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.Irrigation) &&
-					terrainType != TerrainTypeEnum.Water && 
-					this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdcfc) == 0 &&
-					!terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.City))
+				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.Irrigation) && terrainType != TerrainTypeEnum.Water &&
+					this.oParent.Var_dcfc == 0 && !terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.City))
 				{
 					// Draw irrigation
 					// Instruction address 0x2aea:0x07f8, size: 5
@@ -554,8 +537,7 @@ namespace OpenCiv1
 					}
 				}
 
-				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.Mines) &&
-					this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdcfc) == 0)
+				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.Mines) && this.oParent.Var_dcfc == 0)
 				{
 					// Draw mines
 
@@ -571,7 +553,7 @@ namespace OpenCiv1
 
 					// Instruction address 0x2aea:0x0b28, size: 5
 					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-						this.oCPU.ReadUInt16(this.oCPU.DS.UInt16,	(ushort)(0xd4ce + (((int)terrainType + 16) << 1))));
+						this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd4ce + (((int)terrainType + 16) << 1))));
 				}
 
 				// Instruction address 0x2aea:0x0b3a, size: 3
@@ -615,10 +597,7 @@ namespace OpenCiv1
 					}
 				}
 
-				// Instruction address 0x2aea:0x0be7, size: 3
-				this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e), F0_2aea_1369_GetCityOwner(x, y));
-
-				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.City) && this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdcfc) == 0)
+				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.City) && this.oParent.Var_dcfc == 0)
 				{
 					// Draw city
 
@@ -852,14 +831,14 @@ namespace OpenCiv1
 			// Instruction address 0x2aea:0x11e2, size: 3
 			F0_2aea_03ba_DrawCell(x, y);
 
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdcfc) == 0)
+			if (this.oParent.Var_dcfc == 0)
 			{
 				// Instruction address 0x2aea:0x11f6, size: 3
 				int unitID = F0_2aea_1458_GetCellActiveUnitID(x, y);
 
 				if (unitID != -1)
 				{
-					int playerID = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xd20a);
+					int playerID = this.oParent.Var_d20a;
 
 					if (this.oParent.Var_d806_DebugFlag || playerID == this.oParent.GameData.HumanPlayerID ||
 						(this.oParent.GameData.Players[playerID].Units[unitID].VisibleByPlayer & (0x1 << this.oParent.GameData.HumanPlayerID)) != 0)
@@ -1059,7 +1038,7 @@ namespace OpenCiv1
 					if (unit.TypeID != -1 && unit.Position.X == x && unit.Position.Y == y)
 					{
 						this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0xd7f0, (short)playerID);
-						this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0xd20a, (short)playerID);
+						this.oParent.Var_d20a = playerID;
 
 						return i;
 					}
@@ -1176,7 +1155,7 @@ namespace OpenCiv1
 		/// <param name="yPos"></param>
 		public void F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum improvements, int xPos, int yPos)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_1653({improvements}, {xPos}, {yPos})");
+			//this.oCPU.Log.EnterBlock($"F0_2aea_1653({improvements}, {xPos}, {yPos})");
 
 			// function body
 			if (improvements == TerrainImprovementFlagsEnum.None)
@@ -1204,14 +1183,11 @@ namespace OpenCiv1
 				this.oParent.CommonTools.F0_1000_104f_SetPixel(2, xPos, yPos + 100, (ushort)(current | (ushort)improvements));
 			}
 
-			if (this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x6b90) == this.oParent.GameData.HumanPlayerID)
+			if (this.oParent.Var_6b90 == this.oParent.GameData.HumanPlayerID)
 			{
 				// Instruction address 0x2aea:0x16e5, size: 3
 				F0_2aea_1601_UpdateVisbleCellStatus(xPos, yPos);
-			}
-		
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2aea_1653");
+			}		
 		}
 
 		/// <summary>
@@ -1284,7 +1260,7 @@ namespace OpenCiv1
 
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd7f0, this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd20a, this.oCPU.AX.UInt16);
+			this.oParent.Var_d20a = this.oCPU.AX.Int16;
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
 			goto L17ca;
 
@@ -1333,8 +1309,9 @@ namespace OpenCiv1
 		{
 			//this.oCPU.Log.EnterBlock($"F0_2aea_1894({terrainType}, {x}, {y})");
 			// function body
-			if (y > 1 && y < 48 && 
-				terrainType != TerrainTypeEnum.Water && !F0_2aea_1585_GetVisibleTerrainImprovements(x, y).HasFlag(TerrainImprovementFlagsEnum.City) &&
+			// When 'Minor Tribe Hut' is explored the (this.oParent.GameData.MapVisibility[x, y] & 0x1) != 0
+			if (y > 1 && y < 48 && terrainType != TerrainTypeEnum.Water && 
+				!F0_2aea_1585_GetVisibleTerrainImprovements(x, y).HasFlag(TerrainImprovementFlagsEnum.City) &&
 				(this.oParent.GameData.MapVisibility[x, y] & 0x1) == 0 &&
 				(((x & 0x3) * 4) + (y & 0x3)) == ((((x / 4) * 13) + ((y / 4) * 11) + this.oParent.GameData.RandomSeed + 8) & 0x1f))
 			{
@@ -1391,6 +1368,18 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("F0_2aea_195d");
 
 			return this.oCPU.AX.UInt16;
+		}
+
+		private struct CityInfo
+		{
+			public readonly GPoint ScreenPos;
+			public readonly int CityID;
+
+			public CityInfo(int x, int y, int cityID)
+			{
+				this.ScreenPos = new GPoint(x, y);
+				this.CityID = cityID;
+			}
 		}
 	}
 }

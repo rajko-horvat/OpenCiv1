@@ -889,10 +889,10 @@ namespace OpenCiv1
 		L0b6c:
 			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
 			if (this.oCPU.Flags.E) goto L0b83;
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3c_MouseXPos, 0xf2);
-			if (this.oCPU.Flags.LE) goto L0b83;
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3e_MouseYPos, 0xbe);
-			if (this.oCPU.Flags.GE) goto L0b89;
+
+			if (this.oParent.Var_db3c_MouseXPos <= 242) goto L0b83;
+
+			if (this.oParent.Var_db3e_MouseYPos >= 190) goto L0b89;
 
 		L0b83:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)), 0x6c);

@@ -159,7 +159,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f9c, this.oCPU.AX.UInt16);
 
 		L018a:
-			this.oCPU.AX.UInt16 = this.oParent.Var_db3e_MouseYPos;
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_db3e_MouseYPos;
 			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, (ushort)((short)yPos));
 			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, 0x4);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
@@ -168,13 +168,13 @@ namespace OpenCiv1
 			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xb1ec));
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
 
-			if (xPos > (short)this.oParent.Var_db3c_MouseXPos)
+			if (xPos > this.oParent.Var_db3c_MouseXPos)
 			{
 				this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), 0xffff);
 			}
 			else
 			{
-				if ((short)this.oParent.Var_db3c_MouseXPos > this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xde0e))
+				if (this.oParent.Var_db3c_MouseXPos > this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xde0e))
 				{
 					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), 0xffff);
 				}

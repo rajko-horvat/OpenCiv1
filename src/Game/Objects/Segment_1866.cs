@@ -1147,14 +1147,14 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), 0xffff);
 
 		L0b2d:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x70ea);
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_70ea;
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.GE) goto L0b36;
 			this.oCPU.AX.UInt16 = 0;
 
 		L0b36:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x70ea));
+			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, (ushort)((short)this.oParent.Var_70ea));
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), this.oCPU.AX.UInt16);
 			
 			this.oCPU.AX.UInt16 = 0x600;
@@ -1165,8 +1165,7 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1866:0x0b5b, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
-				this.oParent.GameData.Players[playerID].Units[unitID].Position.X - this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x6ed6));
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(this.oParent.GameData.Players[playerID].Units[unitID].Position.X - this.oParent.Var_6ed6);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
 
@@ -3453,14 +3452,13 @@ namespace OpenCiv1
 			goto L2256;
 
 		L21c6:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3c_MouseXPos, 0x64);
-			if (this.oCPU.Flags.G) goto L21d0;
+			if (this.oParent.Var_db3c_MouseXPos > 100) goto L21d0;
 			goto L2256;
 
 		L21d0:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3c_MouseXPos, 0xdc);
-			if (this.oCPU.Flags.GE) goto L2256;
-			this.oCPU.AX.UInt16 = this.oParent.Var_db3e_MouseYPos;
+			if (this.oParent.Var_db3c_MouseXPos >= 220) goto L2256;
+
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_db3e_MouseYPos;
 			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x22)));
 			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, 0x5);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);

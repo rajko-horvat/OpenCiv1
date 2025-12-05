@@ -175,9 +175,8 @@ namespace OpenCiv1
 
 				this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x5872));
 				this.oParent.Var_db3a_MouseButton = this.oCPU.AX.UInt16;
-				this.oParent.Var_db3c_MouseXPos = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x586e);
-				this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x5870);
-				this.oParent.Var_db3e_MouseYPos = this.oCPU.AX.UInt16;
+				this.oParent.Var_db3c_MouseXPos = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x586e);
+				this.oParent.Var_db3e_MouseYPos = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x5870);
 			}
 			else
 			{

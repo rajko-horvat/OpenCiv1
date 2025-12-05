@@ -411,15 +411,16 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0411;
 
 		L0426:
-			this.oCPU.AX.UInt16 = this.oParent.Var_db3c_MouseXPos;
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_db3c_MouseXPos;
 			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, 0xa);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a));
 			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4e), this.oCPU.AX.UInt16);
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3e_MouseYPos, 0x10);
-			if (this.oCPU.Flags.L) goto L044d;
-			this.oCPU.AX.UInt16 = this.oParent.Var_db3e_MouseYPos;
+			
+			if (this.oParent.Var_db3e_MouseYPos < 16) goto L044d;
+
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_db3e_MouseYPos;
 			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, 0x10);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.UInt16 = 0x7;

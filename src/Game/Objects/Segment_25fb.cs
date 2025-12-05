@@ -5225,7 +5225,7 @@ namespace OpenCiv1
 			goto L31ce;
 
 		L309a:
-			if (playerID == this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x6b90))
+			if (playerID == this.oParent.Var_6b90)
 				goto L30a5;
 
 			goto L3170;

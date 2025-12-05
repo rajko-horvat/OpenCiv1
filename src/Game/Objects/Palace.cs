@@ -169,12 +169,12 @@ namespace OpenCiv1
 		L0246:
 			// Instruction address 0x0000:0x0246, size: 5
 			this.oParent.CAPI.kbhit();
-
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L02a0;
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3e_MouseYPos, 0x9a);
-			if (this.oCPU.Flags.GE) goto L0292;
-			this.oCPU.AX.UInt16 = this.oParent.Var_db3c_MouseXPos;
+
+			if (this.oParent.Var_db3e_MouseYPos >= 154) goto L0292;
+
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_db3c_MouseXPos;
 			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, 0xc);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.UInt16 = 0x30;
@@ -206,7 +206,7 @@ namespace OpenCiv1
 			goto L02e6;
 
 		L0292:
-			this.oCPU.AX.UInt16 = this.oParent.Var_db3c_MouseXPos;
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_db3c_MouseXPos;
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.UInt16 = 0x6b;
 			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.UInt16);
@@ -574,7 +574,8 @@ namespace OpenCiv1
 
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L06f5;
-			this.oCPU.AX.UInt16 = this.oParent.Var_db3c_MouseXPos;
+
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_db3c_MouseXPos;
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.UInt16 = 0x6b;
 			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.UInt16);

@@ -1281,9 +1281,9 @@ namespace OpenCiv1
 			goto L10cc;
 
 		L10b8:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3c_MouseXPos, 0x119);
-			if (this.oCPU.Flags.LE) goto L1114;
-			this.oCPU.AX.UInt16 = this.oParent.Var_db3e_MouseYPos;
+			if (this.oParent.Var_db3c_MouseXPos <= 281) goto L1114;
+
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_db3e_MouseYPos;
 			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, 0x1c);
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.CX.UInt16 = 0x18;
@@ -1320,7 +1320,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), 0x0);
 
 		L1114:
-			this.oCPU.AX.UInt16 = this.oParent.Var_db3c_MouseXPos;
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_db3c_MouseXPos;
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x0000:0x111a, size: 5
@@ -1330,7 +1330,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
 			// Instruction address 0x0000:0x112c, size: 5
-			this.oParent.CommonTools.F0_1000_16ae(270, this.oParent.Var_db3e_MouseYPos);
+			this.oParent.CommonTools.F0_1000_16ae(270, (ushort)((short)this.oParent.Var_db3e_MouseYPos));
 			
 			// Instruction address 0x0000:0x1134, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
