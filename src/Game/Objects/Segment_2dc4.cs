@@ -156,12 +156,12 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <returns></returns>
-		public ushort F0_2dc4_0177(short playerID, short unitID, int xPos, int yPos)
+		public ushort F0_2dc4_0177(int playerID, int unitID, int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2dc4_0177({playerID}, {unitID}, {xPos}, {yPos})");
+			this.oCPU.Log.EnterBlock($"F0_2dc4_0177({playerID}, {unitID}, {x}, {y})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
@@ -175,7 +175,7 @@ namespace OpenCiv1
 
 		L018f:
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
@@ -183,7 +183,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x2dc4:0x01b2, size: 3
 			F0_2dc4_0289_GetShortestDistance(
-				xPos, yPos,
+				x, y,
 				this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].Position.X, this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].Position.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
@@ -207,13 +207,13 @@ namespace OpenCiv1
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			if (this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].TypeID == -1)
 				goto L01cf;
 
-			this.oCPU.AX.UInt16 = (ushort)unitID;
+			this.oCPU.AX.UInt16 = (ushort)((short)unitID);
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L018f;
 			goto L01cf;
@@ -318,7 +318,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <returns></returns>
-		public ushort F0_2dc4_02cd(short playerID)
+		public ushort F0_2dc4_02cd(int playerID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_2dc4_02cd({playerID})");
 

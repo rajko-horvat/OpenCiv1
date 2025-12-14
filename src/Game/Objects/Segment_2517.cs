@@ -460,7 +460,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="governmentType"></param>
-		public void F0_2517_04a1(short playerID, short governmentType)
+		public void F0_2517_04a1(int playerID, short governmentType)
 		{
 			this.oCPU.Log.EnterBlock($"F0_2517_04a1({playerID}, {governmentType})");
 
@@ -475,7 +475,7 @@ namespace OpenCiv1
 				(ushort)this.oParent.GameData.Players[playerID].GovernmentType);
 
 			this.oCPU.AX.UInt16 = 0x1;
-			this.oCPU.CX.LowUInt8 = (byte)playerID;
+			this.oCPU.CX.LowInt8 = (sbyte)playerID;
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
 			this.oCPU.TEST_UInt16(this.oCPU.AX.UInt16, (ushort)this.oParent.GameData.PlayerFlags);
 			if (this.oCPU.Flags.NE) goto L04c6;
@@ -594,7 +594,7 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16((ushort)this.oParent.GameData.Players[playerID].GovernmentType, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L0608;
 
-			this.oCPU.BX.UInt16 = (ushort)playerID;
+			this.oCPU.BX.Int16 = (short)playerID;
 			this.oCPU.CX.LowUInt8 = 0x4;
 			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, this.oCPU.CX.LowUInt8);
 
@@ -602,7 +602,7 @@ namespace OpenCiv1
 				goto L06d6;
 
 		L0608:
-			this.oCPU.SI.UInt16 = (ushort)playerID;
+			this.oCPU.SI.Int16 = (short)playerID;
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
 
 			this.oCPU.BX.UInt16 = (ushort)this.oParent.GameData.HumanPlayerID;
@@ -614,7 +614,7 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
-			this.oCPU.DI.UInt16 = (ushort)playerID;
+			this.oCPU.DI.Int16 = (short)playerID;
 			this.oCPU.CX.LowUInt8 = 0x4;
 			this.oCPU.DI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.DI.UInt16, this.oCPU.CX.LowUInt8);
 
@@ -650,7 +650,7 @@ namespace OpenCiv1
 			// Instruction address 0x2517:0x06a9, size: 5
 			this.oParent.CAPI.strcat(0xba06, " government\nhas been overthrown!\n");
 
-			this.oCPU.BX.UInt16 = (ushort)playerID;
+			this.oCPU.BX.Int16 = (short)playerID;
 			this.oCPU.CX.LowUInt8 = 0x4;
 			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, this.oCPU.CX.LowUInt8);
 
@@ -683,7 +683,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0x0);
 
 		L0717:
-			this.oCPU.SI.UInt16 = (ushort)playerID;
+			this.oCPU.SI.Int16 = (short)playerID;
 			this.oCPU.CX.LowUInt8 = 0x4;
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, this.oCPU.CX.LowUInt8);
 
@@ -712,11 +712,11 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID1"></param>
 		/// <param name="playerID2"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		public void F0_2517_0737(short playerID1, short playerID2, int xPos, int yPos)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		public void F0_2517_0737(int playerID1, int playerID2, int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2517_0737({playerID1}, {playerID2}, {xPos}, {yPos})");
+			this.oCPU.Log.EnterBlock($"F0_2517_0737({playerID1}, {playerID2}, {x}, {y})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
@@ -755,7 +755,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L078d;
 
 		L0778:
-			this.oParent.MeetWithKing.F6_0000_0000(playerID2, xPos, yPos, 0);
+			this.oParent.MeetWithKing.F6_0000_0000(playerID2, x, y, 0);
 
 		L078d:
 			this.oCPU.AX.UInt16 = (ushort)this.oParent.GameData.HumanPlayerID;
@@ -778,7 +778,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L07ce;
 
 		L07b9:
-			this.oParent.MeetWithKing.F6_0000_0000(playerID1, xPos, yPos, 0);
+			this.oParent.MeetWithKing.F6_0000_0000(playerID1, x, y, 0);
 
 		L07ce:
 			this.oCPU.SI.UInt16 = (ushort)playerID1;
@@ -1009,7 +1009,7 @@ namespace OpenCiv1
 		/// <param name="playerID1"></param>
 		/// <param name="playerID2"></param>
 		/// <param name="flags"></param>
-		public void F0_2517_0a30_SetDiplomacyFlags(short playerID1, short playerID2, ushort flags)
+		public void F0_2517_0a30_SetDiplomacyFlags(int playerID1, int playerID2, ushort flags)
 		{
 			this.oCPU.Log.EnterBlock($"F0_2517_0a30_SetDiplomacyFlags({playerID1}, {playerID2}, {flags})");
 
@@ -1040,7 +1040,7 @@ namespace OpenCiv1
 		/// <param name="playerID1"></param>
 		/// <param name="playerID2"></param>
 		/// <param name="flags"></param>
-		public void F0_2517_0aa1_ClearDiplomacyFlags(short playerID1, short playerID2, ushort flags)
+		public void F0_2517_0aa1_ClearDiplomacyFlags(int playerID1, int playerID2, ushort flags)
 		{
 			this.oCPU.Log.EnterBlock($"F0_2517_0aa1_ClearDiplomacyFlags({playerID1}, {playerID2}, {flags})");
 
@@ -1049,7 +1049,7 @@ namespace OpenCiv1
 				(this.oParent.GameData.Players[playerID1].Diplomacy[playerID2] & flags) != 0)
 			{
 				// Instruction address 0x2517:0x0ad2, size: 5
-				this.oParent.Segment_1866.F0_1866_250e_AddReplayData(2, (byte)((short)(playerID1 << 4) | playerID2));
+				this.oParent.Segment_1866.F0_1866_250e_AddReplayData(2, (byte)((short)((playerID1 << 4) | playerID2)));
 			}
 		
 			this.oParent.GameData.Players[playerID1].Diplomacy[playerID2] &= (ushort)(~flags);
@@ -1071,7 +1071,7 @@ namespace OpenCiv1
 		/// <param name="playerID1"></param>
 		/// <param name="playerID2"></param>
 		/// <returns></returns>
-		public ushort F0_2517_0b1d(short playerID1, short playerID2)
+		public ushort F0_2517_0b1d(int playerID1, int playerID2)
 		{
 			this.oCPU.Log.EnterBlock($"F0_2517_0b1d({playerID1}, {playerID2})");
 
@@ -1304,7 +1304,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID1"></param>
 		/// <param name="playerID2"></param>
-		public void F0_2517_0cef(short playerID1, short playerID2)
+		public void F0_2517_0cef(int playerID1, int playerID2)
 		{
 			this.oCPU.Log.EnterBlock($"F0_2517_0cef({playerID1}, {playerID2})");
 
@@ -1386,12 +1386,12 @@ namespace OpenCiv1
 		/// ?
 		/// </summary>
 		/// <param name="playerID"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <returns></returns>
-		public ushort F0_2517_0d97(short playerID, int xPos, int yPos)
+		public ushort F0_2517_0d97(int playerID, int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2517_0d97({playerID}, {xPos}, {yPos})");
+			this.oCPU.Log.EnterBlock($"F0_2517_0d97({playerID}, {x}, {y})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
@@ -1411,8 +1411,8 @@ namespace OpenCiv1
 					this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
 						this.oParent.GameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))].Position.X,
 						this.oParent.GameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))].Position.Y,
-						xPos,
-						yPos);
+						x,
+						y);
 
 					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
 					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));

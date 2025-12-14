@@ -130,7 +130,7 @@ namespace OpenCiv1
 			if (this.oParent.GameData.DifficultyLevel != 0) goto L013b;
 
 			// Instruction address 0x1238:0x012a, size: 5
-			this.oParent.Segment_1403.F0_1403_4060(this.oParent.GameData.HumanPlayerID, 0);
+			this.oParent.CheckPlayerTurn.F0_1403_4060(this.oParent.GameData.HumanPlayerID, 0);
 
 			this.oParent.MainIntro.F2_0000_17d9();
 
@@ -217,7 +217,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0237;
 
 			// Instruction address 0x1238:0x022f, size: 5
-			this.oParent.Segment_1403.F0_1403_000e(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
+			this.oParent.CheckPlayerTurn.F0_1403_000e_CheckPlayerTurn(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
 
 		L0237:
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xdf60, 0x0);
@@ -906,7 +906,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1238:0x0a43, size: 5
-			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(0, (short)((this.oCPU.AX.UInt16 < 3) ? 0x11 : 0x12),
+			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(0, ((this.oCPU.AX.Int16 < 3) ? 17 : 18),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
 			
@@ -1060,14 +1060,14 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			// Instruction address 0x1238:0x0bd0, size: 5
-			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oParent.GameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14))].Position.X,
 				this.oParent.GameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14))].Position.Y);
 
 			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 
 			// Instruction address 0x1238:0x0be0, size: 5
-			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
 
@@ -2102,7 +2102,7 @@ namespace OpenCiv1
 			// Instruction address 0x1238:0x1802, size: 3
 			F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
-			this.oParent.Civilopedia.F8_0000_062a((ushort)(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)) + 0x18), 1);
+			this.oParent.Civilopedia.F8_0000_062a(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)) + 24, 1);
 			
 			// Instruction address 0x1238:0x181c, size: 3
 			F0_1238_1b44();

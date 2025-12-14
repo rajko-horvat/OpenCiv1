@@ -812,7 +812,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0ae5;
 
 			// Instruction address 0x0000:0x0ae0, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 		L0ae5:
 			// Instruction address 0x0000:0x0ae5, size: 5
@@ -1246,7 +1246,7 @@ namespace OpenCiv1
 			F18_0000_0000();
 
 			// Instruction address 0x0000:0x0f17, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 			iPos = (12 * this.oParent.GameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))].XPos) +
 				this.oParent.GameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))].YPos;
@@ -1264,7 +1264,7 @@ namespace OpenCiv1
 			this.oParent.GameData.SpaceshipFlags |= (short)this.oCPU.AX.UInt16;
 
 			// Instruction address 0x0000:0x0f71, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 			F18_0000_016d();
 
@@ -1305,7 +1305,7 @@ namespace OpenCiv1
 			F18_0000_0259(playerID, 15, 0);
 
 			// Instruction address 0x0000:0x0fbb, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 		L0fc0:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), 0x2);
@@ -1673,7 +1673,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
 			// Instruction address 0x0000:0x15f3, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 			this.oCPU.SI.UInt16 = (ushort)playerID;
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
@@ -1708,7 +1708,7 @@ namespace OpenCiv1
 
 		L16a1:
 			// Instruction address 0x0000:0x16a1, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 			// Instruction address 0x0000:0x16a6, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();

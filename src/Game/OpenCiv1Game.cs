@@ -17,7 +17,7 @@ namespace OpenCiv1
 		private CommonTools commonTools;
 		private Segment_1238 oSegment_1238;
 		private MenuBoxDialog menuBoxDialog;
-		private Segment_1403 oSegment_1403;
+		private CheckPlayerTurn checkPlayerTurn;
 		private Segment_2dc4 oSegment_2dc4;
 		private DrawStringTools drawStringTools;
 		private ImageTools oImageTools;
@@ -89,7 +89,7 @@ namespace OpenCiv1
 			this.commonTools = new CommonTools(this);
 			this.oSegment_1238 = new Segment_1238(this);
 			this.menuBoxDialog = new MenuBoxDialog(this);
-			this.oSegment_1403 = new Segment_1403(this);
+			this.checkPlayerTurn = new CheckPlayerTurn(this);
 			this.oSegment_2dc4 = new Segment_2dc4(this);
 			this.drawStringTools = new DrawStringTools(this);
 			this.oImageTools = new ImageTools(this);
@@ -1183,9 +1183,9 @@ namespace OpenCiv1
 			get { return this.menuBoxDialog; }
 		}
 
-		public Segment_1403 Segment_1403
+		public CheckPlayerTurn CheckPlayerTurn
 		{
-			get { return this.oSegment_1403; }
+			get { return this.checkPlayerTurn; }
 		}
 
 		public Segment_2dc4 Segment_2dc4

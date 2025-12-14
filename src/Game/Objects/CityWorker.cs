@@ -35,7 +35,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="cityID"></param>
 		/// <param name="flag"></param>
-		public ushort F0_1d12_0045_ProcessCityState(short cityID, short flag)
+		public ushort F0_1d12_0045_ProcessCityState(int cityID, short flag)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1d12_0045({cityID}, {flag})");
 
@@ -405,7 +405,7 @@ namespace OpenCiv1
 						city.FoodCount = 0;
 
 						// Instruction address 0x1d12:0x0879, size: 5
-						this.oParent.Segment_1403.F0_1403_3ed7(local_d8, local_e4);
+						this.oParent.CheckPlayerTurn.F0_1403_3ed7(local_d8, local_e4);
 					}
 
 					if ((city.ActualSize + 1) * local_4a <= city.FoodCount)
@@ -443,7 +443,7 @@ namespace OpenCiv1
 						}
 
 						// Instruction address 0x1d12:0x095d, size: 5
-						this.oParent.Segment_1403.F0_1403_3ed7(local_d8, local_e4);
+						this.oParent.CheckPlayerTurn.F0_1403_3ed7(local_d8, local_e4);
 					}
 				}
 			
@@ -905,7 +905,7 @@ namespace OpenCiv1
 										}
 
 										// Instruction address 0x1d12:0x180e, size: 5
-										this.oParent.Segment_2459.F0_2459_0948(this.Var_6548_PlayerID, (short)local_ba, (short)local_108);
+										this.oParent.Segment_2459.F0_2459_0948(this.Var_6548_PlayerID, local_ba, local_108);
 									}
 
 									if (city.CurrentProductionID == 26)
@@ -919,7 +919,7 @@ namespace OpenCiv1
 											if (this.oParent.GameData.Cities[i].PlayerID != this.oParent.GameData.HumanPlayerID || this.oParent.GameData.Cities[i].StatusFlag != 0xff)
 											{
 												// Instruction address 0x1d12:0x1898, size: 5
-												local_e8 = (short)this.oParent.Segment_2dc4.F0_2dc4_0177(this.Var_6548_PlayerID, (short)local_ba,
+												local_e8 = (short)this.oParent.Segment_2dc4.F0_2dc4_0177(this.Var_6548_PlayerID, local_ba,
 													this.oParent.GameData.Cities[i].Position.X,
 													this.oParent.GameData.Cities[i].Position.Y);
 
@@ -969,7 +969,7 @@ namespace OpenCiv1
 										{
 											// Instruction address 0x1d12:0x19f9, size: 5
 											local_ba = this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(
-												this.Var_6548_PlayerID, 0x1a,
+												this.Var_6548_PlayerID, 26,
 												this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[local_108].Position.X,
 												this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[local_108].Position.Y);
 
@@ -1030,7 +1030,7 @@ namespace OpenCiv1
 							{
 								if (this.oParent.GameData.WonderCityID[local_e8 - 24] == -1)
 								{
-									this.oParent.GameData.WonderCityID[local_e8 - 24] = cityID;
+									this.oParent.GameData.WonderCityID[local_e8 - 24] = (short)cityID;
 
 									// Instruction address 0x1d12:0x1bd7, size: 5
 									this.oParent.Segment_1866.F0_1866_250e_AddReplayData(10, (byte)((sbyte)this.Var_6548_PlayerID), (byte)((sbyte)(local_e8 - 24)));
@@ -3280,7 +3280,7 @@ namespace OpenCiv1
 
 					L56a6:
 						// Instruction address 0x1d12:0x56a6, size: 5
-						this.oParent.Segment_1403.F0_1403_4545();
+						this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 						this.oParent.Var_aa_Rectangle.FontID = 1;
 
@@ -3678,7 +3678,7 @@ namespace OpenCiv1
 
 			L5ea1:
 				// Instruction address 0x1d12:0x5ea9, size: 5
-				this.oParent.Segment_1403.F0_1403_3ed7(local_d8, local_e4);
+				this.oParent.CheckPlayerTurn.F0_1403_3ed7(local_d8, local_e4);
 
 				goto L606c;
 
@@ -3763,7 +3763,7 @@ namespace OpenCiv1
 
 			L603f:
 				// Instruction address 0x1d12:0x6047, size: 5
-				this.oParent.Segment_1403.F0_1403_3ed7(local_d8, local_e4);
+				this.oParent.CheckPlayerTurn.F0_1403_3ed7(local_d8, local_e4);
 
 			L604f:
 				if (this.oParent.GameData.Players[this.Var_6548_PlayerID].GovernmentType != 0) goto L605f;
@@ -4273,7 +4273,7 @@ namespace OpenCiv1
 		/// <param name="cityID"></param>
 		/// <param name="cityOffset"></param>
 		/// <param name="flag"></param>
-		private void F0_1d12_692d_CityResources(short cityID, int cityOffset, short flag)
+		private void F0_1d12_692d_CityResources(int cityID, int cityOffset, short flag)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1d12_692d_CityResources({cityID}, {cityOffset}, {flag})");
 
@@ -4520,7 +4520,7 @@ namespace OpenCiv1
 		/// <param name="playerID"></param>
 		/// <param name="wonderType"></param>
 		/// <returns></returns>
-		public bool F0_1d12_6c97_PlayerHasWonder(short playerID, WonderEnum wonderType)
+		public bool F0_1d12_6c97_PlayerHasWonder(int playerID, WonderEnum wonderType)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_1d12_6c97_PlayerHasWonder({playerID}, {wonderType})");
 
@@ -4691,7 +4691,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="cityID"></param>
 		/// <param name="param2"></param>
-		private void F0_1d12_6dfe(short cityID, int size)
+		private void F0_1d12_6dfe(int cityID, int size)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1d12_6dfe({cityID}, {size})");
 

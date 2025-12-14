@@ -938,7 +938,7 @@ namespace OpenCiv1
 
 		L0b1b:
 			// Instruction address 0x0000:0x0b1b, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6b32, 0xffff);
 

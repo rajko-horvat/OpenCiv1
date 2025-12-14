@@ -19,7 +19,7 @@ namespace OpenCiv1
 		/// ?
 		/// </summary>
 		/// <param name="cityID"></param>
-		public void F0_1866_0006(short cityID)
+		public void F0_1866_0006(int cityID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_0006({cityID})");
 
@@ -38,7 +38,7 @@ namespace OpenCiv1
 				{
 					// Instruction address 0x1866:0x005e, size: 3
 					this.oCPU.AX.UInt16 = (ushort)((short)F0_1866_0cf5_CreateUnit(this.oParent.GameData.Cities[cityID].PlayerID,
-						(short)(this.oParent.GameData.Cities[cityID].Unknown[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))] & 0x3f),
+						(this.oParent.GameData.Cities[cityID].Unknown[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))] & 0x3f),
 						this.oParent.GameData.Cities[cityID].Position.X, this.oParent.GameData.Cities[cityID].Position.Y));
 
 					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
@@ -77,7 +77,7 @@ namespace OpenCiv1
 		/// ?
 		/// </summary>
 		/// <param name="cityID"></param>
-		public void F0_1866_00c6(short cityID)
+		public void F0_1866_00c6(int cityID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_00c6({cityID})");
 
@@ -88,7 +88,7 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.DI.UInt16);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 			this.oCPU.AX.UInt16 = 0x1c;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)cityID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = (ushort)this.oParent.GameData.Cities[cityID].PlayerID;
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
@@ -106,7 +106,7 @@ namespace OpenCiv1
 
 			L0102:
 				this.oCPU.AX.UInt16 = 0x1c;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
+				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)cityID));
 				this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 				this.oCPU.CMP_UInt8((byte)this.oParent.GameData.Cities[cityID].Unknown[1], 0xff);
 				if (this.oCPU.Flags.E) goto L0116;
@@ -155,7 +155,7 @@ namespace OpenCiv1
 					goto L0148;
 
 				this.oCPU.AX.UInt16 = 0x1c;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
+				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)cityID));
 				this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 
 				if ((this.oParent.GameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))].Position.X != 
@@ -192,7 +192,7 @@ namespace OpenCiv1
 				this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
 				this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x70d8, this.oCPU.AX.UInt16);
 				this.oCPU.AX.UInt16 = 0x1c;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);
+				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)cityID));
 				this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 				this.oParent.GameData.Cities[cityID].StatusFlag &= 0xfb;
 			}
@@ -208,14 +208,14 @@ namespace OpenCiv1
 		/// <summary>
 		/// ?
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
 		/// <param name="flag"></param>
-		public void F0_1866_01dc(int xPos, int yPos, short playerID, short unitID, ushort flag)
+		public void F0_1866_01dc(int x, int y, int playerID, int unitID, bool flag)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_01dc({xPos}, {yPos}, {playerID}, {unitID}, {flag})");
+			this.oCPU.Log.EnterBlock($"F0_1866_01dc({x}, {y}, {playerID}, {unitID}, {flag})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
@@ -225,7 +225,7 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 
 			// Instruction address 0x1866:0x01ea, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(x, y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), this.oCPU.AX.UInt16);
 			
@@ -241,21 +241,21 @@ namespace OpenCiv1
 			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))];
 
 			// Instruction address 0x1866:0x0212, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), this.oCPU.AX.UInt16);
 
-			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), (short)(yPos + direction.Y));
+			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), (short)(y + direction.Y));
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)), 0x9);
 			if (this.oCPU.Flags.L) goto L0266;
 
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
@@ -300,7 +300,7 @@ namespace OpenCiv1
 
 		L02af:
 			// Instruction address 0x1866:0x02b5, size: 5
-			this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(x, y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), 0x1);
@@ -312,7 +312,7 @@ namespace OpenCiv1
 		L02cb:
 			// Instruction address 0x1866:0x02da, size: 5
 			this.oParent.Segment_25fb.F0_25fb_304d(this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xd7f0),
-				(short)xPos, (short)yPos, 2, (short)this.oCPU.AX.UInt16);
+				x, y, 2, this.oCPU.AX.Int16);
 
 		L02e2:
 			// Instruction address 0x1866:0x02e8, size: 5
@@ -325,7 +325,7 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd7f0), 0x0);
 			if (this.oCPU.Flags.E) goto L0329;
 
-			this.oCPU.SI.UInt16 = (ushort)playerID;
+			this.oCPU.SI.UInt16 = (ushort)((short)playerID);
 			this.oCPU.CX.LowUInt8 = 0x4;
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, this.oCPU.CX.LowUInt8);
 
@@ -342,7 +342,7 @@ namespace OpenCiv1
 				3, 2);
 
 		L0329:
-			if (flag == 0)
+			if (!flag)
 				goto L037e;
 			
 			if (playerID == this.oParent.GameData.HumanPlayerID)
@@ -392,11 +392,11 @@ namespace OpenCiv1
 			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))];
 
 			// Instruction address 0x1866:0x0397, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), this.oCPU.AX.UInt16);
 
-			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), (short)(yPos + direction.Y));
+			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), (short)(y + direction.Y));
 
 			// Instruction address 0x1866:0x03b0, size: 5
 			this.oCPU.AX.UInt16 = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates(
@@ -446,7 +446,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1866:0x0433, size: 3
-			F0_1866_0006((short)this.oCPU.AX.UInt16);
+			F0_1866_0006(this.oCPU.AX.Int16);
 
 			if (playerID == this.oParent.GameData.HumanPlayerID)
 			{
@@ -458,10 +458,10 @@ namespace OpenCiv1
 			}
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
@@ -472,7 +472,7 @@ namespace OpenCiv1
 			
 			this.oParent.GameData.Players[playerID].Units[unitID].VisibleByPlayer |= (ushort)(1 << this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)));
 
-			this.oCPU.DI.UInt16 = (ushort)playerID;
+			this.oCPU.DI.UInt16 = (ushort)((short)playerID);
 			this.oCPU.CX.LowUInt8 = 0x4;
 			this.oCPU.DI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.DI.UInt16, this.oCPU.CX.LowUInt8);
 
@@ -513,11 +513,11 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0503;
 			
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oParent.GameData.Players[playerID].Units[unitID].VisibleByPlayer |= (ushort)(1 << this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xd7f0));
@@ -559,11 +559,11 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0580;
 			
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
@@ -574,11 +574,11 @@ namespace OpenCiv1
 
 		L0580:
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X = -1;
@@ -600,10 +600,10 @@ namespace OpenCiv1
 
 		L05b7:
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.BX.UInt16, this.oCPU.AX.UInt16);
 
 			this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
@@ -613,7 +613,7 @@ namespace OpenCiv1
 				goto L02e2;
 
 			// Instruction address 0x1866:0x05df, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(x, y);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
 			if (this.oCPU.Flags.NE) goto L05ef;
@@ -645,9 +645,9 @@ namespace OpenCiv1
 				goto L02e2;
 
 			// Instruction address 0x1866:0x0635, size: 5
-			this.oParent.Segment_2517.F0_2517_0737(playerID, this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xd7f0), xPos, yPos);
+			this.oParent.Segment_2517.F0_2517_0737(playerID, this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xd7f0), x, y);
 			
-			this.oCPU.BX.UInt16 = (ushort)playerID;
+			this.oCPU.BX.UInt16 = (ushort)((short)playerID);
 			this.oCPU.CX.LowUInt8 = 0x4;
 			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, this.oCPU.CX.LowUInt8);
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd7f0);
@@ -687,11 +687,11 @@ namespace OpenCiv1
 
 		L06a3:
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID == 26)
@@ -723,11 +723,11 @@ namespace OpenCiv1
 				goto L0857;
 
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 
 			if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID == 22)
@@ -754,7 +754,7 @@ namespace OpenCiv1
 				goto L0760;
 
 			// Instruction address 0x1866:0x0750, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(x, y);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
 			if (this.oCPU.Flags.E) goto L0760;
@@ -776,11 +776,11 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L079d;
 			
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oParent.GameData.Players[playerID].Units[unitID].VisibleByPlayer |= (ushort)(1 << this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xd7f0));
@@ -801,7 +801,7 @@ namespace OpenCiv1
 			goto L0857;
 
 		L07bd:
-			this.oCPU.SI.UInt16 = (ushort)playerID;
+			this.oCPU.SI.Int16 = (short)playerID;
 			this.oCPU.CX.LowUInt8 = 0x4;
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, this.oCPU.CX.LowUInt8);
 
@@ -812,8 +812,7 @@ namespace OpenCiv1
 				goto L0857;
 
 			// Instruction address 0x1866:0x07e6, size: 5
-			this.oParent.Segment_25fb.F0_25fb_304d(this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xd7f0),
-				(short)xPos, (short)yPos, 3, 2);
+			this.oParent.Segment_25fb.F0_25fb_304d(this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xd7f0), x, y, 3, 2);
 
 			goto L0857;
 
@@ -829,7 +828,7 @@ namespace OpenCiv1
 			this.oCPU.TEST_UInt8(this.oCPU.AX.LowUInt8, 0x1);
 			if (this.oCPU.Flags.E) goto L0857;
 
-			this.oCPU.AX.UInt16 = this.oParent.GameData.MapVisibility[xPos, yPos];
+			this.oCPU.AX.UInt16 = this.oParent.GameData.MapVisibility[x, y];
 			
 			this.oCPU.DX.UInt16 = 0x1;
 			this.oCPU.CX.LowUInt8 = (byte)(this.oParent.GameData.HumanPlayerID & 0xff);
@@ -838,17 +837,17 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0857;
 
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			
 			this.oParent.GameData.Players[playerID].Units[unitID].VisibleByPlayer |= (ushort)(1 << this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xd7f0));
 
 			// Instruction address 0x1866:0x084f, size: 5
-			this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(x, y);
 
 		L0857:
 			this.oCPU.TEST_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)), 0x1);
@@ -862,7 +861,7 @@ namespace OpenCiv1
 			if ((short)this.oCPU.AX.UInt16 != this.oParent.GameData.HumanPlayerID)
 				goto L08b9;
 
-			this.oCPU.AX.UInt16 = this.oParent.GameData.MapVisibility[xPos, yPos];
+			this.oCPU.AX.UInt16 = this.oParent.GameData.MapVisibility[x, y];
 			
 			this.oCPU.DX.UInt16 = 0x1;
 			this.oCPU.CX.LowUInt8 = (byte)(this.oParent.GameData.HumanPlayerID & 0xff);
@@ -872,17 +871,17 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L08b9;
 
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oParent.GameData.Players[playerID].Units[unitID].VisibleByPlayer |= (ushort)(1 << this.oParent.GameData.HumanPlayerID);
 
 			// Instruction address 0x1866:0x08b1, size: 5
-			this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(x, y);
 
 		L08b9:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), 
@@ -900,11 +899,11 @@ namespace OpenCiv1
 			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))];
 
 			// Instruction address 0x1866:0x08d2, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), this.oCPU.AX.UInt16);
 
-			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), (short)(yPos + direction.Y));
+			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), (short)(y + direction.Y));
 
 			// Instruction address 0x1866:0x08eb, size: 5
 			this.oCPU.AX.UInt16 = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates(
@@ -929,11 +928,11 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.AX.UInt16);
 			
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
@@ -994,7 +993,7 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd7f0), 0x0);
 			if (this.oCPU.Flags.E) goto L09f9;
 			
-			this.oCPU.SI.UInt16 = (ushort)playerID;
+			this.oCPU.SI.UInt16 = (ushort)((short)playerID);
 			this.oCPU.CX.LowUInt8 = 0x4;
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, this.oCPU.CX.LowUInt8);
 
@@ -1011,8 +1010,7 @@ namespace OpenCiv1
 				3, 2);
 
 		L09f9:
-			this.oCPU.CMP_UInt16(flag, 0x0);
-			if (this.oCPU.Flags.NE) goto L0a02;
+			if (flag) goto L0a02;
 			goto L06ea;
 
 		L0a02:
@@ -1045,11 +1043,10 @@ namespace OpenCiv1
 			if (playerID != this.oParent.GameData.HumanPlayerID)
 				goto L0ad0;
 
-			this.oCPU.CMP_UInt16(flag, 0x0);
-			if (this.oCPU.Flags.E) goto L0ad0;
+			if (!flag) goto L0ad0;
 
 			// Instruction address 0x1866:0x0a59, size: 5
-			this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(x, y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), 0x9);
 
@@ -1060,11 +1057,11 @@ namespace OpenCiv1
 			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))];
 
 			// Instruction address 0x1866:0x0a73, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), this.oCPU.AX.UInt16);
 
-			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), (short)(yPos + direction.Y));
+			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), (short)(y + direction.Y));
 
 			// Instruction address 0x1866:0x0a8c, size: 5
 			this.oCPU.AX.UInt16 = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates(
@@ -1078,7 +1075,7 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12))];
 			
 			this.oCPU.DX.UInt16 = 0x1;
-			this.oCPU.CX.LowUInt8 = (byte)playerID;
+			this.oCPU.CX.LowUInt8 = (byte)((sbyte)playerID);
 			this.oCPU.DX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.DX.UInt16, this.oCPU.CX.LowUInt8);
 			this.oCPU.TEST_UInt16(this.oCPU.AX.UInt16, this.oCPU.DX.UInt16);
 			if (this.oCPU.Flags.E) goto L0ac7;
@@ -1107,11 +1104,11 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		/// <param name="param3"></param>
-		/// <param name="param4"></param>
-		public void F0_1866_0ad6(short playerID, short unitID, ushort param3, ushort param4)
+		/// <param name="xOffset"></param>
+		/// <param name="yOffset"></param>
+		public void F0_1866_0ad6(int playerID, int unitID, int xOffset, int yOffset)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_0ad6({playerID}, {unitID}, {param3}, {param4})");
+			this.oCPU.Log.EnterBlock($"F0_1866_0ad6({playerID}, {unitID}, {xOffset}, {yOffset})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
@@ -1119,17 +1116,17 @@ namespace OpenCiv1
 			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0xe);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), 0xffff);
-			this.oCPU.CMP_UInt16(param3, 0xffff);
-			if (this.oCPU.Flags.E) goto L0b2d;
+			
+			if (xOffset == -1) goto L0b2d;
 
 			// Instruction address 0x1866:0x0af0, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition((short)param3 - this.oParent.Var_d4cc_MapViewX);
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xOffset - this.oParent.Var_d4cc_MapViewX);
 
 			this.oCPU.CX.LowUInt8 = 0x4;
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
 			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, 0x50);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = param4;
+			this.oCPU.AX.Int16 = (short)yOffset;
 			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, (ushort)((short)this.oParent.Var_d75e_MapViewY));
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
 			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, 0x8);
@@ -1158,10 +1155,10 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), this.oCPU.AX.UInt16);
 			
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1866:0x0b5b, size: 5
@@ -1190,10 +1187,10 @@ namespace OpenCiv1
 				goto L0bc9;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1866:0x0b9d, size: 5
@@ -1260,10 +1257,10 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L0c9d;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1866:0x0c5c, size: 5
@@ -1347,7 +1344,7 @@ namespace OpenCiv1
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns>ID of newly created unit or -1 if unit can not be created</returns>
-		public int F0_1866_0cf5_CreateUnit(int playerID, short unitTypeID, int x, int y)
+		public int F0_1866_0cf5_CreateUnit(int playerID, int unitTypeID, int x, int y)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_1866_0cf5_CreateUnit({playerID}, {unitTypeID}, {xPos}, {yPos})");
 
@@ -1384,16 +1381,16 @@ namespace OpenCiv1
 				unit.NextUnitID = -1;
 
 				// Instruction address 0x1866:0x0d39, size: 5
-				this.oParent.MapManagement.F0_2aea_138c_SetCityOwner((short)playerID, x, y);
+				this.oParent.MapManagement.F0_2aea_138c_SetCityOwner(playerID, x, y);
 
 				// Instruction address 0x1866:0x0d4d, size: 5
-				this.oParent.MapManagement.F0_2aea_13cb((short)playerID, (short)unitID, x, y);
+				this.oParent.MapManagement.F0_2aea_13cb(playerID, unitID, x, y);
 
 				this.oParent.GameData.MapVisibility[x, y] |= (ushort)(1 << playerID);
 
 				unit.Status = 0;
 				unit.Position = new GPoint(x, y);
-				unit.TypeID = unitTypeID;
+				unit.TypeID = (short)unitTypeID;
 				unit.VisibleByPlayer = (ushort)(1 << playerID);
 				unit.GoToDestination.X = -1;
 				unit.GoToNextDirection = -1;
@@ -1426,7 +1423,7 @@ namespace OpenCiv1
 					}
 
 					// Instruction address 0x1866:0x0e77, size: 3
-					F0_1866_01dc(x, y, (short)playerID, (short)unitID, 1);
+					F0_1866_01dc(x, y, playerID, unitID, true);
 				}
 
 				if (playerID == this.oParent.GameData.HumanPlayerID
@@ -1455,7 +1452,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_0f10_DeleteUnit(short playerID, short unitID)
+		public void F0_1866_0f10_DeleteUnit(int playerID, int unitID)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_1866_0f10_DeleteUnit({playerID}, {unitID})");
 
@@ -1498,7 +1495,7 @@ namespace OpenCiv1
 				unit.RemainingMoves = 0;
 	
 				// Instruction address 0x1866:0x1027, size: 5
-				this.oParent.MapManagement.F0_2aea_1412(playerID, unitID, unit.Position.X, unit.Position.Y);
+				this.oParent.MapManagement.F0_2aea_1412_SetCellActivePlayerID(playerID, unitID, unit.Position.X, unit.Position.Y);
 	
 				if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x20f4) == 0 && this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x3936) == -1)
 				{
@@ -1518,7 +1515,7 @@ namespace OpenCiv1
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
 		/// <returns></returns>
-		public ushort F0_1866_1089(short playerID, short unitID)
+		public ushort F0_1866_1089(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_1089({playerID}, {unitID})");
 
@@ -1530,22 +1527,22 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			if (this.oParent.GameData.Players[playerID].Units[unitID].NextUnitID != -1)
 				goto L10ad;
 
-			this.oCPU.AX.UInt16 = (ushort)unitID;
+			this.oCPU.AX.Int16 = (short)unitID;
 
 			goto L111c;
 
 		L10ad:
-			this.oCPU.AX.UInt16 = (ushort)unitID;
+			this.oCPU.AX.Int16 = (short)unitID;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6530, this.oCPU.AX.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6534, 0x0);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x0);
@@ -1560,7 +1557,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L1119;
 			
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0xc;
@@ -1572,7 +1569,7 @@ namespace OpenCiv1
 				goto L10c0;
 			
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.SI.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
@@ -1607,7 +1604,7 @@ namespace OpenCiv1
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
 		/// <returns></returns>
-		public ushort F0_1866_1122(short playerID, short unitID)
+		public ushort F0_1866_1122(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_1122({playerID}, {unitID})");
 
@@ -1617,22 +1614,22 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 			
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			if (this.oParent.GameData.Players[playerID].Units[unitID].NextUnitID != -1)
 				goto L1142;
 
-			this.oCPU.AX.UInt16 = (ushort)unitID;
+			this.oCPU.AX.Int16 = (short)unitID;
 
 			goto L1166;
 
 		L1142:
-			this.oCPU.AX.UInt16 = (ushort)unitID;
+			this.oCPU.AX.Int16 = (short)unitID;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6530, this.oCPU.AX.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6534, 0xffff);
 
@@ -1656,7 +1653,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_1169(short playerID, short unitID)
+		public void F0_1866_1169(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_1169({playerID}, {unitID})");
 
@@ -1668,10 +1665,10 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2),
@@ -1700,11 +1697,11 @@ namespace OpenCiv1
 				goto L1202;
 			
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 
 			if ((this.oParent.GameData.Players[playerID].Units[unitID].Status & 0x8) != 0)
@@ -1740,11 +1737,11 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
 			
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			if ((this.oParent.GameData.Players[playerID].Units[unitID].Status & 0x20) != 0)
@@ -1761,7 +1758,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.LE) goto L124b;
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6534, this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = (ushort)unitID;
+			this.oCPU.AX.Int16 = (short)unitID;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6530, this.oCPU.AX.UInt16);
 
 		L124b:
@@ -1780,7 +1777,7 @@ namespace OpenCiv1
 		/// <param name="unitID"></param>
 		/// <param name="param3"></param>
 		/// <returns></returns>
-		public ushort F0_1866_1251(short playerID, short unitID, ushort param3)
+		public ushort F0_1866_1251(int playerID, int unitID, ushort param3)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_1251({playerID}, {unitID}, {param3})");
 
@@ -1790,7 +1787,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6532, 0x0);
 			this.oCPU.AX.UInt16 = param3;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6536, this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = (ushort)unitID;
+			this.oCPU.AX.Int16 = (short)unitID;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6538, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1866:0x1275, size: 3
@@ -1810,7 +1807,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_1280(short playerID, short unitID)
+		public void F0_1866_1280(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_1280({playerID}, {unitID})");
 
@@ -1836,11 +1833,11 @@ namespace OpenCiv1
 
 		L12a5:
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
@@ -1854,11 +1851,11 @@ namespace OpenCiv1
 
 		L12c7:
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			
 			this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
@@ -1870,11 +1867,11 @@ namespace OpenCiv1
 
 		L12e5:
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
@@ -1908,7 +1905,7 @@ namespace OpenCiv1
 		/// <param name="unitID"></param>
 		/// <param name="param3"></param>
 		/// <returns></returns>
-		public ushort F0_1866_1331(short playerID, short unitID, ushort param3)
+		public ushort F0_1866_1331(int playerID, int unitID, ushort param3)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_1331({playerID}, {unitID}, {param3})");
 
@@ -1932,7 +1929,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_135a(short playerID, short unitID)
+		public void F0_1866_135a(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_135a({playerID}, {unitID})");
 
@@ -1953,7 +1950,7 @@ namespace OpenCiv1
 		/// <param name="unitID"></param>
 		/// <param name="param3"></param>
 		/// <returns></returns>
-		public ushort F0_1866_1380(short playerID, short unitID, ushort param3)
+		public ushort F0_1866_1380(int playerID, int unitID, ushort param3)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_1380({playerID}, {unitID}, {param3})");
 
@@ -1977,7 +1974,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_13a9(short playerID, short unitID)
+		public void F0_1866_13a9(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_13a9({playerID}, {unitID})");
 
@@ -1998,7 +1995,7 @@ namespace OpenCiv1
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
 		/// <returns></returns>
-		public ushort F0_1866_13d5(short playerID, short unitID)
+		public ushort F0_1866_13d5(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_13d5({playerID}, {unitID})");
 
@@ -2021,7 +2018,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_13f8(short playerID, short unitID)
+		public void F0_1866_13f8(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_13f8({playerID}, {unitID})");
 
@@ -2051,24 +2048,16 @@ namespace OpenCiv1
 		/// <param name="unitID"></param>
 		/// <param name="fnPtr"></param>
 		/// <exception cref="Exception"></exception>
-		public void F0_1866_144b(short playerID, short unitID, int fnPtr)
+		public void F0_1866_144b(int playerID, int unitID, ushort fnPtr)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_144b({playerID}, {unitID}, 0x{fnPtr:x4})");
+			//this.oCPU.Log.EnterBlock($"F0_1866_144b({playerID}, {unitID}, 0x{fnPtr:x4})");
 
 			// function body
-			short oldUnitID = unitID;
+			int oldUnitID = unitID;
 
 			for (int i = 0; i < 10; i++)
 			{
-				this.oCPU.AX.UInt16 = 0xc;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)oldUnitID);
-				this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
-
-				this.oCPU.AX.UInt16 = 0x600;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
-				this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
-
-				short newUnitID = (short)this.oParent.GameData.Players[playerID].Units[oldUnitID].NextUnitID;
+				int newUnitID = this.oParent.GameData.Players[playerID].Units[oldUnitID].NextUnitID;
 
 				// Instruction address 0x1866:0x147b, size: 3
 				switch (fnPtr)
@@ -2134,9 +2123,6 @@ namespace OpenCiv1
 				if (oldUnitID == -1 || oldUnitID == unitID)
 					break;
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1866_144b");
 		}
 
 		/// <summary>
@@ -2144,7 +2130,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_14a2(short playerID, short unitID)
+		public void F0_1866_14a2(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_14a2({playerID}, {unitID})");
 
@@ -2157,7 +2143,7 @@ namespace OpenCiv1
 			}
 			else
 			{
-				if (this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != 0)
+				if (this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Land)
 				{
 					this.oParent.GameData.Players[playerID].Units[unitID].Status &= 0xfe;
 				}
@@ -2172,7 +2158,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_14f6(short playerID, short unitID)
+		public void F0_1866_14f6(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_14f6({playerID}, {unitID})");
 
@@ -2183,10 +2169,10 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			if ((this.oParent.GameData.Players[playerID].Units[unitID].Status & 0x1) == 0)
@@ -2211,10 +2197,10 @@ namespace OpenCiv1
 
 		L1542:
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 		
 			this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X = -1;
@@ -2232,22 +2218,16 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_1560(short playerID, short unitID)
+		public void F0_1866_1560(int playerID, int unitID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_1560({playerID}, {unitID})");
+			//this.oCPU.Log.EnterBlock($"F0_1866_1560({playerID}, {unitID})");
 
-			// function body			
-			this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
-			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
-
+			// function body
 			if (this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Water)
 			{
 				// Instruction address 0x1866:0x158a, size: 3
 				F0_1866_1593(playerID, unitID);
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1866_1560");
 		}
 
 		/// <summary>
@@ -2255,9 +2235,9 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_1593(short playerID, short unitID)
+		public void F0_1866_1593(int playerID, int unitID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_1593({playerID}, {unitID})");
+			//this.oCPU.Log.EnterBlock($"F0_1866_1593({playerID}, {unitID})");
 
 			// function body
 			if ((this.oParent.GameData.Players[playerID].Units[unitID].Status & 0xc2) != 0)
@@ -2267,9 +2247,6 @@ namespace OpenCiv1
 
 			if ((this.oParent.GameData.Players[playerID].Units[unitID].Status & 0xcb) != 0)
 			{
-				this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
-				this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
-
 				this.oParent.GameData.Players[playerID].Units[unitID].RemainingMoves = 
 					(short)(this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MoveCount * 3);
 			}
@@ -2282,9 +2259,6 @@ namespace OpenCiv1
 				// Instruction address 0x1866:0x1605, size: 5
 				this.oParent.MapManagement.F0_2aea_0e29_DrawUnit(playerID, unitID);
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1866_1593");
 		}
 
 		/// <summary>
@@ -2292,22 +2266,16 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_1610(short playerID, short unitID)
+		public void F0_1866_1610(int playerID, int unitID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_1610({playerID}, {unitID})");
+			//this.oCPU.Log.EnterBlock($"F0_1866_1610({playerID}, {unitID})");
 
 			// function body			
-			this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
-			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
-
 			if (this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Land)
 			{
 				// Instruction address 0x1866:0x163a, size: 3
 				F0_1866_0f10_DeleteUnit(playerID, unitID);
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1866_1610");
 		}
 
 		/// <summary>
@@ -2315,9 +2283,9 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_1643(short playerID, short unitID)
+		public void F0_1866_1643(int playerID, int unitID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_1643({playerID}, {unitID})");
+			//this.oCPU.Log.EnterBlock($"F0_1866_1643({playerID}, {unitID})");
 
 			// function body
 			if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID != -1)
@@ -2328,9 +2296,6 @@ namespace OpenCiv1
 					F0_1866_0f10_DeleteUnit(playerID, unitID);
 				}
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1866_1643");
 		}
 
 		/// <summary>
@@ -2338,115 +2303,78 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_1676(short playerID, short unitID)
+		public void F0_1866_1676(int playerID, int unitID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_1676({playerID}, {unitID})");
+			//this.oCPU.Log.EnterBlock($"F0_1866_1676({playerID}, {unitID})");
 
 			// function body
-			this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
-			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
-
 			if (this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Air)
 			{
 				// Instruction address 0x1866:0x16a0, size: 3
 				F0_1866_0f10_DeleteUnit(playerID, unitID);
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1866_1676");
 		}
 
 		/// <summary>
 		/// ??? To be checked - Too many parameters calling F0_2aea_0008
 		/// </summary>
 		/// <param name="playerID"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		public void F0_1866_16a9(short playerID, int xPos, int yPos)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		public void F0_1866_16a9(int playerID, int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_16a9({playerID}, {xPos}, {yPos})");
+			//this.oCPU.Log.EnterBlock($"F0_1866_16a9({playerID}, {x}, {y})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x2);
+			bool local_2 = false;
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x0);
-
-			if (xPos < 16 && this.oParent.Var_d4cc_MapViewX > 64)
+			if (x < 16 && this.oParent.Var_d4cc_MapViewX > 64)
 			{
-				xPos += 80;
+				x += 80;
 			}
 
-			if (xPos < this.oParent.Var_d4cc_MapViewX + 2 || xPos > this.oParent.Var_d4cc_MapViewX + 13)
+			if (x < this.oParent.Var_d4cc_MapViewX + 2 || x > this.oParent.Var_d4cc_MapViewX + 13 ||
+				y < this.oParent.Var_d75e_MapViewY + 2 || y > this.oParent.Var_d75e_MapViewY + 9)
 			{
-				this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x1);
+				local_2 = true;
 			}
 
-			if (yPos < this.oParent.Var_d75e_MapViewY + 2 || yPos > this.oParent.Var_d75e_MapViewY + 9)
+			if (local_2)
 			{
-				this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x1);
+				// Instruction address 0x1866:0x1719, size: 5
+				this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(playerID, this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x - 8), y - 6);
 			}
-		
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x0);
-			if (this.oCPU.Flags.E) goto L1721;
-
-			// Instruction address 0x1866:0x170d, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos - 8);
-
-			// Instruction address 0x1866:0x1719, size: 5
-			this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(playerID, (short)this.oCPU.AX.UInt16, yPos - 6);
-
-		L1721:
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1866_16a9");
 		}
 
 		/// <summary>
 		/// ?
 		/// </summary>
 		/// <param name="playerID"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		public ushort F0_1866_1725(short playerID, int xPos, int yPos)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		public ushort F0_1866_1725(int playerID, int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_1725({playerID}, {xPos}, {yPos})");
+			//this.oCPU.Log.EnterBlock($"F0_1866_1725({playerID}, {x}, {y})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
+			if (((int)this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(x, y) & 0x1) == 0)
+			{
+				// Instruction address 0x1866:0x1748, size: 3
+				return F0_1866_1750(playerID, x, y);
+			}
 
-			// Instruction address 0x1866:0x172e, size: 5
-			this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(xPos, yPos);
-
-			this.oCPU.TEST_UInt8(this.oCPU.AX.LowUInt8, 0x1);
-			if (this.oCPU.Flags.E) goto L173e;
-			this.oCPU.AX.UInt16 = 0;
-			goto L174e;
-
-		L173e:
-			// Instruction address 0x1866:0x1748, size: 3
-			F0_1866_1750(playerID, xPos, yPos);
-
-		L174e:
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1866_1725");
-
-			return this.oCPU.AX.UInt16;
+			return 0;
 		}
 
 		/// <summary>
 		/// ?
 		/// </summary>
 		/// <param name="playerID"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		public ushort F0_1866_1750(short playerID, int xPos, int yPos)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		public ushort F0_1866_1750(int playerID, int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_1750({playerID}, {xPos}, {yPos})");
+			this.oCPU.Log.EnterBlock($"F0_1866_1750({playerID}, {x}, {y})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
@@ -2456,7 +2384,7 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 
 			// Instruction address 0x1866:0x175e, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
+			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(x, y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), 0x1);
@@ -2500,11 +2428,11 @@ namespace OpenCiv1
 			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))];
 
 			// Instruction address 0x1866:0x17ab, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.AX.UInt16);
 
-			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), (short)(yPos + direction.Y));
+			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), (short)(y + direction.Y));
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)), 0xa);
 			if (this.oCPU.Flags.NE) goto L1770;
@@ -2520,12 +2448,10 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8), this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
 			if (this.oCPU.Flags.E) goto L1792;
-			this.oCPU.AX.UInt16 = (ushort)playerID;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L1792;
-			this.oCPU.AX.UInt16 = (ushort)this.oParent.GameData.HumanPlayerID;
-			this.oCPU.CMP_UInt16((ushort)playerID, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L17f4;
+			
+			if (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)) == playerID) goto L1792;
+			
+			if (playerID == this.oParent.GameData.HumanPlayerID) goto L17f4;
 			goto L18c3;
 
 		L17f4:
@@ -2623,12 +2549,12 @@ namespace OpenCiv1
 		/// ?
 		/// </summary>
 		/// <param name="playerID"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <returns></returns>
-		public ushort F0_1866_18d0(short playerID, int xPos, int yPos)
+		public ushort F0_1866_18d0(int playerID, int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1866_18d0({playerID}, {xPos}, {yPos})");
+			this.oCPU.Log.EnterBlock($"F0_1866_18d0({playerID}, {x}, {y})");
 
 			// function body
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
@@ -2652,11 +2578,11 @@ namespace OpenCiv1
 			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))];
 
 			// Instruction address 0x1866:0x18f4, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
 
-			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), (short)(yPos + direction.Y));
+			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), (short)(y + direction.Y));
 
 			// Instruction address 0x1866:0x190d, size: 5
 			this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(
@@ -2691,7 +2617,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_1931(short playerID, short unitID)
+		public void F0_1866_1931(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_1931({playerID}, {unitID})");
 
@@ -2706,11 +2632,11 @@ namespace OpenCiv1
 				goto L1d4f;
 
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
@@ -2720,10 +2646,10 @@ namespace OpenCiv1
 				goto L1d4f;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1866:0x1980, size: 5
@@ -2778,10 +2704,10 @@ namespace OpenCiv1
 
 		L19e7:
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1866:0x1a0b, size: 3
@@ -2809,14 +2735,14 @@ namespace OpenCiv1
 
 		L1a51:
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 			
 			this.oParent.Overlay_20.F20_0000_0000(playerID,
-				0, this.oParent.GameData.Players[playerID].Units[unitID].Position.X, this.oParent.GameData.Players[playerID].Units[unitID].Position.Y, 1);
+				this.oParent.GameData.Players[playerID].Units[unitID].Position.X, this.oParent.GameData.Players[playerID].Units[unitID].Position.Y, 1);
 
 			goto L1d30;
 
@@ -2986,10 +2912,10 @@ namespace OpenCiv1
 			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10))];
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.DI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.DI.UInt16, this.oCPU.AX.UInt16);
 
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), (short)(this.oParent.GameData.Players[playerID].Units[unitID].Position.X + direction.X));
@@ -3038,14 +2964,14 @@ namespace OpenCiv1
 
 		L1d28:
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1866:0x1d2d, size: 3
-			F0_1866_0cf5_CreateUnit(playerID, (short)((this.oParent.CAPI.RNG.Next(2) != 0) ? 3 : 6),
+			F0_1866_0cf5_CreateUnit(playerID, ((this.oParent.CAPI.RNG.Next(2) != 0) ? 3 : 6),
 				this.oParent.GameData.Players[playerID].Units[unitID].Position.X,
 				this.oParent.GameData.Players[playerID].Units[unitID].Position.Y);
 
@@ -3072,7 +2998,7 @@ namespace OpenCiv1
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
 		/// <param name="moveDirection"></param>
-		public void F0_1866_1d55(short playerID, short unitID, short moveDirection)
+		public void F0_1866_1d55(int playerID, int unitID, int moveDirection)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_1d55({playerID}, {unitID}, {moveDirection})");
 
@@ -3087,11 +3013,11 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0268();
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.DI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.DI.UInt16, this.oCPU.SI.UInt16);
 
@@ -3100,7 +3026,7 @@ namespace OpenCiv1
 				this.oParent.GameData.Players[playerID].Units[unitID].Position.Y)) goto L1f5e;
 
 			// Instruction address 0x1866:0x1dc9, size: 5
-			this.oParent.Segment_1403.F0_1403_4508(this.oParent.GameData.Players[playerID].Units[unitID].Position.X, this.oParent.GameData.Players[playerID].Units[unitID].Position.Y);
+			this.oCPU.AX.UInt16 = (ushort)(this.oParent.CheckPlayerTurn.F0_1403_4508(this.oParent.GameData.Players[playerID].Units[unitID].Position.X, this.oParent.GameData.Players[playerID].Units[unitID].Position.Y) ? 1 : 0);
 
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.E)
@@ -3115,9 +3041,9 @@ namespace OpenCiv1
 			GPoint direction = this.oParent.MoveOffsets[moveDirection];
 
 			// Instruction address 0x1866:0x1dfa, size: 5
-			this.oParent.Segment_1403.F0_1403_4508(
+			this.oCPU.AX.UInt16 = (ushort)(this.oParent.CheckPlayerTurn.F0_1403_4508(
 				this.oParent.GameData.Players[playerID].Units[unitID].Position.X + direction.X,
-				this.oParent.GameData.Players[playerID].Units[unitID].Position.Y + direction.Y);
+				this.oParent.GameData.Players[playerID].Units[unitID].Position.Y + direction.Y) ? 1 : 0);
 
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.E)
@@ -3140,11 +3066,11 @@ namespace OpenCiv1
 
 		L1e40:
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			// Instruction address 0x1866:0x1e59, size: 5
@@ -3155,10 +3081,10 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 80, 0, 240, 200, this.oParent.Var_19d4_Rectangle, 80, 0);
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1866:0x1ea2, size: 5
@@ -3230,7 +3156,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_1f69(short playerID, short unitID)
+		public ushort F0_1866_1f69(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_1f69({playerID}, {unitID})");
 
@@ -3251,7 +3177,7 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x26), this.oCPU.AX.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x28), 0x0);
-			this.oCPU.AX.UInt16 = (ushort)unitID;
+			this.oCPU.AX.UInt16 = (ushort)((short)unitID);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e), this.oCPU.AX.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x0);
 
@@ -3266,10 +3192,10 @@ namespace OpenCiv1
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
-			short oldUnitID = (short)this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e))].NextUnitID;
+			short oldUnitID = this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e))].NextUnitID;
 
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e), oldUnitID);
 
@@ -3299,7 +3225,7 @@ namespace OpenCiv1
 				120, (this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x28)) << 4) + 5, 3);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x28), 0x0);
-			this.oCPU.AX.UInt16 = (ushort)unitID;
+			this.oCPU.AX.UInt16 = (ushort)((short)unitID);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e), this.oCPU.AX.UInt16);
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x22));
 			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, 0x5);
@@ -3312,7 +3238,7 @@ namespace OpenCiv1
 				106, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)));
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e)));
@@ -3333,7 +3259,7 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e)));
@@ -3366,7 +3292,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x1866:0x20e9, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c), 0x0);
 			if (this.oCPU.Flags.E) goto L2110;
@@ -3482,7 +3408,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x26), this.oCPU.AX.UInt16);
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x26)));
@@ -3498,7 +3424,7 @@ namespace OpenCiv1
 			}
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x26)));
@@ -3519,15 +3445,18 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x1866:0x225f, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x26));
+
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.DI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
 			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1866_1f69");
+
+			return this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -3535,7 +3464,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_1866_226d(short playerID, short unitID)
+		public ushort F0_1866_226d(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1866_226d({playerID}, {unitID})");
 
@@ -3557,11 +3486,11 @@ namespace OpenCiv1
 			this.oCPU.CX.UInt16 = (ushort)((short)this.oParent.GameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))].Position.X);
 			
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = (ushort)((short)Math.Abs(this.oParent.GameData.Players[playerID].Units[unitID].Position.X -
@@ -3581,11 +3510,11 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 			
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 			
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe),
@@ -3637,14 +3566,14 @@ namespace OpenCiv1
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			if (this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].TypeID != 23)
 				goto L2416;
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0xc;
@@ -3654,7 +3583,7 @@ namespace OpenCiv1
 			this.oCPU.CX.UInt16 = (ushort)((short)this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].Position.X);
 
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.GameData.Players[playerID].Units[unitID].Position.X);
@@ -3672,7 +3601,7 @@ namespace OpenCiv1
 
 		L23b6:
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.AX.UInt16 = 0xc;
@@ -3681,7 +3610,7 @@ namespace OpenCiv1
 			this.oCPU.DI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.DI.UInt16, this.oCPU.SI.UInt16);
 
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe),
@@ -3718,10 +3647,10 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0x0);
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1866:0x244c, size: 5
@@ -3739,10 +3668,10 @@ namespace OpenCiv1
 			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12))];
 
 			this.oCPU.AX.UInt16 = 0x600;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)playerID));
 			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.UInt16 = 0xc;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)unitID);
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)unitID));
 			this.oCPU.DI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.DI.UInt16, this.oCPU.AX.UInt16);
 
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), (short)(this.oParent.GameData.Players[playerID].Units[unitID].Position.X + direction.X));
@@ -3757,7 +3686,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
 			if (this.oCPU.Flags.E) goto L24a7;
-			this.oCPU.AX.UInt16 = (ushort)playerID;
+			this.oCPU.AX.Int16 = (short)playerID;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L24f9;
 
@@ -3775,7 +3704,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)));
 
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, (ushort)playerID);
+			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, (ushort)((short)playerID));
 			if (this.oCPU.Flags.NE) goto L24f9;
 
 		L24cc:
@@ -3801,12 +3730,15 @@ namespace OpenCiv1
 
 		L2505:
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10));
+
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.DI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
 			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1866_226d");
+
+			return this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>

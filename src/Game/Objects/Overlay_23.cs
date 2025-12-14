@@ -19,7 +19,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="cityID"></param>
 		/// <returns>1 if player entered custom city name, 0 in case of rejected input</returns>
-		public ushort F23_0000_0000_CityNameDialog(short cityID)
+		public ushort F23_0000_0000_CityNameDialog(int cityID)
 		{
 			this.oCPU.Log.EnterBlock($"F23_0000_0000_CityNameDialog({cityID})");
 
@@ -570,7 +570,7 @@ namespace OpenCiv1
 
 		L06b4:
 			// Instruction address 0x0000:0x06b4, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x46));
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();

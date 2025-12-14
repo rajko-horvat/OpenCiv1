@@ -1077,14 +1077,14 @@ namespace OpenCiv1
 			this.oCPU.ES.UInt16 = 0x3725; // segment
 
 			// Instruction address 0x0000:0x0bd6, size: 5
-			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oCPU.ReadInt16(this.oCPU.ES.UInt16, (ushort)(this.oCPU.SI.UInt16 + 0x100)),
 				this.oCPU.ReadInt16(this.oCPU.ES.UInt16, (ushort)(this.oCPU.SI.UInt16 + 0x200)));
 
 			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 
 			// Instruction address 0x0000:0x0be6, size: 5
-			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(xPos, yPos);
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(xPos, yPos);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, this.oCPU.DI.UInt16);
 			if (this.oCPU.Flags.E) goto L0bf5;
@@ -1400,7 +1400,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x0000:0x0f35, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 			// Instruction address 0x0000:0x0f3a, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();

@@ -2013,9 +2013,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L11d4;
 
 			// Instruction address 0x0000:0x11c3, size: 5
-			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
-				(short)this.oCPU.SI.UInt16,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)));
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+				this.oCPU.SI.Int16, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), this.oCPU.AX.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20), this.oCPU.SI.UInt16);
@@ -2033,7 +2032,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L1262;
 
 			// Instruction address 0x0000:0x11ec, size: 5
-			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
 				(short)this.oCPU.SI.UInt16);
 
@@ -2079,7 +2078,7 @@ namespace OpenCiv1
 
 		L1243:
 			// Instruction address 0x0000:0x1249, size: 5
-			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)));
 
@@ -2104,9 +2103,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L1200;
 
 			// Instruction address 0x0000:0x127a, size: 5
-			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
-				(short)this.oCPU.SI.UInt16,
-				(short)this.oCPU.DI.UInt16);
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+				this.oCPU.SI.Int16, this.oCPU.DI.Int16);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), this.oCPU.AX.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20), this.oCPU.SI.UInt16);
@@ -2129,8 +2127,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L12be;
 
 			// Instruction address 0x0000:0x12ad, size: 5
-			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
-				(short)this.oCPU.SI.UInt16,
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+				this.oCPU.SI.Int16,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
@@ -2151,7 +2149,7 @@ namespace OpenCiv1
 
 		L12d5:
 			// Instruction address 0x0000:0x12d9, size: 5
-			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
 				(short)this.oCPU.SI.UInt16);
 
@@ -2201,7 +2199,7 @@ namespace OpenCiv1
 
 		L133d:
 			// Instruction address 0x0000:0x1343, size: 5
-			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
 
@@ -2228,7 +2226,7 @@ namespace OpenCiv1
 
 		L1375:
 			// Instruction address 0x0000:0x1377, size: 5
-			this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
 				(short)this.oCPU.SI.UInt16,
 				(short)this.oCPU.DI.UInt16);
 

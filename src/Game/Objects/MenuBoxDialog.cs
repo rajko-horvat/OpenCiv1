@@ -35,7 +35,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0043;
 
 			// Instruction address 0x2d05:0x003e, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 		L0043:
 			this.oCPU.AX.UInt16 = 0xffff;

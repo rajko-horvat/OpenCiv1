@@ -7,7 +7,7 @@ namespace OpenCiv1
 	{
 		// The Map is currently kept as a bitmap, the layer number, description and position table following:
 		// Layer 1: Terrain data (TerrainTypeEnum), 0:0
-		// Layer 2: Per-Civ land occupation, 80:0
+		// Layer 2: Player land ownership, 80:0
 		//
 		// Layer 3: Terrain groups, the land and water cells have separate group arrays, 0:50
 		// Layer 4: Terrain-based land appeal for the computer to build cities, 80:50
@@ -859,7 +859,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F0_2aea_125b_DrawWaterUnit(int playerID, int unitID)
+		private void F0_2aea_125b_DrawWaterUnit(int playerID, int unitID)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_2aea_125b({playerID}, {unitID})");
 
@@ -895,7 +895,7 @@ namespace OpenCiv1
 			else
 			{
 				// Instruction address 0x2aea:0x131b, size: 3
-				F0_2aea_0e29_DrawUnit(playerID, (short)this.oParent.Segment_1866.F0_1866_1122((short)playerID, (short)unitID));
+				F0_2aea_0e29_DrawUnit(playerID, (short)this.oParent.Segment_1866.F0_1866_1122(playerID, unitID));
 			}
 		}
 
@@ -917,15 +917,15 @@ namespace OpenCiv1
 		/// Returns terrain type at specified map coordinates.
 		/// Only basic terrain types are returned. Terrain addons presence should be checked separately using F0_2aea_1836().
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <returns>terrain ID</returns>
-		public TerrainTypeEnum F0_2aea_134a_GetTerrainType(int xPos, int yPos)
+		public TerrainTypeEnum F0_2aea_134a_GetTerrainType(int x, int y)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_2aea_134a_GetTerrainID({xPos}, {yPos})");
 			// function body
 			// Instruction address 0x2aea:0x1357, size: 5
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0x2ba6 + (this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos) * 2)));
+			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0x2ba6 + (this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x, y) * 2)));
 
 			return (TerrainTypeEnum)this.oCPU.AX.UInt16;
 		}
@@ -933,16 +933,14 @@ namespace OpenCiv1
 		/// <summary>
 		/// Gets the city owner
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <returns>ID of a player that owns the city</returns>
-		public ushort F0_2aea_1369_GetCityOwner(int xPos, int yPos)
+		public ushort F0_2aea_1369_GetCityOwner(int x, int y)
 		{
 			// function body
 			// Instruction address 0x2aea:0x137d, size: 5
-			ushort value = this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos + 160, yPos);
-
-			this.oCPU.AX.UInt16 = (ushort)(value & 0x7);
+			this.oCPU.AX.UInt16 = (ushort)(this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x + 160, y) & 0x7);
 
 			return this.oCPU.AX.UInt16;
 		}
@@ -951,16 +949,16 @@ namespace OpenCiv1
 		/// Sets the city owner
 		/// </summary>
 		/// <param name="playerID"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		public void F0_2aea_138c_SetCityOwner(short playerID, int xPos, int yPos)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		public void F0_2aea_138c_SetCityOwner(int playerID, int x, int y)
 		{
 			// function body
 			// Instruction address 0x2aea:0x13a2, size: 5
-			ushort usOldValue = this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos + 160, yPos);
+			ushort usOldValue = this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x + 160, y);
 
 			// Instruction address 0x2aea:0x13c0, size: 3
-			this.oParent.Graphics.F0_VGA_0550_SetPixel(2, xPos + 160, yPos, (byte)((usOldValue & 8) + playerID), 0);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(2, x + 160, y, (byte)((usOldValue & 0x8) | playerID), 0);
 		}
 
 		/// <summary>
@@ -985,7 +983,7 @@ namespace OpenCiv1
 			}
 		
 			// Instruction address 0x2aea:0x140b, size: 3
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(2, x + 160, y, (ushort)(playerID | 0x8));
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(2, x + 160, y, (byte)(playerID | 0x8));
 		}
 
 		/// <summary>
@@ -993,11 +991,11 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		public void F0_2aea_1412(short playerID, short unitID, int xPos, int yPos)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		public void F0_2aea_1412_SetCellActivePlayerID(int playerID, int unitID, int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_1412({playerID}, {unitID}, {xPos}, {yPos})");
+			this.oCPU.Log.EnterBlock($"F0_2aea_1412({playerID}, {unitID}, {x}, {y})");
 
 			// function body			
 			if (this.oParent.GameData.Players[playerID].Units[unitID].NextUnitID != -1)
@@ -1008,7 +1006,7 @@ namespace OpenCiv1
 			else
 			{
 				// Instruction address 0x2aea:0x144f, size: 3
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(2, xPos + 160, yPos, (byte)playerID);
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, x + 160, y, (byte)playerID);
 			}
 
 			// Far return
@@ -1093,7 +1091,7 @@ namespace OpenCiv1
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns></returns>
-		public bool F0_2aea_1570_CheckCellHasRoadBuilt(int x, int y)
+		public bool F0_2aea_1570_CheckCellHasRoad(int x, int y)
 		{
 			// function body
 			// Instruction address 0x2aea:0x157a, size: 3
@@ -1224,60 +1222,31 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <returns></returns>
-		public ushort F0_2aea_175a(int xPos, int yPos)
+		public int F0_2aea_175a(int xPos, int yPos)
 		{
 			this.oCPU.Log.EnterBlock($"F0_2aea_175a({xPos}, {yPos})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x4);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
-
 			// Instruction address 0x2aea:0x1768, size: 3
-			F0_2aea_1369_GetCityOwner(xPos, yPos);
+			int playerID = F0_2aea_1369_GetCityOwner(xPos, yPos);
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), 0x0);
-			goto L177b;
+			for (int i = 0; i < 128; i++)
+			{
+				City city = this.oParent.GameData.Cities[i];
 
-		L1778:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))));
+				if (city.StatusFlag != 0xff && city.Position.X == xPos && city.Position.Y == yPos)
+				{
+					this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0xd7f0, (short)playerID);
+					this.oParent.Var_d20a = playerID;
 
-		L177b:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 0x80);
-			if (this.oCPU.Flags.GE) goto L17b3;
+					return i;
+				}
+			}
 
-			this.oCPU.AX.UInt16 = 0x1c;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
-			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
-
-			if (this.oParent.GameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))].StatusFlag == 0xff ||
-				this.oParent.GameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))].Position.X != xPos ||
-				this.oParent.GameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))].Position.Y != yPos)
-				goto L1778;
-
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd7f0, this.oCPU.AX.UInt16);
-			this.oParent.Var_d20a = this.oCPU.AX.Int16;
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
-			goto L17ca;
-
-		L17b3:
 			// Instruction address 0x2aea:0x17bf, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0x2bc6, 100, 80);
 
-			this.oCPU.AX.UInt16 = 0xffff;
-
-		L17ca:
-			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2aea_175a");
-
-			return this.oCPU.AX.UInt16;
+			return -1;
 		}
 
 		/// <summary>
@@ -1327,12 +1296,10 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <returns></returns>
-		public ushort F0_2aea_1942_GetCellGroupID(int xPos, int yPos)
+		public int F0_2aea_1942_GetCellGroupID(int xPos, int yPos)
 		{
 			// Instruction address 0x2aea:0x1953, size: 5
-			this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 50);
-
-			return this.oCPU.AX.UInt16;
+			return (sbyte)this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 50);
 		}
 
 		/// <summary>
@@ -1350,7 +1317,7 @@ namespace OpenCiv1
 			if (F0_2aea_134a_GetTerrainType(x, y) != TerrainTypeEnum.Water)
 			{
 				// Instruction address 0x2aea:0x1979, size: 3
-				F0_2aea_1942_GetCellGroupID(x, y);
+				this.oCPU.AX.Int16 = (short)F0_2aea_1942_GetCellGroupID(x, y);
 
 				// Land
 				this.oCPU.AX.UInt16 = (ushort)this.oParent.GameData.Continents[this.oCPU.AX.UInt16].Size;
@@ -1358,7 +1325,7 @@ namespace OpenCiv1
 			else
 			{
 				// Instruction address 0x2aea:0x1990, size: 3
-				F0_2aea_1942_GetCellGroupID(x, y);
+				this.oCPU.AX.Int16 = (short)F0_2aea_1942_GetCellGroupID(x, y);
 
 				// Oceans
 				this.oCPU.AX.UInt16 = (ushort)this.oParent.GameData.Oceans[this.oCPU.AX.UInt16].Size;

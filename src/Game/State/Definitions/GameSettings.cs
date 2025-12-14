@@ -4,7 +4,9 @@
 	{
 		private short value = 2;
 
-		// represents bit value 0x1
+		/// <summary>
+		/// Represents bit value 0x1
+		/// </summary>
 		public bool InstantAdvice
 		{
 			get => (value & (1 << 0)) != 0;
@@ -16,7 +18,9 @@
 			}
 		}
 
-		// represents bit value 0x2
+		/// <summary>
+		/// Represents bit value 0x2
+		/// </summary>
 		public bool AutoSave
 		{
 			get => (value & (1 << 1)) != 0;
@@ -28,7 +32,9 @@
 			}
 		}
 
-		// represents bit value 0x4
+		/// <summary>
+		/// Represents bit value 0x4
+		/// </summary>
 		public bool EndOfTurn
 		{
 			get => (value & (1 << 2)) != 0;
@@ -40,7 +46,9 @@
 			}
 		}
 
-		// represents bit value 0x8
+		/// <summary>
+		/// Represents bit value 0x8
+		/// </summary>
 		public bool Animations
 		{
 			get => (value & (1 << 3)) != 0;
@@ -52,7 +60,9 @@
 			}
 		}
 
-		// represents bit value 0x10
+		/// <summary>
+		/// Represents bit value 0x10
+		/// </summary>
 		public bool Sound
 		{
 			get => (value & (1 << 4)) != 0;
@@ -64,7 +74,9 @@
 			}
 		}
 
-		// represents bit value 0x20
+		/// <summary>
+		/// Represents bit value 0x20
+		/// </summary>
 		public bool EnemyMoves
 		{
 			get => (value & (1 << 5)) != 0;
@@ -76,7 +88,9 @@
 			}
 		}
 
-		// represents bit value 0x40
+		/// <summary>
+		/// Represents bit value 0x40
+		/// </summary>
 		public bool CivilopediaText
 		{
 			get => (value & (1 << 6)) != 0;
@@ -88,7 +102,9 @@
 			}
 		}
 
-		// represents bit value 0x80
+		/// <summary>
+		/// Represents bit value 0x80
+		/// </summary>
 		public bool Palace
 		{
 			get => (value & (1 << 7)) != 0;

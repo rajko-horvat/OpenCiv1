@@ -435,7 +435,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		public void F10_0000_0477(short playerID, short unitID)
+		public void F10_0000_0477(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F10_0000_0477({playerID}, {unitID})");
 

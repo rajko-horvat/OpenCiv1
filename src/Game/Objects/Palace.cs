@@ -550,7 +550,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6828), 0x4b27);
 
 			// Instruction address 0x0000:0x06be, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 			// Instruction address 0x0000:0x06c3, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
@@ -626,7 +626,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreen(1);
 
 			// Instruction address 0x0000:0x0788, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 			// Instruction address 0x0000:0x078d, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();

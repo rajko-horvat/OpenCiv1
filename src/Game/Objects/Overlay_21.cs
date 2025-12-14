@@ -17,7 +17,7 @@ namespace OpenCiv1
 		/// ?
 		/// </summary>
 		/// <param name="cityID"></param>
-		public void F21_0000_0000(short cityID)
+		public void F21_0000_0000(int cityID)
 		{
 			this.oCPU.Log.EnterBlock($"F21_0000_0000({cityID})");
 
@@ -27,7 +27,7 @@ namespace OpenCiv1
 			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x10);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 
-			this.oCPU.AX.UInt16 = (ushort)cityID;
+			this.oCPU.AX.Int16 = (short)cityID;
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.GE) goto L004d;

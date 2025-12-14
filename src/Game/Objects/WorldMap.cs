@@ -1229,7 +1229,7 @@ namespace OpenCiv1
 			this.oParent.GameData.Players[0].CumulativeEpicRanking++;
 
 			// Instruction address 0x0000:0x0d53, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 			// Instruction address 0x0000:0x0d58, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();

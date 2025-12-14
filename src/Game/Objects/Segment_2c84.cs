@@ -22,7 +22,7 @@ namespace OpenCiv1
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
 		/// <param name="menuIndex">Index of specific menu to show or -1 to select menu using current mouse X coordinate</param>
-		public void F0_2c84_0000_ShowTopMenu(short playerID, short unitID, int menuIndex)
+		public void F0_2c84_0000_ShowTopMenu(int playerID, int unitID, int menuIndex)
 		{
 			this.oCPU.Log.EnterBlock($"F0_2c84_0000_ShowTopMenu({playerID}, {unitID}, {menuIndex})");
 
@@ -120,7 +120,7 @@ namespace OpenCiv1
 			var selectedOption = this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 16, 8, 0);
 
 			// Instruction address 0x2c84:0x00ff, size: 5
-			this.oParent.Segment_1403.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 			switch (selectedOption)
 			{
@@ -204,7 +204,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
-		private void F0_2c84_01d8_OrdersMenu(short playerID, short unitID)
+		private void F0_2c84_01d8_OrdersMenu(int playerID, int unitID)
 		{
 			this.oCPU.Log.EnterBlock($"F0_2c84_01d8_OrdersMenu({playerID}, {unitID})");
 
@@ -278,7 +278,7 @@ namespace OpenCiv1
 						this.oParent.CAPI.strcat(0xba06, " Build Irrigation");
 
 						// Instruction address 0x2c84:0x030f, size: 5
-						if (this.oParent.Segment_1403.F0_1403_3fd0(xPos, yPos) == 0)
+						if (!this.oParent.CheckPlayerTurn.F0_1403_3fd0(xPos, yPos))
 						{
 							// Disable 'Build Irrigation' option
 							this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xb276, this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xb276), (ushort)(1 << orderCount)));
