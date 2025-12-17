@@ -68,7 +68,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
-			this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].AttackStrength);
+			this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].AttackStrength);
 			this.oCPU.CX.LowUInt8 = 0x3;
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), this.oCPU.AX.UInt16);
@@ -89,11 +89,11 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)));
 			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 
-			this.oCPU.AX.LowUInt8 = (byte)this.oParent.GameData.TerrainTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20))].DefenseBonus;
+			this.oCPU.AX.LowUInt8 = (byte)this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20))].DefenseBonus;
 			this.oCPU.CBW(this.oCPU.AX);
 
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, 
-				(ushort)((short)this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].DefenseStrength));
+				(ushort)((short)this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].DefenseStrength));
 			this.oCPU.CX.LowUInt8 = 0x3;
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
 
@@ -119,11 +119,11 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
-			this.oCPU.AX.LowUInt8 = (byte)this.oParent.GameData.TerrainTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20))].DefenseBonus;
+			this.oCPU.AX.LowUInt8 = (byte)this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20))].DefenseBonus;
 			this.oCPU.CBW(this.oCPU.AX);
 
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, 
-				(ushort)((short)this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].DefenseStrength));
+				(ushort)((short)this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].DefenseStrength));
 
 			this.oCPU.CX.UInt16 = 0xc;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.UInt16);
@@ -141,10 +141,10 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
-			this.oCPU.AX.LowUInt8 = (byte)this.oParent.GameData.TerrainTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20))].DefenseBonus;
+			this.oCPU.AX.LowUInt8 = (byte)this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20))].DefenseBonus;
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX,
-				(ushort)((short)this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].DefenseStrength));
+				(ushort)((short)this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].DefenseStrength));
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
 
@@ -182,10 +182,10 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
-			if (this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].MovementType == UnitMovementTypeEnum.Air)
+			if (this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].MovementType == UnitMovementTypeEnum.Air)
 				goto L0152;
 
-			if (this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].MovementType != UnitMovementTypeEnum.Water)
+			if (this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].MovementType != UnitMovementTypeEnum.Water)
 				goto L0165;
 
 		L0152:
@@ -193,7 +193,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
-			this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].DefenseStrength);
+			this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].DefenseStrength);
 			this.oCPU.CX.LowUInt8 = 0x3;
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a), this.oCPU.AX.UInt16);
@@ -234,24 +234,24 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
-			if (this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].AttackStrength == 12)
+			if (this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].AttackStrength == 12)
 				goto L01f2;
 			
 			this.oCPU.AX.UInt16 = 0x22;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)));
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
-			if (this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].MovementType == UnitMovementTypeEnum.Air)
+			if (this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].MovementType == UnitMovementTypeEnum.Air)
 				goto L01f2;
 
 			this.oCPU.AX.UInt16 = 0x13;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
-			this.oCPU.AX.LowUInt8 = (byte)this.oParent.GameData.TerrainTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20))].DefenseBonus;
+			this.oCPU.AX.LowUInt8 = (byte)this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20))].DefenseBonus;
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX,
-				(ushort)((short)this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].DefenseStrength));
+				(ushort)((short)this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].DefenseStrength));
 			this.oCPU.CX.UInt16 = 0xc;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a), this.oCPU.AX.UInt16);
@@ -496,14 +496,14 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
-			if (this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].AttackStrength > 4)
+			if (this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].AttackStrength > 4)
 				goto L043a;
 
 			this.oCPU.AX.UInt16 = 0x22;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
-			if (this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].DefenseStrength <= 2)
+			if (this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].DefenseStrength <= 2)
 				goto L045d;
 
 		L043a:
@@ -515,14 +515,14 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
-			if (this.oParent.GameData.UnitTypes[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].AttackStrength > 4)
+			if (this.oParent.GameData.Units[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].AttackStrength > 4)
 				goto L043a;
 
 			this.oCPU.AX.UInt16 = 0x22;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
-			if (this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].DefenseStrength > 2)
+			if (this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))].DefenseStrength > 2)
 				goto L043a;
 
 		L045d:
@@ -1285,7 +1285,7 @@ namespace OpenCiv1
 			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ForeignMinister;
 
 			// Instruction address 0x29f3:0x0cf8, size: 5
-			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
+			this.oCPU.AX.Int16 = (short)this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x1);
 			if (this.oCPU.Flags.E) goto L0d0a;

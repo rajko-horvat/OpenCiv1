@@ -488,9 +488,9 @@ namespace OpenCiv1
 								this.oParent.Var_d2f6++;
 							}
 
-							if (this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].TypeID].AttackStrength != 0)
+							if (this.oParent.GameData.Units[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].TypeID].AttackStrength != 0)
 							{
-								if (this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].TypeID].MovementType == UnitMovementTypeEnum.Air)
+								if (this.oParent.GameData.Units[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].TypeID].MovementType == UnitMovementTypeEnum.Air)
 								{
 									this.Var_6546++;
 								}
@@ -835,7 +835,7 @@ namespace OpenCiv1
 
 					if (city.CurrentProductionID >= 0)
 					{
-						if ((this.oParent.GameData.UnitTypes[city.CurrentProductionID].Cost * local_4a) <= city.ShieldsCount)
+						if ((this.oParent.GameData.Units[city.CurrentProductionID].Cost * local_4a) <= city.ShieldsCount)
 						{
 							if (city.CurrentProductionID == 0 && city.ActualSize == 1 && this.oParent.GameData.DifficultyLevel == 0)
 							{
@@ -843,7 +843,7 @@ namespace OpenCiv1
 							}
 							else
 							{
-								city.ShieldsCount -= (short)(this.oParent.GameData.UnitTypes[city.CurrentProductionID].Cost * local_4a);
+								city.ShieldsCount -= (short)(this.oParent.GameData.Units[city.CurrentProductionID].Cost * local_4a);
 
 								local_ba = -1;
 
@@ -963,7 +963,7 @@ namespace OpenCiv1
 
 										if (local_c8 > 3 || (this.oParent.GameData.Players[this.Var_6548_PlayerID].Diplomacy[this.oParent.GameData.HumanPlayerID] & 2) != 0)
 										{
-											city.ShieldsCount += (short)(this.oParent.GameData.UnitTypes[city.CurrentProductionID].Cost * local_4a);
+											city.ShieldsCount += (short)(this.oParent.GameData.Units[city.CurrentProductionID].Cost * local_4a);
 										}
 										else
 										{
@@ -1006,7 +1006,7 @@ namespace OpenCiv1
 
 										// Instruction address 0x1d12:0x1b2e, size: 5
 										this.oParent.CAPI.strcat(0xba06,
-											this.oParent.GameData.UnitTypes[city.CurrentProductionID].Name);
+											this.oParent.GameData.Units[city.CurrentProductionID].Name);
 
 										// Instruction address 0x1d12:0x1b3e, size: 5
 										this.oParent.CAPI.strcat(0xba06, ".\n");
@@ -1321,7 +1321,7 @@ namespace OpenCiv1
 						local_104 = this.oParent.GameData.Players[this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(local_d8, local_e4) & 0x7].Continents[this.Var_6548_PlayerID].Strategy;
 
 						if ((local_104 == 1 || local_104 == 2 || local_104 == 5) && local_e8 != 0 && city.CurrentProductionID >= 0 &&
-							(int)this.oParent.GameData.UnitTypes[city.CurrentProductionID].AIRole == local_104)
+							(int)this.oParent.GameData.Units[city.CurrentProductionID].AIRole == local_104)
 						{
 							local_cc = this.oParent.GameData.Players[this.Var_6548_PlayerID].Coins / 64;
 						}
@@ -1346,7 +1346,7 @@ namespace OpenCiv1
 						{
 							// Instruction address 0x1d12:0x2530, size: 5
 							local_cc = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-								(this.oParent.GameData.UnitTypes[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
+								(this.oParent.GameData.Units[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
 								0, this.oParent.GameData.Players[this.Var_6548_PlayerID].Coins / 3);
 						}
 
@@ -1354,7 +1354,7 @@ namespace OpenCiv1
 						{
 							// Instruction address 0x1d12:0x2591, size: 5
 							local_cc = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-								(this.oParent.GameData.UnitTypes[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
+								(this.oParent.GameData.Units[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
 								0, this.oParent.GameData.Players[this.Var_6548_PlayerID].Coins / 3);
 						}
 
@@ -1362,7 +1362,7 @@ namespace OpenCiv1
 						{
 							// Instruction address 0x1d12:0x260d, size: 5
 							local_cc = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(
-								(this.oParent.GameData.UnitTypes[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
+								(this.oParent.GameData.Units[city.CurrentProductionID].Cost * local_4a) - city.ShieldsCount,
 								0, this.oParent.GameData.Players[this.Var_6548_PlayerID].Coins / 4);
 						}
 
@@ -1699,7 +1699,7 @@ namespace OpenCiv1
 						if (local_2 >= 32)
 							break;
 
-						if (this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[local_ba].TypeID].AttackStrength != 0)
+						if (this.oParent.GameData.Units[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[local_ba].TypeID].AttackStrength != 0)
 						{
 							local_e6++;
 
@@ -1726,7 +1726,7 @@ namespace OpenCiv1
 
 					for (int i = 0; i < 2; i++)
 					{
-						if (this.oParent.Var_70e4 != 0 && city.Unknown[i] != -1 && this.oParent.GameData.UnitTypes[city.Unknown[i] & 0x3f].AttackStrength != 0)
+						if (this.oParent.Var_70e4 != 0 && city.Unknown[i] != -1 && this.oParent.GameData.Units[city.Unknown[i] & 0x3f].AttackStrength != 0)
 						{
 							local_e6++;
 						}
@@ -1925,7 +1925,7 @@ namespace OpenCiv1
 										this.oParent.Var_db42 = -999; // 0xfc19
 									}
 									else if (local_c8 > 0 &&
-										this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[local_108].TypeID].MovementType == UnitMovementTypeEnum.Land &&
+										this.oParent.GameData.Units[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[local_108].TypeID].MovementType == UnitMovementTypeEnum.Land &&
 										this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[local_108].TypeID != 0)
 									{
 										// Instruction address 0x1d12:0x35c9, size: 5
@@ -1948,7 +1948,7 @@ namespace OpenCiv1
 
 										// Instruction address 0x1d12:0x362d, size: 5
 										this.oParent.CAPI.strcat(0xba06,
-											this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[local_108].TypeID].Name);
+											this.oParent.GameData.Units[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[local_108].TypeID].Name);
 
 										// Instruction address 0x1d12:0x363d, size: 5
 										this.oParent.CAPI.strcat(0xba06, ".\n Unit Disbanded.\n");
@@ -2005,9 +2005,9 @@ namespace OpenCiv1
 
 									if (this.oParent.GameData.Players[this.Var_6548_PlayerID].GovernmentType >= 4)
 									{
-										if (this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].TypeID].AttackStrength != 0 &&
+										if (this.oParent.GameData.Units[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].TypeID].AttackStrength != 0 &&
 											local_e8 != 0 &&
-											(this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].TypeID].MovementType == UnitMovementTypeEnum.Air ||
+											(this.oParent.GameData.Units[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].TypeID].MovementType == UnitMovementTypeEnum.Air ||
 												this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].Position.X != city.Position.X ||
 												this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].Position.Y != city.Position.Y))
 										{
@@ -2101,11 +2101,11 @@ namespace OpenCiv1
 
 					if (city.HasImprovement(ImprovementEnum.MarketPlace))
 					{
-						this.oParent.Var_db42 -= (5 - this.oParent.GameData.NationTypes[this.oParent.GameData.Players[this.Var_6548_PlayerID].NationalityID].Ideology) * this.Var_6546;
+						this.oParent.Var_db42 -= (5 - this.oParent.GameData.Nations[this.oParent.GameData.Players[this.Var_6548_PlayerID].NationalityID].Ideology) * this.Var_6546;
 					}
 					else
 					{
-						this.oParent.Var_db42 -= (7 - this.oParent.GameData.NationTypes[this.oParent.GameData.Players[this.Var_6548_PlayerID].NationalityID].Ideology) * this.Var_6546;
+						this.oParent.Var_db42 -= (7 - this.oParent.GameData.Nations[this.oParent.GameData.Players[this.Var_6548_PlayerID].NationalityID].Ideology) * this.Var_6546;
 					}
 				}
 
@@ -2130,7 +2130,7 @@ namespace OpenCiv1
 								local_e8 = i + 24;
 
 								// Instruction address 0x1d12:0x3b09, size: 5
-								this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.WonderTypes[i + 1].Name);
+								this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.Wonders[i + 1].Name);
 
 								// Instruction address 0x1d12:0x3b15, size: 5
 								this.oParent.CAPI.strupr(0xba06);
@@ -2211,7 +2211,7 @@ namespace OpenCiv1
 
 					if (city.CurrentProductionID >= 0)
 					{
-						local_de = this.oParent.GameData.UnitTypes[city.CurrentProductionID].Cost;
+						local_de = this.oParent.GameData.Units[city.CurrentProductionID].Cost;
 					}
 					else
 					{
@@ -2724,7 +2724,7 @@ namespace OpenCiv1
 					L4bf7:
 						if (city.CurrentProductionID >= 0)
 						{
-							local_106 = this.oParent.GameData.UnitTypes[city.CurrentProductionID].Cost;
+							local_106 = this.oParent.GameData.Units[city.CurrentProductionID].Cost;
 
 							// Instruction address 0x1d12:0x4c3d, size: 5
 							local_e8 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange((10 * local_106) - city.ShieldsCount, 0, 999);
@@ -2755,7 +2755,7 @@ namespace OpenCiv1
 						if (city.CurrentProductionID >= 0)
 						{
 							// Instruction address 0x1d12:0x4d17, size: 5
-							this.oParent.CAPI.strcat(0xba06, this.oParent.GameData.UnitTypes[city.CurrentProductionID].Name);
+							this.oParent.CAPI.strcat(0xba06, this.oParent.GameData.Units[city.CurrentProductionID].Name);
 						}
 						else
 						{
@@ -2960,7 +2960,7 @@ namespace OpenCiv1
 							if ((this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[Arr_74[local_106]].Status & 0x9) != 0)
 							{
 								this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[Arr_74[local_106]].RemainingMoves =
-									(short)(this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[Arr_74[local_106]].TypeID].MoveCount * 3);
+									(short)(this.oParent.GameData.Units[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[Arr_74[local_106]].TypeID].MoveCount * 3);
 							}
 
 							this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[Arr_74[local_106]].Status &= 0x30;
@@ -3468,7 +3468,7 @@ namespace OpenCiv1
 							goto L5a18;
 
 						this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[Arr_74[local_106]].RemainingMoves =
-							(short)(this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[Arr_74[local_106]].TypeID].MoveCount * 3);
+							(short)(this.oParent.GameData.Units[this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[Arr_74[local_106]].TypeID].MoveCount * 3);
 
 					L5a18:
 						this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[Arr_74[local_106]].Status &= 0x30;
@@ -4398,15 +4398,15 @@ namespace OpenCiv1
 				switch (resourceType)
 				{
 					case CityResourceTypeEnum.Food:
-						resourceCount = this.oParent.GameData.TerrainTypes[terrainIndex].Food;
+						resourceCount = this.oParent.GameData.Terrains[terrainIndex].Food;
 						break;
 
 					case CityResourceTypeEnum.Production:
-						resourceCount = this.oParent.GameData.TerrainTypes[terrainIndex].Production;
+						resourceCount = this.oParent.GameData.Terrains[terrainIndex].Production;
 						break;
 
 					case CityResourceTypeEnum.Trade:
-						resourceCount = this.oParent.GameData.TerrainTypes[terrainIndex].Trade;
+						resourceCount = this.oParent.GameData.Terrains[terrainIndex].Trade;
 						break;
 
 					default:
@@ -4530,7 +4530,7 @@ namespace OpenCiv1
 			for (i = 1; i < 8; i++)
 			{
 				// Instruction address 0x1d12:0x6cb9, size: 5
-				ImprovementDefinition wonder = this.oParent.GameData.WonderTypes[(int)wonderType];
+				ImprovementDefinition wonder = this.oParent.GameData.Wonders[(int)wonderType];
 
 				if (wonder.ObsoletesAfterTechnology != TechnologyEnum.None &&
 					this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(i, wonder.ObsoletesAfterTechnology))
@@ -4565,8 +4565,8 @@ namespace OpenCiv1
 			for (i = 1; i < 8; i++)
 			{
 				// Instruction address 0x1d12:0x6d15, size: 5
-				if (this.oParent.GameData.WonderTypes[wonderID].ObsoletesAfterTechnology != TechnologyEnum.None &&
-					this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology((short)i, this.oParent.GameData.WonderTypes[wonderID].ObsoletesAfterTechnology))
+				if (this.oParent.GameData.Wonders[wonderID].ObsoletesAfterTechnology != TechnologyEnum.None &&
+					this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology((short)i, this.oParent.GameData.Wonders[wonderID].ObsoletesAfterTechnology))
 				{
 					break;
 				}

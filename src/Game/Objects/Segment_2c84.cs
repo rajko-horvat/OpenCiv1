@@ -181,12 +181,12 @@ namespace OpenCiv1
 					break;
 
 				case 7: // Retire
-					this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xdc48, 0x2);
+					this.oParent.Var_dc48_GameEndType = 2;
 					this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd4ca, 0x1000);
 					break;
 
 				case 8: // Quit
-					this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xdc48, 0x1);
+					this.oParent.Var_dc48_GameEndType = 1;
 					this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd4ca, 0x1000);
 					break;
 
@@ -278,7 +278,7 @@ namespace OpenCiv1
 						this.oParent.CAPI.strcat(0xba06, " Build Irrigation");
 
 						// Instruction address 0x2c84:0x030f, size: 5
-						if (!this.oParent.CheckPlayerTurn.F0_1403_3fd0(xPos, yPos))
+						if (!this.oParent.CheckPlayerTurn.F0_1403_3fd0_CanIrrigateCell(xPos, yPos))
 						{
 							// Disable 'Build Irrigation' option
 							this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xb276, this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xb276), (ushort)(1 << orderCount)));
@@ -293,7 +293,7 @@ namespace OpenCiv1
 
 							// Instruction address 0x2c84:0x035d, size: 5
 							this.oParent.CAPI.strcat(0xba06,
-								this.oParent.GameData.TerrainTypes[this.oCPU.ReadInt16(this.oCPU.DS.UInt16,
+								this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.DS.UInt16,
 									(ushort)(0x2ba6 + this.oParent.GameData.TerrainModifications[(int)terrainType].IrrigationEffect * 2))].Name);
 						}
 					}
@@ -320,7 +320,7 @@ namespace OpenCiv1
 
 						// Instruction address 0x2c84:0x03dc, size: 5
 						this.oParent.CAPI.strcat(0xba06,
-							this.oParent.GameData.TerrainTypes[this.oCPU.ReadInt16(this.oCPU.DS.UInt16, (ushort)(0x2ba6 + this.oParent.GameData.TerrainModifications[(int)terrainType].MiningEffect * 2))].Name);
+							this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.DS.UInt16, (ushort)(0x2ba6 + this.oParent.GameData.TerrainModifications[(int)terrainType].MiningEffect * 2))].Name);
 					}
 
 					if (this.oParent.GameData.TerrainModifications[(int)terrainType].MiningEffect != -1)
@@ -351,13 +351,13 @@ namespace OpenCiv1
 					this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xb276, this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xb276), (ushort)(1 << orderCount)));
 				}
 			}
-			else if (this.oParent.GameData.UnitTypes[unit.TypeID].MovementType == UnitMovementTypeEnum.Land)
+			else if (this.oParent.GameData.Units[unit.TypeID].MovementType == UnitMovementTypeEnum.Land)
 			{
 				// Instruction address 0x2c84:0x049c, size: 5
 				this.oParent.CAPI.strcat(0xba06, " Fortify \x008ff\n");
 			}
 
-			if (this.oParent.GameData.UnitTypes[unit.TypeID].MovementType == UnitMovementTypeEnum.Land)
+			if (this.oParent.GameData.Units[unit.TypeID].MovementType == UnitMovementTypeEnum.Land)
 			{
 				orders[orderCount++] = 'f';
 			}
@@ -384,7 +384,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x2c84:0x05a4, size: 5
-			if ((this.oParent.GameData.UnitTypes[unit.TypeID].AIRole == UnitAIRoleEnum.SeaTransport || unit.TypeID == (short)UnitTypeEnum.Carrier) && unit.NextUnitID != -1)
+			if ((this.oParent.GameData.Units[unit.TypeID].AIRole == UnitAIRoleEnum.SeaTransport || unit.TypeID == (short)UnitTypeEnum.Carrier) && unit.NextUnitID != -1)
 			{
 				// Instruction address 0x2c84:0x05a4, size: 5
 				this.oParent.CAPI.strcat(0xba06, " Unload \x008fu\n");

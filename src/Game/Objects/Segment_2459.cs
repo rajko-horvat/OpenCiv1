@@ -149,7 +149,7 @@ namespace OpenCiv1
 			this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
-			if (this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].AttackStrength > 2)
+			if (this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].AttackStrength > 2)
 				goto L016c;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x28bc), 0x0);
@@ -328,7 +328,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " gold\npieces plundered.\n");
 
 			// Instruction address 0x2459:0x035d, size: 5
-			this.oParent.CommonTools.F0_1000_0a32_PlayTune(this.oParent.GameData.NationTypes[this.oParent.GameData.Players[playerID].NationalityID].ShortTune, 0);
+			this.oParent.CommonTools.F0_1000_0a32_PlayTune(this.oParent.GameData.Nations[this.oParent.GameData.Players[playerID].NationalityID].ShortTune, 0);
 
 			if (!this.oParent.GameData.GameSettingFlags.Animations) goto L03b7;
 
@@ -726,7 +726,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x2459:0x0762, size: 5
 			this.oParent.CAPI.strcat(0xba06,
-				this.oParent.GameData.TechnologyTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x98))].Name);
+				this.oParent.GameData.Technologies[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x98))].Name);
 
 			// Instruction address 0x2459:0x0772, size: 5
 			this.oParent.CAPI.strcat(0xba06, "\n ");
@@ -768,7 +768,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L07ed;
 
 			// Instruction address 0x2459:0x07e6, size: 5
-			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 32);
+			this.oCPU.AX.Int16 = (short)this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 32);
 
 			goto L07fe;
 
@@ -805,7 +805,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x2459:0x085e, size: 5
 			this.oParent.CAPI.strcat(0xba06,
-				this.oParent.GameData.TechnologyTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))].Name);
+				this.oParent.GameData.Technologies[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))].Name);
 
 			// Instruction address 0x2459:0x086e, size: 5
 			this.oParent.CAPI.strcat(0xba06, ".\n");

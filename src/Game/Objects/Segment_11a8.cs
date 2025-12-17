@@ -132,14 +132,14 @@ namespace OpenCiv1
 			this.oParent.Segment_1238.F0_1238_1b44();
 
 		L016f:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xdc48, 0x0);
+			this.oParent.Var_dc48_GameEndType = 0;
 
 		L0175:
 			// Instruction address 0x11a8:0x0175, size: 5
-			this.oParent.Segment_1238.F0_1238_0092();
+			this.oParent.Segment_1238.F0_1238_0092_GameTurn();
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdc48), 0x0);
-			if (this.oCPU.Flags.E) goto L0175;
+			if (this.oParent.Var_dc48_GameEndType == 0) goto L0175;
+
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c), 0x0);
 			if (this.oCPU.Flags.E) goto L018d;
 

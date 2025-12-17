@@ -33,7 +33,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0027;
 
 			// Instruction address 0x0000:0x001a, size: 5
-			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0x3fb0, 100, 80);
+			this.oCPU.AX.Int16 = (short)this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0x3fb0, 100, 80);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x680a, this.oCPU.AX.UInt16);
 			goto L002d;
@@ -440,7 +440,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " discover ");
 
 			this.oParent.CAPI.strcat(0xba06, 
-				this.oParent.GameData.TechnologyTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))].Name);
+				this.oParent.GameData.Technologies[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))].Name);
 
 			goto L040d;
 
@@ -463,7 +463,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " produce first ");
 
 			// Instruction address 0x0000:0x0405, size: 5
-			this.oParent.CAPI.strcat(0xba06, this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))].Name);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))].Name);
 
 			goto L040d;
 
@@ -518,7 +518,7 @@ namespace OpenCiv1
 		L05ad:
 			// Instruction address 0x0000:0x0405, size: 5
 			this.oParent.CAPI.strcat(0xba06,
-				this.oParent.GameData.WonderTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))].Name);
+				this.oParent.GameData.Wonders[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))].Name);
 
 			goto L040d;
 
@@ -1279,18 +1279,18 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0d78, size: 5
 			this.oParent.GameData.Players[playerID].Nationality = 
-				this.oParent.GameData.NationTypes[this.oParent.GameData.Players[playerID].NationalityID].Nationality;
+				this.oParent.GameData.Nations[this.oParent.GameData.Players[playerID].NationalityID].Nationality;
 
 			// Instruction address 0x0000:0x0d8f, size: 5
 			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0x10),
-				this.oParent.GameData.NationTypes[this.oParent.GameData.Players[playerID].NationalityID].Nation);
+				this.oParent.GameData.Nations[this.oParent.GameData.Players[playerID].NationalityID].Nation);
 
 			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)), 0x0);
 			if (this.oCPU.Flags.NE) goto L0dc4;
 
 			// Instruction address 0x0000:0x0dac, size: 5
 			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0x10),
-				this.oParent.GameData.NationTypes[this.oParent.GameData.Players[playerID].NationalityID].Nationality);
+				this.oParent.GameData.Nations[this.oParent.GameData.Players[playerID].NationalityID].Nationality);
 
 			// Instruction address 0x0000:0x0dbc, size: 5
 			this.oParent.CAPI.strcat((ushort)(this.oCPU.BP.UInt16 - 0x10), "s");
@@ -1345,7 +1345,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0e53, size: 5
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(
-				this.oParent.GameData.NationTypes[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].LongTune, 3);
+				this.oParent.GameData.Nations[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].LongTune, 3);
 
 			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L0e67;
@@ -1566,7 +1566,7 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36)));
 
 			// Instruction address 0x0000:0x11e9, size: 5
-			this.oParent.CommonTools.F0_1000_0a32_PlayTune(this.oParent.GameData.NationTypes[this.oParent.GameData.Players[playerID].NationalityID].LongTune, 3);
+			this.oParent.CommonTools.F0_1000_0a32_PlayTune(this.oParent.GameData.Nations[this.oParent.GameData.Players[playerID].NationalityID].LongTune, 3);
 
 			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L1254;
@@ -1761,7 +1761,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x1508, size: 5
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(
-				this.oParent.GameData.NationTypes[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].LongTune, 3);
+				this.oParent.GameData.Nations[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].LongTune, 3);
 
 			// Instruction address 0x0000:0x1518, size: 5
 			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreen(1);

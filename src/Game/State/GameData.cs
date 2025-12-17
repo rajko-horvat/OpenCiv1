@@ -473,12 +473,12 @@ namespace OpenCiv1
 			get => this.aSpaceshipCells;
 		}
 
-		public NationDefinition[] NationTypes
+		public NationDefinition[] Nations
 		{
 			get => this.nationTypes;
 		}
 
-		public TerrainDefinition[] TerrainTypes
+		public TerrainDefinition[] Terrains
 		{
 			get => this.terrainTypes;
 		}
@@ -488,7 +488,7 @@ namespace OpenCiv1
 			get => this.terrainModifications;
 		}
 
-		public UnitDefinition[] UnitTypes
+		public UnitDefinition[] Units
 		{
 			get => this.unitTypes;
 		}
@@ -510,12 +510,12 @@ namespace OpenCiv1
 			}
 		}
 
-		public ImprovementDefinition[] WonderTypes
+		public ImprovementDefinition[] Wonders
 		{
 			get => this.wonderTypes;
 		}
 
-		public TechnologyDefinition[] TechnologyTypes
+		public TechnologyDefinition[] Technologies
 		{
 			get => this.technologyTypes;
 		}

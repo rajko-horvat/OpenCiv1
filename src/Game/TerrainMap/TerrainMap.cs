@@ -1235,7 +1235,7 @@ namespace OpenCiv1
 				bool destinationReached = false; // remains false if we can't find a path to a destination
 				TerrainMapGroupTypeEnum group1; // The unit can move on this terrain type
 				TerrainMapGroupTypeEnum group2; // The unit can move on this terrain type
-				UnitMovementTypeEnum movementType = this.oGameData.UnitTypes[unit.TypeID].MovementType;
+				UnitMovementTypeEnum movementType = this.oGameData.Units[unit.TypeID].MovementType;
 
 				unit.GoToPath.Clear();
 

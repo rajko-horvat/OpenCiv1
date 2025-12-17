@@ -281,8 +281,8 @@ namespace OpenCiv1
 			this.oCPU.AX.UInt16 = 0x2;
 
 		L0356:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xdf60, this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3484, 0xfffd);
+			this.oParent.Var_df60 = this.oCPU.AX.Int16;
+			this.oParent.Var_3484 = -3;
 			this.oParent.GameData.SpaceshipFlags &= 0x7ffe;
 			goto L02f4;
 
@@ -991,7 +991,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < 28; i++)
 				{
-					this.oParent.GameData.UnitTypes[i] = UnitDefinition.FromStream(reader);
+					this.oParent.GameData.Units[i] = UnitDefinition.FromStream(reader);
 				}
 
 				for (int i = 0; i < 8; i++)
@@ -1591,7 +1591,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < 28; i++)
 				{
-					this.oParent.GameData.UnitTypes[i].ToStream(writer);
+					this.oParent.GameData.Units[i].ToStream(writer);
 				}
 
 				for (int i = 0; i < 8; i++)

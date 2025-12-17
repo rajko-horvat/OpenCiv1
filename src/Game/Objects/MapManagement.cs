@@ -711,7 +711,7 @@ namespace OpenCiv1
 			if (x >= 80 && x < 320 && y >= 8 && y < 193)
 			{
 				if ((unit.Status & 0x1) == 0 || F0_2aea_134a_GetTerrainType(unit.Position.X, unit.Position.Y) != TerrainTypeEnum.Water ||
-					this.oParent.GameData.UnitTypes[unit.TypeID].MovementType == UnitMovementTypeEnum.Water)
+					this.oParent.GameData.Units[unit.TypeID].MovementType == UnitMovementTypeEnum.Water)
 				{
 					// Instruction address 0x2aea:0x0f57, size: 5
 					this.oParent.Segment_11a8.F0_11a8_0268();
@@ -777,7 +777,7 @@ namespace OpenCiv1
 				this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadow("G", x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
 			}
 
-			if (((UnitStatusEnum)unit.Status & UnitStatusEnum.SettlerBuildMask) != 0 && this.oParent.GameData.UnitTypes[unit.TypeID].MovementType != UnitMovementTypeEnum.Air)
+			if (((UnitStatusEnum)unit.Status & UnitStatusEnum.SettlerBuildMask) != 0 && this.oParent.GameData.Units[unit.TypeID].MovementType != UnitMovementTypeEnum.Air)
 			{
 				string status = "R";
 
@@ -868,7 +868,7 @@ namespace OpenCiv1
 			Unit unit = this.oParent.GameData.Players[playerID].Units[unitID];
 
 			if (unit.NextUnitID != -1 && F0_2aea_134a_GetTerrainType(unit.Position.X, unit.Position.Y) == TerrainTypeEnum.Water &&
-				this.oParent.GameData.UnitTypes[unit.TypeID].MovementType != UnitMovementTypeEnum.Water)
+				this.oParent.GameData.Units[unit.TypeID].MovementType != UnitMovementTypeEnum.Water)
 			{
 				int currentUnitID = unitID;
 
@@ -876,7 +876,7 @@ namespace OpenCiv1
 				{
 					currentUnitID = this.oParent.GameData.Players[playerID].Units[currentUnitID].NextUnitID;
 
-					if (this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[currentUnitID].TypeID].MovementType == UnitMovementTypeEnum.Water)
+					if (this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[currentUnitID].TypeID].MovementType == UnitMovementTypeEnum.Water)
 					{
 						// Instruction address 0x2aea:0x12e2, size: 3
 						F0_2aea_0e29_DrawUnit(playerID, currentUnitID);

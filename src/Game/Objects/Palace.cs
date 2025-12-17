@@ -53,7 +53,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0091, size: 5
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(
-				this.oParent.GameData.NationTypes[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].LongTune, 3);
+				this.oParent.GameData.Nations[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].LongTune, 3);
 
 			// Instruction address 0x0000:0x009d, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4ae6, 1);

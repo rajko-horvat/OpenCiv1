@@ -318,7 +318,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x04fc, size: 5
 			this.oParent.CAPI.strcpy(0xba06, 
-				this.oParent.GameData.TechnologyTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))].Name);
+				this.oParent.GameData.Technologies[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))].Name);
 
 			this.oCPU.AX.LowUInt8 = (byte)this.oParent.GameData.TechnologyFirstDiscoveredBy[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))];
 			this.oCPU.AX.HighUInt8 = 0;
@@ -420,7 +420,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0635, size: 5
 			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(
-				this.oParent.GameData.UnitTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))].Name,
+				this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))].Name,
 				36, 
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)), 
 				15);

@@ -102,7 +102,7 @@ namespace OpenCiv1
 
 		L00c9:
 			// Instruction address 0x0000:0x00d2, size: 5
-			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
+			this.oCPU.AX.Int16 = (short)this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24), this.oCPU.AX.UInt16);
 
@@ -269,7 +269,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0284, size: 5
 			this.oParent.CAPI.strcat(0xba06,
-				this.oParent.GameData.TechnologyTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))].Name);
+				this.oParent.GameData.Technologies[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))].Name);
 
 			// Instruction address 0x0000:0x0294, size: 5
 			this.oParent.CAPI.strcat(0xba06, ".\n");
@@ -378,7 +378,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L03c9;
 
 			// Instruction address 0x0000:0x03e5, size: 5
-			this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.UnitTypes[this.oParent.GameData.Cities[cityID].CurrentProductionID].Name);
+			this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.Units[this.oParent.GameData.Cities[cityID].CurrentProductionID].Name);
 
 			goto L03e0;
 
@@ -489,7 +489,7 @@ namespace OpenCiv1
 			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.SpiesReport;
 
 			// Instruction address 0x0000:0x055d, size: 5
-			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
+			this.oCPU.AX.Int16 = (short)this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24), this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x1);
@@ -610,7 +610,7 @@ namespace OpenCiv1
 			this.oCPU.CX.UInt16 = this.oCPU.INC_UInt16(this.oCPU.CX.UInt16);
 			this.oCPU.CX.UInt16 = this.oCPU.INC_UInt16(this.oCPU.CX.UInt16);
 			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.UInt16);
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].Cost));
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].Cost));
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
 
 			if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID != 0)
@@ -646,7 +646,7 @@ namespace OpenCiv1
 			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 
 			// Instruction address 0x0000:0x0719, size: 5
-			this.oParent.CAPI.strcat(0xba06, this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].Name);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].Name);
 
 			// Instruction address 0x0000:0x0729, size: 5
 			this.oParent.CAPI.strcat(0xba06, "\nwill desert for ");
@@ -676,7 +676,7 @@ namespace OpenCiv1
 			if (playerID1 != this.oParent.GameData.HumanPlayerID) goto L07d4;
 
 			// Instruction address 0x0000:0x07c4, size: 5
-			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
+			this.oCPU.AX.Int16 = (short)this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x1);
 			if (this.oCPU.Flags.E) goto L07d4;
@@ -705,7 +705,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " ");
 
 			// Instruction address 0x0000:0x0841, size: 5
-			this.oParent.CAPI.strcat(0xba06, this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].Name);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].Name);
 
 			// Instruction address 0x0000:0x0851, size: 5
 			this.oParent.CAPI.strcat(0xba06, " unit\nbribed by ");

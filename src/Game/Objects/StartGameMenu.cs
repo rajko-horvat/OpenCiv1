@@ -268,7 +268,7 @@ namespace OpenCiv1
 		L032f:
 			// Instruction address 0x0000:0x033d, size: 5
 			this.oParent.CAPI.strcat(0xba06,
-				this.oParent.GameData.NationTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))].Nationality);
+				this.oParent.GameData.Nations[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))].Nationality);
 
 			// Instruction address 0x0000:0x034d, size: 5
 			this.oParent.CAPI.strcat(0xba06, "\n ");
@@ -286,7 +286,7 @@ namespace OpenCiv1
 
 		L0369:
 			// Instruction address 0x0000:0x0377, size: 5
-			this.oParent.CAPI.strcat(0xba06, this.oParent.GameData.NationTypes[8 + this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))].Nationality);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.GameData.Nations[8 + this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))].Nationality);
 
 			// Instruction address 0x0000:0x0387, size: 5
 			this.oParent.CAPI.strcat(0xba06, "\n ");
@@ -403,7 +403,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0569, size: 5
 			this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Name =
-				this.oParent.GameData.NationTypes[this.oParent.GameData.HumanPlayerID].Leader;
+				this.oParent.GameData.Nations[this.oParent.GameData.HumanPlayerID].Leader;
 
 			goto L0569;
 
@@ -426,18 +426,18 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x04ec, size: 5
 			this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Name =
-				this.oParent.GameData.NationTypes[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].Leader;
+				this.oParent.GameData.Nations[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].Leader;
 
 			this.oCPU.SI.UInt16 = (ushort)this.oParent.GameData.HumanPlayerID;
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
 
 			// Instruction address 0x0000:0x0509, size: 5
 			this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Nationality = 
-				this.oParent.GameData.NationTypes[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].Nationality;
+				this.oParent.GameData.Nations[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].Nationality;
 
 			// Instruction address 0x0000:0x0526, size: 5
 			this.oParent.CAPI.strcpy(0xba06,
-				this.oParent.GameData.NationTypes[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].Nation);
+				this.oParent.GameData.Nations[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].Nation);
 
 			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xba06), 0x0);
 			if (this.oCPU.Flags.NE) goto L055b;
@@ -568,7 +568,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x06d7, size: 5
 			this.oParent.CAPI.strcat(0xba06, 
-				this.oParent.GameData.TechnologyTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))].Name);
+				this.oParent.GameData.Technologies[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))].Name);
 
 			// Instruction address 0x0000:0x06e7, size: 5
 			this.oParent.CAPI.strcat(0xba06, ", ");
@@ -590,7 +590,7 @@ namespace OpenCiv1
 			
 			// Instruction address 0x0000:0x0738, size: 5
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(
-				this.oParent.GameData.NationTypes[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].LongTune, 3);
+				this.oParent.GameData.Nations[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].LongTune, 3);
 
 			// Instruction address 0x0000:0x0740, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
@@ -1079,7 +1079,7 @@ namespace OpenCiv1
 				this.oCPU.SI.Int16 = (short)playerID;
 				this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
 
-				this.oCPU.AX.UInt16 = (ushort)this.oParent.GameData.NationTypes[this.oParent.GameData.Players[playerID].NationalityID].Ideology;
+				this.oCPU.AX.UInt16 = (ushort)this.oParent.GameData.Nations[this.oParent.GameData.Players[playerID].NationalityID].Ideology;
 				this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, 0x3);
 				this.oParent.GameData.Players[playerID].ScienceTaxRate = (short)this.oCPU.AX.UInt16;
 				this.oCPU.AX.UInt16 = 0x9;
@@ -1110,8 +1110,8 @@ namespace OpenCiv1
 
 				if (this.oCPU.AX.UInt16 == (ushort)this.oParent.GameData.ActiveCivilizations)
 				{
-					this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xdc48, 1);
-					this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xb884, 1);
+					this.oParent.Var_dc48_GameEndType = 1;
+					this.oParent.Var_b884 = 1;
 				}
 
 				this.oCPU.AX.UInt16 = 0;
@@ -1123,7 +1123,7 @@ namespace OpenCiv1
 
 				// Instruction address 0x0000:0x0d26, size: 5
 				this.oParent.GameData.Players[playerID].Name =
-					this.oParent.GameData.NationTypes[this.oParent.GameData.Players[playerID].NationalityID].Leader;
+					this.oParent.GameData.Nations[this.oParent.GameData.Players[playerID].NationalityID].Leader;
 
 				this.oCPU.AX.UInt16 = (ushort)this.oParent.GameData.HumanPlayerID;
 				this.oCPU.CMP_UInt16((ushort)((short)playerID), this.oCPU.AX.UInt16);
@@ -1138,11 +1138,11 @@ namespace OpenCiv1
 
 				// Instruction address 0x0000:0x0d53, size: 5
 				this.oParent.GameData.Players[playerID].Nationality = 
-					this.oParent.GameData.NationTypes[this.oParent.GameData.Players[playerID].NationalityID].Nationality;
+					this.oParent.GameData.Nations[this.oParent.GameData.Players[playerID].NationalityID].Nationality;
 
 				// Instruction address 0x0000:0x0d6a, size: 5
 				this.oParent.CAPI.strcpy(0xba06,
-					this.oParent.GameData.NationTypes[this.oParent.GameData.Players[playerID].NationalityID].Nation);
+					this.oParent.GameData.Nations[this.oParent.GameData.Players[playerID].NationalityID].Nation);
 
 				this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xba06), 0x0);
 				if (this.oCPU.Flags.NE) goto L0d99;
@@ -1737,7 +1737,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x1376, size: 5
 			this.oParent.CAPI.strcat(0xba06, 
-				this.oParent.GameData.TechnologyTypes[(short)this.oCPU.AX.UInt16].Name);
+				this.oParent.GameData.Technologies[(short)this.oCPU.AX.UInt16].Name);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x48), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x48))));
 
@@ -1883,6 +1883,7 @@ namespace OpenCiv1
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6));
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
+
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.SI.UInt16 + 0xb884));
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.SI.UInt16 + 0xb886), this.oCPU.AX.UInt16);
 

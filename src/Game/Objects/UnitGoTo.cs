@@ -58,7 +58,7 @@ namespace OpenCiv1
 			else
 			{
 				// !!! Illegal memory access
-				if (this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Air)
+				if (this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Air)
 				{
 					this.Var_6590_XPos = (short)this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X;
 					this.Var_6592_YPos = (short)this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.Y;
@@ -246,7 +246,7 @@ namespace OpenCiv1
 				L03e0:
 					// !!! Illegal memory access
 					if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID == -1 ||
-						this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
+						this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
 					{
 						this.oCPU.AX.UInt16 = 0;
 					}
@@ -273,7 +273,7 @@ namespace OpenCiv1
 				L0436:
 					// !!! Illegal memory access
 					if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID != -1 &&
-						this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Air)
+						this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Air)
 						goto L0480;
 
 				L0455:
@@ -324,12 +324,12 @@ namespace OpenCiv1
 				L04b4:
 					// !!! Illegal memory access
 					if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID == -1 ||
-						this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MoveCount <= 1)
+						this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MoveCount <= 1)
 						goto L04e3;
 
 					this.oCPU.AX.LowUInt8 = 0x3;
 					this.oCPU.IMUL_UInt8(this.oCPU.AX, 
-						(byte)this.oParent.GameData.TerrainTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a))].MovementCost);
+						(byte)this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a))].MovementCost);
 
 					goto L04e6;
 
@@ -462,7 +462,7 @@ namespace OpenCiv1
 				F0_2e31_0a2c(
 					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36)),
 					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a)),
-					(ushort)((this.oParent.GameData.Players[playerID].Units[unitID].TypeID == -1 || this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water) ? 0 : 1));
+					(ushort)((this.oParent.GameData.Players[playerID].Units[unitID].TypeID == -1 || this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water) ? 0 : 1));
 
 				if (this.oCPU.AX.UInt16 == 0)
 				{
@@ -478,7 +478,7 @@ namespace OpenCiv1
 					F0_2e31_0a2c(
 						this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X,
 						this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.Y,
-						(ushort)((this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water) ? 0 : 1));
+						(ushort)((this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water) ? 0 : 1));
 
 					// Instruction address 0x2e31:0x06b8, size: 5
 					this.oParent.CAPI.memset(0xd816, 0, 0x104);
@@ -505,7 +505,7 @@ namespace OpenCiv1
 
 					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), 0x0);
 
-					if (this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
+					if (this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
 					{
 						this.oCPU.AX.UInt16 = 0;
 					}
@@ -654,7 +654,7 @@ namespace OpenCiv1
 					this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
 					this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 
-					if (this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
+					if (this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
 						goto L085e;
 
 					this.oCPU.AX.UInt16 = 0xd;
@@ -1174,7 +1174,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6794, param3);
 
 			if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID != -1 &&
-				this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
+				this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
 			{
 				this.oCPU.AX.UInt16 = 0;
 			}
@@ -1187,7 +1187,7 @@ namespace OpenCiv1
 
 			// !!! Illegal memory access
 			if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID != -1 && 
-				this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MoveCount == 1)
+				this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MoveCount == 1)
 			{
 				this.oCPU.AX.UInt16 = 0x1;
 			}
@@ -1371,7 +1371,7 @@ namespace OpenCiv1
 
 			this.oCPU.AX.LowUInt8 = 0x3;
 			this.oCPU.IMUL_UInt8(this.oCPU.AX, 
-				(byte)this.oParent.GameData.TerrainTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e))].MovementCost);
+				(byte)this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e))].MovementCost);
 			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)));
 
 		L0ead:
@@ -1476,7 +1476,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)));
 
-			if (((this.oParent.GameData.UnitTypes[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water) ? 0 : 1) == ((this.oCPU.AX.UInt16 != 0xa) ? 0 : 1))
+			if (((this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water) ? 0 : 1) == ((this.oCPU.AX.UInt16 != 0xa) ? 0 : 1))
 				goto L0fec;
 
 			// Instruction address 0x2e31:0x0fdd, size: 5

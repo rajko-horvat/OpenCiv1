@@ -1603,7 +1603,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x1617, size: 5
 			this.oParent.CAPI.strcpy(0xba06, 
-				this.oParent.GameData.TechnologyTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))].Name);
+				this.oParent.GameData.Technologies[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))].Name);
 
 		L161f:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))));
@@ -1712,7 +1712,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x178c, size: 5
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(
-				this.oParent.GameData.NationTypes[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].ShortTune, 0);
+				this.oParent.GameData.Nations[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].ShortTune, 0);
 
 			// Instruction address 0x0000:0x1798, size: 5
 			this.oParent.CommonTools.F0_1182_0134_WaitTimer(300);
@@ -1788,7 +1788,7 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			// Instruction address 0x0000:0x183d, size: 5
-			this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.TerrainTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].Name);
+			this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].Name);
 
 			// Instruction address 0x0000:0x184e, size: 5
 			this.oCPU.AX.UInt16 = (ushort)(this.oParent.MapManagement.F0_2aea_1836_CellHasSpecialResource(
@@ -1799,7 +1799,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L186c;
 
 			// Instruction address 0x0000:0x1864, size: 5
-			this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.TerrainTypes[12 + this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].Name);
+			this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.Terrains[12 + this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].Name);
 
 		L186c:
 			// Instruction address 0x0000:0x1875, size: 5

@@ -71,6 +71,8 @@ namespace OpenCiv1
 		/// </summary>
 		public ReportTypeEnum Var_2f9e_MessageBoxStyle = ReportTypeEnum.Default;
 
+		public int Var_3484 = -1;
+
 		// 0x652e - after this offset the default values are set to 0
 		public int Var_6b64 = 0;
 		public int Var_6b90 = 0;
@@ -87,6 +89,7 @@ namespace OpenCiv1
 		public int Var_b1e8 = 0;
 		//public int Var_b278 = 0; This was some kind of experiment, Always 0, can be safely removed througout entire code
 		public int Var_b882 = 0;
+		public int Var_b884 = 0; // maybe connected to 0xb886 bitmap array
 		public ushort Var_b2ba = 0;
 		public int Var_d20a = 0;
 		public int Var_d2de = 0;
@@ -96,6 +99,7 @@ namespace OpenCiv1
 		public int Var_d4cc_MapViewX = 0;
 		/// <summary>Y coordinate of the top left cell in map view</summary>
 		public int Var_d75e_MapViewY = 0;
+		public bool Var_d760_HumanPlayerMessageFlag = false;
 		public ushort Var_d762 = 0;
 		public ushort Var_d768 = 0;
 		public int Var_d7f0 = 0;
@@ -108,8 +112,10 @@ namespace OpenCiv1
 		public int Var_db3e_MouseYPos = 0;
 
 		public int Var_db42 = 0;
+		public int Var_dc48_GameEndType = 0;
 		public int Var_dcfc = 0;
 		public int Var_deb8 = 0;
+		public int Var_df60 = 0;
 		public int Var_e17a = 0;
 		public int Var_e3c2 = 0;
 		public int Var_e3c6 = 0;

@@ -1758,12 +1758,12 @@ namespace OpenCiv1
 			this.oCPU.DI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.DI.UInt16, this.oCPU.BP.UInt16);
 			this.oCPU.DI.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.DI.UInt16, 0x38);
 
-			this.oCPU.AX.LowUInt8 = (byte)this.oParent.GameData.TerrainTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40))].Trade;
+			this.oCPU.AX.LowUInt8 = (byte)this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40))].Trade;
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.CX.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.AX.LowUInt8 = 0x3;
 			this.oCPU.IMUL_UInt8(this.oCPU.AX, 
-				(byte)this.oParent.GameData.TerrainTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40))].Food);
+				(byte)this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40))].Food);
 			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, this.oCPU.DI.UInt16, this.oCPU.AX.UInt16);
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40));
@@ -1776,7 +1776,7 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.DX.UInt16, 0xb);
 			if (this.oCPU.Flags.E) goto L0f9c;
 
-			this.oCPU.AX.LowUInt8 = (byte)this.oParent.GameData.TerrainTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40))].Production;
+			this.oCPU.AX.LowUInt8 = (byte)this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40))].Production;
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, this.oCPU.DI.UInt16, this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, this.oCPU.DI.UInt16), this.oCPU.AX.UInt16));

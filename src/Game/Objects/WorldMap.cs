@@ -896,7 +896,7 @@ namespace OpenCiv1
 		L099a:
 			// Instruction address 0x0000:0x09a8, size: 5
 			this.oParent.CAPI.strcat(0xba06, 
-				this.oParent.GameData.WonderTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].Name);
+				this.oParent.GameData.Wonders[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].Name);
 
 			if (this.oParent.GameData.WonderCityID[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))] != 128)
 				goto L09c0;
@@ -1184,7 +1184,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0ccd, size: 5
 			this.oParent.Segment_1238.F0_1238_14a3(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e)),
-				this.oParent.Segment_1238.F0_1238_1c98_GetPalacelLevel(this.oParent.GameData.Players[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e))].Score),
+				(short)this.oParent.Segment_1238.F0_1238_1c98_GetPalacelLevel(this.oParent.GameData.Players[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e))].Score),
 				128, 
 				(short)(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)) - 13));
 

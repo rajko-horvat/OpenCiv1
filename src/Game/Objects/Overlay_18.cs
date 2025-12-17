@@ -916,7 +916,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, "% chance of success)\n No Launch\n Launch CONFIRMED!\n");
 
 			// Instruction address 0x0000:0x0be4, size: 5
-			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 100);
+			this.oCPU.AX.Int16 = (short)this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 100);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x1);
 			if (this.oCPU.Flags.NE) goto L0bfc;
@@ -1323,7 +1323,7 @@ namespace OpenCiv1
 
 		L0fde:
 			// Instruction address 0x0000:0x0fea, size: 5
-			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0x4df9, 100, 80);
+			this.oCPU.AX.Int16 = (short)this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0x4df9, 100, 80);
 
 			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, 0x3);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.AX.UInt16);
@@ -1343,7 +1343,7 @@ namespace OpenCiv1
 
 		L1014:
 			// Instruction address 0x0000:0x1020, size: 5
-			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0x4e12, 100, 80);
+			this.oCPU.AX.Int16 = (short)this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0x4e12, 100, 80);
 
 			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, 0x6);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.AX.UInt16);
@@ -1629,7 +1629,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xb276, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x0000:0x1593, size: 5
-			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
+			this.oCPU.AX.Int16 = (short)this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 			this.oCPU.AX.UInt16 = this.oCPU.INC_UInt16(this.oCPU.AX.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);

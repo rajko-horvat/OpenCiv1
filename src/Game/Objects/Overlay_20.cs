@@ -1399,7 +1399,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0fac, size: 5
 			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(
-				this.oParent.GameData.WonderTypes[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10))].Name,
+				this.oParent.GameData.Wonders[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10))].Name,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)) + 20,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)),
 				11);
@@ -1569,8 +1569,9 @@ namespace OpenCiv1
 
 		L1269:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), 0xffff);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xb884), 0x0);
-			if (this.oCPU.Flags.E) goto L128e;
+			
+			if (this.oParent.Var_b884 == 0) goto L128e;
+
 			this.oCPU.AX.UInt16 = 0x64;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)this.oParent.GameData.AIOpponentCount);
 			this.oCPU.CX.UInt16 = 0x226;
