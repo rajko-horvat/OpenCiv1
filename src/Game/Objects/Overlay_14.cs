@@ -175,7 +175,7 @@ namespace OpenCiv1
 			if (player.ResearchTechnologyID != -1)
 			{
 				// Instruction address 0x0000:0x02b1, size: 5
-				this.oParent.CAPI.strcpy(0xba06, $"Researching {this.oParent.GameData.Technologies[player.ResearchTechnologyID].Name}");
+				this.oParent.CAPI.strcpy(0xba06, $"Researching {this.oParent.GameData.Technologies[player.ResearchTechnologyID].Name} ({progress}/{progressBarValue})");
 
 				// Instruction address 0x0000:0x02df, size: 5
 				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 161, 26, 0);
