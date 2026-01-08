@@ -343,9 +343,7 @@ namespace OpenCiv1
 			new TerrainModification(TerrainTypeEnum.Swamp, 10, 15, 2, 15, 0, 0),
 			new TerrainModification(TerrainTypeEnum.Jungle, 10, 15, 2, 15, 0, 0),
 			new TerrainModification(TerrainTypeEnum.Water, -1, 0, -1, 0, 0, 0),
-			new TerrainModification(TerrainTypeEnum.River, -2, 5, -1, 0, 0, 1)
-
-			};
+			new TerrainModification(TerrainTypeEnum.River, -2, 5, -1, 0, 0, 1)};
 
 		private TerrainDefinition[] terrainTypes = new TerrainDefinition[]{
 			new TerrainDefinition(TerrainTypeEnum.Desert, "Desert", 1, 2, 0, 1, 0, 1, 14),

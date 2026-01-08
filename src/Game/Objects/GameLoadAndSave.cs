@@ -1,6 +1,5 @@
 using IRB.VirtualCPU;
 using System.Text;
-using Tmds.DBus.Protocol;
 
 namespace OpenCiv1
 {
