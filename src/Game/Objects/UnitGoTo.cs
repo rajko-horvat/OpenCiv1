@@ -5,8 +5,8 @@ using OpenCiv1.Graphics;
 namespace OpenCiv1
 {
 	/// <summary>
-	/// This class encapsulates old Goto Algorithm for archival purposes.
-	/// It is unreliable and produces array index out of bounds often.
+	/// This class encapsulates new GoTo algorithm.
+	/// The old Goto Algorithm is included for archival purposes. It is unreliable and produces array index out of bounds often.
 	/// </summary>
 	public class UnitGoTo
 	{
@@ -30,7 +30,7 @@ namespace OpenCiv1
 			this.parent = parent;
 			this.gameData = parent.GameData;
 
-			// Ensure that all arrays containt zero value initially
+			// Ensure that all arrays contain zero value initially
 
 			for (int i = 0; i < this.Arr_6594_PathX.Length; i++)
 			{
