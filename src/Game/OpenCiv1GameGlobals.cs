@@ -13,24 +13,24 @@ namespace OpenCiv1
 			new GPoint(-1, -2), new GPoint(1, -2), new GPoint(2, -1), new GPoint(2, 1), new GPoint(1, 2), new GPoint(-1, 2), new GPoint(-2, 1), new GPoint(-2, -1), 
 			new GPoint(0, 0) };
 
-		public GPoint[] MoveOffsets = new GPoint[] {
-			new GPoint(0, 0), new GPoint(0, -1), new GPoint(1, -1),
+		public GPoint[] MoveDirections = new GPoint[] {
+			new GPoint(0, 0), new GPoint(0, -1), new GPoint(1, -1), // 1
 			new GPoint(1, 0), new GPoint(1, 1), new GPoint(0, 1), 
 			new GPoint(-1, 1), new GPoint(-1, 0), new GPoint(-1, -1), 
-			new GPoint(0, -2), new GPoint(1, -2), new GPoint(2, -1), 
+			new GPoint(0, -2), new GPoint(1, -2), new GPoint(2, -1), // 2, starts at index 9
 			new GPoint(2, 0), new GPoint(2, 1), new GPoint(1, 2), 
 			new GPoint(0, 2), new GPoint(-1, 2), new GPoint(-2, 1), 
 			new GPoint(-2, 0), new GPoint(-2, -1), new GPoint(-1, -2), 
 			new GPoint(2, 2), new GPoint(2, -2), new GPoint(-2, -2), 
-			new GPoint(-2, 2), new GPoint(0, -3), new GPoint(1, -3), 
-			new GPoint(2, -3), new GPoint(3, -2), new GPoint(3, -1), 
-			new GPoint(3, 0), new GPoint(3, 1), new GPoint(3, 2), 
-			new GPoint(2, 3), new GPoint(1, 3), new GPoint(0, 3), 
-			new GPoint(-1, 3), new GPoint(-2, 3), new GPoint(-3, 2), 
-			new GPoint(-3, 1), new GPoint(-3, 0), new GPoint(-3, -1), 
-			new GPoint(-3, -2), new GPoint(-2, -3), new GPoint(-1, -3),
-			new GPoint(3, 3), new GPoint(3, -3), new GPoint(-3, 3), 
-			new GPoint(-3, -3)};
+			new GPoint(-2, 2),
+			new GPoint(0, -3), new GPoint(1, -3), new GPoint(2, -3), // 3, starts at index 25
+			new GPoint(3, -2), new GPoint(3, -1), new GPoint(3, 0), 
+			new GPoint(3, 1), new GPoint(3, 2), new GPoint(2, 3), 
+			new GPoint(1, 3), new GPoint(0, 3), new GPoint(-1, 3), 
+			new GPoint(-2, 3), new GPoint(-3, 2), new GPoint(-3, 1), 
+			new GPoint(-3, 0), new GPoint(-3, -1), new GPoint(-3, -2), 
+			new GPoint(-2, -3), new GPoint(-1, -3), new GPoint(3, 3), 
+			new GPoint(3, -3), new GPoint(-3, 3), new GPoint(-3, -3)}; // size is 49
 
 		public int Var_42 = 0; // ushort
 		public int Var_44 = 0; // ushort
@@ -65,6 +65,26 @@ namespace OpenCiv1
 		public CRectangle Var_19fc_Rectangle = new CRectangle(3, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 
 		public int Var_1ae0 = 0;
+
+		// Convert pixel value to actual TerrainTypeEnum value
+		public TerrainTypeEnum[] Array_2ba6 = {
+			TerrainTypeEnum.Invalid,	// Water = 0
+			TerrainTypeEnum.Water,		// Coast = 1
+			TerrainTypeEnum.Forest,		// Forest = 2
+			TerrainTypeEnum.Swamp,		// Swamp = 3
+			TerrainTypeEnum.Invalid,	// Undefined4 = 4
+			TerrainTypeEnum.Invalid,	// Undefined5 = 5
+			TerrainTypeEnum.Plains,		// Plains = 6
+			TerrainTypeEnum.Tundra,		// Tundra = 7
+			TerrainTypeEnum.Invalid,	// Undefined8 = 8
+			TerrainTypeEnum.River,		// River = 9
+			TerrainTypeEnum.Grassland,	// Grassland = 10
+			TerrainTypeEnum.Jungle,		// Jungle = 11
+			TerrainTypeEnum.Hills,		// Hills = 12
+			TerrainTypeEnum.Mountains,	// Mountains = 13
+			TerrainTypeEnum.Desert,		// Desert = 14
+			TerrainTypeEnum.Arctic		// Arctic = 15
+		};
 
 		/// <summary>
 		/// Allows to customize dialog shown by F0_1238_001e_ShowDialog().

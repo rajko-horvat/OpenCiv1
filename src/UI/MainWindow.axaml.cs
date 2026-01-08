@@ -148,6 +148,13 @@ namespace OpenCiv1.UI
 							// for testing
 							this.oGame.CPU.Keys.Enqueue(0x475c);
 							break;*/
+						/*case Key.Tab:
+							this.oGame.CPU.Keys.Enqueue(0x9);
+							break;*/
+
+						case Key.Escape:
+							this.oGame.CPU.Keys.Enqueue(0x1b);
+							break;
 
 						case Key.F1:
 							this.oGame.CPU.Keys.Enqueue(0x3b00);

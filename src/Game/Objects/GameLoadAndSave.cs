@@ -1,5 +1,6 @@
-using System.Text;
 using IRB.VirtualCPU;
+using System.Text;
+using Tmds.DBus.Protocol;
 
 namespace OpenCiv1
 {
@@ -257,7 +258,7 @@ namespace OpenCiv1
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 2;
 
-			this.oParent.GameInitAndIntro.F7_0000_1440(0);
+			this.oParent.GameInitAndIntro.F7_0000_1440_ConstructWaterPath();
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
@@ -959,15 +960,17 @@ namespace OpenCiv1
 					}
 				}
 
-				for (int i = 0; i < 64; i++)
+				for (int i = 0; i < 16; i++)
 				{
 					this.oParent.GameData.Continents[i].Size = ReadInt16(reader);
 				}
+				reader.Seek(48 * 2, SeekOrigin.Current);
 
-				for (int i = 0; i < 64; i++)
+				for (int i = 0; i < 16; i++)
 				{
 					this.oParent.GameData.Oceans[i].Size = ReadInt16(reader);
 				}
+				reader.Seek(48 * 2, SeekOrigin.Current);
 
 				for (int i = 0; i < 16; i++)
 				{
@@ -1100,9 +1103,15 @@ namespace OpenCiv1
 				this.oParent.GameData.GlobalWarmingCount = ReadInt16(reader);
 				this.oParent.GameData.GameSettingFlags.Value = ReadInt16(reader);
 
-				for (int i = 0; i < 260; i++)
+				//reader.Seek(260, SeekOrigin.Current); // Skip corrupted Land path data
+				int[,] landPath = this.oParent.UnitGoTo.Arr_db44_LandPath;
+
+				for (int i = 0; i < 20; i++)
 				{
-					this.oParent.GameData.LandPathfinding[i] = ReadUInt8(reader);
+					for (int j = 0; j < 13; j++)
+					{
+						landPath[i, j] = ReadUInt8(reader);
+					}
 				}
 
 				this.oParent.GameData.MaximumTechnologyCount = ReadInt16(reader);
@@ -1559,14 +1568,24 @@ namespace OpenCiv1
 					}
 				}
 
-				for (int i = 0; i < 64; i++)
+				for (int i = 0; i < 16; i++)
 				{
 					WriteInt16(writer, this.oParent.GameData.Continents[i].Size);
 				}
 
-				for (int i = 0; i < 64; i++)
+				for (int i = 0; i < 48; i++)
+				{
+					WriteInt16(writer, 0);
+				}
+
+				for (int i = 0; i < 16; i++)
 				{
 					WriteInt16(writer, this.oParent.GameData.Oceans[i].Size);
+				}
+
+				for (int i = 0; i < 48; i++)
+				{
+					WriteInt16(writer, 0);
 				}
 
 				for (int i = 0; i < 16; i++)
@@ -1695,9 +1714,14 @@ namespace OpenCiv1
 				WriteInt16(writer, this.oParent.GameData.GlobalWarmingCount);
 				WriteInt16(writer, this.oParent.GameData.GameSettingFlags.Value);
 
-				for (int i = 0; i < 260; i++)
+				int[,] landPath = this.oParent.UnitGoTo.Arr_db44_LandPath;
+
+				for (int i = 0; i < 20; i++)
 				{
-					writer.WriteByte(this.oParent.GameData.LandPathfinding[i]);
+					for (int j = 0; j < 13; j++)
+					{
+						writer.WriteByte((byte)landPath[i, j]);
+					}
 				}
 
 				WriteInt16(writer, this.oParent.GameData.MaximumTechnologyCount);

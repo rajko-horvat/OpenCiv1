@@ -1,5 +1,7 @@
 using IRB.VirtualCPU;
 using OpenCiv1.Graphics;
+using System;
+using System.Numerics;
 
 namespace OpenCiv1
 {
@@ -13,10 +15,10 @@ namespace OpenCiv1
 		// Layer 4: Terrain-based land appeal for the computer to build cities, 80:50
 		//
 		// Layer 5: Same as layer 6, but only what's visible to the player, 0:100
-		// Layer 6: Terrain improvements(irrigation, mining, roads), 80:100
+		// Layer 6: Terrain improvements (irrigation, mining, roads), 80:100
 		//
 		// Layer 7: Same as layer 8, but only what's visible to the player, 0:150
-		// Layer 8: Railroads, roads, rivers, fortresses, 80:150
+		// Layer 8: Terrain improvements (railroads, roads, rivers, fortresses), 80:150
 		//
 		// Layer 9: Per-Civ land exploration and active units, 160:0
 		// Layer 10: Mini-map render, 240:0
@@ -25,6 +27,8 @@ namespace OpenCiv1
 		private VCPU oCPU;
 
 		// Local variables used exclusively inside this section
+		public static GSize Size = new GSize(80, 50);
+		public static int XMedian = 80 / 2;
 
 		/// <summary>Number of cities currently visible on the screen</summary>
 		private List<CityInfo> VisibleCities = new List<CityInfo>();
@@ -56,7 +60,7 @@ namespace OpenCiv1
 
 			int tempValue = this.oParent.Var_d20a;
 
-			this.oParent.Var_d4cc_MapViewX = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x);
+			this.oParent.Var_d4cc_MapViewX = this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(x);
 			this.oParent.Var_d75e_MapViewY = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(y, 0, 38);
 
 			// Another error, the code modified first parameter (playerID) to a
@@ -78,11 +82,11 @@ namespace OpenCiv1
 				if (cellYPos < 12 && cellXPos < 15)
 				{
 					if (this.oParent.Var_d806_DebugFlag ||
-						(this.oParent.GameData.MapVisibility[this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(cellXPos + this.oParent.Var_d4cc_MapViewX),
+						(this.oParent.GameData.MapVisibility[this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(cellXPos + this.oParent.Var_d4cc_MapViewX),
 							cellYPos + this.oParent.Var_d75e_MapViewY] & mapPlayerVisibilityMask) != 0)
 					{
 						// Instruction address 0x2aea:0x0122, size: 3
-						F0_2aea_11d4_DrawCellWithUnit(this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(cellXPos + this.oParent.Var_d4cc_MapViewX), cellYPos + this.oParent.Var_d75e_MapViewY);
+						F0_2aea_11d4_DrawCellWithUnit(this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(cellXPos + this.oParent.Var_d4cc_MapViewX), cellYPos + this.oParent.Var_d75e_MapViewY);
 					}
 					else
 					{
@@ -200,14 +204,14 @@ namespace OpenCiv1
 				if (city.StatusFlag != 0xff && (city.VisibleSize != 0 || city.PlayerID == this.oParent.GameData.HumanPlayerID))
 				{
 					// Instruction address 0x2aea:0x031a, size: 5
-					cellXPos = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(city.Position.X - mapXSrc);
+					cellXPos = this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(city.Position.X - mapXSrc);
 					cellYPos = city.Position.Y - mapYSrc + mapYOffset;
 
 					if (cellYPos >= 0 && cellYPos < 50)
 					{
 						// Instruction address 0x2aea:0x0355, size: 3
-						this.oParent.CommonTools.F0_1000_104f_SetPixel(cellXPos, cellYPos + 8,
-							this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0x1946 + (city.PlayerID * 2))));
+						this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, cellXPos, cellYPos + 8,
+							this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0x1946 + (city.PlayerID * 2))));
 					}
 				}
 			}
@@ -236,7 +240,7 @@ namespace OpenCiv1
 
 			// function body
 			// Tile position in screen coordinates
-			int scrX = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x - this.oParent.Var_d4cc_MapViewX) * 16 + 80;
+			int scrX = this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(x - this.oParent.Var_d4cc_MapViewX) * 16 + 80;
 			int scrY = (y - this.oParent.Var_d75e_MapViewY) * 16 + 8;
 
 			if (scrX < 80 || scrX >= 320 || scrY < 8 || scrY > 192)
@@ -270,11 +274,11 @@ namespace OpenCiv1
 						{
 							mask >>= 1;
 
-							GPoint direction = this.oParent.MoveOffsets[i];
+							GPoint direction = this.oParent.MoveDirections[i];
 
 							// Instruction address 0x2aea:0x04f0, size: 3
-							if (F0_2aea_134a_GetTerrainType(this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X), y + direction.Y) != TerrainTypeEnum.Water &&
-								F0_2aea_1326_CheckMapCoordinates(0, y + direction.Y))
+							if (F0_2aea_134a_GetTerrainType(this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(x + direction.X), y + direction.Y) != TerrainTypeEnum.Water &&
+								F0_2aea_1326_ValidateMapCoordinates(0, y + direction.Y))
 							{
 								mask |= 0x8;
 							}
@@ -289,11 +293,11 @@ namespace OpenCiv1
 						{
 							mask >>= 1;
 
-							GPoint direction = this.oParent.MoveOffsets[i];
+							GPoint direction = this.oParent.MoveDirections[i];
 
 							// Instruction address 0x2aea:0x0570, size: 3
-							if (F0_2aea_134a_GetTerrainType(this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X), y + direction.Y) != TerrainTypeEnum.Water &&
-								F0_2aea_1326_CheckMapCoordinates(0, y + direction.Y))
+							if (F0_2aea_134a_GetTerrainType(this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(x + direction.X), y + direction.Y) != TerrainTypeEnum.Water &&
+								F0_2aea_1326_ValidateMapCoordinates(0, y + direction.Y))
 							{
 								mask |= 0x80;
 							}
@@ -354,10 +358,10 @@ namespace OpenCiv1
 						// Draw river deltas on top of coastal cells
 						for (int i = 1; i < 9; i += 2)
 						{
-							GPoint direction = this.oParent.MoveOffsets[i];
+							GPoint direction = this.oParent.MoveDirections[i];
 
 							// Instruction address 0x2aea:0x0752, size: 3
-							if (F0_2aea_134a_GetTerrainType(this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X), y + direction.Y) == TerrainTypeEnum.River)
+							if (F0_2aea_134a_GetTerrainType(this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(x + direction.X), y + direction.Y) == TerrainTypeEnum.River)
 							{
 								// Instruction address 0x2aea:0x0777, size: 5
 								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
@@ -400,8 +404,8 @@ namespace OpenCiv1
 					{
 						mask >>= 1;
 
-						GPoint direction = this.oParent.MoveOffsets[i];
-						TerrainTypeEnum terrainType1 = F0_2aea_134a_GetTerrainType(this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X), y + direction.Y);
+						GPoint direction = this.oParent.MoveDirections[i];
+						TerrainTypeEnum terrainType1 = F0_2aea_134a_GetTerrainType(this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(x + direction.X), y + direction.Y);
 
 						if (terrainType1 == TerrainTypeEnum.Water || terrainType1 == TerrainTypeEnum.River)
 						{
@@ -430,10 +434,10 @@ namespace OpenCiv1
 						{
 							mask >>= 1;
 
-							GPoint direction = this.oParent.MoveOffsets[i];
+							GPoint direction = this.oParent.MoveDirections[i];
 
-							if (F0_2aea_134a_GetTerrainType(this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X), y + direction.Y) == terrainType &&
-								F0_2aea_1326_CheckMapCoordinates(0, y + direction.Y))
+							if (F0_2aea_134a_GetTerrainType(this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(x + direction.X), y + direction.Y) == terrainType &&
+								F0_2aea_1326_ValidateMapCoordinates(0, y + direction.Y))
 							{
 								mask |= 0x8;
 							}
@@ -501,11 +505,11 @@ namespace OpenCiv1
 
 					for (int i = 1; i < 9; i++)
 					{
-						GPoint direction = this.oParent.MoveOffsets[i];
+						GPoint direction = this.oParent.MoveDirections[i];
 
 						// Instruction address 0x2aea:0x0a9a, size: 3
 						TerrainImprovementFlagsEnum terrainImprovements1 =
-							F0_2aea_15c1_GetTerrainImprovements(this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X), y + direction.Y);
+							F0_2aea_15c1_GetTerrainImprovements(this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(x + direction.X), y + direction.Y);
 
 						if (terrainImprovements1.HasFlag(TerrainImprovementFlagsEnum.Road))
 						{
@@ -581,12 +585,12 @@ namespace OpenCiv1
 
 					for (int i = 1; i < 9; i += 2)
 					{
-						GPoint direction = this.oParent.MoveOffsets[i];
+						GPoint direction = this.oParent.MoveDirections[i];
 
 						// Instruction address 0x2aea:0x0b87, size: 5
 						int yTemp = y + direction.Y;
 						int visibilityMask = (yTemp >= 0 && yTemp < 50) ?
-							this.oParent.GameData.MapVisibility[this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(x + direction.X), yTemp] : 0;
+							this.oParent.GameData.MapVisibility[this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(x + direction.X), yTemp] : 0;
 
 						if ((visibilityMask & (0x1 << this.oParent.GameData.HumanPlayerID)) == 0)
 						{
@@ -705,7 +709,7 @@ namespace OpenCiv1
 			// function body
 			// Instruction address 0x2aea:0x0ecd, size: 5
 			Unit unit = this.oParent.GameData.Players[playerID].Units[unitID];
-			int x = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(unit.Position.X - this.oParent.Var_d4cc_MapViewX) * 16 + 80;
+			int x = this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(unit.Position.X - this.oParent.Var_d4cc_MapViewX) * 16 + 80;
 			int y = (unit.Position.Y - this.oParent.Var_d75e_MapViewY) * 16 + 8;
 
 			if (x >= 80 && x < 320 && y >= 8 && y < 193)
@@ -905,12 +909,27 @@ namespace OpenCiv1
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns></returns>
-		public bool F0_2aea_1326_CheckMapCoordinates(int x, int y)
+		public bool F0_2aea_1326_ValidateMapCoordinates(int x, int y)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_2aea_1326_CheckMapBounds({xPos}, {yPos})");
 
 			// function body
+			x = F0_2e31_119b_AdjustMapXPosition(x);
 			return x >= 0 && x < 80 && y >= 0 && y < 50;
+		}
+
+		/// <summary>
+		/// Check if the given coordinates are within map bounds
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns></returns>
+		public bool F0_2aea_1326_ValidateMapCoordinates(GPoint pt)
+		{
+			//this.oCPU.Log.EnterBlock($"F0_2aea_1326_CheckMapBounds({xPos}, {yPos})");
+
+			// function body
+			return F0_2aea_1326_ValidateMapCoordinates(pt.X, pt.Y);
 		}
 
 		/// <summary>
@@ -924,10 +943,7 @@ namespace OpenCiv1
 		{
 			//this.oCPU.Log.EnterBlock($"F0_2aea_134a_GetTerrainID({xPos}, {yPos})");
 			// function body
-			// Instruction address 0x2aea:0x1357, size: 5
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0x2ba6 + (this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x, y) * 2)));
-
-			return (TerrainTypeEnum)this.oCPU.AX.UInt16;
+			return this.oParent.Array_2ba6[this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x, y)];
 		}
 
 		/// <summary>
@@ -936,13 +952,10 @@ namespace OpenCiv1
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns>ID of a player that owns the city</returns>
-		public ushort F0_2aea_1369_GetCityOwner(int x, int y)
+		public int F0_2aea_1369_GetCityOwner(int x, int y)
 		{
 			// function body
-			// Instruction address 0x2aea:0x137d, size: 5
-			this.oCPU.AX.UInt16 = (ushort)(this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x + 160, y) & 0x7);
-
-			return this.oCPU.AX.UInt16;
+			return (this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x + 160, y) & 0x7);
 		}
 
 		/// <summary>
@@ -962,13 +975,13 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// Adjusts currently active unit on map cell
+		/// Sets map cell owner player
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
-		public void F0_2aea_13cb(int playerID, int unitID, int x, int y)
+		public void F0_2aea_13cb_SetCellPlayerID(int playerID, int unitID, int x, int y)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_2aea_13cb({playerID}, {unitID}, {xPos}, {yPos})");
 
@@ -1043,7 +1056,7 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x2aea:0x14d3, size: 3
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(2, x + 160, y, 0);
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, x + 160, y, 0);
 			}
 
 			return -1;
@@ -1091,7 +1104,7 @@ namespace OpenCiv1
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns></returns>
-		public bool F0_2aea_1570_CheckCellHasRoad(int x, int y)
+		public bool F0_2aea_1570_CheckIfCellHasRoad(int x, int y)
 		{
 			// function body
 			// Instruction address 0x2aea:0x157a, size: 3
@@ -1101,17 +1114,14 @@ namespace OpenCiv1
 		/// <summary>
 		/// Returns terrain improvements at specified map coordinates.
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <returns>Terrain improvements flags</returns>
-		public TerrainImprovementFlagsEnum F0_2aea_1585_GetVisibleTerrainImprovements(int xPos, int yPos)
+		public TerrainImprovementFlagsEnum F0_2aea_1585_GetVisibleTerrainImprovements(int x, int y)
 		{
 			// function body
-			// Preserve compatibility
-			this.oCPU.AX.UInt16 = (ushort)(this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 100) | 
-				(this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 150) << 4));
-
-			return (TerrainImprovementFlagsEnum)this.oCPU.AX.UInt16;
+			return (TerrainImprovementFlagsEnum)(this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x, y + 100) |
+				(this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x, y + 150) << 4));
 		}
 
 		/// <summary>
@@ -1122,12 +1132,9 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public TerrainImprovementFlagsEnum F0_2aea_15c1_GetTerrainImprovements(int x, int y)
 		{
-			// function body
-			// Instruction address 0x2aea:0x15ef, size: 5
-			this.oCPU.AX.UInt16 = (ushort)(this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x + 80, y + 100) | 
+			// function body			
+			return (TerrainImprovementFlagsEnum)(this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x + 80, y + 100) |
 				(this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x + 80, y + 150) << 4));
-			
-			return (TerrainImprovementFlagsEnum)this.oCPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -1135,7 +1142,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		public void F0_2aea_1601_UpdateVisbleCellStatus(int xPos, int yPos)
+		public void F0_2aea_1601_UpdateVisibleCellStatus(int xPos, int yPos)
 		{
 			// function body			
 			// Instruction address 0x2aea:0x1627, size: 3
@@ -1149,9 +1156,9 @@ namespace OpenCiv1
 		/// Sets terrain improvements at specified map coordinates.
 		/// </summary>
 		/// <param name="improvements"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		public void F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum improvements, int xPos, int yPos)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		public void F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum improvements, int x, int y)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_2aea_1653({improvements}, {xPos}, {yPos})");
 
@@ -1159,83 +1166,79 @@ namespace OpenCiv1
 			if (improvements == TerrainImprovementFlagsEnum.None)
 			{
 				// Instruction address 0x2aea:0x16b7, size: 3
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(2, xPos, yPos + 100, 0);
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, x, y + 100, 0);
 
 				// Instruction address 0x2aea:0x16cf, size: 3
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(2, xPos, yPos + 150, 0);
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, x, y + 150, 0);
 			}
 			else if (improvements >= TerrainImprovementFlagsEnum.RailRoad)
 			{
 				// Instruction address 0x2aea:0x1691, size: 5
-				ushort current = this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 150);
+				ushort current = this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x, y + 150);
 
 				// Instruction address 0x2aea:0x16cf, size: 3
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(2, xPos, yPos + 150, (ushort)(((ushort)improvements >> 4) | current));
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, x, y + 150, (byte)(((ushort)improvements >> 4) | current));
 			}
 			else
 			{
 				// Instruction address 0x2aea:0x1672, size: 5
-				ushort current = this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 100);
+				ushort current = this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x, y + 100);
 
 				// Instruction address 0x2aea:0x16cf, size: 3
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(2, xPos, yPos + 100, (ushort)(current | (ushort)improvements));
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, x, y + 100, (byte)(current | (ushort)improvements));
 			}
 
 			if (this.oParent.Var_6b90 == this.oParent.GameData.HumanPlayerID)
 			{
 				// Instruction address 0x2aea:0x16e5, size: 3
-				F0_2aea_1601_UpdateVisbleCellStatus(xPos, yPos);
+				F0_2aea_1601_UpdateVisibleCellStatus(x, y);
 			}		
 		}
 
 		/// <summary>
 		/// ?
 		/// </summary>
-		/// <param name="param1"></param>
+		/// <param name="improvements"></param>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		public void F0_2aea_16ee(ushort param1, int xPos, int yPos)
+		public void F0_2aea_16ee_ClearImprovements(TerrainImprovementFlagsEnum improvements, int xPos, int yPos)
 		{
 			// function body
-			if ((param1 & 0xf) != 0)
+			if (((int)improvements & 0xf) != 0)
 			{
-				// Instruction address 0x2aea:0x1707, size: 5
-				this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 100);
-
 				// Instruction address 0x2aea:0x171c, size: 3
-				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, xPos, yPos + 100, (byte)(((~param1) & this.oCPU.AX.UInt16) & 0xff), 0);
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, xPos, yPos + 100, 
+					(byte)(((~(int)improvements) & this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 100)) & 0xff), 0);
 			}
 
-			if (((param1 & 0xf0) != 0))
+			if ((((int)improvements & 0xf0) != 0))
 			{
-				// Instruction address 0x2aea:0x1738, size: 5
-				this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 150);
-
 				// Instruction address 0x2aea:0x1751, size: 3
-				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, xPos, yPos + 150, (byte)(((~(param1 >> 4)) & this.oCPU.AX.UInt16) & 0xff), 0);
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, xPos, yPos + 150, 
+					(byte)(((~((int)improvements >> 4)) & this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 150)) & 0xff), 0);
 			}		
 		}
 
 		/// <summary>
-		/// ?
+		/// Finds the city at given coordinates. If the city doesn't exist print error
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <returns></returns>
-		public int F0_2aea_175a(int xPos, int yPos)
+		public int F0_2aea_175a_FindCityHumanPlayer(int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_175a({xPos}, {yPos})");
+			//this.oCPU.Log.EnterBlock($"F0_2aea_175a({x}, {y})");
 
 			// function body
 			// Instruction address 0x2aea:0x1768, size: 3
-			int playerID = F0_2aea_1369_GetCityOwner(xPos, yPos);
-
 			for (int i = 0; i < 128; i++)
 			{
 				City city = this.oParent.GameData.Cities[i];
 
-				if (city.StatusFlag != 0xff && city.Position.X == xPos && city.Position.Y == yPos)
+				if (city.StatusFlag != 0xff && city.Position.X == x && city.Position.Y == y)
 				{
+					int playerID = F0_2aea_1369_GetCityOwner(x, y);
+
 					this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0xd7f0, (short)playerID);
 					this.oParent.Var_d20a = playerID;
 
@@ -1291,15 +1294,15 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// Gets map cell group ID
+		/// Gets map cell group ID at selected coordinates
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <returns></returns>
-		public int F0_2aea_1942_GetCellGroupID(int xPos, int yPos)
+		public int F0_2aea_1942_GetGroupID(int x, int y)
 		{
 			// Instruction address 0x2aea:0x1953, size: 5
-			return (sbyte)this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xPos, yPos + 50);
+			return this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x, y + 50);
 		}
 
 		/// <summary>
@@ -1308,33 +1311,163 @@ namespace OpenCiv1
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns></returns>
-		public ushort F0_2aea_195d_GetMapGroupSize(int x, int y)
+		public int F0_2aea_195d_GetMapGroupSize(int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_195d({x}, {y})");
+			//this.oCPU.Log.EnterBlock($"F0_2aea_195d({x}, {y})");
 
 			// function body
 			// Instruction address 0x2aea:0x1967, size: 3
 			if (F0_2aea_134a_GetTerrainType(x, y) != TerrainTypeEnum.Water)
 			{
-				// Instruction address 0x2aea:0x1979, size: 3
-				this.oCPU.AX.Int16 = (short)F0_2aea_1942_GetCellGroupID(x, y);
-
 				// Land
-				this.oCPU.AX.UInt16 = (ushort)this.oParent.GameData.Continents[this.oCPU.AX.UInt16].Size;
+				return this.oParent.GameData.Continents[F0_2aea_1942_GetGroupID(x, y)].Size;
 			}
 			else
 			{
-				// Instruction address 0x2aea:0x1990, size: 3
-				this.oCPU.AX.Int16 = (short)F0_2aea_1942_GetCellGroupID(x, y);
-
 				// Oceans
-				this.oCPU.AX.UInt16 = (ushort)this.oParent.GameData.Oceans[this.oCPU.AX.UInt16].Size;
+				return this.oParent.GameData.Oceans[F0_2aea_1942_GetGroupID(x, y)].Size;
+			}
+		}
+
+		/// <summary>
+		/// Adjusts Map X position
+		/// </summary>
+		/// <param name="xPos">Map X position to adjust</param>
+		/// <returns>Adjusted map X position</returns>
+		public int F0_2e31_119b_AdjustMapXPosition(int xPos)
+		{
+			// function body
+			while (xPos < 0)
+			{
+				xPos += 80;
 			}
 
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2aea_195d");
+			while (xPos >= 80)
+			{
+				xPos -= 80;
+			}
 
-			return this.oCPU.AX.UInt16;
+			return xPos;
+		}
+
+		public TerrainMapGroupTypeEnum GetGroupType(int x, int y)
+		{
+			switch (F0_2aea_134a_GetTerrainType(x, y))
+			{
+				case TerrainTypeEnum.Desert:
+				case TerrainTypeEnum.Plains:
+				case TerrainTypeEnum.Grassland:
+				case TerrainTypeEnum.Forest:
+				case TerrainTypeEnum.Hills:
+				case TerrainTypeEnum.Mountains:
+				case TerrainTypeEnum.Tundra:
+				case TerrainTypeEnum.Arctic:
+				case TerrainTypeEnum.Swamp:
+				case TerrainTypeEnum.Jungle:
+				case TerrainTypeEnum.River:
+					return TerrainMapGroupTypeEnum.Land;
+
+				case TerrainTypeEnum.Water:
+					return TerrainMapGroupTypeEnum.Water;
+
+				default:
+					return TerrainMapGroupTypeEnum.Land;
+			}
+		}
+
+		public TerrainMapGroupTypeEnum GetGroupType(GPoint pt)
+		{
+			switch (F0_2aea_134a_GetTerrainType(pt.X, pt.Y))
+			{
+				case TerrainTypeEnum.Desert:
+				case TerrainTypeEnum.Plains:
+				case TerrainTypeEnum.Grassland:
+				case TerrainTypeEnum.Forest:
+				case TerrainTypeEnum.Hills:
+				case TerrainTypeEnum.Mountains:
+				case TerrainTypeEnum.Tundra:
+				case TerrainTypeEnum.Arctic:
+				case TerrainTypeEnum.Swamp:
+				case TerrainTypeEnum.Jungle:
+				case TerrainTypeEnum.River:
+					return TerrainMapGroupTypeEnum.Land;
+
+				case TerrainTypeEnum.Water:
+					return TerrainMapGroupTypeEnum.Water;
+
+				default:
+					return TerrainMapGroupTypeEnum.Land;
+			}
+		}
+
+		/// <summary>
+		/// Calculate the shortest map distance (number of moves) between two points in a two dimensional space (Chebyshev distance)
+		/// </summary>
+		/// <param name="xPos">The position of the start X coordinate</param>
+		/// <param name="yPos">The position of the start Y coordinate</param>
+		/// <param name="xPos1">The position of the destination X coordinate</param>
+		/// <param name="yPos1">The position of the destination Y coordinate</param>
+		/// <returns>The shortest distance (number of moves in a two dimensional space)</returns>
+		public int GetDistance(int xPos, int yPos, int xPos1, int yPos1)
+		{
+			return GetDistance(new GPoint(xPos, yPos), new GPoint(xPos1, yPos1));
+		}
+
+		/// <summary>
+		/// Calculate the shortest map distance (number of moves) between two points in a two dimensional space (Chebyshev distance)
+		/// </summary>
+		/// <param name="pt1">The position of the start point</param>
+		/// <param name="pt2">The position of the destination point</param>
+		/// <returns>The shortest distance (number of moves in a two dimensional space)</returns>
+		public int GetDistance(GPoint pt1, GPoint pt2)
+		{
+			return GetDistance(new GSize(pt2 - pt1));
+		}
+
+		/// <summary>
+		/// Calculate the shortest map distance (number of moves) between two points in a two dimensional space (Chebyshev distance)
+		/// </summary>
+		/// <param name="width">The width (number of cells between two points in X coordinate)</param>
+		/// <param name="height">The width (number of cells between two points in Y coordinate)</param>
+		/// <returns>The shortest distance (number of moves in a two dimensional space)</returns>
+		public int GetDistance(int width, int height)
+		{
+			return GetDistance(new GSize(width, height));
+		}
+
+		/// <summary>
+		/// Calculate the shortest map distance (number of moves) between two points in a two dimensional space (Chebyshev distance)
+		/// </summary>
+		/// <param name="size">The size (number of cells between two points 2d space)</param>
+		/// <returns>The shortest distance (number of moves in a two dimensional space)</returns>
+		public int GetDistance(GSize size)
+		{
+			size = GSize.Abs(size);
+
+			if (size.Width >= MapManagement.XMedian)
+			{
+				size.Width = MapManagement.Size.Width - size.Width;
+			}
+
+			return Math.Max(size.Width, size.Height);
+		}
+
+		public int GetMoveOffset(GPoint offset)
+		{
+			int offsetIndex = -1;
+
+			GPoint[] moveDirections = this.oParent.MoveDirections;
+
+			for (int i = 0; i < moveDirections.Length; i++)
+			{
+				if (moveDirections[i] == offset)
+				{
+					offsetIndex = i;
+					break;
+				}
+			}
+
+			return offsetIndex;
 		}
 
 		private struct CityInfo

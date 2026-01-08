@@ -2,6 +2,8 @@
 {
 	public enum TerrainTypeEnum
 	{
+		Invalid = -1,
+
 		Desert = 0,
 		Plains = 1,
 		Grassland = 2,

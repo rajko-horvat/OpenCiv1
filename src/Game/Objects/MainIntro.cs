@@ -343,7 +343,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
 			// Instruction address 0x0000:0x045c, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(0, 0, 0);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, 0, 0, 0);
 
 			this.oParent.Var_aa_Rectangle.ScreenID = this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44));
 
@@ -617,7 +617,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
 			// Instruction address 0x0000:0x07b6, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(0, 0, 0);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, 0, 0, 0);
 
 			this.oParent.Var_aa_Rectangle.ScreenID = this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44));
 
@@ -1243,7 +1243,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x242), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x242))));
 
 			// Instruction address 0x0000:0x1067, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x242)) - 
 					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x23e)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x244)), 15);
@@ -1257,7 +1257,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
 			// Instruction address 0x0000:0x108e, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(0, 0, 0);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, 0, 0, 0);
 
 			this.oParent.Var_aa_Rectangle.ScreenID = this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x23a));
 
@@ -1481,13 +1481,13 @@ namespace OpenCiv1
 				160, 4, 15);
 
 			// Instruction address 0x0000:0x1428, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(280, 32, 15);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, 280, 32, 15);
 
 			// Instruction address 0x0000:0x1434, size: 5
 			this.oParent.CommonTools.F0_1182_0134_WaitTimer(80);
 
 			// Instruction address 0x0000:0x144b, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(280, 32, 0);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, 280, 32, 0);
 
 			// Instruction address 0x0000:0x1457, size: 5
 			this.oParent.CommonTools.F0_1182_0134_WaitTimer(80);
@@ -1764,10 +1764,10 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6));
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
 
-			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))];
+			GPoint direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))];
 
 			// Instruction address 0x0000:0x1809, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)) + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
@@ -1777,7 +1777,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x0000:0x1822, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
 
@@ -1818,7 +1818,7 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6));
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
 
-			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))];
+			direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))];
 
 			F2_0000_195a(
 				(direction.X * 16) + 200,

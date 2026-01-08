@@ -87,7 +87,7 @@ namespace OpenCiv1
 					}
 				}
 
-				GPoint direction = this.oParent.MoveOffsets[oRNG.Next(8) + 1];
+				GPoint direction = this.oParent.MoveDirections[oRNG.Next(8) + 1];
 
 				iXPos1 = Math.Min(Math.Max(iXPos1 + direction.X, 0), 18);
 				iYPos1 = Math.Min(Math.Max(iYPos1 + direction.Y, 0), 11);
@@ -333,7 +333,7 @@ namespace OpenCiv1
 							for (int i = 1; i < 9; i++)
 							{
 								int iPrefixTemp;
-								GPoint direction = this.oParent.MoveOffsets[i];
+								GPoint direction = this.oParent.MoveDirections[i];
 
 								if ((iYPos1 & 0x1) == 0)
 								{
@@ -399,7 +399,7 @@ namespace OpenCiv1
 								for (int i = 1; i < 9; i++)
 								{
 									int iPrefixTemp;
-									GPoint direction = this.oParent.MoveOffsets[i];
+									GPoint direction = this.oParent.MoveDirections[i];
 
 									if ((iYPos1 & 1) == 0)
 									{

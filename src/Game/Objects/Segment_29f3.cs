@@ -57,7 +57,7 @@ namespace OpenCiv1
 				(short)this.oParent.GameData.Players[playerID2].Units[unitID2].TypeID);
 
 			// Instruction address 0x29f3:0x0052, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oParent.GameData.Players[playerID2].Units[unitID2].Position.X,
 				this.oParent.GameData.Players[playerID2].Units[unitID2].Position.Y);
 
@@ -74,7 +74,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x29f3:0x0081, size: 5
-			this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
 				this.oParent.GameData.Players[playerID2].Units[unitID2].Position.X,
 				this.oParent.GameData.Players[playerID2].Units[unitID2].Position.Y);
 
@@ -209,7 +209,7 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x29f3:0x0186, size: 5
-			this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
 				this.oParent.GameData.Players[playerID2].Units[unitID2].Position.X,
 				this.oParent.GameData.Players[playerID2].Units[unitID2].Position.Y);
 
@@ -606,7 +606,7 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x29f3:0x052d, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(this.oParent.GameData.Players[playerID1].Units[unitID1].Position.X - this.oParent.Var_d4cc_MapViewX);
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(this.oParent.GameData.Players[playerID1].Units[unitID1].Position.X - this.oParent.Var_d4cc_MapViewX);
 
 			this.oCPU.CX.LowUInt8 = 0x4;
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
@@ -986,7 +986,7 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x29f3:0x0978, size: 5
-			this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
 				this.oParent.GameData.Players[playerID2].Units[unitID2].Position.X,
 				this.oParent.GameData.Players[playerID2].Units[unitID2].Position.Y);
 
@@ -1062,7 +1062,7 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14));
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
 
-			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14))];
+			GPoint direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14))];
 
 			this.oCPU.AX.UInt16 = 0x600;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID2);
@@ -1076,9 +1076,9 @@ namespace OpenCiv1
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), (short)(this.oParent.GameData.Players[playerID2].Units[unitID2].Position.Y + direction.Y));
 
 			// Instruction address 0x29f3:0x0a7f, size: 5
-			this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))));
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a), this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
@@ -1362,21 +1362,21 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
 
-			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))];
+			GPoint direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))];
 
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), (short)(x + direction.X));
 
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), (short)(y + direction.Y));
 
 			// Instruction address 0x29f3:0x0dcb, size: 5
-			this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))));
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x29f3:0x0ddc, size: 5
-			this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
 
@@ -1486,7 +1486,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0f02;
 
 			// Instruction address 0x29f3:0x0ee7, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
 
@@ -1513,17 +1513,17 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
 
-			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))];
+			GPoint direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))];
 
 			// Instruction address 0x29f3:0x0f26, size: 5
-			this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(xPos + direction.X);
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(xPos + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
 
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), (short)(yPos + direction.Y));
 
 			// Instruction address 0x29f3:0x0f3f, size: 5
-			this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
 

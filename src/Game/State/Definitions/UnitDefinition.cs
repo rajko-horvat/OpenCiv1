@@ -23,7 +23,7 @@ namespace OpenCiv1
 		{ }
 
 		public UnitDefinition(UnitTypeEnum unitType, string name, TechnologyEnum cancelTechnology, UnitMovementTypeEnum movementType,
-			short moveCount, short turnsOutside, short attackStrength, short defenceStrength,
+			short moveCount, short turnsOutside, short attackStrength, short defenseStrength,
 			short cost, short sightRange, short transportCapacity, UnitAIRoleEnum aiRole,
 			TechnologyEnum requiredTechnology)
 		{
@@ -34,7 +34,7 @@ namespace OpenCiv1
 			this.MoveCount = moveCount;
 			this.TurnsOutside = turnsOutside;
 			this.AttackStrength = attackStrength;
-			this.DefenseStrength = defenceStrength;
+			this.DefenseStrength = defenseStrength;
 			this.Cost = cost;
 			this.SightRange = sightRange;
 			this.TransportCapacity = transportCapacity;

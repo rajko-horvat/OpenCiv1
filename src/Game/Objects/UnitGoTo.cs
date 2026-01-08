@@ -4,1697 +4,1313 @@ using OpenCiv1.Graphics;
 
 namespace OpenCiv1
 {
+	/// <summary>
+	/// This class encapsulates old Goto Algorithm for archival purposes.
+	/// It is unreliable and produces array index out of bounds often.
+	/// </summary>
 	public class UnitGoTo
 	{
-		private OpenCiv1Game oParent;
-		private VCPU oCPU;
+		private OpenCiv1Game parent;
+		private GameData gameData;
 
-		private short Var_6590_XPos = -1;
-		private short Var_6592_YPos = -1;
+		private int Var_6590_DestinationX = -1;
+		private int Var_6592_DestinationY = -1;
+		public int[] Arr_6594_PathX = new int[256];
+		public int[] Arr_6694_PathY = new int[256];
+		public int Var_6794 = 0;
+		public int Var_6796_LastDestinationX = 0;
+		public int Var_6798_LastDestinationY = 0;
+		public int[,] Arr_b780 = new int[16, 16];
+		public int[,] Arr_d816 = new int[20, 13]; // Divided by 4
+		public int[,] Arr_db44_LandPath = new int[20, 13]; // Divided by 4
+		public int[,] Arr_7f38_WaterPath = new int[20, 13]; // Divided by 4
 
 		public UnitGoTo(OpenCiv1Game parent)
 		{
-			this.oParent = parent;
-			this.oCPU = parent.CPU;
+			this.parent = parent;
+			this.gameData = parent.GameData;
+
+			// Ensure that all arrays containt zero value initially
+
+			for (int i = 0; i < this.Arr_6594_PathX.Length; i++)
+			{
+				this.Arr_6594_PathX[i] = 0;
+			}
+
+			for (int i = 0; i < this.Arr_6694_PathY.Length; i++)
+			{
+				this.Arr_6694_PathY[i] = 0;
+			}
+
+			for (int i = 0; i < this.Arr_db44_LandPath.GetLength(0); i++)
+			{
+				for (int j = 0; j < this.Arr_db44_LandPath.GetLength(1); j++)
+				{
+					this.Arr_db44_LandPath[i, j] = 0;
+				}
+			}
+
+			for (int i = 0; i < this.Arr_7f38_WaterPath.GetLength(0); i++)
+			{
+				for (int j = 0; j < this.Arr_7f38_WaterPath.GetLength(1); j++)
+				{
+					this.Arr_7f38_WaterPath[i, j] = 0;
+				}
+			}
+
+			for (int i = 0; i < this.Arr_b780.GetLength(0); i++)
+			{
+				for (int j = 0; j < this.Arr_b780.GetLength(1); j++)
+				{
+					this.Arr_b780[i, j] = 0;
+				}
+			}
+
+			for (int i = 0; i < this.Arr_d816.GetLength(0); i++)
+			{
+				for (int j = 0; j < this.Arr_d816.GetLength(1); j++)
+				{
+					this.Arr_d816[i, j] = 0;
+				}
+			}
 		}
 
 		/// <summary>
-		/// ?
+		/// Gets the next position that this unit should move to
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
 		/// <returns></returns>
-		public ushort F0_2e31_000e_GetNextMove(int playerID, int unitID)
+		public int GetNextGoToMove(int playerID, int unitID)
 		{
-			this.oParent.GoToLog.EnterBlock($"F0_2e31_000e({playerID}, {unitID})");
-			OpenCiv1Game.LogUnit(this.oParent, this.oParent.GoToLog, playerID, unitID, this.oParent.GameData.HumanPlayerID);
+			Unit unit;
+
+			if (playerID > 0 && (this.parent.GameData.ActiveCivilizations & (1 << playerID)) != 0 && unitID >= 0 && unitID < 128 &&
+				(unit = this.parent.GameData.Players[playerID].Units[unitID]).TypeID != -1)
+			{
+				unit.PlayerID = (short)playerID;
+
+				return GetNextGoToMove(unit, true);
+			}
+
+			return -1;
+		}
+
+		/// <summary>
+		/// Gets the next position that this unit should move to
+		/// </summary>
+		public int GetNextGoToMove(Unit unit, bool testVisibility)
+		{
+			int direction = -1;
+
+			unit.GoToNextDirection = -1;
+
+			if (this.parent.MapManagement.F0_2aea_1326_ValidateMapCoordinates(unit.GoToDestination) && unit.Position != unit.GoToDestination)
+			{
+				if (unit.GoToPath.Count == 0)
+				{
+					this.FindGoToPath(unit, testVisibility);
+				}
+
+				if (unit.GoToPath.Count == 0)
+				{
+					// We couldn't find a path for a destination
+					unit.GoToDestination = OpenCiv1Game.InvalidPosition;
+					unit.GoToPath.Clear();
+					unit.GoToNextDirection = -1;
+				}
+				else
+				{
+					GPoint newPos = unit.GoToPath.Pop();
+
+					direction = this.parent.MapManagement.GetMoveOffset(newPos - unit.Position);
+					unit.GoToNextDirection = (short)direction;
+				}
+			}
+
+			return direction;
+		}
+
+		/// <summary>
+		/// Validates if the given destination coordinates are reachable for a given unit movement type
+		/// </summary>
+		/// <param name="src"></param>
+		/// <param name="dest"></param>
+		/// <param name="movementType"></param>
+		/// <param name="maxMoves"></param>
+		/// <returns></returns>
+		public int GetGoToDistance(int srcX, int srcY, int dstX, int dstY, UnitMovementTypeEnum movementType, int maxMoves)
+		{
+			return GetGoToDistance(new GPoint(srcX, srcY), new GPoint(dstX, dstY), movementType, maxMoves);
+		}
+
+		/// <summary>
+		/// Validates if the given destination coordinates are reachable for a given unit movement type
+		/// </summary>
+		/// <param name="src"></param>
+		/// <param name="dest"></param>
+		/// <param name="movementType"></param>
+		/// <param name="maxMoves"></param>
+		/// <returns></returns>
+		public int GetGoToDistance(GPoint src, GPoint dest, UnitMovementTypeEnum movementType, int maxMoves)
+		{
+			Unit unit;
+
+			switch (movementType)
+			{
+				case UnitMovementTypeEnum.Land:
+					unit = new Unit();
+					unit.TypeID = (int)UnitTypeEnum.Militia;
+					unit.Position = src;
+					unit.GoToDestination = dest;
+					break;
+
+				case UnitMovementTypeEnum.Water:
+					unit = new Unit();
+					unit.TypeID = (int)UnitTypeEnum.Trireme;
+					unit.Position = src;
+					unit.GoToDestination = dest;
+					break;
+
+				case UnitMovementTypeEnum.Air:
+					unit = new Unit();
+					unit.TypeID = (int)UnitTypeEnum.Fighter;
+					unit.Position = src;
+					unit.GoToDestination = dest;
+					break;
+
+				default:
+					return -1;
+			}
+
+			FindGoToPath(unit, false);
+
+			int distance = -1;
+
+			if (unit.GoToDestination != OpenCiv1Game.InvalidPosition && unit.GoToPath.Count > 0 && unit.GoToPath.Count < maxMoves)
+			{
+				distance = unit.GoToPath.Count;
+			}
+
+			return distance;
+		}
+
+		/// <summary>
+		/// Validates if the given destination coordinates are reachable for a given unit movement type
+		/// </summary>
+		/// <param name="src"></param>
+		/// <param name="dest"></param>
+		/// <param name="movementType"></param>
+		/// <param name="maxMoves"></param>
+		/// <returns></returns>
+		public bool IsValidGoToPath(GPoint src, GPoint dest, UnitMovementTypeEnum movementType, int maxMoves)
+		{
+			Unit unit;
+
+			switch (movementType)
+			{
+				case UnitMovementTypeEnum.Land:
+					unit = new Unit();
+					unit.TypeID = (int)UnitTypeEnum.Militia;
+					unit.Position = src;
+					unit.GoToDestination = dest;
+					break;
+
+				case UnitMovementTypeEnum.Water:
+					unit = new Unit();
+					unit.TypeID = (int)UnitTypeEnum.Trireme;
+					unit.Position = src;
+					unit.GoToDestination = dest;
+					break;
+
+				case UnitMovementTypeEnum.Air:
+					unit = new Unit();
+					unit.TypeID = (int)UnitTypeEnum.Fighter;
+					unit.Position = src;
+					unit.GoToDestination = dest;
+					break;
+
+				default:
+					return false;
+			}
+
+			FindGoToPath(unit, false);
+
+			return unit.GoToDestination != OpenCiv1Game.InvalidPosition && unit.GoToPath.Count > 0 && unit.GoToPath.Count < maxMoves;
+		}
+
+		#region AStar (A*) Path finding algorithm
+		/// <summary>
+		/// A Function to find the shortest path between tho points according to AStar (A*) Algorithm
+		/// </summary>
+		/// <param name="unit"></param>
+		/// <param name="testVisibility">ID of the unit</param>
+		private void FindGoToPath(Unit unit, bool testVisibility)
+		{
+			if (unit.GoToDestination != OpenCiv1Game.InvalidPosition)
+			{
+				bool destinationReached = false; // remains false if we can't find a path to a destination
+				TerrainMapGroupTypeEnum group1; // The unit can move on this terrain type
+				TerrainMapGroupTypeEnum group2; // The unit can move on this terrain type
+				UnitMovementTypeEnum movementType = this.gameData.Units[unit.TypeID].MovementType;
+				MapManagement map = this.parent.MapManagement;
+				
+				unit.GoToPath.Clear();
+
+				switch (movementType)
+				{
+					case UnitMovementTypeEnum.Land:
+						group1 = TerrainMapGroupTypeEnum.Land;
+						group2 = TerrainMapGroupTypeEnum.Land;
+						break;
+
+					case UnitMovementTypeEnum.Water:
+						group1 = TerrainMapGroupTypeEnum.Water;
+						group2 = TerrainMapGroupTypeEnum.Water;
+						break;
+
+					case UnitMovementTypeEnum.Air:
+						group1 = TerrainMapGroupTypeEnum.Water;
+						group2 = TerrainMapGroupTypeEnum.Land;
+						break;
+
+					default:
+						throw new Exception("Unknown Unit Movement Type"); // should never happen, but we want to make compiler happy
+				}
+
+				// Rules to satisfy:
+				// Source or destination cell position is out of range
+				// Destination is the same as the source position
+				// Destination has to be in the same movement group that the unit is
+				// For the unit that is moving on Land or Water we have to be on the same group
+				// Destination cell has to be visible to the Player
+				if (!map.F0_2aea_1326_ValidateMapCoordinates(unit.Position) || !map.F0_2aea_1326_ValidateMapCoordinates(unit.GoToDestination) ||
+					unit.Position == unit.GoToDestination ||
+					(map.GetGroupType(unit.GoToDestination) != group1 && map.GetGroupType(unit.GoToDestination) != group2) ||
+					(movementType != UnitMovementTypeEnum.Air && map.F0_2aea_1942_GetGroupID(unit.Position.X, unit.Position.Y) != map.F0_2aea_1942_GetGroupID(unit.GoToDestination.X, unit.GoToDestination.Y)) ||
+					(testVisibility && (this.parent.GameData.MapVisibility[unit.GoToDestination.X, unit.GoToDestination.Y] & (1 << unit.PlayerID)) == 0))
+				{
+					return;
+				}
+
+				AStarCell[,] cells = new AStarCell[80, 50];
+
+				for (int i = 0; i < cells.GetLength(0); i++)
+				{
+					for (int j = 0; j < cells.GetLength(1); j++)
+					{
+						cells[i, j] = new AStarCell(i, j);
+					}
+				}
+
+				// Create a sorted open list in descending order (sorted from higher to lower value)
+				// We compare this list by cell's f value
+				List<AStarCell> openCells = new List<AStarCell>();
+
+				// Initialize start cell
+				AStarCell cell = cells[unit.Position.X, unit.Position.Y];
+				cell.GCost = 0.0;
+				cell.HCost = 0.0;
+				cell.FCost = 0.0;
+				cell.ParentPos = cell.Position;
+
+				// Put the starting cell on the open list
+				openCells.Add(cell);
+
+				while (openCells.Count > 0)
+				{
+					// Our most favorable current cell is the cell with lowest FCost value
+					cell = openCells[openCells.Count - 1];
+					GPoint pos = cell.Position;
+
+					openCells.RemoveAt(openCells.Count - 1);
+
+					// Mark this cell as closed
+					cell.IsCellClosed = true;
+
+					// Generate all 8 successors of this cell
+					for (int i = -1; i <= 1 && !destinationReached; i++)
+					{
+						for (int j = -1; j <= 1 && !destinationReached; j++)
+						{
+							if (i == 0 && j == 0)
+								continue;
+
+							GPoint newPos = pos.Offset(j, i);
+
+							// If new cell successor position is a valid position
+							if (map.F0_2aea_1326_ValidateMapCoordinates(newPos))
+							{
+								AStarCell newCell = cells[newPos.X, newPos.Y];
+
+								if (map.GetGroupType(newPos.X, newPos.Y) == group1 || map.GetGroupType(newPos.X, newPos.Y) == group2)
+								{
+									// If the destination cell is the same as the current successor cell
+									// we have reached our destination
+									if (newPos == unit.GoToDestination)
+									{
+										newCell.GCost = cell.GCost + VisibleMovementCost(unit.PlayerID, newPos.X, newPos.Y);
+										newCell.HCost = 0.0;
+										newCell.FCost = newCell.GCost + newCell.HCost;
+										newCell.ParentPos = pos;
+
+										destinationReached = true;
+										continue;
+									}
+
+									// Ignore the successor cell if it is closed or blocked
+									if (!newCell.IsCellClosed &&
+										(!testVisibility || (this.gameData.MapVisibility[newPos.X, newPos.Y] & (1 << unit.PlayerID)) != 0))
+									{
+										double newGCost = cell.GCost + VisibleMovementCost(unit.PlayerID, newPos.X, newPos.Y);
+										double newHCost = map.GetDistance(newPos, unit.GoToDestination);
+										double newFCost = newGCost + newHCost;
+
+										// Make current cell the parent of the new successor cell
+										if (newCell.FCost == double.MaxValue)
+										{
+											// We have found a new path
+											// Update the details of the new successor cell and add it to the open cell list in descending order
+											newCell.GCost = newGCost;
+											newCell.HCost = newHCost;
+											newCell.FCost = newFCost;
+											newCell.ParentPos = pos;
+
+											bool bAdded = false;
+
+											for (int k = 0; k < openCells.Count; k++)
+											{
+												if (openCells[k].FCost.CompareTo(newCell.FCost) <= 0)
+												{
+													openCells.Insert(k, newCell);
+													bAdded = true;
+													break;
+												}
+											}
+
+											if (!bAdded)
+											{
+												openCells.Add(newCell);
+											}
+										}
+										else if (newCell.FCost > newFCost)
+										{
+											// We have found a more favorable path
+											// First, remove existing cell from open cell list to avoid duplicates
+											for (int k = 0; k < openCells.Count; k++)
+											{
+												if (openCells[k].Position == newPos)
+												{
+													openCells.RemoveAt(k);
+													break;
+												}
+											}
+
+											// Update the details of the new successor cell and add it to the open cell list in descending order
+											newCell.GCost = newGCost;
+											newCell.HCost = newHCost;
+											newCell.FCost = newFCost;
+											newCell.ParentPos = pos;
+
+											bool bAdded = false;
+
+											for (int k = 0; k < openCells.Count; k++)
+											{
+												if (openCells[k].FCost.CompareTo(newCell.FCost) <= 0)
+												{
+													openCells.Insert(k, newCell);
+													bAdded = true;
+													break;
+												}
+											}
+
+											if (!bAdded)
+											{
+												openCells.Add(newCell);
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+				// When the destination cell is not found and the open list is empty
+				// We can safely conclude that we failed to reach the destination cell.
+				// This may happen when there is no way to destination cell
+				if (!destinationReached)
+				{
+					unit.GoToDestination = OpenCiv1Game.InvalidPosition;
+				}
+				else
+				{
+					// We have sucessfuly found a path from Source to Destination position
+					GPoint pos = unit.GoToDestination;
+
+					// Exclude out source position
+					while ((cell = cells[pos.X, pos.Y]).ParentPos != pos)
+					{
+						unit.GoToPath.Push(pos); // Store in reverse order
+						pos = cell.ParentPos;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Movement cost based on currently visible terrain and improvements
+		/// </summary>
+		private double VisibleMovementCost(int playerID, int x, int y)
+		{
+			MapManagement map = this.parent.MapManagement;
+			TerrainDefinition terrain = this.gameData.Terrains[(int)map.F0_2aea_134a_GetTerrainType(x, y)];
+			TerrainImprovementFlagsEnum improvements = map.F0_2aea_1585_GetVisibleTerrainImprovements(x, y);
+			double dValue = terrain.MovementCost;
+
+			if (improvements.HasFlag(TerrainImprovementFlagsEnum.Road)) // road
+			{
+				dValue = 1.0 / 3.0;
+			}
+
+			if (improvements.HasFlag(TerrainImprovementFlagsEnum.RailRoad)) // railroad
+			{
+				dValue = 0.0;
+			}
+
+			// Increase movement cost for nearby enemy units and cities
+
+			if (this.parent.Segment_1866.IsEnemyCityNear(playerID, x, y, 1))
+			{
+				// this cell is blocked
+				dValue = double.MaxValue;
+			}
+			else
+			{
+				if (this.parent.Segment_1866.IsEnemyCityNear(playerID, x, y, 2))
+				{
+					// this cell has enemy city near, increase cost to avoid it if possible
+					dValue += 1.0;
+				}
+
+				if (this.parent.Segment_1866.IsEnemyUnitNear(playerID, x, y, 2))
+				{
+					// this cell has enemy unit near, increase cost to avoid it if possible
+					dValue += 1.0;
+				}
+			}
+
+			return dValue;
+		}
+
+		private class AStarCell
+		{
+			public GPoint Position = new GPoint(-1);
+			public GPoint ParentPos = new GPoint(-1); // Position of our parent cell
+			public double GCost = double.MaxValue;
+			public double HCost = double.MaxValue;
+			public double FCost = double.MaxValue; // FCost = GCost + HCost
+			public bool IsCellClosed = false;
+
+			public AStarCell(int x, int y)
+			{
+				this.Position = new GPoint(x, y);
+			}
+		}
+		#endregion
+
+		#region Old unfixable GoTo algorithm
+		/// <summary>
+		/// Checks if there is path from start to destination for a given unit
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="x1"></param>
+		/// <param name="y1"></param>
+		/// <param name="waterUnit"></param>
+		/// <param name="param6"></param>
+		/// <returns></returns>
+		public int F0_2e31_111c_CheckUnitPath(int x, int y, int x1, int y1, bool waterUnit, short param6)
+		{
+			//this.oParent.GoToLog.EnterBlock($"F0_2e31_111c({xPos}, {yPos}, {xPos1}, {yPos1}, {flag}, {param6})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x2a);
+			int result = -1;
 
-			GPoint move = this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination - this.oParent.GameData.Players[playerID].Units[unitID].Position;
+			if (Math.Abs(x - x1) <= 7 && Math.Abs(y - y1) <= 7)
+			{
+				// Temporary unit...
+				Unit unit = this.parent.GameData.Players[0].Units[127];
+
+				unit.TypeID = (short)(waterUnit ? UnitTypeEnum.Trireme : UnitTypeEnum.Militia);
+				unit.Position.X = x;
+				unit.Position.Y = y;
+				unit.GoToDestination.X = x1;
+				unit.GoToDestination.Y = y1;
+
+				this.Var_6590_DestinationX = (short)x1;
+				this.Var_6592_DestinationY = (short)y1;
+
+				// Instruction address 0x2e31:0x117c, size: 3
+				result = F0_2e31_0c1d_FindShortestPath(unit, param6);
+
+				unit.TypeID = -1;
+				unit.Position.X = -1;
+				unit.Position.Y = -1;
+				unit.GoToDestination.X = -1;
+				unit.GoToDestination.Y = -1;
+
+				if (result != -1)
+				{
+					result = this.Var_6794;
+				}
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Gets next move unit should take on it's path
+		/// </summary>
+		/// <param name="playerID"></param>
+		/// <param name="unitID"></param>
+		/// <returns></returns>
+		public int F0_2e31_000e_GetNextMove(int playerID, int unitID)
+		{
+			//this.oParent.GoToLog.EnterBlock($"F0_2e31_000e({playerID}, {unitID})");
+			//OpenCiv1Game.LogUnit(this.oParent, this.oParent.GoToLog, playerID, unitID, this.oParent.GameData.HumanPlayerID);
+
+			// function body
+			Unit unit;
+
+			if (playerID < 0 || playerID > 7 || unitID < 0 || unitID > 127 ||
+				(unit = this.parent.GameData.Players[playerID].Units[unitID]).TypeID == -1 || unit.GoToDestination.X == -1)
+			{
+				return -1;
+			}
+
+			GPoint move = unit.GoToDestination - unit.Position;
 			GPoint absMove = GPoint.Abs(move);
 
-			if (playerID == this.oParent.GameData.HumanPlayerID && absMove.X < 2 && absMove.Y < 2)
+			if (playerID == this.parent.GameData.HumanPlayerID && absMove.X < 2 && absMove.Y < 2)
 			{
 				move.X = (absMove.X >= 40) ? -Math.Sign(move.X) : Math.Sign(move.X);
 				move.Y = Math.Sign(move.Y);
 
-				this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination = new GPoint(-1);
-
-				this.oCPU.AX.UInt16 = 0;
+				unit.GoToDestination = new GPoint(-1);
 
 				for (int i = 1; i < 9; i++)
 				{
-					if (this.oParent.MoveOffsets[i] == move)
+					if (this.parent.MoveDirections[i] == move)
 					{
-						this.oCPU.AX.UInt16 = (ushort)i;
-						break;
+						return i;
 					}
 				}
+
+				return -1;
+			}
+
+			if (this.parent.GameData.Units[unit.TypeID].MovementType == UnitMovementTypeEnum.Air)
+			{
+				this.Var_6590_DestinationX = unit.GoToDestination.X;
+				this.Var_6592_DestinationY = unit.GoToDestination.Y;
 			}
 			else
 			{
-				// !!! Illegal memory access
-				if (this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Air)
-				{
-					this.Var_6590_XPos = (short)this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X;
-					this.Var_6592_YPos = (short)this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.Y;
-
-					goto L0208;
-				}
-
-				this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), 0x0);
+				bool local_e = false;
 
 				if (absMove.Y > 6 || (absMove.X > 6 && absMove.X < 74))
 				{
-					this.Var_6590_XPos = (short)this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X;
-					this.Var_6592_YPos = (short)this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.Y;
+					this.Var_6590_DestinationX = unit.GoToDestination.X;
+					this.Var_6592_DestinationY = unit.GoToDestination.Y;
 
 					// Instruction address 0x2e31:0x01bf, size: 3
-					F0_2e31_0c1d(playerID, unitID, 999);
+					int moveDirection = F0_2e31_0c1d_FindShortestPath(unit, 999);
 
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14), this.oCPU.AX.UInt16);
-					this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
-					if (this.oCPU.Flags.NE)
+					if (moveDirection != -1)
 					{
-						this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14));
-
-						goto L05e0;
+						return moveDirection;
 					}
-				
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), 0x1);
+
+					local_e = true;
 				}
 
 				// Instruction address 0x2e31:0x01df, size: 3
-				F0_2e31_05e6(playerID, unitID);
-
-				this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-				if (this.oCPU.Flags.NE) goto L01ef;
-
-				this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)), 0x0);
-				if (this.oCPU.Flags.NE) goto L0208;
-
-			L01ef:
-				// Instruction address 0x2e31:0x01fa, size: 3
-				F0_2e31_0c1d(playerID, unitID, 999);
-
-				this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14), this.oCPU.AX.UInt16);
-				this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
-				if (this.oCPU.Flags.NE)
+				if (F0_2e31_05e6(unit) || !local_e)
 				{
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14));
+					// Instruction address 0x2e31:0x01fa, size: 3
+					int moveDirection = F0_2e31_0c1d_FindShortestPath(unit, 999);
 
-					goto L05e0;
-				}
-
-			L0208:
-				move.X = this.Var_6590_XPos - this.oParent.GameData.Players[playerID].Units[unitID].Position.X;
-				move.Y = this.Var_6592_YPos - this.oParent.GameData.Players[playerID].Units[unitID].Position.Y;
-
-				absMove = GPoint.Abs(move);
-
-				if (absMove.X > absMove.Y)
-				{
-					// Instruction address 0x2e31:0x0271, size: 5
-					this.oParent.CAPI.abs((short)move.X);
-				}
-				else
-				{
-					// Instruction address 0x2e31:0x0271, size: 5
-					this.oParent.CAPI.abs((short)move.Y);
-				}
-
-				this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, (ushort)((short)absMove.X));
-				this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, (ushort)((short)absMove.Y));
-				this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), this.oCPU.AX.UInt16);
-
-				if (move.X == 0 && move.Y == 0)
-				{
-					this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X = -1;
-					this.oParent.GameData.Players[playerID].Units[unitID].GoToNextDirection = -1;
-					this.oParent.GameData.Players[playerID].Units[unitID].RemainingMoves = 0;
-
-					this.oCPU.AX.UInt16 = 0xffff;
-				}
-				else
-				{
-					// Instruction address 0x2e31:0x02c8, size: 5
-					this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
-						this.oParent.GameData.Players[playerID].Units[unitID].Position.X, this.oParent.GameData.Players[playerID].Units[unitID].Position.Y);
-
-					this.oCPU.AX.UInt16 = this.oCPU.AND_UInt16(this.oCPU.AX.UInt16, 0x8);
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), this.oCPU.AX.UInt16);
-
-					// Instruction address 0x2e31:0x02e5, size: 5
-					this.oParent.Segment_1866.F0_1866_1725(playerID,
-						this.oParent.GameData.Players[playerID].Units[unitID].Position.X, this.oParent.GameData.Players[playerID].Units[unitID].Position.Y);
-
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c), this.oCPU.AX.UInt16);
-
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24), 0x270f);
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14), 0x0);
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), 0x1);
-
-					goto L0324;
-
-				L02f7:
-					// Instruction address 0x2e31:0x02fa, size: 5
-					this.oParent.CAPI.abs(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
-
-				L02fa:
-					this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, (ushort)((short)absMove.X));
-					this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, (ushort)((short)absMove.Y));
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.AX.UInt16);
-
-					if (playerID != this.oParent.GameData.HumanPlayerID)
-						goto L03b1;
-
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)), this.oCPU.AX.UInt16);
-					if (this.oCPU.Flags.G) goto L0321;
-					goto L03b1;
-
-				L0321:
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18))));
-
-				L0324:
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18)), 0x9);
-					if (this.oCPU.Flags.L) goto L032d;
-					goto L0571;
-
-				L032d:
-					GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18))];
-
-					this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), (short)(this.oParent.GameData.Players[playerID].Units[unitID].Position.X + direction.X));
-					this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), (short)(this.oParent.GameData.Players[playerID].Units[unitID].Position.Y + direction.Y));
-					this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), (short)(move.X - direction.X));
-					this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), (short)(move.Y - direction.Y));
-
-					// Instruction address 0x2e31:0x0371, size: 5
-					this.oParent.CAPI.abs(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
-
-					absMove.Y = (short)this.oCPU.AX.UInt16;
-
-					// Instruction address 0x2e31:0x037f, size: 5
-					this.oParent.CAPI.abs(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)));
-
-					absMove.X = (short)this.oCPU.AX.UInt16;
-
-					// Instruction address 0x2e31:0x038d, size: 5
-					this.oParent.CAPI.abs(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
-
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2a), this.oCPU.AX.UInt16);
-
-					// Instruction address 0x2e31:0x039b, size: 5
-					this.oParent.CAPI.abs(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)));
-
-					this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2a)));
-					if (this.oCPU.Flags.G) goto L03ab;
-					goto L02f7;
-
-				L03ab:
-					// Instruction address 0x2e31:0x02fa, size: 5
-					this.oParent.CAPI.abs(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)));
-					goto L02fa;
-
-				L03b1:
-					// Instruction address 0x2e31:0x03b7, size: 5
-					this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)),
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
-
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a), this.oCPU.AX.UInt16);
-
-					// Instruction address 0x2e31:0x03c8, size: 5
-					this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)),
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12))));
-
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x22), this.oCPU.AX.UInt16);
-					this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
-					if (this.oCPU.Flags.E)
-						goto L03e0;
-
-					this.oCPU.AX.Int16 = (short)playerID;
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x22)), this.oCPU.AX.UInt16);
-					if (this.oCPU.Flags.NE)
-						goto L0455;
-
-				L03e0:
-					// !!! Illegal memory access
-					if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID == -1 ||
-						this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
+					if (moveDirection != -1)
 					{
-						this.oCPU.AX.UInt16 = 0;
-					}
-					else
-					{
-						this.oCPU.AX.UInt16 = 0x1;
-					}
-
-					if ((short)this.oCPU.AX.UInt16 != (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a)) != 0xa ? 0 : 1))
-						goto L0436;
-
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c)), 0x0);
-					if (this.oCPU.Flags.E)
-						goto L0480;
-
-					// Instruction address 0x2e31:0x042a, size: 5
-					this.oParent.Segment_1866.F0_1866_1725(playerID,
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)),
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
-
-					this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-					if (this.oCPU.Flags.E) goto L0480;
-
-				L0436:
-					// !!! Illegal memory access
-					if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID != -1 &&
-						this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Air)
-						goto L0480;
-
-				L0455:
-					// Instruction address 0x2e31:0x045b, size: 5
-					this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)),
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
-
-					this.oCPU.TEST_UInt8(this.oCPU.AX.LowUInt8, 0x1);
-					if (this.oCPU.Flags.NE) goto L046a;
-					goto L0321;
-
-				L046a:
-					// Instruction address 0x2e31:0x0470, size: 5
-					this.oParent.MapManagement.F0_2aea_1369_GetCityOwner(
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)),
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
-
-					this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, (ushort)((short)playerID));
-					if (this.oCPU.Flags.E) goto L0480;
-					goto L0321;
-
-				L0480:
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a)), 0xa);
-					if (this.oCPU.Flags.NE) goto L049c;
-
-					// Instruction address 0x2e31:0x048c, size: 5
-					this.oParent.MapManagement.F0_2aea_195d_GetMapGroupSize(
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)),
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
-
-					this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x5);
-					if (this.oCPU.Flags.GE) goto L049c;
-					goto L0321;
-
-				L049c:
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)), 0x0);
-					if (this.oCPU.Flags.E) goto L04b4;
-
-					// Instruction address 0x2e31:0x04a8, size: 5
-					this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)),
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
-
-					this.oCPU.TEST_UInt8(this.oCPU.AX.LowUInt8, 0x8);
-					if (this.oCPU.Flags.NE) goto L04eb;
-
-				L04b4:
-					// !!! Illegal memory access
-					if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID == -1 ||
-						this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MoveCount <= 1)
-						goto L04e3;
-
-					this.oCPU.AX.LowUInt8 = 0x3;
-					this.oCPU.IMUL_UInt8(this.oCPU.AX, 
-						(byte)this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a))].MovementCost);
-
-					goto L04e6;
-
-				L04e3:
-					this.oCPU.AX.UInt16 = 0x3;
-
-				L04e6:
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8), this.oCPU.AX.UInt16);
-					goto L04f0;
-
-				L04eb:
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8), 0x1);
-
-				L04f0:
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8),
-						this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
-							(ushort)((short)((this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)) * 4) +
-								Math.Abs(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))) +
-								Math.Abs(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)))))));
-
-					this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2a),
-						this.oParent.GameData.Players[playerID].Units[unitID].GoToNextDirection);
-
-					if (this.oParent.GameData.Players[playerID].Units[unitID].GoToNextDirection != -1)
-					{
-						this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6),
-							(short)Math.Abs(this.oParent.GameData.Players[playerID].Units[unitID].GoToNextDirection - this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18))));
-
-						if (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)) > 4)
-						{
-							this.oCPU.AX.UInt16 = 0x8;
-							this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
-							this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.AX.UInt16);
-						}
-
-						this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6));
-						this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.AX.UInt16);
-						this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8),
-							this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), this.oCPU.AX.UInt16));
-					}
-
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24));
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), this.oCPU.AX.UInt16);
-					if (this.oCPU.Flags.L) goto L0562;
-					goto L0321;
-
-				L0562:
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18));
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14), this.oCPU.AX.UInt16);
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24), this.oCPU.AX.UInt16);
-					goto L0321;
-
-				L0571:
-					if (this.oParent.GameData.Players[playerID].Units[unitID].GoToNextDirection != -1)
-					{
-						if ((this.oParent.GameData.Players[playerID].Units[unitID].GoToNextDirection ^ 0x4) ==
-							this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)))
-						{
-							this.oParent.GameData.Players[playerID].Units[unitID].RemainingMoves = 0;
-
-							this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14), 0);
-						}
-					}
-
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)), 0x0);
-					if (this.oCPU.Flags.E)
-					{
-						this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X = -1;
-						this.oParent.GameData.Players[playerID].Units[unitID].GoToNextDirection = -1;
-
-						this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14), 0xffff);
-
-						this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14));
-					}
-					else
-					{
-						this.oParent.GameData.Players[playerID].Units[unitID].GoToNextDirection = this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14));
-
-						this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14));
+						return moveDirection;
 					}
 				}
 			}
 
-		L05e0:
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
-			// Far return
-			this.oParent.GoToLog.ExitBlock("F0_2e31_000e", this.oCPU.AX.UInt16);
+			move.X = this.Var_6590_DestinationX - unit.Position.X;
+			move.Y = this.Var_6592_DestinationY - unit.Position.Y;
+			absMove = GPoint.Abs(move);
+			int vector = (absMove.X > absMove.Y) ? Math.Abs(move.X) : Math.Abs(move.Y) + absMove.X + absMove.Y;
 
-			return this.oCPU.AX.UInt16;
+			if (move.X == 0 && move.Y == 0)
+			{
+				unit.GoToDestination.X = -1;
+				unit.GoToNextDirection = -1;
+				unit.RemainingMoves = 0;
+
+				return -1;
+			}
+			else
+			{
+				// Instruction address 0x2e31:0x02c8, size: 5
+				TerrainImprovementFlagsEnum terrainImprovements = this.parent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(unit.Position.X, unit.Position.Y);
+
+				// Instruction address 0x2e31:0x02e5, size: 5
+				bool unitIsNear = this.parent.Segment_1866.F0_1866_1725_IsUnitNear(playerID, unit.Position.X, unit.Position.Y);
+				int newDistance = 9999;
+				int newMoveDirection = 0;
+
+				for (int i = 1; i < 9; i++)
+				{
+					GPoint direction = this.parent.MoveDirections[i];
+					int unitNewX = unit.Position.X + direction.X;
+					int unitNewY = unit.Position.Y + direction.Y;
+					absMove.X = Math.Abs(move.X - direction.X);
+					absMove.Y = Math.Abs(move.Y - direction.Y);
+					int newVector = ((absMove.X <= absMove.Y) ? absMove.Y : absMove.X) + absMove.X + absMove.Y;
+
+					if (playerID != this.parent.GameData.HumanPlayerID || newVector <= vector)
+					{
+						// Instruction address 0x2e31:0x03b7, size: 5
+						TerrainTypeEnum newTerrainType = this.parent.MapManagement.F0_2aea_134a_GetTerrainType(unitNewX, unitNewY);
+
+						// Instruction address 0x2e31:0x03c8, size: 5
+						int cellOwner = this.parent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(unitNewX, unitNewY);
+
+						if (((cellOwner == -1 || cellOwner == playerID) &&
+							((((this.parent.GameData.Units[unit.TypeID].MovementType == UnitMovementTypeEnum.Water) ? 1 : 0) == (newTerrainType == TerrainTypeEnum.Water ? 1 : 0) &&
+								(!unitIsNear || !this.parent.Segment_1866.F0_1866_1725_IsUnitNear(playerID, unitNewX, unitNewY))) ||
+								this.parent.GameData.Units[unit.TypeID].MovementType == UnitMovementTypeEnum.Air)) ||
+							(this.parent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(unitNewX, unitNewY).HasFlag(TerrainImprovementFlagsEnum.City) &&
+								this.parent.MapManagement.F0_2aea_1369_GetCityOwner(unitNewX, unitNewY) == playerID))
+						{
+							if (newTerrainType != TerrainTypeEnum.Water || this.parent.MapManagement.F0_2aea_195d_GetMapGroupSize(unitNewX, unitNewY) >= 5)
+							{
+								int movementCost;
+
+								if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.Road) &&
+									this.parent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(unitNewX, unitNewY).HasFlag(TerrainImprovementFlagsEnum.Road))
+								{
+									movementCost = 1;
+								}
+								else
+								{
+									movementCost = ((this.parent.GameData.Units[unit.TypeID].MoveCount > 1) ? (this.parent.GameData.Terrains[(int)newTerrainType].MovementCost * 3) : 3);
+								}
+
+								movementCost += (newVector * 4) + absMove.X + absMove.Y;
+
+								if (unit.GoToNextDirection != -1)
+								{
+									int movement = Math.Abs(unit.GoToNextDirection - i);
+
+									if (movement > 4)
+									{
+										movement = 8 - movement;
+									}
+
+									movementCost += movement * movement;
+								}
+
+								if (movementCost < newDistance)
+								{
+									newMoveDirection = i;
+									newDistance = movementCost;
+								}
+							}
+						}
+					}
+				}
+
+				if (unit.GoToNextDirection != -1)
+				{
+					if ((unit.GoToNextDirection ^ 0x4) == newMoveDirection)
+					{
+						unit.RemainingMoves = 0;
+
+						newMoveDirection = 0;
+					}
+				}
+
+				if (newMoveDirection == 0)
+				{
+					unit.GoToDestination.X = -1;
+					unit.GoToNextDirection = -1;
+
+					return -1;
+				}
+				else
+				{
+					unit.GoToNextDirection = (short)newMoveDirection;
+
+					return newMoveDirection;
+				}
+			}
 		}
 
 		/// <summary>
-		/// ?
+		/// Checks if there is a more favorable path available
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
 		/// <returns></returns>
-		public ushort F0_2e31_05e6(int playerID, int unitID)
+		private bool F0_2e31_05e6(Unit unit)
 		{
-			this.oParent.GoToLog.EnterBlock($"F0_2e31_05e6({playerID}, {unitID})");
-			OpenCiv1Game.LogUnit(this.oParent, this.oParent.GoToLog, playerID, unitID, this.oParent.GameData.HumanPlayerID);
+			//this.oParent.GoToLog.EnterBlock($"F0_2e31_05e6({playerID}, {unitID})");
+			//OpenCiv1Game.LogUnit(this.oParent, this.oParent.GoToLog, playerID, unitID, this.oParent.GameData.HumanPlayerID);
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x3a);
-			this.oCPU.PUSH_UInt16(this.oCPU.DI.UInt16);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
+			bool waterUnit = this.parent.GameData.Units[unit.TypeID].MovementType == UnitMovementTypeEnum.Water;
+			int local_a = 0;
+			int unitX = unit.Position.X;
+			int unitY = unit.Position.Y;
+			this.Var_6590_DestinationX = unit.GoToDestination.X;
+			this.Var_6592_DestinationY = unit.GoToDestination.Y;
 
-			if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID == -1 ||
-				this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X == -1)
+			if (!F0_2e31_0a2c_CanUnitMove(unitX, unitY, waterUnit))
 			{
-				this.oCPU.AX.UInt16 = 0;
+				this.Var_6590_DestinationX = unit.GoToDestination.X;
+				this.Var_6592_DestinationY = unit.GoToDestination.Y;
+
+				return false;
 			}
-			else
+
+			unitX = this.Var_6590_DestinationX;
+			unitY = this.Var_6592_DestinationY;
+
+			// Instruction address 0x2e31:0x06a7, size: 3
+			F0_2e31_0a2c_CanUnitMove(unit.GoToDestination.X, unit.GoToDestination.Y, waterUnit);
+
+			// Instruction address 0x2e31:0x06b8, size: 5
+			for (int i = 0; i < this.Arr_d816.GetLength(0); i++)
 			{
-				this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.GameData.Players[playerID].Units[unitID].Position.X);
-				this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36), this.oCPU.AX.UInt16);
-
-				this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.GameData.Players[playerID].Units[unitID].Position.Y);
-				this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a), this.oCPU.AX.UInt16);
-
-				this.Var_6590_XPos = (short)this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X;
-				this.Var_6592_YPos = (short)this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.Y;
-
-				// !!! Illegal memory access
-				// Instruction address 0x2e31:0x063a, size: 3
-				F0_2e31_0a2c(
-					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36)),
-					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a)),
-					(ushort)((this.oParent.GameData.Players[playerID].Units[unitID].TypeID == -1 || this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water) ? 0 : 1));
-
-				if (this.oCPU.AX.UInt16 == 0)
+				for (int j = 0; j < this.Arr_d816.GetLength(1); j++)
 				{
-					this.Var_6590_XPos = (short)this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X;
-					this.Var_6592_YPos = (short)this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.Y;
+					this.Arr_d816[i, j] = 0;
+				}
+			}
+
+			int pathCount1 = 0;
+			int pathCount2 = 0;
+
+			this.Arr_6594_PathX[pathCount1] = this.Var_6590_DestinationX;
+			this.Arr_6694_PathY[pathCount1] = this.Var_6592_DestinationY;
+
+			pathCount1++;
+
+			this.Arr_d816[this.Var_6590_DestinationX, this.Var_6592_DestinationY] = 1;
+
+			bool oldPath = false;
+
+			do
+			{
+				int prevPathX = this.Arr_6594_PathX[pathCount2];
+				int prevPathY = this.Arr_6694_PathY[pathCount2];
+
+				if (prevPathX != unitX || prevPathY != unitY)
+				{
+					int pathFlags;
+
+					local_a = this.Arr_d816[prevPathX, prevPathY];
+
+					pathCount2++;
+					pathCount2 &= 0xff;
+
+					if (waterUnit)
+					{
+						pathFlags = this.Arr_7f38_WaterPath[prevPathX, prevPathY];
+					}
+					else
+					{
+						pathFlags = this.Arr_db44_LandPath[prevPathX, prevPathY];
+					}
+
+					for (int i = 1; i < 9; i++)
+					{
+						if ((pathFlags & (0x1 << (i - 1))) != 0)
+						{
+							GPoint direction = this.parent.MoveDirections[i];
+
+							int newX = prevPathX + direction.X;
+
+							if (newX == 20)
+							{
+								newX = 0;
+							}
+
+							if (newX == -1)
+							{
+								newX = 19;
+							}
+
+							int newY = prevPathY + direction.Y;
+
+							if (this.Arr_d816[newX, newY] == 0)
+							{
+								this.Arr_d816[newX, newY] = local_a + 1;
+								this.Arr_6594_PathX[pathCount1] = newX;
+								this.Arr_6694_PathY[pathCount1] = newY;
+
+								pathCount1++;
+								pathCount1 &= 0xff;
+							}
+						}
+					}
 				}
 				else
 				{
-					this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36), this.Var_6590_XPos);
-					this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a), this.Var_6592_YPos);
+					oldPath = true;
+				}
+			}
+			while (!oldPath && pathCount2 != pathCount1);
 
-					// Instruction address 0x2e31:0x06a7, size: 3
-					F0_2e31_0a2c(
-						this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X,
-						this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.Y,
-						(ushort)((this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water) ? 0 : 1));
+			this.Var_6590_DestinationX = -1;
 
-					// Instruction address 0x2e31:0x06b8, size: 5
-					this.oParent.CAPI.memset(0xd816, 0, 0x104);
+			if (oldPath)
+			{
+				int local_6 = 0;
+				int local_8 = 99;
+				int newDirection = -1;
+				int pathFlags;
 
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x0);
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), 0x0);
+				if (this.parent.GameData.Units[unit.TypeID].MovementType == UnitMovementTypeEnum.Water)
+				{
+					pathFlags = this.Arr_7f38_WaterPath[unitX, unitY];
+				}
+				else
+				{
+					pathFlags = this.Arr_db44_LandPath[unitX, unitY];
+				}
 
-					// Illegal memory access, this.Var_6590_XPos == -1
-					this.oCPU.WriteInt8(this.oCPU.DS.UInt16, 0x6594, (sbyte)this.Var_6590_XPos);
-
-					this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-
-					this.oCPU.WriteInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x6694), (sbyte)this.Var_6592_YPos);
-
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2),
-						this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
-
-					this.oCPU.DI.UInt16 = (ushort)((short)(13 * this.Var_6590_XPos));
-
-					this.oCPU.BX.UInt16 = (ushort)this.Var_6592_YPos;
-
-					// !!! Illegal memory access, this.Var_6590_XPos = -1
-					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + this.oCPU.DI.UInt16 + 0xd816), 0x1);
-
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), 0x0);
-
-					if (this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
+				for (int i = 1; i < 9; i++)
+				{
+					if ((pathFlags & (0x1 << (i - 1))) != 0)
 					{
-						this.oCPU.AX.UInt16 = 0;
+						GPoint direction = this.parent.MoveDirections[i];
+						int newX = unitX + direction.X;
+						int newY = unitY + direction.Y;
+
+						if (newX == 20)
+						{
+							newX = 0;
+						}
+
+						if (newX == -1)
+						{
+							newX = 19;
+						}
+
+						local_6 = this.Arr_d816[newX, newY];
+
+						if (local_6 != 0)
+						{
+							if (local_6 < local_8)
+							{
+								local_8 = local_6;
+								newDirection = i;
+
+								// Instruction address 0x2e31:0x0976, size: 5
+								local_a = this.parent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(unit.GoToDestination.X, unit.GoToDestination.Y,
+									newX * 4 + 1, newY * 4 + 1);
+							}
+							else if (local_6 == local_8)
+							{
+								// Instruction address 0x2e31:0x08b0, size: 5
+								int local_12 = this.parent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(unit.GoToDestination.X, unit.GoToDestination.Y,
+									newX * 4 + 1, newY * 4 + 1);
+
+								if (local_12 < local_a)
+								{
+									newDirection = i;
+									local_a = local_12;
+								}
+							}
+						}
 					}
-					else
-					{
-						this.oCPU.AX.UInt16 = 0x1;
-					}
+				}
 
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.AX.UInt16);
-
-				L070d:
-					this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
-					this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x6594));
-					this.oCPU.CBW(this.oCPU.AX);
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14), this.oCPU.AX.UInt16);
-					this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x6694));
-					this.oCPU.CBW(this.oCPU.AX);
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2c), this.oCPU.AX.UInt16);
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36));
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)), this.oCPU.AX.UInt16);
-					if (this.oCPU.Flags.NE) goto L0738;
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a));
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2c)), this.oCPU.AX.UInt16);
-					if (this.oCPU.Flags.NE) goto L0738;
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), 0x1);
-					goto L0815;
-
-				L0738:
-					// Illegal memory access, this.oCPU.ReadInt16(this.oCPU.SS.Word, (ushort)(this.oCPU.BP.Word - 0x14)) == -1
-					this.oCPU.AX.UInt16 = 0xd;
-					this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)));
-					this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
-
-					this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2c));
-
-					this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + this.oCPU.SI.UInt16 + 0xd816));
-					this.oCPU.CBW(this.oCPU.AX);
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), this.oCPU.AX.UInt16);
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))));
-					this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
-					this.oCPU.AX.HighUInt8 = 0;
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)), 0x0);
-					if (this.oCPU.Flags.E) goto L076a;
-					
-					this.oCPU.AX.UInt16 = 0xd;
-					this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)));
-					this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
-
-					this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + this.oCPU.SI.UInt16 + 0x7f38));
-					goto L0776;
-
-				L076a:
-					if ((this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)) * 13) + this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2c)) < this.oParent.GameData.LandPathfinding.Length)
-					{
-						this.oCPU.AX.LowUInt8 =
-							this.oParent.GameData.LandPathfinding[(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)) * 13) + this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2c))];
-					}
-					else
-					{
-						this.oCPU.AX.LowUInt8 = 0;
-					}
-
-				L0776:
-					this.oCPU.CBW(this.oCPU.AX);
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), this.oCPU.AX.UInt16);
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e), 0x1);
-
-				L077f:
-					this.oCPU.AX.UInt16 = 0x1;
-					this.oCPU.CX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e));
-					this.oCPU.CX.LowUInt8 = this.oCPU.DEC_UInt8(this.oCPU.CX.LowUInt8);
-					this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
-					this.oCPU.TEST_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)));
-					if (this.oCPU.Flags.E) goto L07f8;
-
-					GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e))];
-
-					this.oCPU.AX.UInt16 = (ushort)((short)direction.X);
-					this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)));
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x30), this.oCPU.AX.UInt16);
-
-					this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x14);
-					if (this.oCPU.Flags.E)
-					{
-						this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x30), 0x0);
-					}
-
-					if (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x30)) == -1)
-					{
-						this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x30), 0x13);
-					}
-
-					this.oCPU.AX.UInt16 = (ushort)((short)direction.Y);
-					this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2c)));
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x34), this.oCPU.AX.UInt16);
-
-					this.oCPU.AX.UInt16 = 0xd;
-					this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x30)));
-					this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
-					this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x34)));
-					this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, 0xd816);
-
-					this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, this.oCPU.SI.UInt16), 0x0);
-					if (this.oCPU.Flags.NE) goto L07f8;
-					this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-					this.oCPU.AX.LowUInt8 = this.oCPU.INC_UInt8(this.oCPU.AX.LowUInt8);
-					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, this.oCPU.SI.UInt16, this.oCPU.AX.LowUInt8);
-
-					this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-					this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x30));
-					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x6594), this.oCPU.AX.LowUInt8);
-					this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x34));
-					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x6694), this.oCPU.AX.LowUInt8);
-
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
-					this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-					this.oCPU.AX.HighUInt8 = 0;
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
-
-				L07f8:
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e))));
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e)), 0x8);
-					if (this.oCPU.Flags.G) goto L0804;
-					goto L077f;
-
-				L0804:
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)), 0x0);
-					if (this.oCPU.Flags.NE) goto L0815;
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), this.oCPU.AX.UInt16);
-					if (this.oCPU.Flags.E) goto L0815;
-					goto L070d;
-
-				L0815:
-					this.Var_6590_XPos = -1;
-
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)), 0x0);
-					if (this.oCPU.Flags.NE) goto L0824;
-					goto L09fc;
-
-				L0824:
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8), 0x63);
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), 0xffff);
-
-					this.oCPU.AX.UInt16 = (ushort)((short)(0x22 * this.oParent.GameData.Players[playerID].Units[unitID].TypeID));
-					this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
-
-					if (this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
-						goto L085e;
-
-					this.oCPU.AX.UInt16 = 0xd;
-					this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36)));
-					this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
-
-					this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a));
-
-					this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + this.oCPU.SI.UInt16 + 0x7f38));
-					goto L086d;
-
-				L085e:
-					this.oCPU.AX.LowUInt8 = this.oParent.GameData.LandPathfinding[(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36)) * 13) + this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a))];
-
-				L086d:
-					this.oCPU.CBW(this.oCPU.AX);
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), this.oCPU.AX.UInt16);
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e), 0x1);
-					goto L08d2;
-
-				L0878:
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), this.oCPU.AX.UInt16);
-					if (this.oCPU.Flags.NE) goto L08cf;
-
-					// Instruction address 0x2e31:0x08b0, size: 5
-					this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
-						this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X,
-						this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.Y,
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x30)) * 4 + 1,
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x34)) * 4 + 1);
-
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), this.oCPU.AX.UInt16);
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)), this.oCPU.AX.UInt16);
-					if (this.oCPU.Flags.GE) goto L08cf;
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e));
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12));
-
-				L08cc:
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), this.oCPU.AX.UInt16);
-
-				L08cf:
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e))));
-
-				L08d2:
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e)), 0x8);
-					if (this.oCPU.Flags.LE) goto L08db;
-					goto L0981;
-
-				L08db:
-					this.oCPU.AX.UInt16 = 0x1;
-					this.oCPU.CX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e));
-					this.oCPU.CX.LowUInt8 = this.oCPU.DEC_UInt8(this.oCPU.CX.LowUInt8);
-					this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
-					this.oCPU.TEST_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)));
-					if (this.oCPU.Flags.E) goto L08cf;
-
-					direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e))];
-
-					this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x30), (short)(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36)) + direction.X));
-
-					this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x34), (short)(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a)) + direction.Y));
-
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x30)), 0x14);
-					if (this.oCPU.Flags.E)
-					{
-						this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x30), 0x0);
-					}
-
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x30)), 0xffff);
-					if (this.oCPU.Flags.NE) goto L0919;
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x30), 0x13);
-
-				L0919:
-					this.oCPU.AX.UInt16 = 0xd;
-					this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x30)));
-					this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
-
-					this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x34));
-
-					this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + this.oCPU.DI.UInt16 + 0xd816));
-					this.oCPU.CBW(this.oCPU.AX);
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.AX.UInt16);
-					this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-					if (this.oCPU.Flags.E) goto L08cf;
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), this.oCPU.AX.UInt16);
-					if (this.oCPU.Flags.L) goto L093b;
-					goto L0878;
-
-				L093b:
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6));
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8), this.oCPU.AX.UInt16);
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e));
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
-
-					// Instruction address 0x2e31:0x0976, size: 5
-					this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
-						this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X,
-						this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.Y,
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x30)) * 4 + 1,
-						this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x34)) * 4 + 1);
-
-					goto L08cc;
-
-				L0981:
-					this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)), 0xffff);
-					if (this.oCPU.Flags.E) goto L09fc;
-
-					direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))];
+				if (newDirection != -1)
+				{
+					GPoint direction = this.parent.MoveDirections[newDirection];
 
 					// Instruction address 0x2e31:0x099d, size: 3
-					this.Var_6590_XPos = (short)F0_2e31_119b_AdjustXPosition(((this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36)) + direction.X) * 4) + 1);
-					this.Var_6592_YPos = (short)(((this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a)) + direction.Y) * 4) + 1);
+					this.Var_6590_DestinationX = this.parent.MapManagement.F0_2e31_119b_AdjustMapXPosition(((unitX + direction.X) * 4) + 1);
+					this.Var_6592_DestinationY = ((unitY + direction.Y) * 4) + 1;
 
-					// Instruction address 0x2e31:0x09ba, size: 5
-					this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(this.Var_6590_XPos, this.Var_6592_YPos);
-
-					this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-					if (this.oCPU.Flags.NE) goto L09cc;
-					this.oCPU.AX.UInt16 = 0x1;
-					goto L09ce;
-
-				L09cc:
-					this.oCPU.AX.UInt16 = 0;
-
-				L09ce:
-					this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)));
-					if (this.oCPU.Flags.E) goto L09fc;
-
-					this.Var_6590_XPos++;
-
-					// Instruction address 0x2e31:0x09df, size: 5
-					this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(this.Var_6590_XPos, this.Var_6592_YPos);
-
-					this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-					if (this.oCPU.Flags.NE) goto L09f1;
-					this.oCPU.AX.UInt16 = 0x1;
-					goto L09f3;
-
-				L09f1:
-					this.oCPU.AX.UInt16 = 0;
-
-				L09f3:
-					this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)));
-					if (this.oCPU.Flags.E) goto L09fc;
-
-					this.Var_6592_YPos++;
-
-				L09fc:
-					if (this.Var_6590_XPos == -1)
+					if ((this.parent.MapManagement.F0_2aea_134a_GetTerrainType(this.Var_6590_DestinationX, this.Var_6592_DestinationY) == TerrainTypeEnum.Water) != waterUnit)
 					{
-						this.Var_6590_XPos = (short)this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X;
-						this.Var_6592_YPos = (short)this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.Y;
-					}
+						this.Var_6590_DestinationX++;
 
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc));
+						if ((this.parent.MapManagement.F0_2aea_134a_GetTerrainType(this.Var_6590_DestinationX, this.Var_6592_DestinationY) == TerrainTypeEnum.Water) != waterUnit)
+						{
+							this.Var_6592_DestinationY++;
+						}
+					}
 				}
 			}
 
-			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
-			this.oCPU.DI.UInt16 = this.oCPU.POP_UInt16();
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
-			// Far return
-			this.oParent.GoToLog.ExitBlock("F0_2e31_05e6", this.oCPU.AX.UInt16);
+			if (this.Var_6590_DestinationX == -1)
+			{
+				this.Var_6590_DestinationX = unit.GoToDestination.X;
+				this.Var_6592_DestinationY = unit.GoToDestination.Y;
+			}
 
-			return this.oCPU.AX.UInt16;
+			return oldPath;
 		}
 
 		/// <summary>
-		/// ?
+		/// Tests if unit can move in any direction
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		/// <param name="flag"></param>
-		/// <returns></returns>
-		public ushort F0_2e31_0a2c(int xPos, int yPos, ushort flag)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="waterUnit"></param>
+		/// <returns>true if unit can move in any direction</returns>
+		private bool F0_2e31_0a2c_CanUnitMove(int x, int y, bool waterUnit)
 		{
-			this.oParent.GoToLog.EnterBlock($"F0_2e31_0a2c({xPos}, {yPos}, {flag})");
+			//this.oParent.GoToLog.EnterBlock($"F0_2e31_0a2c({x}, {y}, {waterFlag})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x14);
-			this.oCPU.PUSH_UInt16(this.oCPU.DI.UInt16);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
+			int newMoveDirection = -1;
+			int shortX = x / 4;
+			int shortY = y / 4;
 
-			this.oCPU.AX.UInt16 = (ushort)((short)xPos);
-			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-			this.oCPU.AX.UInt16 = this.oCPU.XOR_UInt16(this.oCPU.AX.UInt16, this.oCPU.DX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, this.oCPU.DX.UInt16);
-			this.oCPU.CX.UInt16 = 0x2;
-			this.oCPU.AX.UInt16 = this.oCPU.SAR_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
-			this.oCPU.AX.UInt16 = this.oCPU.XOR_UInt16(this.oCPU.AX.UInt16, this.oCPU.DX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, this.oCPU.DX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), this.oCPU.AX.UInt16);
-
-			this.oCPU.AX.UInt16 = (ushort)((short)yPos);
-			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-			this.oCPU.AX.UInt16 = this.oCPU.XOR_UInt16(this.oCPU.AX.UInt16, this.oCPU.DX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, this.oCPU.DX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.SAR_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
-			this.oCPU.AX.UInt16 = this.oCPU.XOR_UInt16(this.oCPU.AX.UInt16, this.oCPU.DX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, this.oCPU.DX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), 0xffff);
-
-			if (flag != 0)
+			if (waterUnit)
 			{
-				this.oCPU.AX.UInt16 = 13;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
-				this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
-
-				this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14));
-
-				if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + this.oCPU.SI.UInt16 + 0x7f38)) != 0)
+				if (this.Arr_7f38_WaterPath[shortX, shortY] != 0)
 				{
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), 0x0);
+					newMoveDirection = 0;
 				}
 			}
-			else
+			else if (this.Arr_db44_LandPath[shortX, shortY] != 0)
 			{
-				this.oCPU.AX.UInt16 = 13;
-				this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
-				this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
+				newMoveDirection = 0;
+			}
 
-				this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14));
+			if (newMoveDirection == -1)
+			{
+				int minDistance = 99;
 
-				if (this.oParent.GameData.LandPathfinding[(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)) * 13) + this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14))] != 0x0)
+				for (int i = 1; i < 9; i++)
 				{
-					this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), 0x0);
+					GPoint direction = this.parent.MoveDirections[i];
+
+					int newShortX = shortX + direction.X;
+					int newShortY = shortY + direction.Y;
+
+					if ((waterUnit && this.Arr_7f38_WaterPath[newShortX, newShortY] != 0) ||
+						(!waterUnit && this.Arr_db44_LandPath[newShortX, newShortY] != 0))
+					{
+						// Instruction address 0x2e31:0x0b43, size: 5
+						int distance = this.parent.Segment_2dc4.F0_2dc4_0208_GetShortestDistance(x - (newShortX * 4) - 1, y - (newShortY * 4) - 1);
+
+						if (distance < minDistance)
+						{
+							int testShortX = newShortX + 1;
+							int testShortY = newShortY + 1;
+
+							if ((this.parent.MapManagement.F0_2aea_134a_GetTerrainType(testShortX, testShortY) == TerrainTypeEnum.Water) == waterUnit)
+							{
+								if (F0_2e31_111c_CheckUnitPath(testShortX, testShortY, x, y, waterUnit, 18) != -1)
+								{
+									minDistance = distance;
+									newMoveDirection = i;
+								}
+							}
+							else
+							{
+								testShortX++;
+
+								if ((this.parent.MapManagement.F0_2aea_134a_GetTerrainType(testShortX, testShortY) == TerrainTypeEnum.Water) == waterUnit)
+								{
+									if (F0_2e31_111c_CheckUnitPath(testShortX, testShortY, x, y, waterUnit, 18) != -1)
+									{
+										minDistance = distance;
+										newMoveDirection = i;
+									}
+								}
+								else
+								{
+									testShortY++;
+
+									if ((this.parent.MapManagement.F0_2aea_134a_GetTerrainType(testShortX, testShortY) == TerrainTypeEnum.Water) == waterUnit)
+									{
+										if (F0_2e31_111c_CheckUnitPath(testShortX, testShortY, x, y, waterUnit, 18) != -1)
+										{
+											minDistance = distance;
+											newMoveDirection = i;
+										}
+									}
+									else
+									{
+										testShortX--;
+
+										if ((this.parent.MapManagement.F0_2aea_134a_GetTerrainType(testShortX, testShortY) == TerrainTypeEnum.Water) == waterUnit)
+										{
+											if (F0_2e31_111c_CheckUnitPath(testShortX, testShortY, x, y, waterUnit, 18) != -1)
+											{
+												minDistance = distance;
+												newMoveDirection = i;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)), 0xffff);
-			if (this.oCPU.Flags.E) goto L0a96;
-			goto L0bf1;
+			if (newMoveDirection != -1)
+			{
+				GPoint direction = this.parent.MoveDirections[newMoveDirection];
 
-		L0a96:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), 0x63);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0x1);
-			goto L0ad8;
+				this.Var_6590_DestinationX = (shortX * 4) + direction.X;
+				this.Var_6592_DestinationY = (shortY * 4) + direction.Y;
 
-		L0aa2:
-			this.oCPU.AX.UInt16 = 0;
+				return true;
+			}
 
-		L0aa4:
-			if (this.oCPU.AX.UInt16 != flag)
-				goto L0b7f;
-
-		L0aac:
-			// Instruction address 0x2e31:0x0ac0, size: 3
-			F0_2e31_111c(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
-				xPos, yPos, flag, 18);
-
-			this.oCPU.AX.UInt16 = this.oCPU.INC_UInt16(this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L0ad5;
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
-
-		L0ad5:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10))));
-
-		L0ad8:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)), 0x8);
-			if (this.oCPU.Flags.LE) goto L0ae1;
-			goto L0bf1;
-
-		L0ae1:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10));
-			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
-
-			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10))];
-
-			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), (short)(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)) + direction.X));
-
-			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), (short)(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)) + direction.Y));
-
-			if (flag == 0) goto L0b12;
-			this.oCPU.AX.UInt16 = 0xd;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)));
-			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc));
-			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + this.oCPU.DI.UInt16 + 0x7f38)), 0x0);
-			if (this.oCPU.Flags.NE) goto L0b2a;
-
-		L0b12:
-			if (flag != 0) goto L0ad5;
-
-			this.oCPU.AX.UInt16 = 13;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)));
-			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
-
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc));
-
-			// !!! Illegal memory access
-			int iTemp = ((this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)) * 13) + this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)));
-
-			if (iTemp < 0 || iTemp >= this.oParent.GameData.LandPathfinding.Length ||
-				this.oParent.GameData.LandPathfinding[(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)) * 13) + this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))] == 0)
-				goto L0ad5;
-
-		L0b2a:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-			this.oCPU.SI.UInt16 <<= 2;
-
-			this.oCPU.DI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc));
-			this.oCPU.DI.UInt16 <<= 2;
-
-			// Instruction address 0x2e31:0x0b43, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0208_GetShortestDistance(
-				xPos - (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)) * 4) - 1,
-				yPos - (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)) * 4) - 1);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
-
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.L) goto L0b59;
-			goto L0ad5;
-
-		L0b59:
-			// LEA
-			this.oCPU.AX.UInt16 = (ushort)(this.oCPU.SI.UInt16 + 0x1);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
-			// LEA
-			this.oCPU.AX.UInt16 = (ushort)(this.oCPU.DI.UInt16 + 0x1);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8), this.oCPU.AX.UInt16);
-
-			// Instruction address 0x2e31:0x0b69, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.E) goto L0b79;
-			goto L0aa2;
-
-		L0b79:
-			this.oCPU.AX.UInt16 = 0x1;
-			goto L0aa4;
-
-		L0b7f:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2),
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
-
-			// Instruction address 0x2e31:0x0b88, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L0b9a;
-			this.oCPU.AX.UInt16 = 0x1;
-			goto L0b9c;
-
-		L0b9a:
-			this.oCPU.AX.UInt16 = 0;
-
-		L0b9c:
-			if (this.oCPU.AX.UInt16 == flag)
-				goto L0aac;
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8),
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))));
-
-			// Instruction address 0x2e31:0x0bad, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L0bbf;
-			this.oCPU.AX.UInt16 = 0x1;
-			goto L0bc1;
-
-		L0bbf:
-			this.oCPU.AX.UInt16 = 0;
-
-		L0bc1:
-			if (this.oCPU.AX.UInt16 == flag)
-				goto L0aac;
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2),
-				this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
-
-			// Instruction address 0x2e31:0x0bd2, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L0be4;
-			this.oCPU.AX.UInt16 = 0x1;
-			goto L0be6;
-
-		L0be4:
-			this.oCPU.AX.UInt16 = 0;
-
-		L0be6:
-			if (this.oCPU.AX.UInt16 == flag) goto L0aac;
-			goto L0ad5;
-
-		L0bf1:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)), 0xffff);
-			if (this.oCPU.Flags.E) goto L0c15;
-			
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe));
-			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
-
-			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))];
-
-			this.Var_6590_XPos = (short)(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)) + direction.X);
-			this.Var_6592_YPos = (short)(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)) + direction.Y);
-
-			this.oCPU.AX.UInt16 = 0x1;
-			goto L0c17;
-
-		L0c15:
-			this.oCPU.AX.UInt16 = 0;
-
-		L0c17:
-			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
-			this.oCPU.DI.UInt16 = this.oCPU.POP_UInt16();
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
-
-			// Far return
-			this.oParent.GoToLog.ExitBlock("F0_2e31_0a2c", this.oCPU.AX.UInt16);
-
-			return this.oCPU.AX.UInt16;
+			return false;
 		}
 
 		/// <summary>
-		/// ?
+		/// Finds the shortest path from start to destination
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="unitID"></param>
 		/// <param name="param3"></param>
 		/// <returns></returns>
-		public ushort F0_2e31_0c1d(int playerID, int unitID, ushort param3)
+		private int F0_2e31_0c1d_FindShortestPath(Unit unit, short param3)
 		{
-			this.oParent.GoToLog.EnterBlock($"F0_2e31_0c1d({playerID}, {unitID}, {param3})");
-			OpenCiv1Game.LogUnit(this.oParent, this.oParent.GoToLog, playerID, unitID, this.oParent.GameData.HumanPlayerID);
+			//this.oParent.GoToLog.EnterBlock($"F0_2e31_0c1d({playerID}, {unitID}, {param3})");
+			//OpenCiv1Game.LogUnit(this.oParent, this.oParent.GoToLog, playerID, unitID, this.oParent.GameData.HumanPlayerID);
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x4a);
-			this.oCPU.PUSH_UInt16(this.oCPU.DI.UInt16);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
+			bool waterUnit = this.parent.GameData.Units[unit.TypeID].MovementType == UnitMovementTypeEnum.Water;
+			int local_20 = this.Var_6590_DestinationX - 8;
+			int local_3a = this.Var_6592_DestinationY - 8;
+			int unitX = unit.Position.X;
+			int unitY = unit.Position.Y;
+			GPoint direction;
 
-			this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.GameData.Players[playerID].Units[unitID].Position.X);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x46), this.oCPU.AX.UInt16);
+			this.Var_6794 = 0;
 
-			this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.GameData.Players[playerID].Units[unitID].Position.Y);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4a), this.oCPU.AX.UInt16);
-
-			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20), (short)(this.Var_6590_XPos - 8));
-
-			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a), (short)(this.Var_6592_YPos - 8));
-
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6794, 0x0);
-			
-			if (this.Var_6590_XPos != this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x6796) ||
-				this.Var_6592_YPos != this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x6798))
-				goto L0c89;
-
-			// !!! Doesn't work well should offset at 0xb780, but due to negative value accesses player.ActiveUnits
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x46));
-			this.oCPU.BX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)));
-
-			this.oCPU.CX.LowUInt8 = 0x4;
-			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, this.oCPU.CX.LowUInt8);
-			this.oCPU.BX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4a)));
-			this.oCPU.BX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a)));
-			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0xb780)), 0x0);
-			if (this.oCPU.Flags.NE)
-				goto L0d8b;
-
-		L0c89:
-			this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0x6796, this.Var_6590_XPos);
-			this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0x6798, this.Var_6592_YPos);
-
-			// Instruction address 0x2e31:0x0ca0, size: 5
-			this.oParent.CAPI.memset(0xb780, 0, 0x100);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), 0x0);
-
-			this.oCPU.WriteInt8(this.oCPU.DS.UInt16, 0x6594, (sbyte)this.Var_6590_XPos);
-
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
-
-			this.oCPU.WriteInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x6694), (sbyte)this.Var_6592_YPos);
-
-			this.oCPU.DI.UInt16 = (ushort)this.Var_6590_XPos;
-			this.oCPU.DI.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.DI.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)));
-			this.oCPU.CX.LowUInt8 = 0x4;
-			this.oCPU.DI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.DI.UInt16, this.oCPU.CX.LowUInt8);
-			this.oCPU.DI.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.DI.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a)));
-
-			this.oCPU.BX.UInt16 = (ushort)this.Var_6592_YPos;
-
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + this.oCPU.DI.UInt16 + 0xb780), 0x1);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14), 0x0);
-			
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6794, param3);
-
-			if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID != -1 &&
-				this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
+			if (this.Var_6590_DestinationX != this.Var_6796_LastDestinationX || this.Var_6592_DestinationY != this.Var_6798_LastDestinationY ||
+				this.Arr_b780[unitX - local_20, unitY - local_3a] == 0)
 			{
-				this.oCPU.AX.UInt16 = 0;
-			}
-			else
-			{
-				this.oCPU.AX.UInt16 = 0x1;
-			}
+				this.Var_6796_LastDestinationX = this.Var_6590_DestinationX;
+				this.Var_6798_LastDestinationY = this.Var_6592_DestinationY;
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e), this.oCPU.AX.UInt16);
-
-			// !!! Illegal memory access
-			if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID != -1 && 
-				this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MoveCount == 1)
-			{
-				this.oCPU.AX.UInt16 = 0x1;
-			}
-			else
-			{
-				this.oCPU.AX.UInt16 = 0;
-			}
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), this.oCPU.AX.UInt16);
-
-		L0d21:
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x6594));
-			this.oCPU.CBW(this.oCPU.AX);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c), this.oCPU.AX.UInt16);
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x6694));
-			this.oCPU.CBW(this.oCPU.AX);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))));
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
-			this.oCPU.AX.HighUInt8 = 0;
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c));
-			this.oCPU.BX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)));
-			this.oCPU.CX.LowUInt8 = 0x4;
-			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, this.oCPU.CX.LowUInt8);
-			this.oCPU.BX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36)));
-			this.oCPU.BX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a)));
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0xb780));
-			this.oCPU.CBW(this.oCPU.AX);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6794);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.G) goto L0d7c;
-
-			// Instruction address 0x2e31:0x0d63, size: 3
-			F0_2e31_119b_AdjustXPosition(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c)));
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x46)));
-			if (this.oCPU.Flags.NE) goto L0da8;
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4a));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36)), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.NE) goto L0da8;
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe));
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6794, this.oCPU.AX.UInt16);
-
-		L0d7c:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L0d8b;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 0xe1);
-			if (this.oCPU.Flags.L) goto L0d21;
-
-			L0d8b:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), 0xffff);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6794);
-			this.oCPU.CMP_UInt16(param3, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.G) goto L0d9b;
-			goto L10ed;
-
-		L0d9b:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), 0x63);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c), 0x1);
-			goto L0f29;
-
-		L0da8:
-			// Instruction address 0x2e31:0x0daf, size: 3
-			F0_2e31_119b_AdjustXPosition(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c)));
-
-			// Instruction address 0x2e31:0x0db6, size: 5
-			this.oCPU.AX.UInt16 = (ushort)(this.oParent.MapManagement.F0_2aea_1570_CheckCellHasRoad((short)this.oCPU.AX.UInt16,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36))) ? 1 : 0);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c), 0x1);
-			goto L0dea;
-
-		L0dc8:
-			this.oCPU.AX.UInt16 = 0;
-
-		L0dca:
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e)));
-			if (this.oCPU.Flags.NE) goto L0dd2;
-			goto L0e70;
-
-		L0dd2:
-			// Instruction address 0x2e31:0x0dd8, size: 5
-			this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)));
-
-			this.oCPU.TEST_UInt8(this.oCPU.AX.LowUInt8, 0x1);
-			if (this.oCPU.Flags.E) goto L0de7;
-			goto L0e70;
-
-		L0de7:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c))));
-
-		L0dea:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c)), 0x8);
-			if (this.oCPU.Flags.G) goto L0d7c;
-			
-			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c))];
-
-			this.oCPU.AX.UInt16 = (ushort)((short)direction.X);
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c)));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40), this.oCPU.AX.UInt16);
-
-			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, (ushort)this.Var_6590_XPos);
-
-			// Instruction address 0x2e31:0x0e04, size: 5
-			this.oParent.CAPI.abs((short)this.oCPU.AX.UInt16);
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x8);
-			if (this.oCPU.Flags.GE) goto L0de7;
-
-			// Instruction address 0x2e31:0x0e15, size: 3
-			F0_2e31_119b_AdjustXPosition(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40)));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), this.oCPU.AX.UInt16);
-
-			this.oCPU.AX.UInt16 = (ushort)((short)direction.Y);
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x36)));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, (ushort)this.Var_6592_YPos);
-
-			// Instruction address 0x2e31:0x0e32, size: 5
-			this.oParent.CAPI.abs((short)this.oCPU.AX.UInt16);
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x8);
-			if (this.oCPU.Flags.GE) goto L0de7;
-
-			// Instruction address 0x2e31:0x0e45, size: 5
-			this.oCPU.AX.UInt16 = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44))) ? 1 : 0);
-
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L0de7;
-
-			// Instruction address 0x2e31:0x0e57, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e), this.oCPU.AX.UInt16);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.E) goto L0e6a;
-			goto L0dc8;
-
-		L0e6a:
-			this.oCPU.AX.UInt16 = 0x1;
-			goto L0dca;
-
-		L0e70:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 0x0);
-			if (this.oCPU.Flags.E) goto L0e8e;
-
-			// Instruction address 0x2e31:0x0e7c, size: 5
-			this.oCPU.AX.UInt16 = (ushort)(this.oParent.MapManagement.F0_2aea_1570_CheckCellHasRoad(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44))) ? 1 : 0);
-
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L0e8e;
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe));
-			this.oCPU.AX.UInt16 = this.oCPU.INC_UInt16(this.oCPU.AX.UInt16);
-			goto L0ead;
-
-		L0e8e:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)), 0x0);
-			if (this.oCPU.Flags.E) goto L0e9c;
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe));
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, 0x3);
-			goto L0ead;
-
-		L0e9c:
-			this.oCPU.AX.UInt16 = 0x13;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e)));
-			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
-
-			this.oCPU.AX.LowUInt8 = 0x3;
-			this.oCPU.IMUL_UInt8(this.oCPU.AX, 
-				(byte)this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e))].MovementCost);
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)));
-
-		L0ead:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a), this.oCPU.AX.UInt16);
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40));
-			this.oCPU.BX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)));
-			this.oCPU.CX.LowUInt8 = 0x4;
-			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, this.oCPU.CX.LowUInt8);
-			this.oCPU.BX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)));
-			this.oCPU.BX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a)));
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0xb780));
-			this.oCPU.CBW(this.oCPU.AX);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x38), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L0ed7;
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x38)), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.G) goto L0ed7;
-			goto L0de7;
-
-		L0ed7:
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40));
-			this.oCPU.BX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)));
-			this.oCPU.CX.LowUInt8 = 0x4;
-			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, this.oCPU.CX.LowUInt8);
-			this.oCPU.BX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)));
-			this.oCPU.BX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a)));
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a));
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0xb780), this.oCPU.AX.LowUInt8);
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40));
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x6594), this.oCPU.AX.LowUInt8);
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44));
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x6694), this.oCPU.AX.LowUInt8);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.AX.HighUInt8 = 0;
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
-			goto L0de7;
-
-		L0f0d:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40), this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40)), 0x50));
-
-		L0f11:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40));
-			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, (ushort)this.Var_6590_XPos);
-
-			// Instruction address 0x2e31:0x0f19, size: 5
-			this.oParent.CAPI.abs((short)this.oCPU.AX.UInt16);
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x8);
-			if (this.oCPU.Flags.L) goto L0f61;
-
-			L0f26:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c))));
-
-		L0f29:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c)), 0x8);
-			if (this.oCPU.Flags.LE) goto L0f32;
-			goto L10e2;
-
-		L0f32:
-			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c))];
-
-			this.oCPU.AX.UInt16 = (ushort)((short)direction.X);
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x46)));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40), this.oCPU.AX.UInt16);
-
-			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, (ushort)this.Var_6590_XPos);
-
-			// Instruction address 0x2e31:0x0f46, size: 5
-			this.oParent.CAPI.abs((short)this.oCPU.AX.UInt16);
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x48);
-			if (this.oCPU.Flags.L) goto L0f11;
-
-			if (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40)) <= this.Var_6590_XPos)
-				goto L0f0d;
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40), this.oCPU.SUB_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40)), 0x50));
-			goto L0f11;
-
-		L0f61:
-			// Instruction address 0x2e31:0x0f65, size: 3
-			F0_2e31_119b_AdjustXPosition(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40)));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), this.oCPU.AX.UInt16);
-
-			this.oCPU.AX.UInt16 = (ushort)((short)direction.Y);
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4a)));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, (ushort)this.Var_6592_YPos);
-
-			// Instruction address 0x2e31:0x0f82, size: 5
-			this.oParent.CAPI.abs((short)this.oCPU.AX.UInt16);
-
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x8);
-			if (this.oCPU.Flags.GE) goto L0f26;
-
-			// Instruction address 0x2e31:0x0f95, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)));
-
-			if (((this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water) ? 0 : 1) == ((this.oCPU.AX.UInt16 != 0xa) ? 0 : 1))
-				goto L0fec;
-
-			// Instruction address 0x2e31:0x0fdd, size: 5
-			this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)));
-
-			this.oCPU.TEST_UInt8(this.oCPU.AX.LowUInt8, 0x1);
-			if (this.oCPU.Flags.NE) goto L0fec;
-			goto L0f26;
-
-		L0fec:
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x40));
-			this.oCPU.BX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)));
-			this.oCPU.CX.LowUInt8 = 0x4;
-			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, this.oCPU.CX.LowUInt8);
-			this.oCPU.BX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)));
-			this.oCPU.BX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a)));
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0xb780));
-			this.oCPU.CBW(this.oCPU.AX);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.NE) goto L100b;
-			goto L0f26;
-
-		L100b:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.GE) goto L106e;
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.AX.UInt16);
-
-			// Instruction address 0x2e31:0x1025, size: 5
-			this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44))));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), this.oCPU.AX.UInt16);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
-			if (this.oCPU.Flags.E) goto L1050;
-
-			// Instruction address 0x2e31:0x103f, size: 5
-			this.oParent.Segment_1866.F0_1866_1251(playerID,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)), 2);
-
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
-			goto L1055;
-
-		L1050:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), 0x0);
-
-		L1055:
-			// Instruction address 0x2e31:0x1063, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
-				this.Var_6590_XPos,
-				this.Var_6592_YPos,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)), this.oCPU.AX.UInt16));
-
-		L106e:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L1079;
-			goto L0f26;
-
-		L1079:
-			// Instruction address 0x2e31:0x107f, size: 5
-			this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44))));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), this.oCPU.AX.UInt16);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
-			if (this.oCPU.Flags.E) goto L10aa;
-
-			// Instruction address 0x2e31:0x1099, size: 5
-			this.oParent.Segment_1866.F0_1866_1251(playerID,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)), 2);
-
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a), this.oCPU.AX.UInt16);
-			goto L10af;
-
-		L10aa:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a), 0x0);
-
-		L10af:
-			// Instruction address 0x2e31:0x10bd, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(
-				this.Var_6590_XPos,
-				this.Var_6592_YPos,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a), this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a)), this.oCPU.AX.UInt16));
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a)), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.L) goto L10d3;
-			goto L0f26;
-
-		L10d3:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
-			goto L0f26;
-
-		L10e2:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)), 0xffff);
-			if (this.oCPU.Flags.E) goto L10ed;
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16));
-			goto L1116;
-
-		L10ed:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)), 0xffff);
-			if (this.oCPU.Flags.NE) goto L1113;
-
-			this.Var_6590_XPos = (short)this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X;
-			this.Var_6592_YPos = (short)this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.Y;
-
-		L1113:
-			this.oCPU.AX.UInt16 = 0xffff;
-
-		L1116:
-			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
-			this.oCPU.DI.UInt16 = this.oCPU.POP_UInt16();
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
-			// Far return
-			this.oParent.GoToLog.ExitBlock("F0_2e31_0c1d", this.oCPU.AX.UInt16);
-
-			return this.oCPU.AX.UInt16;
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		/// <param name="xPos1"></param>
-		/// <param name="yPos1"></param>
-		/// <param name="flag"></param>
-		/// <param name="param6"></param>
-		/// <returns></returns>
-		public ushort F0_2e31_111c(int xPos, int yPos, int xPos1, int yPos1, ushort flag, ushort param6)
-		{
-			this.oParent.GoToLog.EnterBlock($"F0_2e31_111c({xPos}, {yPos}, {xPos1}, {yPos1}, {flag}, {param6})");
-
-			// function body
-			if (Math.Abs(xPos - xPos1) <= 7 && Math.Abs(yPos - yPos1) <= 7)
-			{
-				// Temporary unit...
-				this.oParent.GameData.Players[0].Units[127].TypeID = (short)((flag == 0) ? 1 : 0x10);
-				this.oParent.GameData.Players[0].Units[127].Position.X = xPos;
-				this.oParent.GameData.Players[0].Units[127].Position.Y = yPos;
-				this.oParent.GameData.Players[0].Units[127].GoToDestination.X = xPos1;
-				this.oParent.GameData.Players[0].Units[127].GoToDestination.Y = yPos1;
-
-				this.Var_6590_XPos = (short)xPos1;
-				this.Var_6592_YPos = (short)yPos1;
-
-				// Instruction address 0x2e31:0x117c, size: 3
-				F0_2e31_0c1d(0, 127, param6);
-
-				this.oParent.GameData.Players[0].Units[127].TypeID = -1;
-				this.oParent.GameData.Players[0].Units[127].Position.X = -1;
-				this.oParent.GameData.Players[0].Units[127].Position.Y = -1;
-				this.oParent.GameData.Players[0].Units[127].GoToDestination.X = -1;
-				this.oParent.GameData.Players[0].Units[127].GoToDestination.Y = -1;
-
-				if (this.oCPU.AX.UInt16 == 0xffff)
+				for (int i = 0; i < this.Arr_b780.GetLength(0); i++)
 				{
-					this.oCPU.AX.UInt16 = 0xffff;
+					for (int j = 0; j < this.Arr_b780.GetLength(1); j++)
+					{
+						this.Arr_b780[i, j] = 0;
+					}
 				}
-				else
+
+				int local_2 = 0;
+
+				this.Arr_6594_PathX[local_2] = this.Var_6590_DestinationX;
+				this.Arr_6694_PathY[local_2] = this.Var_6592_DestinationY;
+
+				local_2++;
+
+				this.Arr_b780[this.Var_6590_DestinationX - local_20, this.Var_6592_DestinationY - local_3a] = 1;
+				this.Var_6794 = param3;
+				int oneMove = (this.parent.GameData.Units[unit.TypeID].MoveCount == 1) ? 1 : 0;
+
+				// local_2 will always be 1, so local_4 loop will also end at 1
+				for (int local_4 = 0; local_4 != local_2 && local_4 < 225;)
 				{
-					this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6794);
+					int oldX = this.Arr_6594_PathX[local_4];
+					int oldY = this.Arr_6694_PathY[local_4];
+
+					local_4++;
+					local_4 &= 0xff;
+
+					int local_e = this.Arr_b780[oldX - local_20, oldY - local_3a];
+
+					if (local_e <= this.Var_6794)
+					{
+						if (this.parent.MapManagement.F0_2e31_119b_AdjustMapXPosition(oldX) != unitX || oldY != unitY)
+						{
+							for (int i = 1; i < 9; i++)
+							{
+								direction = this.parent.MoveDirections[i];
+
+								int newX = oldX + direction.X;
+
+								if (Math.Abs(newX - this.Var_6590_DestinationX) < 8)
+								{
+									int newXAdjusted = this.parent.MapManagement.F0_2e31_119b_AdjustMapXPosition(newX);
+									int newY = oldY + direction.Y;
+									TerrainTypeEnum local_3e = this.parent.MapManagement.F0_2aea_134a_GetTerrainType(newXAdjusted, newY);
+
+									if (Math.Abs(newY - this.Var_6592_DestinationY) < 8 &&
+										this.parent.MapManagement.F0_2aea_1326_ValidateMapCoordinates(newXAdjusted, newY) &&
+										((local_3e == TerrainTypeEnum.Water) == waterUnit ||
+										this.parent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(newXAdjusted, newY).HasFlag(TerrainImprovementFlagsEnum.City)))
+									{
+										int local_1a;
+
+										if (this.parent.MapManagement.F0_2aea_1570_CheckIfCellHasRoad(this.parent.MapManagement.F0_2e31_119b_AdjustMapXPosition(oldX), oldY) &&
+											this.parent.MapManagement.F0_2aea_1570_CheckIfCellHasRoad(newXAdjusted, newY))
+										{
+											local_1a = local_e + 1;
+										}
+										else if (oneMove != 0)
+										{
+											local_1a = local_e + 3;
+										}
+										else
+										{
+											local_1a = (3 * this.parent.GameData.Terrains[(int)local_3e].MovementCost) + local_e;
+										}
+
+										int local_38 = this.Arr_b780[newX - local_20, newY - local_3a];
+
+										if (local_38 == 0 || local_38 > local_1a)
+										{
+											this.Arr_b780[newX - local_20, newY - local_3a] = local_1a;
+
+											this.Arr_6594_PathX[local_2] = newX;
+											this.Arr_6694_PathY[local_2] = newY;
+
+											local_2++;
+											local_2 &= 0xff;
+										}
+									}
+								}
+							}
+						}
+						else
+						{
+							this.Var_6794 = local_e;
+						}
+					}
 				}
 			}
-			else
+
+			int nextMoveDirection = -1;
+
+			if (param3 > this.Var_6794)
 			{
-				this.oCPU.AX.UInt16 = 0xffff;
+				int local_a = 99;
+
+				for (int i = 1; i < 9; i++)
+				{
+					direction = this.parent.MoveDirections[i];
+
+					int newX = unitX + direction.X;
+
+					if (Math.Abs(newX - this.Var_6590_DestinationX) >= 72)
+					{
+						if (newX <= this.Var_6590_DestinationX)
+						{
+							newX += 80;
+						}
+						else
+						{
+							newX -= 80;
+						}
+					}
+
+					if (Math.Abs(newX - this.Var_6590_DestinationX) < 8)
+					{
+						int newXAdjusted = this.parent.MapManagement.F0_2e31_119b_AdjustMapXPosition(newX);
+						int newY = unitY + direction.Y;
+
+						if (Math.Abs(newY - this.Var_6592_DestinationY) < 8)
+						{
+							if ((this.parent.MapManagement.F0_2aea_134a_GetTerrainType(newXAdjusted, newY) == TerrainTypeEnum.Water) == waterUnit ||
+								this.parent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(newXAdjusted, newY).HasFlag(TerrainImprovementFlagsEnum.City))
+							{
+								int local_6 = this.Arr_b780[newX - local_20, newY - local_3a];
+
+								if (local_6 != 0)
+								{
+									int local_e = 0;
+
+									if (local_6 < local_a)
+									{
+										local_a = local_6;
+										nextMoveDirection = i;
+
+										// Instruction address 0x2e31:0x1025, size: 5
+										int activeUnitID = this.parent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(newXAdjusted, newY);
+
+										if (activeUnitID != -1)
+										{
+											// Instruction address 0x2e31:0x103f, size: 5
+											local_e = (short)this.parent.Segment_1866.F0_1866_1251(unit.PlayerID, activeUnitID, 2) * 4;
+										}
+										else
+										{
+											local_e = 0;
+										}
+
+										// Instruction address 0x2e31:0x1063, size: 5
+										local_e += this.parent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(this.Var_6590_DestinationX, this.Var_6592_DestinationY, newXAdjusted, newY);
+									}
+
+									if (local_6 == local_a)
+									{
+										int local_1a;
+
+										// Instruction address 0x2e31:0x107f, size: 5
+										int activeUnitID = this.parent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(newXAdjusted, newY);
+
+										if (activeUnitID != -1)
+										{
+											// Instruction address 0x2e31:0x1099, size: 5
+											local_1a = (short)this.parent.Segment_1866.F0_1866_1251(unit.PlayerID, activeUnitID, 2) * 4;
+										}
+										else
+										{
+											local_1a = 0;
+										}
+
+										// Instruction address 0x2e31:0x10bd, size: 5
+										local_1a += this.parent.Segment_2dc4.F0_2dc4_0289_GetShortestDistance(this.Var_6590_DestinationX, this.Var_6592_DestinationY, newXAdjusted, newY);
+
+										if (local_1a < local_e)
+										{
+											nextMoveDirection = i;
+											local_e = local_1a;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+				if (nextMoveDirection != -1)
+				{
+					return nextMoveDirection;
+				}
 			}
 
-			// Far return
-			this.oParent.GoToLog.ExitBlock("F0_2e31_111c", this.oCPU.AX.UInt16);
+			if (nextMoveDirection == -1)
+			{
+				this.Var_6590_DestinationX = unit.GoToDestination.X;
+				this.Var_6592_DestinationY = unit.GoToDestination.Y;
+			}
 
-			return this.oCPU.AX.UInt16;
+			return -1;
 		}
-
-		/// <summary>
-		/// Wrap X position
-		/// </summary>
-		/// <param name="xPos"></param>
-		/// <returns></returns>
-		public int F0_2e31_119b_AdjustXPosition(int xPos)
-		{
-			// function body
-			while (xPos < 0)
-			{
-				xPos += 80;
-			}
-
-			while (xPos >= 80)
-			{
-				xPos -= 80;
-			}
-
-			this.oCPU.AX.UInt16 = (ushort)((short)xPos);
-
-			return xPos;
-		}
+		#endregion
 	}
 }

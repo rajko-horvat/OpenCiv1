@@ -34,8 +34,8 @@ namespace OpenCiv1
 			int local_2c = 0;
 			int local_30 = 0;
 			int local_3a;
-			int local_3e = 0;
-			int local_40;
+			TerrainTypeEnum newTerrainType = TerrainTypeEnum.Invalid;
+			TerrainImprovementFlagsEnum newImprovements;
 			GPoint direction;
 
 			// function body
@@ -235,7 +235,7 @@ namespace OpenCiv1
 			flag7 = false;
 
 		Label59:
-			if (((0x1 << playerID) & this.oParent.GameData.PlayerFlags) == 0)
+			if ((this.oParent.GameData.PlayerFlags & (0x1 << playerID)) == 0)
 			{
 				// Instruction address 0x1403:0x0496, size: 5
 				command = this.oParent.Segment_25fb.F0_25fb_0c9d(playerID, unitID);
@@ -344,7 +344,7 @@ namespace OpenCiv1
 				goto Label151;
 			}
 
-			local_1c = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(((this.oParent.Var_db3c_MouseXPos - 80) / 16) + this.oParent.Var_d4cc_MapViewX);
+			local_1c = this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(((this.oParent.Var_db3c_MouseXPos - 80) / 16) + this.oParent.Var_d4cc_MapViewX);
 			local_26 = ((this.oParent.Var_db3e_MouseYPos - 8) / 16) + this.oParent.Var_d75e_MapViewY;
 
 			if (this.oParent.Var_db3e_MouseYPos < 8)
@@ -372,7 +372,7 @@ namespace OpenCiv1
 					// Instruction address 0x1403:0x0775, size: 5
 					// Instruction address 0x1403:0x0781, size: 5
 					this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(playerID,
-						this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(this.oParent.Var_db3c_MouseXPos + this.oParent.Var_6ed6 - 7),
+						this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(this.oParent.Var_db3c_MouseXPos + this.oParent.Var_6ed6 - 7),
 						this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.Var_db3e_MouseYPos + this.oParent.Var_70ea - 14, 0, 49));
 				}
 				else if (this.oParent.Var_db3e_MouseYPos < 72)
@@ -428,7 +428,7 @@ namespace OpenCiv1
 						if (this.oParent.Var_db3a_MouseButton == 0)
 						{
 							// Instruction address 0x1403:0x0882, size: 5
-							local_1c = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition((this.oParent.Var_db3c_MouseXPos - 80) / 16 + this.oParent.Var_d4cc_MapViewX);
+							local_1c = this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition((this.oParent.Var_db3c_MouseXPos - 80) / 16 + this.oParent.Var_d4cc_MapViewX);
 							local_26 = ((this.oParent.Var_db3e_MouseYPos - 8) / 16) + this.oParent.Var_d75e_MapViewY;
 
 							// Instruction address 0x1403:0x08d0, size: 5
@@ -489,12 +489,12 @@ namespace OpenCiv1
 			{
 				if (flag3 && unitID < 128)
 				{
-					local_3e = (int)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_1c, local_26);
+					newTerrainType = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_1c, local_26);
 
 					// local_36 == 2 || will never happen, because local_36 has only two values 0 and 1
 					if ((this.oParent.GameData.MapVisibility[local_1c, local_26] & (0x1 << this.oParent.GameData.HumanPlayerID)) != 0 &&
-						((this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Air && local_3e == 10) ||
-						(this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Land && local_3e != 10) ||
+						((this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Air && newTerrainType == TerrainTypeEnum.Water) ||
+						(this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Land && newTerrainType != TerrainTypeEnum.Water) ||
 						(this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_1c, local_26).HasFlag(TerrainImprovementFlagsEnum.City) ||
 							this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Water)))
 					{
@@ -605,7 +605,7 @@ namespace OpenCiv1
 		Label152:
 			if (this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X != -1)
 			{
-				command = this.oParent.UnitGoTo.F0_2e31_000e_GetNextMove(playerID, unitID);
+				command = this.oParent.UnitGoTo.GetNextGoToMove(playerID, unitID);
 			}
 			else
 			{
@@ -647,24 +647,24 @@ namespace OpenCiv1
 						{
 							if ((short)this.oParent.Segment_29f3.F0_29f3_0c9e(this.oParent.GameData.Cities[cityID].PlayerID) != -1)
 							{
-								local_3a = (int)this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_2c, local_30);
+								TerrainImprovementFlagsEnum improvements = this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_2c, local_30);
 
-								if ((local_3a & 0x6) != 0)
+								if (improvements.HasFlag(TerrainImprovementFlagsEnum.Mines) || improvements.HasFlag(TerrainImprovementFlagsEnum.Irrigation))
 								{
-									this.oParent.MapManagement.F0_2aea_16ee(6, local_2c, local_30);
+									this.oParent.MapManagement.F0_2aea_16ee_ClearImprovements(TerrainImprovementFlagsEnum.Mines | TerrainImprovementFlagsEnum.Irrigation, local_2c, local_30);
 								}
-								else if ((local_3a & 0x10) != 0)
+								else if (improvements.HasFlag(TerrainImprovementFlagsEnum.RailRoad))
 								{
-									this.oParent.MapManagement.F0_2aea_16ee(16, local_2c, local_30);
+									this.oParent.MapManagement.F0_2aea_16ee_ClearImprovements(TerrainImprovementFlagsEnum.RailRoad | TerrainImprovementFlagsEnum.Irrigation | TerrainImprovementFlagsEnum.Mines, local_2c, local_30);
 								}
 								else
 								{
-									this.oParent.MapManagement.F0_2aea_16ee(8, local_2c, local_30);
+									this.oParent.MapManagement.F0_2aea_16ee_ClearImprovements(TerrainImprovementFlagsEnum.Road, local_2c, local_30);
 								}
 
 								if (this.oParent.GameData.Cities[cityID].PlayerID == this.oParent.GameData.HumanPlayerID)
 								{
-									this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(local_2c, local_30);
+									this.oParent.MapManagement.F0_2aea_1601_UpdateVisibleCellStatus(local_2c, local_30);
 								}
 
 								F0_1403_3ed7(local_2c, local_30);
@@ -699,7 +699,7 @@ namespace OpenCiv1
 					{
 						if (this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_2c, local_30).HasFlag(TerrainImprovementFlagsEnum.City))
 						{
-							int cityID = this.oParent.MapManagement.F0_2aea_175a(local_2c, local_30);
+							int cityID = this.oParent.MapManagement.F0_2aea_175a_FindCityHumanPlayer(local_2c, local_30);
 
 							if (this.oParent.GameData.Cities[cityID].ActualSize < 10)
 							{
@@ -774,7 +774,7 @@ namespace OpenCiv1
 
 								this.oParent.GameData.Players[playerID].Units[unitID].SpecialMoves++;
 
-								if ((this.oParent.GameData.Terrains[local_3e].MovementCost + 4) <= this.oParent.GameData.Players[playerID].Units[unitID].SpecialMoves)
+								if ((this.oParent.GameData.Terrains[(int)newTerrainType].MovementCost + 4) <= this.oParent.GameData.Players[playerID].Units[unitID].SpecialMoves)
 								{
 									// Instruction address 0x1403:0x13bf, size: 5
 									this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.Fortress, local_2c, local_30);
@@ -890,8 +890,8 @@ namespace OpenCiv1
 					}
 					else
 					{
-						local_3e = (int)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_2c, local_30);
-						local_3a = this.oParent.GameData.TerrainModifications[local_3e].IrrigationEffect;
+						newTerrainType = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_2c, local_30);
+						local_3a = this.oParent.GameData.TerrainModifications[(int)newTerrainType].IrrigationEffect;
 
 						if (local_3a == -1)
 						{
@@ -915,22 +915,22 @@ namespace OpenCiv1
 								this.oParent.GameData.Players[playerID].Units[unitID].GoToNextDirection = -1;
 								this.oParent.GameData.Players[playerID].Units[unitID].SpecialMoves++;
 
-								if (this.oParent.GameData.TerrainModifications[local_3e].IrrigationCost <= this.oParent.GameData.Players[playerID].Units[unitID].SpecialMoves)
+								if (this.oParent.GameData.TerrainModifications[(int)newTerrainType].IrrigationCost <= this.oParent.GameData.Players[playerID].Units[unitID].SpecialMoves)
 								{
 									if (local_3a >= 0)
 									{
 										// Instruction address 0x1403:0x1743, size: 5
-										this.oParent.CommonTools.F0_1000_104f_SetPixel(2, local_2c, local_30, (ushort)local_3a);
+										this.oParent.Graphics.F0_VGA_0550_SetPixel(2, local_2c, local_30, (byte)local_3a);
 
 										this.oParent.GameData.MapVisibility[local_2c, local_30] |= 1;
 
 										// Instruction address 0x1403:0x176a, size: 5
-										this.oParent.MapManagement.F0_2aea_16ee(6, local_2c, local_30);
+										this.oParent.MapManagement.F0_2aea_16ee_ClearImprovements(TerrainImprovementFlagsEnum.Irrigation | TerrainImprovementFlagsEnum.Mines, local_2c, local_30);
 									}
 									else
 									{
 										// Instruction address 0x1403:0x177f, size: 5
-										this.oParent.MapManagement.F0_2aea_16ee(4, local_2c, local_30);
+										this.oParent.MapManagement.F0_2aea_16ee_ClearImprovements(TerrainImprovementFlagsEnum.Mines, local_2c, local_30);
 										// Instruction address 0x1403:0x1791, size: 5
 										this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.Irrigation, local_2c, local_30);
 									}
@@ -976,8 +976,8 @@ namespace OpenCiv1
 					}
 					else
 					{
-						local_3e = (int)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_2c, local_30);
-						local_3a = this.oParent.GameData.TerrainModifications[local_3e].MiningEffect;
+						newTerrainType = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_2c, local_30);
+						local_3a = this.oParent.GameData.TerrainModifications[(int)newTerrainType].MiningEffect;
 
 						if (local_3a == -1)
 						{
@@ -1000,7 +1000,7 @@ namespace OpenCiv1
 							this.oParent.GameData.Players[playerID].Units[unitID].GoToNextDirection = -1;
 							this.oParent.GameData.Players[playerID].Units[unitID].SpecialMoves++;
 
-							if (this.oParent.GameData.TerrainModifications[local_3e].MiningCost <= this.oParent.GameData.Players[playerID].Units[unitID].SpecialMoves)
+							if (this.oParent.GameData.TerrainModifications[(int)newTerrainType].MiningCost <= this.oParent.GameData.Players[playerID].Units[unitID].SpecialMoves)
 							{
 								if (local_3a >= 0)
 								{
@@ -1009,12 +1009,12 @@ namespace OpenCiv1
 									if (this.oParent.GameData.Players[playerID].Units[unitID].SpecialMoves > 5)
 									{
 										// Instruction address 0x1403:0x193e, size: 5
-										this.oParent.CommonTools.F0_1000_104f_SetPixel(2, local_2c, local_30, (ushort)local_3a);
+										this.oParent.Graphics.F0_VGA_0550_SetPixel(2, local_2c, local_30, (byte)local_3a);
 
 										this.oParent.GameData.MapVisibility[local_2c, local_30] |= 1;
 
 										// Instruction address 0x1403:0x1965, size: 5
-										this.oParent.MapManagement.F0_2aea_16ee(6, local_2c, local_30);
+										this.oParent.MapManagement.F0_2aea_16ee_ClearImprovements(TerrainImprovementFlagsEnum.Mines | TerrainImprovementFlagsEnum.Irrigation, local_2c, local_30);
 										// Instruction address 0x1403:0x199a, size: 5
 										F0_1403_3f13(playerID, unitID);
 
@@ -1025,7 +1025,7 @@ namespace OpenCiv1
 								else
 								{
 									// Instruction address 0x1403:0x197a, size: 5
-									this.oParent.MapManagement.F0_2aea_16ee(2, local_2c, local_30);
+									this.oParent.MapManagement.F0_2aea_16ee_ClearImprovements(TerrainImprovementFlagsEnum.Irrigation, local_2c, local_30);
 									// Instruction address 0x1403:0x198c, size: 5
 									this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.Mines, local_2c, local_30);
 									// Instruction address 0x1403:0x199a, size: 5
@@ -1047,9 +1047,9 @@ namespace OpenCiv1
 					}
 					else
 					{
-						local_40 = (int)this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_2c, local_30);
+						newImprovements = this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_2c, local_30);
 
-						if ((local_40 & 0x40) == 0)
+						if (!newImprovements.HasFlag(TerrainImprovementFlagsEnum.Pollution))
 						{
 							this.oParent.GameData.Players[playerID].Units[unitID].Status &= 0x7d;
 							this.oParent.GameData.Players[playerID].Units[unitID].SpecialMoves = 0;
@@ -1072,9 +1072,9 @@ namespace OpenCiv1
 							if (this.oParent.GameData.Players[playerID].Units[unitID].SpecialMoves >= 4)
 							{
 								// Instruction address 0x1403:0x123e, size: 5
-								this.oParent.MapManagement.F0_2aea_16ee(0x40, local_2c, local_30);
+								this.oParent.MapManagement.F0_2aea_16ee_ClearImprovements(TerrainImprovementFlagsEnum.Pollution, local_2c, local_30);
 								// Instruction address 0x1403:0x124c, size: 5
-								this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(local_2c, local_30);
+								this.oParent.MapManagement.F0_2aea_1601_UpdateVisibleCellStatus(local_2c, local_30);
 
 								this.oParent.GameData.PollutedSquareCount--;
 
@@ -1096,10 +1096,11 @@ namespace OpenCiv1
 					}
 					else
 					{
-						local_40 = (int)this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_2c, local_30);
+						newImprovements = this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_2c, local_30);
 
-						if (((local_40 & 0x8) != 0 &&
-							(!this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.Railroad) || (local_40 & 0x1) != 0)) || (local_40 & 0x10) != 0)
+						if ((newImprovements.HasFlag(TerrainImprovementFlagsEnum.Road) &&
+							(!this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.Railroad) || 
+							newImprovements.HasFlag(TerrainImprovementFlagsEnum.City))) || newImprovements.HasFlag(TerrainImprovementFlagsEnum.RailRoad))
 						{
 							this.oParent.GameData.Players[playerID].Units[unitID].Status &= 0xfd;
 							this.oParent.GameData.Players[playerID].Units[unitID].SpecialMoves = 0;
@@ -1109,9 +1110,9 @@ namespace OpenCiv1
 						}
 						else
 						{
-							local_3e = (int)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_2c, local_30);
+							newTerrainType = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_2c, local_30);
 
-							if (local_3e != 11 || this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.BridgeBuilding))
+							if (newTerrainType != TerrainTypeEnum.River || this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.BridgeBuilding))
 							{
 								this.oParent.GameData.Players[playerID].Units[unitID].Status |= 2;
 								this.oParent.GameData.Players[playerID].Units[unitID].RemainingMoves = 0;
@@ -1123,11 +1124,11 @@ namespace OpenCiv1
 
 								this.oParent.GameData.Players[playerID].Units[unitID].SpecialMoves++;
 
-								if (((((local_40 & 0x8) != 0) ? 4 : 2) * this.oParent.GameData.Terrains[local_3e].MovementCost) <= local_58)
+								if ((((newImprovements.HasFlag(TerrainImprovementFlagsEnum.Road)) ? 4 : 2) * this.oParent.GameData.Terrains[(int)newTerrainType].MovementCost) <= local_58)
 								{
 									// Instruction address 0x1403:0x154b, size: 5
 									this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(
-										(((local_40 & 0x8) != 0) ? TerrainImprovementFlagsEnum.RailRoad : TerrainImprovementFlagsEnum.Road), local_2c, local_30);
+										((newImprovements.HasFlag(TerrainImprovementFlagsEnum.Road)) ? TerrainImprovementFlagsEnum.RailRoad : TerrainImprovementFlagsEnum.Road), local_2c, local_30);
 									// Instruction address 0x1403:0x1567, size: 5
 									this.oParent.Segment_1866.F0_1866_01dc(local_2c, local_30, playerID, unitID, true);
 
@@ -1195,41 +1196,49 @@ namespace OpenCiv1
 						}
 						break;
 
+					// Up
 					case '\x001':
 					case '\x4800':
 						local_24 = 1;
 						goto Label300;
 
+					// PageUp
 					case '\x002':
 					case '\x4900':
 						local_24 = 2;
 						goto Label300;
 
+					// Right
 					case '\x003':
 					case '\x4d00':
 						local_24 = 3;
 						goto Label300;
 
+					// PageDown
 					case '\x004':
 					case '\x5100':
 						local_24 = 4;
 						goto Label300;
 
+					// Down
 					case '\x005':
 					case '\x5000':
 						local_24 = 5;
 						goto Label300;
 
+					// End
 					case '\x006':
 					case '\x4f00':
 						local_24 = 6;
 						goto Label300;
 
+					// Left
 					case '\x007':
 					case '\x4b00':
 						local_24 = 7;
 						goto Label300;
 
+					// Home
 					case '\x008':
 					case '\x4700':
 						local_24 = 8;
@@ -1249,8 +1258,8 @@ namespace OpenCiv1
 					this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(local_e, local_12);
 				}
 
-				local_e = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(this.oParent.MoveOffsets[local_24].X + local_e);
-				local_12 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.MoveOffsets[local_24].Y + local_12, 0, 49);
+				local_e = this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(this.oParent.MoveDirections[local_24].X + local_e);
+				local_12 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.MoveDirections[local_24].Y + local_12, 0, 49);
 
 				if (!F0_1403_4508(local_e, local_12))
 				{
@@ -1262,20 +1271,21 @@ namespace OpenCiv1
 
 			if (playerID == 0 && this.oParent.GameData.Players[playerID].Units[unitID].TypeID != 26)
 			{
-				local_40 = (int)this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_2c, local_30);
+				newImprovements = this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_2c, local_30);
 
-				if ((local_40 & 0x1) == 0 && (local_40 & 0x6) != 0 &&
+				if (!newImprovements.HasFlag(TerrainImprovementFlagsEnum.City) && 
+					(newImprovements.HasFlag(TerrainImprovementFlagsEnum.Mines) || newImprovements.HasFlag(TerrainImprovementFlagsEnum.Irrigation)) &&
 					this.oParent.GameData.Players[playerID].Units[unitID].TypeID != 3 &&
 					this.oParent.GameData.Players[playerID].Units[unitID].TypeID != 7 &&
 					this.oParent.GameData.Cities[this.oParent.Segment_2dc4.F0_2dc4_0102(local_2c, local_30)].PlayerID == this.oParent.GameData.HumanPlayerID)
 				{
 					// Instruction address 0x1403:0x1d35, size: 5
-					this.oParent.MapManagement.F0_2aea_16ee(6, local_2c, local_30);
+					this.oParent.MapManagement.F0_2aea_16ee_ClearImprovements(TerrainImprovementFlagsEnum.Mines | TerrainImprovementFlagsEnum.Irrigation, local_2c, local_30);
 
 					if ((this.oParent.GameData.MapVisibility[local_2c, local_30] & (0x1 << this.oParent.GameData.HumanPlayerID)) != 0)
 					{
 						// Instruction address 0x1403:0x1d68, size: 5
-						this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(local_2c, local_30);
+						this.oParent.MapManagement.F0_2aea_1601_UpdateVisibleCellStatus(local_2c, local_30);
 						// Instruction address 0x1403:0x1d76, size: 5
 						this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(local_2c, local_30);
 					}
@@ -1285,18 +1295,18 @@ namespace OpenCiv1
 				}
 			}
 
-			local_1c = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(this.oParent.MoveOffsets[local_24].X + local_2c);
-			local_26 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.MoveOffsets[local_24].Y + local_30, 0, 49);
+			local_1c = this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(this.oParent.MoveDirections[local_24].X + local_2c);
+			local_26 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.MoveDirections[local_24].Y + local_30, 0, 49);
 			TerrainTypeEnum terrainType = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_2c, local_30);
-			local_3e = (int)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_1c, local_26);
-			local_40 = (int)this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_1c, local_26);
+			newTerrainType = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_1c, local_26);
+			newImprovements = this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_1c, local_26);
 			local_18 = this.oParent.MapManagement.F0_2aea_1458_GetCellActiveUnitID(local_1c, local_26);
 
 			if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID != -1 &&
 				this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Land)
 			{
-				if (local_18 == -1 && this.oParent.Segment_1866.F0_1866_1725(playerID, local_2c, local_30) != 0 &&
-					this.oParent.Segment_1866.F0_1866_1725(playerID, local_1c, local_26) != 0 &&
+				if (local_18 == -1 && this.oParent.Segment_1866.F0_1866_1725_IsUnitNear(playerID, local_2c, local_30) &&
+					this.oParent.Segment_1866.F0_1866_1725_IsUnitNear(playerID, local_1c, local_26) &&
 					this.oParent.GameData.Players[playerID].Units[unitID].TypeID < 26 && terrainType != TerrainTypeEnum.Water)
 				{
 					if (playerID == this.oParent.GameData.HumanPlayerID)
@@ -1356,7 +1366,7 @@ namespace OpenCiv1
 
 							if (this.oParent.GameData.Cities[cityID].PlayerID != playerID ||
 								this.oParent.GameData.Cities[cityID].CurrentProductionID < -24 || local_3a >= 10 ||
-								this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(local_1c, local_26) != this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+								this.oParent.MapManagement.F0_2aea_1942_GetGroupID(local_1c, local_26) != this.oParent.MapManagement.F0_2aea_1942_GetGroupID(
 									this.oParent.GameData.Cities[this.oParent.GameData.Players[playerID].Units[unitID].HomeCityID].Position.X,
 									this.oParent.GameData.Cities[this.oParent.GameData.Players[playerID].Units[unitID].HomeCityID].Position.Y))
 							{
@@ -1417,7 +1427,7 @@ namespace OpenCiv1
 				}
 			}
 
-			if (local_3e == 10 && this.oParent.GameData.Players[playerID].Units[unitID].TypeID != -1 &&
+			if (newTerrainType == TerrainTypeEnum.Water && this.oParent.GameData.Players[playerID].Units[unitID].TypeID != -1 &&
 				this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Land)
 			{
 				if (playerID != this.oParent.Var_d20a || local_18 == -1 || this.oParent.Segment_1866.F0_1866_13d5(playerID, local_18) <= 0) goto Label674;
@@ -1439,7 +1449,7 @@ namespace OpenCiv1
 					goto Label674;
 				}
 
-				if (local_3e != 10 && this.oParent.GameData.Players[playerID].Units[unitID].TypeID == 22) goto Label674;
+				if (newTerrainType != TerrainTypeEnum.Water && this.oParent.GameData.Players[playerID].Units[unitID].TypeID == 22) goto Label674;
 
 				if (playerID != this.oParent.GameData.HumanPlayerID &&
 					this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].AttackStrength == 0) goto Label674;
@@ -1450,7 +1460,7 @@ namespace OpenCiv1
 				{
 					if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID != 14)
 					{
-						if ((local_40 & 0x1) == 0)
+						if (!newImprovements.HasFlag(TerrainImprovementFlagsEnum.City))
 						{
 							// Instruction address 0x1403:0x2319, size: 5
 							F0_1403_461c_ShowInstantWarningPopupToHumanPlayer(0x1f30);
@@ -1519,7 +1529,7 @@ namespace OpenCiv1
 					this.oParent.GameData.Players[playerID].Units[unitID].RemainingMoves = 0;
 				}
 
-				if ((local_40 & 0x1) == 0) goto Label674;
+				if (!newImprovements.HasFlag(TerrainImprovementFlagsEnum.City)) goto Label674;
 
 				int cityID = this.oParent.Segment_2dc4.F0_2dc4_00ba_GetCityID(local_1c, local_26);
 
@@ -1576,13 +1586,13 @@ namespace OpenCiv1
 					if (this.oParent.Var_d20a != this.oParent.GameData.HumanPlayerID)
 					{
 						// Instruction address 0x1403:0x2641, size: 5
-						this.oParent.Segment_25fb.F0_25fb_3459(this.oParent.Var_d20a, this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(local_1c, local_26));
+						this.oParent.Segment_25fb.F0_25fb_3459(this.oParent.Var_d20a, this.oParent.MapManagement.F0_2aea_1942_GetGroupID(local_1c, local_26));
 					}
 				}
 				goto Label674;
 			}
 
-			if (local_3e != 10 && (local_40 & 0x1) == 0 &&
+			if (newTerrainType != TerrainTypeEnum.Water && !newImprovements.HasFlag(TerrainImprovementFlagsEnum.City) &&
 				this.oParent.GameData.Players[playerID].Units[unitID].TypeID != -1 &&
 				this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Air)
 			{
@@ -1592,7 +1602,7 @@ namespace OpenCiv1
 
 			if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID != -1 &&
 				this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Land &&
-				(local_40 & 0x1) != 0 && this.oParent.MapManagement.F0_2aea_1369_GetCityOwner(local_1c, local_26) != playerID)
+				newImprovements.HasFlag(TerrainImprovementFlagsEnum.City) && this.oParent.MapManagement.F0_2aea_1369_GetCityOwner(local_1c, local_26) != playerID)
 			{
 				if (this.oParent.GameData.Players[playerID].Units[unitID].TypeID != 25)
 				{
@@ -1618,7 +1628,7 @@ namespace OpenCiv1
 
 			if (this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Land)
 			{
-				if ((((int)this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_2c, local_30) & local_40) & 0x8) != 0 &&
+				if ((this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_2c, local_30) & newImprovements).HasFlag(TerrainImprovementFlagsEnum.Road) &&
 					this.oParent.GameData.Players[playerID].Units[unitID].RemainingMoves != 0)
 				{
 					if (!this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_2c, local_30).HasFlag(TerrainImprovementFlagsEnum.RailRoad) ||
@@ -1631,13 +1641,13 @@ namespace OpenCiv1
 				else
 				{
 					if (this.oParent.GameData.Players[playerID].Units[unitID].RemainingMoves != 3 &&
-						this.oParent.CAPI.RNG.Next(this.oParent.GameData.Terrains[local_3e].MovementCost * 3) > this.oParent.GameData.Players[playerID].Units[unitID].RemainingMoves)
+						this.oParent.CAPI.RNG.Next(this.oParent.GameData.Terrains[(int)newTerrainType].MovementCost * 3) > this.oParent.GameData.Players[playerID].Units[unitID].RemainingMoves)
 					{
 						this.oParent.GameData.Players[playerID].Units[unitID].RemainingMoves = 0;
 						goto Label674;
 					}
 
-					this.oParent.GameData.Players[playerID].Units[unitID].RemainingMoves -= (short)(this.oParent.GameData.Terrains[local_3e].MovementCost * 3);
+					this.oParent.GameData.Players[playerID].Units[unitID].RemainingMoves -= (short)(this.oParent.GameData.Terrains[(int)newTerrainType].MovementCost * 3);
 				}
 			}
 			else
@@ -1670,7 +1680,7 @@ namespace OpenCiv1
 			}
 
 			if (local_18 != -1 &&
-				playerID == this.oParent.Var_d20a && playerID != this.oParent.GameData.HumanPlayerID && (local_40 & 0x1) == 0)
+				playerID == this.oParent.Var_d20a && playerID != this.oParent.GameData.HumanPlayerID && !newImprovements.HasFlag(TerrainImprovementFlagsEnum.City))
 			{
 				if (this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Land ||
 					(this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Water &&
@@ -1689,9 +1699,10 @@ namespace OpenCiv1
 			{
 				if (ownerPlayerID < 8)
 				{
-					if (local_3e != 10 && terrainType != TerrainTypeEnum.Water &&
+					if (newTerrainType != TerrainTypeEnum.Water && terrainType != TerrainTypeEnum.Water &&
 						this.oParent.GameData.Players[playerID].Units[unitID].TypeID < 26 &&
-						(local_40 & 0xf) != 0 && ownerPlayerID != playerID)
+						(newImprovements.HasFlag(TerrainImprovementFlagsEnum.City) || newImprovements.HasFlag(TerrainImprovementFlagsEnum.Irrigation) ||
+						newImprovements.HasFlag(TerrainImprovementFlagsEnum.Mines) || newImprovements.HasFlag(TerrainImprovementFlagsEnum.Road)) && ownerPlayerID != playerID)
 					{
 						if ((playerID == this.oParent.GameData.HumanPlayerID || ownerPlayerID == this.oParent.GameData.HumanPlayerID) &&
 							this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType == UnitMovementTypeEnum.Land &&
@@ -1733,7 +1744,7 @@ namespace OpenCiv1
 
 			int cityPlayerID1 = this.oParent.MapManagement.F0_2aea_1369_GetCityOwner(local_1c, local_26);
 
-			if (playerID == 0 && local_3e != 10 &&
+			if (playerID == 0 && newTerrainType != TerrainTypeEnum.Water &&
 				(this.oParent.GameData.MapVisibility[local_2c, local_30] & (0x1 << this.oParent.GameData.HumanPlayerID)) != 0 &&
 				(this.oParent.GameData.Players[playerID].Units[unitID].VisibleByPlayer & (0x1 << this.oParent.GameData.HumanPlayerID)) == 0 &&
 				this.oParent.GameData.Cities[this.oParent.Segment_2dc4.F0_2dc4_0102(local_2c, local_30)].PlayerID == this.oParent.GameData.HumanPlayerID)
@@ -1741,7 +1752,7 @@ namespace OpenCiv1
 				this.oParent.GameData.Players[playerID].Units[unitID].VisibleByPlayer |= this.oParent.GameData.MapVisibility[local_2c, local_30];
 			}
 
-			if ((local_40 & 0x1) != 0 && cityPlayerID1 != playerID &&
+			if (newImprovements.HasFlag(TerrainImprovementFlagsEnum.City) && cityPlayerID1 != playerID &&
 				(this.oParent.GameData.MapVisibility[local_1c, local_26] & (0x1 << this.oParent.GameData.HumanPlayerID)) != 0 &&
 				((this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Diplomacy[playerID] & 0x40) != 0 ||
 					(this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Diplomacy[cityPlayerID1] & 0x40) != 0))
@@ -1749,7 +1760,7 @@ namespace OpenCiv1
 				this.oParent.GameData.Players[playerID].Units[unitID].VisibleByPlayer |= (ushort)(1 << this.oParent.GameData.HumanPlayerID);
 			}
 
-			if (local_3e == 10)
+			if (newTerrainType == TerrainTypeEnum.Water)
 			{
 				if (((int)this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(local_1c, local_26) & 0x2) != 0)
 				{
@@ -1778,7 +1789,7 @@ namespace OpenCiv1
 			this.oParent.MapManagement.F0_2aea_1412_SetCellActivePlayerID(playerID, unitID, local_2c, local_30);
 
 			// Instruction address 0x1403:0x2d21, size: 5
-			this.oParent.MapManagement.F0_2aea_13cb(playerID, unitID, local_1c, local_26);
+			this.oParent.MapManagement.F0_2aea_13cb_SetCellPlayerID(playerID, unitID, local_1c, local_26);
 
 			this.oParent.GameData.Players[playerID].Units[unitID].Position.X = local_1c;
 			this.oParent.GameData.Players[playerID].Units[unitID].Position.Y = local_26;
@@ -1793,7 +1804,7 @@ namespace OpenCiv1
 			if (ownerPlayerID != 0 && ownerPlayerID < 8 && ownerPlayerID != playerID)
 			{
 				// Instruction address 0x1403:0x2d9d, size: 5
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(2, local_1c + 80, local_26, 0);
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, local_1c + 80, local_26, 0);
 			}
 
 			if (this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X == local_1c &&
@@ -1808,7 +1819,7 @@ namespace OpenCiv1
 				}
 			}
 
-			if (terrainType == TerrainTypeEnum.Water && local_3e != 10 &&
+			if (terrainType == TerrainTypeEnum.Water && newTerrainType != TerrainTypeEnum.Water &&
 				this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
 			{
 				this.oParent.GameData.Players[playerID].Units[unitID].RemainingMoves = 0;
@@ -1835,7 +1846,7 @@ namespace OpenCiv1
 							// Instruction address 0x1403:0x2efb, size: 5
 							this.oParent.MapManagement.F0_2aea_1412_SetCellActivePlayerID(playerID, nextUnitID, local_2c, local_30);
 							// Instruction address 0x1403:0x2f0f, size: 5
-							this.oParent.MapManagement.F0_2aea_13cb(playerID, nextUnitID, local_1c, local_26);
+							this.oParent.MapManagement.F0_2aea_13cb_SetCellPlayerID(playerID, nextUnitID, local_1c, local_26);
 
 							this.oParent.GameData.Players[playerID].Units[nextUnitID].Position.X = local_1c;
 							this.oParent.GameData.Players[playerID].Units[nextUnitID].Position.Y = local_26;
@@ -1866,7 +1877,7 @@ namespace OpenCiv1
 				}
 			}
 
-			if ((local_40 & 0x1) != 0 && cityPlayerID1 != playerID)
+			if (newImprovements.HasFlag(TerrainImprovementFlagsEnum.City) && cityPlayerID1 != playerID)
 			{
 				this.oParent.GameData.Players[playerID].Units[unitID].VisibleByPlayer |= (ushort)(1 << cityPlayerID1);
 
@@ -1881,7 +1892,7 @@ namespace OpenCiv1
 			// Instruction address 0x1403:0x3079, size: 5
 			this.oParent.Segment_1866.F0_1866_01dc(local_1c, local_26, playerID, unitID, true);
 
-			if (this.oParent.MapManagement.F0_2aea_1894_CellHasMinorTribeHut((TerrainTypeEnum)local_3e, local_1c, local_26))
+			if (this.oParent.MapManagement.F0_2aea_1894_CellHasMinorTribeHut(newTerrainType, local_1c, local_26))
 			{
 				// Instruction address 0x1403:0x30a0, size: 5
 				this.oParent.Segment_1866.F0_1866_1931(playerID, unitID);
@@ -1889,14 +1900,15 @@ namespace OpenCiv1
 				this.oParent.GameData.MapVisibility[local_1c, local_26] |= 1;
 			}
 
-			if (local_3e == 10 &&
-				this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Air)
+			if (newTerrainType == TerrainTypeEnum.Water &&
+				this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Air &&
+				this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].MovementType != UnitMovementTypeEnum.Water)
 			{
 				// Instruction address 0x1403:0x30f6, size: 5
 				this.oParent.Segment_1866.F0_1866_144b(playerID, unitID, 0x1560);
 			}
 
-			if (playerID == 0 && local_3e != 10)
+			if (playerID == 0 && newTerrainType != TerrainTypeEnum.Water)
 			{
 				if ((this.oParent.GameData.MapVisibility[local_1c, local_26] & (0x1 << this.oParent.GameData.HumanPlayerID)) != 0 &&
 					(this.oParent.GameData.Players[playerID].Units[unitID].VisibleByPlayer & (0x1 << this.oParent.GameData.HumanPlayerID)) == 0 &&
@@ -1935,7 +1947,7 @@ namespace OpenCiv1
 
 			local_a = 0;
 
-			if ((local_40 & 0x1) != 0 &&
+			if (newImprovements.HasFlag(TerrainImprovementFlagsEnum.City) &&
 				this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[unitID].TypeID].TurnsOutside != 0)
 			{
 				this.oParent.GameData.Players[playerID].Units[unitID].Status &= 0xfd;
@@ -2382,7 +2394,7 @@ namespace OpenCiv1
 				case 0x4737:
 					local_24 = 8;
 
-					direction = this.oParent.MoveOffsets[local_24];
+					direction = this.oParent.MoveDirections[local_24];
 					this.oParent.Var_d4cc_MapViewX += direction.X * 4;
 					this.oParent.Var_d75e_MapViewY += direction.Y * 4;
 
@@ -2394,7 +2406,7 @@ namespace OpenCiv1
 				case 0x4838:
 					local_24 = 1;
 
-					direction = this.oParent.MoveOffsets[local_24];
+					direction = this.oParent.MoveDirections[local_24];
 					this.oParent.Var_d4cc_MapViewX += direction.X * 4;
 					this.oParent.Var_d75e_MapViewY += direction.Y * 4;
 
@@ -2406,7 +2418,7 @@ namespace OpenCiv1
 				case 0x4939:
 					local_24 = 2;
 
-					direction = this.oParent.MoveOffsets[local_24];
+					direction = this.oParent.MoveDirections[local_24];
 					this.oParent.Var_d4cc_MapViewX += direction.X * 4;
 					this.oParent.Var_d75e_MapViewY += direction.Y * 4;
 
@@ -2418,7 +2430,7 @@ namespace OpenCiv1
 				case 0x4b34:
 					local_24 = 7;
 
-					direction = this.oParent.MoveOffsets[local_24];
+					direction = this.oParent.MoveDirections[local_24];
 					this.oParent.Var_d4cc_MapViewX += direction.X * 4;
 					this.oParent.Var_d75e_MapViewY += direction.Y * 4;
 
@@ -2430,7 +2442,7 @@ namespace OpenCiv1
 				case 0x4d36:
 					local_24 = 3;
 
-					direction = this.oParent.MoveOffsets[local_24];
+					direction = this.oParent.MoveDirections[local_24];
 					this.oParent.Var_d4cc_MapViewX += direction.X * 4;
 					this.oParent.Var_d75e_MapViewY += direction.Y * 4;
 
@@ -2442,7 +2454,7 @@ namespace OpenCiv1
 				case 0x4f31:
 					local_24 = 6;
 
-					direction = this.oParent.MoveOffsets[local_24];
+					direction = this.oParent.MoveDirections[local_24];
 					this.oParent.Var_d4cc_MapViewX += direction.X * 4;
 					this.oParent.Var_d75e_MapViewY += direction.Y * 4;
 
@@ -2454,7 +2466,7 @@ namespace OpenCiv1
 				case 0x5032:
 					local_24 = 5;
 
-					direction = this.oParent.MoveOffsets[local_24];
+					direction = this.oParent.MoveDirections[local_24];
 					this.oParent.Var_d4cc_MapViewX += direction.X * 4;
 					this.oParent.Var_d75e_MapViewY += direction.Y * 4;
 
@@ -2466,7 +2478,7 @@ namespace OpenCiv1
 				case 0x5133:
 					local_24 = 4;
 
-					direction = this.oParent.MoveOffsets[local_24];
+					direction = this.oParent.MoveDirections[local_24];
 					this.oParent.Var_d4cc_MapViewX += direction.X * 4;
 					this.oParent.Var_d75e_MapViewY += direction.Y * 4;
 
@@ -2518,7 +2530,7 @@ namespace OpenCiv1
 
 							for (int i = 1; i < 9; i++)
 							{
-								direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c))];
+								direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c))];
 
 								if (this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 									this.oParent.GameData.Players[playerID].Units[unitID].Position.X + direction.X,
@@ -2663,7 +2675,7 @@ namespace OpenCiv1
 			{
 				for (int Local_8 = 1; Local_8 < 9; Local_8 += 2)
 				{
-					GPoint direction = this.oParent.MoveOffsets[Local_8];
+					GPoint direction = this.oParent.MoveDirections[Local_8];
 					int newX = x + direction.X;
 					int newY = y + direction.Y;
 

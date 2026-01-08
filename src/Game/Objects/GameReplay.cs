@@ -151,7 +151,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L0181;
 
 			// Instruction address 0x0000:0x016c, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)));
 
@@ -1061,7 +1061,7 @@ namespace OpenCiv1
 				goto L0c16;
 
 			// Instruction address 0x0000:0x0b9d, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
@@ -1077,14 +1077,14 @@ namespace OpenCiv1
 			this.oCPU.ES.UInt16 = 0x3725; // segment
 
 			// Instruction address 0x0000:0x0bd6, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetGroupID(
 				this.oCPU.ReadInt16(this.oCPU.ES.UInt16, (ushort)(this.oCPU.SI.UInt16 + 0x100)),
 				this.oCPU.ReadInt16(this.oCPU.ES.UInt16, (ushort)(this.oCPU.SI.UInt16 + 0x200)));
 
 			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
 
 			// Instruction address 0x0000:0x0be6, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(xPos, yPos);
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetGroupID(xPos, yPos);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, this.oCPU.DI.UInt16);
 			if (this.oCPU.Flags.E) goto L0bf5;
@@ -1153,7 +1153,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L0c68;
 
 			// Instruction address 0x0000:0x0c57, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
 
@@ -1199,7 +1199,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L0d24;
 
 			// Instruction address 0x0000:0x0ccb, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
 
@@ -1225,7 +1225,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0cdf;
 
 			// Instruction address 0x0000:0x0d10, size: 5
-			this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
 

@@ -20,7 +20,8 @@ namespace OpenCiv1
 
 		public bool HasSpecialResources = false;
 		public int Layer2_PlayerOwnership = 0;
-		public int Layer3_GroupID = -1; // GroupID
+		public int Layer3_GroupID = -1; // Old group ID
+		public int GroupID = -1;
 		public int Layer4_BuildSites = 0;
 
 		// 0x1 - City, 0x2 - Irrigation, 0x4 - Mine, 0x8 - Roads, 0x10 - Railroads, 0x20 - City Walls, 0x40 - Pollution, 0x80 - Flag80

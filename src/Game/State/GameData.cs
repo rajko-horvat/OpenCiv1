@@ -81,8 +81,8 @@ namespace OpenCiv1
 
 		// Continents
 		public short[] PerContinentSizeAndPerOceanSize = new short[128];
-		public Continent[] Continents = new Continent[64];
-		public Continent[] Oceans = new Continent[64];
+		public Continent[] Continents = new Continent[16];
+		public Continent[] Oceans = new Continent[16];
 
 		// Graphs
 		public byte[] ScoreGraphData = new byte[1200];
@@ -161,9 +161,6 @@ namespace OpenCiv1
 		// Replay data
 		public short ReplayDataLength = 0;
 		public byte[] ReplayData = new byte[4096];
-
-		// Unused GoTo data
-		public byte[] LandPathfinding = new byte[260];
 
 		// Spaceship
 		public short SpaceshipFlags = 0;
@@ -346,7 +343,9 @@ namespace OpenCiv1
 			new TerrainModification(TerrainTypeEnum.Swamp, 10, 15, 2, 15, 0, 0),
 			new TerrainModification(TerrainTypeEnum.Jungle, 10, 15, 2, 15, 0, 0),
 			new TerrainModification(TerrainTypeEnum.Water, -1, 0, -1, 0, 0, 0),
-			new TerrainModification(TerrainTypeEnum.River, -2, 5, -1, 0, 0, 1) };
+			new TerrainModification(TerrainTypeEnum.River, -2, 5, -1, 0, 0, 1)
+
+			};
 
 		private TerrainDefinition[] terrainTypes = new TerrainDefinition[]{
 			new TerrainDefinition(TerrainTypeEnum.Desert, "Desert", 1, 2, 0, 1, 0, 1, 14),
@@ -411,12 +410,12 @@ namespace OpenCiv1
 				this.PerContinentSizeAndPerOceanSize[i] = 0;
 			}
 
-			for (int i = 0; i < 64; i++)
+			for (int i = 0; i < 16; i++)
 			{
 				this.Continents[i] = new Continent();
 			}
 
-			for (int i = 0; i < 64; i++)
+			for (int i = 0; i < 16; i++)
 			{
 				this.Oceans[i] = new Continent();
 			}
@@ -460,11 +459,6 @@ namespace OpenCiv1
 			for (int i = 0; i < this.ReplayData.Length; i++)
 			{
 				this.ReplayData[i] = 0;
-			}
-
-			for (int i = 0; i < this.LandPathfinding.Length; i++)
-			{
-				this.LandPathfinding[i] = 0;
 			}
 		}
 

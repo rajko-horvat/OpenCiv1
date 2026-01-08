@@ -293,8 +293,7 @@ namespace OpenCiv1
 
 							// Instruction address 0x2c84:0x035d, size: 5
 							this.oParent.CAPI.strcat(0xba06,
-								this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.DS.UInt16,
-									(ushort)(0x2ba6 + this.oParent.GameData.TerrainModifications[(int)terrainType].IrrigationEffect * 2))].Name);
+								this.oParent.GameData.Terrains[(int)this.oParent.Array_2ba6[this.oParent.GameData.TerrainModifications[(int)terrainType].IrrigationEffect]].Name);
 						}
 					}
 
@@ -320,7 +319,7 @@ namespace OpenCiv1
 
 						// Instruction address 0x2c84:0x03dc, size: 5
 						this.oParent.CAPI.strcat(0xba06,
-							this.oParent.GameData.Terrains[this.oCPU.ReadInt16(this.oCPU.DS.UInt16, (ushort)(0x2ba6 + this.oParent.GameData.TerrainModifications[(int)terrainType].MiningEffect * 2))].Name);
+							this.oParent.GameData.Terrains[(int)this.oParent.Array_2ba6[this.oParent.GameData.TerrainModifications[(int)terrainType].MiningEffect]].Name);
 					}
 
 					if (this.oParent.GameData.TerrainModifications[(int)terrainType].MiningEffect != -1)

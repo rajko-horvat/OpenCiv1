@@ -1,12 +1,7 @@
-﻿using HarfBuzzSharp;
-using IRB.Collections.Generic;
-using IRB.VirtualCPU;
+﻿using IRB.Collections.Generic;
 using OpenCiv1.Graphics;
-using System.Diagnostics;
 using System.IO.Compression;
-using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using static OpenCiv1.AStar1;
 
 namespace OpenCiv1
 {
@@ -188,7 +183,7 @@ namespace OpenCiv1
 			writer.Close();//*/
 		}
 
-		public TerrainMap(OpenCiv1Game parent, GBitmap bitmap) : this(parent, bitmap, Environment.TickCount)
+		public TerrainMap(OpenCiv1Game parent, GBitmap bitmap) : this(parent, bitmap, 0)
 		{ }
 
 		/// <summary>
@@ -775,7 +770,7 @@ namespace OpenCiv1
 		// Generates Map common data
 		private void GenerateCommonMapData(RandomMT19937 rng)
 		{
-			if (this.oParent!=null && this.oGameData != null)
+			if (this.oParent != null && this.oGameData != null)
 			{
 				int iTotalMapCellCount = this.oSize.Height * this.oSize.Width;
 
@@ -931,6 +926,111 @@ namespace OpenCiv1
 					FloodFillGroup(i, j);
 				}
 			}
+
+			// Construct old type map groups
+			List<TerrainMapGroup> continents = new();
+
+			for (int i = 0; i < this.mapGroups.Count; i++)
+			{
+				TerrainMapGroup group = this.mapGroups[i];
+
+				if (group.GroupType == TerrainMapGroupTypeEnum.Land)
+				{
+					continents.Add(group);
+				}
+			}
+
+			continents.Sort((a, b) => a.Size.CompareTo(b.Size));
+
+			Continent[] oldContinents = this.oGameData!.Continents;
+			Continent[] oldOceans = this.oGameData!.Oceans;
+			int oldGroupID = 0;
+
+			for (int i = 0; i < continents.Count; i++)
+			{
+				TerrainMapGroup group = continents[i];
+
+				if (oldGroupID < 15)
+				{
+					oldContinents[oldGroupID].Size = (short)group.Size;
+					oldContinents[oldGroupID].BuildSiteCount = (short)group.BuildSiteCount;
+					SetOldGroupID(group.ID, oldGroupID);
+
+					oldGroupID++;
+				}
+				else
+				{
+					oldContinents[oldGroupID].Size += (short)group.Size;
+					oldContinents[oldGroupID].BuildSiteCount += (short)group.BuildSiteCount;
+					SetOldGroupID(group.ID, oldGroupID);
+				}
+			}
+
+			List<TerrainMapGroup> oceans = new();
+
+			for (int i = 0; i < this.mapGroups.Count; i++)
+			{
+				TerrainMapGroup group = this.mapGroups[i];
+
+				if (group.GroupType == TerrainMapGroupTypeEnum.Water)
+				{
+					oceans.Add(group);
+				}
+			}
+
+			oceans.Sort((a, b) => a.Size.CompareTo(b.Size));
+			oldGroupID = 0;
+
+			for (int i = 0; i < oceans.Count; i++)
+			{
+				TerrainMapGroup group = oceans[i];
+
+				if (oldGroupID < 15)
+				{
+					oldOceans[oldGroupID].Size = (short)group.Size;
+					SetOldGroupID(group.ID, oldGroupID);
+
+					oldGroupID++;
+				}
+				else
+				{
+					oldOceans[oldGroupID].Size += (short)group.Size;
+					SetOldGroupID(group.ID, oldGroupID);
+				}
+			}
+
+			List<TerrainMapGroup> polarCaps = new();
+
+			for (int i = 0; i < this.mapGroups.Count; i++)
+			{
+				TerrainMapGroup group = this.mapGroups[i];
+
+				if (group.GroupType == TerrainMapGroupTypeEnum.PolarCap)
+				{
+					polarCaps.Add(group);
+				}
+			}
+
+			for (int i = 0; i < polarCaps.Count; i++)
+			{
+				TerrainMapGroup group = polarCaps[i];
+
+				oldOceans[oldGroupID].Size += (short)group.Size;
+			}
+		}
+
+		private void SetOldGroupID(int groupID, int oldGroupID)
+		{
+			for (int i = 0; i < this.oSize.Width; i++)
+			{
+				for (int j = 0; j < this.oSize.Height; j++)
+				{
+					if (this[i, j].GroupID == groupID)
+					{
+						this[i, j].Layer3_GroupID = oldGroupID;
+					}
+				}
+			}
 		}
 
 		/// <summary>
@@ -941,7 +1041,7 @@ namespace OpenCiv1
 		/// <returns>The group ID of the specified cell</returns>
 		private int FloodFillGroup(int x, int y)
 		{
-			int iGroupID = this.Cells[x, y].Layer3_GroupID;
+			int iGroupID = this.Cells[x, y].GroupID;
 
 			if (iGroupID == -1)
 			{
@@ -958,7 +1058,7 @@ namespace OpenCiv1
 
 				TerrainMapGroup group = new TerrainMapGroup(iGroupID, groupType);
 
-				this.Cells[x, y].Layer3_GroupID = iGroupID; // Set the starting cell to our GroupID
+				this.Cells[x, y].GroupID = iGroupID; // Set the starting cell to our GroupID
 				iCellCount++; // Increment the group cell count
 				queue.Enqueue(new GPoint(x, y)); // Append the starting position to the queue
 
@@ -971,42 +1071,42 @@ namespace OpenCiv1
 					if (position.Y - 1 >= 0)
 					{
 						// North
-						if ((cell = this.Cells[position.X, position.Y - 1]).Layer3_GroupID == -1 && cell.GroupType == groupType)
+						if ((cell = this.Cells[position.X, position.Y - 1]).GroupID == -1 && cell.GroupType == groupType)
 						{
-							this.Cells[position.X, position.Y - 1].Layer3_GroupID = iGroupID; // Set the neighbour cell to our GroupID
+							this.Cells[position.X, position.Y - 1].GroupID = iGroupID; // Set the neighbour cell to our GroupID
 							iCellCount++; // Increment the group cell count
 							queue.Enqueue(new GPoint(position.X, position.Y - 1)); // Append the current position to the queue
 						}
 
 						// North - West
-						if (groupType != TerrainMapGroupTypeEnum.Water && (cell = this.Cells[position.X - 1, position.Y - 1]).Layer3_GroupID == -1 && cell.GroupType == groupType)
+						if (groupType != TerrainMapGroupTypeEnum.Water && (cell = this.Cells[position.X - 1, position.Y - 1]).GroupID == -1 && cell.GroupType == groupType)
 						{
-							this.Cells[position.X - 1, position.Y - 1].Layer3_GroupID = iGroupID; // Set the neighbour cell to our GroupID
+							this.Cells[position.X - 1, position.Y - 1].GroupID = iGroupID; // Set the neighbour cell to our GroupID
 							iCellCount++; // Increment the group cell count
 							queue.Enqueue(new GPoint(position.X - 1, position.Y - 1)); // Append the current position to the queue
 						}
 
 						// North - East
-						if (groupType != TerrainMapGroupTypeEnum.Water && (cell = this.Cells[position.X + 1, position.Y - 1]).Layer3_GroupID == -1 && cell.GroupType == groupType)
+						if (groupType != TerrainMapGroupTypeEnum.Water && (cell = this.Cells[position.X + 1, position.Y - 1]).GroupID == -1 && cell.GroupType == groupType)
 						{
-							this.Cells[position.X + 1, position.Y - 1].Layer3_GroupID = iGroupID; // Set the neighbour cell to our GroupID
+							this.Cells[position.X + 1, position.Y - 1].GroupID = iGroupID; // Set the neighbour cell to our GroupID
 							iCellCount++; // Increment the group cell count
 							queue.Enqueue(new GPoint(position.X + 1, position.Y - 1)); // Append the current position to the queue
 						}
 					}
 
 					// West
-					if ((cell = this.Cells[position.X - 1, position.Y]).Layer3_GroupID == -1 && cell.GroupType == groupType)
+					if ((cell = this.Cells[position.X - 1, position.Y]).GroupID == -1 && cell.GroupType == groupType)
 					{
-						this.Cells[position.X - 1, position.Y].Layer3_GroupID = iGroupID; // Set the neighbour cell to our GroupID
+						this.Cells[position.X - 1, position.Y].GroupID = iGroupID; // Set the neighbour cell to our GroupID
 						iCellCount++; // Increment the group cell count
 						queue.Enqueue(new GPoint(position.X - 1, position.Y)); // Append the current position to the queue
 					}
 
 					// East
-					if ((cell = this.Cells[position.X + 1, position.Y]).Layer3_GroupID == -1 && cell.GroupType == groupType)
+					if ((cell = this.Cells[position.X + 1, position.Y]).GroupID == -1 && cell.GroupType == groupType)
 					{
-						this.Cells[position.X + 1, position.Y].Layer3_GroupID = iGroupID; // Set the neighbour cell to our GroupID
+						this.Cells[position.X + 1, position.Y].GroupID = iGroupID; // Set the neighbour cell to our GroupID
 						iCellCount++; // Increment the group cell count
 						queue.Enqueue(new GPoint(position.X + 1, position.Y)); // Append the current position to the queue
 					}
@@ -1014,25 +1114,25 @@ namespace OpenCiv1
 					if (position.Y + 1 < this.oSize.Height)
 					{
 						// South
-						if ((cell = this.Cells[position.X, position.Y + 1]).Layer3_GroupID == -1 && cell.GroupType == groupType)
+						if ((cell = this.Cells[position.X, position.Y + 1]).GroupID == -1 && cell.GroupType == groupType)
 						{
-							this.Cells[position.X, position.Y + 1].Layer3_GroupID = iGroupID; // Set the neighbour cell to our GroupID
+							this.Cells[position.X, position.Y + 1].GroupID = iGroupID; // Set the neighbour cell to our GroupID
 							iCellCount++; // Increment the group cell count
 							queue.Enqueue(new GPoint(position.X, position.Y + 1)); // Append the current position to the queue
 						}
 
 						// South - West
-						if (groupType != TerrainMapGroupTypeEnum.Water && (cell = this.Cells[position.X - 1, position.Y + 1]).Layer3_GroupID == -1 && cell.GroupType == groupType)
+						if (groupType != TerrainMapGroupTypeEnum.Water && (cell = this.Cells[position.X - 1, position.Y + 1]).GroupID == -1 && cell.GroupType == groupType)
 						{
-							this.Cells[position.X - 1, position.Y + 1].Layer3_GroupID = iGroupID; // Set the neighbour cell to our GroupID
+							this.Cells[position.X - 1, position.Y + 1].GroupID = iGroupID; // Set the neighbour cell to our GroupID
 							iCellCount++; // Increment the group cell count
 							queue.Enqueue(new GPoint(position.X - 1, position.Y + 1)); // Append the current position to the queue
 						}
 
 						// South - East
-						if (groupType != TerrainMapGroupTypeEnum.Water && (cell = this.Cells[position.X + 1, position.Y + 1]).Layer3_GroupID == -1 && cell.GroupType == groupType)
+						if (groupType != TerrainMapGroupTypeEnum.Water && (cell = this.Cells[position.X + 1, position.Y + 1]).GroupID == -1 && cell.GroupType == groupType)
 						{
-							this.Cells[position.X + 1, position.Y + 1].Layer3_GroupID = iGroupID; // Set the neighbour cell to our GroupID
+							this.Cells[position.X + 1, position.Y + 1].GroupID = iGroupID; // Set the neighbour cell to our GroupID
 							iCellCount++; // Increment the group cell count
 							queue.Enqueue(new GPoint(position.X + 1, position.Y + 1)); // Append the current position to the queue
 						}
@@ -1262,9 +1362,8 @@ namespace OpenCiv1
 
 				if (!IsValidPosition(unit.Position) || !IsValidPosition(unit.GoToDestination) || // Source or destination cell position is out of range
 					unit.Position == unit.GoToDestination || // Destination is the same as the source position
-					this[unit.GoToDestination].GroupType != TerrainMapGroupTypeEnum.Land || // Destination has to be on the land also
-					((movementType == UnitMovementTypeEnum.Land || movementType == UnitMovementTypeEnum.Water) &&
-						this[unit.Position].Layer3_GroupID != this[unit.GoToDestination].Layer3_GroupID) || // For the unit that is moving on Land or Water we have to be on the same continent
+					(this[unit.GoToDestination].GroupType != group1 && this[unit.GoToDestination].GroupType != group2) || // Destination has to be on the land also
+					(movementType != UnitMovementTypeEnum.Air && this[unit.Position].Layer3_GroupID != this[unit.GoToDestination].Layer3_GroupID) || // For the unit that is moving on Land or Water we have to be on the same group
 					(testVisibility && !this[unit.Position].IsVisibleTo(unit.PlayerID)) ||
 					(testVisibility && !this[unit.GoToDestination].IsVisibleTo(unit.PlayerID))) // Either the source or the destination cell is invisible to the Player
 				{

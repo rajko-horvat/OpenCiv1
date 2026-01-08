@@ -797,8 +797,8 @@ namespace OpenCiv1
 				{
 					// Instruction address 0x1d12:0x1428, size: 5
 					// Instruction address 0x1d12:0x1442, size: 5
-					if (this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(city.Position.X, city.Position.Y) ==
-						this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+					if (this.oParent.MapManagement.F0_2aea_1942_GetGroupID(city.Position.X, city.Position.Y) ==
+						this.oParent.MapManagement.F0_2aea_1942_GetGroupID(
 						this.oParent.GameData.Cities[this.oParent.GameData.WonderCityID[(int)WonderEnum.HooverDam]].Position.X,
 						this.oParent.GameData.Cities[this.oParent.GameData.WonderCityID[(int)WonderEnum.HooverDam]].Position.Y))
 					{
@@ -939,9 +939,9 @@ namespace OpenCiv1
 
 													// Instruction address 0x1d12:0x1956, size: 5
 													// Instruction address 0x1d12:0x1970, size: 5
-													if (terrainType != TerrainTypeEnum.Water && this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+													if (terrainType != TerrainTypeEnum.Water && this.oParent.MapManagement.F0_2aea_1942_GetGroupID(
 														this.oParent.GameData.Cities[i].Position.X,	this.oParent.GameData.Cities[i].Position.Y) ==
-														this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+														this.oParent.MapManagement.F0_2aea_1942_GetGroupID(
 														this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
 														this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y))
 													{
@@ -1266,7 +1266,7 @@ namespace OpenCiv1
 												this.oParent.GameData.Cities[i].Position.Y] |= (ushort)(1 << this.Var_6548_PlayerID);
 
 											// Instruction address 0x1d12:0x2204, size: 5
-											this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(
+											this.oParent.MapManagement.F0_2aea_1601_UpdateVisibleCellStatus(
 												this.oParent.GameData.Cities[i].Position.X, this.oParent.GameData.Cities[i].Position.Y);
 										}
 									}
@@ -1318,7 +1318,7 @@ namespace OpenCiv1
 
 						// Instruction address 0x1d12:0x2344, size: 5
 						// !!! Added & 0x7 to prevent owerflow, need to investigate why this happens
-						local_104 = this.oParent.GameData.Players[this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(local_d8, local_e4) & 0x7].Continents[this.Var_6548_PlayerID].Strategy;
+						local_104 = this.oParent.GameData.Players[this.oParent.MapManagement.F0_2aea_1942_GetGroupID(local_d8, local_e4) & 0x7].Continents[this.Var_6548_PlayerID].Strategy;
 
 						if ((local_104 == 1 || local_104 == 2 || local_104 == 5) && local_e8 != 0 && city.CurrentProductionID >= 0 &&
 							(int)this.oParent.GameData.Units[city.CurrentProductionID].AIRole == local_104)
@@ -1808,8 +1808,8 @@ namespace OpenCiv1
 				{
 					// Instruction address 0x1d12:0x3229, size: 5
 					// Instruction address 0x1d12:0x3217, size: 5
-					if (this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(local_d8, local_e4) == 
-						this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
+					if (this.oParent.MapManagement.F0_2aea_1942_GetGroupID(local_d8, local_e4) == 
+						this.oParent.MapManagement.F0_2aea_1942_GetGroupID(
 							this.oParent.GameData.Cities[this.oParent.GameData.WonderCityID[(int)WonderEnum.JSBachsCathedral]].Position.X,
 							this.oParent.GameData.Cities[this.oParent.GameData.WonderCityID[(int)WonderEnum.JSBachsCathedral]].Position.Y))
 					{
@@ -2639,7 +2639,7 @@ namespace OpenCiv1
 						{
 							if (local_b8 != 0)
 							{
-								local_f0 = (int)'p';
+								local_f0 = 'p';
 							}
 						}
 						else
@@ -2657,7 +2657,7 @@ namespace OpenCiv1
 						if ((this.oParent.Var_db3a_MouseButton == 2 &&
 							this.oParent.Var_db3c_MouseXPos >= 230 && this.oParent.Var_db3c_MouseXPos < 270 &&
 							this.oParent.Var_db3e_MouseYPos >= 106 && this.oParent.Var_db3e_MouseYPos <= 116) ||
-							local_f0 == 65)
+							local_f0 == 'A')
 						{
 							city.StatusFlag ^= 0x10;
 
@@ -2718,7 +2718,7 @@ namespace OpenCiv1
 						goto L4bf7;
 
 					L4bed:
-						if (local_f0 == (int)'b') goto L4bf7;
+						if (local_f0 == 'b') goto L4bf7;
 						goto L4e80;
 
 					L4bf7:
@@ -2809,7 +2809,7 @@ namespace OpenCiv1
 						goto L045f;
 
 					L4e80:
-						if ((this.oParent.Var_db3c_MouseXPos >= 230 && this.oParent.Var_db3c_MouseXPos < 270) || local_f0 == (int)'c')
+						if ((this.oParent.Var_db3c_MouseXPos >= 230 && this.oParent.Var_db3c_MouseXPos < 270) || local_f0 == 'c')
 						{
 							city.StatusFlag &= 0xef;
 
@@ -2835,7 +2835,7 @@ namespace OpenCiv1
 							goto L045f;
 						}
 
-						if (local_f0 == (int)'i') goto L4f41;
+						if (local_f0 == 'i') goto L4f41;
 						goto L4f4a;
 
 					L4f41:
@@ -2843,7 +2843,7 @@ namespace OpenCiv1
 						goto L4faf;
 
 					L4f4a:
-						if (local_f0 == (int)'h') goto L4f54;
+						if (local_f0 == 'h') goto L4f54;
 						goto L4f5d;
 
 					L4f54:
@@ -2851,7 +2851,7 @@ namespace OpenCiv1
 						goto L4faf;
 
 					L4f5d:
-						if (local_f0 == (int)'m') goto L4f67;
+						if (local_f0 == 'm') goto L4f67;
 						goto L4f70;
 
 					L4f67:
@@ -2859,7 +2859,7 @@ namespace OpenCiv1
 						goto L4faf;
 
 					L4f70:
-						if (local_f0 == (int)'v') goto L4f7a;
+						if (local_f0 == 'v') goto L4f7a;
 						goto L4f83;
 
 					L4f7a:
@@ -2892,7 +2892,7 @@ namespace OpenCiv1
 						goto L045f;
 
 					L4ff5:
-						if (local_f0 == (int)'a') goto L4fff;
+						if (local_f0 == 'a') goto L4fff;
 						goto L520e;
 
 					L4fff:
@@ -2931,18 +2931,22 @@ namespace OpenCiv1
 
 						switch (local_fc)
 						{
+							// Up
 							case 0x4800:
 								local_ea = local_106 - 6;
 								break;
 
+							// Left
 							case 0x4b00:
 								local_ea = local_106 - 1;
 								break;
 
+							// Right
 							case 0x4d00:
 								local_ea = local_106 + 1;
 								break;
 
+							// Down
 							case 0x5000:
 								local_ea = local_106 + 6;
 								break;
@@ -2967,6 +2971,7 @@ namespace OpenCiv1
 							this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[Arr_74[local_106]].GoToDestination.X = -1;
 						}
 					
+						// Escape
 						if (local_fc != 0x1b)
 							goto L504b;
 
@@ -2976,7 +2981,7 @@ namespace OpenCiv1
 						goto L12c2;
 
 					L520e:
-						if (local_f0 == (int)'s') goto L5218;
+						if (local_f0 == 's') goto L5218;
 						goto L532e;
 
 					L5218:
@@ -3019,10 +3024,12 @@ namespace OpenCiv1
 						goto L52f3;
 
 					L52e0:
+						// Up
 						if (local_fc != 0x4800) goto L52e8;
 						goto L52d1;
 
 					L52e8:
+						// Down
 						if (local_fc != 0x5000) goto L52f3;
 						goto L52c5;
 
@@ -3040,7 +3047,7 @@ namespace OpenCiv1
 						if (local_f0 < '1' || local_f0 > '9')
 							goto L53c8;
 
-						local_ea = local_f0 - 49;
+						local_ea = local_f0 - '1';
 
 						if (local_ea >= local_8)
 							goto L045f;
@@ -3080,7 +3087,7 @@ namespace OpenCiv1
 						goto L12c2;
 
 					L53c8:
-						if (local_f0 == (int)'p') goto L53d2;
+						if (local_f0 == 'p') goto L53d2;
 						goto L563f;
 
 					L53d2:
@@ -3226,7 +3233,7 @@ namespace OpenCiv1
 						if (local_e8 == 13)
 							goto L5619;
 
-						if (local_e8 != 32)
+						if (local_e8 != ' ')
 							goto L562c;
 
 						L5619:
@@ -3236,7 +3243,7 @@ namespace OpenCiv1
 						goto L5aa6;
 
 					L562c:
-						if (local_e8 != 27)
+						if (local_e8 != 0x1b)
 							goto L53ed;
 
 						local_b8 = 0;
@@ -3244,7 +3251,7 @@ namespace OpenCiv1
 						goto L045f;
 
 					L563f:
-						if (local_f0 == (int)'M') goto L5649;
+						if (local_f0 == 'M') goto L5649;
 						goto L5671;
 
 					L5649:
@@ -3259,7 +3266,7 @@ namespace OpenCiv1
 						goto L12c2;
 
 					L5671:
-						if (local_f0 != (int)'r') goto L567b;
+						if (local_f0 != 'r') goto L567b;
 						goto L56a6;
 
 					L567b:
@@ -4317,7 +4324,7 @@ namespace OpenCiv1
 				this.Var_2494 = 1;
 
 				// Instruction address 0x1d12:0x69dd, size: 5
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(2, local_6 + 80, local_a, (ushort)this.oParent.GameData.Cities[cityID].PlayerID);
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, local_6 + 80, local_a, (byte)this.oParent.GameData.Cities[cityID].PlayerID);
 			}
 
 			local_8 = 0;
@@ -4380,7 +4387,7 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x1d12:0x6ac9, size: 5
-			if (this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates(x, y))
+			if (this.oParent.MapManagement.F0_2aea_1326_ValidateMapCoordinates(x, y))
 			{
 				// Instruction address 0x1d12:0x6ade, size: 5
 				TerrainTypeEnum terrainType = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(x, y);
@@ -4604,7 +4611,7 @@ namespace OpenCiv1
 				this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.Pollution, xPos, yPos);
 
 				// Instruction address 0x1d12:0x6d60, size: 5
-				this.oParent.MapManagement.F0_2aea_1601_UpdateVisbleCellStatus(xPos, yPos);
+				this.oParent.MapManagement.F0_2aea_1601_UpdateVisibleCellStatus(xPos, yPos);
 
 				this.oParent.GameData.PollutedSquareCount++;
 			}
@@ -4991,7 +4998,7 @@ namespace OpenCiv1
 				for (int xPos = 0; xPos < 80; xPos++)
 				{
 					// Instruction address 0x1d12:0x731c, size: 5
-					int mapXPos = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].XStart + xPos - 40);
+					int mapXPos = this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].XStart + xPos - 40);
 					int mapYPos = yPos;
 
 					if ((this.oParent.GameData.MapVisibility[mapXPos, mapYPos] & (1 << this.oParent.GameData.HumanPlayerID)) != 0)
@@ -5037,7 +5044,7 @@ namespace OpenCiv1
 			if (this.Var_2496 == 2)
 			{
 				// Instruction address 0x1d12:0x7405, size: 5
-				xPos = this.oParent.UnitGoTo.F0_2e31_119b_AdjustXPosition(
+				xPos = this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(
 					xPos - this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].XStart + 40);
 
 				// Instruction address 0x1d12:0x7444, size: 5

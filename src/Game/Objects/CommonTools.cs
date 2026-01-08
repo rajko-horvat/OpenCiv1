@@ -657,71 +657,24 @@ namespace OpenCiv1
 		/// Fills the rectangle with color
 		/// </summary>
 		/// <param name="rectPtr"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <param name="width"></param>
 		/// <param name="height"></param>
 		/// <param name="mode"></param>
-		public void F0_1000_0bfa_FillRectangle(CRectangle rect, int xPos, int yPos, int width, int height, ushort mode)
+		public void F0_1000_0bfa_FillRectangle(CRectangle rect, int x, int y, int width, int height, ushort mode)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_0bfa_FillRectangle({rect}, {xPos}, {yPos}, {width}, {height}, 0x{mode:x4})");
+			this.oCPU.Log.EnterBlock($"F0_1000_0bfa_FillRectangle({rect}, {x}, {y}, {width}, {height}, 0x{mode:x4})");
 
 			// function body
 			if (width > 0 && height > 0)
 			{
-				GRectangle rect1 = new GRectangle(rect.Left + xPos, rect.Top + yPos, width, height);
+				GRectangle rect1 = new GRectangle(rect.Left + x, rect.Top + y, width, height);
 				this.oParent.Graphics.F0_VGA_040a_FillRectangle(rect.ScreenID, rect1, (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
 			}
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1000_0bfa_FillRectangle");
-		}
-
-		/// <summary>
-		/// Sets a pixel on screen set by structure at 0xaa
-		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		/// <param name="mode"></param>
-		public void F0_1000_104f_SetPixel(int xPos, int yPos, ushort mode)
-		{
-			CRectangle rect = this.oParent.Var_aa_Rectangle;
-
-			this.oCPU.Log.EnterBlock($"F0_1000_104f_SetPixel({rect.ScreenID}, {xPos}, {yPos}, 0x{mode:x4})");
-
-			// function body
-			if (xPos >= 0 && xPos <= rect.Width && yPos >= 0 && yPos <= rect.Height)
-			{
-				// Instruction address 0x1000:0x1080, size: 5
-				this.oParent.Graphics.F0_VGA_0550_SetPixel(rect.ScreenID, rect.Left + xPos, rect.Top + yPos, (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
-			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_104f_SetPixel");
-		}
-
-		/// <summary>
-		/// Sets a pixel on selected screen
-		/// </summary>
-		/// <param name="screenID"></param>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		/// <param name="mode"></param>
-		public void F0_1000_104f_SetPixel(ushort screenID, int xPos, int yPos, ushort mode)
-		{
-			CRectangle rect = this.oParent.Var_aa_Rectangle;
-
-			this.oCPU.Log.EnterBlock($"F0_1000_104f_SetPixel({screenID}, {xPos}, {yPos}, 0x{mode:x4})");
-
-			// function body
-			if (xPos >= 0 && xPos <= rect.Width && yPos >= 0 && yPos <= rect.Height)
-			{
-				// Instruction address 0x1000:0x1080, size: 5
-				this.oParent.Graphics.F0_VGA_0550_SetPixel(screenID, rect.Left + xPos, rect.Top + yPos, (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
-			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_104f_SetPixel");
 		}
 
 		/// <summary>

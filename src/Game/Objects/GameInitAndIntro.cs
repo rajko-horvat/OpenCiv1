@@ -124,17 +124,17 @@ namespace OpenCiv1
 
 		L014a:
 			// Instruction address 0x0000:0x0157, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)) + 1,
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)) + 1,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				1);
 
 			// Instruction address 0x0000:0x016c, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)) + 1,
 				1);
 
 			// Instruction address 0x0000:0x017b, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)) + 1,
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)) + 1,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)) + 1,
 				1);
 
@@ -171,7 +171,7 @@ namespace OpenCiv1
 
 		L01b9:
 			// Instruction address 0x0000:0x01c4, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				1);
 
@@ -201,7 +201,7 @@ namespace OpenCiv1
 
 		L01fe:
 			// Instruction address 0x0000:0x01c4, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				13);
 
@@ -251,7 +251,7 @@ namespace OpenCiv1
 
 		L024a:
 			// Instruction address 0x0000:0x01c4, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				14);
 
@@ -259,7 +259,7 @@ namespace OpenCiv1
 
 		L0254:
 			// Instruction address 0x0000:0x01c4, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				6);
 
@@ -267,7 +267,7 @@ namespace OpenCiv1
 
 		L025e:
 			// Instruction address 0x0000:0x01c4, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				7);
 
@@ -275,7 +275,7 @@ namespace OpenCiv1
 
 		L0268:
 			// Instruction address 0x0000:0x01c4, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				15);
 
@@ -283,7 +283,7 @@ namespace OpenCiv1
 
 		L0285:
 			// Instruction address 0x0000:0x01c4, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				12);
 
@@ -330,7 +330,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L02fa;
 
 			// Instruction address 0x0000:0x02f2, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				6);
 
@@ -366,7 +366,7 @@ namespace OpenCiv1
 
 		L0340:
 			// Instruction address 0x0000:0x02f2, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				10);
 
@@ -374,7 +374,7 @@ namespace OpenCiv1
 
 		L0349:
 			// Instruction address 0x0000:0x02f2, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				2);
 
@@ -382,7 +382,7 @@ namespace OpenCiv1
 
 		L0352:
 			// Instruction address 0x0000:0x02f2, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				15);
 
@@ -433,7 +433,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L03c9;
 
 			// Instruction address 0x0000:0x03c1, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				6);
 
@@ -464,7 +464,7 @@ namespace OpenCiv1
 
 		L0402:
 			// Instruction address 0x0000:0x03c1, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				10);
 
@@ -475,14 +475,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L)
 			{
 				// Instruction address 0x0000:0x0424, size: 5
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 					11);
 			}
 			else
 			{
 				// Instruction address 0x0000:0x0424, size: 5
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 					3);
 			}
@@ -495,7 +495,7 @@ namespace OpenCiv1
 
 		L0437:
 			// Instruction address 0x0000:0x03c1, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				2);
 
@@ -582,7 +582,7 @@ namespace OpenCiv1
 
 		L04bb:
 			// Instruction address 0x0000:0x050e, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				6);
 
@@ -597,7 +597,7 @@ namespace OpenCiv1
 
 		L04d3:
 			// Instruction address 0x0000:0x050e, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				2);
 
@@ -605,7 +605,7 @@ namespace OpenCiv1
 
 		L04dc:
 			// Instruction address 0x0000:0x050e, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				11);
 
@@ -613,7 +613,7 @@ namespace OpenCiv1
 
 		L04e5:
 			// Instruction address 0x0000:0x050e, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				12);
 
@@ -621,7 +621,7 @@ namespace OpenCiv1
 
 		L04ee:
 			// Instruction address 0x0000:0x050e, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				13);
 
@@ -629,7 +629,7 @@ namespace OpenCiv1
 
 		L04f7:
 			// Instruction address 0x0000:0x050e, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				10);
 
@@ -637,7 +637,7 @@ namespace OpenCiv1
 
 		L0500:
 			// Instruction address 0x0000:0x050e, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				3);
 
@@ -660,7 +660,7 @@ namespace OpenCiv1
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2),
 				(short)(this.oParent.CAPI.RNG.Next(8) + 1));
 
-			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))];
+			GPoint direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))];
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)), (ushort)((short)direction.X)));
@@ -737,7 +737,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L05f2;
 
 			// Instruction address 0x0000:0x0652, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, xPos, yPos, 1);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, xPos, yPos, 1);
 
 		L065a:
 			// Far return
@@ -796,7 +796,7 @@ namespace OpenCiv1
 
 		L06e6:
 			// Instruction address 0x0000:0x06f4, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				9);
 
@@ -804,7 +804,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), 0x1);
 
 		L0706:
-			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))];
+			GPoint direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))];
 
 			// Instruction address 0x0000:0x071f, size: 5
 			this.oParent.Graphics.F0_VGA_038c_GetPixel(1,
@@ -838,12 +838,12 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.LE) goto L0784;
 
 			// Instruction address 0x0000:0x077c, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)) + 0x32,
 				8);
 
 		L0784:
-			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18)) + 1];
+			direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18)) + 1];
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), (ushort)((short)direction.X)));
@@ -890,7 +890,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), 0x1);
 
 		L0806:
-			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))];
+			direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))];
 
 			this.oCPU.AX.UInt16 = (ushort)((short)direction.X);
 			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
@@ -909,7 +909,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L084a;
 
 			// Instruction address 0x0000:0x0842, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				11);
 
@@ -977,7 +977,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), 0x0);
 
 		L090b:
-			F7_0000_0988_GenerateCloud(
+			F7_0000_0988_GenerateMapCloud(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
 
@@ -1011,9 +1011,9 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
 
 			// Instruction address 0x0000:0x0966, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(1, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
-				(ushort)(this.oCPU.AX.UInt16 + 1));
+				(byte)(this.oCPU.AX.UInt16 + 1));
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x67fe, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x67fe)));
 			goto L0928;
@@ -1040,18 +1040,18 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
-		public void F7_0000_0988_GenerateCloud(short xPos, short yPos)
+		public void F7_0000_0988_GenerateMapCloud(short xPos, short yPos)
 		{
-			this.oCPU.Log.EnterBlock($"F7_0000_0988_GenerateCloud({xPos}, {yPos})");
+			//this.oCPU.Log.EnterBlock($"F7_0000_0988_GenerateMapCloud({xPos}, {yPos})");
 
 			// function body
 			int iCloudSize = this.oParent.CAPI.RNG.Next(64) + 1;
 
 			do
 			{
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(1, xPos + 160, yPos, 15);
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(1, xPos + 161, yPos, 15);
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(1, xPos + 160, yPos + 1, 15);
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(1, xPos + 160, yPos, 15);
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(1, xPos + 161, yPos, 15);
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(1, xPos + 160, yPos + 1, 15);
 
 				/*this.oParent.Segment_1000.F0_1000_104f_SetPixel(1, xPos + 159, yPos, 15);
 				this.oParent.Segment_1000.F0_1000_104f_SetPixel(1, xPos + 160, yPos, 15);
@@ -1085,9 +1085,6 @@ namespace OpenCiv1
 				iCloudSize--;
 
 			} while (iCloudSize > 0 && xPos > 2 && xPos < 77 && yPos > 2 && yPos < 46);
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F7_0000_0988_GenerateCloud");
 		}
 
 		/// <summary>
@@ -1370,9 +1367,9 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24)), 0x50);
 			if (this.oCPU.Flags.GE) goto L0c3e;
 
-			F7_0000_176d(
+			this.oCPU.AX.UInt16 = (ushort)((short)F7_0000_176d_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa8)));
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa8))));
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xaa), this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 0x0);
@@ -1531,9 +1528,10 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0d24;
 
 			// Instruction address 0x0000:0x0d67, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24)),
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID,
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa8)) + 0x32,
-				this.oCPU.AX.UInt16);
+				this.oCPU.AX.LowUInt8);
 
 			goto L0d24;
 
@@ -1650,9 +1648,8 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0e0c, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19e8_Rectangle, 0, 0);
 
-			F7_0000_1188();
-
-			F7_0000_1440(1);
+			F7_0000_1188_ConstructLandPath();
+			F7_0000_1440_ConstructWaterPath();
 
 			F7_0000_17cf();
 
@@ -1668,16 +1665,20 @@ namespace OpenCiv1
 
 		L0e75:
 			// Instruction address 0x0000:0x0e8d, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(this.oParent.CAPI.RNG.Next(80), 0, 7);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, 
+				this.oParent.CAPI.RNG.Next(80), 0, 7);
 
 			// Instruction address 0x0000:0x0eae, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(this.oParent.CAPI.RNG.Next(80), 1, 7);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, 
+				this.oParent.CAPI.RNG.Next(80), 1, 7);
 
 			// Instruction address 0x0000:0x0ecf, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(this.oParent.CAPI.RNG.Next(80), 48, 7);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, 
+				this.oParent.CAPI.RNG.Next(80), 48, 7);
 
 			// Instruction address 0x0000:0x0ef0, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(this.oParent.CAPI.RNG.Next(80), 49, 7);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, 
+				this.oParent.CAPI.RNG.Next(80), 49, 7);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24))));
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24)), 0x14);
@@ -1804,11 +1805,13 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, 0x50);
 
 			// Instruction address 0x0000:0x0fd3, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c)) + 80,
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, 
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c)) + 80,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e)), 0);
 
 			// Instruction address 0x0000:0x0fec, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c)) + 80,
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, 
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c)) + 80,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e)) + 0x32, 0);
 
 		L0ff4:
@@ -1821,9 +1824,9 @@ namespace OpenCiv1
 			goto L1171;
 
 		L1000:
-			F7_0000_176d(
+			this.oCPU.AX.UInt16 = (ushort)((short)F7_0000_176d_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e)));
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e))));
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x42), this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xb);
@@ -1851,9 +1854,9 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e))));
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3a), this.oCPU.AX.UInt16);
 
-			F7_0000_176d(
+			this.oCPU.AX.UInt16 = (ushort)((short)F7_0000_176d_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
-				(short)this.oCPU.AX.UInt16);
+				(short)this.oCPU.AX.UInt16));
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x42), this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x2);
@@ -1907,9 +1910,9 @@ namespace OpenCiv1
 			goto L1029;
 
 		L10c6:
-			F7_0000_176d(
+			this.oCPU.AX.UInt16 = (ushort)((short)F7_0000_176d_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e)));
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e))));
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x42), this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x1);
@@ -1941,15 +1944,17 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, 0x50);
 
 			// Instruction address 0x0000:0x1138, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c)) + 80,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e)), this.oCPU.AX.UInt16);
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, 
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c)) + 80,
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e)), this.oCPU.AX.LowUInt8);
 
 			// Instruction address 0x0000:0x1151, size: 5
-			this.oParent.CommonTools.F0_1000_104f_SetPixel(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c)) + 80,
+			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID,
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c)) + 80,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e)) + 0x32,
-				this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
+				this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
 
-			F7_0000_178e(
+			F7_0000_178e_GetGroupID(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3c)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x3e)));
 
@@ -1979,851 +1984,300 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Constructs the Land path array
 		/// </summary>
-		public void F7_0000_1188()
+		public void F7_0000_1188_ConstructLandPath()
 		{
-			this.oCPU.Log.EnterBlock("F7_0000_1188()");
+			//this.oCPU.Log.EnterBlock("F7_0000_1188()");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x26);
-			this.oCPU.PUSH_UInt16(this.oCPU.DI.UInt16);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
+			int[,] LandPath = this.oParent.UnitGoTo.Arr_db44_LandPath;
 
-			// Instruction address 0x0000:0x119b, size: 5
-			for (int i = 0; i < 260; i++)
+			for (int i = 0; i < LandPath.GetLength(0); i++)
 			{
-				this.oParent.GameData.LandPathfinding[i] = 0;
+				for (int j = 0; j < LandPath.GetLength(1); j++)
+				{
+					LandPath[i, j] = 0;
+				}
 			}
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14), 0x0);
-			goto L142c;
-
-		L11ab:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-
-			F7_0000_176d(
-				(short)this.oCPU.SI.UInt16,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)));
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.E) goto L11d4;
-
-			// Instruction address 0x0000:0x11c3, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
-				this.oCPU.SI.Int16, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20), this.oCPU.SI.UInt16);
-			goto L125a;
-
-		L11d4:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-
-			F7_0000_176d(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
-				(short)this.oCPU.SI.UInt16);
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.E) goto L1262;
-
-			// Instruction address 0x0000:0x11ec, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
-				(short)this.oCPU.SI.UInt16);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24), this.oCPU.SI.UInt16);
-
-		L1200:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18)), 0xffff);
-			if (this.oCPU.Flags.E) goto L1209;
-			goto L128e;
-
-		L1209:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a))));
-
-		L120c:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a)), 0xd);
-			if (this.oCPU.Flags.L) goto L1215;
-			goto L1429;
-
-		L1215:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14));
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
-			this.oCPU.AX.UInt16 = this.oCPU.INC_UInt16(this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a));
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
-			this.oCPU.AX.UInt16 = this.oCPU.INC_UInt16(this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), 0xffff);
-
-			F7_0000_176d(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
-				(short)this.oCPU.AX.UInt16);
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L1243;
-			goto L11ab;
-
-		L1243:
-			// Instruction address 0x0000:0x1249, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20), this.oCPU.AX.UInt16);
-
-		L125a:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24), this.oCPU.AX.UInt16);
-			goto L1200;
-
-		L1262:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-			this.oCPU.DI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc));
-			this.oCPU.DI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.DI.UInt16);
-
-			F7_0000_176d((short)this.oCPU.SI.UInt16, (short)this.oCPU.DI.UInt16);
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.E) goto L1200;
-
-			// Instruction address 0x0000:0x127a, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
-				this.oCPU.SI.Int16, this.oCPU.DI.Int16);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20), this.oCPU.SI.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24), this.oCPU.DI.UInt16);
-			goto L1200;
-
-		L128e:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), 0x1);
-			goto L12fb;
-
-		L1295:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-
-			F7_0000_176d(
-				(short)this.oCPU.SI.UInt16,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.E) goto L12be;
-
-			// Instruction address 0x0000:0x12ad, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
-				this.oCPU.SI.Int16,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.SI.UInt16);
-			goto L1354;
-
-		L12be:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-
-			F7_0000_176d(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				(short)this.oCPU.SI.UInt16);
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L12d5;
-			goto L135c;
-
-		L12d5:
-			// Instruction address 0x0000:0x12d9, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				(short)this.oCPU.SI.UInt16);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c), this.oCPU.SI.UInt16);
-
-		L12ed:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18)), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.NE) goto L12f8;
-			goto L138b;
-
-		L12f8:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))));
-
-		L12fb:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)), 0x4);
-			if (this.oCPU.Flags.LE) goto L1304;
-			goto L1209;
-
-		L1304:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
-
-			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))];
-
-			this.oCPU.AX.UInt16 = (ushort)((short)direction.X * 4);
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
-
-			this.oCPU.AX.UInt16 = (ushort)((short)direction.Y * 4);
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), 0xffff);
-
-			F7_0000_176d(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				(short)this.oCPU.AX.UInt16);
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L133d;
-			goto L1295;
-
-		L133d:
-			// Instruction address 0x0000:0x1343, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.AX.UInt16);
-
-		L1354:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c), this.oCPU.AX.UInt16);
-			goto L12ed;
-
-		L135c:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-			this.oCPU.DI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
-			this.oCPU.DI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.DI.UInt16);
-
-			F7_0000_176d((short)this.oCPU.SI.UInt16, (short)this.oCPU.DI.UInt16);
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L1375;
-			goto L12ed;
-
-		L1375:
-			// Instruction address 0x0000:0x1377, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_1942_GetCellGroupID(
-				(short)this.oCPU.SI.UInt16,
-				(short)this.oCPU.DI.UInt16);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.SI.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c), this.oCPU.DI.UInt16);
-			goto L12ed;
-
-		L138b:
-			// Instruction address 0x0000:0x139e, size: 5
-			this.oParent.UnitGoTo.F0_2e31_111c(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c)),
-				0, 20);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), this.oCPU.AX.UInt16);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
-			if (this.oCPU.Flags.NE) goto L13b1;
-			goto L12f8;
-
-		L13b1:
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 20);
-			if (this.oCPU.Flags.L) goto L13b9;
-			goto L12f8;
-
-		L13b9:
-			this.oCPU.AX.UInt16 = 13;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)));
-			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
-
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a));
-
-			this.oCPU.AX.LowUInt8 = 0x1;
-			this.oCPU.CX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-			this.oCPU.CX.LowUInt8 = this.oCPU.DEC_UInt8(this.oCPU.CX.LowUInt8);
-			this.oCPU.AX.LowUInt8 = this.oCPU.SHL_UInt8(this.oCPU.AX.LowUInt8, this.oCPU.CX.LowUInt8);
-
-			this.oParent.GameData.LandPathfinding[(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)) * 13) + this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a))] |= 
-				this.oCPU.AX.LowUInt8;
-
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
-
-			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))];
-
-			this.oCPU.AX.UInt16 = (ushort)((short)direction.X);
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
-
-			this.oCPU.AX.UInt16 = (ushort)((short)direction.Y);
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.BX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
-
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x0);
-			if (this.oCPU.Flags.GE) goto L13f2;
-			goto L12f8;
-
-		L13f2:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x14);
-			if (this.oCPU.Flags.L) goto L13fb;
-			goto L12f8;
-
-		L13fb:
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.GE) goto L1402;
-			goto L12f8;
-
-		L1402:
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xd);
-			if (this.oCPU.Flags.L) goto L140a;
-			goto L12f8;
-
-		L140a:
-			this.oCPU.AX.UInt16 = 13;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)));
-			this.oCPU.DI.UInt16 = this.oCPU.AX.UInt16;
-
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
-
-			this.oCPU.AX.LowUInt8 = 0x1;
-			this.oCPU.CX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-			this.oCPU.CX.LowUInt8 = this.oCPU.ADD_UInt8(this.oCPU.CX.LowUInt8, 0x3);
-			this.oCPU.CX.LowUInt8 = this.oCPU.AND_UInt8(this.oCPU.CX.LowUInt8, 0x7);
-			this.oCPU.AX.LowUInt8 = this.oCPU.SHL_UInt8(this.oCPU.AX.LowUInt8, this.oCPU.CX.LowUInt8);
-
-			this.oParent.GameData.LandPathfinding[(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)) * 13) + this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))] |=
-				this.oCPU.AX.LowUInt8;
-
-			goto L12f8;
-
-		L1429:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14))));
-
-		L142c:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)), 0x14);
-			if (this.oCPU.Flags.GE) goto L143a;
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1a), 0x0);
-			goto L120c;
-
-		L143a:
-			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
-			this.oCPU.DI.UInt16 = this.oCPU.POP_UInt16();
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
-			// Far return
-			this.oCPU.Log.ExitBlock("F7_0000_1188");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		/// <param name="flag"></param>
-		public void F7_0000_1440(ushort flag)
-		{
-			this.oCPU.Log.EnterBlock($"F7_0000_1440({flag})");
-
-			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x18);
-			this.oCPU.PUSH_UInt16(this.oCPU.DI.UInt16);
-			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
-
-			// Instruction address 0x0000:0x1453, size: 5
-			this.oParent.CAPI.memset(0x7f38, 0, 0x104);
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14), 0x0);
-			goto L172a;
-
-		L1463:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-
-			F7_0000_176d(
-				(short)this.oCPU.SI.UInt16,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)));
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L147d;
-
-			F7_0000_178e(
-				(short)this.oCPU.SI.UInt16,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)));
-
-			goto L14f3;
-
-		L147d:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-
-			F7_0000_176d(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
-				(short)this.oCPU.SI.UInt16);
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L1494;
-
-			F7_0000_178e(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
-				(short)this.oCPU.SI.UInt16);
-
-			goto L14f3;
-
-		L1494:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-			this.oCPU.DI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc));
-			this.oCPU.DI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.DI.UInt16);
-
-			F7_0000_176d((short)this.oCPU.SI.UInt16, (short)this.oCPU.DI.UInt16);
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L14ad;
-
-			F7_0000_178e((short)this.oCPU.SI.UInt16, (short)this.oCPU.DI.UInt16);
-
-			goto L14f3;
-
-		L14ad:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)), 0xffff);
-			if (this.oCPU.Flags.NE) goto L14ff;
-
-		L14b3:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18))));
-
-		L14b6:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18)), 0xc);
-			if (this.oCPU.Flags.L) goto L14bf;
-			goto L171d;
-
-		L14bf:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14));
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
-			this.oCPU.AX.UInt16 = this.oCPU.INC_UInt16(this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18));
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
-			this.oCPU.AX.UInt16 = this.oCPU.INC_UInt16(this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), 0xffff);
-
-			F7_0000_176d(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
-				(short)this.oCPU.AX.UInt16);
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.E) goto L14ed;
-			goto L1463;
-
-		L14ed:
-			F7_0000_178e(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)));
-
-		L14f3:			
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.AX.UInt16);
-			goto L14ad;
-
-		L14ff:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), 0x1);
-			goto L155b;
-
-		L1506:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-
-			F7_0000_176d(
-				(short)this.oCPU.SI.UInt16,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L1520;
-
-			F7_0000_178e(
-				(short)this.oCPU.SI.UInt16,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
-
-			goto L159e;
-
-		L1520:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-
-			F7_0000_176d(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				(short)this.oCPU.SI.UInt16);
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L1537;
-
-			F7_0000_178e(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				(short)this.oCPU.SI.UInt16);
-
-			goto L159e;
-
-		L1537:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-			this.oCPU.DI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
-			this.oCPU.DI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.DI.UInt16);
-
-			F7_0000_176d((short)this.oCPU.SI.UInt16, (short)this.oCPU.DI.UInt16);
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L1550;
-
-			F7_0000_178e((short)this.oCPU.SI.UInt16, (short)this.oCPU.DI.UInt16);
-
-			goto L159e;
-
-		L1550:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L15aa;
-
-		L1558:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))));
-
-		L155b:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)), 0x8);
-			if (this.oCPU.Flags.LE) goto L1564;
-			goto L14b3;
-
-		L1564:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
-
-			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))];
-
-			this.oCPU.AX.UInt16 = (ushort)((short)direction.X * 4);
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
-
-			this.oCPU.AX.UInt16 = (ushort)((short)direction.Y * 4);
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
-
-			F7_0000_176d(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				(short)this.oCPU.AX.UInt16);
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.E) goto L1598;
-			goto L1506;
-
-		L1598:
-			F7_0000_178e(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
-
-		L159e:			
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
-			goto L1550;
-
-		L15aa:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0x1);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), 0x0);
-			goto L15c5;
-
-		L15c2:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12))));
-
-		L15c5:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)), 0x4);
-			if (this.oCPU.Flags.LE) goto L15ce;
-			goto L1690;
-
-		L15ce:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
-
-			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))];
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 
-				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), (ushort)((short)direction.X)));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), 
-				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), (ushort)((short)direction.Y)));
-
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), 0x4);
-
-			F7_0000_176d(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L160a;
-
-			// Instruction address 0x0000:0x15fe, size: 5
-			this.oCPU.AX.UInt16 = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))) ? 1 : 0);
-
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.NE) goto L160d;
-
-		L160a:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))));
-
-		L160d:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-
-			F7_0000_176d(
-				(short)this.oCPU.SI.UInt16,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L1631;
-
-			// Instruction address 0x0000:0x1625, size: 5
-			this.oCPU.AX.UInt16 = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates((short)this.oCPU.SI.UInt16,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))) ? 1 : 0);
-
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.NE) goto L1634;
-
-		L1631:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))));
-
-		L1634:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-
-			F7_0000_176d(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
-				(short)this.oCPU.SI.UInt16);
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L1658;
-
-			// Instruction address 0x0000:0x164c, size: 5
-			this.oCPU.AX.UInt16 = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), (short)this.oCPU.SI.UInt16) ? 1 : 0);
-
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.NE) goto L165b;
-
-		L1658:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))));
-
-		L165b:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.SI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.SI.UInt16);
-			this.oCPU.DI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
-			this.oCPU.DI.UInt16 = this.oCPU.INC_UInt16(this.oCPU.DI.UInt16);
-
-			F7_0000_176d((short)this.oCPU.SI.UInt16, (short)this.oCPU.DI.UInt16);
-			
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
-			if (this.oCPU.Flags.NE) goto L167f;
-
-			// Instruction address 0x0000:0x1673, size: 5
-			this.oCPU.AX.UInt16 = (ushort)(this.oParent.MapManagement.F0_2aea_1326_CheckMapCoordinates((short)this.oCPU.SI.UInt16, (short)this.oCPU.DI.UInt16) ? 1 : 0);
-
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.NE) goto L1682;
-
-		L167f:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))));
-
-		L1682:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), 0x2);
-			if (this.oCPU.Flags.L) goto L168b;
-			goto L15c2;
-
-		L168b:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0x0);
-
-		L1690:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)), 0x0);
-			if (this.oCPU.Flags.NE) goto L16a8;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18)), 0xb);
-			if (this.oCPU.Flags.E) goto L169f;
-			goto L1558;
-
-		L169f:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)), 0x3);
-			if (this.oCPU.Flags.E) goto L16a8;
-			goto L1558;
-
-		L16a8:
-			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
-
-			direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))];
-
-			this.oCPU.DI.UInt16 = (ushort)((short)direction.Y);
-			this.oCPU.DI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.DI.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18)));
-
-			if ((short)this.oCPU.DI.UInt16 >= 12)
-				goto L1558;
-
-			this.oCPU.AX.UInt16 = 0xd;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)));
-			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
-			this.oCPU.BX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.BX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18)));
-
-			this.oCPU.AX.LowUInt8 = 0x1;
-			this.oCPU.CX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-			this.oCPU.CX.LowUInt8 = this.oCPU.DEC_UInt8(this.oCPU.CX.LowUInt8);
-			this.oCPU.AX.LowUInt8 = this.oCPU.SHL_UInt8(this.oCPU.AX.LowUInt8, this.oCPU.CX.LowUInt8);
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x7f38), 
-				this.oCPU.OR_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x7f38)), this.oCPU.AX.LowUInt8));
-
-			this.oCPU.AX.UInt16 = (ushort)((short)direction.X);
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.DI.UInt16);
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.GE) goto L16e8;
-			goto L1558;
-
-		L16e8:
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x14);
-			if (this.oCPU.Flags.L) goto L16f0;
-			goto L1558;
-
-		L16f0:
-			this.oCPU.DI.UInt16 = this.oCPU.OR_UInt16(this.oCPU.DI.UInt16, this.oCPU.DI.UInt16);
-			if (this.oCPU.Flags.GE) goto L16f7;
-			goto L1558;
-
-		L16f7:
-			this.oCPU.CMP_UInt16(this.oCPU.DI.UInt16, 0xc);
-			if (this.oCPU.Flags.LE) goto L16ff;
-			goto L1558;
-
-		L16ff:
-			this.oCPU.AX.UInt16 = 0xd;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)));
-			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
-			this.oCPU.BX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.BX.UInt16, this.oCPU.DI.UInt16);
-			this.oCPU.AX.LowUInt8 = 0x1;
-			this.oCPU.CX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa));
-			this.oCPU.CX.LowUInt8 = this.oCPU.ADD_UInt8(this.oCPU.CX.LowUInt8, 0x3);
-			this.oCPU.CX.LowUInt8 = this.oCPU.AND_UInt8(this.oCPU.CX.LowUInt8, 0x7);
-			this.oCPU.AX.LowUInt8 = this.oCPU.SHL_UInt8(this.oCPU.AX.LowUInt8, this.oCPU.CX.LowUInt8);
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x7f38), 
-				this.oCPU.OR_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x7f38)), this.oCPU.AX.LowUInt8));
-			goto L1558;
-
-		L171d:
-			if (flag != 0)
+			for (int i = 0; i < 20; i++)
 			{
-				F7_0000_17cf();
+				for (int j = 0; j < 13; j++)
+				{
+					int x = (i * 4) + 1;
+					int y = (j * 4) + 1;
+					int groupID = -1;
+					int fromX = 0;
+					int fromY = 0;
+
+					if (F7_0000_176d_GetTerrainType(x, y) != TerrainTypeEnum.Water)
+					{
+						// Instruction address 0x0000:0x1249, size: 5
+						groupID = this.oParent.MapManagement.F0_2aea_1942_GetGroupID(x, y);
+						fromX = x;
+						fromY = y;
+					}
+					else if (F7_0000_176d_GetTerrainType(x + 1, y) != TerrainTypeEnum.Water)
+					{
+						// Instruction address 0x0000:0x11c3, size: 5
+						groupID = this.oParent.MapManagement.F0_2aea_1942_GetGroupID(x + 1, y);
+						fromX = x + 1;
+						fromY = y;
+					}
+					else if (F7_0000_176d_GetTerrainType(x, y + 1) != TerrainTypeEnum.Water)
+					{
+						// Instruction address 0x0000:0x11ec, size: 5
+						groupID = this.oParent.MapManagement.F0_2aea_1942_GetGroupID(x, y + 1);
+						fromX = x;
+						fromY = y + 1;
+					}
+					else if (F7_0000_176d_GetTerrainType(x + 1, y + 1) != TerrainTypeEnum.Water)
+					{
+						groupID = this.oParent.MapManagement.F0_2aea_1942_GetGroupID(x + 1, y + 1);
+						fromX = x + 1;
+						fromY = y + 1;
+					}
+
+					if (groupID != -1)
+					{
+						for (int k = 1; k < 5; k++)
+						{
+							GPoint direction = this.oParent.MoveDirections[k];
+
+							int newX = (direction.X * 4) + x;
+							int newY = (direction.Y * 4) + y;
+							int newGroupID = -1;
+							int toX = 0;
+							int toY = 0;
+
+							if (F7_0000_176d_GetTerrainType(newX, newY) != TerrainTypeEnum.Water)
+							{
+								newGroupID = this.oParent.MapManagement.F0_2aea_1942_GetGroupID(newX, newY);
+								toX = newX;
+								toY = newY;
+							}
+							else if (F7_0000_176d_GetTerrainType(newX + 1, newY) != TerrainTypeEnum.Water)
+							{
+								newGroupID = this.oParent.MapManagement.F0_2aea_1942_GetGroupID(newX + 1, newY);
+								toX = newX + 1;
+								toY = newY;
+							}
+							else if (F7_0000_176d_GetTerrainType(newX, newY + 1) != TerrainTypeEnum.Water)
+							{
+								newGroupID = this.oParent.MapManagement.F0_2aea_1942_GetGroupID(newX, newY + 1);
+								toX = newX;
+								toY = newY + 1;
+							}
+							else if (F7_0000_176d_GetTerrainType(newX + 1, newY + 1) != TerrainTypeEnum.Water)
+							{
+								newGroupID = this.oParent.MapManagement.F0_2aea_1942_GetGroupID(newX + 1, newY + 1);
+								toX = newX + 1;
+								toY = newY + 1;
+							}
+
+							if (groupID == newGroupID)
+							{
+								int distance = this.oParent.UnitGoTo.GetGoToDistance(fromX, fromY, toX, toY, UnitMovementTypeEnum.Land, 20);
+
+								if (distance != -1 && distance < 20)
+								{
+									LandPath[i, j] |= (0x1 << (k - 1));
+
+									direction = this.oParent.MoveDirections[k];
+
+									newX = i + direction.X;
+									newY = j + direction.Y;
+
+									if (newX >= 0 && newX < 20 && newY >= 0 && newY < 13)
+									{
+										LandPath[newX, newY] |= 0x1 << ((k + 3) & 0x7);
+									}
+								}
+							}
+						}
+					}
+				}
 			}
-		
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14))));
-
-		L172a:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)), 0x14);
-			if (this.oCPU.Flags.GE) goto L1738;
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), 0x0);
-			goto L14b6;
-
-		L1738:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), 0x0);
-
-		L173d:
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18));
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x7f38), 
-				this.oCPU.OR_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x7f38)), 0xe0));
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x802f), 
-				this.oCPU.OR_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x802f)), 0xe));
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18)), 0xc);
-			if (this.oCPU.Flags.L) goto L173d;
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x7f38, this.oCPU.AND_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x7f38), 0x7f));
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x7f43, this.oCPU.AND_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x7f43), 0xdf));
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x802f, this.oCPU.AND_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x802f), 0xfd));
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x803a, this.oCPU.AND_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x803a), 0xf7));
-			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
-			this.oCPU.DI.UInt16 = this.oCPU.POP_UInt16();
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
-			// Far return
-			this.oCPU.Log.ExitBlock("F7_0000_1440");
 		}
 
 		/// <summary>
-		/// ?
+		/// Constructs the Water path array
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
-		/// <returns></returns>
-		public ushort F7_0000_176d(short xPos, short yPos)
+		public void F7_0000_1440_ConstructWaterPath()
 		{
-			this.oCPU.Log.EnterBlock($"F7_0000_176d({xPos}, {yPos})");
+			//this.oCPU.Log.EnterBlock($"F7_0000_1440()");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
+			int[,] waterPath = this.oParent.UnitGoTo.Arr_7f38_WaterPath;
 
-			// Instruction address 0x0000:0x177c, size: 5
-			this.oParent.Graphics.F0_VGA_038c_GetPixel(this.oParent.Var_aa_Rectangle.ScreenID, xPos, yPos);
+			for (int i = 0; i < waterPath.GetLength(0); i++)
+			{
+				for (int j = 0; j < waterPath.GetLength(1); j++)
+				{
+					waterPath[i, j] = 0;
+				}
+			}
 
-			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
-			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, 0x1);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x2ba6));
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
+			for (int local_14 = 0; local_14 < 20; local_14++)
+			{
+				for (int local_18 = 0; local_18 < 12; local_18++)
+				{
+					int x = (local_14 * 4) + 1;
+					int y = (local_18 * 4) + 1;
+					int groupID = -1;
 
-			// Far return
-			this.oCPU.Log.ExitBlock("F7_0000_176d");
+					if (F7_0000_176d_GetTerrainType(x, y) == TerrainTypeEnum.Water)
+					{
+						groupID = F7_0000_178e_GetGroupID(x, y);
+					}
+					else if (F7_0000_176d_GetTerrainType(x + 1, y) == TerrainTypeEnum.Water)
+					{
+						groupID = F7_0000_178e_GetGroupID(x + 1, y);
+					}
+					else if (F7_0000_176d_GetTerrainType(x, y + 1) == TerrainTypeEnum.Water)
+					{
+						groupID = F7_0000_178e_GetGroupID(x, y + 1);
+					}
+					else if (F7_0000_176d_GetTerrainType(x + 1, y + 1) == TerrainTypeEnum.Water)
+					{
+						groupID = F7_0000_178e_GetGroupID(x + 1, y + 1);
+					}
 
-			return this.oCPU.AX.UInt16;
+					if (groupID != -1)
+					{
+						for (int local_a = 1; local_a < 9; local_a++)
+						{
+							GPoint direction = this.oParent.MoveDirections[local_a];
+							int newX = x + (direction.X * 4);
+							int newY = y + (direction.Y * 4);
+							int newGroupID = -1;
+
+							if (F7_0000_176d_GetTerrainType(newX, newY) == TerrainTypeEnum.Water)
+							{
+								newGroupID = F7_0000_178e_GetGroupID(newX, newY);
+							}
+							else if (F7_0000_176d_GetTerrainType(newX + 1, newY) == TerrainTypeEnum.Water)
+							{
+								newGroupID = F7_0000_178e_GetGroupID(newX + 1, newY);
+							}
+							else if (F7_0000_176d_GetTerrainType(newX, newY + 1) == TerrainTypeEnum.Water)
+							{
+								newGroupID = F7_0000_178e_GetGroupID(newX, newY + 1);
+							}
+							else if (F7_0000_176d_GetTerrainType(newX + 1, newY + 1) == TerrainTypeEnum.Water)
+							{
+								newGroupID = F7_0000_178e_GetGroupID(newX + 1, newY + 1);
+							}
+
+							if (groupID == newGroupID)
+							{
+								newX = x;
+								newY = y;
+								int local_6 = 0;
+
+								for (int local_12 = 0; local_12 < 5; local_12++)
+								{
+									direction = this.oParent.MoveDirections[local_a];
+									newX += direction.X;
+									newY += direction.Y;
+
+									local_6 = 4;
+
+									if (!this.oParent.MapManagement.F0_2aea_1326_ValidateMapCoordinates(newX, newY) ||
+										F7_0000_176d_GetTerrainType(newX, newY) != TerrainTypeEnum.Water)
+									{
+										local_6--;
+									}
+
+									if (!this.oParent.MapManagement.F0_2aea_1326_ValidateMapCoordinates(newX + 1, newY) || 
+										F7_0000_176d_GetTerrainType(newX + 1, newY) != TerrainTypeEnum.Water)
+									{
+										local_6--;
+									}
+
+									if (!this.oParent.MapManagement.F0_2aea_1326_ValidateMapCoordinates(newX, newY + 1) || 
+										F7_0000_176d_GetTerrainType(newX, newY + 1) != TerrainTypeEnum.Water)
+									{
+										local_6--;
+									}
+
+									if (!this.oParent.MapManagement.F0_2aea_1326_ValidateMapCoordinates(newX + 1, newY + 1) || 
+										F7_0000_176d_GetTerrainType(newX + 1, newY + 1) != TerrainTypeEnum.Water)
+									{
+										local_6--;
+									}
+
+									if (local_6 < 2)
+									{
+										break;
+									}
+								}
+
+								if (local_6 > 1 || (local_18 == 11 && local_a == 3))
+								{
+									direction = this.oParent.MoveDirections[local_a];
+
+									int local_1a = local_18 + direction.Y;
+
+									if (local_1a < 12)
+									{
+										waterPath[local_14, local_18] |= 0x1 << (local_a - 1);
+
+										newX = local_14 + direction.X;
+										newY = local_1a;
+
+										if (newX >= 0 && newX < 20 && local_1a >= 0 && local_1a < 13)
+										{
+											waterPath[newX, local_1a] |= 0x1 << ((local_a + 3) & 0x7);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			for (int i = 0; i < 12; i++)
+			{
+				waterPath[0, i] |= 0xe0;
+				waterPath[19, i] |= 0xe;
+			}
+
+			waterPath[0, 0] &= 0x7f;
+			waterPath[0, 11] &= 0xdf;
+			waterPath[19, 0] &= 0xfd;
+			waterPath[19, 11] &= 0xf7;
 		}
 
 		/// <summary>
-		/// ?
+		/// Gets cell terrain type at selected coordinates
 		/// </summary>
-		/// <param name="xPos"></param>
-		/// <param name="yPos"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <returns></returns>
-		public ushort F7_0000_178e(short xPos, short yPos)
+		public TerrainTypeEnum F7_0000_176d_GetTerrainType(int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F7_0000_178e({xPos}, {yPos})");
+			//this.oCPU.Log.EnterBlock($"F7_0000_176d({x}, {y})");
+
+			// function body
+			return this.oParent.Array_2ba6[this.oParent.Graphics.F0_VGA_038c_GetPixel(this.oParent.Var_aa_Rectangle.ScreenID, x, y)];
+		}
+
+		/// <summary>
+		/// Gets map cell group ID at selected coordinates
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns></returns>
+		public ushort F7_0000_178e_GetGroupID(int x, int y)
+		{
+			//this.oCPU.Log.EnterBlock($"F7_0000_178e({xPos}, {yPos})");
 
 			// function body
 			// Instruction address 0x0000:0x17a1, size: 5
-			this.oParent.Graphics.F0_VGA_038c_GetPixel(this.oParent.Var_aa_Rectangle.ScreenID, xPos, yPos + 50);
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F7_0000_178e");
-
-			return this.oCPU.AX.UInt16;
+			return this.oParent.Graphics.F0_VGA_038c_GetPixel(this.oParent.Var_aa_Rectangle.ScreenID, x, y + 50);
 		}
 
 		/// <summary>
@@ -3200,7 +2654,7 @@ namespace OpenCiv1
 
 		L1c11:
 			// Instruction address 0x0000:0x1c2a, size: 5
-			this.oParent.MapManagement.F0_2aea_16ee(6,
+			this.oParent.MapManagement.F0_2aea_16ee_ClearImprovements(TerrainImprovementFlagsEnum.Mines | TerrainImprovementFlagsEnum.Irrigation,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
 
@@ -3225,14 +2679,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.LE)
 			{
 				// Instruction address 0x0000:0x1c82, size: 5
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(2, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
 					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
 					14);
 			}
 			else
 			{
 				// Instruction address 0x0000:0x1c82, size: 5
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(2, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
 					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
 					6);
 			}
@@ -3262,7 +2716,7 @@ namespace OpenCiv1
 
 		L1cb8:
 			// Instruction address 0x0000:0x1cbe, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
 
@@ -3276,10 +2730,10 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
 
-			GPoint direction = this.oParent.MoveOffsets[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))];
+			GPoint direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))];
 
 			// Instruction address 0x0000:0x1ced, size: 5
-			this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)) + direction.X,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)) + direction.Y);
 
@@ -3307,14 +2761,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE)
 			{
 				// Instruction address 0x0000:0x1c18, size: 5
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(2, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
 					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
 					3);
 			}
 			else
 			{
 				// Instruction address 0x0000:0x1c18, size: 5
-				this.oParent.CommonTools.F0_1000_104f_SetPixel(2, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
 					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
 					11);
 			}
