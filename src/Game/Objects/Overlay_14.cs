@@ -169,7 +169,7 @@ namespace OpenCiv1
 			{
 				// Instruction address 0x0000:0x0270, size: 5
 				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, progressBarXStart + (progressBarSpacing * i / 8), 33,
-					this.oCPU.ReadInt16(this.oCPU.DS.UInt16, (ushort)(0xd4ce + (12 << 1))));
+					this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd4ce + (12 << 1))));
 			}
 			
 			if (player.ResearchTechnologyID != -1)
