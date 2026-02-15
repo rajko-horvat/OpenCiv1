@@ -139,7 +139,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x0000:0x016f, size: 5
-			this.oParent.Segment_1866.F0_1866_250e_AddReplayData(1, (byte)((sbyte)playerID),
+			this.oParent.UnitManagement.F0_1866_250e_AddReplayData(1, (byte)((sbyte)playerID),
 				this.oParent.GameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))].NameID,
 				(byte)x, (byte)y);
 

@@ -100,6 +100,7 @@ namespace OpenCiv1
 		public int Var_6c98 = 0;
 		public int Var_6c9a = 0;
 		public int Var_6ed6 = 0;
+		public bool Var_70d8 = false;
 		public int[] Var_70da_Arr = new int[4];
 		public int Var_70e2 = 0;
 		public int Var_70e4 = 0;

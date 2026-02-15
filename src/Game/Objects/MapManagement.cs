@@ -899,7 +899,7 @@ namespace OpenCiv1
 			else
 			{
 				// Instruction address 0x2aea:0x131b, size: 3
-				F0_2aea_0e29_DrawUnit(playerID, (short)this.oParent.Segment_1866.F0_1866_1122(playerID, unitID));
+				F0_2aea_0e29_DrawUnit(playerID, (short)this.oParent.UnitManagement.F0_1866_1122(playerID, unitID));
 			}
 		}
 
@@ -908,7 +908,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
-		/// <returns></returns>
+		/// <returns>True if given coordinates are within map bounds</returns>
 		public bool F0_2aea_1326_ValidateMapCoordinates(int x, int y)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_2aea_1326_CheckMapBounds({xPos}, {yPos})");
@@ -1048,7 +1048,7 @@ namespace OpenCiv1
 
 					if (unit.TypeID != -1 && unit.Position.X == x && unit.Position.Y == y)
 					{
-						this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0xd7f0, (short)playerID);
+						this.oParent.Var_d7f0 = playerID;
 						this.oParent.Var_d20a = playerID;
 
 						return i;
@@ -1239,7 +1239,7 @@ namespace OpenCiv1
 				{
 					int playerID = F0_2aea_1369_GetCityOwner(x, y);
 
-					this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0xd7f0, (short)playerID);
+					this.oParent.Var_d7f0 = playerID;
 					this.oParent.Var_d20a = playerID;
 
 					return i;

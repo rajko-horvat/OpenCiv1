@@ -480,20 +480,20 @@ namespace OpenCiv1
 
 			// Increase movement cost for nearby enemy units and cities
 
-			if (this.parent.Segment_1866.IsEnemyCityNear(playerID, x, y, 1))
+			if (this.parent.UnitManagement.IsEnemyCityNear(playerID, x, y, 1))
 			{
 				// this cell is blocked
 				dValue = double.MaxValue;
 			}
 			else
 			{
-				if (this.parent.Segment_1866.IsEnemyCityNear(playerID, x, y, 2))
+				if (this.parent.UnitManagement.IsEnemyCityNear(playerID, x, y, 2))
 				{
 					// this cell has enemy city near, increase cost to avoid it if possible
 					dValue += 1.0;
 				}
 
-				if (this.parent.Segment_1866.IsEnemyUnitNear(playerID, x, y, 2))
+				if (this.parent.UnitManagement.IsEnemyUnitNear(playerID, x, y, 2))
 				{
 					// this cell has enemy unit near, increase cost to avoid it if possible
 					dValue += 1.0;
@@ -667,7 +667,7 @@ namespace OpenCiv1
 				TerrainImprovementFlagsEnum terrainImprovements = this.parent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(unit.Position.X, unit.Position.Y);
 
 				// Instruction address 0x2e31:0x02e5, size: 5
-				bool unitIsNear = this.parent.Segment_1866.F0_1866_1725_IsUnitNear(playerID, unit.Position.X, unit.Position.Y);
+				bool unitIsNear = this.parent.UnitManagement.F0_1866_1725_IsUnitNear(playerID, unit.Position.X, unit.Position.Y);
 				int newDistance = 9999;
 				int newMoveDirection = 0;
 
@@ -690,7 +690,7 @@ namespace OpenCiv1
 
 						if (((cellOwner == -1 || cellOwner == playerID) &&
 							((((this.parent.GameData.Units[unit.TypeID].MovementType == UnitMovementTypeEnum.Water) ? 1 : 0) == (newTerrainType == TerrainTypeEnum.Water ? 1 : 0) &&
-								(!unitIsNear || !this.parent.Segment_1866.F0_1866_1725_IsUnitNear(playerID, unitNewX, unitNewY))) ||
+								(!unitIsNear || !this.parent.UnitManagement.F0_1866_1725_IsUnitNear(playerID, unitNewX, unitNewY))) ||
 								this.parent.GameData.Units[unit.TypeID].MovementType == UnitMovementTypeEnum.Air)) ||
 							(this.parent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(unitNewX, unitNewY).HasFlag(TerrainImprovementFlagsEnum.City) &&
 								this.parent.MapManagement.F0_2aea_1369_GetCityOwner(unitNewX, unitNewY) == playerID))
@@ -1254,7 +1254,7 @@ namespace OpenCiv1
 										if (activeUnitID != -1)
 										{
 											// Instruction address 0x2e31:0x103f, size: 5
-											local_e = (short)this.parent.Segment_1866.F0_1866_1251(unit.PlayerID, activeUnitID, 2) * 4;
+											local_e = (short)this.parent.UnitManagement.F0_1866_1251(unit.PlayerID, activeUnitID, 2) * 4;
 										}
 										else
 										{
@@ -1275,7 +1275,7 @@ namespace OpenCiv1
 										if (activeUnitID != -1)
 										{
 											// Instruction address 0x2e31:0x1099, size: 5
-											local_1a = (short)this.parent.Segment_1866.F0_1866_1251(unit.PlayerID, activeUnitID, 2) * 4;
+											local_1a = (short)this.parent.UnitManagement.F0_1866_1251(unit.PlayerID, activeUnitID, 2) * 4;
 										}
 										else
 										{

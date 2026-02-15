@@ -257,7 +257,7 @@ namespace OpenCiv1
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 2;
 
-			this.oParent.GameInitAndIntro.F7_0000_1440_ConstructWaterPath();
+			//this.oParent.GameInitAndIntro.F7_0000_1440_ConstructWaterPath();
 
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
@@ -527,7 +527,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L063d;
 
 			// Instruction address 0x0000:0x0638, size: 5
-			this.oParent.Segment_1866.F0_1866_260e();
+			this.oParent.UnitManagement.F0_1866_260e();
 
 		L063d:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681a), 0x0);

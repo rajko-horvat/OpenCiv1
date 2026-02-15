@@ -1649,7 +1649,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19e8_Rectangle, 0, 0);
 
 			F7_0000_1188_ConstructLandPath();
-			F7_0000_1440_ConstructWaterPath();
+			//F7_0000_1440_ConstructWaterPath();
 
 			F7_0000_17cf();
 

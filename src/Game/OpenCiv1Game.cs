@@ -23,7 +23,7 @@ namespace OpenCiv1
 		private ImageTools oImageTools;
 		private LanguageTools languageTools;
 		private MapManagement mapManagement;
-		private Segment_1866 oSegment_1866;
+		private UnitManagement oUnitManagement;
 		private UnitGoTo oUnitGoTo;
 		private Segment_2459 oSegment_2459;
 		private Segment_25fb oSegment_25fb;
@@ -95,7 +95,7 @@ namespace OpenCiv1
 			this.oImageTools = new ImageTools(this);
 			this.languageTools = new LanguageTools(this);
 			this.mapManagement = new MapManagement(this);
-			this.oSegment_1866 = new Segment_1866(this);
+			this.oUnitManagement = new UnitManagement(this);
 			this.oUnitGoTo = new UnitGoTo(this);
 			this.oSegment_2459 = new Segment_2459(this);
 			this.oSegment_25fb = new Segment_25fb(this);
@@ -1213,9 +1213,9 @@ namespace OpenCiv1
 			get { return this.mapManagement; }
 		}
 
-		public Segment_1866 Segment_1866
+		public UnitManagement UnitManagement
 		{
-			get { return this.oSegment_1866; }
+			get { return this.oUnitManagement; }
 		}
 
 		public UnitGoTo UnitGoTo

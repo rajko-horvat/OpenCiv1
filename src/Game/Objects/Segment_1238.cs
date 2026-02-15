@@ -333,7 +333,7 @@ namespace OpenCiv1
 				int playerPopulation = this.oParent.Segment_2dc4.F0_2dc4_02cd(this.oParent.GameData.HumanPlayerID);
 
 				// Instruction address 0x1238:0x04c8, size: 5
-				this.oParent.Segment_1866.F0_1866_250e_AddReplayData(11, (byte)humanPlayer.CityCount, (byte)((playerPopulation & 0xff00) >> 8), (byte)(playerPopulation & 0xff));
+				this.oParent.UnitManagement.F0_1866_250e_AddReplayData(11, (byte)humanPlayer.CityCount, (byte)((playerPopulation & 0xff00) >> 8), (byte)(playerPopulation & 0xff));
 
 				int[] playerRankings = new int[4];
 
@@ -355,7 +355,7 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x1238:0x0556, size: 5
-				this.oParent.Segment_1866.F0_1866_250e_AddReplayData(12, (byte)playerRankings[3], (byte)playerRankings[2], (byte)playerRankings[1], (byte)playerRankings[0]);
+				this.oParent.UnitManagement.F0_1866_250e_AddReplayData(12, (byte)playerRankings[3], (byte)playerRankings[2], (byte)playerRankings[1], (byte)playerRankings[0]);
 			}
 
 			if (this.oParent.GameData.TurnCount >= this.oParent.GameData.NextAnthologyTurn)
@@ -679,7 +679,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1238:0x0a43, size: 5
-			this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(0, ((this.oCPU.AX.Int16 < 3) ? 17 : 18),
+			this.oParent.UnitManagement.F0_1866_0cf5_CreateUnit(0, ((this.oCPU.AX.Int16 < 3) ? 17 : 18),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
 			
@@ -697,10 +697,10 @@ namespace OpenCiv1
 
 		L0a64:
 			// Instruction address 0x1238:0x0a70, size: 5
-			this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(0,
+			this.oCPU.AX.Int16 = (short)this.oParent.UnitManagement.F0_1866_0cf5_CreateUnit(0,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12))));
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c), this.oCPU.AX.UInt16);
 
@@ -799,7 +799,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L0afc;
 
 			// Instruction address 0x1238:0x0b83, size: 5
-			this.oCPU.AX.UInt16 = (ushort)(this.oParent.Segment_1866.F0_1866_1750_IsUnitOrCityNear(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+			this.oCPU.AX.UInt16 = (ushort)(this.oParent.UnitManagement.F0_1866_1750_IsUnitOrCityNear(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12))) ? 1 : 0);
 
@@ -946,10 +946,10 @@ namespace OpenCiv1
 
 		L0d1e:
 			// Instruction address 0x1238:0x0d2a, size: 5
-			this.oCPU.AX.UInt16 = (ushort)((short)this.oParent.Segment_1866.F0_1866_0cf5_CreateUnit(0,
+			this.oCPU.AX.Int16 = (short)this.oParent.UnitManagement.F0_1866_0cf5_CreateUnit(0,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12))));
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
 
 			// In case our unit count has reached capacity
 			if (this.oCPU.AX.UInt16 != 0xffff)
@@ -2089,7 +2089,7 @@ namespace OpenCiv1
 			this.oParent.GameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))].ShieldsCount = 0;
 
 			// Instruction address 0x1238:0x1a6f, size: 5
-			this.oParent.Segment_1866.F0_1866_250e_AddReplayData(10,
+			this.oParent.UnitManagement.F0_1866_250e_AddReplayData(10,
 				this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
 				this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);

@@ -9,6 +9,6 @@
 		AirAttack = 4,
 		SeaTransport = 5,
 		/// <summary>Diplomacy or trade</summary>
-		Civilian = 6,
+		Civilian = 6
 	}
 }

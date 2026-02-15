@@ -676,7 +676,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0731;
 
 			// Instruction address 0x2517:0x070a, size: 5
-			this.oParent.Segment_1866.F0_1866_250e_AddReplayData(8, (byte)playerID, (byte)this.oParent.GameData.Players[playerID].GovernmentType);
+			this.oParent.UnitManagement.F0_1866_250e_AddReplayData(8, (byte)playerID, (byte)this.oParent.GameData.Players[playerID].GovernmentType);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0x0);
 
@@ -1016,7 +1016,7 @@ namespace OpenCiv1
 				(this.oParent.GameData.Players[playerID1].Diplomacy[playerID2] & flags) == 0)
 			{
 				// Instruction address 0x2517:0x0a5e, size: 5
-				this.oParent.Segment_1866.F0_1866_250e_AddReplayData(3, (byte)(((ushort)playerID1 << 4) | (ushort)playerID2));
+				this.oParent.UnitManagement.F0_1866_250e_AddReplayData(3, (byte)(((ushort)playerID1 << 4) | (ushort)playerID2));
 			}
 
 			this.oParent.GameData.Players[playerID1].Diplomacy[playerID2] |= flags;
@@ -1047,7 +1047,7 @@ namespace OpenCiv1
 				(this.oParent.GameData.Players[playerID1].Diplomacy[playerID2] & flags) != 0)
 			{
 				// Instruction address 0x2517:0x0ad2, size: 5
-				this.oParent.Segment_1866.F0_1866_250e_AddReplayData(2, (byte)((short)((playerID1 << 4) | playerID2)));
+				this.oParent.UnitManagement.F0_1866_250e_AddReplayData(2, (byte)((short)((playerID1 << 4) | playerID2)));
 			}
 		
 			this.oParent.GameData.Players[playerID1].Diplomacy[playerID2] &= (ushort)(~flags);

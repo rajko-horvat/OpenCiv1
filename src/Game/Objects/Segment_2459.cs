@@ -235,7 +235,7 @@ namespace OpenCiv1
 
 		L0209:
 			// Instruction address 0x2459:0x0221, size: 5
-			this.oParent.Segment_1866.F0_1866_250e_AddReplayData(9, (byte)playerID, this.oParent.GameData.Cities[cityID].NameID,
+			this.oParent.UnitManagement.F0_1866_250e_AddReplayData(9, (byte)playerID, this.oParent.GameData.Cities[cityID].NameID,
 				this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
 				this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
 
@@ -296,7 +296,7 @@ namespace OpenCiv1
 			if (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)) == this.oParent.GameData.HumanPlayerID)
 			{
 				// Instruction address 0x2459:0x02cb, size: 5
-				this.oParent.Segment_1866.F0_1866_16a9(this.oParent.GameData.HumanPlayerID,
+				this.oParent.UnitManagement.F0_1866_16a9(this.oParent.GameData.HumanPlayerID,
 					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
 					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
 			}
@@ -465,7 +465,7 @@ namespace OpenCiv1
 				(this.oParent.GameData.Cities[cityID].ActualSize == 0))
 			{
 				// Instruction address 0x2459:0x0529, size: 5
-				this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)),
+				this.oParent.UnitManagement.F0_1866_0f10_DeleteUnit(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)),
 					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)));
 			}
 
@@ -1075,7 +1075,7 @@ namespace OpenCiv1
 
 		L0b23:
 			// Instruction address 0x2459:0x0b29, size: 5
-			this.oParent.Segment_1866.F0_1866_0f10_DeleteUnit(playerID, unitID);
+			this.oParent.UnitManagement.F0_1866_0f10_DeleteUnit(playerID, unitID);
 			
 			this.oCPU.AX.UInt16 = 0x1c;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)cityID);

@@ -695,7 +695,7 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)));
 
 			// Instruction address 0x0000:0x06b9, size: 5
-			this.oParent.Segment_1866.F0_1866_260e();
+			this.oParent.UnitManagement.F0_1866_260e();
 
 			this.oParent.Var_aa_Rectangle.FontID = 7;
 

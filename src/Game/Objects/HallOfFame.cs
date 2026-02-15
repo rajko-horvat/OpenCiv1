@@ -649,7 +649,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 15);
 
 			// Instruction address 0x0000:0x06ec, size: 5
-			this.oParent.Segment_1866.F0_1866_260e();
+			this.oParent.UnitManagement.F0_1866_260e();
 
 			// Instruction address 0x0000:0x070e, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 200, 140, 40, 60, this.oParent.Var_aa_Rectangle, 10, 10);
