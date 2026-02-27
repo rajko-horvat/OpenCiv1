@@ -432,7 +432,7 @@ namespace OpenCiv1.Graphics
 		public int LoadIcon(string filename)
 		{
 			byte[] aTemp;
-			GBitmap? bitmap = GBitmap.FromPICFile($"{VCPU.DefaultCIVPath}{filename.ToUpper()}", out aTemp);
+			GBitmap? bitmap = GBitmap.FromPICFile($"{VCPU.DefaultCIVPath}{filename.ToUpper()}", out aTemp, true);
 			int bitmapID = -1;
 
 			if (bitmap != null)

@@ -30,9 +30,9 @@ namespace OpenCiv1
 			// '1' - VGA; first letter of driver
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x1a22, 0x4d);
 			// '1' - No sound 0x4e, '4' - Sound blaster 0x41, '5' - Roland MIDI board 0x52; first letter of driver
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x1a30, 0x4e);
+			this.oParent.Var_1a30_SoundDriverType = 'N';
 			// '1' - Mouse and Keyboard 0x1, '2' - Keyboard only 0x0
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x1a3c, 0x1);
+			this.oParent.Var_1a3c_MouseAvailable = true;
 
 			this.oParent.MainIntro.F2_0000_0000();
 
@@ -83,28 +83,25 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0102;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 0x23be);
 			if (this.oCPU.Flags.GE) goto L0102;
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x1a3e, 0x1);
+			
+			this.oParent.Var_1a3e = 1;
 
 		L0102:
 			// Instruction address 0x11a8:0x010b, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.ImageTools.F0_2fa1_044c_LoadIcon(0x277);
+			this.oParent.Var_6e92 = this.oParent.ImageTools.F0_2fa1_044c_LoadIcon(0x277);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6e92, this.oCPU.AX.UInt16);
-
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c), 0x0);
-			if (this.oCPU.Flags.E) goto L012a;
+			if (!this.oParent.Var_1a3c_MouseAvailable) goto L012a;
 
 			// Instruction address 0x11a8:0x0122, size: 5
 			this.oParent.CommonTools.F0_1000_163e_InitMouse();
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x1a3c, this.oCPU.AX.UInt16);
+			//this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x1a3c, this.oCPU.AX.UInt16);
 
 		L012a:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c), 0x0);
-			if (this.oCPU.Flags.E) goto L0145;
+			if (!this.oParent.Var_1a3c_MouseAvailable) goto L0145;
 
 			// Instruction address 0x11a8:0x0139, size: 5
-			this.oParent.CommonTools.F0_1000_1697(0, 0, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6e92));
+			this.oParent.CommonTools.F0_1000_1697(0, 0, (short)this.oParent.Var_6e92);
 			
 			// Instruction address 0x11a8:0x0142, size: 3
 			F0_11a8_0250();
@@ -140,8 +137,7 @@ namespace OpenCiv1
 
 			if (this.oParent.Var_dc48_GameEndType == 0) goto L0175;
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c), 0x0);
-			if (this.oCPU.Flags.E) goto L018d;
+			if (!this.oParent.Var_1a3c_MouseAvailable) goto L018d;
 
 			// Instruction address 0x11a8:0x0188, size: 5
 			this.oParent.CommonTools.F0_1000_1687();
@@ -168,7 +164,7 @@ namespace OpenCiv1
 		public void F0_11a8_0223_UpdateMouse()
 		{
 			// function body
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c) != 0)
+			if (this.oParent.Var_1a3c_MouseAvailable)
 			{
 				// Instruction address 0x11a8:0x022a, size: 5
 				this.oParent.CommonTools.F0_1000_16d4();
@@ -197,8 +193,9 @@ namespace OpenCiv1
 			// function body
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xdeea, 
 				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdeea)));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c), 0x0);
-			if (this.oCPU.Flags.E) goto L0267;
+			
+			if (!this.oParent.Var_1a3c_MouseAvailable) goto L0267;
+
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdeea), 0x1);
 			if (this.oCPU.Flags.NE) goto L0267;
 
@@ -218,7 +215,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_11a8_0268()");
 
 			// function body
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c) != 0 && this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdeea) == 1)
+			if (this.oParent.Var_1a3c_MouseAvailable && this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdeea) == 1)
 			{
 				// Instruction address 0x11a8:0x0276, size: 5
 				this.oParent.CommonTools.F0_1000_170b();
@@ -287,7 +284,7 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
 			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
 			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x6);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76a, 0x0);
+			this.oParent.Var_d76a = 0;
 			goto L04bb;
 
 		L0494:
@@ -517,7 +514,7 @@ namespace OpenCiv1
 			// Instruction address 0x11a8:0x0796, size: 3
 			F0_11a8_0268();
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76a, 0x1);
+			this.oParent.Var_d76a = 1;
 
 			this.oParent.GameInitAndIntro.F7_0000_0012_GameIntro();
 
@@ -560,7 +557,7 @@ namespace OpenCiv1
 			goto L04bb;
 
 		L0810:
-			this.oParent.StartGameMenu.F5_0000_1455();
+			this.oParent.StartGameMenu.F5_0000_1455_LoadBitmaps();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f98, 0x1);
 			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
@@ -609,11 +606,11 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
 			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
 			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x6);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c), 0x0);
-			if (this.oCPU.Flags.E) goto L0899;
+
+			if (!this.oParent.Var_1a3c_MouseAvailable) goto L0899;
 
 			// Instruction address 0x11a8:0x0891, size: 5
-			this.oParent.CommonTools.F0_1000_1697(0, 0, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd4dc));
+			this.oParent.CommonTools.F0_1000_1697(0, 0, (short)this.oParent.Array_d4ce[7]);
 
 		L0899:
 			if (this.oParent.GameData.TurnCount != 0) goto L08c5;
@@ -624,7 +621,7 @@ namespace OpenCiv1
 			this.oParent.StartGameMenu.F5_0000_0000();
 
 		L08c5:
-			this.oParent.StartGameMenu.F5_0000_1af6();
+			this.oParent.StartGameMenu.F5_0000_1af6_LoadGovernmentImage();
 
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
 			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();

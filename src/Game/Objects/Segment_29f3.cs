@@ -689,8 +689,7 @@ namespace OpenCiv1
 			// Instruction address 0x29f3:0x061e, size: 5
 			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
 				(short)this.oCPU.SI.UInt16 + 1, (short)this.oCPU.DI.UInt16 + 1,
-				this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(((this.oParent.GameData.Players[playerID1].Units[unitID1].TypeID +
-					(playerID1 << 5) + 0x40) << 1) + 0xd4ce)));
+				this.oParent.Array_d4ce[64 + this.oParent.GameData.Players[playerID1].Units[unitID1].TypeID + (playerID1 * 32)]);
 
 			// Instruction address 0x29f3:0x062a, size: 5
 			this.oParent.CommonTools.F0_1182_0134_WaitTimer(2);
@@ -746,8 +745,7 @@ namespace OpenCiv1
 			// Instruction address 0x29f3:0x06e6, size: 5
 			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
 				(short)this.oCPU.SI.UInt16 + 1, (short)this.oCPU.DI.UInt16 + 1,
-				this.oCPU.ReadUInt16(this.oCPU.DS.UInt16,
-					(ushort)(((this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c)) + 0x20) << 1) + 0xd4ce)));
+				this.oParent.Array_d4ce[32 + this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1c))]);
 
 			// Instruction address 0x29f3:0x06f2, size: 5
 			this.oParent.CommonTools.F0_1182_0134_WaitTimer(4);

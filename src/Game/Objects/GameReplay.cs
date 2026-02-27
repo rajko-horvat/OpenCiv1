@@ -485,10 +485,8 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x053b, size: 5
 			this.oParent.CAPI.strcat(0xba06, " form ");
 
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc));
-			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, 0x1);
 			// Instruction address 0x0000:0x0405, size: 5
-			this.oParent.CAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x1966)));
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Array_1966[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc))]);
 			goto L040d;
 
 		L054f:
@@ -1100,10 +1098,9 @@ namespace OpenCiv1
 			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, 0x1);
 			this.oCPU.ES.UInt16 = 0x3725; // segment
 			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.ES.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x0));
-			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, 0x1);
 			// Instruction address 0x0000:0x0b84, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos * 4, (yPos * 4) + 4, 4, 4, 
-				this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x1946)));
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos * 4, (yPos * 4) + 4, 4, 4,
+				this.oParent.Array_1946[this.oCPU.BX.UInt16]);
 			goto L0b8c;
 
 		L0c16:

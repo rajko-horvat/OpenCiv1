@@ -465,12 +465,12 @@ namespace OpenCiv1
 		/// <param name="param1"></param>
 		/// <param name="param2"></param>
 		/// <param name="param3"></param>
-		public void F0_1000_083f(short param1, short param2, ushort param3)
+		public void F0_1000_083f(short param1, short param2, int BitmapPtr)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_083f({param1}, {param2}, {param3})");
+			this.oCPU.Log.EnterBlock($"F0_1000_083f({param1}, {param2}, {BitmapPtr})");
 
 			// function body
-			//this.oParent.Graphics.F0_VGA_0270(param1, param2, param3);
+			//this.oParent.Graphics.F0_VGA_0270(param1, param2, BitmapPtr);
 
 			if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x5403) != 0)
 			{
@@ -540,32 +540,32 @@ namespace OpenCiv1
 			{
 				this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x5402, 0);
 
-			/*L075e:
-				this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, this.oCPU.DECByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5402)));
-				if (this.oCPU.Flags.E) goto L0769;
+				/*L075e:
+					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, this.oCPU.DECByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5402)));
+					if (this.oCPU.Flags.E) goto L0769;
 
-				this.oCPU.PushWord(this.oCPU.AX.Word);
-				this.oCPU.PushWord(this.oCPU.DX.Word);
-				this.oCPU.PushWord(this.oCPU.ES.Word);
-				
-				this.oCPU.ES.Word = 0x1000;
-				// Instruction address 0x1000:0x17a2, size: 5
-				this.oParent.Graphics.F0_VGA_0224_DrawBufferToScreen();
+					this.oCPU.PushWord(this.oCPU.AX.Word);
+					this.oCPU.PushWord(this.oCPU.DX.Word);
+					this.oCPU.PushWord(this.oCPU.ES.Word);
 
-				this.oCPU.ES.Word = 0x1000;
-				// Instruction address 0x1000:0x17c0, size: 5
-				this.oParent.Graphics.F0_VGA_0270(
-					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
-					(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x587a)),
-					this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5876));
+					this.oCPU.ES.Word = 0x1000;
+					// Instruction address 0x1000:0x17a2, size: 5
+					this.oParent.Graphics.F0_VGA_0224_DrawBufferToScreen();
 
-				this.oCPU.ES.Word = this.oCPU.PopWord();
-				this.oCPU.DX.Word = this.oCPU.PopWord();
-				this.oCPU.AX.Word = this.oCPU.PopWord();
-				goto L075e;
+					this.oCPU.ES.Word = 0x1000;
+					// Instruction address 0x1000:0x17c0, size: 5
+					this.oParent.Graphics.F0_VGA_0270(
+						(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
+						(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x587a)),
+						this.oParent.Var_5876);
 
-			L0769:
-				this.oCPU.AX.Word |= 0;*/
+					this.oCPU.ES.Word = this.oCPU.PopWord();
+					this.oCPU.DX.Word = this.oCPU.PopWord();
+					this.oCPU.AX.Word = this.oCPU.PopWord();
+					goto L075e;
+
+				L0769:
+					this.oCPU.AX.Word |= 0;*/
 			}
 
 			this.oCPU.Log.ExitBlock("F0_1000_084d_DrawBitmapToScreen");
@@ -751,14 +751,14 @@ namespace OpenCiv1
 		/// <param name="param1"></param>
 		/// <param name="param2"></param>
 		/// <param name="param3"></param>
-		public void F0_1000_1697(ushort param1, ushort param2, ushort param3)
+		public void F0_1000_1697(ushort param1, ushort param2, int bitmapPtr)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_1697({param1}, {param2}, {param3})");
+			this.oCPU.Log.EnterBlock($"F0_1000_1697({param1}, {param2}, {bitmapPtr})");
 
 			// function body
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5878, param1);
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x587a, param2);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5876, param3);
+			this.oParent.Var_5876 = bitmapPtr;
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1000_1697");
@@ -819,15 +819,15 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_1000_16db()");
 
 			// function body
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x5876), 0x0);
-			if (this.oCPU.Flags.E) goto L170a;
+			if (this.oParent.Var_5876 == 0) goto L170a;
+
 			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x5403), 0x0);
 			if (this.oCPU.Flags.NE) goto L170a;
 
 			// Instruction address 0x1000:0x16fd, size: 5
 			F0_1000_083f((short)(this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x586e) - this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x5878)),
 				(short)(this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x5870) - this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x587a)),
-				this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x5876));
+				this.oParent.Var_5876);
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x5403, 0x1);
 
@@ -844,8 +844,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_1000_170b()");
 
 			// function body
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x5876), 0x0);
-			if (this.oCPU.Flags.E) goto L1723;
+			if (this.oParent.Var_5876 == 0) goto L1723;
 
 			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x5403), 0x0);
 			if (this.oCPU.Flags.E) goto L1723;

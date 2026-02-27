@@ -11,6 +11,7 @@
 		RailRoad = 0x10,
 		Fortress = 0x20,
 		Pollution = 0x40,
+		Flag80 = 0x80,
 		PillageMask = 0x1e,
 	}
 }

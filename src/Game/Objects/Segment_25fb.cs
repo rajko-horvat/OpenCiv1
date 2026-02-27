@@ -865,7 +865,7 @@ namespace OpenCiv1
 				this.oParent.GameData.Players[playerID].CityCount != 0 ||
 				playerID == this.oParent.GameData.HumanPlayerID) goto L0845;
 
-			this.oParent.StartGameMenu.F5_0000_0e6c(playerID, 0);
+			this.oParent.StartGameMenu.F5_0000_0e6c_TestIfAIPlayerDestroyed(playerID, 0);
 
 		L0845:
 			this.oCPU.AX.LowUInt8 = (byte)playerID;
@@ -2107,8 +2107,8 @@ namespace OpenCiv1
 
 		L13d9:
 			if (this.oParent.GameData.TurnCount != 0) goto L13f1;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd76a), 0x0);
-			if (this.oCPU.Flags.E) goto L13f1;
+			if (this.oParent.Var_d76a == 0) goto L13f1;
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x28), 0xf);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2c), 0x0);
 

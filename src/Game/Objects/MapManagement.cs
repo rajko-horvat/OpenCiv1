@@ -211,7 +211,7 @@ namespace OpenCiv1
 					{
 						// Instruction address 0x2aea:0x0355, size: 3
 						this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, cellXPos, cellYPos + 8,
-							this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(0x1946 + (city.PlayerID * 2))));
+							this.oParent.Array_1946[city.PlayerID]);
 					}
 				}
 			}
@@ -312,13 +312,13 @@ namespace OpenCiv1
 							{
 								// Instruction address 0x2aea:0x05f4, size: 5
 								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + ((i & 0x1) * 8), scrY,
-									this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd294 + 0x8 * ((bitmapMask >> (i * 2)) & 0x7) + i * 2)));
+									this.oParent.Array_d294[(bitmapMask >> (i * 2)) & 0x7, i]);
 							}
 							else
 							{
 								// Instruction address 0x2aea:0x05f4, size: 5
 								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX - ((i & 0x1) * 8) + 8, scrY + 8,
-									this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd294 + 0x8 * ((bitmapMask >> (i * 2)) & 0x7) + i * 2)));
+									this.oParent.Array_d294[(bitmapMask >> (i * 2)) & 0x7, i]);
 							}
 						}
 
@@ -364,8 +364,7 @@ namespace OpenCiv1
 							if (F0_2aea_134a_GetTerrainType(this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(x + direction.X), y + direction.Y) == TerrainTypeEnum.River)
 							{
 								// Instruction address 0x2aea:0x0777, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-									this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd2d4 + i - 1)));
+								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d2d4[(i - 1) / 2]);
 							}
 						}
 					}
@@ -391,8 +390,7 @@ namespace OpenCiv1
 				{
 					// Draw irrigation
 					// Instruction address 0x2aea:0x07f8, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-						this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd4ce + (4 << 1))));
+					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d4ce[4]);
 				}
 
 				if (terrainType == TerrainTypeEnum.River)
@@ -413,19 +411,18 @@ namespace OpenCiv1
 						}
 					}
 
-					if (this.oParent.Var_d762 == 0 || (this.oParent.Graphics.F0_VGA_038c_GetPixel(2, x, y + 150) & 0x8) != 0)
+					if (this.oParent.Var_d762 == 0 || this.F0_2aea_1585_GetVisibleTerrainImprovements(x, y).HasFlag(TerrainImprovementFlagsEnum.Flag80))
 					{
 						mask += 0x10;
 					}
 
 					// Instruction address 0x2aea:0x0885, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-						this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0x6dfe + (mask << 1))));
+					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_6e00[mask - 1]);
 				}
 
 				if (terrainType != TerrainTypeEnum.Water && terrainType != TerrainTypeEnum.River)
 				{
-					// Blend seams between cells with the same terrain types
+					// Blend seas between cells with the same terrain types
 					if (this.oParent.Var_d762 != 0)
 					{
 						int mask = 0;
@@ -444,15 +441,13 @@ namespace OpenCiv1
 						}
 
 						// Instruction address 0x2aea:0x091e, size: 5
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-							this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xb886 + ((int)terrainType * 32) + (mask * 2))));
+						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_b886[(int)terrainType, mask]);
 
 						if (terrainType == TerrainTypeEnum.Grassland && (((7 * x) + (11 * y)) & 0x2) == 0)
 						{
 							// Draw grassland tiles with production bonus
 							// Instruction address 0x2aea:0x0996, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + 4, scrY + 4, 
-								this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xb880));
+							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + 4, scrY + 4, this.oParent.Var_b880);
 						}
 					}
 					else
@@ -461,13 +456,13 @@ namespace OpenCiv1
 						{
 							// Instruction address 0x2aea:0x0996, size: 5
 							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-								this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xb886 + (int)terrainType * 32 + ((((7 * x) + (11 * y)) & 0x2) >> 1) * 2)));
+								this.oParent.Array_b886[(int)terrainType, (((7 * x) + (11 * y)) & 0x2) / 2]);
 						}
 						else
 						{
 							// Instruction address 0x2aea:0x0996, size: 5
 							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-								this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xb886 + (int)terrainType * 32 + ((x + y) & 0x1) * 2)));
+								this.oParent.Array_b886[(int)terrainType, ((x + y) & 0x1) * 2]);
 						}
 					}
 				}
@@ -493,8 +488,7 @@ namespace OpenCiv1
 					else
 					{
 						// Instruction address 0x2aea:0x09bc, size: 5
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-							this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd4da));
+						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d4ce[6]);
 					}
 				}
 
@@ -520,14 +514,12 @@ namespace OpenCiv1
 							if ((terrainImprovements & railRoadOrCity) == 0 || (terrainImprovements1 & railRoadOrCity) == 0)
 							{
 								// Instruction address 0x2aea:0x0a73, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-									this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xb278 + i * 2)));
+								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_b27a[i - 1]);
 							}
 							else
 							{
 								// Instruction address 0x2aea:0x0a73, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-									this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xb298 + i * 2)));
+								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_b29a[i - 1]);
 							}
 						}
 					}
@@ -546,8 +538,7 @@ namespace OpenCiv1
 					// Draw mines
 
 					// Instruction address 0x2aea:0x0aff, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-						this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd4ce + (5 << 1))));
+					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d4ce[5]);
 				}
 
 				// Instruction address 0x2aea:0x0b11, size: 3
@@ -556,8 +547,7 @@ namespace OpenCiv1
 					// Draw special resources
 
 					// Instruction address 0x2aea:0x0b28, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-						this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd4ce + (((int)terrainType + 16) << 1))));
+					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d4ce[(int)terrainType + 16]);
 				}
 
 				// Instruction address 0x2aea:0x0b3a, size: 3
@@ -566,8 +556,7 @@ namespace OpenCiv1
 					// Draw Minot tribe hut
 
 					// Instruction address 0x2aea:0x0b4e, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-						this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd4ce + (0x1f << 1))));
+					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d4ce[31]);
 				}
 
 				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.Fortress))
@@ -575,8 +564,7 @@ namespace OpenCiv1
 					// Draw fortresses
 
 					// Instruction address 0x2aea:0x0b66, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-						this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd4ce + (0x1e << 1))));
+					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d4ce[30]);
 				}
 
 				if (!this.oParent.Var_d806_DebugFlag)
@@ -595,8 +583,7 @@ namespace OpenCiv1
 						if ((visibilityMask & (0x1 << this.oParent.GameData.HumanPlayerID)) == 0)
 						{
 							// Instruction address 0x2aea:0x0bce, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-								this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0x7eec + i - 1)));
+							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_7eec[(i - 1) / 2]);
 						}
 					}
 				}
@@ -621,26 +608,24 @@ namespace OpenCiv1
 							// Draw city dark borders at the top and right sides
 
 							// Instruction address 0x2aea:0x0c7d, size: 5
-							this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(scrX + 2, scrY + 1, 12, 12,
-								this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0x1956 + (city.PlayerID * 2))));
+							this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(scrX + 2, scrY + 1, 12, 12, this.oParent.Array_1956[city.PlayerID]);
 
 							// Draw city main color
 
 							// Instruction address 0x2aea:0x0cac, size: 5
 							this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, scrX + 2, scrY + 2, 12, 12,
-								this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0x1946 + (city.PlayerID * 2))));
+								this.oParent.Array_1946[city.PlayerID]);
 
 							// Draw city 'streets'
 
 							// Instruction address 0x2aea:0x0cba, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + 1, scrY + 1,
-								this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd4ce + (0x1c << 1))));
+							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + 1, scrY + 1, this.oParent.Array_d4ce[28]);
 
 							// Color city 'streets' according to player nation
 
 							// Instruction address 0x2aea:0x0ce5, size: 5
 							this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, scrX + 2, scrY + 2, 12, 12, 5,
-								(byte)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0x1956 + (city.PlayerID * 2))));
+								this.oParent.Array_1956[city.PlayerID]);
 
 							int citySize = (city.PlayerID == this.oParent.GameData.HumanPlayerID || this.oParent.Var_d806_DebugFlag) ?
 									city.ActualSize : city.VisibleSize;
@@ -655,8 +640,7 @@ namespace OpenCiv1
 								// Draw city disorder
 
 								// Instruction address 0x2aea:0x0d66, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + 5, scrY + 2,
-									this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6e9e));
+								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + 5, scrY + 2, this.oParent.Array_6e96[4]);
 							}
 							else
 							{
@@ -680,8 +664,7 @@ namespace OpenCiv1
 								// Draw city walls
 
 								// Instruction address 0x2aea:0x0de7, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + 1, scrY + 1,
-									this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd4ce + (0x1d << 1))));
+								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + 1, scrY + 1, this.oParent.Array_d4ce[29]);
 							}
 
 							this.VisibleCities.Add(new CityInfo(scrX, scrY, cityID));
@@ -725,7 +708,7 @@ namespace OpenCiv1
 						// There are multiple units stacked
 
 						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, x + 1, y + 1,
-							this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd4ce + (((playerID * 32) + unit.TypeID + 64) * 2))));
+							this.oParent.Array_d4ce[64 + (playerID * 32) + unit.TypeID]);
 					}
 
 					// Instruction address 0x2aea:0x0fa0, size: 3
@@ -757,14 +740,13 @@ namespace OpenCiv1
 
 			// Instruction address 0x2aea:0x0fe2, size: 5
 			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, x, y,
-				this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd4ce + (((playerID * 32) + unit.TypeID + 64) * 2))));
+				this.oParent.Array_d4ce[64 + (playerID * 32) + unit.TypeID]);
 
 			if ((unit.Status & 0x8) != 0)
 			{
 
 				// Instruction address 0x2aea:0x0ffb, size: 5
-				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, x, y,
-					this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd4ce + (29 * 2))));
+				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, x, y, this.oParent.Array_d4ce[29]);
 			}
 			else
 			{

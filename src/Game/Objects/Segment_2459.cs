@@ -542,7 +542,7 @@ namespace OpenCiv1
 			this.oParent.GameData.Players[playerID].UnitsInProduction[this.oParent.GameData.Cities[cityID].CurrentProductionID]++;
 
 		L05da:
-			this.oParent.StartGameMenu.F5_0000_0e6c(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)), playerID);
+			this.oParent.StartGameMenu.F5_0000_0e6c_TestIfAIPlayerDestroyed(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)), playerID);
 
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.DI.UInt16 = this.oCPU.POP_UInt16();

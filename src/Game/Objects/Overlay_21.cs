@@ -101,7 +101,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0797_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
 				20 * this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)),
 				100 - this.oParent.CAPI.RNG.Next(2),
-				this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdf0c));
+				this.oParent.Var_df0c);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10))));
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)), 0x10);

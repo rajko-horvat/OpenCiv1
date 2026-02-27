@@ -257,7 +257,7 @@ namespace OpenCiv1
 			// Instruction address 0x2517:0x0254, size: 5
 			this.oParent.LanguageTools.F0_2f4d_044f(0x29a6);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x1);
+			this.oParent.Var_3936 = 1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
 			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
@@ -373,7 +373,7 @@ namespace OpenCiv1
 			// Instruction address 0x2517:0x03b3, size: 5
 			this.oParent.LanguageTools.F0_2f4d_044f(0x2988);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x1);
+			this.oParent.Var_3936 = 1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
 			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
@@ -540,10 +540,9 @@ namespace OpenCiv1
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10));
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 + this.oCPU.SI.UInt16 - 0xe), this.oCPU.AX.UInt16);
 
-			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10));
-			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, 0x1);
 			// Instruction address 0x2517:0x0575, size: 5
-			this.oParent.CAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x1966)));
+			this.oParent.CAPI.strcat(0xba06,
+				this.oParent.Array_1966[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10))]);
 
 			// Instruction address 0x2517:0x0585, size: 5
 			this.oParent.CAPI.strcat(0xba06, "\n ");
@@ -578,12 +577,12 @@ namespace OpenCiv1
 		L05d3:
 			this.oParent.GameData.Players[playerID].GovernmentType = (short)this.oCPU.AX.UInt16;
 
-			this.oParent.StartGameMenu.F5_0000_1af6();
+			this.oParent.StartGameMenu.F5_0000_1af6_LoadGovernmentImage();
 
 			// Instruction address 0x2517:0x05dc, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
 
-			this.oParent.StartGameMenu.F5_0000_1ba2();
+			this.oParent.StartGameMenu.F5_0000_1ba2_ChangeGovernment();
 
 			goto L06f0;
 
@@ -625,11 +624,8 @@ namespace OpenCiv1
 			// Instruction address 0x2517:0x064a, size: 5
 			this.oParent.CAPI.strcat(0xba06, " government\nchanged to ");
 
-			this.oCPU.BX.UInt16 = (ushort)governmentType;
-			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, 0x1);
-
 			// Instruction address 0x2517:0x065f, size: 5
-			this.oParent.CAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x1966)));
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Array_1966[governmentType]);
 
 			// Instruction address 0x2517:0x066f, size: 5
 			this.oParent.CAPI.strcat(0xba06, "!\n");

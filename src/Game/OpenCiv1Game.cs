@@ -1,6 +1,14 @@
-﻿using IRB.VirtualCPU;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using IRB.VirtualCPU;
 using OpenCiv1.Graphics;
 using OpenCiv1.Resources;
+using SkiaSharp;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace OpenCiv1
 {
@@ -127,15 +135,53 @@ namespace OpenCiv1
 			this.schizm = new Schizm(this);
 			#endregion
 
-			/*string[] aFiles = Directory.GetFiles(this.oCPU.DefaultCIVPath, "*.pic");
+			/*string[] aFiles = Directory.GetFiles(VCPU.DefaultCIVPath, "*.pic");
 
 			for (int i = 0; i < aFiles.Length; i++)
 			{
-				byte[] palette;
-				VGABitmap bitmap = VGABitmap.FromPICFile(aFiles[i], out palette);
+				WriteImage(aFiles[i], @"Z:\Civilization\Images\" + Path.GetFileNameWithoutExtension(aFiles[i]) + ".png");
+			}*/
 
-				bitmap.Bitmap.SaveToPIC(Path.GetFileNameWithoutExtension(aFiles[i]) + ".bmp", ImageFormat.Bmp);
-			}//*/
+			/*byte[] palette;
+			var colors = GBitmap.ReadPaletteFromPICFile(@"Z:\Games\Civilization\Civ I\Dos\Installed\CIV1.5\sp256.pal", out palette);
+
+			StreamWriter writer = new StreamWriter("palette.txt");
+
+			for (int i = 0; i < colors.Count; i++)
+			{
+				Color color = colors[i].Value;
+
+				writer.WriteLine($"new Color(0, {color.R}, {color.G}, {color.B}),");
+			}
+
+			writer.Close();*/
+		}
+
+		private void WriteImage(string fileIn, string fileOut)
+		{
+			byte[] palette;
+			GBitmap? originalBitmap = GBitmap.FromPICFile(fileIn, out palette, true);
+
+			if (originalBitmap != null)
+			{
+				int width = originalBitmap.Width;
+				int height = originalBitmap.Height;
+				SKBitmap skBitmap = new SKBitmap(width, height, SKColorType.Rgba8888, SKAlphaType.Unpremul);
+
+				for (int y = 0; y < height; y++)
+				{
+					for (int x = 0; x < width; x++)
+					{
+						Color color = originalBitmap.Palette[originalBitmap.GetPixel(x, y)];
+
+						skBitmap.SetPixel(x, y, new SKColor(color.R, color.G, color.B));
+					}
+				}
+
+				FileStream output = new FileStream(fileOut, FileMode.Create);
+				skBitmap.Encode(output, SKEncodedImageFormat.Png, 80);
+				output.Close();
+			}
 		}
 
 		public void Start()

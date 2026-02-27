@@ -30,8 +30,8 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.ScreenID = 1;
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x67fc, 0x0);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd76a), 0x0);
-			if (this.oCPU.Flags.E) goto L0054;
+			
+			if (this.oParent.Var_d76a == 0) goto L0054;
 			
 			// Instruction address 0x0000:0x0049, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x3b20, 1);

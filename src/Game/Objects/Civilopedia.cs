@@ -389,8 +389,8 @@ namespace OpenCiv1
 
 		L03ff:
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6808, this.oCPU.AX.UInt16);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c), 0x0);
-			if (this.oCPU.Flags.NE) goto L040c;
+
+			if (this.oParent.Var_1a3c_MouseAvailable) goto L040c;
 			goto L0492;
 
 		L040c:
@@ -938,8 +938,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x0aa4, size: 5
 			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
-				216, 48,
-				this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)((topicID << 1) + 0xd58e)));
+				216, 48, this.oParent.Array_d4ce[96 + topicID]);
 			goto L07e2;
 
 		L0aac:
@@ -1116,9 +1115,8 @@ namespace OpenCiv1
 				// Instruction address 0x0000:0x0da3, size: 5
 				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
 					40, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)) - 4,
-					this.oCPU.ReadUInt16(this.oCPU.DS.UInt16,
-						(ushort)((((this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e)) +
-						(this.oParent.GameData.HumanPlayerID << 5)) + 0x40) << 1) + 0xd4ce)));
+					this.oParent.Array_d4ce[64 + this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e)) +
+						(this.oParent.GameData.HumanPlayerID * 32)]);
 
 				// Instruction address 0x0000:0x0db5, size: 5
 				this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2e))].Name);

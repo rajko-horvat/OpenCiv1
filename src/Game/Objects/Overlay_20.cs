@@ -1708,7 +1708,7 @@ namespace OpenCiv1
 				this.oParent.Var_aa_Rectangle,
 				this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xb25c),
 				this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xb2bc),
-				this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)((param1 << 1) + 0x6e96)));
+				this.oParent.Array_6e96[param1]);
 
 		L1442:
 			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();

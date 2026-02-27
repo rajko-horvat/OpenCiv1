@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Avalonia.Media;
 using IRB.Collections.Generic;
 using OpenCiv1.Compression;
@@ -567,7 +568,7 @@ namespace OpenCiv1.Graphics
 		public bool LoadPIC(string filename, int xPos, int yPos, out byte[] palette)
 		{
 			// function body
-			GBitmap? bitmap = GBitmap.FromPICFile(filename, out palette);
+			GBitmap? bitmap = GBitmap.FromPICFile(filename, out palette, true);
 
 			if (bitmap != null)
 			{
@@ -586,7 +587,7 @@ namespace OpenCiv1.Graphics
 			return false;
 		}
 
-		public static GBitmap? FromPICFile(string path, out byte[] palette)
+		public static GBitmap? FromPICFile(string path, out byte[] palette, bool preferHiColor)
 		{
 			GBitmap? bitmap = null;
 			FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
@@ -621,145 +622,167 @@ namespace OpenCiv1.Graphics
 				{
 					case 0x3045:
 						// 8bit colorIndex palette
+						if (aPalette.Count == 0 || !preferHiColor)
+						{
+							aPalette.Clear();
+						}
 						break;
 
 					case 0x304d:
-						// 18bit colorIndex palette
-						List<byte> aTemp = new List<byte>();
-						aTemp.Add(0x4d);
-						aTemp.Add(0x30);
-						aTemp.Add((byte)(iBlockLength & 0xff));
-						aTemp.Add((byte)((iBlockLength & 0xff00) >> 8));
-						aTemp.AddRange(aBlock);
-						palette = aTemp.ToArray();
-
-						blockReader = new MemoryStream(aBlock);
-						int iIndex = blockReader.ReadByte();
-						int iColorCount = blockReader.ReadByte();
-
-						if (iIndex >= 0 && iColorCount >= 0)
+						if (aPalette.Count == 0 || preferHiColor)
 						{
-							iColorCount -= iIndex;
-							iColorCount++;
+							// 18bit colorIndex palette
+							aPalette.Clear();
+							List<byte> aTemp = new List<byte>();
+							aTemp.Add(0x4d);
+							aTemp.Add(0x30);
+							aTemp.Add((byte)(iBlockLength & 0xff));
+							aTemp.Add((byte)((iBlockLength & 0xff00) >> 8));
+							aTemp.AddRange(aBlock);
+							palette = aTemp.ToArray();
 
-							for (int i = 0; i < iColorCount; i++)
+							blockReader = new MemoryStream(aBlock);
+							int iIndex = blockReader.ReadByte();
+							int iColorCount = blockReader.ReadByte();
+
+							if (iIndex >= 0 && iColorCount >= 0)
 							{
-								int iRed = blockReader.ReadByte();
-								int iGreen = blockReader.ReadByte();
-								int iBlue = blockReader.ReadByte();
+								iColorCount -= iIndex;
+								iColorCount++;
 
-								if (iRed < 0 || iGreen < 0 || iBlue < 0)
+								for (int i = 0; i < iColorCount; i++)
 								{
-									throw new Exception($"Palette block type 0x{iSignature:x4} malformed");
+									int iRed = blockReader.ReadByte();
+									int iGreen = blockReader.ReadByte();
+									int iBlue = blockReader.ReadByte();
+
+									if (iRed < 0 || iGreen < 0 || iBlue < 0)
+									{
+										throw new Exception($"Palette block type 0x{iSignature:x4} malformed");
+									}
+									aPalette.Add(new BKeyValuePair<int, Color>(iIndex + i,
+										GBitmap.Color18ToColor(iRed, iGreen, iBlue)));
 								}
-								aPalette.Add(new BKeyValuePair<int, Color>(iIndex + i,
-									GBitmap.Color18ToColor(iRed, iGreen, iBlue)));
 							}
-						}
-						else
-						{
-							throw new Exception($"Palette block type 0x{iSignature:x4} malformed");
+							else
+							{
+								throw new Exception($"Palette block type 0x{iSignature:x4} malformed");
+							}
 						}
 						break;
 
 					case 0x3058:
 						// Image data encoded by RLE and LZW
-						blockReader = new MemoryStream(aBlock);
-						iWidth = ReadUInt16(blockReader);
-						iHeight = ReadUInt16(blockReader);
-						iMaxBits = blockReader.ReadByte();
-
-						if (iWidth >= 0 && iHeight >= 0 && iMaxBits > 7)
+						if (bitmap == null || preferHiColor)
 						{
-							// decode LZW
-							MemoryStream lzwOutput = new MemoryStream();
-							LZW.Decompress(lzwOutput, blockReader, 9, iMaxBits);
-							lzwOutput.Position = 0;
+							blockReader = new MemoryStream(aBlock);
+							iWidth = ReadUInt16(blockReader);
+							iHeight = ReadUInt16(blockReader);
+							iMaxBits = blockReader.ReadByte();
 
-							// decode RLE
-							MemoryStream rleOutput = new MemoryStream();
-							RLE.Decompress(rleOutput, lzwOutput);
-							rleOutput.Position = 0;
-
-							// construct bitmap with our raw data
-							int iPixelAddress = 0;
-							bitmap = new GBitmap(iWidth, iHeight);
-
-							// set bitmap palette
-							for (int i = 0; i < aPalette.Count; i++)
+							if (iWidth >= 0 && iHeight >= 0 && iMaxBits > 7)
 							{
-								bitmap.oPalette[(byte)aPalette[i].Key] = aPalette[i].Value;
-							}
+								// decode LZW
+								MemoryStream lzwOutput = new MemoryStream();
+								LZW.Decompress(lzwOutput, blockReader, 9, iMaxBits);
+								lzwOutput.Position = 0;
 
-							// set bitmap pixels
-							for (int i = 0; i < iHeight; i++)
-							{
-								for (int j = 0; j < iWidth; j++)
+								// decode RLE
+								MemoryStream rleOutput = new MemoryStream();
+								RLE.Decompress(rleOutput, lzwOutput);
+								rleOutput.Position = 0;
+
+								// construct bitmap with our raw data
+								int iPixelAddress = 0;
+								bitmap = new GBitmap(iWidth, iHeight);
+
+								// set bitmap palette
+								for (int i = 0; i < aPalette.Count; i++)
 								{
-									int c = rleOutput.ReadByte();
-									if (c < 0)
-										break;
+									bitmap.oPalette[(byte)aPalette[i].Key] = aPalette[i].Value;
+								}
 
-									bitmap.Pixels[iPixelAddress] = (byte)c;
-									iPixelAddress++;
+								// set bitmap pixels
+								for (int i = 0; i < iHeight; i++)
+								{
+									for (int j = 0; j < iWidth; j++)
+									{
+										int c = rleOutput.ReadByte();
+										if (c < 0)
+											break;
+
+										bitmap.Pixels[iPixelAddress] = (byte)c;
+										iPixelAddress++;
+									}
 								}
 							}
-						}
-						else
-						{
-							throw new Exception($"Image block type 0x{iSignature:x4} malformed");
+							else
+							{
+								throw new Exception($"Image block type 0x{iSignature:x4} malformed");
+							}
 						}
 						break;
 
 					case 0x3158:
-						// Image data encoded by two pixels packed into one, RLE and LZW
-						blockReader = new MemoryStream(aBlock);
-						iWidth = ReadUInt16(blockReader);
-						iHeight = ReadUInt16(blockReader);
-						iMaxBits = blockReader.ReadByte();
-
-						if (iWidth >= 0 && iHeight >= 0 && iMaxBits > 7)
+						if (bitmap == null || !preferHiColor)
 						{
-							// decode LZW
-							MemoryStream lzwOutput = new MemoryStream();
-							LZW.Decompress(lzwOutput, blockReader, 9, iMaxBits);
-							lzwOutput.Position = 0;
+							// Image data encoded by two pixels packed into one, RLE and LZW
+							blockReader = new MemoryStream(aBlock);
+							iWidth = ReadUInt16(blockReader);
+							iHeight = ReadUInt16(blockReader);
+							iMaxBits = blockReader.ReadByte();
 
-							// decode RLE
-							MemoryStream rleOutput = new MemoryStream();
-							RLE.Decompress(rleOutput, lzwOutput);
-							rleOutput.Position = 0;
-
-							// construct bitmap with our raw data
-							int iPixelAddress = 0;
-
-							bitmap = new GBitmap(iWidth, iHeight * 2);
-
-							// set bitmap palette
-							for (int i = 0; i < aPalette.Count; i++)
+							if (iWidth >= 0 && iHeight >= 0 && iMaxBits > 7)
 							{
-								bitmap.oPalette[(byte)aPalette[i].Key] = aPalette[i].Value;
-							}
+								// decode LZW
+								MemoryStream lzwOutput = new MemoryStream();
+								LZW.Decompress(lzwOutput, blockReader, 9, iMaxBits);
+								lzwOutput.Position = 0;
 
-							// set bitmap pixels
-							for (int i = 0; i < iHeight; i++)
-							{
-								for (int j = 0; j < iWidth; j += 2)
+								// decode RLE
+								MemoryStream rleOutput = new MemoryStream();
+								RLE.Decompress(rleOutput, lzwOutput);
+								rleOutput.Position = 0;
+
+								// construct bitmap with our raw data
+								int iPixelAddress = 0;
+
+								bitmap = new GBitmap(iWidth, iHeight);
+
+								// set bitmap palette
+								/*for (int i = 0; i < aPalette.Count; i++)
 								{
-									int c = rleOutput.ReadByte();
-									if (c < 0)
-										break;
+									bitmap.oPalette[(byte)aPalette[i].Key] = aPalette[i].Value;
+								}*/
 
-									bitmap.Pixels[iPixelAddress] = (byte)(c & 0xf);
-									iPixelAddress++;
-									bitmap.Pixels[iPixelAddress] = (byte)((c & 0xf0) >> 4);
-									iPixelAddress++;
+								// set bitmap pixels
+								for (int i = 0; i < iHeight; i++)
+								{
+									for (int j = 0; j < iWidth; j++)
+									{
+										int c = rleOutput.ReadByte();
+										if (c < 0)
+											break;
+
+										// for some reason the first pixel is discarded
+										//if (j == 0)
+										//{
+										bitmap.Pixels[iPixelAddress] = (byte)((c & 0xf));
+										iPixelAddress++;
+										//}
+										if (j + 1 < iWidth)
+										{
+											bitmap.Pixels[iPixelAddress] = (byte)((c & 0xf0) >> 4);
+											iPixelAddress++;
+											j++;
+										}
+									}
 								}
 							}
-						}
-						else
-						{
-							throw new Exception($"Image block type 0x{iSignature:x4} malformed");
+							else
+							{
+								throw new Exception($"Image block type 0x{iSignature:x4} malformed");
+							}
 						}
 						break;
 

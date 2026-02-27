@@ -38,26 +38,30 @@ namespace OpenCiv1
 			this.oParent.CheckPlayerTurn.F0_1403_4545();
 
 		L0043:
-			this.oCPU.AX.UInt16 = 0xffff;
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
-			this.oCPU.AX.UInt16 = 0;
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2fa2, this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f9c, this.oCPU.AX.UInt16);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.NE) goto L006f;
+			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), -1);
+			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), -1);
+
+			this.oParent.Var_2fa2 = 0;
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f9c, 0);
+
+			if (this.oParent.Var_1a3c_MouseAvailable) goto L006f;
+
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 0xffff);
 			if (this.oCPU.Flags.NE) goto L006f;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x8066), this.oCPU.AX.UInt16);
+
+			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x8066), 0);
 			if (this.oCPU.Flags.NE) goto L006f;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd206), this.oCPU.AX.UInt16);
+
+			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd206), 0);
 			if (this.oCPU.Flags.NE) goto L006f;
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
+
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), 0);
 
 		L006f:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), 0x0);
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2f9a), 0xffff);
 			if (this.oCPU.Flags.E) goto L0081;
+
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2f9a);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
 
@@ -74,8 +78,8 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2fa4, this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2fa4)));
 
 		L00a8:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x3936), 0xffff);
-			if (this.oCPU.Flags.E) goto L00b5;
+			if (this.oParent.Var_3936 == -1) goto L00b5;
+
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2fa4, 0x8);
 
 		L00b5:
@@ -133,8 +137,7 @@ namespace OpenCiv1
 			goto L0470;
 
 		L014d:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x3936), 0xffff);
-			if (this.oCPU.Flags.E) goto L0159;
+			if (this.oParent.Var_3936 == -1) goto L0159;
 
 			this.oParent.MeetWithKing.F6_0000_1b33();
 
@@ -151,12 +154,12 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L01db;
 
 		L0177:
-			this.oCPU.AX.UInt16 = 0x1;
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2fa2, this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), this.oCPU.AX.UInt16);
+			this.oParent.Var_2fa2 = 1;
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), 1);
+
 			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x2);
 			if (this.oCPU.Flags.NE) goto L018a;
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f9c, this.oCPU.AX.UInt16);
+			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f9c, 1);
 
 		L018a:
 			this.oCPU.AX.Int16 = (short)this.oParent.Var_db3e_MouseYPos;
@@ -509,8 +512,8 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2fa4, this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2fa4)));
 
 		L04a8:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x3936), 0xffff);
-			if (this.oCPU.Flags.E) goto L04b5;
+			if (this.oParent.Var_3936 == -1) goto L04b5;
+
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2fa4, 0x8);
 
 		L04b5:
@@ -696,7 +699,7 @@ namespace OpenCiv1
 			
 			// Instruction address 0x2d05:0x06c8, size: 5
 			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, xPos - 40, yPos - 5,
-				this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xdf62 + ((int)this.oParent.Var_2f9e_MessageBoxStyle * 2))));
+				this.oParent.Array_df62[(int)this.oParent.Var_2f9e_MessageBoxStyle]);
 			goto L0715;
 
 		L06d2:

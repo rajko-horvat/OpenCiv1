@@ -777,7 +777,7 @@ namespace OpenCiv1
 				// Instruction address 0x1866:0x1027, size: 5
 				this.oParent.MapManagement.F0_2aea_1412_SetCellActivePlayerID(playerID, unitID, unit.Position.X, unit.Position.Y);
 	
-				if (!this.Var_20f4 && this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x3936) == -1)
+				if (!this.Var_20f4 && this.oParent.Var_3936 == -1)
 				{
 					if (this.oParent.Var_d806_DebugFlag || playerID == this.oParent.GameData.HumanPlayerID ||
 						(unit.VisibleByPlayer & (1 << this.oParent.GameData.HumanPlayerID)) != 0)
@@ -1948,8 +1948,7 @@ namespace OpenCiv1
 					// Instruction address 0x1866:0x1f0a, size: 5
 					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
 						(direction.X * i) + mapX + 1, (direction.Y * i) + mapY + 1,
-						this.oCPU.ReadUInt16(this.oCPU.DS.UInt16,
-							(ushort)(0xd4ce + ((this.oParent.GameData.Players[playerID].Units[unitID].TypeID + (playerID << 5) + 0x40) << 1))));
+						this.oParent.Array_d4ce[64 + this.oParent.GameData.Players[playerID].Units[unitID].TypeID + (playerID * 32)]);
 
 					// Instruction address 0x1866:0x1f16, size: 5
 					this.oParent.CommonTools.F0_1182_0134_WaitTimer(1);

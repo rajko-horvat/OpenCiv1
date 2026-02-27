@@ -779,7 +779,7 @@ namespace OpenCiv1
 			goto L0822;
 
 		L0762:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x1);
+			this.oParent.Var_3936 = 1;
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x077b, size: 5
@@ -804,7 +804,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x07b7, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0xffff);
+			this.oParent.Var_3936 = -1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3c62, 0x1);
 
 			// Instruction address 0x0000:0x07cf, size: 5
@@ -823,7 +823,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.FontID = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x67ec);
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x1);
+			this.oParent.Var_3936 = 1;
 
 			// Instruction address 0x0000:0x0810, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
@@ -912,7 +912,7 @@ namespace OpenCiv1
 			this.oCPU.AX.UInt16 = 0x1;
 
 		L08e0:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, this.oCPU.AX.UInt16);
+			this.oParent.Var_3936 = this.oCPU.AX.Int16;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24)), 0x0);
 			if (this.oCPU.Flags.E) goto L08fb;
@@ -988,7 +988,7 @@ namespace OpenCiv1
 			this.oParent.LanguageTools.F0_2f4d_044f(0x3797);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6b8e, 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x2);
+			this.oParent.Var_3936 = 2;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
 			// Instruction address 0x0000:0x09e8, size: 5
@@ -1036,7 +1036,7 @@ namespace OpenCiv1
 			this.oParent.LanguageTools.F0_2f4d_044f(0x37a0);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6b8e, 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x2);
+			this.oParent.Var_3936 = 2;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
 			// Instruction address 0x0000:0x0a94, size: 5
@@ -1093,7 +1093,7 @@ namespace OpenCiv1
 			this.oParent.LanguageTools.F0_2f4d_0000(0x28);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6b8e, 0x1);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x2);
+			this.oParent.Var_3936 = 2;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
 			F6_0000_251d(0xba06, 0x14, 0x8b);
@@ -1217,7 +1217,7 @@ namespace OpenCiv1
 			this.oParent.LanguageTools.F0_2f4d_044f(0x37cd);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6b8e, 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x0);
+			this.oParent.Var_3936 = 0;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
 			F6_0000_251d(0xba06, 0x14, 0x8b);
@@ -1289,7 +1289,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0d72, size: 5
 			this.oParent.LanguageTools.F0_2f4d_044f(0x3805);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x0);
+			this.oParent.Var_3936 = 0;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
 			F6_0000_251d(0xba06, 0x14, 0x8b);
@@ -1308,7 +1308,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0dad, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0xffff);
+			this.oParent.Var_3936 = -1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3c62, 0x1);
 
 			// Instruction address 0x0000:0x0dc8, size: 5
@@ -1320,7 +1320,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0dda, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x0);
+			this.oParent.Var_3936 = 0;
 
 			// Instruction address 0x0000:0x0de5, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
@@ -1375,7 +1375,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0e98, size: 5
 			this.oParent.LanguageTools.F0_2f4d_044f(0x380e);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x0);
+			this.oParent.Var_3936 = 0;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
 			F6_0000_251d(0xba06, 0x14, 0x8b);
@@ -1426,7 +1426,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0f5b, size: 5
 			this.oParent.LanguageTools.F0_2f4d_044f(0x3818);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x0);
+			this.oParent.Var_3936 = 0;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
 			F6_0000_251d(0xba06, 0x14, 0x8b);
@@ -1455,7 +1455,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0fc1, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0xffff);
+			this.oParent.Var_3936 = -1;
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20), 0x0);
 
 		L0fd1:
@@ -1489,7 +1489,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1021, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x0);
+			this.oParent.Var_3936 = 0;
 
 			// Instruction address 0x0000:0x102c, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();
@@ -1522,7 +1522,7 @@ namespace OpenCiv1
 			this.oParent.LanguageTools.F0_2f4d_044f(0x3820);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6b8e, 0x1);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x2);
+			this.oParent.Var_3936 = 2;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0x4);
 
 			F6_0000_251d(0xba06, 0x14, 0x8b);
@@ -1564,7 +1564,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L112f;
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), 0x3e7);
 			if (this.oCPU.Flags.E) goto L112f;
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x1);
+
+			this.oParent.Var_3936 = 1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0x4);
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
@@ -1574,7 +1575,7 @@ namespace OpenCiv1
 			goto L11c3;
 
 		L112f:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x0);
+			this.oParent.Var_3936 = 0;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
 			// Instruction address 0x0000:0x1143, size: 5
@@ -1688,7 +1689,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x12f1, size: 5
 			this.oParent.LanguageTools.F0_2f4d_044f(0x3897);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x0);
+			this.oParent.Var_3936 = 0;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
 			F6_0000_251d(0xba06, 0x14, 0x8b);
@@ -1714,7 +1715,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1360, size: 5
 			this.oParent.Segment_2517.F0_2517_0aa1_ClearDiplomacyFlags(this.oParent.GameData.HumanPlayerID, playerID, 2);
 			
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x2);
+			this.oParent.Var_3936 = 2;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 			goto L1392;
 
@@ -1722,7 +1723,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x137e, size: 5
 			this.oParent.CAPI.strcpy(0xba06, "We ignore your feeble threats.\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x1);
+			this.oParent.Var_3936 = 1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0x4);
 
 		L1392:
@@ -1777,7 +1778,8 @@ namespace OpenCiv1
 			F6_0000_251d(0xba06, 0x14, 0x8b);
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x22), this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x1);
+			this.oParent.Var_3936 = 1;
+
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
 			if (this.oCPU.Flags.NE) goto L144a;
 			goto L15e2;
@@ -1969,7 +1971,7 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd804, 0x0);
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3934, 0xffff);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0xffff);
+			this.oParent.Var_3936 = -1;
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.DI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
@@ -1993,7 +1995,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x16b9, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0xffff);
+			this.oParent.Var_3936 = -1;
 			this.oCPU.AX.UInt16 = 0;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3934, this.oCPU.AX.UInt16);
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd804, this.oCPU.AX.UInt16);
@@ -2118,7 +2120,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.FontID = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x67ec);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd2dc, 1);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 1);
+			this.oParent.Var_3936 = 1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x67e8, 0xffff);
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x7ef4, 0x0);
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
@@ -2444,7 +2446,7 @@ namespace OpenCiv1
 
 		L1b9a:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), 0xffff);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x3936);
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_3936;
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.E) goto L1bb2;
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x1);
@@ -2919,8 +2921,8 @@ namespace OpenCiv1
 					(ushort)((this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e)) << 1) + 0x3afe)),
 				34,
 				this.oCPU.ReadUInt16(this.oCPU.DS.UInt16,
-					(ushort)((((this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e)) +
-					playerID) & 3) * 6) + 0x804e)));
+					(ushort)(0x804e + (((this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e)) +
+					playerID) & 3) * 6))));
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e))));
 

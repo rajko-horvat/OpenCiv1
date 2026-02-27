@@ -228,7 +228,7 @@ namespace OpenCiv1
 			if (flag3)
 			{
 				// Instruction address 0x1403:0x046b, size: 5
-				this.oParent.CommonTools.F0_1000_1697(0, 0, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd4dc));
+				this.oParent.CommonTools.F0_1000_1697(0, 0, (short)this.oParent.Array_d4ce[7]);
 			}
 
 			flag3 = false;
@@ -453,7 +453,7 @@ namespace OpenCiv1
 								flag3 = false;
 
 								// Instruction address 0x1403:0x095b, size: 5
-								this.oParent.CommonTools.F0_1000_1697(0, 0, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd4dc));
+								this.oParent.CommonTools.F0_1000_1697(0, 0, (short)this.oParent.Array_d4ce[7]);
 							}
 							else
 							{
@@ -505,7 +505,7 @@ namespace OpenCiv1
 
 					flag3 = false;
 
-					this.oParent.CommonTools.F0_1000_1697(0, 0, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd4dc));
+					this.oParent.CommonTools.F0_1000_1697(0, 0, (short)this.oParent.Array_d4ce[7]);
 
 					if (flag1)
 					{
@@ -791,7 +791,7 @@ namespace OpenCiv1
 					break;
 
 				case 'g':
-					if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c) == 0)
+					if (!this.oParent.Var_1a3c_MouseAvailable)
 					{
 						if (!flag3)
 						{
@@ -827,8 +827,8 @@ namespace OpenCiv1
 						{
 							local_56 = 2;
 						}
-						
-						this.oParent.CommonTools.F0_1000_1697(0, 0, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0xd4ce + (local_56 * 2))));
+
+						this.oParent.CommonTools.F0_1000_1697(0, 0, this.oParent.Array_d4ce[local_56]);
 					}
 
 					flag3 ^= true;
@@ -1557,7 +1557,7 @@ namespace OpenCiv1
 				{
 					// Instruction address 0x1403:0x2576, size: 5
 					this.oParent.Segment_1ade.F0_1ade_018e(cityID, local_1c, local_26);
-					this.oParent.StartGameMenu.F5_0000_0e6c(this.oParent.Var_d20a, playerID);
+					this.oParent.StartGameMenu.F5_0000_0e6c_TestIfAIPlayerDestroyed(this.oParent.Var_d20a, playerID);
 
 					if (playerID == this.oParent.GameData.HumanPlayerID)
 					{
@@ -1991,7 +1991,7 @@ namespace OpenCiv1
 						// Instruction address 0x1403:0x35a5, size: 5
 						this.oParent.CAPI.strcat(0xba06, " are\nrevolting! Citizens\ndemand new govt.\n");
 						this.oParent.Overlay_21.F21_0000_0000(-1);
-						this.oParent.StartGameMenu.F5_0000_1af6();
+						this.oParent.StartGameMenu.F5_0000_1af6_LoadGovernmentImage();
 						// Instruction address 0x1403:0x35be, size: 5
 						this.oParent.Segment_1238.F0_1238_1b44();
 					}
@@ -1999,7 +1999,7 @@ namespace OpenCiv1
 
 				// Tab
 				case 0x9:
-					if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c) == 0)
+					if (!this.oParent.Var_1a3c_MouseAvailable)
 					{
 						if (flag1)
 						{
@@ -2045,7 +2045,7 @@ namespace OpenCiv1
 
 				// ESC
 				case 0x1b:
-					if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1a3c) == 0)
+					if (!this.oParent.Var_1a3c_MouseAvailable)
 					{
 						if (flag1)
 						{

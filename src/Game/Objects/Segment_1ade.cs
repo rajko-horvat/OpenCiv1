@@ -2253,7 +2253,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="playerID"></param>
 		/// <param name="playerID1"></param>
-		public ushort F0_1ade_1584(short playerID, short playerID1)
+		public ushort F0_1ade_1584(int playerID, int playerID1)
 		{
 			this.oCPU.Log.EnterBlock($"F0_1ade_1584({playerID}, {playerID1})");
 
@@ -3085,7 +3085,7 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x1fe6, size: 5
 			this.oParent.LanguageTools.F0_2f4d_044f(0x240e);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3936, 0x2);
+			this.oParent.Var_3936 = 2;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
 			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
@@ -3105,7 +3105,7 @@ namespace OpenCiv1
 		L202f:
 			if (technology != TechnologyEnum.Invention) goto L203f;
 
-			this.oParent.StartGameMenu.F5_0000_1af6();
+			this.oParent.StartGameMenu.F5_0000_1af6_LoadGovernmentImage();
 
 			// Instruction address 0x1ade:0x203a, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
