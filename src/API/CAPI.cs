@@ -26,6 +26,8 @@ namespace OpenCiv1
 		#region Keyboard operations
 		public short kbhit()
 		{
+			this.oCPU.DoEvents();
+
 			this.oCPU.AX.UInt16 = (ushort)((this.oCPU.Keys.Count > 0) ? 0xffff : 0);
 
 			return (short)this.oCPU.AX.UInt16;
@@ -33,6 +35,8 @@ namespace OpenCiv1
 
 		public short getch()
 		{
+			this.oCPU.DoEvents();
+
 			while (this.oCPU.Keys.Count == 0)
 			{
 				Thread.Sleep(200);

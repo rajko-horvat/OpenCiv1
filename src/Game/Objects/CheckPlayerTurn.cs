@@ -338,7 +338,7 @@ namespace OpenCiv1
 					local_26 = local_12;
 					this.oParent.Var_db3c_MouseXPos = 80;
 					this.oParent.Var_db3e_MouseYPos = 8;
-					this.oParent.Var_db3a_MouseButton = 0x1;
+					this.oParent.Var_db3a_MouseButton = 1;
 					goto Label114;
 				}
 				goto Label151;
@@ -449,7 +449,7 @@ namespace OpenCiv1
 								this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.X = local_1c;
 								this.oParent.GameData.Players[playerID].Units[unitID].GoToDestination.Y = local_26;
 								this.oParent.GameData.Players[playerID].Units[unitID].GoToNextDirection = -1;
-								this.oParent.Var_db3a_MouseButton = 0x0;
+								this.oParent.Var_db3a_MouseButton = 0;
 								flag3 = false;
 
 								// Instruction address 0x1403:0x095b, size: 5
@@ -457,7 +457,7 @@ namespace OpenCiv1
 							}
 							else
 							{
-								this.oParent.Var_db3a_MouseButton = 0x2;
+								this.oParent.Var_db3a_MouseButton = 2;
 							}
 							break;
 						}
@@ -2971,7 +2971,7 @@ namespace OpenCiv1
 				// Instruction address 0x1403:0x4555, size: 5
 				this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 			}
-			while (this.oParent.Var_db3a_MouseButton != 0x0);
+			while (this.oParent.Var_db3a_MouseButton != 0);
 		}
 
 		/// <summary>

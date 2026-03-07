@@ -882,8 +882,7 @@ namespace OpenCiv1
 			// Instruction address 0x2459:0x091d, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-			if (this.oCPU.Flags.NE) goto L0932;
+			if (this.oParent.Var_db3a_MouseButton != 0) goto L0932;
 
 			// Instruction address 0x2459:0x0929, size: 5
 			this.oParent.CAPI.kbhit();
@@ -892,8 +891,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L091d;
 
 		L0932:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-			if (this.oCPU.Flags.NE) goto L0947;
+			if (this.oParent.Var_db3a_MouseButton != 0) goto L0947;
 
 			// Instruction address 0x2459:0x0939, size: 5
 			this.oParent.CAPI.getch();

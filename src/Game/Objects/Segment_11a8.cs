@@ -137,12 +137,12 @@ namespace OpenCiv1
 
 			if (this.oParent.Var_dc48_GameEndType == 0) goto L0175;
 
-			if (!this.oParent.Var_1a3c_MouseAvailable) goto L018d;
-
-			// Instruction address 0x11a8:0x0188, size: 5
-			this.oParent.CommonTools.F0_1000_1687();
-
-		L018d:
+			if (this.oParent.Var_1a3c_MouseAvailable)
+			{
+				// Instruction address 0x11a8:0x0188, size: 5
+				this.oParent.Var_587d = 0;
+			}
+		
 			// Instruction address 0x11a8:0x0191, size: 3
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(0, 0);
 
@@ -164,15 +164,16 @@ namespace OpenCiv1
 		public void F0_11a8_0223_UpdateMouse()
 		{
 			// function body
+			this.oCPU.DoEvents();
+
 			if (this.oParent.Var_1a3c_MouseAvailable)
 			{
 				// Instruction address 0x11a8:0x022a, size: 5
-				this.oParent.CommonTools.F0_1000_16d4();
+				this.oParent.Var_db3a_MouseButton = this.oParent.Var_5874 | this.oParent.Var_5872_MouseNewButtons;
+				this.oParent.Var_5874 = 0;
 
-				this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x5872));
-				this.oParent.Var_db3a_MouseButton = this.oCPU.AX.UInt16;
-				this.oParent.Var_db3c_MouseXPos = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x586e);
-				this.oParent.Var_db3e_MouseYPos = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x5870);
+				this.oParent.Var_db3c_MouseXPos = this.oParent.Var_586e_MouseNewX;
+				this.oParent.Var_db3e_MouseYPos = this.oParent.Var_5870_MouseNewY;
 			}
 			else
 			{

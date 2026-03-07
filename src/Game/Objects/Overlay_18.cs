@@ -853,14 +853,12 @@ namespace OpenCiv1
 			param2--;
 			if (param2 == 0) goto L0b3a;
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-			if (this.oCPU.Flags.E) goto L0af3;
+			if (this.oParent.Var_db3a_MouseButton == 0) goto L0af3;
 
 		L0b3a:
 			if (param2 == 0) goto L0b4f;
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-			if (this.oCPU.Flags.NE) goto L0b4f;
+			if (this.oParent.Var_db3a_MouseButton != 0) goto L0b4f;
 
 			// Instruction address 0x0000:0x0b47, size: 5
 			this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
@@ -882,8 +880,7 @@ namespace OpenCiv1
 			goto L0bfc;
 
 		L0b6c:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-			if (this.oCPU.Flags.E) goto L0b83;
+			if (this.oParent.Var_db3a_MouseButton == 0) goto L0b83;
 
 			if (this.oParent.Var_db3c_MouseXPos <= 242) goto L0b83;
 

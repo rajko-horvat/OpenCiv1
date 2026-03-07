@@ -1366,8 +1366,8 @@ namespace OpenCiv1
 
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L10cc;
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-			if (this.oCPU.Flags.NE) goto L10cc;
+			
+			if (this.oParent.Var_db3a_MouseButton != 0) goto L10cc;
 			goto L100e;
 
 		L10cc:

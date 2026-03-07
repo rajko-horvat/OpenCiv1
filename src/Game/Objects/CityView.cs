@@ -501,7 +501,7 @@ namespace OpenCiv1
 					this.oParent.CommonTools.F0_1000_0a32_PlayTune(0x2c, 0);
 
 					// Instruction address 0x0000:0x0e3c, size: 5
-					this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreen(1);
+					this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(1);
 				}
 				else
 				{
@@ -1385,8 +1385,8 @@ namespace OpenCiv1
 
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L18a2;
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-			if (this.oCPU.Flags.NE) goto L18a2;
+			
+			if (this.oParent.Var_db3a_MouseButton != 0) goto L18a2;
 			goto L17db;
 
 		L18a2:
@@ -1642,8 +1642,8 @@ namespace OpenCiv1
 
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L1c89;
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-			if (this.oCPU.Flags.NE) goto L1c89;
+			
+			if (this.oParent.Var_db3a_MouseButton != 0) goto L1c89;
 			goto L1ba8;
 
 		L1c89:

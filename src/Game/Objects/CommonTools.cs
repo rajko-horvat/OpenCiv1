@@ -34,7 +34,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_0000_InitializeTimer()
 		{
-			this.oCPU.Log.EnterBlock("F0_1000_0000_InitializeTimer()");
+			//this.oCPU.Log.EnterBlock("F0_1000_0000_InitializeTimer()");
 
 			// function body
 			if (this.oTimer == null)
@@ -42,9 +42,6 @@ namespace OpenCiv1
 				this.oCPU.EnableTimer = true;
 				this.oTimer = new Timer(F0_1000_01a7_Timer, null, 10, 10);
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_0000_InitializeTimer");
 		}
 
 		/// <summary>
@@ -52,7 +49,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_0051_StopTimer()
 		{
-			this.oCPU.Log.EnterBlock("F0_1000_0051_InitTimer()");
+			//this.oCPU.Log.EnterBlock("F0_1000_0051_InitTimer()");
 
 			// function body
 			if (this.oTimer != null)
@@ -60,9 +57,6 @@ namespace OpenCiv1
 				this.oTimer.Dispose();
 				this.oTimer = null;
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_0051_InitTimer");
 		}
 
 		/// <summary>
@@ -168,14 +162,14 @@ namespace OpenCiv1
 		/// <param name="waitTime"></param>
 		public void F0_1182_0134_WaitTimer(int waitTime)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1182_0134_WaitTime({waitTime})");
+			//this.oCPU.Log.EnterBlock($"F0_1182_0134_WaitTime({waitTime})");
 
 			F0_1000_033e_ResetWaitTimer();
 
 			int iTime = Math.Max(waitTime * 12, 1);
 
 			Thread.Sleep(iTime);
-			this.oCPU.DoEvents();//*/
+			this.oCPU.DoEvents();
 
 			/*waitTime = (short)(Math.Ceiling(0.6 * waitTime));
 
@@ -183,8 +177,6 @@ namespace OpenCiv1
 			{
 				Thread.Sleep(1);
 			}//*/
-
-			this.oCPU.Log.ExitBlock("F0_1182_0134_WaitTime");
 		}
 
 		/// <summary>
@@ -197,7 +189,7 @@ namespace OpenCiv1
 		/// <exception cref="Exception"></exception>
 		public void F0_1000_0382_AddPaletteCycleSlot(int index, int speed, byte fromColorIndex, byte toColorIndex)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_0382_AddPaletteCycleSlot({index}, {speed}, {fromColorIndex}, {toColorIndex})");
+			//this.oCPU.Log.EnterBlock($"F0_1000_0382_AddPaletteCycleSlot({index}, {speed}, {fromColorIndex}, {toColorIndex})");
 
 			if (index < 0 || index > 8)
 				throw new ArgumentOutOfRangeException("Argument index is out of range");
@@ -251,9 +243,6 @@ namespace OpenCiv1
 					this.aPletteCycleSlots.Add(index, slot);
 				}
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_0382_AddPaletteCycleSlot");
 		}
 
 		/// <summary>
@@ -262,7 +251,7 @@ namespace OpenCiv1
 		/// <param name="index"></param>
 		public void F0_1000_03fa_StartPaletteCycleSlot(int index)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_03fa_StartPaletteCycleSlot({index})");
+			//this.oCPU.Log.EnterBlock($"F0_1000_03fa_StartPaletteCycleSlot({index})");
 
 			// function body
 			if (this.aPletteCycleSlots.ContainsKey(index))
@@ -279,11 +268,8 @@ namespace OpenCiv1
 			}
 			else
 			{
-				this.oCPU.Log.WriteLine($"Attempt to start undefined PaletteCycleSlot({index})");
+				//throw new Exception($"Attempt to start undefined PaletteCycleSlot({index})");
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_03fa_StartPaletteCycleSlot");
 		}
 
 		/// <summary>
@@ -292,7 +278,7 @@ namespace OpenCiv1
 		/// <param name="index"></param>
 		public void F0_1000_042b_StopPaletteCycleSlot(int index)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_042b_StopPaletteCycleSlot({index})");
+			//this.oCPU.Log.EnterBlock($"F0_1000_042b_StopPaletteCycleSlot({index})");
 
 			// function body
 			if (this.aPletteCycleSlots.ContainsKey(index))
@@ -317,9 +303,6 @@ namespace OpenCiv1
 					slot.Active = false;
 				}
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_042b_StopPaletteCycleSlot");
 		}
 
 		/// <summary>
@@ -329,7 +312,7 @@ namespace OpenCiv1
 		/// <param name="palettePtr"></param>
 		public void F0_1000_04aa_TransformPalette(int speed, ushort palettePtr)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_04aa_TransformPalette({speed}, 0x{palettePtr:x4})");
+			//this.oCPU.Log.EnterBlock($"F0_1000_04aa_TransformPalette({speed}, 0x{palettePtr:x4})");
 
 			// function body
 			if (speed < 1 || speed > 50)
@@ -368,9 +351,6 @@ namespace OpenCiv1
 				this.oCPU.DoEvents();
 				Thread.Sleep(1);
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_04aa_TransformPalette");
 		}
 
 		/// <summary>
@@ -380,7 +360,7 @@ namespace OpenCiv1
 		/// <param name="color"></param>
 		public void F0_1000_04d4_TransformPaletteToColor(int speed, Color color)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_04d4_TransformPaletteToColor({speed}, {color})");
+			//this.oCPU.Log.EnterBlock($"F0_1000_04d4_TransformPaletteToColor({speed}, {color})");
 
 			// function body
 			HSVColor to = HSVColor.FromColor(color);
@@ -411,73 +391,25 @@ namespace OpenCiv1
 				this.oCPU.DoEvents();
 				Thread.Sleep(1);
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_04d4_TransformPaletteToColor");
 		}
 
 		/// <summary>
 		/// ?
 		/// </summary>
-		/// <param name="fileNamePtr"></param>
-		/// <returns></returns>
-		public short F0_1000_066a_FileExists(ushort fileNamePtr)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="BitmapPtr"></param>
+		public void F0_1000_083f(int x, int y, int BitmapPtr)
 		{
-			string fileName = CAPI.GetDOSFileName(this.oParent.CPU.ReadString(VCPU.ToLinearAddress(this.oParent.CPU.DS.UInt16, fileNamePtr)).ToUpper());
-
-			this.oCPU.Log.EnterBlock($"F0_1000_066a_FileExists('{fileName}')");
+			//this.oCPU.Log.EnterBlock($"F0_1000_083f({x}, {y}, {BitmapPtr})");
 
 			// function body
-			if (File.Exists($"{VCPU.DefaultCIVPath}{fileName}"))
+			//this.oParent.Graphics.F0_VGA_0270(x, y, BitmapPtr);
+
+			if (this.oParent.Var_5403 != 0)
 			{
-				this.oCPU.AX.UInt16 = 0;
+				this.oParent.Var_5402 = 0;
 			}
-			else
-			{
-				this.oCPU.AX.UInt16 = 0xffff;
-			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_066a_FileExists");
-
-			return this.oCPU.AX.Int16;
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		public void F0_1000_07d6()
-		{
-			this.oCPU.Log.EnterBlock("F0_1000_07d6()");
-
-			// function body
-			if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x5403) != 0)
-			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x5402, 0);
-			}
-
-			this.oCPU.Log.ExitBlock("F0_1000_07d6");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		/// <param name="param1"></param>
-		/// <param name="param2"></param>
-		/// <param name="param3"></param>
-		public void F0_1000_083f(short param1, short param2, int BitmapPtr)
-		{
-			this.oCPU.Log.EnterBlock($"F0_1000_083f({param1}, {param2}, {BitmapPtr})");
-
-			// function body
-			//this.oParent.Graphics.F0_VGA_0270(param1, param2, BitmapPtr);
-
-			if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x5403) != 0)
-			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x5402, 0);
-			}
-
-			this.oCPU.Log.ExitBlock("F0_1000_083f");
 		}
 
 		/// <summary>
@@ -486,18 +418,16 @@ namespace OpenCiv1
 		/// <param name="screenID"></param>
 		public void F0_1000_0846(int screenID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_0846({screenID})");
+			//this.oCPU.Log.EnterBlock($"F0_1000_0846({screenID})");
 
 			// function body
 			//this.oParent.Graphics.F0_VGA_063c(screenID);
-			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreen(screenID);
+			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(screenID);
 
-			if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x5403) != 0)
+			if (this.oParent.Var_5403 != 0)
 			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x5402, 0);
+				this.oParent.Var_5402 = 0;
 			}
-
-			this.oCPU.Log.ExitBlock("F0_1000_0846");
 		}
 
 		/// <summary>
@@ -509,17 +439,15 @@ namespace OpenCiv1
 		/// <param name="bitmapPtr"></param>
 		public void F0_1000_0797_DrawBitmapToScreen(CRectangle rect, int xPos, int yPos, int bitmapPtr)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_0797_DrawBitmapToScreen({rect}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
+			//this.oCPU.Log.EnterBlock($"F0_1000_0797_DrawBitmapToScreen({rect}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 
 			// function body
 			this.oParent.Graphics.F0_VGA_0c3e_DrawBitmapToScreen(rect, xPos, yPos, bitmapPtr);
 
-			if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x5403) != 0)
+			if (this.oParent.Var_5403 != 0)
 			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x5402, 0);
+				this.oParent.Var_5402 = 0;
 			}
-
-			this.oCPU.Log.ExitBlock("F0_1000_0797_DrawBitmapToScreen");
 		}
 
 		/// <summary>
@@ -531,44 +459,15 @@ namespace OpenCiv1
 		/// <param name="bitmapPtr"></param>
 		public void F0_1000_084d_DrawBitmapToScreen(CRectangle rect, int xPos, int yPos, int bitmapPtr)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_084d_DrawBitmapToScreen({rect}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
+			//this.oCPU.Log.EnterBlock($"F0_1000_084d_DrawBitmapToScreen({rect}, {xPos}, {yPos}, 0x{bitmapPtr:x4})");
 
 			// function body
 			this.oParent.Graphics.F0_VGA_0d47_DrawBitmapToScreen(rect, xPos, yPos, bitmapPtr);
 
-			if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x5403) != 0)
+			if (this.oParent.Var_5403 != 0)
 			{
-				this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x5402, 0);
-
-				/*L075e:
-					this.oCPU.WriteUInt8(this.oCPU.DS.Word, 0x5402, this.oCPU.DECByte(this.oCPU.ReadUInt8(this.oCPU.DS.Word, 0x5402)));
-					if (this.oCPU.Flags.E) goto L0769;
-
-					this.oCPU.PushWord(this.oCPU.AX.Word);
-					this.oCPU.PushWord(this.oCPU.DX.Word);
-					this.oCPU.PushWord(this.oCPU.ES.Word);
-
-					this.oCPU.ES.Word = 0x1000;
-					// Instruction address 0x1000:0x17a2, size: 5
-					this.oParent.Graphics.F0_VGA_0224_DrawBufferToScreen();
-
-					this.oCPU.ES.Word = 0x1000;
-					// Instruction address 0x1000:0x17c0, size: 5
-					this.oParent.Graphics.F0_VGA_0270(
-						(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x586e) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5878)),
-						(short)((short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x5870) - (short)this.oCPU.ReadUInt16(this.oCPU.DS.Word, 0x587a)),
-						this.oParent.Var_5876);
-
-					this.oCPU.ES.Word = this.oCPU.PopWord();
-					this.oCPU.DX.Word = this.oCPU.PopWord();
-					this.oCPU.AX.Word = this.oCPU.PopWord();
-					goto L075e;
-
-				L0769:
-					this.oCPU.AX.Word |= 0;*/
+				this.oParent.Var_5402 = 0;
 			}
-
-			this.oCPU.Log.ExitBlock("F0_1000_084d_DrawBitmapToScreen");
 		}
 
 		/// <summary>
@@ -619,10 +518,7 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock("Sound overlay 'F0_1000_0a40_SoundWorker'");
 
 			// Instruction address 0x1000:0x0a40, size: 5
-			ushort usTemp =  this.oParent.Sound.F0_0000_0055_SoundWorker();
-			//this.oCPU.Log.ExitBlock("Sound overlay 'F0_1000_0a40_SoundWorker'");
-
-			return usTemp;
+			return this.oParent.Sound.F0_0000_0055_SoundWorker();
 		}
 
 		/// <summary>
@@ -647,10 +543,7 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock("Sound overlay 'F0_1000_0a4e_Soundtimer'");
 
 			// Instruction address 0x1000:0x0a4e, size: 5
-			this.oCPU.AX.UInt16 = this.oParent.Sound.F0_0000_005d_SoundTimer();
-			//this.oCPU.Log.ExitBlock("Sound overlay 'F0_1000_0a4e_Soundtimer'");
-
-			return this.oCPU.AX.UInt16;
+			return this.oParent.Sound.F0_0000_005d_SoundTimer();
 		}
 
 		/// <summary>
@@ -664,7 +557,7 @@ namespace OpenCiv1
 		/// <param name="mode"></param>
 		public void F0_1000_0bfa_FillRectangle(CRectangle rect, int x, int y, int width, int height, ushort mode)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_0bfa_FillRectangle({rect}, {x}, {y}, {width}, {height}, 0x{mode:x4})");
+			//this.oCPU.Log.EnterBlock($"F0_1000_0bfa_FillRectangle({rect}, {x}, {y}, {width}, {height}, 0x{mode:x4})");
 
 			// function body
 			if (width > 0 && height > 0)
@@ -672,143 +565,53 @@ namespace OpenCiv1
 				GRectangle rect1 = new GRectangle(rect.Left + x, rect.Top + y, width, height);
 				this.oParent.Graphics.F0_VGA_040a_FillRectangle(rect.ScreenID, rect1, (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
 			}
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_0bfa_FillRectangle");
 		}
 
 		/// <summary>
 		/// Resets and inits the mouse subsystem
 		/// </summary>
 		/// <returns>true if mouse is detected</returns>
-		public ushort F0_1000_163e_InitMouse()
+		public void F0_1000_163e_InitMouse()
 		{
-			this.oCPU.Log.EnterBlock("F0_1000_163e_InitMouse()");
+			//this.oCPU.Log.EnterBlock("F0_1000_163e_InitMouse()");
 
 			// function body
-			// assume our mouse is initialized
-
-			//this.oCPU.ES.Word = 0;
-			//this.oCPU.AX.Word = this.oCPU.ReadUInt16(this.oCPU.ES.Word, 0xcc);
-			//this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.ReadUInt16(this.oCPU.ES.Word, 0xce));
-			//if (this.oCPU.Flags.E) goto L1683;
-			//this.oCPU.AX.Word = 0x0;
-			//this.oCPU.INT(0x33);
-			//this.oCPU.AX.Word = this.oCPU.ORWord(this.oCPU.AX.Word, this.oCPU.AX.Word);
-			//if (this.oCPU.Flags.E) goto L1683;
-			//this.oCPU.AX.Word = 0xc;
-			//this.oCPU.CX.Word = 0x1f;
-			//this.oCPU.ES.Word = this.oCPU.CS.Word;
-			//this.oCPU.DX.Word = 0x17db;
-			//this.oCPU.INT(0x33);
 			//this.oCPU.AX.Word = 0x3;
 			//this.oCPU.INT(0x33);
-			this.oCPU.CX.LowUInt8 = 0;
-			this.oCPU.AX.UInt16 = (ushort)(this.oCPU.MouseLocation.X >> this.oCPU.CX.LowUInt8);
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x587c, this.oCPU.CX.LowUInt8);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x586e, this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5870, (ushort)this.oCPU.MouseLocation.Y);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5872, (ushort)this.oCPU.MouseButtons);
-			this.oCPU.AX.UInt16 = 0xffff;
-
-		//L1683:
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x587d, this.oCPU.AX.LowUInt8);
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_163e_InitMouse");
-
-			return this.oCPU.AX.UInt16;
+			this.oParent.Var_586e_MouseNewX = this.oCPU.MouseLocation.X;
+			this.oParent.Var_5870_MouseNewY = this.oCPU.MouseLocation.Y;
+			this.oParent.Var_5872_MouseNewButtons = (int)this.oCPU.MouseButtons;
+			this.oParent.Var_587d = -1;
 		}
 
 		/// <summary>
 		/// ?
 		/// </summary>
-		public void F0_1000_1687()
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="bitmapPtr"></param>
+		public void F0_1000_1697(int x, int y, int bitmapPtr)
 		{
-			this.oCPU.Log.EnterBlock("F0_1000_1687()");
+			//this.oCPU.Log.EnterBlock($"F0_1000_1697({param1}, {param2}, {bitmapPtr})");
 
 			// function body
-			this.oCPU.AX.LowUInt8 = 0x0;
-			this.oCPU.Temp.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x587d);
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x587d, this.oCPU.AX.LowUInt8);
-			this.oCPU.AX.LowUInt8 = this.oCPU.Temp.LowUInt8;
-			this.oCPU.AX.LowUInt8 = this.oCPU.OR_UInt8(this.oCPU.AX.LowUInt8, this.oCPU.AX.LowUInt8);
-			if (this.oCPU.Flags.E) goto L1696;
-
-			//this.oCPU.AX.Word = 0x0;
-			//this.oCPU.INT(0x33);
-			this.oCPU.AX.UInt16 = 0xffff;
-			this.oCPU.BX.UInt16 = 2;
-
-		L1696:
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_1687");
+			this.oParent.Var_5878_MouseIconXOffset = x;
+			this.oParent.Var_587a_MouseIconYOffset = y;
+			this.oParent.Var_5876_MouseIcon = bitmapPtr;
 		}
 
 		/// <summary>
 		/// ?
 		/// </summary>
-		/// <param name="param1"></param>
-		/// <param name="param2"></param>
-		/// <param name="param3"></param>
-		public void F0_1000_1697(ushort param1, ushort param2, int bitmapPtr)
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		public void F0_1000_16ae(int x, int y)
 		{
-			this.oCPU.Log.EnterBlock($"F0_1000_1697({param1}, {param2}, {bitmapPtr})");
+			//this.oCPU.Log.EnterBlock($"F0_1000_16ae({param1}, {param2})");
 
 			// function body
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5878, param1);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x587a, param2);
-			this.oParent.Var_5876 = bitmapPtr;
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_1697");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		/// <param name="param1"></param>
-		/// <param name="param2"></param>
-		public void F0_1000_16ae(ushort param1, ushort param2)
-		{
-			this.oCPU.Log.EnterBlock($"F0_1000_16ae({param1}, {param2})");
-
-			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-
-			this.oCPU.AX.UInt16 = param1;
-			this.oCPU.DX.UInt16 = param2;
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x586e, this.oCPU.AX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5870, this.oCPU.DX.UInt16);
-
-			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x587d), 0x0);
-			if (this.oCPU.Flags.E) goto L16d2;
-			
-			this.oCPU.CX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x587c);
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
-			this.oCPU.CX.UInt16 = this.oCPU.AX.UInt16;
-			
-			//this.oCPU.AX.Word = 0x4;
-			//this.oCPU.INT(0x33);
-
-		L16d2:
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_16ae");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		/// <returns></returns>
-		public ushort F0_1000_16d4()
-		{
-			// function body
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x5874);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5874, 0);
-
-			return this.oCPU.AX.UInt16;
+			this.oParent.Var_586e_MouseNewX = x;
+			this.oParent.Var_5870_MouseNewY = y;
 		}
 
 		/// <summary>
@@ -816,24 +619,21 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_16db()
 		{
-			this.oCPU.Log.EnterBlock("F0_1000_16db()");
+			//this.oCPU.Log.EnterBlock("F0_1000_16db()");
 
 			// function body
-			if (this.oParent.Var_5876 == 0) goto L170a;
+			if (this.oParent.Var_5876_MouseIcon != 0)
+			{
+				if (this.oParent.Var_5403 == 0)
+				{
+					// Instruction address 0x1000:0x16fd, size: 5
+					F0_1000_083f(this.oParent.Var_586e_MouseNewX - this.oParent.Var_5878_MouseIconXOffset,
+						this.oParent.Var_5870_MouseNewY - this.oParent.Var_587a_MouseIconYOffset,
+						this.oParent.Var_5876_MouseIcon);
 
-			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x5403), 0x0);
-			if (this.oCPU.Flags.NE) goto L170a;
-
-			// Instruction address 0x1000:0x16fd, size: 5
-			F0_1000_083f((short)(this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x586e) - this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x5878)),
-				(short)(this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x5870) - this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x587a)),
-				this.oParent.Var_5876);
-
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x5403, 0x1);
-
-		L170a:
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_16db");
+					this.oParent.Var_5403 = 1;
+				}
+			}
 		}
 
 		/// <summary>
@@ -841,34 +641,16 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_1000_170b()
 		{
-			this.oCPU.Log.EnterBlock("F0_1000_170b()");
+			//this.oCPU.Log.EnterBlock("F0_1000_170b()");
 
 			// function body
-			if (this.oParent.Var_5876 == 0) goto L1723;
-
-			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x5403), 0x0);
-			if (this.oCPU.Flags.E) goto L1723;
-
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x5403, 0x0);
-
-			// Instruction address 0x1000:0x171e, size: 5
-			F0_1000_07d6();
-
-		L1723:
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1000_170b");
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		public void F0_1000_179a()
-		{
-			this.oCPU.Log.EnterBlock("F0_1000_179a()");
-
-			// function body
-			// Near return
-			this.oCPU.Log.ExitBlock("F0_1000_179a");
+			if (this.oParent.Var_5876_MouseIcon != 0)
+			{
+				if (this.oParent.Var_5403 != 0)
+				{
+					this.oParent.Var_5403 = 0;
+				}
+			}
 		}
 
 		/// <summary>
@@ -879,39 +661,25 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock("F0_1000_17db_MouseEvent()");
 
 			// function body
-			this.oCPU.DS.UInt16 = 0x3b01;
+			this.oCPU.DoEvents();
 
-			this.oCPU.BP.UInt16 = this.oCPU.CX.UInt16;
-			this.oCPU.CX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x587c);
-			this.oCPU.BP.UInt16 = this.oCPU.SHR_UInt16(this.oCPU.BP.UInt16, this.oCPU.CX.LowUInt8);
-			this.oCPU.CX.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5874, 
-				this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x5874), this.oCPU.BX.UInt16));
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5872, this.oCPU.BX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x586e, this.oCPU.CX.UInt16);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5870, this.oCPU.DX.UInt16);
+			this.oParent.Var_5874 |= this.oCPU.BX.UInt16;
+			this.oParent.Var_5872_MouseNewButtons = this.oCPU.BX.Int16;
+			this.oParent.Var_586e_MouseNewX = this.oCPU.CX.Int16;
+			this.oParent.Var_5870_MouseNewY = this.oCPU.DX.Int16;
 
-			this.oCPU.BP.UInt16 = this.oCPU.AX.UInt16;
-			this.oCPU.TEST_UInt16(this.oCPU.BP.UInt16, 0x1);
-			if (this.oCPU.Flags.E) goto L1829;
-			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x5403), 0x0);
-			if (this.oCPU.Flags.E) goto L1829;
-			this.oCPU.AX.LowUInt8 = 0x2;
-			this.oCPU.Temp.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x5402);
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x5402, this.oCPU.AX.LowUInt8);
-			this.oCPU.AX.LowUInt8 = this.oCPU.Temp.LowUInt8;
-			this.oCPU.AX.LowUInt8 = this.oCPU.OR_UInt8(this.oCPU.AX.LowUInt8, this.oCPU.AX.LowUInt8);
-			if (this.oCPU.Flags.NE) goto L1829;
-
-			// Instruction address 0x1000:0x1821, size: 3
-			F0_1000_179a();
-
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x5402, 0x0);
-
-		L1829:
-			// Far return
-			//this.oCPU.Log.ExitBlock("F0_1000_17db_MouseEvent");
-			this.oCPU.AX.LowUInt8 = this.oCPU.AX.LowUInt8;
+			// Mouse location changed
+			if ((this.oCPU.AX.UInt16 & 0x1) != 0 && this.oParent.Var_5403 != 0)
+			{
+				if (this.oParent.Var_5402 == 0)
+				{
+					this.oParent.Var_5402 = 0;
+				}
+				else
+				{
+					this.oParent.Var_5402 = 2;
+				}
+			}
 		}
 	}
 }

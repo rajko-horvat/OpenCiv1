@@ -1129,8 +1129,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x107e, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-			if (this.oCPU.Flags.NE) goto L1093;
+			if (this.oParent.Var_db3a_MouseButton != 0) goto L1093;
 
 			// Instruction address 0x0000:0x108a, size: 5
 			this.oParent.CAPI.kbhit();

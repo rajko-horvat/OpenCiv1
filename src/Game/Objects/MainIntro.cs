@@ -43,19 +43,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4c), 0x0);
 
 		L003a:
-			// Instruction address 0x0000:0x0041, size: 5
-			this.oParent.CommonTools.F0_1000_066a_FileExists(0x324a);
-			
-			this.oCPU.AX.UInt16 = this.oCPU.INC_UInt16(this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L0051;
-			this.oCPU.AX.UInt16 = 0x1;
-			goto L0053;
-
-		L0051:
-			this.oCPU.AX.UInt16 = 0;
-
-		L0053:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4c), this.oCPU.AX.UInt16);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4c), 1); // fonts are embedded in application
 			
 			// Instruction address 0x0000:0x005d, size: 5
 			/*Console.SetCursorPosition(0, 12);
@@ -973,7 +961,7 @@ namespace OpenCiv1
 				0, 64, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4e)));
 
 			// Instruction address 0x0000:0x0b8b, size: 5
-			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreen(1);
+			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(1);
 
 			// Instruction address 0x0000:0x0bab, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);

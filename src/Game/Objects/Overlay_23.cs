@@ -381,8 +381,7 @@ namespace OpenCiv1
 			goto L0525;
 
 		L04b2:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-			if (this.oCPU.Flags.NE) goto L052e;
+			if (this.oParent.Var_db3a_MouseButton != 0) goto L052e;
 
 			// Instruction address 0x0000:0x04d6, size: 5
 			this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, 
@@ -419,8 +418,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L04b2;
 
 		L052e:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-			if (this.oCPU.Flags.E) goto L053c;
+			if (this.oParent.Var_db3a_MouseButton == 0) goto L053c;
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x48), 0xd);
 			goto L0544;
 

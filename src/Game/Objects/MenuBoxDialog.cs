@@ -143,13 +143,13 @@ namespace OpenCiv1
 
 		L0159:
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd2e2, 0x0);
-			this.oParent.Var_db3a_MouseButton = 0x0;
+			this.oParent.Var_db3a_MouseButton = 0;
 
 			// Instruction address 0x2d05:0x0165, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-			if (this.oCPU.Flags.NE) goto L0177;
+			if (this.oParent.Var_db3a_MouseButton != 0) goto L0177;
+
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)), 0x0);
 			if (this.oCPU.Flags.E) goto L01db;
 
@@ -157,8 +157,8 @@ namespace OpenCiv1
 			this.oParent.Var_2fa2 = 1;
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), 1);
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x2);
-			if (this.oCPU.Flags.NE) goto L018a;
+			if (this.oParent.Var_db3a_MouseButton != 2) goto L018a;
+
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f9c, 1);
 
 		L018a:
@@ -195,10 +195,7 @@ namespace OpenCiv1
 			goto L0217;
 
 		L01cd:
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-
-		L01d2:
-			if (this.oCPU.Flags.NE) goto L0217;
+			if (this.oParent.Var_db3a_MouseButton != 0) goto L0217;
 
 		L01d4:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8), 0x1);
@@ -366,7 +363,9 @@ namespace OpenCiv1
 			this.oCPU.CX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
 			this.oCPU.TEST_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xb276));
-			goto L01d2;
+			if (this.oCPU.Flags.NE) goto L0217;
+
+			goto L01d4;
 
 		L0386:
 			this.oCPU.AX.UInt16 = 0x1;

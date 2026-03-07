@@ -103,7 +103,16 @@ namespace OpenCiv1
 		public GPoint[] Array_35da = { new(0, 0), new(36, 19), new(45, 22), new(38, 15), new(41, 24), new(12, 18), new(39, 18), new(57, 24), 
 			new(0, 0), new(44, 12), new(42, 42), new(33, 16), new(5, 23), new(66, 19), new(31, 14), new(49, 19) };
 		public int Var_3936 = -1;
-		public int Var_5876 = 0;
+		public int Var_5402 = 0;
+		public int Var_5403 = 0;
+		public int Var_586e_MouseNewX = 0;
+		public int Var_5870_MouseNewY = 0;
+		public int Var_5872_MouseNewButtons = 0;
+		public int Var_5874 = 0;
+		public int Var_5876_MouseIcon = 0;
+		public int Var_5878_MouseIconXOffset = 0;
+		public int Var_587a_MouseIconYOffset = 0;
+		public int Var_587d = 0;
 
 		// 0x652e - after this offset the default values are set to 0
 		public byte[] Var_6b34 = new byte[48];
@@ -153,7 +162,7 @@ namespace OpenCiv1
 		public bool Var_d806_DebugFlag = false;
 
 		// Currently pressed mouse button: 0 - nothing, 1 - left button, 2 - right button
-		public ushort Var_db3a_MouseButton = 0;
+		public int Var_db3a_MouseButton = 0;
 		// Current mouse position, in pixels. Position (0, 0) is the top-left corner
 		public int Var_db3c_MouseXPos = 0;
 		public int Var_db3e_MouseYPos = 0;

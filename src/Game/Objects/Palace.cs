@@ -157,8 +157,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0231, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-			if (this.oCPU.Flags.NE) goto L0246;
+			if (this.oParent.Var_db3a_MouseButton != 0) goto L0246;
 
 			// Instruction address 0x0000:0x023d, size: 5
 			this.oParent.CAPI.kbhit();
@@ -559,8 +558,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x06c8, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_db3a_MouseButton, 0x0);
-			if (this.oCPU.Flags.NE) goto L06dd;
+			if (this.oParent.Var_db3a_MouseButton != 0) goto L06dd;
 
 			// Instruction address 0x0000:0x06d4, size: 5
 			this.oParent.CAPI.kbhit();
@@ -623,7 +621,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
 			// Instruction address 0x0000:0x0780, size: 5
-			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreen(1);
+			this.oParent.Graphics.F0_VGA_06b7_DrawScreenToMainScreenWithEffect(1);
 
 			// Instruction address 0x0000:0x0788, size: 5
 			this.oParent.CheckPlayerTurn.F0_1403_4545();
