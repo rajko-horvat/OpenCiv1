@@ -220,7 +220,7 @@ namespace OpenCiv1
 			if ((this.oParent.GameData.PlayerFlags & (0x1 << playerID)) != 0)
 			{
 				// Instruction address 0x1403:0x044c, size: 5
-				F0_1403_4545();
+				F0_1403_4545_EmptyKeyboardAndMouse();
 			}
 
 			local_a = 0;
@@ -353,7 +353,7 @@ namespace OpenCiv1
 				this.oParent.Segment_2c84.F0_2c84_0000_ShowTopMenu(playerID, unitID, -1);
 
 				// Instruction address 0x1403:0x070f, size: 5
-				F0_1403_4545();
+				F0_1403_4545_EmptyKeyboardAndMouse();
 
 				if (this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xd4ca) != -1)
 				{
@@ -596,7 +596,7 @@ namespace OpenCiv1
 			command = -1;
 
 			// Instruction address 0x1403:0x0cfb, size: 5
-			F0_1403_4545();
+			F0_1403_4545_EmptyKeyboardAndMouse();
 
 		Label151:
 			if (unitID < 128) goto Label152;
@@ -1382,7 +1382,7 @@ namespace OpenCiv1
 
 										if (local_3a < 10)
 										{
-											this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xb276, 2);
+											this.oParent.Var_b276 = 2;
 										}
 									}
 								}
@@ -2079,7 +2079,7 @@ namespace OpenCiv1
 						this.oParent.CAPI.strcat(0xba06, "% Science)\n ");
 					}
 
-					this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0x2f9a, this.oParent.GameData.Players[playerID].TaxRate);
+					this.oParent.Var_2f9a = this.oParent.GameData.Players[playerID].TaxRate;
 
 					// Instruction address 0x1403:0x368b, size: 5
 					local_3a = this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -2110,8 +2110,7 @@ namespace OpenCiv1
 						this.oParent.CAPI.strcat(0xba06, "% Science)\n ");
 					}
 
-					this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0x2f9a,
-						(short)(-((this.oParent.GameData.Players[playerID].TaxRate + this.oParent.GameData.Players[playerID].ScienceTaxRate) - 10)));
+					this.oParent.Var_2f9a = -((this.oParent.GameData.Players[playerID].TaxRate + this.oParent.GameData.Players[playerID].ScienceTaxRate) - 10);
 
 					local_3a = this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
@@ -2952,9 +2951,9 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Empties keyboard buffer and mouse statuses
 		/// </summary>
-		public void F0_1403_4545()
+		public void F0_1403_4545_EmptyKeyboardAndMouse()
 		{
 			// This function is referenced 29 time(s)
 			// Assembly

@@ -486,10 +486,10 @@ namespace OpenCiv1
 				}
 				else
 				{
-					this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xdb38, 0x1);
+					this.oParent.Var_db38 = 1;
 
 					// Instruction address 0x0000:0x0e03, size: 5
-					this.oParent.ManuBoxDialog.F0_2d05_0031((ushort)(this.oCPU.BP.UInt16 - 0x80), 80, 8, 1);
+					this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox((ushort)(this.oCPU.BP.UInt16 - 0x80), 80, 8, true);
 				}
 
 				this.oParent.Var_aa_Rectangle.ScreenID = 0;
@@ -574,7 +574,7 @@ namespace OpenCiv1
 				if (this.oParent.CAPI.kbhit() != 0)
 				{
 					// Instruction address 0x0000:0x0f84, size: 5
-					this.oParent.CheckPlayerTurn.F0_1403_4545();
+					this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 				}
 				else
 				{
@@ -1394,7 +1394,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x0000:0x18a7, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 			// Instruction address 0x0000:0x18af, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)), 0);
@@ -1497,7 +1497,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x0000:0x1acc, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 			for (int i = 0; i < 10; i++)
 			{
@@ -1651,7 +1651,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x0000:0x1c8e, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 			
 			// Instruction address 0x0000:0x1c96, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)), 0);

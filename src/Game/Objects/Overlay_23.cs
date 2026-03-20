@@ -569,7 +569,7 @@ namespace OpenCiv1
 
 		L06b4:
 			// Instruction address 0x0000:0x06b4, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x46));
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();

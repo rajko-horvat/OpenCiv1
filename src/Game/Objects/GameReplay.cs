@@ -1397,7 +1397,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x0000:0x0f35, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 			// Instruction address 0x0000:0x0f3a, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();

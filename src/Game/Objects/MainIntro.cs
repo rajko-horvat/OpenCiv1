@@ -818,7 +818,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6b32, 0xffff);
 
 			// Instruction address 0x0000:0x09ec, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
+			this.oCPU.AX.Int16 = (short)this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x4e);
 			if (this.oCPU.Flags.E) goto L0a09;
@@ -926,7 +926,7 @@ namespace OpenCiv1
 
 		L0b1b:
 			// Instruction address 0x0000:0x0b1b, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6b32, 0xffff);
 
@@ -1867,10 +1867,10 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1981, size: 5
 			this.oParent.CAPI.strcat(0xba06, "\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xdb38, 0x1);
+			this.oParent.Var_db38 = 1;
 
 			// Instruction address 0x0000:0x1999, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, xPos2, yPos2, 1);
+			this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, xPos2, yPos2, true);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F2_0000_195a");

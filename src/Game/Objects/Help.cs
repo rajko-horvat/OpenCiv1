@@ -67,7 +67,8 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 		L00a5:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f9c, 0x0);
+			this.oParent.Var_2f9c = 0;
+
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
 			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
 			// Far return

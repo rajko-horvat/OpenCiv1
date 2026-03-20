@@ -92,10 +92,15 @@ namespace OpenCiv1
 			TerrainTypeEnum.Arctic		// Arctic = 15
 		};
 
+		public bool Var_2f98_PatternAvailable = false;
+		public int Var_2f9a = -1;
+		public int Var_2f9c = 0;
+
 		/// <summary>
 		/// Allows to customize dialog shown by F0_1238_001e_ShowDialog().
 		/// </summary>
 		public ReportTypeEnum Var_2f9e_MessageBoxStyle = ReportTypeEnum.Default;
+		public int Var_2fa0 = 0;
 		public int Var_2fa2 = 0;
 		public string[] Array_2fac = { "Defense Minister:", "Domestic Advisor:", "Foreign Minister:", "Science Advisor:" };
 
@@ -134,7 +139,8 @@ namespace OpenCiv1
 		public int[] Array_7eec = new int[4];
 		public int Var_8078 = 0;
 		public int Var_b1e8 = 0;
-		//public int Var_b278 = 0; This was some kind of experiment, Always 0, can be safely removed througout entire code
+		public int Var_b276 = 0;
+		
 		public int[] Array_b27a = new int[8];
 		public int[] Array_b29a = new int[8];
 		public int Var_b880 = 0;
@@ -142,6 +148,7 @@ namespace OpenCiv1
 		public int Var_b884 = 0;
 		public int[,] Array_b886 = new int[10, 16];
 		public int Var_b2ba = 0;
+		public int Var_d206 = 0;
 		public int Var_d20a = 0;
 		public int[,] Array_d21c = new int[3, 20];
 		public int[,] Array_d294 = new int[8, 4];
@@ -159,8 +166,10 @@ namespace OpenCiv1
 		public ushort Var_d768 = 0;
 		public int Var_d76a = 0;
 		public int Var_d7f0 = 0;
+		public int Var_d7f2 = 0;
 		public bool Var_d806_DebugFlag = false;
 
+		public int Var_db38 = 0;
 		// Currently pressed mouse button: 0 - nothing, 1 - left button, 2 - right button
 		public int Var_db3a_MouseButton = 0;
 		// Current mouse position, in pixels. Position (0, 0) is the top-left corner

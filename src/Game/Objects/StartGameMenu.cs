@@ -37,7 +37,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "Difficulty Level...\n Chieftain (easiest)\n Warlord\n Prince\n King\n Emperor (toughest)\n");
 
 			// Instruction address 0x0000:0x0056, size: 5
-			this.oParent.GameData.DifficultyLevel = (short)this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 160, 35, 1);
+			this.oParent.GameData.DifficultyLevel = (short)this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 160, 35, true);
 
 			if (this.oParent.Var_1a3c_MouseAvailable && this.oParent.Var_2fa2 != 0)
 			{
@@ -93,7 +93,7 @@ namespace OpenCiv1
 			do
 			{
 				// Instruction address 0x0000:0x0188, size: 5
-				this.oParent.GameData.AIOpponentCount = (short)this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 160, 35, 1);
+				this.oParent.GameData.AIOpponentCount = (short)this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 160, 35, true);
 			}
 			while (this.oParent.GameData.AIOpponentCount == -1);
 
@@ -204,7 +204,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x0000:0x03d3, size: 5
-			this.oParent.GameData.HumanPlayerID = (short)this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 160, 35, 1);
+			this.oParent.GameData.HumanPlayerID = (short)this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 160, 35, true);
 
 			if (this.oParent.GameData.HumanPlayerID <= this.oParent.GameData.AIOpponentCount)
 			{

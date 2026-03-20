@@ -661,8 +661,6 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock("F0_1000_17db_MouseEvent()");
 
 			// function body
-			this.oCPU.DoEvents();
-
 			this.oParent.Var_5874 |= this.oCPU.BX.UInt16;
 			this.oParent.Var_5872_MouseNewButtons = this.oCPU.BX.Int16;
 			this.oParent.Var_586e_MouseNewX = this.oCPU.CX.Int16;

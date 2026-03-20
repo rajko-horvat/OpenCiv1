@@ -2776,7 +2776,7 @@ namespace OpenCiv1
 						this.oParent.Var_aa_Rectangle.FontID = 1;
 
 						// Instruction address 0x1d12:0x4e32, size: 5
-						if (this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 100, 80, 1) == 0 && this.oParent.GameData.Players[this.Var_6548_PlayerID].Coins >= local_e8)
+						if (this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 100, 80, true) == 0 && this.oParent.GameData.Players[this.Var_6548_PlayerID].Coins >= local_e8)
 						{
 							city.ShieldsCount = (short)(local_106 * 10);
 
@@ -3056,7 +3056,7 @@ namespace OpenCiv1
 
 					L53ad:
 						this.oParent.CAPI.strcpy(0xba06, "A City must have five\npopulation units to support\ntaxmen or scientists.\n");
-						this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 32, 32, 1);
+						this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 32, 32, true);
 
 						goto L045f;
 
@@ -3267,7 +3267,7 @@ namespace OpenCiv1
 
 					L56a6:
 						// Instruction address 0x1d12:0x56a6, size: 5
-						this.oParent.CheckPlayerTurn.F0_1403_4545();
+						this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 						this.oParent.Var_aa_Rectangle.FontID = 1;
 
@@ -3361,7 +3361,7 @@ namespace OpenCiv1
 						this.oParent.Segment_11a8.F0_11a8_0250();
 
 						// Instruction address 0x1d12:0x5834, size: 5
-						if (this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 128, 80, 1) == 1) goto L5844;
+						if (this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 128, 80, true) == 1) goto L5844;
 						goto L58a1;
 
 					L5844:
@@ -3423,7 +3423,7 @@ namespace OpenCiv1
 
 					L5953:
 						this.oParent.CAPI.strcpy(0xba06, "A City must have five\npopulation units to support\ntaxmen or scientists.\n");
-						this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 32, 32, 1);
+						this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 32, 32, true);
 
 						goto L045f;
 

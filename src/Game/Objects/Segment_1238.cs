@@ -41,7 +41,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x1238:0x0058, size: 3
-			int dialogResult = (short)this.oParent.ManuBoxDialog.F0_2d05_0031(stringPtr, x, y, 1);
+			int dialogResult = this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(stringPtr, x, y, true);
 
 			// Instruction address 0x1238:0x0061, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();

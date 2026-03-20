@@ -1640,7 +1640,7 @@ namespace OpenCiv1
 			if (this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].GovernmentType < 4) goto L124d;
 
 		L1247:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xb276, 0x4);
+			this.oParent.Var_b276 = 4;
 
 		L124d:
 			this.oCPU.AX.UInt16 = 0x1;
@@ -1652,7 +1652,8 @@ namespace OpenCiv1
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.DX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, (ushort)this.oParent.GameData.ActiveCivilizations);
 			if (this.oCPU.Flags.NE) goto L126b;
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xb276, this.oCPU.OR_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xb276), 0x2));
+
+			this.oParent.Var_b276 |= 0x2;
 
 		L126b:
 			F6_0000_251d(0xba06, 0x14, 0x8b);
@@ -3215,7 +3216,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0280();
 
 			// Instruction address 0x0000:0x2567, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031(stringPtr, (short)xPos, (short)yPos, 1);
+			this.oCPU.AX.Int16 = (short)this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(stringPtr, (short)xPos, (short)yPos, true);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
 

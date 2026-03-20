@@ -1147,7 +1147,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L10b8;
 
 			// Instruction address 0x0000:0x10a1, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
+			this.oCPU.AX.Int16 = (short)this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x22), this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x31);
@@ -1201,7 +1201,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x0000:0x111a, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 			// Instruction address 0x0000:0x111f, size: 5
 			this.oParent.Segment_11a8.F0_11a8_0268();

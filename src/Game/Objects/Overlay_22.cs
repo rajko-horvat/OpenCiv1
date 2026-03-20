@@ -77,7 +77,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0096;
 
 		L0090:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xb276, 0x1);
+			this.oParent.Var_b276 = 1;
 
 		L0096:
 			this.oCPU.AX.UInt16 = 0x1c;
@@ -85,7 +85,8 @@ namespace OpenCiv1
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.TEST_UInt8(this.oParent.GameData.Cities[cityID].StatusFlag, 0x20);
 			if (this.oCPU.Flags.E) goto L00aa;
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xb276, this.oCPU.OR_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xb276), 0x4));
+
+			this.oParent.Var_b276 |= 0x4;
 
 		L00aa:
 			this.oCPU.AX.UInt16 = 0x1c;
@@ -93,12 +94,14 @@ namespace OpenCiv1
 			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.TEST_UInt16(this.oParent.GameData.Cities[cityID].ImprovementFlags0, 0x1);
 			if (this.oCPU.Flags.E) goto L00be;
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xb276, this.oCPU.OR_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xb276), 0x10));
+
+			this.oParent.Var_b276 |= 0x10;
 
 		L00be:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x26)), 0x0);
 			if (this.oCPU.Flags.NE) goto L00c9;
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xb276, this.oCPU.OR_UInt8(this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xb276), 0x20));
+
+			this.oParent.Var_b276 |= 0x20;
 
 		L00c9:
 			// Instruction address 0x0000:0x00d2, size: 5
@@ -1309,7 +1312,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0x0);
 
 			// Instruction address 0x0000:0x1002, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), 0x50);
 			goto L1011;
@@ -1405,7 +1408,7 @@ namespace OpenCiv1
 			this.oParent.Segment_11a8.F0_11a8_0250();
 
 			// Instruction address 0x0000:0x1148, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;

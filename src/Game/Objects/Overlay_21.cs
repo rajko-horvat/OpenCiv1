@@ -277,7 +277,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L041f;
 
 			// Instruction address 0x0000:0x03f7, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031(0x5181, 80, 128, 1);
+			this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0x5181, 80, 128, true);
 
 			// Instruction address 0x0000:0x0417, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);

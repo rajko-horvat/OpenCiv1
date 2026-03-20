@@ -876,7 +876,7 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x2459:0x0918, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 		L091d:
 			// Instruction address 0x2459:0x091d, size: 5

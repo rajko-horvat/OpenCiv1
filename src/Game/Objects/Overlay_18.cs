@@ -807,7 +807,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0ae5;
 
 			// Instruction address 0x0000:0x0ae0, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 		L0ae5:
 			// Instruction address 0x0000:0x0ae5, size: 5
@@ -861,7 +861,7 @@ namespace OpenCiv1
 			if (this.oParent.Var_db3a_MouseButton != 0) goto L0b4f;
 
 			// Instruction address 0x0000:0x0b47, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
+			this.oCPU.AX.Int16 = (short)this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.AX.UInt16);
 
@@ -1240,7 +1240,7 @@ namespace OpenCiv1
 			F18_0000_0000();
 
 			// Instruction address 0x0000:0x0f17, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 			iPos = (12 * this.oParent.GameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))].XPos) +
 				this.oParent.GameData.SpaceshipCells[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))].YPos;
@@ -1258,7 +1258,7 @@ namespace OpenCiv1
 			this.oParent.GameData.SpaceshipFlags |= (short)this.oCPU.AX.UInt16;
 
 			// Instruction address 0x0000:0x0f71, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 			F18_0000_016d();
 
@@ -1299,7 +1299,7 @@ namespace OpenCiv1
 			F18_0000_0259(playerID, 15, 0);
 
 			// Instruction address 0x0000:0x0fbb, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 		L0fc0:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), 0x2);
@@ -1309,8 +1309,10 @@ namespace OpenCiv1
 
 			this.oCPU.CMP_UInt16(param2, 0x1);
 			if (this.oCPU.Flags.NE) goto L1000;
+
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x687c);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xb276, this.oCPU.AX.UInt16);
+			this.oParent.Var_b276 = this.oCPU.AX.Int16;
+
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x3);
 			if (this.oCPU.Flags.NE) goto L0fde;
 			goto L12c2;
@@ -1330,7 +1332,8 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L1036;
 
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x687e);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xb276, this.oCPU.AX.UInt16);
+			this.oParent.Var_b276 = this.oCPU.AX.Int16;
+
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x7);
 			if (this.oCPU.Flags.NE) goto L1014;
 			goto L12c2;
@@ -1616,11 +1619,12 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))));
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 0x8);
 			if (this.oCPU.Flags.L) goto L154d;
+
 			this.oCPU.AX.UInt16 = (ushort)this.oParent.GameData.SpaceshipFlags;
 			this.oCPU.CX.LowUInt8 = 0x9;
 			this.oCPU.AX.UInt16 = this.oCPU.SAR_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
 			this.oCPU.AX.LowUInt8 = this.oCPU.XOR_UInt8(this.oCPU.AX.LowUInt8, 0xff);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xb276, this.oCPU.AX.UInt16);
+			this.oParent.Var_b276 = this.oCPU.AX.Int16;
 
 			// Instruction address 0x0000:0x1593, size: 5
 			this.oCPU.AX.Int16 = (short)this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -1667,7 +1671,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
 			// Instruction address 0x0000:0x15f3, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 			this.oCPU.SI.UInt16 = (ushort)playerID;
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
@@ -1702,7 +1706,7 @@ namespace OpenCiv1
 
 		L16a1:
 			// Instruction address 0x0000:0x16a1, size: 5
-			this.oParent.CheckPlayerTurn.F0_1403_4545();
+			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 			// Instruction address 0x0000:0x16a6, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();

@@ -76,7 +76,7 @@ namespace OpenCiv1
 			this.oParent.LanguageTools.F0_2f4d_044f(0x270);
 
 			// Instruction address 0x11a8:0x00e6, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 64, 49, 1);
+			this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 64, 49, true);
 
 		L00ee:
 			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
@@ -213,7 +213,7 @@ namespace OpenCiv1
 		/// </summary>
 		public void F0_11a8_0268()
 		{
-			this.oCPU.Log.EnterBlock("F0_11a8_0268()");
+			//this.oCPU.Log.EnterBlock("F0_11a8_0268()");
 
 			// function body
 			if (this.oParent.Var_1a3c_MouseAvailable && this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdeea) == 1)
@@ -224,9 +224,6 @@ namespace OpenCiv1
 		
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xdeea, 
 				this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xdeea)));
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_11a8_0268");
 		}
 
 		/// <summary>
@@ -293,7 +290,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, " Start a New Game\n Load a Saved Game\n EARTH\n Customize World\n View Hall of Fame\n");
 
 			// Instruction address 0x11a8:0x04b0, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 100, 140, 1);
+			this.oCPU.AX.Int16 = (short)this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 100, 140, true);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6b32, this.oCPU.AX.UInt16);
 
@@ -403,7 +400,7 @@ namespace OpenCiv1
 			// Instruction address 0x11a8:0x061a, size: 3
 			F0_11a8_0250();
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f9a, 0x1);
+			this.oParent.Var_2f9a = 1;
 
 		L0623:
 			// Instruction address 0x11a8:0x062b, size: 5
@@ -413,22 +410,22 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "LAND MASS:\n Small\n Normal\n Large\n");
 
 			// Instruction address 0x11a8:0x064f, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 200, 1, 1);
+			this.oCPU.AX.Int16 = (short)this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 200, 1, true);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x7ef6, this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
 			if (this.oCPU.Flags.E) goto L0623;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2f9c), 0x0);
-			if (this.oCPU.Flags.E) goto L067a;
+
+			if (this.oParent.Var_2f9c == 0) goto L067a;
 
 			this.oParent.Help.F4_0000_0000(0x1b6a);
 
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x7ef6);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f9a, this.oCPU.AX.UInt16);
+			this.oParent.Var_2f9a = this.oCPU.AX.Int16;
 			goto L0623;
 
 		L067a:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f9a, 0x1);
+			this.oParent.Var_2f9a = 1;
 
 		L0680:
 			// Instruction address 0x11a8:0x0688, size: 5
@@ -438,22 +435,22 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "TEMPERATURE:\n Cool\n Temperate\n Warm\n");
 
 			// Instruction address 0x11a8:0x06ac, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 200, 51, 1);
+			this.oCPU.AX.Int16 = (short)this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 200, 51, true);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x7ef8, this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
 			if (this.oCPU.Flags.E) goto L0680;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2f9c), 0x0);
-			if (this.oCPU.Flags.E) goto L06d7;
+
+			if (this.oParent.Var_2f9c == 0) goto L06d7;
 
 			this.oParent.Help.F4_0000_0000(0x1b94);
 			
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x7ef8);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f9a, this.oCPU.AX.UInt16);
+			this.oParent.Var_2f9a = this.oCPU.AX.Int16;
 			goto L0680;
 
 		L06d7:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f9a, 0x1);
+			this.oParent.Var_2f9a = 1;
 
 		L06dd:
 			// Instruction address 0x11a8:0x06e5, size: 5
@@ -463,26 +460,25 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "CLIMATE:\n Arid\n Normal\n Wet\n");
 
 			// Instruction address 0x11a8:0x0709, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 200, 101, 1);
+			this.oCPU.AX.Int16 = (short)this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 200, 101, true);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x7efa, this.oCPU.AX.UInt16);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
 			if (this.oCPU.Flags.E) goto L06dd;
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2f9c), 0x0);
-			if (this.oCPU.Flags.E) goto L0734;
+			if (this.oParent.Var_2f9c == 0) goto L0734;
 
 			this.oParent.Help.F4_0000_0000(0x1bbd);
 			
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x7efa);
 
 		L072f:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f9a, this.oCPU.AX.UInt16);
+			this.oParent.Var_2f9a = this.oCPU.AX.Int16;
 			goto L06dd;
 
 		L0734:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f9a, 0x1);
+			this.oParent.Var_2f9a = 1;
 
 		L073a:
 			// Instruction address 0x11a8:0x0742, size: 5
@@ -492,13 +488,13 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "AGE:\n 3 billion years\n 4 billion years\n 5 billion years\n");
 
 			// Instruction address 0x11a8:0x0766, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031(0xba06, 200, 151, 1);
+			this.oCPU.AX.Int16 = (short)this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 200, 151, true);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x7efc, this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
 			if (this.oCPU.Flags.E) goto L073a;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2f9c), 0x0);
-			if (this.oCPU.Flags.E) goto L078e;
+
+			if (this.oParent.Var_2f9c == 0) goto L078e;
 
 			this.oParent.Help.F4_0000_0000(0x1bfe);
 			
@@ -560,7 +556,8 @@ namespace OpenCiv1
 		L0810:
 			this.oParent.StartGameMenu.F5_0000_1455_LoadBitmaps();
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2f98, 0x1);
+			this.oParent.Var_2f98_PatternAvailable = true;
+
 			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
 			if (this.oCPU.Flags.E) goto L0848;
 
