@@ -81,7 +81,7 @@ namespace OpenCiv1
 			int maxContentWidth = this.oParent.ScreenSize.Width - (windowFrame ? 8 : 0) - x - ((windowFrame && this.oParent.Var_2f9e_MessageBoxStyle != MenuBoxReportTypeEnum.None) ? 44 : 0);
 			int maxContentHeight = this.oParent.ScreenSize.Height - (windowFrame ? 8 : 0) - y;
 			int maxLineWidth = 0;
-			int maxLineCount = (maxContentHeight - (helpOption ? 8 : 0)) / lineHeight;
+			int maxLineCount = (maxContentHeight - (helpOption && windowFrame ? 8 : 0)) / lineHeight;
 
 			// limit the number of available lines to window height
 			if (menuItems.Length > maxLineCount)
@@ -158,7 +158,7 @@ namespace OpenCiv1
 			int contentLeft = x + (windowFrame ? 4 : 0) + ((windowFrame && this.oParent.Var_2f9e_MessageBoxStyle != MenuBoxReportTypeEnum.None) ? 44 : 0);
 			int contentTop = y + (windowFrame ? 4 : 0);
 			int contentWidth = maxLineWidth;
-			int contentHeight = Math.Max((menuItems.Length * lineHeight) + (helpOption ? 8 : 0), ((windowFrame && this.oParent.Var_2f9e_MessageBoxStyle != MenuBoxReportTypeEnum.None) ? 60 : 0));
+			int contentHeight = Math.Max((menuItems.Length * lineHeight) + (helpOption && windowFrame ? 8 : 0), ((windowFrame && this.oParent.Var_2f9e_MessageBoxStyle != MenuBoxReportTypeEnum.None) ? 60 : 0));
 
 			int windowWidth = contentWidth + (windowFrame ? 8 : 0) + ((windowFrame && this.oParent.Var_2f9e_MessageBoxStyle != MenuBoxReportTypeEnum.None) ? 44 : 0);
 			int windowHeight = contentHeight + (windowFrame ? 8 : 0);
@@ -214,7 +214,7 @@ namespace OpenCiv1
 				}
 			}
 
-			if (helpOption)
+			if (windowFrame && helpOption)
 			{
 				int fontID = this.oParent.Var_aa_Rectangle.FontID;
 				this.oParent.Var_aa_Rectangle.FontID = 2;
