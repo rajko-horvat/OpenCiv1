@@ -315,7 +315,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " capture\n");
 
 			// Instruction address 0x2459:0x030a, size: 3
-			F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, F0_2459_08c6_GetCityName(cityID));
 
 			// Instruction address 0x2459:0x0318, size: 5
 			this.oParent.CAPI.strcat(0xba06, ". ");
@@ -333,12 +333,12 @@ namespace OpenCiv1
 			if (!this.oParent.GameData.GameSettingFlags.Animations) goto L03b7;
 
 			// Instruction address 0x2459:0x036c, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			this.oParent.CityView.F19_0000_0000(cityID, -2);
 			
 			// Instruction address 0x2459:0x0380, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			this.oParent.CityView.F19_0000_167b(playerID);
 
@@ -392,7 +392,7 @@ namespace OpenCiv1
 				goto L04bc;
 
 		L041a:
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.SpiesReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.SpiesReport;
 
 			// Instruction address 0x2459:0x0428, size: 5
 			this.oParent.CAPI.strcpy(0xba06, "Spies report:\n");
@@ -422,7 +422,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " city\nof ");
 
 			// Instruction address 0x2459:0x0492, size: 3
-			F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, F0_2459_08c6_GetCityName(cityID));
 
 			// Instruction address 0x2459:0x04a0, size: 5
 			this.oParent.CAPI.strcat(0xba06, ".\n");
@@ -773,10 +773,7 @@ namespace OpenCiv1
 			goto L07fe;
 
 		L07ed:
-			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
-			this.oCPU.PUSH_UInt16(0x07fe); // stack management - push return offset
-			this.oParent.MeetWithKing.F6_0000_251d(0xba06, 0x14, 0x8b);
-			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
+			this.oParent.MeetWithKing.F6_0000_251d_ShowInlineDialog(0xba06, 36, 139);
 
 		L07fe:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x9a), this.oCPU.AX.UInt16);
@@ -819,10 +816,7 @@ namespace OpenCiv1
 			goto L08a1;
 
 		L088d:
-			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
-			this.oCPU.PUSH_UInt16(0x089e); // stack management - push return offset
-			this.oParent.MeetWithKing.F6_0000_251d(0xba06, 0x14, 0x8b);
-			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
+			this.oParent.MeetWithKing.F6_0000_251d_ShowInlineDialog(0xba06, 36, 139);
 
 		L08a1:
 			// Instruction address 0x2459:0x08aa, size: 5
@@ -844,27 +838,17 @@ namespace OpenCiv1
 		/// Appends buffer at 0xba06 with city name
 		/// </summary>
 		/// <param name="cityID"></param>
-		public void F0_2459_08c6_GetCityName(int cityID)
+		public string F0_2459_08c6_GetCityName(int cityID)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_2459_08c6_GetCityName({cityID})");
 
 			// function body
 			if (cityID != -1)
 			{
-				byte cityNameID = this.oParent.GameData.Cities[cityID].NameID;
-				ushort stringPtr = (ushort)(0xba06 + this.oParent.CAPI.strlen(0xba06));
+				return this.oParent.GameData.CityNames[this.oParent.GameData.Cities[cityID].NameID].Substring(0, 13);
+			}
 
-				// 13 is maximum city name size to copy
-				for (int i = 0; i < 13; i++)
-				{
-					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(stringPtr + i), (byte)this.oParent.GameData.CityNames[cityNameID][i]);
-				}
-			}
-			else
-			{
-				// Instruction address 0x2459:0x08d7, size: 5
-				this.oParent.CAPI.strcat(0xba06, "NONE");
-			}
+			return "NONE";
 		}
 
 		/// <summary>
@@ -880,7 +864,7 @@ namespace OpenCiv1
 
 		L091d:
 			// Instruction address 0x2459:0x091d, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
+			this.oParent.MainCode.F0_11a8_0223_UpdateMouseState();
 
 			if (this.oParent.Var_db3a_MouseButton != 0) goto L0932;
 
@@ -1047,13 +1031,13 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " caravan from ");
 
 			// Instruction address 0x2459:0x0aad, size: 3
-			F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
+			this.oParent.CAPI.strcat(0xba06, F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))));
 
 			// Instruction address 0x2459:0x0abb, size: 5
 			this.oParent.CAPI.strcat(0xba06, "\narrives in ");
 
 			// Instruction address 0x2459:0x0ac7, size: 3
-			F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, F0_2459_08c6_GetCityName(cityID));
 
 			// Instruction address 0x2459:0x0ad5, size: 5
 			this.oParent.CAPI.strcat(0xba06, "\nTrade route established\nRevenue: $");

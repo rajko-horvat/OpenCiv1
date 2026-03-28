@@ -595,8 +595,7 @@ namespace OpenCiv1.Graphics
 					fontCh = font.Characters.GetValueByKey('?');
 				}
 				iWidth += fontCh.Width;
-				iHeight = Math.Max(iHeight, fontCh.Height);
-				iHeight += font.LineSpacing;
+				iHeight = Math.Max(iHeight, fontCh.Height + font.LineSpacing);
 			}
 
 			return new GSize(iWidth, iHeight);

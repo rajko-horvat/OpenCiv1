@@ -37,12 +37,12 @@ namespace OpenCiv1
 			}
 		
 			// Instruction address 0x2c84:0x0031, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
 			// Instruction address 0x2c84:0x003b, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			switch (menuIndex)
 			{
@@ -73,7 +73,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x2c84:0x0082, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			if (this.Var_654a == 1)
 			{
@@ -87,7 +87,7 @@ namespace OpenCiv1
 			}
 		
 			// Instruction address 0x2c84:0x00a6, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2c84_0000_ShowTopMenu");
@@ -101,10 +101,11 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_2c84_00ad_GameMenu()");
 
 			// function body
+			// Enable Save game with zero turns
 			if (oParent.GameData.TurnCount == 0)
 			{
 				// Disable 'Save Game' option
-				this.oParent.Var_b276 = 0x10;
+				this.oParent.Var_b276_MenuBoxDisabledOptions = 0x10;
 			}
 
 			// Instruction address 0x2c84:0x00c8, size: 5
@@ -117,7 +118,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x2c84:0x00f4, size: 5
-			int selectedOption = this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 16, 8, false);
+			int selectedOption = this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 16, 8, true, false, false);
 
 			// Instruction address 0x2c84:0x00ff, size: 5
 			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
@@ -145,25 +146,26 @@ namespace OpenCiv1
 					do
 					{
 						// Write current flags to show as checkmarks in options submenu
-						this.oParent.Var_d7f2 = this.oParent.GameData.GameSettingFlags.Value;
+						this.oParent.Var_d7f2_MenuBoxCheckedOptions = this.oParent.GameData.GameSettingFlags.Value;
 						// Process options submenu, return selected option index or -1 if selection was rejected
-						index = this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 24, 16, false);
+						index = this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 24, 16, true, false, false);
+
 						if (index == -1)
 						{
 							continue;
 						}
 
-						if (this.oParent.Var_2f9c == 0)
+						if (!this.oParent.Var_2f9c_MenuBoxHelpRequested)
 						{
 							this.oParent.GameData.GameSettingFlags.Value ^= (short)(1 << index);
 						}
 
 						if (index != -1)
 						{
-							this.oParent.Var_2f9a = index;
+							this.oParent.Var_2f9a_MenuBoxDefaultOptionIndex = index;
 						}
 					}
-					while (index != -1 || this.oParent.Var_2f9c != 0);
+					while (index != -1 || this.oParent.Var_2f9c_MenuBoxHelpRequested);
 
 					break;
 
@@ -234,7 +236,7 @@ namespace OpenCiv1
 			orders[orderCount++] = ' ';
 
 			// All orders are enabled by default
-			this.oParent.Var_b276 = 0;
+			this.oParent.Var_b276_MenuBoxDisabledOptions = 0;
 
 			if (unit.TypeID == (short)UnitTypeEnum.Settlers)
 			{
@@ -279,7 +281,7 @@ namespace OpenCiv1
 						if (!this.oParent.CheckPlayerTurn.F0_1403_3fd0_CanIrrigateCell(xPos, yPos))
 						{
 							// Disable 'Build Irrigation' option
-							this.oParent.Var_b276 |= 0x1 << orderCount;
+							this.oParent.Var_b276_MenuBoxDisabledOptions |= 0x1 << orderCount;
 						}
 					}
 					else
@@ -345,7 +347,7 @@ namespace OpenCiv1
 				if (!this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.Construction))
 				{
 					// Disable 'Build Fortress' option
-					this.oParent.Var_b276 |= 0x1 << orderCount;
+					this.oParent.Var_b276_MenuBoxDisabledOptions |= 0x1 << orderCount;
 				}
 			}
 			else if (this.oParent.GameData.Units[unit.TypeID].MovementType == UnitMovementTypeEnum.Land)
@@ -396,7 +398,7 @@ namespace OpenCiv1
 			orders[orderCount++] = 'D';
 
 			// Instruction address 0x2c84:0x05e6, size: 5
-			int selectedOrder = this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 72, 8, false);
+			int selectedOrder = this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 72, 8, true, false, false);
 
 			if (selectedOrder < 0 || selectedOrder >= orderCount)
 			{
@@ -426,15 +428,15 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " Trade Advisor (F5)\n Science Advisor (F6)\n");
 
 			// Instruction address 0x2c84:0x0647, size: 5
-			int selectedOption = this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 112, 8, false);
+			int selectedOption = this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 112, 8, true, false, false);
 
 			// Instruction address 0x2c84:0x0652, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x2c84:0x065c, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			Var_654a = -1;
 
@@ -487,7 +489,7 @@ namespace OpenCiv1
 			if ((this.oParent.GameData.SpaceshipFlags & 0xfe00) == 0)
 			{
 				// Disable 'SpaceShips' option
-				this.oParent.Var_b276 = 0x20;
+				this.oParent.Var_b276_MenuBoxDisabledOptions = 0x20;
 			}
 
 			// Instruction address 0x2c84:0x0700, size: 5
@@ -497,15 +499,15 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " World Map (F10)\n Demographics\n SpaceShips\n");
 
 			// Instruction address 0x2c84:0x0724, size: 5
-			int selectedOption = this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 144, 8, false);
+			int selectedOption = this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 144, 8, true, false, false);
 
 			// Instruction address 0x2c84:0x072f, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x2c84:0x0739, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x654a, 0xffff);
 
@@ -552,7 +554,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " Miscellaneous\n");
 
 			// Instruction address 0x2c84:0x07e1, size: 5
-			int selectedOption = this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 182, 8, false);
+			int selectedOption = this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 182, 8, true, false, false);
 
 			if (selectedOption < 0)
 			{

@@ -112,7 +112,7 @@ namespace OpenCiv1
 				this.Var_2496 = 0;
 
 				// Instruction address 0x1d12:0x007e, size: 5
-				this.oParent.Segment_11a8.F0_11a8_0268();
+				this.oParent.MainCode.F0_11a8_0268();
 
 				for (int i = 0; i < 5; i++)
 				{
@@ -275,7 +275,7 @@ namespace OpenCiv1
 					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 					// Instruction address 0x1d12:0x051f, size: 5
-					this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+					this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 					// Instruction address 0x1d12:0x052b, size: 5
 					this.oParent.CAPI.strupr(0xba06);
@@ -325,7 +325,7 @@ namespace OpenCiv1
 								if (Arr_a6[this.oParent.CityOffsets[i].X + 2, this.oParent.CityOffsets[i].Y + 2] != 0)
 								{
 									// Instruction address 0x1d12:0x06f6, size: 5
-									this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(
+									this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(
 										(local_c6 - this.oParent.Var_d4cc_MapViewX) * 16 + 80, (local_d2 - this.oParent.Var_d75e_MapViewY) * 16 + 8, 15, 15, 12);
 								}
 							}
@@ -357,7 +357,7 @@ namespace OpenCiv1
 							this.oParent.CAPI.strcpy(0xba06, "Food storage exhausted\nin ");
 
 							// Instruction address 0x1d12:0x07b1, size: 5
-							this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+							this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 							if (local_e8 != -1)
 							{
@@ -396,7 +396,7 @@ namespace OpenCiv1
 								this.oParent.StartGameMenu.F5_0000_0e6c_TestIfAIPlayerDestroyed(this.Var_6548_PlayerID, 0);
 
 								// Instruction address 0x1d12:0x085b, size: 5
-								this.oParent.Segment_11a8.F0_11a8_0250();
+								this.oParent.MainCode.F0_11a8_0250();
 
 								goto L6927;
 							}
@@ -427,12 +427,12 @@ namespace OpenCiv1
 
 							if (this.Var_6548_PlayerID == this.oParent.GameData.HumanPlayerID)
 							{
-								this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DomesticAdvisor;
+								this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DomesticAdvisorReport;
 
 								this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 								// Instruction address 0x1d12:0x0929, size: 5
-								this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+								this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 								// Instruction address 0x1d12:0x0939, size: 5
 								this.oParent.CAPI.strcat(0xba06, " requires an AQUEDUCT\nfor further growth.\n");
@@ -597,12 +597,12 @@ namespace OpenCiv1
 							this.oParent.CAPI.strcpy(0xba06, "Population decrease\nin ");
 
 							// Instruction address 0x1d12:0x0e31, size: 5
-							this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+							this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 							// Instruction address 0x1d12:0x0e41, size: 5
 							this.oParent.CAPI.strcat(0xba06, ".\n");
 
-							this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DomesticAdvisor;
+							this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DomesticAdvisorReport;
 
 							// Instruction address 0x1d12:0x0e5b, size: 5
 							this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -881,7 +881,7 @@ namespace OpenCiv1
 										this.oParent.StartGameMenu.F5_0000_0e6c_TestIfAIPlayerDestroyed(this.Var_6548_PlayerID, 0);
 
 										// Instruction address 0x1d12:0x1743, size: 5
-										this.oParent.Segment_11a8.F0_11a8_0250();
+										this.oParent.MainCode.F0_11a8_0250();
 
 										goto L6927;
 									}
@@ -999,7 +999,7 @@ namespace OpenCiv1
 										this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 										// Instruction address 0x1d12:0x1b00, size: 5
-										this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+										this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 										// Instruction address 0x1d12:0x1b10, size: 5
 										this.oParent.CAPI.strcat(0xba06, " builds ");
@@ -1011,7 +1011,7 @@ namespace OpenCiv1
 										// Instruction address 0x1d12:0x1b3e, size: 5
 										this.oParent.CAPI.strcat(0xba06, ".\n");
 
-										this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DefenseMinister;
+										this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DefenseMinisterReport;
 
 										// Instruction address 0x1d12:0x1b58, size: 5
 										this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -1053,7 +1053,7 @@ namespace OpenCiv1
 									this.oParent.CAPI.strcpy(0xba06, "Sensors report a\nNUCLEAR WEAPONS test\nnear ");
 
 									// Instruction address 0x1d12:0x1c44, size: 5
-									this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+									this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 									// Instruction address 0x1d12:0x1c54, size: 5
 									this.oParent.CAPI.strcat(0xba06, "!\n");
@@ -1088,7 +1088,7 @@ namespace OpenCiv1
 									this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 									// Instruction address 0x1d12:0x1d31, size: 5
-									this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+									this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 									// Instruction address 0x1d12:0x1d41, size: 5
 									this.oParent.CAPI.strcat(0xba06, " builds\n");
@@ -1213,7 +1213,7 @@ namespace OpenCiv1
 											// Instruction address 0x1d12:0x2097, size: 5
 											this.oParent.CAPI.strcpy(0xba06, "Diplomats report:\n");
 
-											this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DiplomatsReport;
+											this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DiplomatsReport;
 										}
 
 										// Instruction address 0x1d12:0x20b3, size: 5
@@ -1223,12 +1223,12 @@ namespace OpenCiv1
 										this.oParent.CAPI.strcat(0xba06, " capital\nmoved to ");
 
 										// Instruction address 0x1d12:0x20ce, size: 5
-										this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+										this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 										// Instruction address 0x1d12:0x20de, size: 5
 										this.oParent.CAPI.strcat(0xba06, ".\n");
 
-										this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ForeignMinister;
+										this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.ForeignMinisterReport;
 
 										// Instruction address 0x1d12:0x20f8, size: 5
 										this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -1242,7 +1242,7 @@ namespace OpenCiv1
 								if (local_e8 == 38)
 								{
 									// Instruction address 0x1d12:0x2136, size: 5
-									this.oParent.Segment_11a8.F0_11a8_0280();
+									this.oParent.MainCode.F0_11a8_0280();
 
 									// Instruction address 0x1d12:0x2143, size: 5
 									this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
@@ -1251,7 +1251,7 @@ namespace OpenCiv1
 									this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
 
 									// Instruction address 0x1d12:0x215b, size: 5
-									this.oParent.Segment_11a8.F0_11a8_0294();
+									this.oParent.MainCode.F0_11a8_0294();
 								}
 
 								if (local_e8 == 43 && this.Var_6548_PlayerID == this.oParent.GameData.HumanPlayerID)
@@ -1938,7 +1938,7 @@ namespace OpenCiv1
 										this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 										// Instruction address 0x1d12:0x35f5, size: 5
-										this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+										this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 										// Instruction address 0x1d12:0x3605, size: 5
 										this.oParent.CAPI.strcat(0xba06, " can't support\n");
@@ -1950,7 +1950,7 @@ namespace OpenCiv1
 										// Instruction address 0x1d12:0x363d, size: 5
 										this.oParent.CAPI.strcat(0xba06, ".\n Unit Disbanded.\n");
 
-										this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DefenseMinister;
+										this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DefenseMinisterReport;
 
 										// Instruction address 0x1d12:0x3657, size: 5
 										this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -2056,7 +2056,7 @@ namespace OpenCiv1
 						this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 						// Instruction address 0x1d12:0x398e, size: 5
-						this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].HomeCityID);
+						this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].HomeCityID));
 
 						this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba09, 0x2e);
 						this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba0a, 0x0);
@@ -2473,7 +2473,7 @@ namespace OpenCiv1
 							this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 							// Instruction address 0x1d12:0x463d, size: 5
-							this.oParent.Segment_2459.F0_2459_08c6_GetCityName((short)local_4c);
+							this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName((short)local_4c));
 
 							// Instruction address 0x1d12:0x464d, size: 5
 							this.oParent.CAPI.strcat(0xba06, ":+");
@@ -2569,12 +2569,12 @@ namespace OpenCiv1
 						}
 
 						// Instruction address 0x1d12:0x4994, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0250();
+						this.oParent.MainCode.F0_11a8_0250();
 
 						while (this.oParent.Var_db3a_MouseButton != 0)
 						{
 							// Instruction address 0x1d12:0x49a3, size: 5
-							this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
+							this.oParent.MainCode.F0_11a8_0223_UpdateMouseState();
 						}
 
 						while (this.oParent.Var_db3a_MouseButton == 0)
@@ -2584,12 +2584,12 @@ namespace OpenCiv1
 								break;
 
 							// Instruction address 0x1d12:0x49cc, size: 5
-							this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
+							this.oParent.MainCode.F0_11a8_0223_UpdateMouseState();
 
 							if (local_c0 != 0)
 							{
 								// Instruction address 0x1d12:0x49db, size: 5
-								this.oParent.Segment_11a8.F0_11a8_0268();
+								this.oParent.MainCode.F0_11a8_0268();
 
 								local_c0++;
 
@@ -2605,7 +2605,7 @@ namespace OpenCiv1
 								}
 
 								// Instruction address 0x1d12:0x4a3a, size: 5
-								this.oParent.Segment_11a8.F0_11a8_0250();
+								this.oParent.MainCode.F0_11a8_0250();
 
 								// Instruction address 0x1d12:0x4a43, size: 5
 								this.oParent.CommonTools.F0_1182_0134_WaitTimer(10);
@@ -2625,14 +2625,14 @@ namespace OpenCiv1
 						else
 						{
 							// Instruction address 0x1d12:0x4a61, size: 5
-							local_f0 = this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
+							local_f0 = this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 							this.oParent.Var_db3e_MouseYPos = 0;
 							this.oParent.Var_db3c_MouseXPos = 0;
 						}
 
 						// Instruction address 0x1d12:0x4a86, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0268();
+						this.oParent.MainCode.F0_11a8_0268();
 
 						if ((this.oParent.Var_db3a_MouseButton == 2 &&
 							this.oParent.Var_db3c_MouseXPos >= 230 && this.oParent.Var_db3c_MouseXPos < 270 &&
@@ -2771,12 +2771,13 @@ namespace OpenCiv1
 						}
 
 						// Instruction address 0x1d12:0x4e18, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0250();
+						this.oParent.MainCode.F0_11a8_0250();
 
 						this.oParent.Var_aa_Rectangle.FontID = 1;
 
 						// Instruction address 0x1d12:0x4e32, size: 5
-						if (this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 100, 80, true) == 0 && this.oParent.GameData.Players[this.Var_6548_PlayerID].Coins >= local_e8)
+						if (this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 100, 80, true, false, true) == 0 && 
+							this.oParent.GameData.Players[this.Var_6548_PlayerID].Coins >= local_e8)
 						{
 							city.ShieldsCount = (short)(local_106 * 10);
 
@@ -2784,7 +2785,7 @@ namespace OpenCiv1
 						}
 
 						// Instruction address 0x1d12:0x4e78, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0268();
+						this.oParent.MainCode.F0_11a8_0268();
 
 						goto L045f;
 
@@ -2794,7 +2795,7 @@ namespace OpenCiv1
 							city.StatusFlag &= 0xef;
 
 							// Instruction address 0x1d12:0x4ead, size: 5
-							this.oParent.Segment_11a8.F0_11a8_0250();
+							this.oParent.MainCode.F0_11a8_0250();
 
 							if (city.CurrentProductionID >= 0)
 							{
@@ -2810,7 +2811,7 @@ namespace OpenCiv1
 							}
 
 							// Instruction address 0x1d12:0x4f2f, size: 5
-							this.oParent.Segment_11a8.F0_11a8_0268();
+							this.oParent.MainCode.F0_11a8_0268();
 
 							goto L045f;
 						}
@@ -2907,7 +2908,7 @@ namespace OpenCiv1
 						while (this.oParent.CAPI.kbhit() == 0);
 
 						// Instruction address 0x1d12:0x50d2, size: 5
-						local_fc = this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey(); // this.oCPU.AX.Word has navigatio code also!
+						local_fc = this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey(); // this.oCPU.AX.Word has navigatio code also!
 
 						switch (local_fc)
 						{
@@ -2992,7 +2993,7 @@ namespace OpenCiv1
 
 					L52b5:
 						// Instruction address 0x1d12:0x52b5, size: 5
-						local_fc = this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
+						local_fc = this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 						goto L52e0;
 
 					L52c5:
@@ -3056,7 +3057,7 @@ namespace OpenCiv1
 
 					L53ad:
 						this.oParent.CAPI.strcpy(0xba06, "A City must have five\npopulation units to support\ntaxmen or scientists.\n");
-						this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 32, 32, true);
+						this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 32, 32, true, false, true);
 
 						goto L045f;
 
@@ -3085,7 +3086,7 @@ namespace OpenCiv1
 							16, 16, this.oParent.Var_19d4_Rectangle, 0, 0);
 
 						// Instruction address 0x1d12:0x5449, size: 5
-						this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(
+						this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(
 							(local_b6 * 16) + 160, (local_be * 16) + 56,
 							15, 15, 15);
 
@@ -3110,7 +3111,7 @@ namespace OpenCiv1
 						local_fc = local_be;
 
 						// Instruction address 0x1d12:0x54c4, size: 5
-						local_e8 = this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
+						local_e8 = this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 						goto L551f;
 
@@ -3358,10 +3359,10 @@ namespace OpenCiv1
 						this.oParent.Var_aa_Rectangle.FontID = 1;
 
 						// Instruction address 0x1d12:0x5823, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0250();
+						this.oParent.MainCode.F0_11a8_0250();
 
 						// Instruction address 0x1d12:0x5834, size: 5
-						if (this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 128, 80, true) == 1) goto L5844;
+						if (this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 128, 80, true, false, true) == 1) goto L5844;
 						goto L58a1;
 
 					L5844:
@@ -3376,7 +3377,7 @@ namespace OpenCiv1
 
 					L58a1:
 						// Instruction address 0x1d12:0x58a1, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0268();
+						this.oParent.MainCode.F0_11a8_0268();
 
 						goto L045f;
 
@@ -3423,7 +3424,7 @@ namespace OpenCiv1
 
 					L5953:
 						this.oParent.CAPI.strcpy(0xba06, "A City must have five\npopulation units to support\ntaxmen or scientists.\n");
-						this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 32, 32, true);
+						this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 32, 32, true, false, true);
 
 						goto L045f;
 
@@ -3584,7 +3585,7 @@ namespace OpenCiv1
 				this.oParent.CAPI.strcpy(0xba06, "Civil Disorder in\n");
 
 				// Instruction address 0x1d12:0x5d1f, size: 5
-				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+				this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 				// Instruction address 0x1d12:0x5d2f, size: 5
 				this.oParent.CAPI.strcat(0xba06, "! Mayor\nflees in panic.\n");
@@ -3615,7 +3616,7 @@ namespace OpenCiv1
 				goto L5db9;
 
 			L5d9f:
-				this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DomesticAdvisor;
+				this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DomesticAdvisorReport;
 
 				// Instruction address 0x1d12:0x5db1, size: 5
 				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -3680,7 +3681,7 @@ namespace OpenCiv1
 				this.oParent.CAPI.strcpy(0xba06, "Discontented citizens of\n");
 
 				// Instruction address 0x1d12:0x5ee3, size: 5
-				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+				this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 				// Instruction address 0x1d12:0x5ef3, size: 5
 				this.oParent.CAPI.strcat(0xba06, " revolt:\nGovernment Collapses!\n");
@@ -3715,13 +3716,13 @@ namespace OpenCiv1
 				goto L5fc2;
 
 			L5f7a:
-				this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DomesticAdvisor;
+				this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DomesticAdvisorReport;
 
 				// Instruction address 0x1d12:0x5f88, size: 5
 				this.oParent.CAPI.strcpy(0xba06, "Order restored\nin ");
 
 				// Instruction address 0x1d12:0x5f93, size: 5
-				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+				this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 				// Instruction address 0x1d12:0x5fa3, size: 5
 				this.oParent.CAPI.strcat(0xba06, ".\n");
@@ -3798,7 +3799,7 @@ namespace OpenCiv1
 				this.oParent.CAPI.strcat(0xba06, "'\nday celebrated in\n");
 
 				// Instruction address 0x1d12:0x6127, size: 5
-				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+				this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 				// Instruction address 0x1d12:0x6137, size: 5
 				this.oParent.CAPI.strcat(0xba06, "!\n");
@@ -3880,7 +3881,7 @@ namespace OpenCiv1
 				this.oParent.CAPI.strcat(0xba06, "'\ncelebration canceled\nin ");
 
 				// Instruction address 0x1d12:0x629c, size: 5
-				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+				this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 				// Instruction address 0x1d12:0x62ac, size: 5
 				this.oParent.CAPI.strcat(0xba06, ".\n");
@@ -3926,13 +3927,13 @@ namespace OpenCiv1
 
 			L6337:
 				// Instruction address 0x1d12:0x6337, size: 5
-				this.oParent.Segment_11a8.F0_11a8_0280();
+				this.oParent.MainCode.F0_11a8_0280();
 
 				// Instruction address 0x1d12:0x6344, size: 5
 				this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
 
 				// Instruction address 0x1d12:0x634c, size: 5
-				this.oParent.Segment_11a8.F0_11a8_0294();
+				this.oParent.MainCode.F0_11a8_0294();
 
 			L6351:
 				this.oParent.GameData.Players[this.Var_6548_PlayerID].ResearchProgress = 0;
@@ -4001,13 +4002,13 @@ namespace OpenCiv1
 
 			L649e:
 				// Instruction address 0x1d12:0x649e, size: 5
-				this.oParent.Segment_11a8.F0_11a8_0280();
+				this.oParent.MainCode.F0_11a8_0280();
 
 				// Instruction address 0x1d12:0x64ab, size: 5
 				this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
 
 				// Instruction address 0x1d12:0x64b3, size: 5
-				this.oParent.Segment_11a8.F0_11a8_0294();
+				this.oParent.MainCode.F0_11a8_0294();
 
 			L64b8:
 				this.oParent.GameData.Players[this.Var_6548_PlayerID].Score +=
@@ -4054,13 +4055,13 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x65f3, size: 5
 				this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(local_c6, local_d2);
 
-				this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ScienceAdvisor;
+				this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.ScienceAdvisorReport;
 
 				// Instruction address 0x1d12:0x6609, size: 5
 				this.oParent.CAPI.strcpy(0xba06, "Pollution near ");
 
 				// Instruction address 0x1d12:0x6614, size: 5
-				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+				this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 				// Instruction address 0x1d12:0x6624, size: 5
 				this.oParent.CAPI.strcat(0xba06, ".\n");
@@ -4106,7 +4107,7 @@ namespace OpenCiv1
 				this.oParent.CAPI.strcpy(0xba06, "Nuclear Catastrophe\nin ");
 
 				// Instruction address 0x1d12:0x66fe, size: 5
-				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+				this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 				// Instruction address 0x1d12:0x670e, size: 5
 				this.oParent.CAPI.strcat(0xba06, "!\nContamination feared!\n");
@@ -4183,7 +4184,7 @@ namespace OpenCiv1
 				this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 				// Instruction address 0x1d12:0x6856, size: 5
-				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+				this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 				// Instruction address 0x1d12:0x6866, size: 5
 				this.oParent.CAPI.strcat(0xba06, "\ncan't maintain\n");
@@ -4194,7 +4195,7 @@ namespace OpenCiv1
 				// Instruction address 0x1d12:0x688d, size: 5
 				this.oParent.CAPI.strcat(0xba06, ".\n");
 
-				this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DomesticAdvisor;
+				this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DomesticAdvisorReport;
 
 				// Instruction address 0x1d12:0x68a7, size: 5
 				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -4221,7 +4222,7 @@ namespace OpenCiv1
 				this.oParent.Var_aa_Rectangle.FontID = 1;
 
 				// Instruction address 0x1d12:0x6918, size: 5
-				this.oParent.Segment_11a8.F0_11a8_0250();
+				this.oParent.MainCode.F0_11a8_0250();
 
 				// !!! Do we really need to return a value?
 				this.oCPU.AX.UInt16 = (ushort)((short)(this.oParent.Var_70e2 - this.oParent.Var_70e4));
@@ -4858,7 +4859,7 @@ namespace OpenCiv1
 			F0_1d12_710d_FillRectangleWithPattern(xPos1, yPos1, iWidth, iHeight);
 
 			// Instruction address 0x1d12:0x7104, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(xPos1, yPos1, iWidth, iHeight, 1);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(xPos1, yPos1, iWidth, iHeight, 1);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1d12_70cb_FillRectangleWithPattern");
@@ -4876,7 +4877,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_1d12_710d_FillRectangleWithPattern({xPos}, {yPos}, {width}, {height})");
 
 			// function body
-			if (this.oParent.Var_d762 == 0)
+			if (this.oParent.Var_d762_AlwaysOneForVGA == 0)
 			{
 				// Instruction address 0x1d12:0x712e, size: 5
 				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos, yPos, width, height, 9);
@@ -4997,7 +4998,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x1d12:0x73e1, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(100, 117, 121, 75, 9);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(100, 117, 121, 75, 9);
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1d12_72b7");

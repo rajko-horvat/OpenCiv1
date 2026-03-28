@@ -6,6 +6,8 @@ namespace OpenCiv1
 	partial class OpenCiv1Game
 	{
 		#region Global variables
+		public GSize ScreenSize = new GSize(320, 200);
+
 		public GPoint[] CityOffsets = new GPoint[] { 
 			new GPoint(0, -1), new GPoint(1, 0), new GPoint(0, 1), new GPoint(-1, 0), 
 			new GPoint(1, -1), new GPoint(1, 1), new GPoint(-1, 1), new GPoint(-1, -1), 
@@ -93,15 +95,17 @@ namespace OpenCiv1
 		};
 
 		public bool Var_2f98_PatternAvailable = false;
-		public int Var_2f9a = -1;
-		public int Var_2f9c = 0;
+
+		public int Var_d7f2_MenuBoxCheckedOptions = 0;
+		public int Var_b276_MenuBoxDisabledOptions = 0;
+		public int Var_2f9a_MenuBoxDefaultOptionIndex = -1;
+		public bool Var_2f9c_MenuBoxHelpRequested = false;
 
 		/// <summary>
 		/// Allows to customize dialog shown by F0_1238_001e_ShowDialog().
 		/// </summary>
-		public ReportTypeEnum Var_2f9e_MessageBoxStyle = ReportTypeEnum.Default;
-		public int Var_2fa0 = 0;
-		public int Var_2fa2 = 0;
+		public MenuBoxReportTypeEnum Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.None;
+		public bool Var_2fa2_DialogMousePressed = false;
 		public string[] Array_2fac = { "Defense Minister:", "Domestic Advisor:", "Foreign Minister:", "Science Advisor:" };
 
 		public int Var_3484 = -1;
@@ -139,7 +143,6 @@ namespace OpenCiv1
 		public int[] Array_7eec = new int[4];
 		public int Var_8078 = 0;
 		public int Var_b1e8 = 0;
-		public int Var_b276 = 0;
 		
 		public int[] Array_b27a = new int[8];
 		public int[] Array_b29a = new int[8];
@@ -148,7 +151,7 @@ namespace OpenCiv1
 		public int Var_b884 = 0;
 		public int[,] Array_b886 = new int[10, 16];
 		public int Var_b2ba = 0;
-		public int Var_d206 = 0;
+		public int Var_d206_CanBeRemoved = 0;
 		public int Var_d20a = 0;
 		public int[,] Array_d21c = new int[3, 20];
 		public int[,] Array_d294 = new int[8, 4];
@@ -162,11 +165,10 @@ namespace OpenCiv1
 		public int[] Array_d4ce = new int[320];
 		public int Var_d75e_MapViewY = 0;
 		public bool Var_d760_HumanPlayerMessageFlag = false;
-		public ushort Var_d762 = 0;
+		public ushort Var_d762_AlwaysOneForVGA = 0;
 		public ushort Var_d768 = 0;
 		public int Var_d76a = 0;
 		public int Var_d7f0 = 0;
-		public int Var_d7f2 = 0;
 		public bool Var_d806_DebugFlag = false;
 
 		public int Var_db38 = 0;

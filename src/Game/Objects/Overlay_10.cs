@@ -74,7 +74,7 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 
 			// Instruction address 0x0000:0x0080, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			// Instruction address 0x0000:0x0098, size: 5
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
@@ -419,7 +419,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
 			// Instruction address 0x0000:0x046d, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
@@ -467,7 +467,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, "\n");
 
 			// Instruction address 0x0000:0x04ff, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oParent.GameData.Players[playerID].Units[unitID].HomeCityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oParent.GameData.Players[playerID].Units[unitID].HomeCityID));
 
 			// Instruction address 0x0000:0x050f, size: 5
 			this.oParent.CAPI.strcat(0xba06, "\n");

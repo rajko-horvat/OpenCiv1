@@ -432,7 +432,7 @@ namespace OpenCiv1
 			if (playerID != this.oParent.GameData.HumanPlayerID)
 				goto L00f8;
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DomesticAdvisor;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DomesticAdvisorReport;
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
@@ -497,7 +497,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0598, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 			// Instruction address 0x0000:0x05a8, size: 5
 			this.oParent.CAPI.strcpy(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x30be), 0xba06);
@@ -588,7 +588,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "Earthquake in ");
 
 			// Instruction address 0x0000:0x0657, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 			// Instruction address 0x0000:0x0667, size: 5
 			this.oParent.CAPI.strcat(0xba06, "!\n");
@@ -873,7 +873,7 @@ namespace OpenCiv1
 
 		L0934:
 			// Instruction address 0x0000:0x0937, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 			// Instruction address 0x0000:0x0947, size: 5
 			this.oParent.CAPI.strcat(0xba06, "!\nCitizens demand ");
@@ -1068,13 +1068,13 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "Residents of ");
 
 			// Instruction address 0x0000:0x0b4e, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 			// Instruction address 0x0000:0x0b5e, size: 5
 			this.oParent.CAPI.strcat(0xba06, " admire\nthe prosperity of ");
 
 			// Instruction address 0x0000:0x0b69, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)));
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe))));
 
 			// Instruction address 0x0000:0x0b79, size: 5
 			this.oParent.CAPI.strcat(0xba06, ".\n");
@@ -1103,7 +1103,7 @@ namespace OpenCiv1
 			this.oCPU.TEST_UInt16(this.oCPU.AX.UInt16, (ushort)this.oParent.GameData.PlayerFlags);
 			if (this.oCPU.Flags.E) goto L0c18;
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DomesticAdvisor;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DomesticAdvisorReport;
 
 			// Instruction address 0x0000:0x0bf9, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -1130,7 +1130,7 @@ namespace OpenCiv1
 			this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0xba06), 0x0);
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.TravelersReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.TravelersReport;
 
 			// Instruction address 0x0000:0x0c73, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 64);
@@ -1195,7 +1195,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 
 			// Instruction address 0x0000:0x0d2f, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			// Instruction address 0x0000:0x0d34, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
@@ -1626,7 +1626,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5116, this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x5116)));
 
 			// Instruction address 0x0000:0x1340, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			goto L0cc3;
 
@@ -1658,7 +1658,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 
 			// Instruction address 0x0000:0x13e6, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			// Instruction address 0x0000:0x13eb, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();

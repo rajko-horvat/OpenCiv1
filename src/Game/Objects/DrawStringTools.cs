@@ -97,7 +97,7 @@ namespace OpenCiv1
 		/// <param name="xPos"></param>
 		/// <param name="yPos"></param>
 		/// <param name="frontColor"></param>
-		public void F0_1182_0086_DrawStringWithShadow(string text, int xPos, int yPos, byte frontColor)
+		public void F0_1182_0086_DrawStringWithShadowToScreen0(string text, int xPos, int yPos, byte frontColor)
 		{
 			F0_1182_005c_DrawStringToScreen0(text, xPos, yPos + 1, 0);
 			F0_1182_005c_DrawStringToScreen0(text, xPos, yPos, frontColor);

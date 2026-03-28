@@ -174,7 +174,7 @@ namespace OpenCiv1
 			// Instruction address 0x2517:0x01a0, size: 5
 			this.oParent.CAPI.strcat(0xba06, " has ended.\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DiplomatsReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DiplomatsReport;
 
 			// Instruction address 0x2517:0x01ba, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -260,10 +260,7 @@ namespace OpenCiv1
 			this.oParent.Var_3936 = 1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
-			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
-			this.oCPU.PUSH_UInt16(0x0279); // stack management - push return offset
-			this.oParent.MeetWithKing.F6_0000_251d(0xba06, 0x14, 0x8b);
-			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
+			this.oParent.MeetWithKing.F6_0000_251d_ShowInlineDialog(0xba06, 36, 139);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x1);
 			if (this.oCPU.Flags.NE) goto L02c2;
@@ -376,10 +373,7 @@ namespace OpenCiv1
 			this.oParent.Var_3936 = 1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
-			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
-			this.oCPU.PUSH_UInt16(0x03d8); // stack management - push return offset
-			this.oParent.MeetWithKing.F6_0000_251d(0xba06, 0x14, 0x8b);
-			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
+			this.oParent.MeetWithKing.F6_0000_251d_ShowInlineDialog(0xba06, 36, 139);
 			
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x1);
 			if (this.oCPU.Flags.NE) goto L0428;
@@ -651,7 +645,7 @@ namespace OpenCiv1
 			this.oParent.GameData.Players[playerID].Diplomacy[0] |= 4;
 
 		L06bc:
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DiplomatsReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DiplomatsReport;
 
 			// Instruction address 0x2517:0x06ce, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 64);
@@ -909,7 +903,7 @@ namespace OpenCiv1
 			// Instruction address 0x2517:0x0933, size: 5
 			this.oParent.CAPI.strcat(0xba06, " sign\na peace treaty.\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DiplomatsReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DiplomatsReport;
 
 			// Instruction address 0x2517:0x094d, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -979,7 +973,7 @@ namespace OpenCiv1
 				this.oParent.CAPI.strcat(0xba06, " declare\nwar on each other.\n");
 			}
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DiplomatsReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DiplomatsReport;
 
 			// Instruction address 0x2517:0x0a11, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);

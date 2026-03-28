@@ -21,7 +21,7 @@ namespace OpenCiv1
 		private VCPU oCPU;
 
 		#region Segment definitions
-		private Segment_11a8 oSegment_11a8;
+		private MainCode mainCode;
 		private CommonTools commonTools;
 		private Segment_1238 oSegment_1238;
 		private MenuBoxDialog menuBoxDialog;
@@ -93,7 +93,7 @@ namespace OpenCiv1
 			this.oGraphics = new GDriver(this);
 			this.oSound = new NSound(this);
 
-			this.oSegment_11a8 = new Segment_11a8(this);
+			this.mainCode = new MainCode(this);
 			this.commonTools = new CommonTools(this);
 			this.oSegment_1238 = new Segment_1238(this);
 			this.menuBoxDialog = new MenuBoxDialog(this);
@@ -1018,7 +1018,7 @@ namespace OpenCiv1
 			#endregion
 
 			#region Objects
-			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3604, 0, 0xd00, VCPUMemoryFlagsEnum.AccessNotAllowed));
+			/*this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3604, 0, 0xd00, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3772, 0x0, 0x4b0, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3772, 0x4b0, 0x90, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3772, 0x540, 0x100, VCPUMemoryFlagsEnum.AccessNotAllowed));
@@ -1118,7 +1118,7 @@ namespace OpenCiv1
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xe498, 0x80, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xe698, 0x10, VCPUMemoryFlagsEnum.AccessNotAllowed));
 			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xe898, 0x10, VCPUMemoryFlagsEnum.AccessNotAllowed));
-			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xe8a8, 0x10, VCPUMemoryFlagsEnum.AccessNotAllowed));
+			this.oCPU.Memory.MemoryRegions.Add(new VCPUMemoryRegion(0x3b01, 0xe8a8, 0x10, VCPUMemoryFlagsEnum.AccessNotAllowed));*/
 			#endregion
 
 			#endregion
@@ -1162,7 +1162,7 @@ namespace OpenCiv1
 			this.oCPU.ES.Word = this.oCPU.SS.Word;//*/
 
 			// Call our 'short Main()' function
-			this.Segment_11a8.F0_11a8_0008_Main();
+			this.MainCode.F0_11a8_0008_Main();
 
 			this.CAPI.exit((short)this.oCPU.AX.UInt16);
 		}
@@ -1209,9 +1209,9 @@ namespace OpenCiv1
 		#endregion
 
 		#region Public Segment getters
-		public Segment_11a8 Segment_11a8
+		public MainCode MainCode
 		{
-			get { return this.oSegment_11a8; }
+			get { return this.mainCode; }
 		}
 
 		public CommonTools CommonTools
@@ -1224,7 +1224,7 @@ namespace OpenCiv1
 			get { return this.oSegment_1238; }
 		}
 
-		public MenuBoxDialog ManuBoxDialog
+		public MenuBoxDialog MenuBoxDialog
 		{
 			get { return this.menuBoxDialog; }
 		}

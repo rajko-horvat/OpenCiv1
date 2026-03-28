@@ -25,7 +25,7 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x0000:0x0006, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			// Save main screen graphics before showing popup dialog
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
@@ -41,7 +41,7 @@ namespace OpenCiv1
 
 				// Borders
 				// Instruction address 0x0000:0x003e, size: 5
-				this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(80, 80, 160, 32, 11);
+				this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(80, 80, 160, 32, 11);
 
 				// Title
 				// Instruction address 0x0000:0x0055, size: 5
@@ -50,7 +50,7 @@ namespace OpenCiv1
 				this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 				// Instruction address 0x0000:0x0065, size: 5
-				this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+				this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 				editBoxResult = F23_0000_0414_EditBox(88, 96, 12);
 
@@ -75,7 +75,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x00ca, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F23_0000_0000_CityNameDialog");
@@ -95,7 +95,7 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x0000:0x00d6, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			// Dialog background
 			// Instruction address 0x0000:0x00f3, size: 5
@@ -103,7 +103,7 @@ namespace OpenCiv1
 
 			// Borders
 			// Instruction address 0x0000:0x010f, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
 
 			// Title
 			// Instruction address 0x0000:0x0126, size: 5
@@ -118,7 +118,7 @@ namespace OpenCiv1
 			this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Name = this.oCPU.ReadString(this.oCPU.DS.UInt16, 0xba06);
 
 			// Instruction address 0x0000:0x016d, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F23_0000_00d6_PlayerNameDialog");
@@ -137,13 +137,13 @@ namespace OpenCiv1
 			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x2);
 
 			// Instruction address 0x0000:0x0179, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			// Instruction address 0x0000:0x0196, size: 5
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 158, 88, 160, 32, 15);
 
 			// Instruction address 0x0000:0x01b2, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(158, 88, 160, 32, 11);
 
 			// Instruction address 0x0000:0x01c9, size: 5
 			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("Name of your Tribe...", 166, 90, 0);
@@ -171,7 +171,7 @@ namespace OpenCiv1
 			this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Nationality = this.oCPU.ReadString(this.oCPU.DS.UInt16, 0xba06).Substring(0, 9);
 
 			// Instruction address 0x0000:0x0252, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
 			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
@@ -189,7 +189,7 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x0000:0x0263, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			// Save main screen graphics before showing popup dialog
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
@@ -207,7 +207,7 @@ namespace OpenCiv1
 					// Instruction address 0x0000:0x02c3, size: 5
 					this.oParent.MapManagement.F0_2aea_0008_DrawVisibleMap(this.oParent.GameData.HumanPlayerID, city.Position.X - 7, city.Position.Y - 6);
 					// Instruction address 0x0000:0x030e, size: 5
-					this.oParent.Segment_11a8.F0_11a8_0250();
+					this.oParent.MainCode.F0_11a8_0250();
 					// Far return
 					this.oCPU.Log.ExitBlock("F23_0000_025b_FindCityDialog");
 					return;
@@ -229,7 +229,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x030e, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F23_0000_025b_FindCityDialog");
@@ -257,7 +257,7 @@ namespace OpenCiv1
 
 			// Borders
 			// Instruction address 0x0000:0x0353, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(64, 78, 224, 24, 0);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(64, 78, 224, 24, 0);
 
 			// Title
 			// Instruction address 0x0000:0x0369, size: 5
@@ -350,7 +350,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos, yPos, (7 * lengthMax), 11, 15);
 
 			// Instruction address 0x0000:0x0456, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(xPos, yPos - 1, lengthMax * 8 + 8, 13, 0);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(xPos, yPos - 1, lengthMax * 8 + 8, 13, 0);
 
 			this.oParent.Var_aa_Rectangle.BackColor = 0xf;
 
@@ -408,7 +408,7 @@ namespace OpenCiv1
 
 		L0520:
 			// Instruction address 0x0000:0x0520, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
+			this.oParent.MainCode.F0_11a8_0223_UpdateMouseState();
 
 		L0525:
 			// Instruction address 0x0000:0x0525, size: 5

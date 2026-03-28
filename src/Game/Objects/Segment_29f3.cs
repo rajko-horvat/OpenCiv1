@@ -474,7 +474,7 @@ namespace OpenCiv1
 				this.oParent.GameData.Players[playerID2].Units[unitID2].Position.Y);
 
 			// Instruction address 0x29f3:0x03e6, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			this.oCPU.AX.UInt16 = 0x600;
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)playerID1);
@@ -760,7 +760,7 @@ namespace OpenCiv1
 
 		L071c:
 			// Instruction address 0x29f3:0x071c, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 		L0721:
 			this.oCPU.SI.UInt16 = (ushort)playerID1;
@@ -814,7 +814,7 @@ namespace OpenCiv1
 				goto L07e2;
 
 		L0782:
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DefenseMinister;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DefenseMinisterReport;
 
 			// Instruction address 0x29f3:0x0790, size: 5
 			this.oParent.CAPI.strcpy(0xba06, "Sneak attack by\n");
@@ -866,7 +866,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L087a;
 
 		L0816:
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ForeignMinister;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.ForeignMinisterReport;
 
 			// Instruction address 0x29f3:0x0829, size: 5
 			this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.Players[playerID2].Nation);
@@ -1279,7 +1279,7 @@ namespace OpenCiv1
 			// Instruction address 0x29f3:0x0ce1, size: 5
 			this.oParent.CAPI.strcat(0xba06, "!\n Cancel action.\n Break treaty.\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ForeignMinister;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.ForeignMinisterReport;
 
 			// Instruction address 0x29f3:0x0cf8, size: 5
 			this.oCPU.AX.Int16 = (short)this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -1297,7 +1297,7 @@ namespace OpenCiv1
 			// Instruction address 0x29f3:0x0d1f, size: 5
 			this.oParent.CAPI.strcpy(0xba06, "Overruled by\nthe Senate.\nAction canceled.\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DomesticAdvisor;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DomesticAdvisorReport;
 
 			// Instruction address 0x29f3:0x0d39, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -1339,7 +1339,7 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16((ushort)playerID, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.E) goto L0d9b;
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DefenseMinister;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DefenseMinisterReport;
 
 			// Instruction address 0x29f3:0x0d6f, size: 5
 			this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.Players[playerID].Nation);
@@ -1393,7 +1393,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "SDI protects ");
 
 			// Instruction address 0x29f3:0x0e1c, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)));
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
 
 			// Instruction address 0x29f3:0x0e2c, size: 5
 			this.oParent.CAPI.strcat(0xba06, ".\n");

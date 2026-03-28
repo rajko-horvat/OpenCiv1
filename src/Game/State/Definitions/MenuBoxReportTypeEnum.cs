@@ -1,11 +1,11 @@
 ﻿namespace OpenCiv1
 {
-	public enum ReportTypeEnum
+	public enum MenuBoxReportTypeEnum
 	{
 		/// <summary>
 		/// No title or image
 		/// </summary>
-		Default = -1,
+		None = -1,
 		/// <summary>
 		/// Message box title: 'Spies report:', spy image on the left
 		/// </summary>
@@ -21,18 +21,18 @@
 		/// <summary>
 		/// Message box title: 'Defense Minister:', minister image on the left
 		/// </summary>
-		DefenseMinister = 3,
+		DefenseMinisterReport = 3,
 		/// <summary>
 		/// Message box title: 'Domestic Advisor:', advisor image on the left
 		/// </summary>
-		DomesticAdvisor = 4,
+		DomesticAdvisorReport = 4,
 		/// <summary>
 		/// Message box title: 'Foreign Minister:', minister image on the left
 		/// </summary>
-		ForeignMinister = 5,
+		ForeignMinisterReport = 5,
 		/// <summary>
 		/// Message box title: 'Science Advisor:', advisor image on the left
 		/// </summary>
-		ScienceAdvisor = 6
+		ScienceAdvisorReport = 6
 	}
 }

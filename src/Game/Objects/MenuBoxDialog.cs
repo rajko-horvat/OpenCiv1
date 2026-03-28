@@ -1,4 +1,5 @@
 using IRB.VirtualCPU;
+using OpenCiv1.Graphics;
 using System.Diagnostics;
 
 namespace OpenCiv1
@@ -8,7 +9,7 @@ namespace OpenCiv1
 		private OpenCiv1Game oParent;
 		private VCPU oCPU;
 
-		private string[] Array_2fa6 = { "Spies", "Diplomats", "Travelers", "Defense Minister:", "Domestic Advisor:", "Foreign Minister:", "Science Advisor:" };
+		private string[] Array_2fa6 = { "Spies report:", "Diplomats report:", "Travelers report:", "Defense Minister reports:", "Domestic Advisor reports:", "Foreign Minister reports:", "Science Advisor reports:" };
 
 		public MenuBoxDialog(OpenCiv1Game parent)
 		{
@@ -16,65 +17,53 @@ namespace OpenCiv1
 			this.oCPU = parent.CPU;
 		}
 
+		public int F0_2d05_0031_ShowMenuBox(ushort stringPtr, int x, int y, bool windowFrame, bool helpOption, bool emptyKeyboardAndMouse)
+		{
+			return F0_2d05_0031_ShowMenuBox(this.oCPU.ReadString(this.oCPU.DS.UInt16, stringPtr), x, y, windowFrame, helpOption, emptyKeyboardAndMouse);
+		}
+
 		/// <summary>
-		/// ?
+		/// Shows customized MenuBox
 		/// </summary>
 		/// <param name="stringPtr"></param>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
+		/// <param name="windowFrame"></param>
+		/// <param name="helpOption"></param>
 		/// <param name="emptyKeyboardAndMouse"></param>
 		/// <returns></returns>
-		public int F0_2d05_0031_ShowMenuBox(ushort stringPtr, int x, int y, bool emptyKeyboardAndMouse)
+		public int F0_2d05_0031_ShowMenuBox(string menuString, int x, int y, bool windowFrame, bool helpOption, bool emptyKeyboardAndMouse)
 		{
 			//this.oCPU.Log.EnterBlock($"F0_2d05_0031_ShowMenuBox(0x{stringPtr:x4}, {x}, {y}, {emptyKeyboardAndMouse})");
 
-			// !!! To Do: Change stringPtr to string input
-
-			//Debug.WriteLine($"\"{this.oCPU.ReadString(this.oCPU.DS.UInt16, stringPtr)}\"");
-
-			// function body
-			int lineHeight = 8;
-			int textColor = 0;
-			int optionCount = 0;
-			int[] optionPositions = new int[32];
-			int optionCountMax = 0;
-			int firstOptionIndex = 0;
-			int maxLineWidth = 0;
-			char[] optionFirstChar = new char[32];
-			int Var_de0e = 0;
-
-			int local_2;
-			int selectedOptionIndex;
-			int local_8;
-			int local_a;
-			int backgroundColor;
-			int local_e;
-			int local_12;
-
-			int windowHeight;
-			int local_58;
-			int local_5a;
-
-			if (emptyKeyboardAndMouse)
+			if (windowFrame && this.oParent.Var_2f9e_MessageBoxStyle != MenuBoxReportTypeEnum.None)
 			{
-				// Instruction address 0x2d05:0x003e, size: 5
-				this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
+				// Instruction address 0x2d05:0x0621, size: 5
+				menuString = $"{Array_2fa6[(int)this.oParent.Var_2f9e_MessageBoxStyle]}\n{menuString}";
 			}
 
-			local_2 = -1;
-			this.oParent.Var_2fa2 = 0;
-			this.oParent.Var_2f9c = 0;
-			selectedOptionIndex = 0;
+			// We want to remove empty entries, because they shouldn't be in the list
+			string[] menuItems = menuString.TrimEnd().Split("\n" , StringSplitOptions.RemoveEmptyEntries);
 
-			if (this.oParent.Var_2f9a != -1)
+			#region Print debug data
+			/*Debug.WriteLine($"\"{menuString}\"");
+
+			Debug.Write("{");
+			for (int i = 0; i < menuItems.Length; i++)
 			{
-				selectedOptionIndex = this.oParent.Var_2f9a;
+				if (i > 0)
+					Debug.Write(", ");
+
+				Debug.Write($"\"{menuItems[i]}\"");
 			}
+			Debug.WriteLine("}");//*/
+			#endregion
 
-			firstOptionIndex = -1;
+			this.oParent.Var_2fa2_DialogMousePressed = false;
+			this.oParent.Var_2f9c_MenuBoxHelpRequested = false;
 
-			// Instruction address 0x2d05:0x0094, size: 5
-			lineHeight = this.oParent.Graphics.F0_VGA_11ae_GetTextHeight(this.oParent.Var_aa_Rectangle.FontID);
+			// Determine maximum line width and height
+			int lineHeight = this.oParent.Graphics.F0_VGA_11ae_GetTextHeight(this.oParent.Var_aa_Rectangle.FontID);
 
 			if (lineHeight == 9)
 			{
@@ -86,283 +75,228 @@ namespace OpenCiv1
 				lineHeight = 8;
 			}
 
-			backgroundColor = 7;
-			local_e = 22;
+			List<int> optionIndexes = new();
+			List<char> optionChars = new();
+			int selectedOptionIndex = 0;
+			int maxContentWidth = this.oParent.ScreenSize.Width - (windowFrame ? 8 : 0) - x - ((windowFrame && this.oParent.Var_2f9e_MessageBoxStyle != MenuBoxReportTypeEnum.None) ? 44 : 0);
+			int maxContentHeight = this.oParent.ScreenSize.Height - (windowFrame ? 8 : 0) - y;
+			int maxLineWidth = 0;
+			int maxLineCount = (maxContentHeight - (helpOption ? 8 : 0)) / lineHeight;
+
+			// limit the number of available lines to window height
+			if (menuItems.Length > maxLineCount)
+			{
+				Array.Resize(ref menuItems, maxLineCount);
+			}
+
+			// Detect default checked char, it can be a simple space or a bullet, but not checkmark '^'
+			char defaultCheckedChar = '\x0';
+
+			for (int i = 0; i < menuItems.Length; i++)
+			{
+				string menuItem = menuItems[i];
+
+				if (defaultCheckedChar == '\x0' && (menuItem.StartsWith(' ') || menuItem.StartsWith('_')))
+				{
+					defaultCheckedChar = menuItem[0];
+					break;
+				}
+			}
+
+			for (int i = 0; i < menuItems.Length; i++)
+			{
+				string menuItem = menuItems[i];
+				int itemWidth = this.oParent.Graphics.GetDrawStringSize(this.oParent.Var_aa_Rectangle.FontID, menuItem).Width;
+
+				if (optionIndexes.Count > 0 && !menuItem.StartsWith(defaultCheckedChar) && menuItem.StartsWith(' '))
+				{
+					menuItem = defaultCheckedChar + menuItem;
+
+					// treat this as exception for now
+					throw new Exception($"The menu items are not properly formed, the offending menu text: '{menuString}'");
+				}
+
+				// Trim the item to the available content size
+				while (itemWidth > maxContentWidth)
+				{
+					menuItem = menuItem.Substring(0, menuItem.Length - 1);
+					itemWidth = this.oParent.Graphics.GetDrawStringSize(this.oParent.Var_aa_Rectangle.FontID, menuItem + "...").Width;
+
+					if (itemWidth <= maxContentWidth)
+					{
+						menuItem += "...";
+						menuItems[i] = menuItem;
+					}
+				}
+
+				if (itemWidth > maxLineWidth)
+				{
+					maxLineWidth = itemWidth;
+				}
+
+				// detect options and select checkmarks if necessary
+				if (menuItem.StartsWith(defaultCheckedChar))
+				{
+					optionIndexes.Add(i);
+
+					// test if this option is checked
+					if ((this.oParent.Var_d7f2_MenuBoxCheckedOptions & (0x1 << optionIndexes.Count)) != 0)
+					{
+						// Current default is to pass space as first character and then ammend it to a checkmark (if selected)
+						menuItems[i] = '^' + menuItem.Substring(1);
+					}
+
+					// These are the shortcut characters which can be selected with the keyboard
+					// !!! To do: What if the shourtcut characters have a duplicate?
+					if (menuItem.Length > 1)
+					{
+						optionChars.Add(menuItem[1]);
+					}
+				}
+			}
+
+			int contentLeft = x + (windowFrame ? 4 : 0) + ((windowFrame && this.oParent.Var_2f9e_MessageBoxStyle != MenuBoxReportTypeEnum.None) ? 44 : 0);
+			int contentTop = y + (windowFrame ? 4 : 0);
+			int contentWidth = maxLineWidth;
+			int contentHeight = Math.Max((menuItems.Length * lineHeight) + (helpOption ? 8 : 0), ((windowFrame && this.oParent.Var_2f9e_MessageBoxStyle != MenuBoxReportTypeEnum.None) ? 60 : 0));
+
+			int windowWidth = contentWidth + (windowFrame ? 8 : 0) + ((windowFrame && this.oParent.Var_2f9e_MessageBoxStyle != MenuBoxReportTypeEnum.None) ? 44 : 0);
+			int windowHeight = contentHeight + (windowFrame ? 8 : 0);
+
+			// Adjust default selected option (if selected)
+			if (this.oParent.Var_2f9a_MenuBoxDefaultOptionIndex != -1)
+			{
+				selectedOptionIndex = Math.Min(optionIndexes.Count - 1, this.oParent.Var_2f9a_MenuBoxDefaultOptionIndex);
+			}
+
+			// Determine colors
+			int textColor;
+			int backgroundColor = 7;
+			int highlightColor = 22;
 
 			if (y == 139)
 			{
-				local_e = 8;
+				highlightColor = 8;
 			}
 
-			if ((y & 1) != 0 && y != 139)
+			if (!windowFrame && y != 139)
 			{
-				// Instruction address 0x2d05:0x00e1, size: 5
+				// in this case we want for a background color to be as color on the screen
 				backgroundColor = this.oParent.Graphics.F0_VGA_038c_GetPixel(0, x, y);
-				local_e = -1;
+				highlightColor = -1;
 			}
 
 			textColor = (backgroundColor == 15) ? 3 : 15;
 
-			if (this.oParent.Var_d762 == 0)
+			if (windowFrame)
 			{
-				local_e = -1;
-			}
+				FillRectangleWithDoubleShadow(x, y, windowWidth, windowHeight, 7);
 
-			local_12 = 0;
-			local_8 = 0;
-
-			// Instruction address 0x2d05:0x011c, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
-
-			optionPositions[0] = 0;
-
-			for (int i = 0; i < 32; i++)
-			{
-				optionFirstChar[i] = '\x0';
-			}
-
-			local_5a = 0;
-			int selectedLineWidth = 0;
-			maxLineWidth = 0;
-			int stringLength = this.oParent.CAPI.strlen(stringPtr);
-
-			for (int i = 0; i < stringLength; i++)
-			{
-				char ch = (char)this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(stringPtr + i));
-
-				if (ch != 0xa)
+				if (this.oParent.Var_2f9e_MessageBoxStyle != MenuBoxReportTypeEnum.None)
 				{
-					if (selectedLineWidth == 0)
+					// This is dialog image being drawn
+
+					if (this.oParent.Var_2f9e_MessageBoxStyle == MenuBoxReportTypeEnum.DefenseMinisterReport ||
+						this.oParent.Var_2f9e_MessageBoxStyle == MenuBoxReportTypeEnum.DomesticAdvisorReport ||
+						this.oParent.Var_2f9e_MessageBoxStyle == MenuBoxReportTypeEnum.ForeignMinisterReport ||
+						this.oParent.Var_2f9e_MessageBoxStyle == MenuBoxReportTypeEnum.ScienceAdvisorReport)
 					{
-						if (ch == ' ' || ch == '_')
-						{
-							if (local_5a < 32)
-							{
-								optionFirstChar[local_5a] = (char)this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(stringPtr + i + 1));
-							}
-
-							if (firstOptionIndex == -1)
-							{
-								firstOptionIndex = optionCount;
-							}
-
-							local_5a++;
-						}
-					}
-
-					// Instruction address 0x2d05:0x052d, size: 5
-					selectedLineWidth += this.oParent.Graphics.F0_VGA_115d_GetCharWidth(this.oParent.Var_aa_Rectangle.FontID, ch);
-				}
-				else
-				{
-					if (selectedLineWidth > maxLineWidth)
-					{
-						maxLineWidth = selectedLineWidth;
-					}
-
-					selectedLineWidth = 0;
-					optionCount++;
-
-					optionPositions[optionCount] = i + 1;
-				}
-			}
-
-			// Instruction address 0x2d05:0x0592, size: 5
-			optionCount = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(optionCount, 0, (192 - y) / lineHeight);
-
-			Var_de0e = x + maxLineWidth + 8;
-
-			windowHeight = y + (optionCount * lineHeight) + 6;
-
-			if (this.oParent.Var_2fa0 != 0)
-			{
-				windowHeight += 2;
-			}
-
-			// Instruction address 0x2d05:0x05c8, size: 5
-			if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(stringPtr + this.oParent.CAPI.strlen(stringPtr) - 1)) != 0xa)
-			{
-				local_5a--;
-			}
-
-			optionCountMax = local_5a;
-
-			if ((y & 1) == 0)
-			{
-				if (this.oParent.Var_2f9e_MessageBoxStyle != ReportTypeEnum.Default)
-				{
-					// Instruction address 0x2d05:0x0621, size: 5
-					string messageText = Array_2fa6[(int)this.oParent.Var_2f9e_MessageBoxStyle];
-
-					if (this.oParent.Var_2f9e_MessageBoxStyle != ReportTypeEnum.DefenseMinister && this.oParent.Var_2f9e_MessageBoxStyle != ReportTypeEnum.DomesticAdvisor &&
-						this.oParent.Var_2f9e_MessageBoxStyle != ReportTypeEnum.ForeignMinister && this.oParent.Var_2f9e_MessageBoxStyle != ReportTypeEnum.ScienceAdvisor)
-					{
-						// Instruction address 0x2d05:0x0638, size: 5
-						messageText += " report:";
-					}
-
-					// Instruction address 0x2d05:0x0644, size: 5
-					local_58 = this.oParent.DrawStringTools.F0_1182_00ef_GetStringWidth(messageText);
-
-					if (Var_de0e < x + local_58 + 8)
-					{
-						Var_de0e = x + local_58 + 8;
-					}
-
-					// Instruction address 0x2d05:0x0677, size: 5
-					// Instruction address 0x2d05:0x0699, size: 3
-					F0_2d05_096c_FillRectangleWithDoubleShadow(x - 42, y - 8,
-						(Var_de0e - x) + 42, this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(windowHeight - y + 8, 61, 999), 7);
-
-					local_58 = windowHeight - y - 52;
-
-					if (this.oParent.Var_2f9e_MessageBoxStyle == ReportTypeEnum.DefenseMinister || this.oParent.Var_2f9e_MessageBoxStyle == ReportTypeEnum.DomesticAdvisor ||
-						this.oParent.Var_2f9e_MessageBoxStyle == ReportTypeEnum.ForeignMinister || this.oParent.Var_2f9e_MessageBoxStyle == ReportTypeEnum.ScienceAdvisor)
-					{
-						// ??? This is dialog image being drawn for future reference
-						if (local_58 > 0)
-						{
-							// Instruction address 0x2d05:0x070d, size: 5
-							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-								40 + (40 * (int)this.oParent.Var_2f9e_MessageBoxStyle), 140, 40, 60,
-								this.oParent.Var_aa_Rectangle, x - 40, ((local_58 - 1) + y) - 6);
-						}
-						else
-						{
-							// Instruction address 0x2d05:0x070d, size: 5
-							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-								40 + (40 * (int)this.oParent.Var_2f9e_MessageBoxStyle), 140, 40, 60,
-								this.oParent.Var_aa_Rectangle, x - 40, y - 6);
-						}
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+							40 + (40 * (int)this.oParent.Var_2f9e_MessageBoxStyle), 140, 40, 60,
+							this.oParent.Var_aa_Rectangle, contentLeft - 44, contentTop);
 					}
 					else
 					{
 						// Instruction address 0x2d05:0x06c8, size: 5
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, x - 40, y - 5,
-							this.oParent.Array_df62[(int)this.oParent.Var_2f9e_MessageBoxStyle]);
-
-						// Instruction address 0x2d05:0x072b, size: 5
-						this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(messageText, x + 5, y - 4, 15);
-
-						// Instruction address 0x2d05:0x0753, size: 5
-						this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, x + 5, y + 3, x + 5, y + 3, 11);
+						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, 
+							contentLeft - 44, contentTop, this.oParent.Array_df62[(int)this.oParent.Var_2f9e_MessageBoxStyle]);
 					}
-				}
-				else
-				{
-					// Instruction address 0x2d05:0x060d, size: 3
-					F0_2d05_096c_FillRectangleWithDoubleShadow(x, y, Var_de0e - x, windowHeight - y, 7);
 				}
 			}
 
-			if (this.oParent.Var_2fa0 != 0)
+			if (helpOption)
 			{
 				int fontID = this.oParent.Var_aa_Rectangle.FontID;
 				this.oParent.Var_aa_Rectangle.FontID = 2;
 
+				string helpText = "(HELP AVAILABLE)";
+				GSize helpSize = this.oParent.Graphics.GetDrawStringSize(this.oParent.Var_aa_Rectangle.FontID, helpText);
+
 				// Instruction address 0x2d05:0x0787, size: 5
-				this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("(HELP AVAILABLE)", Var_de0e - 74, windowHeight - 4, 10);
+				this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(helpText, contentLeft + contentWidth - helpSize.Width, contentTop + contentHeight - helpSize.Height, 10);
 
 				this.oParent.Var_aa_Rectangle.FontID = fontID;
 			}
 
-			if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, stringPtr) == 0x20 || this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, stringPtr) == 0x5f)
-			{
-				local_5a = 0;
-			}
-			else
-			{
-				local_5a = -1;
-			}
-
 			this.oParent.Var_aa_Rectangle.FrontColor = (byte)textColor;
 
-			for (int i = 0; i < optionCount; i++)
+			int optionIndex = -1;
+
+			for (int i = 0; i < menuItems.Length; i++)
 			{
-				// ??? Why is this here at all? if (Math.Abs(this.oParent.Var_2f9a - local_5a) < 2)
-				//{
-				this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(stringPtr + optionPositions[i + 1] - 1), 0x0);
+				string menuItem = menuItems[i];
 
-				if (local_5a >= 0 && (this.oParent.Var_d7f2 & (0x1 << local_5a)) != 0)
+				if (optionIndexes.Count > 0)
 				{
-					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(stringPtr + optionPositions[i]), 0x5e);
-
-					if (local_5a < 0)
+					if (optionIndex == -1 && i == optionIndexes[0])
 					{
-						// Instruction address 0x2d05:0x0834, size: 5
-						this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0((ushort)(stringPtr + optionPositions[i]),
-							x + 5, y + 5 + (i * lineHeight), (byte)textColor);
-
-						this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(stringPtr + optionPositions[i]), 0x20);
+						optionIndex = 0;
 					}
-					else
+					else if (optionIndex != -1)
 					{
-						if ((this.oParent.Var_b276 & (0x1 << local_5a)) != 0)
+						if (optionIndex < optionIndexes.Count)
 						{
-							// Instruction address 0x2d05:0x0834, size: 5
-							this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0((ushort)(stringPtr + optionPositions[i]),
-								x + 5, y + 5 + (i * lineHeight), 3);
-
-							this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(stringPtr + optionPositions[i]), 0x20);
+							optionIndex++;
 						}
 						else
 						{
-							// Instruction address 0x2d05:0x0834, size: 5
-							this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0((ushort)(stringPtr + optionPositions[i]),
-								x + 5, y + 5 + (i * lineHeight), 0);
-
-							this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(stringPtr + optionPositions[i]), 0x20);
+							throw new Exception("Run out of options. This should never happen.");
 						}
+					}
+				}
+
+				if (optionIndex == -1)
+				{
+					if (lineHeight > 9)
+					{
+						// Instruction address 0x2d05:0x08c6, size: 5
+						this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToScreen0(menuItem, contentLeft, contentTop + (i * lineHeight), (byte)textColor);
+					}
+					else
+					{
+						// Instruction address 0x2d05:0x08c6, size: 5
+						this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(menuItem, contentLeft, contentTop + (i * lineHeight), (byte)textColor);
 					}
 				}
 				else
 				{
-					if (local_5a < 0 && lineHeight > 9)
+					if ((this.oParent.Var_d7f2_MenuBoxCheckedOptions & (0x1 << optionIndex)) != 0 || (this.oParent.Var_b276_MenuBoxDisabledOptions & (0x1 << optionIndex)) != 0)
 					{
-						// Instruction address 0x2d05:0x087b, size: 5
-						this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0((ushort)(optionPositions[i] + stringPtr),
-							x + 5, y + 6 + (i * lineHeight), 0);
-					}
-
-					if (local_5a < 0)
-					{
-						// Instruction address 0x2d05:0x08c6, size: 5
-						this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0((ushort)(optionPositions[i] + stringPtr),
-							x + 5, y + (i * lineHeight) + 5, (byte)textColor);
+						// Instruction address 0x2d05:0x0834, size: 5
+						this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(menuItem, contentLeft, contentTop + (i * lineHeight), 3);
 					}
 					else
 					{
-						if ((this.oParent.Var_b276 & (0x1 << local_5a)) != 0)
-						{
-							// Instruction address 0x2d05:0x08c6, size: 5
-							this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0((ushort)(optionPositions[i] + stringPtr),
-								x + 5, y + (i * lineHeight) + 5, 3);
-						}
-						else
-						{
-							// Instruction address 0x2d05:0x08c6, size: 5
-							this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0((ushort)(optionPositions[i] + stringPtr),
-								x + 5, y + (i * lineHeight) + 5, 0);
-						}
+						// Instruction address 0x2d05:0x0834, size: 5
+						this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(menuItem, contentLeft, contentTop + (i * lineHeight), 0);
 					}
-				}
-
-				this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(stringPtr + optionPositions[i + 1] - 1), 0xa);
-				//}
-
-				char ch = (char)this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, (ushort)(stringPtr + optionPositions[i + 1]));
-
-				if (ch == ' ' || ch == '_')
-				{
-					local_5a++;
 				}
 			}
 
-			// Instruction address 0x2d05:0x0135, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			if (emptyKeyboardAndMouse)
+			{
+				// Instruction address 0x2d05:0x003e, size: 5
+				this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
+			}
 
 			if (this.oParent.Var_db38 == 0)
 			{
+				int oldMouseX = -1;
+				int oldMouseY = -1;
+				int oldSelectedOptionIndex = -1;
+				bool mouseActive = false;
+				bool exitLoop = false;
+
 				while (true)
 				{
 					if (this.oParent.Var_3936 != -1)
@@ -373,203 +307,193 @@ namespace OpenCiv1
 					this.oParent.Var_db3a_MouseButton = 0;
 
 					// Instruction address 0x2d05:0x0165, size: 5
-					this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
+					this.oParent.MainCode.F0_11a8_0223_UpdateMouseState();
 
-					if (this.oParent.Var_db3a_MouseButton != 0 || local_12 != 0)
+					if (this.oParent.Var_db3c_MouseXPos >= contentLeft && this.oParent.Var_db3c_MouseXPos <= contentLeft + contentWidth &&
+						this.oParent.Var_db3e_MouseYPos >= contentTop && this.oParent.Var_db3e_MouseYPos <= contentTop + contentHeight)
 					{
-						this.oParent.Var_2fa2 = 1;
-						local_12 = 1;
-
-						if (this.oParent.Var_db3a_MouseButton == 2)
+						if (this.oParent.Var_db3c_MouseXPos != oldMouseX && this.oParent.Var_db3e_MouseYPos != oldMouseY)
 						{
-							this.oParent.Var_2f9c = 1;
-						}
+							int selectedLine = ((this.oParent.Var_db3e_MouseYPos - contentTop) / lineHeight);
 
-						selectedOptionIndex = ((this.oParent.Var_db3e_MouseYPos - y - 4) / lineHeight) - firstOptionIndex;
-
-						if (x > this.oParent.Var_db3c_MouseXPos || this.oParent.Var_db3c_MouseXPos > Var_de0e)
-						{
-							selectedOptionIndex = -1;
-						}
-
-						if ((this.oParent.Var_b276 & (0x1 << selectedOptionIndex)) == 0)
-						{
-							if (this.oParent.Var_db3a_MouseButton == 0)
+							for (int i = 0; i < optionIndexes.Count; i++)
 							{
-								local_8 = 1;
+								if (selectedLine == optionIndexes[i])
+								{
+									selectedOptionIndex = i;
+									mouseActive = true;
+									break;
+								}
 							}
-						}
-						else
-						{
-							selectedOptionIndex = local_2;
+
+							oldMouseX = this.oParent.Var_db3c_MouseXPos;
+							oldMouseY = this.oParent.Var_db3e_MouseYPos;
 						}
 					}
-					else
+					else if (mouseActive && this.oParent.Var_db3a_MouseButton != 0)
 					{
-						// Instruction address 0x2d05:0x01db, size: 5
-						if (this.oParent.CAPI.kbhit() != 0)
+						selectedOptionIndex = -1;
+						exitLoop = true;
+					}
+
+					if (!mouseActive && this.oParent.Var_db3a_MouseButton == 0)
+					{
+						mouseActive = true;
+					}
+					else if (mouseActive)
+					{
+						if (this.oParent.Var_db3a_MouseButton == 1)
 						{
-							// Instruction address 0x2d05:0x01e5, size: 3
-							int pressedKey = F0_2d05_0ac9_GetNavigationKey();
+							this.oParent.Var_2fa2_DialogMousePressed = true;
 
-							switch (pressedKey)
+							if (selectedOptionIndex == oldSelectedOptionIndex)
 							{
-								case 0xd:
-								case 0x20:
-									if ((this.oParent.Var_b276 & (0x1 << selectedOptionIndex)) == 0)
-									{
-										local_8 = 1;
-									}
-									break;
-
-								case 0x1b:
-									selectedOptionIndex = -1;
-									local_8 = 1;
-									break;
-
-								case 0x2300:
-									this.oParent.Var_2f9c = 1;
-									local_8 = 1;
-									break;
-
-								case 0x2f00:
-									this.oParent.GameData.GameSettingFlags.Sound ^= true;
-
-									if (!this.oParent.GameData.GameSettingFlags.Sound)
-									{
-										// Instruction address 0x2d05:0x03ad, size: 5
-										this.oParent.CommonTools.F0_1000_0a32_PlayTune(1, 0);
-									}
-									break;
-
-								case 0x4800:
-									if (selectedOptionIndex > 0)
-									{
-										selectedOptionIndex--;
-									}
-									break;
-
-								case 0x5000:
-									if (selectedOptionIndex < optionCountMax - 1)
-									{
-										selectedOptionIndex++;
-									}
-									break;
-
-								default:
-									local_a = selectedOptionIndex + 1;
-
-									while (local_a < 0x20)
-									{
-										if (optionFirstChar[local_a] == '\0' || (optionFirstChar[local_a] & 0x1f) != (pressedKey & 0x1f))
-										{
-											local_a++;
-										}
-										else
-										{
-											selectedOptionIndex = local_a;
-											break;
-										}
-									}
-									break;
+								exitLoop = true;
+							}
+						}
+						else if (this.oParent.Var_db3a_MouseButton == 2)
+						{
+							if (helpOption && selectedOptionIndex == oldSelectedOptionIndex)
+							{
+								this.oParent.Var_2f9c_MenuBoxHelpRequested = true;
+								exitLoop = true;
 							}
 						}
 					}
 
-					if (selectedOptionIndex < 0 || selectedOptionIndex >= optionCountMax || this.oParent.Var_d206 != 0)
+					// Instruction address 0x2d05:0x01db, size: 5
+					if (this.oParent.CAPI.kbhit() != 0)
+					{
+						// Instruction address 0x2d05:0x01e5, size: 3
+						int pressedKey = F0_2d05_0ac9_GetNavigationKey();
+
+						switch (pressedKey)
+						{
+							case 0xd:
+							case 0x20:
+								if ((this.oParent.Var_b276_MenuBoxDisabledOptions & (0x1 << selectedOptionIndex)) == 0)
+								{
+									exitLoop = true;
+								}
+								break;
+
+							case 0x1b:
+								selectedOptionIndex = -1;
+								exitLoop = true;
+								break;
+
+							case 0x2300:
+								this.oParent.Var_2f9c_MenuBoxHelpRequested = true;
+								exitLoop = true;
+								break;
+
+							case 0x2f00:
+								this.oParent.GameData.GameSettingFlags.Sound ^= true;
+
+								if (!this.oParent.GameData.GameSettingFlags.Sound)
+								{
+									// Instruction address 0x2d05:0x03ad, size: 5
+									this.oParent.CommonTools.F0_1000_0a32_PlayTune(1, 0);
+								}
+								break;
+
+							case 0x4800:
+								if (selectedOptionIndex == -1 && optionIndexes.Count > 0)
+								{
+									selectedOptionIndex = 0;
+								}
+								else if (selectedOptionIndex > 0)
+								{
+									selectedOptionIndex--;
+								}
+								break;
+
+							case 0x5000:
+								if (selectedOptionIndex == -1 && optionIndexes.Count > 0)
+								{
+									selectedOptionIndex = 0;
+								}
+								else if (selectedOptionIndex < optionIndexes.Count - 1)
+								{
+									selectedOptionIndex++;
+								}
+								break;
+
+							default:
+								for (int i = 0; i < optionChars.Count; i++)
+								{
+									if (optionChars[i] != '\0' && optionChars[i] == pressedKey)
+									{
+										selectedOptionIndex = i;
+										break;
+									}
+								}
+								break;
+						}
+					}
+
+					if (selectedOptionIndex < 0 || selectedOptionIndex >= optionIndexes.Count)
 					{
 						selectedOptionIndex = -1;
 					}
 
-					if (selectedOptionIndex != local_2)
+					if (selectedOptionIndex != oldSelectedOptionIndex)
 					{
-						// Instruction address 0x2d05:0x0243, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0268();
-
-						if (local_2 != -1)
+						if (oldSelectedOptionIndex != -1)
 						{
+							int oldLineIndex = optionIndexes[oldSelectedOptionIndex];
+
 							// Instruction address 0x2d05:0x027c, size: 5
 							this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-								x + 3, y + ((local_2 + firstOptionIndex) * lineHeight) + 4,
-								maxLineWidth + 5, lineHeight, 11, (byte)backgroundColor);
+								contentLeft, contentTop + (oldLineIndex * lineHeight) - 1, maxLineWidth, lineHeight, 11, (byte)backgroundColor);
 
-							if (local_e != -1)
+							if (highlightColor != -1)
 							{
 								// Instruction address 0x2d05:0x02b2, size: 5
 								this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-									x + 3, y + ((local_2 + firstOptionIndex) * lineHeight) + 4,
-									maxLineWidth + 5, lineHeight, 3, (byte)local_e);
+									contentLeft, contentTop + (oldLineIndex * lineHeight) - 1, maxLineWidth, lineHeight, 3, (byte)highlightColor);
 							}
 						}
 
 						if (selectedOptionIndex != -1)
 						{
+							int lineIndex = optionIndexes[selectedOptionIndex];
+
 							// Instruction address 0x2d05:0x02ee, size: 5
 							this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-								x + 3, y + ((selectedOptionIndex + firstOptionIndex) * lineHeight) + 4,
-								maxLineWidth + 5, lineHeight, (byte)backgroundColor, 11);
+								contentLeft, contentTop + (lineIndex * lineHeight) - 1, maxLineWidth, lineHeight, (byte)backgroundColor, 11);
 
-							if (local_e != -1)
+							if (highlightColor != -1)
 							{
 								// Instruction address 0x2d05:0x0324, size: 5
 								this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-									x + 3, y + ((selectedOptionIndex + firstOptionIndex) * lineHeight) + 4,
-									maxLineWidth + 5, lineHeight, (byte)local_e, 3);
+									contentLeft, contentTop + (lineIndex * lineHeight) - 1, maxLineWidth, lineHeight, (byte)highlightColor, 3);
 							}
 						}
 
-						local_2 = selectedOptionIndex;
-
-						// Instruction address 0x2d05:0x0332, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0250();
+						oldSelectedOptionIndex = selectedOptionIndex;
 					}
 
-					if (local_8 != 0)
+					if (exitLoop)
 					{
 						if (selectedOptionIndex != -1)
 						{
-							// Instruction address 0x2d05:0x0349, size: 5
-							this.oParent.Segment_11a8.F0_11a8_0268();
-
-							if (this.oParent.Var_d762 == 0)
-							{
-								if (this.oParent.Var_2f9c != 0)
-								{
-									// Instruction address 0x2d05:0x0435, size: 5
-									this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-										x + 3, y + ((selectedOptionIndex + firstOptionIndex) * lineHeight) + 4,
-										maxLineWidth + 5, lineHeight, 11, 11);
-								}
-								else
-								{
-									// Instruction address 0x2d05:0x0435, size: 5
-									this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
-										x + 3, y + ((selectedOptionIndex + firstOptionIndex) * lineHeight) + 4,
-										maxLineWidth + 5, lineHeight, 11, (byte)textColor);
-								}
-							}
-
 							// Instruction address 0x2d05:0x0441, size: 5
 							this.oParent.CommonTools.F0_1182_0134_WaitTimer(20);
-
-							// Instruction address 0x2d05:0x0449, size: 5
-							this.oParent.Segment_11a8.F0_11a8_0250();
 						}
 						else
 						{
-							this.oParent.Var_2f9c = 0;
+							this.oParent.Var_2f9c_MenuBoxHelpRequested = false;
 						}
 
 						break;
 					}
 				}
 
-				this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.Default;
-				this.oParent.Var_2f9a = -1;
-				this.oParent.Var_2fa0 = 0;
-				this.oParent.Var_d206 = 0;
-				this.oParent.Var_b276 = 0;
-				this.oParent.Var_d7f2 = 0;
+				this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.None;
+				this.oParent.Var_2f9a_MenuBoxDefaultOptionIndex = -1;
+				this.oParent.Var_b276_MenuBoxDisabledOptions = 0;
+				this.oParent.Var_d7f2_MenuBoxCheckedOptions = 0;
 
 				return selectedOptionIndex;
 			}
@@ -580,7 +504,38 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Fills the rectangle and draws a double shadow around the rectangle
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="mode"></param>
+		public void FillRectangleWithDoubleShadow(int x, int y, int width, int height, ushort mode)
+		{
+			// function body
+			if (mode == 7 && this.oParent.Var_2f98_PatternAvailable)
+			{
+				// Instruction address 0x2d05:0x098c, size: 5
+				this.oParent.Segment_2dc4.F0_2dc4_03ce_FillRectangleWithPattern(x, y, width, height);
+			}
+			else
+			{
+				// Instruction address 0x2d05:0x09b1, size: 5
+				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, x, y, width, height, mode);
+			}
+
+			this.oParent.Var_aa_Rectangle.BackColor = (byte)mode;
+
+			// Instruction address 0x2d05:0x09e1, size: 3
+			F0_2d05_0a66_DrawShadowRectangle(x - 1, y - 1, width + 1, height + 1, 15, 8);
+
+			// Instruction address 0x2d05:0x09fd, size: 3
+			F0_2d05_0a05_DrawRectangle(x - 2, y - 2, width + 3, height + 3, 0);
+		}
+
+		/// <summary>
+		/// Fills the rectangle and draws a double shadow around the rectangle
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="y"></param>

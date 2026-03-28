@@ -58,7 +58,7 @@ namespace OpenCiv1
 
 		L004d:
 			// Instruction address 0x0000:0x004d, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 0xfffe);
 			if (this.oCPU.Flags.E) goto L0078;
@@ -139,7 +139,7 @@ namespace OpenCiv1
 
 		L01ce:
 			// Instruction address 0x0000:0x01d1, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 			// Instruction address 0x0000:0x01e1, size: 5
 			this.oParent.CAPI.strcat(0xba06, " Weekly");
@@ -154,7 +154,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0205, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 			// Instruction address 0x0000:0x0215, size: 5
 			this.oParent.CAPI.strcat(0xba06, " News");
@@ -191,7 +191,7 @@ namespace OpenCiv1
 
 		L028d:
 			// Instruction address 0x0000:0x0290, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 			
 			// Instruction address 0x0000:0x01e1, size: 5
 			this.oParent.CAPI.strcat(0xba06, " Today");
@@ -203,7 +203,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "The ");
 
 			// Instruction address 0x0000:0x02b1, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 			
 			// Instruction address 0x0000:0x01e1, size: 5
 			this.oParent.CAPI.strcat(0xba06, " Times");
@@ -215,7 +215,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "The ");
 
 			// Instruction address 0x0000:0x02d2, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 			
 			// Instruction address 0x0000:0x01e1, size: 5
 			this.oParent.CAPI.strcat(0xba06, " Tribune");
@@ -277,14 +277,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L041f;
 
 			// Instruction address 0x0000:0x03f7, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0x5181, 80, 128, true);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0x5181, 80, 128, true, false, true);
 
 			// Instruction address 0x0000:0x0417, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 		L041f:
 			// Instruction address 0x0000:0x041f, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;

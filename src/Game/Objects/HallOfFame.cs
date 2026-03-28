@@ -179,7 +179,7 @@ namespace OpenCiv1
 			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("'C\x0083lear'", 252, 189, 0);
 
 			// Instruction address 0x0000:0x01a5, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(236, 187, 60, 10, 11);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(236, 187, 60, 10, 11);
 
 		L01ad:
 			// Instruction address 0x0000:0x01ad, size: 5
@@ -638,7 +638,7 @@ namespace OpenCiv1
 
 		L06ba:
 			// Instruction address 0x0000:0x06ba, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
@@ -663,7 +663,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2dc4.F0_2dc4_03ce_FillRectangleWithPattern(80, 4, 160, 27);
 
 			// Instruction address 0x0000:0x0777, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0a66_DrawShadowRectangle(80, 4, 159, 26, 11, 8);
+			this.oParent.MenuBoxDialog.F0_2d05_0a66_DrawShadowRectangle(80, 4, 159, 26, 11, 8);
 
 			this.oCPU.CMP_UInt16(param2, 0x0);
 			if (this.oCPU.Flags.E) goto L0788;
@@ -790,7 +790,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x09a3, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 		L09a8:
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
@@ -906,7 +906,7 @@ namespace OpenCiv1
 
 		L0a8e:
 			// Instruction address 0x0000:0x0a8e, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
@@ -914,7 +914,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 3);
 
 			// Instruction address 0x0000:0x0ac4, size: 5
-			this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadow("The Top Five Cities in the World", 80, 12, 15);
+			this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToScreen0("The Top Five Cities in the World", 80, 12, 15);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), 0x20);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14), 0x0);
@@ -941,7 +941,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, ". ");
 
 			// Instruction address 0x0000:0x0b29, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12))));
 
 			// Instruction address 0x0000:0x0b39, size: 5
 			this.oParent.CAPI.strcat(0xba06, " (");
@@ -1006,7 +1006,7 @@ namespace OpenCiv1
 			this.oCPU.BX.UInt16 = (ushort)this.oParent.GameData.Cities[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12))].PlayerID;
 
 			// Instruction address 0x0000:0x0c4b, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(8, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(8, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
 				303, 25, this.oParent.Array_1946[this.oCPU.BX.UInt16]);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), 
@@ -1026,7 +1026,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x0c6d, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.DI.UInt16 = this.oCPU.POP_UInt16();

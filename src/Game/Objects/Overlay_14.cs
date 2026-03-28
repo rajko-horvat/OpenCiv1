@@ -24,7 +24,7 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x0000:0x0003, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
@@ -133,7 +133,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x0145, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 		}
 
 		/// <summary>
@@ -482,7 +482,7 @@ namespace OpenCiv1
 
 		L07c3:
 			// Instruction address 0x0000:0x07e0, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(100, 25,
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(100, 25,
 				18, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)) - 25,
 				this.oParent.Array_1946[this.oParent.GameData.HumanPlayerID]);
 
@@ -670,7 +670,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0a2d, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x38)));
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x38))));
 
 			// Instruction address 0x0000:0x0a3d, size: 5
 			this.oParent.LanguageTools.F0_2f4d_04f7(0xba06, 62);
@@ -1123,11 +1123,11 @@ namespace OpenCiv1
 
 		L1079:
 			// Instruction address 0x0000:0x1079, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 		L107e:
 			// Instruction address 0x0000:0x107e, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
+			this.oParent.MainCode.F0_11a8_0223_UpdateMouseState();
 
 			if (this.oParent.Var_db3a_MouseButton != 0) goto L1093;
 
@@ -1147,7 +1147,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L10b8;
 
 			// Instruction address 0x0000:0x10a1, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
+			this.oCPU.AX.Int16 = (short)this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x22), this.oCPU.AX.UInt16);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x31);
@@ -1204,13 +1204,13 @@ namespace OpenCiv1
 			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
 			// Instruction address 0x0000:0x111f, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			// Instruction address 0x0000:0x112c, size: 5
 			this.oParent.CommonTools.F0_1000_16ae(270, (ushort)((short)this.oParent.Var_db3e_MouseYPos));
 			
 			// Instruction address 0x0000:0x1134, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x18)), 0x0);
 			if (this.oCPU.Flags.NE) goto L1142;
@@ -1218,7 +1218,7 @@ namespace OpenCiv1
 
 		L1142:
 			// Instruction address 0x0000:0x1142, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24)), 0x0);
 			if (this.oCPU.Flags.E) goto L1154;
@@ -1233,7 +1233,7 @@ namespace OpenCiv1
 
 		L1159:
 			// Instruction address 0x0000:0x1159, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.DI.UInt16 = this.oCPU.POP_UInt16();
@@ -1377,7 +1377,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "Capital:\x008f ");
 
 			// Instruction address 0x0000:0x138d, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)));
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
 			
 			// Instruction address 0x0000:0x13a4, size: 5
 			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 16, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 9);
@@ -1601,7 +1601,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x1676, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)));
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))));
 
 			// Instruction address 0x0000:0x1686, size: 5
 			this.oParent.CAPI.strcat(0xba06, ":");
@@ -1845,7 +1845,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x19c2, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))));
 			
 			// Instruction address 0x0000:0x19d9, size: 5
 			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 8, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), 15);

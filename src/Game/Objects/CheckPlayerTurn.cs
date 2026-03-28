@@ -330,7 +330,7 @@ namespace OpenCiv1
 			if (this.oParent.Var_db3a_MouseButton == 0)
 			{
 				// Instruction address 0x1403:0x0676, size: 5
-				command = this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
+				command = this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
 				if (command == 0xd && flag1)
 				{
@@ -378,7 +378,7 @@ namespace OpenCiv1
 				else if (this.oParent.Var_db3e_MouseYPos < 72)
 				{
 					// Instruction address 0x1403:0x0796, size: 5
-					this.oParent.Segment_11a8.F0_11a8_0268();
+					this.oParent.MainCode.F0_11a8_0268();
 
 					this.oParent.Palace.F17_0000_07ec(0);
 
@@ -397,7 +397,7 @@ namespace OpenCiv1
 					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 					// Instruction address 0x1403:0x0808, size: 5
-					this.oParent.Segment_11a8.F0_11a8_0250();
+					this.oParent.MainCode.F0_11a8_0250();
 
 					// Instruction address 0x1403:0x080d, size: 5
 					this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
@@ -423,7 +423,7 @@ namespace OpenCiv1
 					while (true)
 					{
 						// Instruction address 0x1403:0x085a, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
+						this.oParent.MainCode.F0_11a8_0223_UpdateMouseState();
 
 						if (this.oParent.Var_db3a_MouseButton == 0)
 						{
@@ -471,7 +471,7 @@ namespace OpenCiv1
 					this.oParent.Var_d806_DebugFlag)
 				{
 					// Instruction address 0x1403:0x09a5, size: 5
-					this.oParent.Segment_11a8.F0_11a8_0268();
+					this.oParent.MainCode.F0_11a8_0268();
 
 					// Instruction address 0x1403:0x09b4, size: 5
 					this.oParent.Civilopedia.F8_0000_062a((int)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_1c, local_26), 3);
@@ -480,7 +480,7 @@ namespace OpenCiv1
 					this.oParent.Segment_1238.F0_1238_1b44();
 
 					// Instruction address 0x1403:0x09ca, size: 5
-					this.oParent.Segment_11a8.F0_11a8_0250();
+					this.oParent.MainCode.F0_11a8_0250();
 				}
 			}
 
@@ -1382,7 +1382,7 @@ namespace OpenCiv1
 
 										if (local_3a < 10)
 										{
-											this.oParent.Var_b276 = 2;
+											this.oParent.Var_b276_MenuBoxDisabledOptions = 2;
 										}
 									}
 								}
@@ -2079,7 +2079,7 @@ namespace OpenCiv1
 						this.oParent.CAPI.strcat(0xba06, "% Science)\n ");
 					}
 
-					this.oParent.Var_2f9a = this.oParent.GameData.Players[playerID].TaxRate;
+					this.oParent.Var_2f9a_MenuBoxDefaultOptionIndex = this.oParent.GameData.Players[playerID].TaxRate;
 
 					// Instruction address 0x1403:0x368b, size: 5
 					local_3a = this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -2110,7 +2110,7 @@ namespace OpenCiv1
 						this.oParent.CAPI.strcat(0xba06, "% Science)\n ");
 					}
 
-					this.oParent.Var_2f9a = -((this.oParent.GameData.Players[playerID].TaxRate + this.oParent.GameData.Players[playerID].ScienceTaxRate) - 10);
+					this.oParent.Var_2f9a_MenuBoxDefaultOptionIndex = -((this.oParent.GameData.Players[playerID].TaxRate + this.oParent.GameData.Players[playerID].ScienceTaxRate) - 10);
 
 					local_3a = this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
@@ -2128,10 +2128,11 @@ namespace OpenCiv1
 					break;
 
 				case 'S':
-					if (this.oParent.GameData.TurnCount != 0)
-					{
+					// Enable Save game with zero turns
+					//if (this.oParent.GameData.TurnCount != 0)
+					//{
 						this.oParent.GameLoadAndSave.F11_0000_036a(0xffff);
-					}
+					//}
 					break;
 
 				case 't':
@@ -2309,7 +2310,7 @@ namespace OpenCiv1
 					if (this.oParent.Var_d806_DebugFlag)
 					{
 						// Instruction address 0x1403:0x33a5, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0268();
+						this.oParent.MainCode.F0_11a8_0268();
 
 						// Instruction address 0x1403:0x33ae, size: 5
 						this.oParent.CommonTools.F0_1000_0846(2);
@@ -2321,7 +2322,7 @@ namespace OpenCiv1
 						this.oParent.CommonTools.F0_1000_0846(0);
 
 						// Instruction address 0x1403:0x33c7, size: 5
-						this.oParent.Segment_11a8.F0_11a8_0250();
+						this.oParent.MainCode.F0_11a8_0250();
 					}
 					else
 					{
@@ -2576,11 +2577,11 @@ namespace OpenCiv1
 			if (playerID == this.oParent.GameData.HumanPlayerID)
 			{
 				// Instruction address 0x1403:0x3eac, size: 5
-				this.oParent.Segment_11a8.F0_11a8_0268();
+				this.oParent.MainCode.F0_11a8_0268();
 				// Instruction address 0x1403:0x3ec1, size: 5
 				this.oParent.Segment_1238.F0_1238_1bb2_FillRectangleWithShadow(0, 97, 80, 103);
 				// Instruction address 0x1403:0x3ec9, size: 5
-				this.oParent.Segment_11a8.F0_11a8_0250();
+				this.oParent.MainCode.F0_11a8_0250();
 			}
 		}
 
@@ -2720,7 +2721,7 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x1403:0x4068, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 			// Instruction address 0x1403:0x407c, size: 5
 			this.oParent.Segment_1238.F0_1238_1bb2_FillRectangleWithShadow(0, 97, 80, 103);
 
@@ -2800,7 +2801,7 @@ namespace OpenCiv1
 					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 					// Instruction address 0x1403:0x42ac, size: 5
-					this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oParent.GameData.Players[playerID].Units[unitID].HomeCityID);
+					this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(this.oParent.GameData.Players[playerID].Units[unitID].HomeCityID));
 					// Instruction address 0x1403:0x42c2, size: 5
 					this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 4, Local_a, 0);
 
@@ -2926,7 +2927,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x1403:0x44fd, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 		}
 
 		/// <summary>
@@ -2962,13 +2963,13 @@ namespace OpenCiv1
 			while (this.oParent.CAPI.kbhit() != 0)
 			{
 				// Instruction address 0x1403:0x4547, size: 5
-				this.oParent.ManuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
+				this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 			}
 
 			do
 			{
 				// Instruction address 0x1403:0x4555, size: 5
-				this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
+				this.oParent.MainCode.F0_11a8_0223_UpdateMouseState();
 			}
 			while (this.oParent.Var_db3a_MouseButton != 0);
 		}

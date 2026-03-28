@@ -385,13 +385,13 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x1ade:0x0394, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			// Instruction address 0x1ade:0x03b1, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
 			// Instruction address 0x1ade:0x03b9, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1ade_0394");
@@ -406,13 +406,13 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x1ade:0x03bf, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			// Instruction address 0x1ade:0x03dc, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x1ade:0x03e4, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1ade_03bf");
@@ -494,7 +494,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "What shall we build in ");
 
 			// Instruction address 0x1ade:0x0470, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 			// Instruction address 0x1ade:0x0480, size: 5
 			this.oParent.CAPI.strcat(0xba06, "?\n ");
@@ -2070,7 +2070,7 @@ namespace OpenCiv1
 			this.oParent.Var_db38 = 1;
 
 			// Instruction address 0x1ade:0x1380, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 8, 160, true);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 8, 160, true, false, true);
 
 		L1388:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x48)), 0xffff);
@@ -2115,7 +2115,7 @@ namespace OpenCiv1
 			this.oParent.Var_db38 = 1;
 
 			// Instruction address 0x1ade:0x141f, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 164, 160, true);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 164, 160, true, false, true);
 
 		L1427:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), 0x1);
@@ -2134,10 +2134,8 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.FontID = 2;
 
 		L144e:
-			this.oParent.Var_2fa0 = 1;
-
 			// Instruction address 0x1ade:0x1460, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 80, 8, true);
+			this.oCPU.AX.Int16 = (short)this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 80, 8, true, true, true);
 
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
@@ -2156,10 +2154,10 @@ namespace OpenCiv1
 		L148c:
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
-			if (this.oParent.Var_2f9c == 0) goto L14e3;
+			if (!this.oParent.Var_2f9c_MenuBoxHelpRequested) goto L14e3;
 
 			// Instruction address 0x1ade:0x149c, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
@@ -2178,7 +2176,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x1ade:0x14d5, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			this.oParent.Var_6b64 = 1;
 
@@ -2399,7 +2397,7 @@ namespace OpenCiv1
 
 		L16fa:
 			// Instruction address 0x1ade:0x16fa, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			// Instruction address 0x1ade:0x1707, size: 5
 			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0x10), "discovr1.pic");
@@ -2487,17 +2485,11 @@ namespace OpenCiv1
 		L186e:
 			this.oParent.Var_db38 = 1;
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)), 0x0);
-			if (this.oCPU.Flags.E) goto L187f;
-			this.oCPU.AX.UInt16 = 25;
-			goto L1882;
+			;
 
-		L187f:
-			this.oCPU.AX.UInt16 = 1;
-
-		L1882:
 			// Instruction address 0x1ade:0x188b, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 96, (short)this.oCPU.AX.UInt16, true);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 96, (this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)) != 0) ? 25 : 1, 
+				false, false, true);
 
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
@@ -2518,7 +2510,7 @@ namespace OpenCiv1
 				(ushort)((((this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)) % 9) / 3) * 69) + 1),
 				110, 68, 174, (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)) != 0 ? 87 : 96));
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_d762_AlwaysOneForVGA, 0x0);
 			if (this.oCPU.Flags.E) goto L1994;
 
 			// Instruction address 0x1ade:0x1948, size: 5
@@ -2541,7 +2533,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 
 			// Instruction address 0x1ade:0x1999, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			// Instruction address 0x1ade:0x199e, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0626();
@@ -2567,12 +2559,12 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x1ade:0x19ec, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
 
 			// Instruction address 0x1ade:0x19f6, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			if (this.oParent.GameData.GameSettingFlags.InstantAdvice) goto L1a05;
 			goto L1b3d;
@@ -2662,13 +2654,9 @@ namespace OpenCiv1
 
 			this.oParent.Var_db38 = 1;
 
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12));
-			this.oCPU.CX.LowUInt8 = 0x3;
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
-			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, 0xa8);
-			this.oCPU.AX.UInt16 = this.oCPU.NEG_UInt16(this.oCPU.AX.UInt16);
 			// Instruction address 0x1ade:0x1b2c, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 8, (short)this.oCPU.AX.UInt16, true);
+			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 8, -((this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)) * 8) - 168), 
+				true, false, true);
 
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
@@ -2772,25 +2760,23 @@ namespace OpenCiv1
 			goto L1b8f;
 
 		L1c52:
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ScienceAdvisor;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.ScienceAdvisorReport;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)), 0x0);
 			if (this.oCPU.Flags.E) goto L1cca;
 
-			this.oParent.Var_2fa0 = 1;
-
 			// Instruction address 0x1ade:0x1c70, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.ManuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 80, 64, true);
+			this.oCPU.AX.Int16 = (short)this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 80, 64, true, true, true);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x46), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1ade:0x1c7b, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x1ade:0x1c85, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x46)), 0xffff);
 			if (this.oCPU.Flags.NE) goto L1c95;
@@ -2802,7 +2788,7 @@ namespace OpenCiv1
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 + this.oCPU.SI.UInt16 - 0x3a));
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x46), this.oCPU.AX.UInt16);
 			
-			if (this.oParent.Var_2f9c == 0) goto L1cc2;
+			if (!this.oParent.Var_2f9c_MenuBoxHelpRequested) goto L1cc2;
 
 			this.oParent.Civilopedia.F8_0000_062a(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x46)), 0);
 			
@@ -3020,16 +3006,16 @@ namespace OpenCiv1
 			goto L2013;
 
 		L1f14:
-			this.oParent.Var_d206 = 1;
+			this.oParent.Var_d206_CanBeRemoved = 1;
 
 			if (playerID == this.oParent.GameData.HumanPlayerID) goto L1f2a;
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.SpiesReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.SpiesReport;
 
 			goto L1f30;
 
 		L1f2a:
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.ScienceAdvisor;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.ScienceAdvisorReport;
 
 		L1f30:
 			// Instruction address 0x1ade:0x1f3c, size: 5
@@ -3088,10 +3074,7 @@ namespace OpenCiv1
 			this.oParent.Var_3936 = 2;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd76c, 0xc);
 
-			this.oCPU.PUSH_UInt16(0); // stack management - push return segment, ignored
-			this.oCPU.PUSH_UInt16(0x200b); // stack management - push return offset
-			this.oParent.MeetWithKing.F6_0000_251d(0xba06, 0x14, 0x8b);
-			this.oCPU.POP_UInt32(); // stack management - pop return offset and segment
+			this.oParent.MeetWithKing.F6_0000_251d_ShowInlineDialog(0xba06, 36, 139);
 
 			this.oParent.MeetWithKing.F6_0000_16ac();
 
@@ -3158,7 +3141,7 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x20b2, size: 5
 			this.oParent.CAPI.strcat(0xba06, " agree to\nan exchange of ambassadors.\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DiplomatsReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DiplomatsReport;
 
 			// Instruction address 0x1ade:0x20cc, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 100);
@@ -3193,7 +3176,7 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x2152, size: 5
 			this.oParent.CAPI.strcat(0xba06, "\nmakes existing Barracks\nobsolete.\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DefenseMinister;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DefenseMinisterReport;
 
 			// Instruction address 0x1ade:0x216c, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 100);

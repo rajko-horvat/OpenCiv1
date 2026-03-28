@@ -59,10 +59,10 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.G) goto L0073;
 
 			// Instruction address 0x0000:0x009f, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(0, 0, 79, 49, 0);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(0, 0, 79, 49, 0);
 
 			// Instruction address 0x0000:0x00b7, size: 5
-			this.oParent.ManuBoxDialog.F0_2d05_0a05_DrawRectangle(1, 1, 77, 47, 0);
+			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(1, 1, 77, 47, 0);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), 0x1);
 
@@ -2457,7 +2457,7 @@ namespace OpenCiv1
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x3b64);
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3b64, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x3b64)));
 			this.oCPU.WriteUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xb), this.oCPU.ADD_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xb)), this.oCPU.AX.LowUInt8));
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_d762_AlwaysOneForVGA, 0x0);
 			if (this.oCPU.Flags.E) goto L1a19;
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), 0x1);
 			goto L1a11;
@@ -2478,7 +2478,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1a21, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(2, 0, 0, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0);
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_d762_AlwaysOneForVGA, 0x0);
 			if (this.oCPU.Flags.E) goto L1a41;
 
 			// Instruction address 0x0000:0x1a39, size: 5
@@ -2488,7 +2488,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1a59, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_d762_AlwaysOneForVGA, 0x0);
 			if (this.oCPU.Flags.NE) goto L1a6b;
 			goto L1b29;
 
@@ -2587,7 +2587,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1b8c, size: 5
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(1, 0);
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_d762_AlwaysOneForVGA, 0x0);
 			if (this.oCPU.Flags.E) goto L1bb8;
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), 0x1);
 			goto L1bb0;

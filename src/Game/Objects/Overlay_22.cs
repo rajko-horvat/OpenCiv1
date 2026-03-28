@@ -55,7 +55,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " diplomat arrives\nin ");
 
 			// Instruction address 0x0000:0x0055, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 			// Instruction address 0x0000:0x0065, size: 5
 			this.oParent.CAPI.strcat(0xba06, "...\n Establish Embassy\n Investigate City\n Steal Technology\n Industrial Sabotage\n Incite a Revolt\n Meet with King\n");
@@ -77,7 +77,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0096;
 
 		L0090:
-			this.oParent.Var_b276 = 1;
+			this.oParent.Var_b276_MenuBoxDisabledOptions = 1;
 
 		L0096:
 			this.oCPU.AX.UInt16 = 0x1c;
@@ -86,7 +86,7 @@ namespace OpenCiv1
 			this.oCPU.TEST_UInt8(this.oParent.GameData.Cities[cityID].StatusFlag, 0x20);
 			if (this.oCPU.Flags.E) goto L00aa;
 
-			this.oParent.Var_b276 |= 0x4;
+			this.oParent.Var_b276_MenuBoxDisabledOptions |= 0x4;
 
 		L00aa:
 			this.oCPU.AX.UInt16 = 0x1c;
@@ -95,13 +95,13 @@ namespace OpenCiv1
 			this.oCPU.TEST_UInt16(this.oParent.GameData.Cities[cityID].ImprovementFlags0, 0x1);
 			if (this.oCPU.Flags.E) goto L00be;
 
-			this.oParent.Var_b276 |= 0x10;
+			this.oParent.Var_b276_MenuBoxDisabledOptions |= 0x10;
 
 		L00be:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x26)), 0x0);
 			if (this.oCPU.Flags.NE) goto L00c9;
 
-			this.oParent.Var_b276 |= 0x20;
+			this.oParent.Var_b276_MenuBoxDisabledOptions |= 0x20;
 
 		L00c9:
 			// Instruction address 0x0000:0x00d2, size: 5
@@ -277,7 +277,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0294, size: 5
 			this.oParent.CAPI.strcat(0xba06, ".\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.SpiesReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.SpiesReport;
 
 			// Instruction address 0x0000:0x02ab, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -398,12 +398,12 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, "in ");
 
 			// Instruction address 0x0000:0x0410, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 			// Instruction address 0x0000:0x0420, size: 5
 			this.oParent.CAPI.strcat(0xba06, ".\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.SpiesReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.SpiesReport;
 
 			// Instruction address 0x0000:0x0437, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 80);
@@ -451,7 +451,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "Dissidents in ");
 
 			// Instruction address 0x0000:0x04b7, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 			// Instruction address 0x0000:0x04c7, size: 5
 			this.oParent.CAPI.strcat(0xba06, "\nwill revolt for $");
@@ -489,7 +489,7 @@ namespace OpenCiv1
 			}
 
 		L054b:
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.SpiesReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.SpiesReport;
 
 			// Instruction address 0x0000:0x055d, size: 5
 			this.oCPU.AX.Int16 = (short)this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -719,7 +719,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0876, size: 5
 			this.oParent.CAPI.strcat(0xba06, "!\n");
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.SpiesReport;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.SpiesReport;
 
 			// Instruction address 0x0000:0x0890, size: 5
 			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 80, 40);
@@ -1084,7 +1084,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x0000:0x0cf1, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 			if (playerID == 0) goto L0d29;
 
@@ -1253,7 +1253,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
 			// Instruction address 0x0000:0x0ed2, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268();
 
 			// Instruction address 0x0000:0x0ee4, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x536e, 0);
@@ -1288,7 +1288,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x0f84, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
 
 			// Instruction address 0x0000:0x0f94, size: 5
 			this.oParent.CAPI.strcat(0xba06, " founded: ");
@@ -1362,7 +1362,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L10aa;
 
 			// Instruction address 0x0000:0x10b4, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0223_UpdateMouse();
+			this.oParent.MainCode.F0_11a8_0223_UpdateMouseState();
 
 			// Instruction address 0x0000:0x10b9, size: 5
 			this.oParent.CAPI.kbhit();
@@ -1377,7 +1377,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x10d3, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 0x539a);
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762, 0x0);
+			this.oCPU.CMP_UInt16(this.oParent.Var_d762_AlwaysOneForVGA, 0x0);
 			if (this.oCPU.Flags.E) goto L1104;
 
 			// Instruction address 0x0000:0x10fc, size: 5
@@ -1405,7 +1405,7 @@ namespace OpenCiv1
 
 		L1143:
 			// Instruction address 0x0000:0x1143, size: 5
-			this.oParent.Segment_11a8.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250();
 
 			// Instruction address 0x0000:0x1148, size: 5
 			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();

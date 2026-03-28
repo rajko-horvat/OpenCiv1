@@ -6042,7 +6042,7 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x28)));
 
-			this.oParent.Var_2f9e_MessageBoxStyle = ReportTypeEnum.DefenseMinister;
+			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DefenseMinisterReport;
 
 			// Instruction address 0x25fb:0x3829, size: 5
 			this.oParent.CAPI.strcpy(0xba06, "Barbarian raiding party\nlands near ");
@@ -6055,7 +6055,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x25fb:0x3843, size: 5
-			this.oParent.Segment_2459.F0_2459_08c6_GetCityName((short)this.oCPU.AX.UInt16);
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName((short)this.oCPU.AX.UInt16));
 
 			// Instruction address 0x25fb:0x3853, size: 5
 			this.oParent.CAPI.strcat(0xba06, "!\nCitizens are alarmed.\n");
