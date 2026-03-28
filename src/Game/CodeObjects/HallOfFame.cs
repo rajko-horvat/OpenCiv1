@@ -126,7 +126,7 @@ namespace OpenCiv1
 		/// </summary>
 		/// <param name="param1"></param>
 		/// <returns></returns>
-		public ushort F3_0000_00d7(ushort param1)
+		public ushort F3_0000_00d7(short param1)
 		{
 			this.oCPU.Log.EnterBlock($"F3_0000_00d7({param1})");
 
@@ -154,8 +154,8 @@ namespace OpenCiv1
 			goto L0160;
 
 		L0151:
-			this.oCPU.CMP_UInt16(param1, 0x5);
-			if (this.oCPU.Flags.NE) goto L01d1;
+			if (param1 != 5) goto L01d1;
+
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 0x4);
 			if (this.oCPU.Flags.NE) goto L01d1;
 
@@ -165,15 +165,14 @@ namespace OpenCiv1
 		L0160:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 0x6);
 			if (this.oCPU.Flags.GE) goto L0174;
-			this.oCPU.AX.UInt16 = param1;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L0151;
+
+			if (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)) == param1) goto L0151;
+
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 0x5);
 			if (this.oCPU.Flags.NE) goto L0151;
 
 		L0174:
-			this.oCPU.CMP_UInt16(param1, 0xffff);
-			if (this.oCPU.Flags.E) goto L01ad;
+			if (param1 == -1) goto L01ad;
 
 			// Instruction address 0x0000:0x0189, size: 5
 			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("'C\x0083lear'", 252, 189, 0);
@@ -184,10 +183,9 @@ namespace OpenCiv1
 		L01ad:
 			// Instruction address 0x0000:0x01ad, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
-
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), this.oCPU.AX.UInt16);
-			this.oCPU.CMP_UInt16(param1, 0xffff);
-			if (this.oCPU.Flags.NE) goto L01be;
+			
+			if (param1 != -1) goto L01be;
 			goto L050b;
 
 		L01be:
@@ -398,9 +396,8 @@ namespace OpenCiv1
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), 0x8));
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), 
 				this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), 0x2));
-			this.oCPU.AX.UInt16 = param1;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L04c6;
+
+			if (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)) == param1) goto L04c6;
 			goto L015d;
 
 		L04c6:
@@ -526,7 +523,7 @@ namespace OpenCiv1
 			this.oCPU.ES.UInt16 = 0x3772; // segment
 			this.oCPU.WriteUInt16(this.oCPU.ES.UInt16, (ushort)(this.oCPU.SI.UInt16 + 0x37de), this.oCPU.AX.UInt16);
 
-			F3_0000_00d7(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
+			F3_0000_00d7(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
 
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.E) goto L0612;

@@ -69,6 +69,7 @@ namespace OpenCiv1
 		// !!! This should not be used at all as screen 3 doesn't exist
 		public CRectangle Var_19fc_Rectangle = new CRectangle(3, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 
+		public char Var_1a22_VGAType = 'M';
 		public char Var_1a30_SoundDriverType = 'N';
 		public bool Var_1a3c_MouseAvailable = true;
 		public int Var_1a3e = 0;
@@ -117,13 +118,14 @@ namespace OpenCiv1
 		public int Var_586e_MouseNewX = 0;
 		public int Var_5870_MouseNewY = 0;
 		public int Var_5872_MouseNewButtons = 0;
-		public int Var_5874 = 0;
+		public int Var_5874_MouseNewButtonsOr = 0;
 		public int Var_5876_MouseIcon = 0;
 		public int Var_5878_MouseIconXOffset = 0;
 		public int Var_587a_MouseIconYOffset = 0;
 		public int Var_587d = 0;
 
 		// 0x652e - after this offset the default values are set to 0
+		public int Var_6b32_SelectedGameType = 0;
 		public byte[] Var_6b34 = new byte[48];
 		public int Var_6b64 = 0;
 		public int Var_6b90 = 0;
@@ -131,7 +133,7 @@ namespace OpenCiv1
 		public int Var_6c98 = 0;
 		public int Var_6c9a = 0;
 		public int[] Array_6e00 = new int[32];
-		public int Var_6e92 = 0;
+		public int Var_6e92_MouseIconHandle = 0;
 		public int[] Array_6e96 = new int[9];
 		public int Var_6ed6 = 0;
 		public bool Var_70d8 = false;
@@ -141,6 +143,12 @@ namespace OpenCiv1
 		public int Var_70e6 = 0;
 		public int Var_70ea = 0;
 		public int[] Array_7eec = new int[4];
+
+		public int Var_7ef6_PlanetLandMass = 1;
+		public int Var_7ef8_PlanetTemperature = 1;
+		public int Var_7efa_PlanetClimate = 1;
+		public int Var_7efc_PlanetAge = 1;
+
 		public int Var_8078 = 0;
 		public int Var_b1e8 = 0;
 		
@@ -165,7 +173,7 @@ namespace OpenCiv1
 		public int[] Array_d4ce = new int[320];
 		public int Var_d75e_MapViewY = 0;
 		public bool Var_d760_HumanPlayerMessageFlag = false;
-		public ushort Var_d762_AlwaysOneForVGA = 0;
+		public int Var_d762_AlwaysOneForVGA = 0;
 		public ushort Var_d768 = 0;
 		public int Var_d76a = 0;
 		public int Var_d7f0 = 0;

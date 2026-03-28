@@ -291,8 +291,10 @@ namespace OpenCiv1
 
 			if (this.oParent.Var_db38 == 0)
 			{
-				int oldMouseX = -1;
-				int oldMouseY = -1;
+				this.oParent.MainCode.F0_11a8_0223_UpdateMouseState();
+
+				int oldMouseX = this.oParent.Var_db3c_MouseXPos;
+				int oldMouseY = this.oParent.Var_db3e_MouseYPos;
 				int oldSelectedOptionIndex = -1;
 				bool mouseActive = false;
 				bool exitLoop = false;

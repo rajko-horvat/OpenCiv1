@@ -49,7 +49,7 @@ namespace OpenCiv1
 
 			F7_0000_17cf();
 
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x7ef6);
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_7ef6_PlanetLandMass;
 			this.oCPU.CX.LowUInt8 = 0x3;
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
 			this.oCPU.CX.UInt16 = 0x28;
@@ -219,7 +219,7 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
 			this.oCPU.AX.UInt16 = 0x1;
-			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x7ef8));
+			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, (ushort)((short)this.oParent.Var_7ef8_PlanetTemperature));
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.ADD_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), this.oCPU.AX.UInt16));
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
@@ -308,7 +308,8 @@ namespace OpenCiv1
 		L02ac:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 0x0);
 			if (this.oCPU.Flags.LE) goto L02fa;
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x7efa);
+
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_7efa_PlanetClimate;
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
 			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, 0x7);
 			this.oCPU.AX.UInt16 = this.oCPU.NEG_UInt16(this.oCPU.AX.UInt16);
@@ -355,7 +356,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0324, size: 5
 			this.oParent.CAPI.abs((short)this.oCPU.AX.UInt16);
 
-			this.oCPU.CX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x7efa);
+			this.oCPU.CX.Int16 = (short)this.oParent.Var_7efa_PlanetClimate;
 			this.oCPU.CX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.CX.UInt16, 0x1);
 			this.oCPU.CX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.CX.UInt16, 0x1);
 			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.UInt16);
@@ -400,7 +401,8 @@ namespace OpenCiv1
 		L036d:
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 0x0);
 			if (this.oCPU.Flags.LE) goto L03c9;
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x7efa);
+
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_7efa_PlanetClimate;
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
 			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, 0x7);
 			this.oCPU.AX.UInt16 = this.oCPU.NEG_UInt16(this.oCPU.AX.UInt16);
@@ -456,7 +458,7 @@ namespace OpenCiv1
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, this.oCPU.DX.UInt16);
 			this.oCPU.AX.UInt16 = this.oCPU.SAR_UInt16(this.oCPU.AX.UInt16, 0x1);
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x7efa));
+			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, (ushort)((short)this.oParent.Var_7efa_PlanetClimate));
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
 			if (this.oCPU.Flags.LE) goto L03c9;
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8))));
@@ -647,7 +649,7 @@ namespace OpenCiv1
 
 		L0537:
 			this.oCPU.AX.UInt16 = 0x320;
-			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x7efc));
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, (ushort)((short)this.oParent.Var_7efc_PlanetAge));
 			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, 0x320);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)));
 			if (this.oCPU.Flags.LE) goto L0574;
@@ -926,8 +928,9 @@ namespace OpenCiv1
 				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14))));
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14)), 0x100);
 			if (this.oCPU.Flags.GE) goto L0875;
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x7ef6);
-			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x7efa));
+
+			this.oCPU.AX.Int16 = (short)this.oParent.Var_7ef6_PlanetLandMass;
+			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, (ushort)((short)this.oParent.Var_7efa_PlanetClimate));
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, 0x1);
 			this.oCPU.AX.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.AX.UInt16, 0x6);
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
@@ -2457,8 +2460,9 @@ namespace OpenCiv1
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x3b64);
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3b64, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x3b64)));
 			this.oCPU.WriteUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xb), this.oCPU.ADD_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xb)), this.oCPU.AX.LowUInt8));
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762_AlwaysOneForVGA, 0x0);
-			if (this.oCPU.Flags.E) goto L1a19;
+			
+			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L1a19;
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), 0x1);
 			goto L1a11;
 
@@ -2478,8 +2482,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1a21, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(2, 0, 0, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0);
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762_AlwaysOneForVGA, 0x0);
-			if (this.oCPU.Flags.E) goto L1a41;
+			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L1a41;
 
 			// Instruction address 0x0000:0x1a39, size: 5
 			this.oParent.CommonTools.F0_1000_04d4_TransformPaletteToColor(8, Color.FromRgb(0, 0, 0));
@@ -2488,8 +2491,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1a59, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762_AlwaysOneForVGA, 0x0);
-			if (this.oCPU.Flags.NE) goto L1a6b;
+			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L1a6b;
 			goto L1b29;
 
 		L1a6b:
@@ -2587,8 +2589,8 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1b8c, size: 5
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(1, 0);
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762_AlwaysOneForVGA, 0x0);
-			if (this.oCPU.Flags.E) goto L1bb8;
+			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L1bb8;
+
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), 0x1);
 			goto L1bb0;
 

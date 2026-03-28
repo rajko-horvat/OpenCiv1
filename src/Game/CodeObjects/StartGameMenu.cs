@@ -1154,7 +1154,7 @@ namespace OpenCiv1
 				this.oParent.Array_d4ce[i] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, i * 16, 32, 16, 16);
 			}
 
-			this.oParent.Array_d4ce[7] = this.oParent.Var_6e92;
+			this.oParent.Array_d4ce[7] = this.oParent.Var_6e92_MouseIconHandle;
 
 			for (int i = 0; i < 8; i++)
 			{

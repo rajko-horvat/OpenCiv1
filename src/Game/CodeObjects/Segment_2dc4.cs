@@ -463,8 +463,8 @@ namespace OpenCiv1
 			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
 			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x2);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762_AlwaysOneForVGA, 0x0);
-			if (this.oCPU.Flags.E) goto L04d8;
+
+			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L04d8;
 
 			// Instruction address 0x2dc4:0x0492, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, filenamePtr, 0xbdee);

@@ -2161,8 +2161,8 @@ namespace OpenCiv1
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x1c28, 0x1);
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762_AlwaysOneForVGA, 0x0);
-			if (this.oCPU.Flags.E) goto L1b6e;
+
+			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L1b6e;
 
 			// Instruction address 0x1238:0x1b66, size: 5
 			this.oParent.CommonTools.F0_1000_04d4_TransformPaletteToColor(5, Color.FromRgb(0, 0, 0));
@@ -2221,8 +2221,8 @@ namespace OpenCiv1
 			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
 			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x10);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762_AlwaysOneForVGA, 0x0);
-			if (this.oCPU.Flags.NE) goto L1bfc;
+
+			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L1bfc;
 			goto L1c93;
 
 		L1bfc:

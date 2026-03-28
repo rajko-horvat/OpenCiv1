@@ -2510,8 +2510,7 @@ namespace OpenCiv1
 				(ushort)((((this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)) % 9) / 3) * 69) + 1),
 				110, 68, 174, (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)) != 0 ? 87 : 96));
 
-			this.oCPU.CMP_UInt16(this.oParent.Var_d762_AlwaysOneForVGA, 0x0);
-			if (this.oCPU.Flags.E) goto L1994;
+			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L1994;
 
 			// Instruction address 0x1ade:0x1948, size: 5
 			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0x8), ".pal");
