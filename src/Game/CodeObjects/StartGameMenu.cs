@@ -240,7 +240,7 @@ namespace OpenCiv1
 				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID & 7].PalaceData1[i + 8] = 0;
 			}
 
-			this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Nationality = "";
+			this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID & 7].Nationality = "";
 
 			if (this.oParent.GameData.HumanPlayerID != 0)
 			{
