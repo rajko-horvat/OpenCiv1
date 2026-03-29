@@ -351,7 +351,7 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x100)), 0x2a);
 			if (this.oCPU.Flags.NE) goto L0349;
 
-			// Let's try to trim the dialog text, and fix the bug with unecessary lines in dialogs
+			// Let's try to trim the dialog text, and fix the bug with unnecessary lines in dialogs
 			string sInput = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oParent.CPU.DS.UInt16, 0xba06));
 			sInput = sInput.TrimEnd(new char[] {' ', '^'});
 			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oParent.CPU.DS.UInt16, 0xba06), sInput, sInput.Length);
