@@ -7,7 +7,7 @@
 <img src="src/Resources/Screenshots/Linux.png" alt="Linux OS" width="260" />
 <img src="src/Resources/Screenshots/MacOSX.png" alt="MacOSX OS" width="260" /></p>
 <li>The game logic is <b>Based on original DOS Civilization 1 game version 475.05</b> disassembly.</li>
-<li>The game is still very popular and easy to play. But the obsoletness of DOS or Windows 16-bit platform and the bugs that have never been fixed are hindering the popularity of the game.</li>
+<li>The game is still very popular and easy to play. But the obsolescence of DOS or Windows 16-bit platform and the bugs that have never been fixed are hindering the popularity of the game.</li>
 <li>The news, discussions about this project and release news are published regularly on <a href="https://forums.civfanatics.com/threads/rewrite-of-civilization-1-source-code-openciv1-project.682623/" target="_blank">Civilization Fanatics Forum page</a></li>
 <li>For contact purposes openciv1@yahoo.com public email address can be used.</li>
 </ul>
@@ -33,21 +33,21 @@ Currently, you can contribute to this repository in one of the following ways:
 
 ## Frequently asked questions
 <p><b>Q:</b> Why did you use C#, instead of C and x86 assembly in which the original game is written?</p>
-<b>A:</b> I have chosen C# becase it's platform independent, secure, flexible, managed, popular, modern and API rich language.
+<b>A:</b> I have chosen C# because it's platform independent, secure, flexible, managed, popular, modern and API rich language.
 
 ***
 <p><b>Q:</b> Why does the OpenCiv1 differs, in some aspects, from the original Civilization 1 game?</p>
 <b>A:</b> There are numerous reasons:
 <ul>
 <li>Simply replicating all of the functionality to skip the DosBox emulation to be able to run the game natively is not a good enough reason (for me) to start a project of this magnitude.</li>
-<li>Copying the game Code, Functionality, Graphics and Audio would be considered a Copyright volation and that is prohibited by current Copyright laws.</li>
+<li>Copying the game Code, Functionality, Graphics and Audio would be considered a Copyright violation and that is prohibited by current Copyright laws.</li>
 <li>To make the OpenCiv1 available to anyone who wishes to play the game, and that means Copyright free Code, Graphics and Audio.</li>
-<li>To add additional functionalities (features) to the game (like online gaming, scalable HQ Grahics, HQ Audio, plugins, etc.).</li>
+<li>To add additional functionalities (features) to the game (like online gaming, scalable HQ Graphics, HQ Audio, plugins, etc.).</li>
 <li>To make OpenCiv1 platform independent, popular, appealing and easy to play, to the older, as well as to the younger public, as was original Civilization 1 game popular back in the day.</li>
 </ul>
 
 ***
-<p><b>Q:</b> Will OpenCiv1 source code be indentical to the Original Civilization 1 game source code?</p>
+<p><b>Q:</b> Will OpenCiv1 source code be identical to the Original Civilization 1 game source code?</p>
 <p><b>A:</b> No. The OpenCiv1 source code does not contain any original Civilization 1 source code. 
 The rewritten code performs the same function (as the original code does), but the code is completely different and under MIT license. 
 The Microprose and its successors never released the original source code which remains protected under copyright laws to this day.</p>
@@ -61,8 +61,8 @@ The Microprose and its successors never released the original source code which 
 <b>A:</b> Based on some stats, many people think that the first Civilization offers as much fun as the other sequels do.
 
 ***
-<p><b>Q:</b> Are there any additional or different keyboard shorcuts (apart from the default ones)?</p>
-<b>A:</b> Yes, these are additional keyboard shorcuts that you can use during the game:
+<p><b>Q:</b> Are there any additional or different keyboard shortcuts (apart from the default ones)?</p>
+<b>A:</b> Yes, these are additional keyboard shortcuts that you can use during the game:
 <ul>
 <li>Alt + D - Enable / Disable the <b>Debug mode</b> (previously, Shift-56)</li>
 <li>Alt + P - Pause / Resume game</li>
