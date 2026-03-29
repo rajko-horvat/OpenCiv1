@@ -7,7 +7,7 @@
 <img src="src/Resources/Screenshots/Linux.png" alt="Linux OS" width="260" />
 <img src="src/Resources/Screenshots/MacOSX.png" alt="MacOSX OS" width="260" /></p>
 <li>The game logic is <b>Based on original DOS Civilization 1 game version 475.05</b> disassembly.</li>
-<li>The game is still very popular and easy to play. But the obsolescence of DOS or Windows 16-bit platform and the bugs that have never been fixed are hindering the popularity of the game.</li>
+<li>The game is still very popular and easy to play. But the obsolescence of DOS or Windows 16-bit platform and the bugs that have never been fixed are hindering the popularity of the game. <a href="https://forums.civfanatics.com/threads/dos-civilization-1-1991-bug-s-discussion-what-should-be-fixed-in-openciv1.688773/" target="_blank">Original game bug(s) discussion page</a></li>
 <li>The news, discussions about this project and release news are published regularly on <a href="https://forums.civfanatics.com/threads/rewrite-of-civilization-1-source-code-openciv1-project.682623/" target="_blank">Civilization Fanatics Forum page</a></li>
 <li>For contact purposes openciv1@yahoo.com public email address can be used.</li>
 </ul>
