@@ -416,7 +416,7 @@ namespace OpenCiv1
 		public void F0_2dc4_03ce_FillRectangleWithPattern(int xPos, int yPos, int width, int height)
 		{
 			// function body
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0)
+			if (this.oParent.Var_d762_AlwaysTrueForVGA)
 			{
 				int iYPosTemp = yPos;
 				int iHeightTemp = height;
@@ -464,7 +464,7 @@ namespace OpenCiv1
 			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x2);
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L04d8;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L04d8;
 
 			// Instruction address 0x2dc4:0x0492, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, filenamePtr, 0xbdee);
@@ -565,7 +565,7 @@ namespace OpenCiv1
 		public void F0_2dc4_0626()
 		{
 			// function body
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2fec) == 0 && this.oParent.Var_d762_AlwaysOneForVGA != 0)
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2fec) == 0 && this.oParent.Var_d762_AlwaysTrueForVGA)
 			{
 				// Instruction address 0x2dc4:0x0638, size: 5
 				this.oParent.CommonTools.F0_1000_03fa_StartPaletteCycleSlot(1);
@@ -588,7 +588,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock("F0_2dc4_065f()");
 
 			// function body
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2fec) != 0 && this.oParent.Var_d762_AlwaysOneForVGA != 0)
+			if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2fec) != 0 && this.oParent.Var_d762_AlwaysTrueForVGA)
 			{
 				// Instruction address 0x2dc4:0x0671, size: 5
 				this.oParent.CommonTools.F0_1000_042b_StopPaletteCycleSlot(1);

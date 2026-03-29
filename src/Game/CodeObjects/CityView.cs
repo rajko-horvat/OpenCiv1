@@ -518,7 +518,7 @@ namespace OpenCiv1
 					// Instruction address 0x0000:0x0e8c, size: 5
 					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
-					if (param2 == -3 && this.oParent.Var_d762_AlwaysOneForVGA != 0)
+					if (param2 == -3 && this.oParent.Var_d762_AlwaysTrueForVGA)
 					{
 						// Instruction address 0x0000:0x0ea9, size: 5
 						this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4eaa, 0xbdee);
@@ -527,7 +527,7 @@ namespace OpenCiv1
 						this.oParent.CommonTools.F0_1000_04aa_TransformPalette(15, 0xbdee);
 					}
 
-					if (this.oParent.Var_d762_AlwaysOneForVGA != 0)
+					if (this.oParent.Var_d762_AlwaysTrueForVGA)
 					{
 						// Instruction address 0x0000:0x0ed8, size: 5
 						this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(4, 15, 64, 79);
@@ -564,7 +564,7 @@ namespace OpenCiv1
 
 			if (param2 == -2)
 			{
-				if (this.oParent.Var_d762_AlwaysOneForVGA != 0)
+				if (this.oParent.Var_d762_AlwaysTrueForVGA)
 				{
 					// Instruction address 0x0000:0x0fe6, size: 5
 					this.oParent.CommonTools.F0_1000_042b_StopPaletteCycleSlot(4);
@@ -583,13 +583,13 @@ namespace OpenCiv1
 					this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 				}
 
-				if (this.oParent.Var_d762_AlwaysOneForVGA != 0)
+				if (this.oParent.Var_d762_AlwaysTrueForVGA)
 				{
 					// Instruction address 0x0000:0x0f94, size: 5
 					this.oParent.CommonTools.F0_1000_042b_StopPaletteCycleSlot(4);
 				}
 
-				if (this.oParent.Var_d762_AlwaysOneForVGA != 0)
+				if (this.oParent.Var_d762_AlwaysTrueForVGA)
 				{
 					// Instruction address 0x0000:0x0fc7, size: 5
 					this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
@@ -1233,7 +1233,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1682, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L16a0;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L16a0;
 
 			// Instruction address 0x0000:0x1698, size: 5
 			this.oParent.Graphics.SetPaletteColor(0xfd, GBitmap.Color18ToColor(3, 3, 3));

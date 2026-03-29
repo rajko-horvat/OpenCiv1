@@ -1377,7 +1377,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x10d3, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 0x539a);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L1104;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L1104;
 
 			// Instruction address 0x0000:0x10fc, size: 5
 			this.oParent.CommonTools.F0_1000_04d4_TransformPaletteToColor(10, Color.FromRgb(0, 0, 0));

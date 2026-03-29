@@ -2107,7 +2107,7 @@ namespace OpenCiv1
 
 		L13d9:
 			if (this.oParent.GameData.TurnCount != 0) goto L13f1;
-			if (this.oParent.Var_d76a == 0) goto L13f1;
+			if (!this.oParent.Var_d76a_EarthMap) goto L13f1;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x28), 0xf);
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2c), 0x0);

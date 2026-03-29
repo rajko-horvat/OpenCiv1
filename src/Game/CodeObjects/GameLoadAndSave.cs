@@ -412,8 +412,6 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x04ae, size: 5
 			this.oParent.CAPI.strcat(0xba06, " Press key to continue.\n");
 
-			this.oParent.Var_d206_CanBeRemoved = 1;
-
 			// Instruction address 0x0000:0x04c8, size: 5
 			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 64, 127, false, false, true);
 
@@ -479,8 +477,6 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x05a9, size: 5
 			this.oParent.CAPI.strcat(0xba06, "\n ... save in progress.\n");
-
-			this.oParent.Var_d206_CanBeRemoved = 1;
 
 			// Instruction address 0x0000:0x05c3, size: 5
 			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 64, 86, true, false, true);

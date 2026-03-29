@@ -4877,7 +4877,7 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_1d12_710d_FillRectangleWithPattern({xPos}, {yPos}, {width}, {height})");
 
 			// function body
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0)
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA)
 			{
 				// Instruction address 0x1d12:0x712e, size: 5
 				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos, yPos, width, height, 9);

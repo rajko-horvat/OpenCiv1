@@ -198,7 +198,7 @@ namespace OpenCiv1
 			//*/
 		#endregion
 
-			this.oParent.Var_d76a = 0;
+			this.oParent.Var_d76a_EarthMap = false;
 
 			while (this.oParent.Var_6b32_SelectedGameType == -1)
 			{
@@ -266,7 +266,7 @@ namespace OpenCiv1
 						// Instruction address 0x11a8:0x0796, size: 3
 						F0_11a8_0268();
 
-						this.oParent.Var_d76a = 1;
+						this.oParent.Var_d76a_EarthMap = true;
 
 						this.oParent.GameInitAndIntro.F7_0000_0012_GameIntro();
 

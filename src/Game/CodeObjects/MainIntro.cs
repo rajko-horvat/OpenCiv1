@@ -42,11 +42,10 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L0012;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4c), 1); // fonts are embedded in application
-			this.oParent.Var_d762_AlwaysOneForVGA = (this.oParent.Var_1a22_VGAType == 'm' || this.oParent.Var_1a22_VGAType == 'M') ? 1 : 0;
-			this.oCPU.WriteInt16(this.oCPU.DS.UInt16, 0xb20e, (short)((this.oParent.Var_1a22_VGAType == 'e' || this.oParent.Var_1a22_VGAType == 'E') ? 1 : 0));			
+			this.oParent.Var_d762_AlwaysTrueForVGA = true;
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6dfc, 0);
-			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), (short)((this.oParent.Var_d762_AlwaysOneForVGA == 1) ? 3 : 4));
+			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), (short)((this.oParent.Var_d762_AlwaysTrueForVGA) ? 3 : 4));
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x48), 0);
 
 			goto L0196;
@@ -85,7 +84,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x01e0, size: 5
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L020a;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L020a;
 
 			// Instruction address 0x0000:0x0202, size: 5
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_19fc_Rectangle, 0, 0, 320, 200, 0);
@@ -123,7 +122,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x02f4, size: 5
 			this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(1, 14, 146, 152);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L031c;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L031c;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x48), 0x1);
 
@@ -162,7 +161,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0362, size: 5
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 184, this.oCPU.AX.LowUInt8);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L0376;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L0376;
 
 			this.oCPU.AX.UInt16 = 0xf8;
 			goto L0379;
@@ -174,7 +173,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0386, size: 5
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 182, this.oCPU.AX.LowUInt8);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L039a;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L039a;
 
 			this.oCPU.AX.UInt16 = 0xfa;
 			goto L039d;
@@ -189,7 +188,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.ScreenID = this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44));
 
 		L03bb:
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L03d4;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L03d4;
 
 			if (this.oParent.Var_aa_Rectangle.ScreenID == 0)
 				goto L03cf;
@@ -221,7 +220,7 @@ namespace OpenCiv1
 				0, 88, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x48)), 88,
 				this.oParent.Var_aa_Rectangle, (short)this.oCPU.SI.UInt16, 100);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L0476;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L0476;
 			
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44), (short)this.oParent.Var_aa_Rectangle.ScreenID);
 
@@ -392,7 +391,7 @@ namespace OpenCiv1
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44), (short)this.oParent.Var_aa_Rectangle.ScreenID);
 			this.oParent.Var_aa_Rectangle.ScreenID = 1;
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L062f;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L062f;
 			goto L0352;
 
 		L062f:
@@ -410,7 +409,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x064d, size: 5
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 184, this.oCPU.AX.LowUInt8);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L0661;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L0661;
 
 			this.oCPU.AX.UInt16 = 0xf8;
 			goto L0664;
@@ -422,7 +421,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0671, size: 5
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 182, this.oCPU.AX.LowUInt8);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L0685;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L0685;
 
 			this.oCPU.AX.UInt16 = 0xfa;
 			goto L0688;
@@ -437,7 +436,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Rectangle.ScreenID = this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44));
 
 		L06a6:
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L06bf;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L06bf;
 
 			if (this.oParent.Var_aa_Rectangle.ScreenID == 0) goto L06ba;
 
@@ -492,7 +491,7 @@ namespace OpenCiv1
 				this.oParent.Var_aa_Rectangle, 320 - this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x48)), 100);
 
 		L079c:
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L07d0;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L07d0;
 
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44), (short)this.oParent.Var_aa_Rectangle.ScreenID);
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
@@ -692,7 +691,7 @@ namespace OpenCiv1
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44), (short)this.oParent.Var_aa_Rectangle.ScreenID);
 			this.oParent.Var_aa_Rectangle.ScreenID = 1;
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L09d1;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L09d1;
 			goto L063d;
 
 		L09d1:
@@ -770,7 +769,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_19d4_Rectangle,
 				0, 64, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4e)));
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L0ab4;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L0ab4;
 
 			// Instruction address 0x0000:0x0aa0, size: 5
 			this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(4, 14, 224, 239);
@@ -822,7 +821,7 @@ namespace OpenCiv1
 			this.oParent.Var_6b32_SelectedGameType = -1;
 
 		L0b26:
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L0b4a;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L0b4a;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x48), 0x1);
 			goto L0b37;
@@ -908,7 +907,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0c5b, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L0c6c;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L0c6c;
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x246), 0xec);
 			// Instruction address 0x0000:0x0c83, size: 5
@@ -931,7 +930,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0cdc, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 32, 320, 24, this.oParent.Var_19d4_Rectangle, 0, 176);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L0d17;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L0d17;
 
 			// Instruction address 0x0000:0x0d0f, size: 5
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_19fc_Rectangle, 0, 0, 320, 200, 0);
@@ -1030,7 +1029,7 @@ namespace OpenCiv1
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0((ushort)(0xba06 + this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x23c))),
 				160, 184, this.oCPU.AX.LowUInt8);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L0f00;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L0f00;
 
 			this.oCPU.AX.UInt16 = 0x3c;
 			goto L0f03;
@@ -1058,7 +1057,7 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x238 +
 					(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x208)) << 1))));
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L0f6e;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L0f6e;
 
 			if (this.oParent.Var_aa_Rectangle.ScreenID == 0)
 				goto L0f69;
@@ -1127,7 +1126,7 @@ namespace OpenCiv1
 		L106f:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x242), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x242))));
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L10a9;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L10a9;
 			
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x23a), (short)this.oParent.Var_aa_Rectangle.ScreenID);
 			this.oParent.Var_aa_Rectangle.ScreenID = 0;
@@ -1219,7 +1218,7 @@ namespace OpenCiv1
 			this.oCPU.WriteInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x23a), (short)this.oParent.Var_aa_Rectangle.ScreenID);
 			this.oParent.Var_aa_Rectangle.ScreenID = 1;
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L1199;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L1199;
 			goto L0ed8;
 
 		L1199:
@@ -1255,7 +1254,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1213, size: 5
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(1, 0);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L1233;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L1233;
 
 			// Instruction address 0x0000:0x122b, size: 5
 			this.oParent.CommonTools.F0_1000_04d4_TransformPaletteToColor(5, Color.FromRgb(0, 0, 0));
@@ -1273,7 +1272,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x128f, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L12a1;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L12a1;
 			goto L137e;
 
 		L12a1:
@@ -1377,7 +1376,7 @@ namespace OpenCiv1
 
 			if (playerID != this.oParent.GameData.HumanPlayerID) goto L149d;
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L149d;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L149d;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x23e), 0x1);
 
@@ -1402,7 +1401,7 @@ namespace OpenCiv1
 
 			this.oParent.Var_aa_Rectangle.FontID = 1;
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L1500;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L1500;
 
 			// Instruction address 0x0000:0x14e7, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(3, 0, 0, 0x3322, 0);
@@ -1533,7 +1532,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x16c3, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 6, 320, 20, this.oParent.Var_aa_Rectangle, 0, 6);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L170d;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L170d;
 
 			// Instruction address 0x0000:0x16e5, size: 5
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0((ushort)(0xba06 + this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))),

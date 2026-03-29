@@ -2510,7 +2510,7 @@ namespace OpenCiv1
 				(ushort)((((this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)) % 9) / 3) * 69) + 1),
 				110, 68, 174, (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)) != 0 ? 87 : 96));
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L1994;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L1994;
 
 			// Instruction address 0x1ade:0x1948, size: 5
 			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0x8), ".pal");
@@ -3005,8 +3005,6 @@ namespace OpenCiv1
 			goto L2013;
 
 		L1f14:
-			this.oParent.Var_d206_CanBeRemoved = 1;
-
 			if (playerID == this.oParent.GameData.HumanPlayerID) goto L1f2a;
 
 			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.SpiesReport;

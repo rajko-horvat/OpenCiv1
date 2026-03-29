@@ -676,7 +676,7 @@ namespace OpenCiv1
 		L066d:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0xf);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L069e;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L069e;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x3c62), 0x0);
 			if (this.oCPU.Flags.E) goto L0687;
@@ -963,7 +963,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0ae8, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0xba06, 0);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L0b25;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L0b25;
 
 			// Instruction address 0x0000:0x0aff, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x3d75, 0xc5be);

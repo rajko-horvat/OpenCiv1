@@ -2709,7 +2709,7 @@ namespace OpenCiv1
 			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.UInt16);
 			this.oCPU.WriteUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), this.oCPU.ADD_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)), this.oCPU.AX.LowUInt8));
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L1f46;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L1f46;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x67f8), 0x0);
 			if (this.oCPU.Flags.E) goto L1f42;

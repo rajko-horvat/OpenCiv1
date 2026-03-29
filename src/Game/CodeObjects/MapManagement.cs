@@ -268,7 +268,7 @@ namespace OpenCiv1
 					// Draw ocean, coastal cells and river deltas
 					int mask = 0;
 
-					if (this.oParent.Var_d762_AlwaysOneForVGA == 0)
+					if (!this.oParent.Var_d762_AlwaysTrueForVGA)
 					{
 						for (int i = 1; i < 9; i += 2)
 						{
@@ -373,7 +373,7 @@ namespace OpenCiv1
 				if (terrainType != TerrainTypeEnum.Water)
 				{
 					// Draw grassland background for land cells
-					if (this.oParent.Var_d762_AlwaysOneForVGA == 0)
+					if (!this.oParent.Var_d762_AlwaysTrueForVGA)
 					{
 						// Instruction address 0x2aea:0x07cd, size: 5
 						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19fc_Rectangle, 0, 80, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
@@ -411,7 +411,7 @@ namespace OpenCiv1
 						}
 					}
 
-					if (this.oParent.Var_d762_AlwaysOneForVGA == 0 || this.F0_2aea_1585_GetVisibleTerrainImprovements(x, y).HasFlag(TerrainImprovementFlagsEnum.Flag80))
+					if (!this.oParent.Var_d762_AlwaysTrueForVGA || this.F0_2aea_1585_GetVisibleTerrainImprovements(x, y).HasFlag(TerrainImprovementFlagsEnum.Flag80))
 					{
 						mask += 0x10;
 					}
@@ -423,7 +423,7 @@ namespace OpenCiv1
 				if (terrainType != TerrainTypeEnum.Water && terrainType != TerrainTypeEnum.River)
 				{
 					// Blend seas between cells with the same terrain types
-					if (this.oParent.Var_d762_AlwaysOneForVGA != 0)
+					if (this.oParent.Var_d762_AlwaysTrueForVGA)
 					{
 						int mask = 0;
 
@@ -471,7 +471,7 @@ namespace OpenCiv1
 				{
 					// Draw pollution
 
-					if (this.oParent.Var_d762_AlwaysOneForVGA == 0)
+					if (!this.oParent.Var_d762_AlwaysTrueForVGA)
 					{
 						// Instruction address 0x2aea:0x09dc, size: 5
 						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, scrX, scrY, 16, 16, 2, 0);

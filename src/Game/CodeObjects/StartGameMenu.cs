@@ -596,7 +596,7 @@ namespace OpenCiv1
 								this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xStart, yStart), xStart, yStart)) goto L0a5e;
 					}
 
-					if (this.oParent.GameData.TurnCount == 0 && this.oParent.Var_d76a != 0)
+					if (this.oParent.GameData.TurnCount == 0 && this.oParent.Var_d76a_EarthMap)
 					{
 						xStart = this.oParent.Array_35da[this.oParent.GameData.Players[playerID].NationalityID].X;
 						yStart = this.oParent.Array_35da[this.oParent.GameData.Players[playerID].NationalityID].Y;
@@ -1028,7 +1028,7 @@ namespace OpenCiv1
 				this.oParent.Array_df62[i] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, (42 * i) + 160, 142, 41, 58);
 			}
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0)
+			if (this.oParent.Var_d762_AlwaysTrueForVGA)
 			{
 				// Instruction address 0x0000:0x14f7, size: 5
 				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "ter257.pic", 0);
@@ -1090,7 +1090,7 @@ namespace OpenCiv1
 				}
 			}
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0)
+			if (this.oParent.Var_d762_AlwaysTrueForVGA)
 			{
 				// Instruction address 0x0000:0x16c2, size: 5
 				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "sp257.pic", 0);

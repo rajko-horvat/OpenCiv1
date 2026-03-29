@@ -159,7 +159,6 @@ namespace OpenCiv1
 		public int Var_b884 = 0;
 		public int[,] Array_b886 = new int[10, 16];
 		public int Var_b2ba = 0;
-		public int Var_d206_CanBeRemoved = 0;
 		public int Var_d20a = 0;
 		public int[,] Array_d21c = new int[3, 20];
 		public int[,] Array_d294 = new int[8, 4];
@@ -173,9 +172,9 @@ namespace OpenCiv1
 		public int[] Array_d4ce = new int[320];
 		public int Var_d75e_MapViewY = 0;
 		public bool Var_d760_HumanPlayerMessageFlag = false;
-		public int Var_d762_AlwaysOneForVGA = 0;
+		public bool Var_d762_AlwaysTrueForVGA = true;
 		public ushort Var_d768 = 0;
-		public int Var_d76a = 0;
+		public bool Var_d76a_EarthMap = false;
 		public int Var_d7f0 = 0;
 		public bool Var_d806_DebugFlag = false;
 

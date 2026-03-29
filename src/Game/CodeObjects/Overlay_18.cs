@@ -97,7 +97,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0140, size: 5
 			this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(5, 150, 128, 129);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L0168;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L0168;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x1);
 
@@ -134,7 +134,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x017b, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x682a), 0x4cda);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L01a3;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L01a3;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), 0x1);
 

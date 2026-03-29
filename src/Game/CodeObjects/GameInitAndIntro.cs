@@ -31,7 +31,7 @@ namespace OpenCiv1
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x67fc, 0x0);
 			
-			if (this.oParent.Var_d76a == 0) goto L0054;
+			if (!this.oParent.Var_d76a_EarthMap) goto L0054;
 			
 			// Instruction address 0x0000:0x0049, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x3b20, 1);
@@ -2461,7 +2461,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3b64, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x3b64)));
 			this.oCPU.WriteUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xb), this.oCPU.ADD_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xb)), this.oCPU.AX.LowUInt8));
 			
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L1a19;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L1a19;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), 0x1);
 			goto L1a11;
@@ -2482,7 +2482,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1a21, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(2, 0, 0, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L1a41;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L1a41;
 
 			// Instruction address 0x0000:0x1a39, size: 5
 			this.oParent.CommonTools.F0_1000_04d4_TransformPaletteToColor(8, Color.FromRgb(0, 0, 0));
@@ -2491,7 +2491,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1a59, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA != 0) goto L1a6b;
+			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L1a6b;
 			goto L1b29;
 
 		L1a6b:
@@ -2589,7 +2589,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1b8c, size: 5
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(1, 0);
 
-			if (this.oParent.Var_d762_AlwaysOneForVGA == 0) goto L1bb8;
+			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L1bb8;
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), 0x1);
 			goto L1bb0;
