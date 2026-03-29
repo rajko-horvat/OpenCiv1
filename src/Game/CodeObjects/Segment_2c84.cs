@@ -102,10 +102,10 @@ namespace OpenCiv1
 
 			// function body
 			// Enable Save game with zero turns
-			if (oParent.GameData.TurnCount == 0)
+			if (this.oParent.GameData.TurnCount == 0)
 			{
 				// Disable 'Save Game' option
-				this.oParent.Var_b276_MenuBoxDisabledOptions = 0x10;
+				//this.oParent.Var_b276_MenuBoxDisabledOptions = 0x10;
 			}
 
 			// Instruction address 0x2c84:0x00c8, size: 5

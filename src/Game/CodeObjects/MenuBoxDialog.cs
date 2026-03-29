@@ -140,7 +140,7 @@ namespace OpenCiv1
 					optionIndexes.Add(i);
 
 					// test if this option is checked
-					if ((this.oParent.Var_d7f2_MenuBoxCheckedOptions & (0x1 << optionIndexes.Count)) != 0)
+					if ((this.oParent.Var_d7f2_MenuBoxCheckedOptions & (0x1 << optionIndexes.Count - 1)) != 0)
 					{
 						// Current default is to pass space as first character and then ammend it to a checkmark (if selected)
 						menuItems[i] = '^' + menuItem.Substring(1);
@@ -270,10 +270,10 @@ namespace OpenCiv1
 				}
 				else
 				{
-					if ((this.oParent.Var_d7f2_MenuBoxCheckedOptions & (0x1 << optionIndex)) != 0 || (this.oParent.Var_b276_MenuBoxDisabledOptions & (0x1 << optionIndex)) != 0)
+					if ((this.oParent.Var_b276_MenuBoxDisabledOptions & (0x1 << optionIndex)) != 0)
 					{
 						// Instruction address 0x2d05:0x0834, size: 5
-						this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(menuItem, contentLeft, contentTop + (i * lineHeight), 3);
+						this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(menuItem, contentLeft, contentTop + (i * lineHeight), 4);
 					}
 					else
 					{

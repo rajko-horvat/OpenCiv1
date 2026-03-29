@@ -245,8 +245,6 @@ namespace OpenCiv1
 
 						// Instruction address 0x11a8:0x0576, size: 5
 						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 160, 50, 160, 150, this.oParent.Var_19e8_Rectangle, 160, 50);
-
-						this.oParent.Var_6b32_SelectedGameType = -1;
 						break;
 
 					case 1:
