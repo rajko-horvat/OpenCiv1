@@ -342,104 +342,82 @@ namespace OpenCiv1
 					// Draw ocean, coastal cells and river deltas
 					int mask = 0;
 
-					if (!this.oParent.Var_d762_AlwaysTrueForVGA)
+					for (int i = 1; i < 9; i++)
 					{
-						for (int i = 1; i < 9; i += 2)
+						mask >>= 1;
+
+						GPoint direction = this.oParent.MoveDirections[i];
+
+						// Instruction address 0x2aea:0x0570, size: 3
+						if (GetTerrainType(this.oParent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y) != TerrainTypeEnum.Water &&
+							F0_2aea_1326_ValidateMapCoordinates(0, y + direction.Y))
 						{
-							mask >>= 1;
-
-							GPoint direction = this.oParent.MoveDirections[i];
-
-							// Instruction address 0x2aea:0x04f0, size: 3
-							if (GetTerrainType(this.oParent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y) != TerrainTypeEnum.Water &&
-								F0_2aea_1326_ValidateMapCoordinates(0, y + direction.Y))
-							{
-								mask |= 0x8;
-							}
+							mask |= 0x80;
 						}
-
-						// Instruction address 0x2aea:0x053e, size: 5
-						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19fc_Rectangle, mask * 16, 64, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
 					}
-					else
+
+					int bitmapMask = (mask >> 6) & 0x3;
+					bitmapMask += (mask << 2);
+
+					for (int i = 0; i < 4; i++)
 					{
-						for (int i = 1; i < 9; i++)
+						if (i < 2)
 						{
-							mask >>= 1;
-
-							GPoint direction = this.oParent.MoveDirections[i];
-
-							// Instruction address 0x2aea:0x0570, size: 3
-							if (GetTerrainType(this.oParent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y) != TerrainTypeEnum.Water &&
-								F0_2aea_1326_ValidateMapCoordinates(0, y + direction.Y))
-							{
-								mask |= 0x80;
-							}
+							// Instruction address 0x2aea:0x05f4, size: 5
+							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + ((i & 0x1) * 8), scrY,
+								this.oParent.Array_d294[(bitmapMask >> (i * 2)) & 0x7, i]);
 						}
-
-						int bitmapMask = (mask >> 6) & 0x3;
-						bitmapMask += (mask << 2);
-
-						for (int i = 0; i < 4; i++)
+						else
 						{
-							if (i < 2)
-							{
-								// Instruction address 0x2aea:0x05f4, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + ((i & 0x1) * 8), scrY,
-									this.oParent.Array_d294[(bitmapMask >> (i * 2)) & 0x7, i]);
-							}
-							else
-							{
-								// Instruction address 0x2aea:0x05f4, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX - ((i & 0x1) * 8) + 8, scrY + 8,
-									this.oParent.Array_d294[(bitmapMask >> (i * 2)) & 0x7, i]);
-							}
+							// Instruction address 0x2aea:0x05f4, size: 5
+							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX - ((i & 0x1) * 8) + 8, scrY + 8,
+								this.oParent.Array_d294[(bitmapMask >> (i * 2)) & 0x7, i]);
 						}
+					}
 
-						switch (mask)
+					switch (mask)
+					{
+						case 0x1c:
+							// Instruction address 0x2aea:0x0656, size: 5
+							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 224, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
+							break;
+
+						case 0xc1:
+							// Instruction address 0x2aea:0x0680, size: 5
+							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 240, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
+							break;
+
+						case 0x7:
+							// Instruction address 0x2aea:0x06a9, size: 5
+							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 256, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
+							break;
+
+						case 0x70:
+							// Instruction address 0x2aea:0x06d2, size: 5
+							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 272, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
+							break;
+
+						case 0x8f:
+							// Instruction address 0x2aea:0x06fc, size: 5
+							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 288, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
+							break;
+
+						case 0xf8:
+							// Instruction address 0x2aea:0x0726, size: 5
+							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 304, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
+							break;
+					}
+
+					// Draw river deltas on top of coastal cells
+					for (int i = 1; i < 9; i += 2)
+					{
+						GPoint direction = this.oParent.MoveDirections[i];
+
+						// Instruction address 0x2aea:0x0752, size: 3
+						if (GetTerrainType(this.oParent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y) == TerrainTypeEnum.River)
 						{
-							case 0x1c:
-								// Instruction address 0x2aea:0x0656, size: 5
-								this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 224, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
-								break;
-
-							case 0xc1:
-								// Instruction address 0x2aea:0x0680, size: 5
-								this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 240, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
-								break;
-
-							case 0x7:
-								// Instruction address 0x2aea:0x06a9, size: 5
-								this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 256, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
-								break;
-
-							case 0x70:
-								// Instruction address 0x2aea:0x06d2, size: 5
-								this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 272, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
-								break;
-
-							case 0x8f:
-								// Instruction address 0x2aea:0x06fc, size: 5
-								this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 288, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
-								break;
-
-							case 0xf8:
-								// Instruction address 0x2aea:0x0726, size: 5
-								this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 304, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
-								break;
-						}
-
-						// Draw river deltas on top of coastal cells
-						for (int i = 1; i < 9; i += 2)
-						{
-							GPoint direction = this.oParent.MoveDirections[i];
-
-							// Instruction address 0x2aea:0x0752, size: 3
-							if (GetTerrainType(this.oParent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y) == TerrainTypeEnum.River)
-							{
-								// Instruction address 0x2aea:0x0777, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d2d4[(i - 1) / 2]);
-							}
+							// Instruction address 0x2aea:0x0777, size: 5
+							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d2d4[(i - 1) / 2]);
 						}
 					}
 				}
@@ -447,16 +425,8 @@ namespace OpenCiv1
 				if (terrainType != TerrainTypeEnum.Water)
 				{
 					// Draw grassland background for land cells
-					if (!this.oParent.Var_d762_AlwaysTrueForVGA)
-					{
-						// Instruction address 0x2aea:0x07cd, size: 5
-						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19fc_Rectangle, 0, 80, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
-					}
-					else
-					{
-						// Instruction address 0x2aea:0x07cd, size: 5
-						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 256, 120, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
-					}
+					// Instruction address 0x2aea:0x07cd, size: 5
+					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 256, 120, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
 				}
 
 				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.Irrigation) && terrainType != TerrainTypeEnum.Water &&
@@ -485,12 +455,11 @@ namespace OpenCiv1
 						}
 					}
 
-					if (!this.oParent.Var_d762_AlwaysTrueForVGA || this.F0_2aea_1585_GetVisibleTerrainImprovements(x, y).HasFlag(TerrainImprovementFlagsEnum.Flag80))
+					if (this.F0_2aea_1585_GetVisibleTerrainImprovements(x, y).HasFlag(TerrainImprovementFlagsEnum.Flag80))
 					{
 						mask += 0x10;
 					}
 
-					// !!! Map generation problem?
 					if (mask > 0)
 					{
 						// Instruction address 0x2aea:0x0885, size: 5
@@ -501,47 +470,29 @@ namespace OpenCiv1
 				if (terrainType != TerrainTypeEnum.Water && terrainType != TerrainTypeEnum.River)
 				{
 					// Blend seas between cells with the same terrain types
-					if (this.oParent.Var_d762_AlwaysTrueForVGA)
+					int mask = 0;
+
+					for (int i = 1; i < 9; i += 2)
 					{
-						int mask = 0;
+						mask >>= 1;
 
-						for (int i = 1; i < 9; i += 2)
+						GPoint direction = this.oParent.MoveDirections[i];
+
+						if (GetTerrainType(this.oParent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y) == terrainType &&
+							F0_2aea_1326_ValidateMapCoordinates(0, y + direction.Y))
 						{
-							mask >>= 1;
-
-							GPoint direction = this.oParent.MoveDirections[i];
-
-							if (GetTerrainType(this.oParent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y) == terrainType &&
-								F0_2aea_1326_ValidateMapCoordinates(0, y + direction.Y))
-							{
-								mask |= 0x8;
-							}
-						}
-
-						// Instruction address 0x2aea:0x091e, size: 5
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_b886[(int)terrainType, mask]);
-
-						if (terrainType == TerrainTypeEnum.Grassland && (((7 * x) + (11 * y)) & 0x2) == 0)
-						{
-							// Draw grassland tiles with production bonus
-							// Instruction address 0x2aea:0x0996, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + 4, scrY + 4, this.oParent.Var_b880);
+							mask |= 0x8;
 						}
 					}
-					else
+
+					// Instruction address 0x2aea:0x091e, size: 5
+					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_b886[(int)terrainType, mask]);
+
+					if (terrainType == TerrainTypeEnum.Grassland && (((7 * x) + (11 * y)) & 0x2) == 0)
 					{
-						if (terrainType == TerrainTypeEnum.Grassland)
-						{
-							// Instruction address 0x2aea:0x0996, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-								this.oParent.Array_b886[(int)terrainType, (((7 * x) + (11 * y)) & 0x2) / 2]);
-						}
-						else
-						{
-							// Instruction address 0x2aea:0x0996, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY,
-								this.oParent.Array_b886[(int)terrainType, ((x + y) & 0x1) * 2]);
-						}
+						// Draw grassland tiles with production bonus
+						// Instruction address 0x2aea:0x0996, size: 5
+						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + 4, scrY + 4, this.oParent.Var_b880);
 					}
 				}
 
@@ -549,25 +500,8 @@ namespace OpenCiv1
 				{
 					// Draw pollution
 
-					if (!this.oParent.Var_d762_AlwaysTrueForVGA)
-					{
-						// Instruction address 0x2aea:0x09dc, size: 5
-						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, scrX, scrY, 16, 16, 2, 0);
-
-						// Instruction address 0x2aea:0x09fb, size: 5
-						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, scrX, scrY, 16, 16, 10, 15);
-
-						// Instruction address 0x2aea:0x0a1a, size: 5
-						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, scrX, scrY, 16, 16, 9, 8);
-
-						// Instruction address 0x2aea:0x0a38, size: 5
-						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, scrX, scrY, 16, 16, 11, 0);
-					}
-					else
-					{
-						// Instruction address 0x2aea:0x09bc, size: 5
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d4ce[6]);
-					}
+					// Instruction address 0x2aea:0x09bc, size: 5
+					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d4ce[6]);
 				}
 
 				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.Road))

@@ -189,7 +189,6 @@ namespace OpenCiv1
 		public int[] Array_d4ce = new int[320];
 		public int Var_d75e_MapViewY = 0;
 		public bool Var_d760_HumanPlayerMessageFlag = false;
-		public bool Var_d762_AlwaysTrueForVGA = true;
 		public ushort Var_d768 = 0;
 		public bool Var_d76a_EarthMap = false;
 		public int Var_d7f0 = 0;

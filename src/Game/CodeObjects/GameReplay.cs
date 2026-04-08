@@ -1344,34 +1344,17 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(
 				this.oParent.GameData.Nations[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].LongTune, 3);
 
-			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L0e67;
-
 			// Instruction address 0x0000:0x0e7f, size: 5
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 18, 150, 284, 32, 34);
 
-			goto L0e6a;
-
-		L0e67:
-			// Instruction address 0x0000:0x0e7f, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 18, 150, 284, 32, 7);
-
-		L0e6a:
 			// Instruction address 0x0000:0x0e8f, size: 5
 			this.oParent.CAPI.strcpy(0xba06, "The entire world hails");
 
 			// Instruction address 0x0000:0x0ea7, size: 5
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 152, 20);
 
-			if (this.oParent.Var_d762_AlwaysTrueForVGA)
-			{
-				// Instruction address 0x0000:0x0ecb, size: 5
-				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 151, 23);
-			}
-			else
-			{
-				// Instruction address 0x0000:0x0ecb, size: 5
-				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 151, 15);
-			}
+			// Instruction address 0x0000:0x0ecb, size: 5
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 151, 23);
 			
 			// Instruction address 0x0000:0x0ee1, size: 5
 			this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Name);
@@ -1382,16 +1365,8 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0f09, size: 5
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 168, 20);
 
-			if (this.oParent.Var_d762_AlwaysTrueForVGA)
-			{
-				// Instruction address 0x0000:0x0f2d, size: 5
-				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 167, 23);
-			}
-			else
-			{
-				// Instruction address 0x0000:0x0f2d, size: 5
-				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 167, 15);
-			}
+			// Instruction address 0x0000:0x0f2d, size: 5
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 167, 23);
 
 			// Instruction address 0x0000:0x0f35, size: 5
 			this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
@@ -1450,17 +1425,6 @@ namespace OpenCiv1
 			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.CX.UInt16);
 			this.oCPU.WriteUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), this.oCPU.ADD_UInt8(this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)), this.oCPU.AX.LowUInt8));
 			
-			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L0fd2;
-
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x32)), 0x0);
-			if (this.oCPU.Flags.E) goto L0fce;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x32)), 0x3);
-			if (this.oCPU.Flags.NE) goto L0fd2;
-
-		L0fce:
-			this.oCPU.WriteUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xd), 0x6b);
-
-		L0fd2:
 			// Instruction address 0x0000:0x0ff5, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0);
 
@@ -1482,23 +1446,15 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1061, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x4112, 0);
 
-			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L1081;
-
 			// Instruction address 0x0000:0x1079, size: 5
 			this.oParent.CommonTools.F0_1000_04d4_TransformPaletteToColor(5, Color.FromRgb(0, 0, 0));
 
-		L1081:
 			// Instruction address 0x0000:0x1099, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x10a9, size: 5
 			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0x24), "slam2.pic");
 
-			if (this.oParent.Var_d762_AlwaysTrueForVGA) goto L10bc;
-
-			this.oCPU.WriteUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x21), 0x67);
-
-		L10bc:
 			// Instruction address 0x0000:0x10ce, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0x85, (ushort)(this.oCPU.BP.UInt16 - 0x24), 0);
 
@@ -1562,8 +1518,6 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x11e9, size: 5
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(this.oParent.GameData.Nations[this.oParent.GameData.Players[playerID].NationalityID].LongTune, 3);
 
-			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L1254;
-
 			// Instruction address 0x0000:0x1200, size: 5
 			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0x9), "pal");
 
@@ -1587,7 +1541,6 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x124c, size: 5
 			this.oParent.CommonTools.F0_1000_04aa_TransformPalette(8, 0xbdee);
 
-		L1254:
 			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xb1d4);
 			this.oCPU.CBW(this.oCPU.AX);
 			this.oCPU.CX.LowUInt8 = 0x7;
@@ -1698,16 +1651,8 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x13f3, size: 5
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 152, 20);
 
-			if (this.oParent.Var_d762_AlwaysTrueForVGA)
-			{
-				// Instruction address 0x0000:0x1417, size: 5
-				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 151, 23);
-			}
-			else
-			{
-				// Instruction address 0x0000:0x1417, size: 5
-				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 151, 15);
-			}
+			// Instruction address 0x0000:0x1417, size: 5
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 151, 23);
 			
 			// Instruction address 0x0000:0x1427, size: 5
 			this.oParent.CAPI.strcpy(0xba06, "the ");
@@ -1721,16 +1666,8 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1464, size: 5
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 168, 20);
 
-			if (this.oParent.Var_d762_AlwaysTrueForVGA)
-			{
-				// Instruction address 0x0000:0x1488, size: 5
-				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 167, 23);
-			}
-			else
-			{
-				// Instruction address 0x0000:0x1488, size: 5
-				this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 167, 15);
-			}
+			// Instruction address 0x0000:0x1488, size: 5
+			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 167, 23);
 
 			// Instruction address 0x0000:0x14ae, size: 5
 			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 133, 320, 67, this.oParent.Var_19d4_Rectangle, 0, 133);

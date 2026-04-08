@@ -1028,84 +1028,61 @@ namespace OpenCiv1
 				this.oParent.Array_df62[i] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, (42 * i) + 160, 142, 41, 58);
 			}
 
-			if (this.oParent.Var_d762_AlwaysTrueForVGA)
+			// Instruction address 0x0000:0x14f7, size: 5
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "ter257.pic", 0);
+
+			for (int i = 0; i < 10; i++)
 			{
-				// Instruction address 0x0000:0x14f7, size: 5
-				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "ter257.pic", 0);
-
-				for (int i = 0; i < 10; i++)
+				for (int j = 0; j < 16; j++)
 				{
-					for (int j = 0; j < 16; j++)
+					if ((i >= 6 || this.oParent.Var_1a3e != 0) && j != 0)
 					{
-						if ((i >= 6 || this.oParent.Var_1a3e != 0) && j != 0)
-						{
-							this.oParent.Array_b886[i, j] = this.oParent.Array_b886[i, j - 1];
-						}
-						else
-						{
-							// Instruction address 0x0000:0x154f, size: 5
-							this.oParent.Array_b886[i, j] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, j * 16, i * 16, 16, 16);
-						}
+						this.oParent.Array_b886[i, j] = this.oParent.Array_b886[i, j - 1];
 					}
-				}
-
-				for (int i = 0; i < 8; i++)
-				{
-					for (int j = 0; j < 4; j++)
+					else
 					{
-						if (j < 2)
-						{
-							// Instruction address 0x0000:0x15a4, size: 5
-							this.oParent.Array_d294[i, j] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, (i * 16) + ((j & 1) * 8), 176, 8, 8);
-						}
-						else
-						{
-							// Instruction address 0x0000:0x15a4, size: 5
-							this.oParent.Array_d294[i, j] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, (i * 16) - ((j & 1) * 8) + 8, 184, 8, 8);
-						}
+						// Instruction address 0x0000:0x154f, size: 5
+						this.oParent.Array_b886[i, j] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, j * 16, i * 16, 16, 16);
 					}
-				}
-
-				for (int i = 0; i < 4; i++)
-				{
-					// Instruction address 0x0000:0x1624, size: 5
-					this.oParent.Array_d2d4[i] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, (i * 16) + 128, 176, 16, 16);
-				}
-			}
-			else
-			{
-				// Instruction address 0x0000:0x163f, size: 5
-				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(3, 0, 0, "sprites.pic", 1);
-
-				// Instruction address 0x0000:0x165f, size: 5
-				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19fc_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
-
-				for (int i = 0; i < 12; i++)
-				{
-					// Instruction address 0x0000:0x1687, size: 5
-					this.oParent.Array_b886[i, 0] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(3, i * 16, 0, 16, 16);
-
-					// Instruction address 0x0000:0x169e, size: 5
-					this.oParent.Array_b886[i, 0] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(3, i * 16, 16, 16, 16);
 				}
 			}
 
-			if (this.oParent.Var_d762_AlwaysTrueForVGA)
+			for (int i = 0; i < 8; i++)
 			{
-				// Instruction address 0x0000:0x16c2, size: 5
-				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "sp257.pic", 0);
-
-				byte[] palette;
-
-				// Instruction address 0x0000:0x16d2, size: 5
-				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, "sp256.pal", out palette); // 0xbdee
-
-				if (palette.Length > 53)
+				for (int j = 0; j < 4; j++)
 				{
-					for (int i = 0; i < 48; i++)
+					if (j < 2)
 					{
-						this.oParent.Var_6b34[i] = palette[i + 6]; // 0xbdf4 (0xbdee + 6)
+						// Instruction address 0x0000:0x15a4, size: 5
+						this.oParent.Array_d294[i, j] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, (i * 16) + ((j & 1) * 8), 176, 8, 8);
 					}
+					else
+					{
+						// Instruction address 0x0000:0x15a4, size: 5
+						this.oParent.Array_d294[i, j] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, (i * 16) - ((j & 1) * 8) + 8, 184, 8, 8);
+					}
+				}
+			}
+
+			for (int i = 0; i < 4; i++)
+			{
+				// Instruction address 0x0000:0x1624, size: 5
+				this.oParent.Array_d2d4[i] = this.oParent.Graphics.F0_VGA_0b85_ScreenToBitmap(1, (i * 16) + 128, 176, 16, 16);
+			}
+
+			// Instruction address 0x0000:0x16c2, size: 5
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "sp257.pic", 0);
+
+			byte[] palette;
+
+			// Instruction address 0x0000:0x16d2, size: 5
+			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, "sp256.pal", out palette); // 0xbdee
+
+			if (palette.Length > 53)
+			{
+				for (int i = 0; i < 48; i++)
+				{
+					this.oParent.Var_6b34[i] = palette[i + 6]; // 0xbdf4 (0xbdee + 6)
 				}
 			}
 

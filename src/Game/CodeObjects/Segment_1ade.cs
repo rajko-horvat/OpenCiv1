@@ -2509,8 +2509,6 @@ namespace OpenCiv1
 				(ushort)((((this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x44)) % 9) / 3) * 69) + 1),
 				110, 68, 174, (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)) != 0 ? 87 : 96));
 
-			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L1994;
-
 			// Instruction address 0x1ade:0x1948, size: 5
 			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0x8), ".pal");
 
@@ -2526,7 +2524,6 @@ namespace OpenCiv1
 			// Instruction address 0x1ade:0x198c, size: 5
 			this.oParent.CommonTools.F0_1000_04aa_TransformPalette(30, 0xc5be);
 
-		L1994:
 			// Instruction address 0x1ade:0x1994, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 

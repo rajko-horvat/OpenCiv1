@@ -518,7 +518,7 @@ namespace OpenCiv1
 					// Instruction address 0x0000:0x0e8c, size: 5
 					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
 
-					if (param2 == -3 && this.oParent.Var_d762_AlwaysTrueForVGA)
+					if (param2 == -3)
 					{
 						// Instruction address 0x0000:0x0ea9, size: 5
 						this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x4eaa, 0xbdee);
@@ -527,14 +527,11 @@ namespace OpenCiv1
 						this.oParent.CommonTools.F0_1000_04aa_TransformPalette(15, 0xbdee);
 					}
 
-					if (this.oParent.Var_d762_AlwaysTrueForVGA)
-					{
-						// Instruction address 0x0000:0x0ed8, size: 5
-						this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(4, 15, 64, 79);
+					// Instruction address 0x0000:0x0ed8, size: 5
+					this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(4, 15, 64, 79);
 
-						// Instruction address 0x0000:0x0ee4, size: 5
-						this.oParent.CommonTools.F0_1000_03fa_StartPaletteCycleSlot(4);
-					}
+					// Instruction address 0x0000:0x0ee4, size: 5
+					this.oParent.CommonTools.F0_1000_03fa_StartPaletteCycleSlot(4);
 				}
 
 				if (param2 == -1 && i3 == 0)
@@ -564,11 +561,8 @@ namespace OpenCiv1
 
 			if (param2 == -2)
 			{
-				if (this.oParent.Var_d762_AlwaysTrueForVGA)
-				{
-					// Instruction address 0x0000:0x0fe6, size: 5
-					this.oParent.CommonTools.F0_1000_042b_StopPaletteCycleSlot(4);
-				}
+				// Instruction address 0x0000:0x0fe6, size: 5
+				this.oParent.CommonTools.F0_1000_042b_StopPaletteCycleSlot(4);
 			}
 			else
 			{
@@ -583,20 +577,14 @@ namespace OpenCiv1
 					this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 				}
 
-				if (this.oParent.Var_d762_AlwaysTrueForVGA)
-				{
-					// Instruction address 0x0000:0x0f94, size: 5
-					this.oParent.CommonTools.F0_1000_042b_StopPaletteCycleSlot(4);
-				}
+				// Instruction address 0x0000:0x0f94, size: 5
+				this.oParent.CommonTools.F0_1000_042b_StopPaletteCycleSlot(4);
 
-				if (this.oParent.Var_d762_AlwaysTrueForVGA)
-				{
-					// Instruction address 0x0000:0x0fc7, size: 5
-					this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
+				// Instruction address 0x0000:0x0fc7, size: 5
+				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
 
-					// Instruction address 0x0000:0x0fcf, size: 5
-					this.oParent.Segment_1238.F0_1238_1beb();
-				}
+				// Instruction address 0x0000:0x0fcf, size: 5
+				this.oParent.Segment_1238.F0_1238_1beb();
 
 				// Instruction address 0x0000:0x0fd4, size: 5
 				this.oParent.Segment_2dc4.F0_2dc4_0626();
@@ -1233,12 +1221,9 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x1682, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			if (!this.oParent.Var_d762_AlwaysTrueForVGA) goto L16a0;
-
 			// Instruction address 0x0000:0x1698, size: 5
 			this.oParent.Graphics.SetPaletteColor(0xfd, GBitmap.Color18ToColor(3, 3, 3));
 
-		L16a0:
 			// Instruction address 0x0000:0x16a5, size: 5
 			this.oParent.MainCode.F0_11a8_0268();
 

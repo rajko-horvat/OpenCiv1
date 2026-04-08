@@ -4877,39 +4877,31 @@ namespace OpenCiv1
 			this.oCPU.Log.EnterBlock($"F0_1d12_710d_FillRectangleWithPattern({xPos}, {yPos}, {width}, {height})");
 
 			// function body
-			if (!this.oParent.Var_d762_AlwaysTrueForVGA)
-			{
-				// Instruction address 0x1d12:0x712e, size: 5
-				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, xPos, yPos, width, height, 9);
-			}
-			else
-			{
-				int iRectYPos = yPos;
-				int iRectHeight = height;
+			int iRectYPos = yPos;
+			int iRectHeight = height;
 
-				while (iRectHeight > 0)
+			while (iRectHeight > 0)
+			{
+				int iCellHeight = Math.Min(iRectHeight, 16);
+				int iRectXPos = xPos;
+				int iRectWidth = width;
+
+				while (iRectWidth > 0)
 				{
-					int iCellHeight = Math.Min(iRectHeight, 16);
-					int iRectXPos = xPos;
-					int iRectWidth = width;
+					int iCellWidth = Math.Min(iRectWidth, 16);
 
-					while (iRectWidth > 0)
-					{
-						int iCellWidth = Math.Min(iRectWidth, 16);
+					// Instruction address 0x1d12:0x7195, size: 5
+					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+						208, 100, iCellWidth, iCellHeight, this.oParent.Var_aa_Rectangle, iRectXPos, iRectYPos);
 
-						// Instruction address 0x1d12:0x7195, size: 5
-						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-							208, 100, iCellWidth, iCellHeight, this.oParent.Var_aa_Rectangle, iRectXPos, iRectYPos);
-
-						iRectXPos += iCellWidth;
-						iRectWidth -= iCellWidth;
-					}
-
-					iRectYPos += iCellHeight;
-					iRectHeight -= iCellHeight;
+					iRectXPos += iCellWidth;
+					iRectWidth -= iCellWidth;
 				}
+
+				iRectYPos += iCellHeight;
+				iRectHeight -= iCellHeight;
 			}
-		
+
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1d12_710d_FillRectangleWithPattern");
 		}
