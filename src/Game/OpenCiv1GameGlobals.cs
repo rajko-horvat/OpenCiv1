@@ -60,9 +60,11 @@ namespace OpenCiv1
 		public ushort Var_6c = 0; // ushort
 
 		public CRectangle Var_aa_Rectangle = new CRectangle(0, 0, 0, 319, 199, 0x1, 15, 0, 4, 0, 0);
+
 		public byte[] Array_1946 = { 12, 15, 10, 9, 14, 11, 13, 7 };
 		public byte[] Array_1956 = { 4, 7, 2, 1, 10, 3, 4, 8 };
 		public string[] Array_1966 = { "Anarchy", "Despotism", "Monarchy", "Communist", "Republic", "Democratic" };
+
 		public CRectangle Var_19d4_Rectangle = new CRectangle(1, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 		public CRectangle Var_19e8_Rectangle = new CRectangle(2, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 
@@ -76,9 +78,9 @@ namespace OpenCiv1
 		public int Var_1ae0 = 0;
 
 		// Convert pixel value to actual TerrainTypeEnum value
-		public TerrainTypeEnum[] Array_2ba6 = {
-			TerrainTypeEnum.Invalid,	// Water = 0
-			TerrainTypeEnum.Water,		// Coast = 1
+		public TerrainTypeEnum[] PixelValuesToTerrainTypes = {
+			TerrainTypeEnum.Invalid,	// Undefined0 = 0
+			TerrainTypeEnum.Water,		// Water = 1
 			TerrainTypeEnum.Forest,		// Forest = 2
 			TerrainTypeEnum.Swamp,		// Swamp = 3
 			TerrainTypeEnum.Invalid,	// Undefined4 = 4
@@ -93,6 +95,21 @@ namespace OpenCiv1
 			TerrainTypeEnum.Mountains,	// Mountains = 13
 			TerrainTypeEnum.Desert,		// Desert = 14
 			TerrainTypeEnum.Arctic		// Arctic = 15
+		};
+
+		public int[] TerrainTypeToPixelValues = {
+			14, // Desert = 0
+			6, // Plains = 1
+			10, // Grassland = 2
+			2, // Forest = 3
+			12, // Hills = 4
+			13, // Mountains = 5
+			7, // Tundra = 6
+			15, // Arctic = 7
+			3, // Swamp = 8
+			11, // Jungle = 9
+			1, // Water = 10
+			9 // River = 11
 		};
 
 		public bool Var_2f98_PatternAvailable = false;

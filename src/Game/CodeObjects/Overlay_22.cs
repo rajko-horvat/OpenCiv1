@@ -837,7 +837,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L099f;
 
 			// Instruction address 0x0000:0x09f0, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(xPos - this.oParent.Var_d4cc_MapViewX);
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.AdjustXPosition(xPos - this.oParent.Var_d4cc_MapViewX);
 
 			this.oCPU.CX.LowUInt8 = 0x4;
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
@@ -1163,9 +1163,9 @@ namespace OpenCiv1
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)));
 			
 			// Instruction address 0x0000:0x0de5, size: 5
-			this.oParent.MapManagement.F0_2aea_138c_SetCityOwner(playerID,
-				this.oParent.GameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16))].Position.X,
-				this.oParent.GameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16))].Position.Y);
+			this.oParent.MapManagement.F0_2aea_138c_SetCityOwner(this.oParent.GameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16))].Position.X,
+				this.oParent.GameData.Players[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16))].Position.Y,
+				playerID);
 
 			// Instruction address 0x0000:0x0df9, size: 5
 			this.oParent.MapManagement.F0_2aea_1511_ActiveUnitSetFlag8(
@@ -1223,8 +1223,8 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.AX.UInt16;
 
 			// Instruction address 0x0000:0x0ea1, size: 5
-			this.oParent.MapManagement.F0_2aea_138c_SetCityOwner(playerID,
-				this.oParent.GameData.Cities[cityID].Position.X, this.oParent.GameData.Cities[cityID].Position.Y);
+			this.oParent.MapManagement.F0_2aea_138c_SetCityOwner(this.oParent.GameData.Cities[cityID].Position.X,
+				this.oParent.GameData.Cities[cityID].Position.Y, playerID);
 
 		L0ea9:
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();

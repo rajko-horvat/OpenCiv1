@@ -225,7 +225,7 @@ namespace OpenCiv1
 			this.oParent.GameData.Cities[cityID].StatusFlag = 0xff;
 
 			// Instruction address 0x1ade:0x01fe, size: 5
-			this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.None, x, y);
+			this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(x, y, TerrainImprovementFlagsEnum.None);
 
 			this.oCPU.AX.UInt16 = this.oParent.GameData.MapVisibility[x, y];
 			
@@ -333,7 +333,7 @@ namespace OpenCiv1
 			GPoint direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))];
 
 			// Instruction address 0x1ade:0x0329, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(x + direction.X);
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.AdjustXPosition(x + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.AX.UInt16);
 
@@ -355,14 +355,13 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, 0x50);
 
 			// Instruction address 0x1ade:0x0370, size: 5
-			this.oParent.Graphics.F0_VGA_038c_GetPixel(2,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)) + 0x50,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)) + 0x32);
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.GetBuildLocationScore(
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
 
 			// Instruction address 0x1ade:0x037d, size: 5
-			this.oParent.Graphics.F0_VGA_0550_SetPixel(2, this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)) + 0x50,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
-				this.oCPU.AX.LowUInt8);
+			this.oParent.MapManagement.SetPlayerLandOwnership(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), this.oCPU.AX.Int16);
 
 		L0385:
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))));

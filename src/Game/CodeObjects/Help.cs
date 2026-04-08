@@ -103,7 +103,7 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.SI.UInt16, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x0000:0x00dd, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(this.oParent.GameData.Players[playerID].Units[unitID].Position.X, 
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.GetTerrainType(this.oParent.GameData.Players[playerID].Units[unitID].Position.X, 
 				this.oParent.GameData.Players[playerID].Units[unitID].Position.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), this.oCPU.AX.UInt16);
@@ -130,8 +130,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x0000:0x0120, size: 5
-			this.oParent.Graphics.F0_VGA_038c_GetPixel(2,
-				this.oParent.GameData.Players[playerID].Units[unitID].Position.X + 80,
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.GetPlayerLandOwnership(this.oParent.GameData.Players[playerID].Units[unitID].Position.X,
 				this.oParent.GameData.Players[playerID].Units[unitID].Position.Y);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.AX.UInt16);
@@ -156,8 +155,7 @@ namespace OpenCiv1
 			this.oCPU.DI.UInt16 = this.oCPU.ADD_UInt16(this.oCPU.DI.UInt16, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x0000:0x016c, size: 5
-			this.oParent.Graphics.F0_VGA_038c_GetPixel(2,
-				this.oParent.GameData.Players[playerID].Units[unitID].Position.X + direction.X + 80,
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.GetPlayerLandOwnership(this.oParent.GameData.Players[playerID].Units[unitID].Position.X + direction.X,
 				this.oParent.GameData.Players[playerID].Units[unitID].Position.Y + direction.Y);
 
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));

@@ -337,6 +337,7 @@ namespace OpenCiv1
 								continue;
 
 							GPoint newPos = pos.Offset(j, i);
+							newPos.X = this.parent.MapManagement.AdjustXPosition(newPos.X);
 
 							// If new cell successor position is a valid position
 							if (map.F0_2aea_1326_ValidateMapCoordinates(newPos))
@@ -464,7 +465,7 @@ namespace OpenCiv1
 		private double VisibleMovementCost(int playerID, int x, int y)
 		{
 			MapManagement map = this.parent.MapManagement;
-			TerrainDefinition terrain = this.gameData.Terrains[(int)map.F0_2aea_134a_GetTerrainType(x, y)];
+			TerrainDefinition terrain = this.gameData.Terrains[(int)map.GetTerrainType(x, y)];
 			TerrainImprovementFlagsEnum improvements = map.F0_2aea_1585_GetVisibleTerrainImprovements(x, y);
 			double dValue = terrain.MovementCost;
 
@@ -683,7 +684,7 @@ namespace OpenCiv1
 					if (playerID != this.parent.GameData.HumanPlayerID || newVector <= vector)
 					{
 						// Instruction address 0x2e31:0x03b7, size: 5
-						TerrainTypeEnum newTerrainType = this.parent.MapManagement.F0_2aea_134a_GetTerrainType(unitNewX, unitNewY);
+						TerrainTypeEnum newTerrainType = this.parent.MapManagement.GetTerrainType(unitNewX, unitNewY);
 
 						// Instruction address 0x2e31:0x03c8, size: 5
 						int cellOwner = this.parent.MapManagement.F0_2aea_14e0_GetCellUnitPlayerID(unitNewX, unitNewY);
@@ -945,14 +946,14 @@ namespace OpenCiv1
 					GPoint direction = this.parent.MoveDirections[newDirection];
 
 					// Instruction address 0x2e31:0x099d, size: 3
-					this.Var_6590_DestinationX = this.parent.MapManagement.F0_2e31_119b_AdjustMapXPosition(((unitX + direction.X) * 4) + 1);
+					this.Var_6590_DestinationX = this.parent.MapManagement.AdjustXPosition(((unitX + direction.X) * 4) + 1);
 					this.Var_6592_DestinationY = ((unitY + direction.Y) * 4) + 1;
 
-					if ((this.parent.MapManagement.F0_2aea_134a_GetTerrainType(this.Var_6590_DestinationX, this.Var_6592_DestinationY) == TerrainTypeEnum.Water) != waterUnit)
+					if ((this.parent.MapManagement.GetTerrainType(this.Var_6590_DestinationX, this.Var_6592_DestinationY) == TerrainTypeEnum.Water) != waterUnit)
 					{
 						this.Var_6590_DestinationX++;
 
-						if ((this.parent.MapManagement.F0_2aea_134a_GetTerrainType(this.Var_6590_DestinationX, this.Var_6592_DestinationY) == TerrainTypeEnum.Water) != waterUnit)
+						if ((this.parent.MapManagement.GetTerrainType(this.Var_6590_DestinationX, this.Var_6592_DestinationY) == TerrainTypeEnum.Water) != waterUnit)
 						{
 							this.Var_6592_DestinationY++;
 						}
@@ -1019,7 +1020,7 @@ namespace OpenCiv1
 							int testShortX = newShortX + 1;
 							int testShortY = newShortY + 1;
 
-							if ((this.parent.MapManagement.F0_2aea_134a_GetTerrainType(testShortX, testShortY) == TerrainTypeEnum.Water) == waterUnit)
+							if ((this.parent.MapManagement.GetTerrainType(testShortX, testShortY) == TerrainTypeEnum.Water) == waterUnit)
 							{
 								if (F0_2e31_111c_CheckUnitPath(testShortX, testShortY, x, y, waterUnit, 18) != -1)
 								{
@@ -1031,7 +1032,7 @@ namespace OpenCiv1
 							{
 								testShortX++;
 
-								if ((this.parent.MapManagement.F0_2aea_134a_GetTerrainType(testShortX, testShortY) == TerrainTypeEnum.Water) == waterUnit)
+								if ((this.parent.MapManagement.GetTerrainType(testShortX, testShortY) == TerrainTypeEnum.Water) == waterUnit)
 								{
 									if (F0_2e31_111c_CheckUnitPath(testShortX, testShortY, x, y, waterUnit, 18) != -1)
 									{
@@ -1043,7 +1044,7 @@ namespace OpenCiv1
 								{
 									testShortY++;
 
-									if ((this.parent.MapManagement.F0_2aea_134a_GetTerrainType(testShortX, testShortY) == TerrainTypeEnum.Water) == waterUnit)
+									if ((this.parent.MapManagement.GetTerrainType(testShortX, testShortY) == TerrainTypeEnum.Water) == waterUnit)
 									{
 										if (F0_2e31_111c_CheckUnitPath(testShortX, testShortY, x, y, waterUnit, 18) != -1)
 										{
@@ -1055,7 +1056,7 @@ namespace OpenCiv1
 									{
 										testShortX--;
 
-										if ((this.parent.MapManagement.F0_2aea_134a_GetTerrainType(testShortX, testShortY) == TerrainTypeEnum.Water) == waterUnit)
+										if ((this.parent.MapManagement.GetTerrainType(testShortX, testShortY) == TerrainTypeEnum.Water) == waterUnit)
 										{
 											if (F0_2e31_111c_CheckUnitPath(testShortX, testShortY, x, y, waterUnit, 18) != -1)
 											{
@@ -1144,7 +1145,7 @@ namespace OpenCiv1
 
 					if (local_e <= this.Var_6794)
 					{
-						if (this.parent.MapManagement.F0_2e31_119b_AdjustMapXPosition(oldX) != unitX || oldY != unitY)
+						if (this.parent.MapManagement.AdjustXPosition(oldX) != unitX || oldY != unitY)
 						{
 							for (int i = 1; i < 9; i++)
 							{
@@ -1154,9 +1155,9 @@ namespace OpenCiv1
 
 								if (Math.Abs(newX - this.Var_6590_DestinationX) < 8)
 								{
-									int newXAdjusted = this.parent.MapManagement.F0_2e31_119b_AdjustMapXPosition(newX);
+									int newXAdjusted = this.parent.MapManagement.AdjustXPosition(newX);
 									int newY = oldY + direction.Y;
-									TerrainTypeEnum local_3e = this.parent.MapManagement.F0_2aea_134a_GetTerrainType(newXAdjusted, newY);
+									TerrainTypeEnum local_3e = this.parent.MapManagement.GetTerrainType(newXAdjusted, newY);
 
 									if (Math.Abs(newY - this.Var_6592_DestinationY) < 8 &&
 										this.parent.MapManagement.F0_2aea_1326_ValidateMapCoordinates(newXAdjusted, newY) &&
@@ -1165,7 +1166,7 @@ namespace OpenCiv1
 									{
 										int local_1a;
 
-										if (this.parent.MapManagement.F0_2aea_1570_CheckIfCellHasRoad(this.parent.MapManagement.F0_2e31_119b_AdjustMapXPosition(oldX), oldY) &&
+										if (this.parent.MapManagement.F0_2aea_1570_CheckIfCellHasRoad(this.parent.MapManagement.AdjustXPosition(oldX), oldY) &&
 											this.parent.MapManagement.F0_2aea_1570_CheckIfCellHasRoad(newXAdjusted, newY))
 										{
 											local_1a = local_e + 1;
@@ -1229,12 +1230,12 @@ namespace OpenCiv1
 
 					if (Math.Abs(newX - this.Var_6590_DestinationX) < 8)
 					{
-						int newXAdjusted = this.parent.MapManagement.F0_2e31_119b_AdjustMapXPosition(newX);
+						int newXAdjusted = this.parent.MapManagement.AdjustXPosition(newX);
 						int newY = unitY + direction.Y;
 
 						if (Math.Abs(newY - this.Var_6592_DestinationY) < 8)
 						{
-							if ((this.parent.MapManagement.F0_2aea_134a_GetTerrainType(newXAdjusted, newY) == TerrainTypeEnum.Water) == waterUnit ||
+							if ((this.parent.MapManagement.GetTerrainType(newXAdjusted, newY) == TerrainTypeEnum.Water) == waterUnit ||
 								this.parent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(newXAdjusted, newY).HasFlag(TerrainImprovementFlagsEnum.City))
 							{
 								int local_6 = this.Arr_b780[newX - local_20, newY - local_3a];

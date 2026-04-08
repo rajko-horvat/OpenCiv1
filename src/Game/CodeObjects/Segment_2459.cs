@@ -255,7 +255,7 @@ namespace OpenCiv1
 			GPoint direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10))];
 
 			// Instruction address 0x2459:0x0258, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.AdjustXPosition(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)) + direction.X);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), this.oCPU.AX.UInt16);
@@ -264,10 +264,9 @@ namespace OpenCiv1
 				(short)(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)) + direction.Y));
 
 			// Instruction address 0x2459:0x027e, size: 5
-			this.oParent.Graphics.F0_VGA_0550_SetPixel(2, 
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)) + 80,
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)),
-				(byte)playerID);
+			this.oParent.MapManagement.SetPlayerLandOwnership(
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc)), playerID);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10))));
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)), 0x14);
@@ -436,9 +435,9 @@ namespace OpenCiv1
 
 			// Instruction address 0x2459:0x04d2, size: 5
 			this.oParent.MapManagement.F0_2aea_138c_SetCityOwner(
-				playerID,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)),
+				playerID);
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0x0);
 

@@ -177,7 +177,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x0000:0x01a5, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
 

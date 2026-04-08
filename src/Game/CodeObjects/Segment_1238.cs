@@ -1,6 +1,7 @@
-using System;
 using Avalonia.Media;
 using IRB.VirtualCPU;
+using OpenCiv1.Graphics;
+using System;
 
 namespace OpenCiv1
 {
@@ -650,7 +651,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x1238:0x09dd, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
 
@@ -809,7 +810,7 @@ namespace OpenCiv1
 
 		L0b92:
 			// Instruction address 0x1238:0x0b98, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12)));
 
@@ -1862,7 +1863,7 @@ namespace OpenCiv1
 		L17ca:
 			if (this.oParent.GameData.PollutionEffectLevel <= 16) goto L17e7;
 			
-			this.oParent.GameInitAndIntro.F7_0000_1be3(this.oParent.GameData.GlobalWarmingCount);
+			F7_0000_1be3_IcecapMeltEvent(this.oParent.GameData.GlobalWarmingCount);
 
 			this.oParent.GameData.GlobalWarmingCount++;
 			this.oParent.GameData.PollutionEffectLevel = 0;
@@ -2296,6 +2297,165 @@ namespace OpenCiv1
 			level--;
 
 			return level;
+		}
+
+		/// <summary>
+		/// Global warming causes Icecap melt event
+		/// </summary>
+		/// <param name="globalWarmingCount"></param>
+		public void F7_0000_1be3_IcecapMeltEvent(short globalWarmingCount)
+		{
+			this.oCPU.Log.EnterBlock($"F7_0000_1be3({globalWarmingCount})");
+
+			// function body
+			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
+			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
+			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0xe);
+			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
+
+			// Instruction address 0x0000:0x1bf2, size: 5
+			this.oParent.CAPI.strcpy(0xba06, "Global temperature\nrises! Icecaps melt.\nSevere Drought.\n");
+
+			this.oParent.Overlay_21.F21_0000_0000(-1);
+
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x0);
+			goto L1d45;
+
+		L1c11:
+			// Instruction address 0x0000:0x1c2a, size: 5
+			this.oParent.MapManagement.F0_2aea_16ee_ClearTerrainImprovements(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)),
+				TerrainImprovementFlagsEnum.Mines | TerrainImprovementFlagsEnum.Irrigation);
+
+			goto L1c8a;
+
+		L1c34:
+			this.oCPU.AX.UInt16 = 0xb;
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)));
+			this.oCPU.CX.UInt16 = this.oCPU.AX.UInt16;
+			this.oCPU.AX.UInt16 = 0xd;
+			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
+			this.oCPU.CX.LowUInt8 = this.oCPU.ADD_UInt8(this.oCPU.CX.LowUInt8, this.oCPU.AX.LowUInt8);
+			this.oCPU.CX.HighUInt8 = 0;
+			this.oCPU.CX.UInt16 = this.oCPU.AND_UInt16(this.oCPU.CX.UInt16, 0x7);
+			this.oCPU.CMP_UInt16(this.oCPU.CX.UInt16, (ushort)globalWarmingCount);
+			if (this.oCPU.Flags.NE) goto L1cac;
+
+			this.oParent.GameData.MapVisibility[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+				this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))] |= 1;
+
+			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 0x1);
+			if (this.oCPU.Flags.LE)
+			{
+				// Instruction address 0x0000:0x1c82, size: 5
+				this.oParent.MapManagement.SetTerrainType(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), TerrainTypeEnum.Desert);
+			}
+			else
+			{
+				// Instruction address 0x0000:0x1c82, size: 5
+				this.oParent.MapManagement.SetTerrainType(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), TerrainTypeEnum.Plains);
+			}
+
+		L1c8a:
+			this.oCPU.AX.UInt16 = this.oParent.GameData.MapVisibility[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+				this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))];
+			this.oCPU.DX.UInt16 = 0x1;
+			this.oCPU.CX.LowUInt8 = (byte)(this.oParent.GameData.HumanPlayerID & 0xff);
+			this.oCPU.DX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.DX.UInt16, this.oCPU.CX.LowUInt8);
+			this.oCPU.TEST_UInt16(this.oCPU.AX.UInt16, this.oCPU.DX.UInt16);
+			if (this.oCPU.Flags.E) goto L1cac;
+
+			// Instruction address 0x0000:0x1ca4, size: 5
+			this.oParent.MapManagement.F0_2aea_11d4_DrawCellWithUnit(
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
+
+		L1cac:
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6),
+				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))));
+
+		L1caf:
+			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), 0x32);
+			if (this.oCPU.Flags.L) goto L1cb8;
+			goto L1d42;
+
+		L1cb8:
+			// Instruction address 0x0000:0x1cbe, size: 5
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.GetTerrainType(
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
+
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8), this.oCPU.AX.UInt16);
+			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x3);
+			if (this.oCPU.Flags.G) goto L1cac;
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), 0x0);
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), 0x1);
+
+		L1cd8:
+			this.oCPU.SI.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4));
+			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
+
+			GPoint direction = this.oParent.MoveDirections[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))];
+
+			// Instruction address 0x0000:0x1ced, size: 5
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.GetTerrainType(
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)) + direction.X,
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)) + direction.Y);
+
+			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xa);
+			if (this.oCPU.Flags.NE) goto L1cfd;
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa),
+				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa))));
+
+		L1cfd:
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4),
+				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))));
+			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 0x8);
+			if (this.oCPU.Flags.LE) goto L1cd8;
+			this.oCPU.AX.UInt16 = 0x7;
+			this.oCPU.AX.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.AX.UInt16, (ushort)globalWarmingCount);
+			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)));
+			if (this.oCPU.Flags.LE) goto L1d14;
+			goto L1c34;
+
+		L1d14:
+			this.oParent.GameData.MapVisibility[this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+				this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6))] |= 1;
+
+			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 0x3);
+			if (this.oCPU.Flags.NE)
+			{
+				// Instruction address 0x0000:0x1c18, size: 5
+				this.oParent.MapManagement.SetTerrainType(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), TerrainTypeEnum.Swamp);
+			}
+			else
+			{
+				// Instruction address 0x0000:0x1c18, size: 5
+				this.oParent.MapManagement.SetTerrainType(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)),
+					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), TerrainTypeEnum.Jungle);
+			}
+			goto L1c11;
+
+		L1d42:
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2),
+				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
+
+		L1d45:
+			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x50);
+			if (this.oCPU.Flags.GE) goto L1d53;
+
+			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), 0x0);
+			goto L1caf;
+
+		L1d53:
+			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
+			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
+			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
+			// Far return
+			this.oCPU.Log.ExitBlock("F7_0000_1be3");
 		}
 	}
 }

@@ -354,6 +354,54 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
+		/// Transform current palette to another palette
+		/// </summary>
+		/// <param name="speed"></param>
+		/// <param name="palettePtr"></param>
+		public void F0_1000_04aa_TransformPalette(int speed, byte[] palette)
+		{
+			//this.oCPU.Log.EnterBlock($"F0_1000_04aa_TransformPalette({speed}, 0x{palettePtr:x4})");
+
+			// function body
+			int position = 0;
+
+			if (speed < 1 || speed > 50)
+				throw new ArgumentOutOfRangeException("The argument speed is out of range");
+
+			this.aTransformColors = new TransformColor[256];
+			position += 6;
+
+			lock (VCPU.GraphicsLock)
+			{
+				while (this.bInTimer)
+				{
+					Thread.Sleep(1);
+				}
+
+				this.iTransformValue = speed * 10;
+				this.iTransformCount = 0;
+
+				for (int i = 0; i < 256; i++)
+				{
+					HSVColor from = HSVColor.FromColor(this.oGraphics.GetPaletteColor((byte)i));
+					HSVColor to = HSVColor.FromColor(GBitmap.Color18ToColor(palette[position], palette[position + 1], palette[position + 2]));
+
+					this.aTransformColors[i] = new TransformColor(from, to, this.iTransformValue);
+
+					position += 3;
+				}
+
+				this.bTransformFlag = true;
+			}
+
+			while (this.bTransformFlag)
+			{
+				this.oCPU.DoEvents();
+				Thread.Sleep(1);
+			}
+		}
+
+		/// <summary>
 		/// Transform entire palette to one color
 		/// </summary>
 		/// <param name="speed"></param>

@@ -1007,7 +1007,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x6866), 0x1);
 
 			// Instruction address 0x0000:0x0cc6, size: 5
-			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, 
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(this.oParent.Var_aa_Rectangle.ScreenID, 
 				this.oCPU.ReadInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x683e)),
 				this.oCPU.ReadInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x6852)),
 				this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
@@ -1045,7 +1045,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L0d2a;
 
 			// Instruction address 0x0000:0x0d22, size: 5
-			this.oParent.Graphics.F0_VGA_0550_SetPixel((ushort)this.oParent.Var_aa_Rectangle.ScreenID, 
+			this.oParent.Graphics.F0_VGA_0550_SetPixel(this.oParent.Var_aa_Rectangle.ScreenID, 
 				this.oCPU.ReadInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x683e)),
 				this.oCPU.ReadInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x6852)),
 				0);

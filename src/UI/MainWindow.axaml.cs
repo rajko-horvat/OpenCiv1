@@ -312,6 +312,10 @@ namespace OpenCiv1.UI
 							ToggleScreen(2);
 							break;
 
+						case Key.D4:
+							ToggleScreen(3);
+							break;
+
 						case Key.A:
 							this.oGame.CPU.Keys.Enqueue(0x1e00);
 							break;

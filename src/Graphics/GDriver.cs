@@ -300,7 +300,7 @@ namespace OpenCiv1.Graphics
 
 					lock (VCPU.GraphicsLock)
 					{
-						screen0.DrawImage(newScreen);
+						screen0.DrawBitmap(newScreen);
 					}
 				}
 				else
@@ -328,7 +328,7 @@ namespace OpenCiv1.Graphics
 					{
 						GBitmap destBitmap = this.aScreens.GetValueByKey(dstRect.ScreenID);
 
-						destBitmap.DrawImage(iXOffsetTo, iYOffsetTo, srcBitmap, new GRectangle(iXOffsetFrom, iYOffsetFrom, width, height), false);
+						destBitmap.DrawBitmap(iXOffsetTo, iYOffsetTo, srcBitmap, new GRectangle(iXOffsetFrom, iYOffsetFrom, width, height), false);
 					}
 				}
 				else
@@ -358,7 +358,7 @@ namespace OpenCiv1.Graphics
 
 					screen.CopyPalette(bitmap);
 
-					bitmap.DrawImage(0, 0, screen, rect, false);
+					bitmap.DrawBitmap(0, 0, screen, rect, false);
 
 					this.aBitmaps.Add(newScreenID, bitmap);
 
@@ -389,7 +389,7 @@ namespace OpenCiv1.Graphics
 						GBitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 						GBitmap bitmap = this.aBitmaps.GetValueByKey(bitmapID);
 
-						screen.DrawImage(rect.Left + xPos, rect.Top + yPos, bitmap, true);
+						screen.DrawBitmap(rect.Left + xPos, rect.Top + yPos, bitmap, true);
 					}
 				}
 				else
@@ -415,7 +415,7 @@ namespace OpenCiv1.Graphics
 						GBitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 						GBitmap bitmap = this.aBitmaps.GetValueByKey(bitmapPtr);
 
-						screen.DrawImage(rect.Left + xPos, rect.Top + yPos, bitmap, true);
+						screen.DrawBitmap(rect.Left + xPos, rect.Top + yPos, bitmap, true);
 					}
 				}
 				else
@@ -426,6 +426,25 @@ namespace OpenCiv1.Graphics
 			else
 			{
 				throw new Exception($"The screen {rect.ScreenID} is not allocated");
+			}
+		}
+
+		public void DrawBitmapToScreen(GBitmap bitmap, int xFrom, int yFrom, int width, int height, CRectangle dstRect, int xTo, int yTo)
+		{
+			// function body
+			if (this.aScreens.ContainsKey(dstRect.ScreenID))
+			{
+				lock (VCPU.GraphicsLock)
+				{
+					GBitmap screen = this.aScreens.GetValueByKey(dstRect.ScreenID);
+
+					screen.DrawBitmap(dstRect.Left + xTo, dstRect.Top + yTo, 
+						bitmap, new GRectangle(xFrom, yFrom, width, height), false);
+				}
+			}
+			else
+			{
+				throw new Exception($"The screen {dstRect.ScreenID} is not allocated");
 			}
 		}
 

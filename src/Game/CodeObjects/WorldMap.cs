@@ -312,7 +312,7 @@ namespace OpenCiv1
 
 		L02ed:
 			// Instruction address 0x0000:0x02f4, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.AdjustXPosition(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)) +
 					this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)));
 
@@ -326,7 +326,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16), this.oCPU.AX.UInt16);
 
 			// Instruction address 0x0000:0x0316, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)));
 
@@ -1295,7 +1295,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.GE) goto L0e4c;
 
 			// Instruction address 0x0000:0x0e27, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+			this.oCPU.AX.Int16 = (short)this.oParent.MapManagement.GetTerrainType(
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x42)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x54)));
 

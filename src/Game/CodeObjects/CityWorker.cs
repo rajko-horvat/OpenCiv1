@@ -933,7 +933,7 @@ namespace OpenCiv1
 												if (local_c8 > this.oParent.Var_6c9a || (local_c8 == this.oParent.Var_6c9a && this.oParent.CAPI.RNG.Next(++local_106) == 0))
 												{
 													// Instruction address 0x1d12:0x191e, size: 5
-													TerrainTypeEnum terrainType = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(
+													TerrainTypeEnum terrainType = this.oParent.MapManagement.GetTerrainType(
 														this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[local_e8].Position.X,
 														this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[local_e8].Position.Y);
 
@@ -4037,7 +4037,7 @@ namespace OpenCiv1
 
 			L6590:
 				// Instruction address 0x1d12:0x6598, size: 5
-				if (this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(local_c6, local_d2) != TerrainTypeEnum.Water) goto L65a8;
+				if (this.oParent.MapManagement.GetTerrainType(local_c6, local_d2) != TerrainTypeEnum.Water) goto L65a8;
 				goto L6640;
 
 			L65a8:
@@ -4305,7 +4305,7 @@ namespace OpenCiv1
 				this.Var_2494 = 1;
 
 				// Instruction address 0x1d12:0x69dd, size: 5
-				this.oParent.Graphics.F0_VGA_0550_SetPixel(2, local_6 + 80, local_a, (byte)this.oParent.GameData.Cities[cityID].PlayerID);
+				this.oParent.MapManagement.SetPlayerLandOwnership(local_6, local_a, this.oParent.GameData.Cities[cityID].PlayerID);
 			}
 
 			local_8 = 0;
@@ -4371,7 +4371,7 @@ namespace OpenCiv1
 			if (this.oParent.MapManagement.F0_2aea_1326_ValidateMapCoordinates(x, y))
 			{
 				// Instruction address 0x1d12:0x6ade, size: 5
-				TerrainTypeEnum terrainType = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(x, y);
+				TerrainTypeEnum terrainType = this.oParent.MapManagement.GetTerrainType(x, y);
 				int terrainIndex = (int)terrainType;
 
 				// Instruction address 0x1d12:0x6af0, size: 5
@@ -4589,7 +4589,7 @@ namespace OpenCiv1
 			if (!this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(xPos, yPos).HasFlag(TerrainImprovementFlagsEnum.Pollution))
 			{
 				// Instruction address 0x1d12:0x6d52, size: 5
-				this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(TerrainImprovementFlagsEnum.Pollution, xPos, yPos);
+				this.oParent.MapManagement.F0_2aea_1653_SetTerrainImprovements(xPos, yPos, TerrainImprovementFlagsEnum.Pollution);
 
 				// Instruction address 0x1d12:0x6d60, size: 5
 				this.oParent.MapManagement.F0_2aea_1601_UpdateVisibleCellStatus(xPos, yPos);
@@ -4972,7 +4972,7 @@ namespace OpenCiv1
 				for (int xPos = 0; xPos < 80; xPos++)
 				{
 					// Instruction address 0x1d12:0x731c, size: 5
-					int mapXPos = this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].XStart + xPos - 40);
+					int mapXPos = this.oParent.MapManagement.AdjustXPosition(this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].XStart + xPos - 40);
 					int mapYPos = yPos;
 
 					if ((this.oParent.GameData.MapVisibility[mapXPos, mapYPos] & (1 << this.oParent.GameData.HumanPlayerID)) != 0)
@@ -4983,7 +4983,7 @@ namespace OpenCiv1
 						int rectYPos = ((yPos / 2) * 3) + this.oCPU.ReadInt8(this.oCPU.DS.UInt16, (ushort)(local_10 + 0x2810)) + 118;
 
 						// Instruction address 0x1d12:0x73a3, size: 5
-						if (this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(mapXPos, mapYPos) != TerrainTypeEnum.Water)
+						if (this.oParent.MapManagement.GetTerrainType(mapXPos, mapYPos) != TerrainTypeEnum.Water)
 						{
 							// Instruction address 0x1d12:0x72f7, size: 5
 							this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, rectXPos, rectYPos, 2, 2, 2);
@@ -5018,7 +5018,7 @@ namespace OpenCiv1
 			if (this.Var_2496 == 2)
 			{
 				// Instruction address 0x1d12:0x7405, size: 5
-				xPos = this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(
+				xPos = this.oParent.MapManagement.AdjustXPosition(
 					xPos - this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].XStart + 40);
 
 				// Instruction address 0x1d12:0x7444, size: 5

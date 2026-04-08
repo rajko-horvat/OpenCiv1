@@ -226,7 +226,7 @@ namespace OpenCiv1
 			TerrainImprovementFlagsEnum improvements = this.oParent.MapManagement.F0_2aea_1585_GetVisibleTerrainImprovements(xPos, yPos);
 
 			// Instruction address 0x2c84:0x0232, size: 5
-			TerrainTypeEnum terrainType = this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xPos, yPos);
+			TerrainTypeEnum terrainType = this.oParent.MapManagement.GetTerrainType(xPos, yPos);
 
 			int orderCount = 0;
 			char[] orders = new char[15];
@@ -293,7 +293,7 @@ namespace OpenCiv1
 
 							// Instruction address 0x2c84:0x035d, size: 5
 							this.oParent.CAPI.strcat(0xba06,
-								this.oParent.GameData.Terrains[(int)this.oParent.Array_2ba6[this.oParent.GameData.TerrainModifications[(int)terrainType].IrrigationEffect]].Name);
+								this.oParent.GameData.Terrains[(int)this.oParent.PixelValuesToTerrainTypes[this.oParent.GameData.TerrainModifications[(int)terrainType].IrrigationEffect]].Name);
 						}
 					}
 
@@ -319,7 +319,7 @@ namespace OpenCiv1
 
 						// Instruction address 0x2c84:0x03dc, size: 5
 						this.oParent.CAPI.strcat(0xba06,
-							this.oParent.GameData.Terrains[(int)this.oParent.Array_2ba6[this.oParent.GameData.TerrainModifications[(int)terrainType].MiningEffect]].Name);
+							this.oParent.GameData.Terrains[(int)this.oParent.PixelValuesToTerrainTypes[this.oParent.GameData.TerrainModifications[(int)terrainType].MiningEffect]].Name);
 					}
 
 					if (this.oParent.GameData.TerrainModifications[(int)terrainType].MiningEffect != -1)

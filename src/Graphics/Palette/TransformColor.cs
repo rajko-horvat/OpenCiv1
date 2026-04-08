@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OpenCiv1.Graphics
+﻿namespace OpenCiv1.Graphics
 {
 	public class TransformColor
 	{

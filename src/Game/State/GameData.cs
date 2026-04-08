@@ -1,6 +1,4 @@
-﻿using System;
-using IRB.Collections.Generic;
-using OpenCiv1.Graphics;
+﻿using OpenCiv1.Graphics;
 
 namespace OpenCiv1
 {

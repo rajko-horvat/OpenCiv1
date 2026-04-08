@@ -581,19 +581,19 @@ namespace OpenCiv1
 					}
 
 					// Instruction address 0x0000:0x0b24, size: 5
-					landOwnership = this.oParent.Graphics.F0_VGA_038c_GetPixel(2, xStart + 80, yStart);
+					landOwnership = this.oParent.MapManagement.GetPlayerLandOwnership(xStart, yStart);
 
 					tryCount++;
 
 					if (tryCount <= 2000 || playerID == this.oParent.GameData.HumanPlayerID && oParent.GameData.TurnCount == 0)
 					{
 						// Instruction address 0x0000:0x0b54, size: 5
-						if (this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xStart, yStart) == TerrainTypeEnum.Water ||
+						if (this.oParent.MapManagement.GetTerrainType(xStart, yStart) == TerrainTypeEnum.Water ||
 							-((tryCount / 32) - 12) > landOwnership || distance < 10 - (tryCount / 64) || 
 							this.oParent.GameData.Continents[this.oParent.MapManagement.F0_2aea_1942_GetGroupID(xStart, yStart)].BuildSiteCount < -((this.oParent.GameData.TurnCount / 32) + (tryCount / 64) - 32) ||
 							(this.oParent.GameData.Year > 0 && cityCount[this.oParent.MapManagement.F0_2aea_1942_GetGroupID(xStart, yStart)] != 0) ||
 							this.oParent.MapManagement.F0_2aea_1894_CellHasMinorTribeHut(
-								this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(xStart, yStart), xStart, yStart)) goto L0a5e;
+								xStart, yStart, this.oParent.MapManagement.GetTerrainType(xStart, yStart))) goto L0a5e;
 					}
 
 					if (this.oParent.GameData.TurnCount == 0 && this.oParent.Var_d76a_EarthMap)
@@ -656,7 +656,7 @@ namespace OpenCiv1
 					}
 
 					// Instruction address 0x0000:0x0db7, size: 5
-					this.oParent.MapManagement.F0_2aea_138c_SetCityOwner(playerID, xStart, yStart);
+					this.oParent.MapManagement.F0_2aea_138c_SetCityOwner(xStart, yStart, playerID);
 
 					// Instruction address 0x0000:0x0dcb, size: 5
 					this.oParent.UnitManagement.F0_1866_0cf5_CreateUnit(playerID, 0, xStart, yStart);
@@ -858,13 +858,13 @@ namespace OpenCiv1
 				{
 					GPoint direction = this.oParent.MoveDirections[k];
 
-					int newX = this.oParent.MapManagement.F0_2e31_119b_AdjustMapXPosition(this.oParent.GameData.Players[i].Units[0].Position.X + direction.X);
+					int newX = this.oParent.MapManagement.AdjustXPosition(this.oParent.GameData.Players[i].Units[0].Position.X + direction.X);
 					int newY = this.oParent.GameData.Players[i].Units[0].Position.Y + direction.Y;
 
 					if (this.oParent.MapManagement.F0_2aea_1326_ValidateMapCoordinates(newX, newY))
 					{
 						// Instruction address 0x0000:0x10ee, size: 5
-						switch (this.oParent.MapManagement.F0_2aea_134a_GetTerrainType(newX, newY))
+						switch (this.oParent.MapManagement.GetTerrainType(newX, newY))
 						{
 							case TerrainTypeEnum.Water:
 								waterCellCount++;

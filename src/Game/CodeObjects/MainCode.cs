@@ -25,12 +25,12 @@ namespace OpenCiv1
 			// this.oCPU.Log.EnterBlock("F0_11a8_0008_Main()");
 
 			// function body
+
 			// Main menu selection
 			// 'M' - VGA
 			this.oParent.Var_1a22_VGAType = 'M';
 			// 'N' - No sound, 'A' - Sound blaster, 'R' - Roland MIDI board
 			this.oParent.Var_1a30_SoundDriverType = 'N';
-			// '1' - Mouse and Keyboard 0x1, '2' - Keyboard only 0x0
 			this.oParent.Var_1a3c_MouseAvailable = true;
 
 			this.oParent.MainIntro.F2_0000_0000();
@@ -233,7 +233,7 @@ namespace OpenCiv1
 						this.oParent.Var_7efc_PlanetAge = 1;
 
 						// Intro...
-						this.oParent.GameInitAndIntro.F7_0000_0012_GameIntro();
+						this.oParent.GameInitAndIntro.F7_0000_0012_GenerateMap();
 
 						this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
@@ -268,7 +268,7 @@ namespace OpenCiv1
 
 						this.oParent.Var_d76a_EarthMap = true;
 
-						this.oParent.GameInitAndIntro.F7_0000_0012_GameIntro();
+						this.oParent.GameInitAndIntro.F7_0000_0012_GenerateMap();
 
 						this.oParent.Var_aa_Rectangle.ScreenID = 0;
 
@@ -386,7 +386,7 @@ namespace OpenCiv1
 						F0_11a8_0268();
 
 						// Intro...
-						this.oParent.GameInitAndIntro.F7_0000_0012_GameIntro();
+						this.oParent.GameInitAndIntro.F7_0000_0012_GenerateMap();
 
 						this.oParent.Var_aa_Rectangle.ScreenID = 0;
 

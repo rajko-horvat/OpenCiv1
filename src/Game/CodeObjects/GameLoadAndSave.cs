@@ -1,4 +1,5 @@
 using IRB.VirtualCPU;
+using OpenCiv1.Graphics;
 using System.Text;
 
 namespace OpenCiv1
@@ -744,10 +745,12 @@ namespace OpenCiv1
 			try
 			{
 				// read map file
-				byte[] temp;
+				GBitmap? map;
 
-				if (!this.oParent.Graphics.Screens.GetValueByKey(2).LoadPIC($"{VCPU.DefaultCIVPath}{filename}.MAP", 0, 0, out temp))
+				if ((map = GBitmap.FromPICFile($"{VCPU.DefaultCIVPath}{filename}.MAP", true)) == null)
 					throw new Exception($"Can't read Map file '{filename}.MAP'");
+
+				this.oParent.MapManagement.MapBitmap = map;
 
 				// read sve file
 				FileStream reader = new FileStream($"{VCPU.DefaultCIVPath}{filename}.SVE", FileMode.Open);
@@ -1352,7 +1355,7 @@ namespace OpenCiv1
 			try
 			{
 				// write map file
-				this.oParent.Graphics.Screens.GetValueByKey(2).SaveToPIC($"{VCPU.DefaultCIVPath}{filename}.MAP", false);
+				this.oParent.MapManagement.MapBitmap.SaveToPIC($"{VCPU.DefaultCIVPath}{filename}.MAP", false);
 
 				// write sve file
 				FileStream writer = new FileStream($"{VCPU.DefaultCIVPath}{filename}.SVE", FileMode.Create);

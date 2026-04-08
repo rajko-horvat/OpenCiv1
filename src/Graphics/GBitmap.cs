@@ -352,22 +352,22 @@ namespace OpenCiv1.Graphics
 			}
 		}
 
-		public void DrawImage(GBitmap srcScreen)
+		public void DrawBitmap(GBitmap srcBitmap)
 		{
-			this.DrawImage(new GPoint(0, 0), srcScreen, srcScreen.Rectangle, false);
+			this.DrawBitmap(new GPoint(0, 0), srcBitmap, srcBitmap.Rectangle, false);
 		}
 
-		public void DrawImage(int x, int y, GBitmap srcBitmap, bool transparent)
+		public void DrawBitmap(int x, int y, GBitmap srcBitmap, bool transparent)
 		{
-			DrawImage(new GPoint(x, y), srcBitmap, srcBitmap.Rectangle, transparent);
+			DrawBitmap(new GPoint(x, y), srcBitmap, srcBitmap.Rectangle, transparent);
 		}
 
-		public void DrawImage(int x, int y, GBitmap srcBitmap, GRectangle srcRect, bool transparent)
+		public void DrawBitmap(int x, int y, GBitmap srcBitmap, GRectangle srcRect, bool transparent)
 		{
-			DrawImage(new GPoint(x, y), srcBitmap, srcRect, transparent);
+			DrawBitmap(new GPoint(x, y), srcBitmap, srcRect, transparent);
 		}
 
-		public void DrawImage(GPoint destPoint, GBitmap srcBitmap, GRectangle srcRect, bool transparent)
+		public void DrawBitmap(GPoint destPoint, GBitmap srcBitmap, GRectangle srcRect, bool transparent)
 		{
 			GRectangle srcRect1 = new GRectangle(srcRect.Location, srcRect.Size);
 			srcRect1.Intersect(srcBitmap.Rectangle);
@@ -572,7 +572,7 @@ namespace OpenCiv1.Graphics
 
 			if (bitmap != null)
 			{
-				this.DrawImage(xPos, yPos, bitmap, false);
+				this.DrawBitmap(xPos, yPos, bitmap, false);
 
 				/*for (int i = 0; i < bitmap.Height; i++)
 				{
@@ -585,6 +585,13 @@ namespace OpenCiv1.Graphics
 			}
 
 			return false;
+		}
+
+		public static GBitmap? FromPICFile(string path, bool preferHiColor)
+		{
+			byte[] palette;
+
+			return FromPICFile(path, out palette, preferHiColor);
 		}
 
 		public static GBitmap? FromPICFile(string path, out byte[] palette, bool preferHiColor)

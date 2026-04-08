@@ -543,9 +543,9 @@ namespace OpenCiv1
 			
 			// Instruction address 0x0000:0x0583, size: 5
 			this.oParent.MapManagement.F0_2aea_138c_SetCityOwner(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)),
 				this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14))].Position.X,
-				this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14))].Position.Y);
+				this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14))].Position.Y,
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)));
 			
 			// Instruction address 0x0000:0x0597, size: 5
 			this.oParent.MapManagement.F0_2aea_1511_ActiveUnitSetFlag8(
@@ -612,9 +612,9 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x063e, size: 5
 			this.oParent.MapManagement.F0_2aea_138c_SetCityOwner(
-				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)),
 				this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14))].Position.X,
-				this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14))].Position.Y);
+				this.oParent.GameData.Players[playerID].Units[this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x14))].Position.Y,
+				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x16)));
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0xffff);
 			if (this.oCPU.Flags.E) goto L06c4;
@@ -838,8 +838,8 @@ namespace OpenCiv1
 			this.oParent.GameData.Cities[cityID].PlayerID = playerID;
 
 			// Instruction address 0x0000:0x08a1, size: 5
-			this.oParent.MapManagement.F0_2aea_138c_SetCityOwner(playerID, 
-				this.oParent.GameData.Cities[cityID].Position.X, this.oParent.GameData.Cities[cityID].Position.Y);
+			this.oParent.MapManagement.F0_2aea_138c_SetCityOwner(this.oParent.GameData.Cities[cityID].Position.X,
+				this.oParent.GameData.Cities[cityID].Position.Y, playerID);
 
 			this.oParent.GameData.Players[playerID].TotalCitySize += this.oParent.GameData.Cities[cityID].ActualSize;
 
