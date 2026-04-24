@@ -46,17 +46,17 @@ Relevant principles under EU law that apply to this project:
 <td>Created code independently (for example, didn't look at or copy any of the original source code). The resulting work can be functionally similar in this case.</td><td>Independent creation</td><td>Established principle; Mio/konektra (C-580/23) (There can be no infringement where a legitimate licensee, who has not had access to the source code, simply studies, observes, and tests the program in order to reproduce the functionality in its own program)</td>
 </tr>
 <tr>
-<td>Used no original graphics, music or any of it's copyrighted assets</td><td>Audiovisual works protected under InfoSoc Directive; Independent creation is a defense</td><td>Directive 2001/29/EC</td>
+<td>Used no original graphics, music or any of it's copyrighted assets</td><td>Audiovisual works protected under InfoSoc Directive; Independent creation of the game resources</td><td>Directive 2001/29/EC</td>
 </tr>
 <tr>
-<td>The authors admitted in the <url='https://arstechnica.com/gaming/2017/03/sid-meier-tells-civilizations-origin-story-cites-childrens-history-books/'>Origin story of the game</URL> that they mostly referenced and very likely used large parts of the text for 'Civilopedia' from external sources.</td><td>Only completely original work can be copyrighted</td><td>Directive 2001/29/EC; Article 1(2) of Directive 2009/24/EC ; SAS v. WPL; Mio/konektra (C-580/23)</td>
+<td>The authors admitted in the <a href="https://arstechnica.com/gaming/2017/03/sid-meier-tells-civilizations-origin-story-cites-childrens-history-books/" target="_blank">Origin story of the game</URL> that they mostly referenced and very likely used large parts of the text for 'Civilopedia' from external sources.</td><td>Only completely original work can be copyrighted</td><td>Directive 2001/29/EC; Article 1(2) of Directive 2009/24/EC ; SAS v. WPL; Mio/konektra (C-580/23)</td>
 </tr>
 <tr>
 <td>Used no trademarks</td><td>No likelihood of confusion; no "use in the course of trade" of a protected mark</td><td>EU Trade Mark Directive (EU 2015/2436)</td>
 </tr>
 </table>
 
-<p><b>The available code is not a full working copy of the game and is not based on original source code.</b>
+<p><b>The available source code is not a full working copy of the game and is not based on original source code.</b>
 <b>To run OpenCiv1 you are legally required to own your own copy of the DOS Civilization game.</b>
 <b>This is the reason that not a single file from the original Civilization game is included in this GitHub repository as they are copyrighted.</b></p>
 
