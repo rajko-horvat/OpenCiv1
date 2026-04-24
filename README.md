@@ -49,7 +49,7 @@ Relevant principles under EU law that apply to this project:
 <td>Used no original graphics, music or any of it's copyrighted assets</td><td>Audiovisual works protected under InfoSoc Directive; Independent creation of the game resources</td><td>Directive 2001/29/EC</td>
 </tr>
 <tr>
-<td>The authors admitted in the <a href="https://arstechnica.com/gaming/2017/03/sid-meier-tells-civilizations-origin-story-cites-childrens-history-books/" target="_blank">Origin story of the game</URL> that they mostly referenced and very likely used large parts of the text for 'Civilopedia' from external sources.</td><td>Only completely original work can be copyrighted</td><td>Directive 2001/29/EC; Article 1(2) of Directive 2009/24/EC ; SAS v. WPL; Mio/konektra (C-580/23)</td>
+<td>The authors admitted in the <a href="https://arstechnica.com/gaming/2017/03/sid-meier-tells-civilizations-origin-story-cites-childrens-history-books/" target="_blank">Origin story of the game</a> that they mostly referenced and very likely used large parts of the text for 'Civilopedia' from external sources.</td><td>Only completely original work can be copyrighted</td><td>Directive 2001/29/EC; Article 1(2) of Directive 2009/24/EC ; SAS v. WPL; Mio/konektra (C-580/23)</td>
 </tr>
 <tr>
 <td>Used no trademarks</td><td>No likelihood of confusion; no "use in the course of trade" of a protected mark</td><td>EU Trade Mark Directive (EU 2015/2436)</td>
