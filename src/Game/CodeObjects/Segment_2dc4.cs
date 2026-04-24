@@ -430,8 +430,8 @@ namespace OpenCiv1
 					int iCellWidth = Math.Min(iWidthTemp, 32);
 
 					// Instruction address 0x2dc4:0x0435, size: 5
-					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-						288, 120, iCellWidth, iCellHeight, this.oParent.Var_aa_Rectangle, iXPosTemp, iYPosTemp);
+					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Screen2_Rectangle,
+						288, 120, iCellWidth, iCellHeight, this.oParent.Var_aa_Screen0_Rectangle, iXPosTemp, iYPosTemp);
 
 					iXPosTemp += iCellWidth;
 					iWidthTemp -= iCellWidth;

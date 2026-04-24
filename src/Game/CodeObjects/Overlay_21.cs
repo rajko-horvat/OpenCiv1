@@ -58,39 +58,39 @@ namespace OpenCiv1
 
 		L004d:
 			// Instruction address 0x0000:0x004d, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 0xfffe);
 			if (this.oCPU.Flags.E) goto L0078;
 
 			// Instruction address 0x0000:0x0070, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Screen1_Rectangle, 0, 0);
 
 		L0078:
 			// Instruction address 0x0000:0x008c, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 100, 15);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 100, 15);
 
-			this.oParent.Var_aa_Rectangle.FontID = 4;
+			this.oParent.Var_aa_Screen0_Rectangle.FontID = 4;
 
 			// Instruction address 0x0000:0x00ad, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 1, 1, 318, 1, 0);
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, 1, 1, 318, 1, 0);
 
 			// Instruction address 0x0000:0x00cd, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 8, 3, 304, 20, 15);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 8, 3, 304, 20, 15);
 
-			this.oParent.Var_aa_Rectangle.BackColor = 0xf;
+			this.oParent.Var_aa_Screen0_Rectangle.BackColor = 0xf;
 
 			// Instruction address 0x0000:0x00f0, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 0, 35, 319, 35, 0);
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, 0, 35, 319, 35, 0);
 
 			// Instruction address 0x0000:0x0105, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 1, 1, 1, 35, 0);
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, 1, 1, 1, 35, 0);
 
 			// Instruction address 0x0000:0x0120, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 318, 1, 318, 35, 0);
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, 318, 1, 318, 35, 0);
 
 			// Instruction address 0x0000:0x013a, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 0, 97, 319, 97, 0);
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, 0, 97, 319, 97, 0);
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 0xfffe);
 			if (this.oCPU.Flags.E) goto L017f;
@@ -98,7 +98,7 @@ namespace OpenCiv1
 
 		L014d:
 			// Instruction address 0x0000:0x016e, size: 5
-			this.oParent.CommonTools.F0_1000_0797_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+			this.oParent.CommonTools.F0_1000_0797_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 				20 * this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10)),
 				100 - this.oParent.CAPI.RNG.Next(2),
 				this.oParent.Var_df0c);
@@ -111,7 +111,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x018e, size: 5
 			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(40, 16, 40, 0);
 
-			this.oParent.Var_aa_Rectangle.FontID = 5;
+			this.oParent.Var_aa_Screen0_Rectangle.FontID = 5;
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
@@ -227,7 +227,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "FLASH");
 
 		L02e3:
-			this.oParent.Var_aa_Rectangle.FontID = 3;
+			this.oParent.Var_aa_Screen0_Rectangle.FontID = 3;
 
 			// Instruction address 0x0000:0x0308, size: 5
 			this.oParent.DrawStringTools.F0_1182_002a_DrawString(0xba06, 6, 3, 0);
@@ -235,7 +235,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x031f, size: 5
 			this.oParent.DrawStringTools.F0_1182_002a_DrawString(0xba06, 272, 3, 0);
 			
-			this.oParent.Var_aa_Rectangle.FontID = 1;
+			this.oParent.Var_aa_Screen0_Rectangle.FontID = 1;
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
@@ -254,7 +254,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0380, size: 5
 			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 8, 28, 0);
 
-			this.oParent.Var_aa_Rectangle.FontID = 2;
+			this.oParent.Var_aa_Screen0_Rectangle.FontID = 2;
 
 			// Instruction address 0x0000:0x0399, size: 5
 			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0xc), "*NEWSA");
@@ -271,7 +271,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x03d4, size: 5
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0(0xba06, 160, 3, 0);
 
-			this.oParent.Var_aa_Rectangle.FontID = 1;
+			this.oParent.Var_aa_Screen0_Rectangle.FontID = 1;
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 0xfffe);
 			if (this.oCPU.Flags.E) goto L041f;
@@ -280,11 +280,11 @@ namespace OpenCiv1
 			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0x5181, 80, 128, true, false, true);
 
 			// Instruction address 0x0000:0x0417, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Screen0_Rectangle, 0, 0);
 
 		L041f:
 			// Instruction address 0x0000:0x041f, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;

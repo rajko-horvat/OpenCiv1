@@ -4,7 +4,7 @@ using OpenCiv1.Graphics;
 
 namespace OpenCiv1
 {
-	public class GameInitAndIntro
+	public class MapInitAndIntro
 	{
 		private OpenCiv1Game oParent;
 		private VCPU oCPU;
@@ -43,7 +43,7 @@ namespace OpenCiv1
 			new(0, 2, 8), new(0, 2, 11), new(0, 2, 14), new(0, 2, 17), new(0, 2, 20), new(0, 2, 23), new(0, 2, 26), new(0, 2, 29), new(0, 2, 32), new(0, 2, 35),
 			new(0, 2, 42), new(0, 2, 45)];
 
-		public GameInitAndIntro(OpenCiv1Game parent)
+		public MapInitAndIntro(OpenCiv1Game parent)
 		{
 			this.oParent = parent;
 			this.oCPU = parent.CPU;
@@ -1024,7 +1024,7 @@ namespace OpenCiv1
 
 			this.oParent.Graphics.F0_VGA_040a_FillRectangle(2, new GRectangle(0, 0, 320, 200), 0, 0);
 
-			this.oParent.Var_aa_Rectangle.FontID = 1;
+			this.oParent.Var_aa_Screen0_Rectangle.FontID = 1;
 		}
 
 		/// <summary>
@@ -1315,7 +1315,7 @@ namespace OpenCiv1
 				if (this.animationStage == 0)
 				{
 					// Instruction address 0x0000:0x1869, size: 5
-					this.storyFile = new StreamReader(VCPU.DefaultCIVPath + "story.txt");
+					this.storyFile = new StreamReader($"{this.oParent.ResourcePath}story.txt");
 
 					this.animationStage = 1;
 					this.storyText = "";
@@ -1323,7 +1323,7 @@ namespace OpenCiv1
 					this.storyStartTime = DateTime.Now;
 					this.storyNextEvent = this.storyStartTime + this.storyEvents[this.storyTimeIndex];
 
-					this.oParent.Var_aa_Rectangle.FontID = 7;
+					this.oParent.Var_aa_Screen0_Rectangle.FontID = 7;
 				}
 
 				if (DateTime.Now < this.storyNextEvent)
@@ -1360,7 +1360,7 @@ namespace OpenCiv1
 						if (this.buildImageIndex > 1)
 						{
 							// Instruction address 0x0000:0x194a, size: 5
-							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 0, 160, 320, 8, this.oParent.Var_aa_Rectangle, 0, 160);
+							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Screen2_Rectangle, 0, 160, 320, 8, this.oParent.Var_aa_Screen0_Rectangle, 0, 160);
 						}
 
 						// Instruction address 0x0000:0x1956, size: 5
@@ -1414,7 +1414,7 @@ namespace OpenCiv1
 								this.oParent.CommonTools.F0_1000_04d4_TransformPaletteToColor(8, Color.FromRgb(0, 0, 0));
 
 								// Instruction address 0x0000:0x1a59, size: 5
-								this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+								this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Screen2_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Screen0_Rectangle, 0, 0);
 
 								// Instruction address 0x0000:0x1a73, size: 5
 								imageFileName = imageFileName.Replace(".pic", ".pal");

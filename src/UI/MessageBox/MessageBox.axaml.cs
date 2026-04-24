@@ -8,6 +8,7 @@ namespace OpenCiv1.UI
 {
 	public partial class MessageBox : Window
 	{
+		private bool closed = false;
 		private bool bHasReturnValue = false;
 		private MessageBoxDefaultButton eReturnValue = MessageBoxDefaultButton.None;
 
@@ -15,21 +16,23 @@ namespace OpenCiv1.UI
 		{
 			InitializeComponent();
 
+			this.Closed += this.MessageBox_Closed;
 			this.messageButton1.Click += this.MessageButton1_Click;
 			this.messageButton2.Click += this.MessageButton2_Click;
 			this.messageButton3.Click += this.MessageButton3_Click;
 			this.KeyDown += this.MessageBox_KeyDown;
 		}
 
-		public bool HasValue
+		private void MessageBox_Closed(object? sender, EventArgs e)
 		{
-			get => this.bHasReturnValue;
+			this.closed = true;
 		}
 
-		public MessageBoxDefaultButton ReturnValue
-		{
-			get => this.eReturnValue;
-		}
+		public bool DialogClosed { get => this.closed; }
+
+		public bool HasValue { get => this.bHasReturnValue; }
+
+		public MessageBoxDefaultButton ReturnValue { get => this.eReturnValue; }
 
 		private void MessageBox_KeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
 		{
@@ -256,264 +259,283 @@ namespace OpenCiv1.UI
 		private static MessageBoxResult ShowInternal(Window? owner, string text, string title,
 			Bitmap? bitmap, WindowIcon? icon, MessageBoxButtons buttons, MessageBoxDefaultButton defaultButton)
 		{
-			MessageBox messageBox = new MessageBox();
+			MessageBox? messageBox = null;
+			bool creatingWindow = true;
 
-			if (icon == null)
+			Dispatcher.UIThread.Invoke(() =>
 			{
-				messageBox.Icon = new WindowIcon(new MemoryStream(UI.MessageBoxResources.Information));
-			}
-			else
-			{
-				messageBox.Icon = icon;
-			}
+				messageBox = new MessageBox();
 
-			messageBox.Title = title;
-
-			if (bitmap != null)
-			{
-				messageBox.messageIcon.Source = bitmap;
-			}
-
-			messageBox.messageText.Text = text;
-
-			switch (buttons)
-			{
-				case MessageBoxButtons.OK:
-					messageBox.messageButton1.IsVisible = false;
-					messageBox.messageButton2.IsVisible = false;
-					messageBox.messageButton3.Content = "OK";
-					
-					messageBox.messageButton3.IsDefault = true;
-					break;
-
-				case MessageBoxButtons.OKCancel:
-					messageBox.messageButton1.IsVisible = false;
-					messageBox.messageButton2.Content = "OK";
-					messageBox.messageButton3.Content = "Cancel";
-
-					switch(defaultButton)
-					{
-						case MessageBoxDefaultButton.Button1:
-							messageBox.messageButton2.IsDefault = true;
-							break;
-
-						case MessageBoxDefaultButton.Button2:
-							messageBox.messageButton3.IsDefault = true;
-							break;
-					}
-					break;
-
-				case MessageBoxButtons.AbortRetryIgnore:
-					messageBox.messageButton1.Content = "Abort";
-					messageBox.messageButton2.Content = "Retry";
-					messageBox.messageButton3.Content = "Ignore";
-
-					switch (defaultButton)
-					{
-						case MessageBoxDefaultButton.Button1:
-							messageBox.messageButton1.IsDefault = true;
-							break;
-
-						case MessageBoxDefaultButton.Button2:
-							messageBox.messageButton2.IsDefault = true;
-							break;
-
-						case MessageBoxDefaultButton.Button3:
-							messageBox.messageButton3.IsDefault = true;
-							break;
-					}
-					break;
-
-				case MessageBoxButtons.YesNoCancel:
-					messageBox.messageButton1.Content = "Yes";
-					messageBox.messageButton2.Content = "No";
-					messageBox.messageButton3.Content = "Cancel";
-
-					switch (defaultButton)
-					{
-						case MessageBoxDefaultButton.Button1:
-							messageBox.messageButton1.IsDefault = true;
-							break;
-
-						case MessageBoxDefaultButton.Button2:
-							messageBox.messageButton2.IsDefault = true;
-							break;
-
-						case MessageBoxDefaultButton.Button3:
-							messageBox.messageButton3.IsDefault = true;
-							break;
-					}
-					break;
-
-				case MessageBoxButtons.YesNo:
-					messageBox.messageButton1.IsVisible = false;
-					messageBox.messageButton2.Content = "Yes";
-					messageBox.messageButton3.Content = "No";
-
-					switch (defaultButton)
-					{
-						case MessageBoxDefaultButton.Button1:
-							messageBox.messageButton2.IsDefault = true;
-							break;
-
-						case MessageBoxDefaultButton.Button2:
-							messageBox.messageButton3.IsDefault = true;
-							break;
-					}
-					break;
-
-				case MessageBoxButtons.RetryCancel:
-					messageBox.messageButton1.IsVisible = false;
-					messageBox.messageButton2.Content = "Retry";
-					messageBox.messageButton3.Content = "Cancel";
-					
-					switch (defaultButton)
-					{
-						case MessageBoxDefaultButton.Button1:
-							messageBox.messageButton2.IsDefault = true;
-							break;
-
-						case MessageBoxDefaultButton.Button2:
-							messageBox.messageButton3.IsDefault = true;
-							break;
-					}
-					break;
-
-				case MessageBoxButtons.CancelTryContinue:
-					messageBox.messageButton1.Content = "Cancel";
-					messageBox.messageButton2.Content = "Try Again";
-					messageBox.messageButton3.Content = "Continue";
-
-					switch (defaultButton)
-					{
-						case MessageBoxDefaultButton.Button1:
-							messageBox.messageButton1.IsDefault = true;
-							break;
-
-						case MessageBoxDefaultButton.Button2:
-							messageBox.messageButton2.IsDefault = true;
-							break;
-
-						case MessageBoxDefaultButton.Button3:
-							messageBox.messageButton3.IsDefault = true;
-							break;
-					}
-					break;
-			}
-
-			if (owner == null)
-			{
-				messageBox.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-				messageBox.Show();
-
-				while (!messageBox.HasValue)
+				if (icon == null)
 				{
-					try
+					messageBox.Icon = new WindowIcon(new MemoryStream(UI.MessageBoxResources.Information));
+				}
+				else
+				{
+					messageBox.Icon = icon;
+				}
+
+				messageBox.Title = title;
+
+				if (bitmap != null)
+				{
+					messageBox.messageIcon.Source = bitmap;
+				}
+
+				messageBox.messageText.Text = text;
+
+				switch (buttons)
+				{
+					case MessageBoxButtons.OK:
+						messageBox.messageButton1.IsVisible = false;
+						messageBox.messageButton2.IsVisible = false;
+						messageBox.messageButton3.Content = "OK";
+
+						messageBox.messageButton3.IsDefault = true;
+						break;
+
+					case MessageBoxButtons.OKCancel:
+						messageBox.messageButton1.IsVisible = false;
+						messageBox.messageButton2.Content = "OK";
+						messageBox.messageButton3.Content = "Cancel";
+
+						switch (defaultButton)
+						{
+							case MessageBoxDefaultButton.Button1:
+								messageBox.messageButton2.IsDefault = true;
+								break;
+
+							case MessageBoxDefaultButton.Button2:
+								messageBox.messageButton3.IsDefault = true;
+								break;
+						}
+						break;
+
+					case MessageBoxButtons.AbortRetryIgnore:
+						messageBox.messageButton1.Content = "Abort";
+						messageBox.messageButton2.Content = "Retry";
+						messageBox.messageButton3.Content = "Ignore";
+
+						switch (defaultButton)
+						{
+							case MessageBoxDefaultButton.Button1:
+								messageBox.messageButton1.IsDefault = true;
+								break;
+
+							case MessageBoxDefaultButton.Button2:
+								messageBox.messageButton2.IsDefault = true;
+								break;
+
+							case MessageBoxDefaultButton.Button3:
+								messageBox.messageButton3.IsDefault = true;
+								break;
+						}
+						break;
+
+					case MessageBoxButtons.YesNoCancel:
+						messageBox.messageButton1.Content = "Yes";
+						messageBox.messageButton2.Content = "No";
+						messageBox.messageButton3.Content = "Cancel";
+
+						switch (defaultButton)
+						{
+							case MessageBoxDefaultButton.Button1:
+								messageBox.messageButton1.IsDefault = true;
+								break;
+
+							case MessageBoxDefaultButton.Button2:
+								messageBox.messageButton2.IsDefault = true;
+								break;
+
+							case MessageBoxDefaultButton.Button3:
+								messageBox.messageButton3.IsDefault = true;
+								break;
+						}
+						break;
+
+					case MessageBoxButtons.YesNo:
+						messageBox.messageButton1.IsVisible = false;
+						messageBox.messageButton2.Content = "Yes";
+						messageBox.messageButton3.Content = "No";
+
+						switch (defaultButton)
+						{
+							case MessageBoxDefaultButton.Button1:
+								messageBox.messageButton2.IsDefault = true;
+								break;
+
+							case MessageBoxDefaultButton.Button2:
+								messageBox.messageButton3.IsDefault = true;
+								break;
+						}
+						break;
+
+					case MessageBoxButtons.RetryCancel:
+						messageBox.messageButton1.IsVisible = false;
+						messageBox.messageButton2.Content = "Retry";
+						messageBox.messageButton3.Content = "Cancel";
+
+						switch (defaultButton)
+						{
+							case MessageBoxDefaultButton.Button1:
+								messageBox.messageButton2.IsDefault = true;
+								break;
+
+							case MessageBoxDefaultButton.Button2:
+								messageBox.messageButton3.IsDefault = true;
+								break;
+						}
+						break;
+
+					case MessageBoxButtons.CancelTryContinue:
+						messageBox.messageButton1.Content = "Cancel";
+						messageBox.messageButton2.Content = "Try Again";
+						messageBox.messageButton3.Content = "Continue";
+
+						switch (defaultButton)
+						{
+							case MessageBoxDefaultButton.Button1:
+								messageBox.messageButton1.IsDefault = true;
+								break;
+
+							case MessageBoxDefaultButton.Button2:
+								messageBox.messageButton2.IsDefault = true;
+								break;
+
+							case MessageBoxDefaultButton.Button3:
+								messageBox.messageButton3.IsDefault = true;
+								break;
+						}
+						break;
+				}
+
+				if (owner == null)
+				{
+					messageBox.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+					messageBox.Show();
+
+					creatingWindow = false;
+
+					while (!messageBox.HasValue)
+					{
+						try
+						{
+							var s = new CancellationTokenSource();
+							DispatcherTimer.RunOnce(() => s.Cancel(), TimeSpan.FromMilliseconds(20));
+							Dispatcher.UIThread.MainLoop(s.Token);
+						}
+						catch { }
+					}
+				}
+				else
+				{
+					Task task = messageBox.ShowDialog(owner);
+					
+					creatingWindow = false;
+
+					while (!task.IsCompleted)
 					{
 						var s = new CancellationTokenSource();
 						DispatcherTimer.RunOnce(() => s.Cancel(), TimeSpan.FromMilliseconds(20));
 						Dispatcher.UIThread.MainLoop(s.Token);
 					}
-					catch { }
 				}
-			}
-			else
+
+			});
+
+			while (creatingWindow) { Thread.Sleep(1); }
+
+			while (messageBox != null && !messageBox.DialogClosed) { Thread.Sleep(1); }
+
+			if (messageBox != null)
 			{
-				Task task = messageBox.ShowDialog(owner);
-				while (!task.IsCompleted)
+				MessageBoxDefaultButton result = messageBox.ReturnValue;
+
+				switch (buttons)
 				{
-					var s = new CancellationTokenSource();
-					DispatcherTimer.RunOnce(() => s.Cancel(), TimeSpan.FromMilliseconds(20));
-					Dispatcher.UIThread.MainLoop(s.Token);
+					case MessageBoxButtons.OK:
+						switch (result)
+						{
+							case MessageBoxDefaultButton.Button3:
+								return MessageBoxResult.OK;
+						}
+						return MessageBoxResult.None;
+
+					case MessageBoxButtons.OKCancel:
+						switch (result)
+						{
+							case MessageBoxDefaultButton.Button2:
+								return MessageBoxResult.OK;
+
+							case MessageBoxDefaultButton.Button3:
+								return MessageBoxResult.Cancel;
+						}
+						return MessageBoxResult.None;
+
+					case MessageBoxButtons.AbortRetryIgnore:
+						switch (result)
+						{
+							case MessageBoxDefaultButton.Button1:
+								return MessageBoxResult.Abort;
+
+							case MessageBoxDefaultButton.Button2:
+								return MessageBoxResult.Retry;
+
+							case MessageBoxDefaultButton.Button3:
+								return MessageBoxResult.Ignore;
+						}
+						return MessageBoxResult.None;
+
+					case MessageBoxButtons.YesNoCancel:
+						switch (result)
+						{
+							case MessageBoxDefaultButton.Button1:
+								return MessageBoxResult.Yes;
+
+							case MessageBoxDefaultButton.Button2:
+								return MessageBoxResult.No;
+
+							case MessageBoxDefaultButton.Button3:
+								return MessageBoxResult.Cancel;
+						}
+						return MessageBoxResult.None;
+
+					case MessageBoxButtons.YesNo:
+						switch (result)
+						{
+							case MessageBoxDefaultButton.Button2:
+								return MessageBoxResult.Yes;
+
+							case MessageBoxDefaultButton.Button3:
+								return MessageBoxResult.No;
+						}
+						return MessageBoxResult.None;
+
+					case MessageBoxButtons.RetryCancel:
+						switch (result)
+						{
+							case MessageBoxDefaultButton.Button2:
+								return MessageBoxResult.Retry;
+
+							case MessageBoxDefaultButton.Button3:
+								return MessageBoxResult.Cancel;
+						}
+						return MessageBoxResult.None;
+
+					case MessageBoxButtons.CancelTryContinue:
+						switch (result)
+						{
+							case MessageBoxDefaultButton.Button1:
+								return MessageBoxResult.Cancel;
+
+							case MessageBoxDefaultButton.Button2:
+								return MessageBoxResult.TryAgain;
+
+							case MessageBoxDefaultButton.Button3:
+								return MessageBoxResult.Continue;
+						}
+						return MessageBoxResult.None;
 				}
-			}
-
-			MessageBoxDefaultButton result = messageBox.ReturnValue;
-
-			switch (buttons)
-			{
-				case MessageBoxButtons.OK:
-					switch (result)
-					{
-						case MessageBoxDefaultButton.Button3:
-							return MessageBoxResult.OK;
-					}
-					return MessageBoxResult.None;
-
-				case MessageBoxButtons.OKCancel:
-					switch (result)
-					{
-						case MessageBoxDefaultButton.Button2:
-							return MessageBoxResult.OK;
-
-						case MessageBoxDefaultButton.Button3:
-							return MessageBoxResult.Cancel;
-					}
-					return MessageBoxResult.None;
-
-				case MessageBoxButtons.AbortRetryIgnore:
-					switch (result)
-					{
-						case MessageBoxDefaultButton.Button1:
-							return MessageBoxResult.Abort;
-
-						case MessageBoxDefaultButton.Button2:
-							return MessageBoxResult.Retry;
-
-						case MessageBoxDefaultButton.Button3:
-							return MessageBoxResult.Ignore;
-					}
-					return MessageBoxResult.None;
-
-				case MessageBoxButtons.YesNoCancel:
-					switch (result)
-					{
-						case MessageBoxDefaultButton.Button1:
-							return MessageBoxResult.Yes;
-
-						case MessageBoxDefaultButton.Button2:
-							return MessageBoxResult.No;
-
-						case MessageBoxDefaultButton.Button3:
-							return MessageBoxResult.Cancel;
-					}
-					return MessageBoxResult.None;
-
-				case MessageBoxButtons.YesNo:
-					switch (result)
-					{
-						case MessageBoxDefaultButton.Button2:
-							return MessageBoxResult.Yes;
-
-						case MessageBoxDefaultButton.Button3:
-							return MessageBoxResult.No;
-					}
-					return MessageBoxResult.None;
-
-				case MessageBoxButtons.RetryCancel:
-					switch (result)
-					{
-						case MessageBoxDefaultButton.Button2:
-							return MessageBoxResult.Retry;
-
-						case MessageBoxDefaultButton.Button3:
-							return MessageBoxResult.Cancel;
-					}
-					return MessageBoxResult.None;
-
-				case MessageBoxButtons.CancelTryContinue:
-					switch (result)
-					{
-						case MessageBoxDefaultButton.Button1:
-							return MessageBoxResult.Cancel;
-
-						case MessageBoxDefaultButton.Button2:
-							return MessageBoxResult.TryAgain;
-
-						case MessageBoxDefaultButton.Button3:
-							return MessageBoxResult.Continue;
-					}
-					return MessageBoxResult.None;
 			}
 
 			return MessageBoxResult.None;

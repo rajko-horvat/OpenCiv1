@@ -610,8 +610,8 @@ namespace OpenCiv1
 			// function body
 			if (width > 0 && height > 0)
 			{
-				GRectangle rect1 = new GRectangle(rect.Left + x, rect.Top + y, width, height);
-				this.oParent.Graphics.F0_VGA_040a_FillRectangle(rect.ScreenID, rect1, (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
+				this.oParent.Graphics.F0_VGA_040a_FillRectangle(rect.ScreenID, 
+					new GRectangle(rect.Left + x, rect.Top + y, width, height), (byte)(mode & 0xff), (byte)((mode & 0xff00) >> 8));
 			}
 		}
 
@@ -624,8 +624,6 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock("F0_1000_163e_InitMouse()");
 
 			// function body
-			//this.oCPU.AX.Word = 0x3;
-			//this.oCPU.INT(0x33);
 			this.oParent.Var_586e_MouseNewX = this.oCPU.MouseLocation.X;
 			this.oParent.Var_5870_MouseNewY = this.oCPU.MouseLocation.Y;
 			this.oParent.Var_5872_MouseNewButtons = (int)this.oCPU.MouseButtons;

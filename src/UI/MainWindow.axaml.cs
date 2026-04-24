@@ -58,7 +58,7 @@ namespace OpenCiv1.UI
 			Thread.CurrentThread.Name = "OpenCiv1 main thread";
 
 			// Initialize game state
-			this.oGame = new OpenCiv1Game();
+			this.oGame = new OpenCiv1Game(this);
 
 			// Main Windows events
 			this.Closing += this.MainWindow_Closing;
@@ -100,7 +100,7 @@ namespace OpenCiv1.UI
 							StreamWriter writer = new StreamWriter($"{VCPU.AssemblyPath}Exception.log", true);
 
 							writer.WriteLine("---------------------------");
-							writer.WriteLine($"Mesage: {ex.Message}");
+							writer.WriteLine($"Message: {ex.Message}");
 							writer.WriteLine($"Source: {ex.Source}");
 							writer.WriteLine($"Stack trace: {ex.StackTrace}");
 

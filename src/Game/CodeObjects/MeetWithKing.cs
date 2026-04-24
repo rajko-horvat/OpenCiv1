@@ -797,12 +797,12 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0822;
 
 			// Instruction address 0x0000:0x07ad, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Screen1_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x07b7, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			this.oParent.Var_3936 = -1;
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3c62, 0x1);
@@ -810,7 +810,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x07cf, size: 5
 			this.oParent.Segment_2459.F0_2459_06f2(playerID, oParent.GameData.HumanPlayerID);
 			
-			this.oParent.Var_aa_Rectangle.FontID = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x67ec);
+			this.oParent.Var_aa_Screen0_Rectangle.FontID = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x67ec);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3c62, 0x1);
 
@@ -820,18 +820,18 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x07f6, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
-			this.oParent.Var_aa_Rectangle.FontID = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x67ec);
+			this.oParent.Var_aa_Screen0_Rectangle.FontID = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x67ec);
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x24), 0x0);
 			this.oParent.Var_3936 = 1;
 
 			// Instruction address 0x0000:0x0810, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Screen0_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x081a, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			goto L064f;
 
@@ -1298,12 +1298,12 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.NE) goto L0e0e;
 
 			// Instruction address 0x0000:0x0d9e, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Screen1_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x0da8, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			// Instruction address 0x0000:0x0dad, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
@@ -1315,7 +1315,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1ade.F0_1ade_1d2e(this.oParent.GameData.HumanPlayerID,
 				(TechnologyEnum)this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)), playerID);
 			
-			this.oParent.Var_aa_Rectangle.FontID = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x67ec);
+			this.oParent.Var_aa_Screen0_Rectangle.FontID = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x67ec);
 
 			// Instruction address 0x0000:0x0dda, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
@@ -1323,12 +1323,12 @@ namespace OpenCiv1
 			this.oParent.Var_3936 = 0;
 
 			// Instruction address 0x0000:0x0de5, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Screen0_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x0def, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			F6_0000_1a3f(playerID);
 
@@ -1445,12 +1445,12 @@ namespace OpenCiv1
 			this.oParent.GameData.Players[playerID].Coins = 0;
 
 			// Instruction address 0x0000:0x0fb2, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Screen1_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x0fbc, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			// Instruction address 0x0000:0x0fc1, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
@@ -1484,7 +1484,7 @@ namespace OpenCiv1
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x20)), 0x48);
 			if (this.oCPU.Flags.L) goto L0fd1;
 
-			this.oParent.Var_aa_Rectangle.FontID = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x67ec);
+			this.oParent.Var_aa_Screen0_Rectangle.FontID = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x67ec);
 
 			// Instruction address 0x0000:0x1021, size: 5
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
@@ -1492,12 +1492,12 @@ namespace OpenCiv1
 			this.oParent.Var_3936 = 0;
 
 			// Instruction address 0x0000:0x102c, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Screen0_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x1036, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			this.oCPU.AX.UInt16 = (ushort)oParent.GameData.TurnCount;
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x34), this.oCPU.AX.UInt16);
@@ -1991,7 +1991,7 @@ namespace OpenCiv1
 			// function body
 			F6_0000_233c();
 
-			this.oParent.Var_aa_Rectangle.FontID = 1;
+			this.oParent.Var_aa_Screen0_Rectangle.FontID = 1;
 
 			// Instruction address 0x0000:0x16b9, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
@@ -2071,7 +2071,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(this.oParent.GameData.Nations[this.oParent.GameData.Players[playerID].NationalityID].ShortTune, 3);
 
 			// Instruction address 0x0000:0x178f, size: 5
-			this.oParent.MainCode.F0_11a8_0280();
+			this.oParent.MainCode.F0_11a8_0280_ShowMouseAndSaveState();
 
 			// Instruction address 0x0000:0x17a0, size: 5
 			this.oCPU.AX.Int16 = (short)this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
@@ -2080,7 +2080,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x3934, this.oCPU.AX.UInt16);
 
 			// Instruction address 0x0000:0x17ad, size: 5
-			this.oParent.MainCode.F0_11a8_0294();
+			this.oParent.MainCode.F0_11a8_0294_HideMouseAndSaveState();
 
 			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x3934), 0xfffe);
 			if (this.oCPU.Flags.NE) goto L17c7;
@@ -2096,7 +2096,7 @@ namespace OpenCiv1
 
 		L17d1:
 			// Instruction address 0x0000:0x17d1, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 			
 			F6_0000_1d2b(playerID);
 
@@ -2104,7 +2104,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(this.oParent.GameData.Nations[this.oParent.GameData.Players[playerID].NationalityID].LongTune, 3);
 
 			// Instruction address 0x0000:0x180a, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			this.oCPU.BX.UInt16 = (ushort)this.oParent.GameData.Players[playerID].NationalityID;
 			this.oCPU.ES.UInt16 = 0x36fa; // segment
@@ -2118,7 +2118,7 @@ namespace OpenCiv1
 				this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x67ec, 0x3);
 			}
 		
-			this.oParent.Var_aa_Rectangle.FontID = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x67ec);
+			this.oParent.Var_aa_Screen0_Rectangle.FontID = this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x67ec);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd2dc, 1);
 			this.oParent.Var_3936 = 1;
@@ -2778,7 +2778,7 @@ namespace OpenCiv1
 
 		L203f:
 			// Instruction address 0x0000:0x2057, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Screen1_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x207e, size: 5
 			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0x10), "govt0a.pic");
@@ -2842,10 +2842,10 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x67fa, 0x1);
 
 			// Instruction address 0x0000:0x213f, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Screen1_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x2170, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Screen0_Rectangle, 0, 0);
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x67ea, 0x1);
 
@@ -2876,7 +2876,7 @@ namespace OpenCiv1
 
 		L21bd:
 			// Instruction address 0x0000:0x21bd, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
 			// Instruction address 0x0000:0x21ca, size: 5
 			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0xe), "back0a.pic");
@@ -2907,7 +2907,7 @@ namespace OpenCiv1
 
 		L2214:
 			// Instruction address 0x0000:0x2239, size: 5
-			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_19d4_Rectangle,
+			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_19d4_Screen1_Rectangle,
 				this.oCPU.ReadInt16(this.oCPU.DS.UInt16,
 					(ushort)((this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x1e)) << 1) + 0x3afe)),
 				34,
@@ -2923,7 +2923,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.G) goto L2214;
 			
 			// Instruction address 0x0000:0x2267, size: 5
-			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_19d4_Rectangle, 90, 0, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xb1e6));
+			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_19d4_Screen1_Rectangle, 90, 0, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xb1e6));
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x67f4, 0x0);
 
@@ -2964,16 +2964,16 @@ namespace OpenCiv1
 			this.oParent.Segment_2dc4.F0_2dc4_065f();
 
 			// Instruction address 0x0000:0x22fe, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, 0);
 			
 			// Instruction address 0x0000:0x230a, size: 5
 			this.oParent.Graphics.F0_VGA_0162_SetColorsFromColorStruct(0xbdee);
 			
 			// Instruction address 0x0000:0x232a, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Screen0_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x2332, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 		L2337:
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
@@ -3028,7 +3028,7 @@ namespace OpenCiv1
 
 		L2374:
 			// Instruction address 0x0000:0x2374, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
 			this.oCPU.AX.UInt16 = param3;
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), this.oCPU.AX.UInt16);
@@ -3107,7 +3107,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6), this.oCPU.SUB_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), this.oCPU.CX.UInt16));
 
 			// Instruction address 0x0000:0x245c, size: 5
-			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)) + 34,
 				this.oCPU.ReadUInt16(this.oCPU.DS.UInt16,
@@ -3147,7 +3147,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L24eb;
 			
 			// Instruction address 0x0000:0x24e3, size: 5
-			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)) - 2,
 				this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)((param1 << 2) + 0x7efe)));
@@ -3157,14 +3157,14 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.E) goto L2512;
 			
 			// Instruction address 0x0000:0x250a, size: 5
-			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)),
 				this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)) + 18,
 				this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)((param2 << 2) + 0x7f00)));
 
 		L2512:
 			// Instruction address 0x0000:0x2512, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 		L2517:
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
@@ -3188,25 +3188,25 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x0000:0x2523, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
 			// Instruction address 0x0000:0x2546, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 128, 320, 72, this.oParent.Var_19d4_Rectangle, 0, 128);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Screen0_Rectangle, 0, 128, 320, 72, this.oParent.Var_19d4_Screen1_Rectangle, 0, 128);
 		
 			// Instruction address 0x0000:0x2559, size: 5
-			this.oParent.MainCode.F0_11a8_0280();
+			this.oParent.MainCode.F0_11a8_0280_ShowMouseAndSaveState();
 
 			// Instruction address 0x0000:0x2567, size: 5
 			int local_2 = this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(stringPtr, x, y, false, false, true);
 
 			// Instruction address 0x0000:0x2572, size: 5
-			this.oParent.MainCode.F0_11a8_0294();
+			this.oParent.MainCode.F0_11a8_0294_HideMouseAndSaveState();
 
 			// Instruction address 0x0000:0x2595, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 128, 320, 72, this.oParent.Var_aa_Rectangle, 0, 128);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 128, 320, 72, this.oParent.Var_aa_Screen0_Rectangle, 0, 128);
 
 			// Instruction address 0x0000:0x259d, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			this.oCPU.AX.Int16 = (short)local_2;
 

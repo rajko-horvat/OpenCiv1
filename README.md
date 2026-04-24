@@ -1,32 +1,76 @@
 ## About
-<p>OpenCiv1 project is an open source rewrite of <a href="https://en.wikipedia.org/wiki/Civilization_(video_game)">Civilization 1 Game</a> designed by Sid Meier and Bruce Shelley in year 1991.</p>
+<p>OpenCiv1 project is an open source preservation effort and rewrite of the iconic <a href="https://en.wikipedia.org/wiki/Civilization_(video_game) target="_blank">Civilization Game</a> designed by Sid Meier and Bruce Shelley in year 1991.</p>
+<p><a href="https://www.stopkillinggames.com/en" target="_blank">The Stop Killing Games Campaign</a></p>
+<p><b>The final source code for the game, according to the sources from MicroProse Software, Inc. is lost forever.</b> The only copy that remains is the game prototype source code on Sid Meier's own IBM PC on which he designed the game (<a href="https://www.youtube.com/watch?v=XwUM33VJRbY" target="_blank">Video in which Sid Meier talks about his IBM PCs</a>).
 <ul>
 <li>The OpenCiv1 uses .NET 8 and Avalonia UI framework and is OS independent. It is currently compatible with desktops: Windows, Linux and MacOSX.</li>
 <p align="center">
 <img src="src/Resources/Screenshots/Windows.png" alt="Windows OS" width="260" />
 <img src="src/Resources/Screenshots/Linux.png" alt="Linux OS" width="260" />
 <img src="src/Resources/Screenshots/MacOSX.png" alt="MacOSX OS" width="260" /></p>
-<li>The game logic is <b>Based on original DOS Civilization 1 game version 475.05</b> disassembly.</li>
+<li>The game logic is <b>Based on original DOS Civilization game version 475.05</b>.</li>
 <li>The game is still very popular and easy to play. But the obsolescence of DOS or Windows 16-bit platform and the bugs that have never been fixed are hindering the popularity of the game. <a href="https://forums.civfanatics.com/threads/dos-civilization-1-1991-bug-s-discussion-what-should-be-fixed-in-openciv1.688773/" target="_blank">Original game bug(s) discussion page</a></li>
 <li>The news, discussions about this project and release news are published regularly on <a href="https://forums.civfanatics.com/threads/rewrite-of-civilization-1-source-code-openciv1-project.682623/" target="_blank">Civilization Fanatics Forum page</a></li>
 <li>For contact purposes openciv1@yahoo.com public email address can be used.</li>
 </ul>
 
+## Project reviews
+<ul>
+<li><a href="https://gigazine.net/gsc_news/en/20240129-openciv1/" target="_blank">OpenCiv1 is a project that disassembles the first 'Civilization' and makes it open source, by logu_ii (from Jan 29, 2024)</a></li>
+<li><a href="https://thepixelspulse.com/posts/openciv1-rewrite-modernizing-civilization-1/" target="_blank">OpenCiv1 Rewrite: A Blueprint for Modernizing Civilization 1, by gaming-insider (from March 28, 2026)</a></li>
+</ul>
+
 ## Copyright considerations
-<p><b>The available code is not a full working copy of the game.</b> <b>To run OpenCiv1 you are legally required to own your own copy of the DOS Civilization game.</b> 
-<b>This is the reason that not a single file from the original Civilization 1 game is included in this GitHub repository as they are copyrighted.</b></p>
-<p>The part of the game assembly code is emulated with Virtual CPU, and the rest of the code has been rewritten from scratch until all of the code is replaced with new copyright free code. 
-The other resources (like graphics, music and text) will also be completely replaced with copyright free resources before publishing the complete game.</p>
+<p>The sole purpose of this preservation project is to provide an open source code and resources to the game which is considered abandoned for at least 30 years since in that time the publishing company and/or its sucessor(s) that released the original game did not provide any updates or support and the sucessor publishing company is not selling that particular game for a least 20 years.</p>
+What this project will not do:
+<ul>
+<li>Copy any of the original game source code or it's executable code,</li>
+<li>Copy any of it's copyrighted assets (graphics, music, etc.),</li>
+<li>Copy or use any of the protected trademarks,</li>
+<li>Associate itself in any way with any of the companies that sell games.</li>
+</ul>
+
+<p> </p>
+Relevant principles under EU law that apply to this project:
+<table>
+<tr>
+<td><b>Argument</b></td><td><b>Relevant EU Legal Principle</b></td><td><b>Case Law Support</b></td>
+</tr>
+<tr>
+<td>Observed functionality via disassembly</td><td>Right to study, observe, and test to determine underlying ideas</td><td>Article 5(3) of Directive 2009/24/EC ; SAS v. WPL</td>
+</tr>
+<tr>
+<td>Did not copy original code</td><td>Copyright protects expression (source code), not ideas (functionality)</td><td>Article 1(2) of Directive 2009/24/EC ; SAS v. WPL</td>
+</tr>
+<tr>
+<td>Created code independently (for example, didn't look at or copy any of the original source code). The resulting work can be functionally similar in this case.</td><td>Independent creation</td><td>Established principle; Mio/konektra (C-580/23) (There can be no infringement where a legitimate licensee, who has not had access to the source code, simply studies, observes, and tests the program in order to reproduce the functionality in its own program)</td>
+</tr>
+<tr>
+<td>Used no original graphics, music or any of it's copyrighted assets</td><td>Audiovisual works protected under InfoSoc Directive; Independent creation is a defense</td><td>Directive 2001/29/EC</td>
+</tr>
+<tr>
+<td>The authors admitted in the <url='https://arstechnica.com/gaming/2017/03/sid-meier-tells-civilizations-origin-story-cites-childrens-history-books/'>Origin story of the game</URL> that they mostly referenced and very likely used large parts of the text for 'Civilopedia' from external sources.</td><td>Only completely original work can be copyrighted</td><td>Directive 2001/29/EC; Article 1(2) of Directive 2009/24/EC ; SAS v. WPL; Mio/konektra (C-580/23)</td>
+</tr>
+<tr>
+<td>Used no trademarks</td><td>No likelihood of confusion; no "use in the course of trade" of a protected mark</td><td>EU Trade Mark Directive (EU 2015/2436)</td>
+</tr>
+</table>
+
+<p><b>The available code is not a full working copy of the game and is not based on original source code.</b>
+<b>To run OpenCiv1 you are legally required to own your own copy of the DOS Civilization game.</b>
+<b>This is the reason that not a single file from the original Civilization game is included in this GitHub repository as they are copyrighted.</b></p>
 
 ## Current status
 <p><b>The game is in working state</b>, but you have to legally own the Original game (the .txt, .pic and .pal files have to be present).</p>
+<p>The part of the game assembly code is emulated with Virtual CPU, and the rest of the code has been rewritten from scratch until all of the code is replaced with new copyright free code. 
+The other resources (like graphics, music and text) will also be completely replaced with copyright free resources before publishing the complete game.</p>
 
 ## How to Contribute to this project
 <p>Anyone can contribute to this repository in accordance with these <a href="https://github.com/rajko-horvat/OpenCiv1/blob/master/.github/CONTRIBUTING.md">Contributing guidelines</a></p>
 Currently, you can contribute to this repository in one of the following ways:
 <ul>
 <li>By testing the game functionality and submitting Issues,</li>
-<li>By translating the part(s) of the code from pseudo assembly language to native C# language (for details see <a href="https://github.com/rajko-horvat/OpenCiv1/wiki/Introduction-to-code-translating">Introduction to code translating</a>),</li>
+<li>By rewriting the part(s) of the code from pseudo assembly language to native C# language,</li>
 <li>By designing parts of a 'Default' Visual and Audio theme (which must preserve original Game appearance and feel as much as possible, SVG and MIDI/SoundFonts would be the best),</li>
 <li>By designing parts of a 'Custom' Visual and Audio theme(s) (SVG and MIDI/SoundFonts would be the best).</li>
 </ul>

@@ -5,7 +5,7 @@ using IRB.Collections.Generic.Trees;
 namespace IRB.Collections.Generic
 {
 	/// <summary>
-	/// Implementation of serializable direct replacemnt for Dictionary class which uses BTree indexing
+	/// Implementation of serializable direct replacement for Dictionary class which uses BTree indexing
 	/// </summary>
 	/// <license>
 	/// 	MIT
@@ -34,7 +34,7 @@ namespace IRB.Collections.Generic
 	public class BDictionary<TKey, TValue>
 		: IList<BKeyValuePair<TKey, TValue>>, ICollection<BKeyValuePair<TKey, TValue>>, IEnumerable<BKeyValuePair<TKey, TValue>>
 		where TKey : notnull
-		where TValue : notnull
+		//where TValue : notnull
 	{
 		protected List<BKeyValuePair<TKey, TValue>> aItems;
 		private BTree oBTree = new BTree();
@@ -150,7 +150,7 @@ namespace IRB.Collections.Generic
 		{
 			for (int i = 0; i < this.aItems.Count; i++)
 			{
-				if (this.aItems[i].Value.Equals(value))
+				if ((value == null && this.aItems[i].Value == null) || (this.aItems[i].Value != null && (this.aItems[i].Value)!.Equals(value)))
 				{
 					return true;
 				}
@@ -176,7 +176,7 @@ namespace IRB.Collections.Generic
 
 			for (int i = 0; i < this.aItems.Count; i++)
 			{
-				if (this.aItems[i].Value.Equals(value))
+				if ((value == null && this.aItems[i].Value == null) || (this.aItems[i].Value != null && (this.aItems[i].Value)!.Equals(value)))
 				{
 					index = i;
 					break;
@@ -638,7 +638,7 @@ namespace IRB.Collections.Generic
 
 				#region IEnumerator Members
 
-				object System.Collections.IEnumerator.Current
+				object? System.Collections.IEnumerator.Current
 				{
 					get
 					{

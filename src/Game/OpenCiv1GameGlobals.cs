@@ -59,19 +59,14 @@ namespace OpenCiv1
 		public ushort Var_6a = 0; // ushort
 		public ushort Var_6c = 0; // ushort
 
-		public CRectangle Var_aa_Rectangle = new CRectangle(0, 0, 0, 319, 199, 0x1, 15, 0, 4, 0, 0);
+		public CRectangle Var_aa_Screen0_Rectangle = new CRectangle(0, 0, 0, 319, 199, 0x1, 15, 0, 4, 0, 0);
+		public CRectangle Var_19d4_Screen1_Rectangle = new CRectangle(1, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
+		public CRectangle Var_19e8_Screen2_Rectangle = new CRectangle(2, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
 
 		public byte[] Array_1946 = { 12, 15, 10, 9, 14, 11, 13, 7 };
 		public byte[] Array_1956 = { 4, 7, 2, 1, 10, 3, 4, 8 };
 		public string[] Array_1966 = { "Anarchy", "Despotism", "Monarchy", "Communist", "Republic", "Democratic" };
 
-		public CRectangle Var_19d4_Rectangle = new CRectangle(1, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
-		public CRectangle Var_19e8_Rectangle = new CRectangle(2, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
-
-		// !!! This should not be used at all as screen 3 doesn't exist
-		public CRectangle Var_19fc_Rectangle = new CRectangle(3, 0, 0, 319, 199, 0x0, 15, 0, 4, 0, 0);
-
-		public char Var_1a22_VGAType = 'M';
 		public char Var_1a30_SoundDriverType = 'N';
 		public bool Var_1a3c_MouseAvailable = true;
 		public int Var_1a3e = 0;
@@ -125,6 +120,8 @@ namespace OpenCiv1
 		public MenuBoxReportTypeEnum Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.None;
 		public bool Var_2fa2_DialogMousePressed = false;
 		public string[] Array_2fac = { "Defense Minister:", "Domestic Advisor:", "Foreign Minister:", "Science Advisor:" };
+
+		public string[] Array_33a2_GameDifficultyNames = { "Chief", "Lord", "Prince", "King", "Emperor" };
 
 		public int Var_3484 = -1;
 		public GPoint[] Array_35da = { new(0, 0), new(36, 19), new(45, 22), new(38, 15), new(41, 24), new(12, 18), new(39, 18), new(57, 24), 

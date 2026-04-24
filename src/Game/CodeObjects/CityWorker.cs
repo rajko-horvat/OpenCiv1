@@ -112,7 +112,7 @@ namespace OpenCiv1
 				this.Var_2496 = 0;
 
 				// Instruction address 0x1d12:0x007e, size: 5
-				this.oParent.MainCode.F0_11a8_0268();
+				this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
 				for (int i = 0; i < 5; i++)
 				{
@@ -258,7 +258,7 @@ namespace OpenCiv1
 					this.oParent.UnitManagement.F0_1866_0006(cityID);
 
 					// Instruction address 0x1d12:0x04ba, size: 5
-					this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
+					this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, 0);
 
 					// Instruction address 0x1d12:0x04d2, size: 5
 					F0_1d12_70cb_FillRectangleWithPattern(2, 1, 208, 21);
@@ -270,7 +270,7 @@ namespace OpenCiv1
 						local_e8 += i;
 					}
 
-					this.oParent.Var_aa_Rectangle.FontID = 2;
+					this.oParent.Var_aa_Screen0_Rectangle.FontID = 2;
 
 					this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
@@ -396,7 +396,7 @@ namespace OpenCiv1
 								this.oParent.StartGameMenu.F5_0000_0e6c_TestIfAIPlayerDestroyed(this.Var_6548_PlayerID, 0);
 
 								// Instruction address 0x1d12:0x085b, size: 5
-								this.oParent.MainCode.F0_11a8_0250();
+								this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 								goto L6927;
 							}
@@ -881,7 +881,7 @@ namespace OpenCiv1
 										this.oParent.StartGameMenu.F5_0000_0e6c_TestIfAIPlayerDestroyed(this.Var_6548_PlayerID, 0);
 
 										// Instruction address 0x1d12:0x1743, size: 5
-										this.oParent.MainCode.F0_11a8_0250();
+										this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 										goto L6927;
 									}
@@ -1242,7 +1242,7 @@ namespace OpenCiv1
 								if (local_e8 == 38)
 								{
 									// Instruction address 0x1d12:0x2136, size: 5
-									this.oParent.MainCode.F0_11a8_0280();
+									this.oParent.MainCode.F0_11a8_0280_ShowMouseAndSaveState();
 
 									// Instruction address 0x1d12:0x2143, size: 5
 									this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
@@ -1251,7 +1251,7 @@ namespace OpenCiv1
 									this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
 
 									// Instruction address 0x1d12:0x215b, size: 5
-									this.oParent.MainCode.F0_11a8_0294();
+									this.oParent.MainCode.F0_11a8_0294_HideMouseAndSaveState();
 								}
 
 								if (local_e8 == 43 && this.Var_6548_PlayerID == this.oParent.GameData.HumanPlayerID)
@@ -1281,7 +1281,7 @@ namespace OpenCiv1
 						// Instruction address 0x1d12:0x2262, size: 5
 						local_e8 = (short)this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
 
-						this.oParent.Var_aa_Rectangle.FontID = 2;
+						this.oParent.Var_aa_Screen0_Rectangle.FontID = 2;
 
 						if (local_e8 == 99)
 						{
@@ -1398,7 +1398,7 @@ namespace OpenCiv1
 					F0_1d12_71bf_DrawFilledRectangleWithCenteredText(194, 106, 226, 114, 0x25f9, 9);
 
 					// Instruction address 0x1d12:0x275a, size: 5
-					this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, (33 * this.Var_2496) + 96, 107, 32, 7, 9, 15);
+					this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Screen0_Rectangle, (33 * this.Var_2496) + 96, 107, 32, 7, 9, 15);
 
 					if (this.Var_2496 == 2)
 					{
@@ -1564,7 +1564,7 @@ namespace OpenCiv1
 					local_42 += 16;
 
 					// Instruction address 0x1d12:0x2c35, size: 5
-					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 100, local_42 - 2, 222, local_42 - 2, 1);
+					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, 100, local_42 - 2, 222, local_42 - 2, 1);
 				}
 
 				this.oParent.Var_70e2 = this.oParent.Var_70da_Arr[3] / 2;
@@ -1578,13 +1578,13 @@ namespace OpenCiv1
 					F0_1d12_6ed4_DrawResources(cityID, 100, local_42, local_8, 92);
 
 					// Instruction address 0x1d12:0x2ca6, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 						208, local_42 + 4, this.oParent.Array_d4ce[14]);
 
 					local_42 += 16;
 
 					// Instruction address 0x1d12:0x2cc6, size: 5
-					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 100, local_42 - 2, 222, local_42 - 2, 1);
+					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, 100, local_42 - 2, 222, local_42 - 2, 1);
 				}
 
 				local_6 = 208;
@@ -1678,7 +1678,7 @@ namespace OpenCiv1
 					local_42 += 16;
 
 					// Instruction address 0x1d12:0x2eeb, size: 5
-					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 100, local_42 - 2, 222, local_42 - 2, 1);
+					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, 100, local_42 - 2, 222, local_42 - 2, 1);
 				}
 
 				local_6 = 208;
@@ -1706,7 +1706,7 @@ namespace OpenCiv1
 							if (flag == 1 && this.Var_2496 == 1 && local_e6 <= 3)
 							{
 								// Instruction address 0x1d12:0x2fbd, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 									local_6, local_42 - 1,
 									this.oParent.Array_d4ce[64 + this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[local_ba].TypeID + (this.Var_6548_PlayerID * 32)]);
 
@@ -1757,7 +1757,7 @@ namespace OpenCiv1
 							for (int i = 0; i < (local_e8 * this.Var_6546); i++)
 							{
 								// Instruction address 0x1d12:0x3117, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, local_6, local_42 + 4,
+								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle, local_6, local_42 + 4,
 									this.oParent.Array_d4ce[13]);
 
 								local_6 -= 2;
@@ -1777,7 +1777,7 @@ namespace OpenCiv1
 					local_42 += 16;
 
 					// Instruction address 0x1d12:0x3183, size: 5
-					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 100, local_42 - 2, 222, local_42 - 2, 1);
+					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, 100, local_42 - 2, 222, local_42 - 2, 1);
 				}
 
 				local_e8 = this.oParent.Var_70e2 - this.oParent.Var_70e4;
@@ -1828,7 +1828,7 @@ namespace OpenCiv1
 					local_42 += 16;
 
 					// Instruction address 0x1d12:0x32c5, size: 5
-					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 100, local_42 - 2, 222, local_42 - 2, 1);
+					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, 100, local_42 - 2, 222, local_42 - 2, 1);
 				}
 
 				if ((this.oParent.GameData.DebugFlags & 0x2) == 0)
@@ -1971,19 +1971,19 @@ namespace OpenCiv1
 								if (this.oParent.Var_d2f6 != 0)
 								{
 									// Instruction address 0x1d12:0x36c0, size: 5
-									this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+									this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 										local_f6 + 8, local_fc + 12, this.oParent.Array_d4ce[9]);
 								}
 								if (this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].TypeID == 0)
 								{
 									// Instruction address 0x1d12:0x36f4, size: 5
-									this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+									this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 										local_f6, local_fc + 12, this.oParent.Array_d4ce[8]);
 
 									if (this.oParent.GameData.Players[this.Var_6548_PlayerID].GovernmentType >= 2)
 									{
 										// Instruction address 0x1d12:0x371f, size: 5
-										this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+										this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 											local_f6 + 2, local_fc + 12, this.oParent.Array_d4ce[8]);
 									}
 								}
@@ -2006,13 +2006,13 @@ namespace OpenCiv1
 												this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].Position.Y != city.Position.Y))
 										{
 											// Instruction address 0x1d12:0x381d, size: 5
-											this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+											this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 												local_f6, local_fc + 12, this.oParent.Array_d4ce[13]);
 
 											if (local_e8 > 1)
 											{
 												// Instruction address 0x1d12:0x3842, size: 5
-												this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+												this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 													local_f6 + 2, local_fc + 12, this.oParent.Array_d4ce[13]);
 											}
 										}
@@ -2021,7 +2021,7 @@ namespace OpenCiv1
 							}
 
 							// Instruction address 0x1d12:0x3877, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, local_f6, local_fc,
+							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle, local_f6, local_fc,
 								this.oParent.Array_d4ce[64 + this.oParent.GameData.Players[this.Var_6548_PlayerID].Units[i].TypeID + (this.Var_6548_PlayerID * 32)]);
 
 							// Instruction address 0x1d12:0x38a3, size: 5
@@ -2100,7 +2100,7 @@ namespace OpenCiv1
 
 				if (flag == 1)
 				{
-					this.oParent.Var_aa_Rectangle.FontID = 2;
+					this.oParent.Var_aa_Screen0_Rectangle.FontID = 2;
 
 					// Instruction address 0x1d12:0x3a9f, size: 5
 					F0_1d12_70cb_FillRectangleWithPattern(211, 1, 317, 97);
@@ -2159,7 +2159,7 @@ namespace OpenCiv1
 								local_b4++;
 
 								// Instruction address 0x1d12:0x3bfb, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 									309, local_e4 + 1, this.oParent.Array_d4ce[11]);
 
 								// Instruction address 0x1d12:0x3c12, size: 5
@@ -2184,10 +2184,10 @@ namespace OpenCiv1
 					}
 
 					// Instruction address 0x1d12:0x3c97, size: 5
-					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 231, 0, 250, 0, 0);
+					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, 231, 0, 250, 0, 0);
 
 					// Instruction address 0x1d12:0x3cb3, size: 5
-					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 231, 1, 250, 1, 1);
+					this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, 231, 1, 250, 1, 1);
 
 					if ((local_ca & 2) != 0)
 					{
@@ -2196,7 +2196,7 @@ namespace OpenCiv1
 					}
 
 					// Instruction address 0x1d12:0x3d01, size: 5
-					this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, 309, 2, 8, 96, 14, 12);
+					this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Screen0_Rectangle, 309, 2, 8, 96, 14, 12);
 
 					if (city.CurrentProductionID >= 0)
 					{
@@ -2214,7 +2214,7 @@ namespace OpenCiv1
 					local_fc = (((local_de - 1) / local_44) * 8) + 8;
 
 					// Instruction address 0x1d12:0x3ded, size: 5
-					this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 230, 99, local_f6 + 3, local_fc + 19, 1);
+					this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 230, 99, local_f6 + 3, local_fc + 19, 1);
 
 					if (this.Var_6548_PlayerID == this.oParent.GameData.HumanPlayerID)
 					{
@@ -2228,7 +2228,7 @@ namespace OpenCiv1
 					if (city.CurrentProductionID >= 0)
 					{
 						// Instruction address 0x1d12:0x3e8e, size: 5
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, 264, 100,
+						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle, 264, 100,
 							this.oParent.Array_d4ce[64 + city.CurrentProductionID + (this.Var_6548_PlayerID * 32)]);
 					}
 					else
@@ -2249,7 +2249,7 @@ namespace OpenCiv1
 					for (int i = 0; i < city.ShieldsCount; i++)
 					{
 						// Instruction address 0x1d12:0x3f55, size: 5
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 							(((i % (local_4a * local_44)) * local_e8) / local_44) + 232,
 							((i / (local_4a * local_44)) * 8) + 117,
 							this.oParent.Array_d4ce[9]);
@@ -2268,7 +2268,7 @@ namespace OpenCiv1
 					local_fc = 80 / local_4a;
 
 					// Instruction address 0x1d12:0x3fb5, size: 5
-					this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 2, 106, 91, (local_4a * local_fc) + 12, 1);
+					this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 2, 106, 91, (local_4a * local_fc) + 12, 1);
 
 					// Instruction address 0x1d12:0x3fcd, size: 5
 					this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("Food Storage", 8, 108, 15);
@@ -2279,7 +2279,7 @@ namespace OpenCiv1
 					if (city.HasImprovement(ImprovementEnum.Granary))
 					{
 						// Instruction address 0x1d12:0x403b, size: 5
-						this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, 5, 155, (city.ActualSize * local_e8) + 9, 155, 1);
+						this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, 5, 155, (city.ActualSize * local_e8) + 9, 155, 1);
 					}
 
 					// Instruction address 0x1d12:0x406a, size: 5
@@ -2288,7 +2288,7 @@ namespace OpenCiv1
 					for (int i = 0; i < iTemp; i++)
 					{
 						// Instruction address 0x1d12:0x40af, size: 5
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 							((i % (city.ActualSize + 1)) * local_e8) + 4,
 							((i / (city.ActualSize + 1)) * local_fc) + 116,
 							this.oParent.Array_d4ce[8]);
@@ -2300,7 +2300,7 @@ namespace OpenCiv1
 					local_fc = 25;
 
 					// Instruction address 0x1d12:0x40f0, size: 5
-					this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 2, 23, 122, 9, 1);
+					this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 2, 23, 122, 9, 1);
 
 					// Instruction address 0x1d12:0x4108, size: 5
 					this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("City Resources", 8, local_fc, 15);
@@ -2353,7 +2353,7 @@ namespace OpenCiv1
 							}
 
 							// Instruction address 0x1d12:0x4267, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 								local_d8, (i * 8) + local_fc, this.oParent.Array_d4ce[8 + i]);
 
 							local_d8 += local_e8;
@@ -2369,7 +2369,7 @@ namespace OpenCiv1
 					for (int i = 0; i < this.oParent.Var_70da_Arr[3]; i++)
 					{
 						// Instruction address 0x1d12:0x42e1, size: 5
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 							local_d8 / 2, local_fc + 24, this.oParent.Array_d4ce[14]);
 
 						local_d8 += local_e8;
@@ -2385,7 +2385,7 @@ namespace OpenCiv1
 					for (int i = 0; i < this.oParent.Var_e17a; i++)
 					{
 						// Instruction address 0x1d12:0x433a, size: 5
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 							local_d8 / 2, local_fc + 24, this.oParent.Array_d4ce[11]);
 
 						local_d8 += local_e8;
@@ -2399,7 +2399,7 @@ namespace OpenCiv1
 					for (int i = 0; i < this.oParent.Var_70e6; i++)
 					{
 						// Instruction address 0x1d12:0x438b, size: 5
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 							local_d8 / 2, local_fc + 24, this.oParent.Array_d4ce[12]);
 
 						local_d8 += local_e8;
@@ -2413,12 +2413,12 @@ namespace OpenCiv1
 						for (int i = this.oParent.Var_70da_Arr[0]; i < (city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6); i++)
 						{
 							// Instruction address 0x1d12:0x443e, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 								(i * local_e8) + 8, local_fc, this.oParent.Array_d4ce[8]);
 						}
 
 						// Instruction address 0x1d12:0x448f, size: 5
-						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
+						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Screen0_Rectangle,
 							(local_e8 * this.oParent.Var_70da_Arr[0]) + 8, local_fc,
 							(((city.ActualSize * 2) + (local_48 * this.oParent.Var_e3c6) - this.oParent.Var_70da_Arr[0]) * local_e8) + 4,
 							8, 15, 0);
@@ -2432,12 +2432,12 @@ namespace OpenCiv1
 						for (int i = this.oParent.Var_70da_Arr[1]; i < this.oParent.Var_d2f6; i++)
 						{
 							// Instruction address 0x1d12:0x44f7, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 								(i * local_e8) + 8, local_fc + 8, this.oParent.Array_d4ce[9]);
 						}
 
 						// Instruction address 0x1d12:0x4532, size: 5
-						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
+						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Screen0_Rectangle,
 							(this.oParent.Var_70da_Arr[1] * local_e8) + 8, local_fc + 8,
 							(this.oParent.Var_d2f6 - this.oParent.Var_70da_Arr[1]) * local_e8,
 							8, 15, 0);
@@ -2449,7 +2449,7 @@ namespace OpenCiv1
 						local_e8 = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(116 / (this.oParent.Var_70da_Arr[2] + 1), 1, 8);
 
 						// Instruction address 0x1d12:0x4598, size: 5
-						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
+						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Screen0_Rectangle,
 							((this.oParent.Var_70da_Arr[2] - this.oParent.Var_d2e0) * local_e8) + 6,
 							local_fc + 16, (local_e8 * this.oParent.Var_d2e0) + 2,
 							8, 15, 0);
@@ -2528,7 +2528,7 @@ namespace OpenCiv1
 						for (int i = 0; i < local_e0; i++)
 						{
 							// Instruction address 0x1d12:0x4847, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 								(i * local_fc) + 98, (i & 1) + 161, this.oParent.Var_b2ba);
 						}
 					}
@@ -2569,7 +2569,7 @@ namespace OpenCiv1
 						}
 
 						// Instruction address 0x1d12:0x4994, size: 5
-						this.oParent.MainCode.F0_11a8_0250();
+						this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 						while (this.oParent.Var_db3a_MouseButton != 0)
 						{
@@ -2589,23 +2589,23 @@ namespace OpenCiv1
 							if (local_c0 != 0)
 							{
 								// Instruction address 0x1d12:0x49db, size: 5
-								this.oParent.MainCode.F0_11a8_0268();
+								this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
 								local_c0++;
 
 								if ((local_c0 & 1) != 0)
 								{
 									// Instruction address 0x1d12:0x4a0b, size: 5
-									this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, 231, 106, 32, 8, 14, 9);
+									this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Screen0_Rectangle, 231, 106, 32, 8, 14, 9);
 								}
 								else
 								{
 									// Instruction address 0x1d12:0x4a32, size: 5
-									this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, 231, 106, 32, 8, 9, 14);
+									this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Screen0_Rectangle, 231, 106, 32, 8, 9, 14);
 								}
 
 								// Instruction address 0x1d12:0x4a3a, size: 5
-								this.oParent.MainCode.F0_11a8_0250();
+								this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 								// Instruction address 0x1d12:0x4a43, size: 5
 								this.oParent.CommonTools.F0_1182_0134_WaitTimer(10);
@@ -2632,7 +2632,7 @@ namespace OpenCiv1
 						}
 
 						// Instruction address 0x1d12:0x4a86, size: 5
-						this.oParent.MainCode.F0_11a8_0268();
+						this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
 						if ((this.oParent.Var_db3a_MouseButton == 2 &&
 							this.oParent.Var_db3c_MouseXPos >= 230 && this.oParent.Var_db3c_MouseXPos < 270 &&
@@ -2646,7 +2646,7 @@ namespace OpenCiv1
 								// Instruction address 0x1d12:0x4aef, size: 5
 								local_102 = (short)this.oParent.Segment_1ade.F0_1ade_0421(this.Var_6548_PlayerID, cityID);
 
-								this.oParent.Var_aa_Rectangle.FontID = 2;
+								this.oParent.Var_aa_Screen0_Rectangle.FontID = 2;
 
 								if (local_102 != 99)
 								{
@@ -2665,7 +2665,7 @@ namespace OpenCiv1
 									}
 
 									// Instruction address 0x1d12:0x4b9c, size: 5
-									this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 230, 99, 90, 100, 0);
+									this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 230, 99, 90, 100, 0);
 								}
 								else
 								{
@@ -2771,9 +2771,9 @@ namespace OpenCiv1
 						}
 
 						// Instruction address 0x1d12:0x4e18, size: 5
-						this.oParent.MainCode.F0_11a8_0250();
+						this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
-						this.oParent.Var_aa_Rectangle.FontID = 1;
+						this.oParent.Var_aa_Screen0_Rectangle.FontID = 1;
 
 						// Instruction address 0x1d12:0x4e32, size: 5
 						if (this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 100, 80, true, false, true) == 0 && 
@@ -2785,7 +2785,7 @@ namespace OpenCiv1
 						}
 
 						// Instruction address 0x1d12:0x4e78, size: 5
-						this.oParent.MainCode.F0_11a8_0268();
+						this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
 						goto L045f;
 
@@ -2795,7 +2795,7 @@ namespace OpenCiv1
 							city.StatusFlag &= 0xef;
 
 							// Instruction address 0x1d12:0x4ead, size: 5
-							this.oParent.MainCode.F0_11a8_0250();
+							this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 							if (city.CurrentProductionID >= 0)
 							{
@@ -2811,7 +2811,7 @@ namespace OpenCiv1
 							}
 
 							// Instruction address 0x1d12:0x4f2f, size: 5
-							this.oParent.MainCode.F0_11a8_0268();
+							this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
 							goto L045f;
 						}
@@ -2861,7 +2861,7 @@ namespace OpenCiv1
 						if (this.Var_2496 != 3)
 							goto L12c2;
 
-						this.oParent.Var_aa_Rectangle.FontID = 1;
+						this.oParent.Var_aa_Screen0_Rectangle.FontID = 1;
 
 						this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
@@ -2974,14 +2974,14 @@ namespace OpenCiv1
 
 					L5230:
 						// Instruction address 0x1d12:0x5258, size: 5
-						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
+						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Screen0_Rectangle,
 							252, ((local_106 + local_40) * 6) + 3, 56, 7, 9, 1);
 
 						// Instruction address 0x1d12:0x5264, size: 5
 						this.oParent.CommonTools.F0_1182_0134_WaitTimer(10);
 
 						// Instruction address 0x1d12:0x5294, size: 5
-						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
+						this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Screen0_Rectangle,
 							252, ((local_106 + local_40) * 6) + 3, 56, 7, 1, 9);
 
 						// Instruction address 0x1d12:0x52a0, size: 5
@@ -3081,9 +3081,9 @@ namespace OpenCiv1
 
 					L53ed:
 						// Instruction address 0x1d12:0x541d, size: 5
-						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle,
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Screen0_Rectangle,
 							(local_b6 * 16) + 160, (local_be * 16) + 56,
-							16, 16, this.oParent.Var_19d4_Rectangle, 0, 0);
+							16, 16, this.oParent.Var_19d4_Screen1_Rectangle, 0, 0);
 
 						// Instruction address 0x1d12:0x5449, size: 5
 						this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(
@@ -3094,7 +3094,7 @@ namespace OpenCiv1
 						this.oParent.CommonTools.F0_1182_0134_WaitTimer(10);
 
 						// Instruction address 0x1d12:0x548d, size: 5
-						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 16, 16, this.oParent.Var_aa_Rectangle,
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 0, 16, 16, this.oParent.Var_aa_Screen0_Rectangle,
 							(local_b6 * 16) + 160, (local_be * 16) + 56);
 
 						// Instruction address 0x1d12:0x5499, size: 5
@@ -3270,9 +3270,9 @@ namespace OpenCiv1
 						// Instruction address 0x1d12:0x56a6, size: 5
 						this.oParent.CheckPlayerTurn.F0_1403_4545_EmptyKeyboardAndMouse();
 
-						this.oParent.Var_aa_Rectangle.FontID = 1;
+						this.oParent.Var_aa_Screen0_Rectangle.FontID = 1;
 
-						this.oParent.Overlay_23.F23_0000_0000_CityNameDialog(cityID);
+						this.oParent.TextBoxDialogs.F23_0000_0000_CityNameDialog(cityID);
 
 						this.oParent.Var_6b64 = 1;
 
@@ -3356,10 +3356,10 @@ namespace OpenCiv1
 						// Instruction address 0x1d12:0x5812, size: 5
 						this.oParent.CAPI.strcat(0xba06, "$?\n No.\n Yes.\n");
 
-						this.oParent.Var_aa_Rectangle.FontID = 1;
+						this.oParent.Var_aa_Screen0_Rectangle.FontID = 1;
 
 						// Instruction address 0x1d12:0x5823, size: 5
-						this.oParent.MainCode.F0_11a8_0250();
+						this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 						// Instruction address 0x1d12:0x5834, size: 5
 						if (this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 128, 80, true, false, true) == 1) goto L5844;
@@ -3377,7 +3377,7 @@ namespace OpenCiv1
 
 					L58a1:
 						// Instruction address 0x1d12:0x58a1, size: 5
-						this.oParent.MainCode.F0_11a8_0268();
+						this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
 						goto L045f;
 
@@ -3927,13 +3927,13 @@ namespace OpenCiv1
 
 			L6337:
 				// Instruction address 0x1d12:0x6337, size: 5
-				this.oParent.MainCode.F0_11a8_0280();
+				this.oParent.MainCode.F0_11a8_0280_ShowMouseAndSaveState();
 
 				// Instruction address 0x1d12:0x6344, size: 5
 				this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
 
 				// Instruction address 0x1d12:0x634c, size: 5
-				this.oParent.MainCode.F0_11a8_0294();
+				this.oParent.MainCode.F0_11a8_0294_HideMouseAndSaveState();
 
 			L6351:
 				this.oParent.GameData.Players[this.Var_6548_PlayerID].ResearchProgress = 0;
@@ -4002,13 +4002,13 @@ namespace OpenCiv1
 
 			L649e:
 				// Instruction address 0x1d12:0x649e, size: 5
-				this.oParent.MainCode.F0_11a8_0280();
+				this.oParent.MainCode.F0_11a8_0280_ShowMouseAndSaveState();
 
 				// Instruction address 0x1d12:0x64ab, size: 5
 				this.oParent.Segment_1ade.F0_1ade_1584(this.Var_6548_PlayerID, 0);
 
 				// Instruction address 0x1d12:0x64b3, size: 5
-				this.oParent.MainCode.F0_11a8_0294();
+				this.oParent.MainCode.F0_11a8_0294_HideMouseAndSaveState();
 
 			L64b8:
 				this.oParent.GameData.Players[this.Var_6548_PlayerID].Score +=
@@ -4219,10 +4219,10 @@ namespace OpenCiv1
 				this.oParent.UnitManagement.F0_1866_00c6(cityID);
 
 			L690f:
-				this.oParent.Var_aa_Rectangle.FontID = 1;
+				this.oParent.Var_aa_Screen0_Rectangle.FontID = 1;
 
 				// Instruction address 0x1d12:0x6918, size: 5
-				this.oParent.MainCode.F0_11a8_0250();
+				this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 				// !!! Do we really need to return a value?
 				this.oCPU.AX.UInt16 = (ushort)((short)(this.oParent.Var_70e2 - this.oParent.Var_70e4));
@@ -4321,7 +4321,7 @@ namespace OpenCiv1
 				while (flag == 1 && local_c > 0)
 				{
 					// Instruction address 0x1d12:0x6a5d, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 						161 + (this.oParent.CityOffsets[cityOffset].X * 16) + local_4,
 						57 + (this.oParent.CityOffsets[cityOffset].Y * 16) + local_8,
 						this.oParent.Array_d4ce[(int)cityResource + 8]);
@@ -4343,7 +4343,7 @@ namespace OpenCiv1
 			if (flag == 1 && local_10 == 0)
 			{
 				// Instruction address 0x1d12:0x6aa8, size: 5
-				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 					165 + (this.oParent.CityOffsets[cityOffset].X * 16),
 					61 + (this.oParent.CityOffsets[cityOffset].Y * 16),
 					this.oParent.Array_d4ce[13]);
@@ -4750,7 +4750,7 @@ namespace OpenCiv1
 			for (i = 0; i < this.oParent.Var_70e2; i++)
 			{
 				// Instruction address 0x1d12:0x6f26, size: 5
-				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, xPos, yPos, this.oParent.Array_6e96[i & 1]);
+				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle, xPos, yPos, this.oParent.Array_6e96[i & 1]);
 
 				xPos += xSpacing;
 			}
@@ -4758,7 +4758,7 @@ namespace OpenCiv1
 			for (i = 0; i < this.oParent.GameData.Cities[cityID].ActualSize - param4 - this.oParent.Var_70e2 - this.oParent.Var_70e4; i++)
 			{
 				// Instruction address 0x1d12:0x6f66, size: 5
-				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, xPos, yPos, this.oParent.Array_6e96[2 + (i & 1)]);
+				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle, xPos, yPos, this.oParent.Array_6e96[2 + (i & 1)]);
 
 				xPos += xSpacing;
 			}
@@ -4771,12 +4771,12 @@ namespace OpenCiv1
 			for (i = 0; i < this.oParent.Var_70e4; i++)
 			{
 				// Instruction address 0x1d12:0x6fbb, size: 5
-				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, xPos, yPos, this.oParent.Array_6e96[4 + (i & 1)]);
+				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle, xPos, yPos, this.oParent.Array_6e96[4 + (i & 1)]);
 
 				if (i < this.Var_6542)
 				{
 					// Instruction address 0x1d12:0x6fe5, size: 5
-					this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, xPos, yPos, 12, 14, 5, 12);
+					this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Screen0_Rectangle, xPos, yPos, 12, 14, 5, 12);
 				}
 
 				xPos += xSpacing;
@@ -4790,7 +4790,7 @@ namespace OpenCiv1
 				F0_1d12_6da1_GetSpecialWorkerFlags(i);
 
 				// Instruction address 0x1d12:0x7025, size: 5
-				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle,
+				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle,
 					xPos, yPos, this.oParent.Array_6e96[5 + this.oCPU.AX.Int16]);
 
 				xPos += xSpacing;
@@ -4825,14 +4825,14 @@ namespace OpenCiv1
 				if (xPosSrc >= 40)
 				{
 					// Instruction address 0x1d12:0x70c1, size: 5
-					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, ((xPosSrc & 1) * 19) + 161, 100, 18, 10,
-						this.oParent.Var_aa_Rectangle, xPosDst, yPosDst);
+					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Screen2_Rectangle, ((xPosSrc & 1) * 19) + 161, 100, 18, 10,
+						this.oParent.Var_aa_Screen0_Rectangle, xPosDst, yPosDst);
 				}
 				else
 				{
 					// Instruction address 0x1d12:0x70c1, size: 5
-					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, ((xPosSrc / 5) * 19) + 161, ((xPosSrc % 5) * 10) + 50, 18, 10,
-						this.oParent.Var_aa_Rectangle, xPosDst, yPosDst);
+					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Screen2_Rectangle, ((xPosSrc / 5) * 19) + 161, ((xPosSrc % 5) * 10) + 50, 18, 10,
+						this.oParent.Var_aa_Screen0_Rectangle, xPosDst, yPosDst);
 				}
 			}
 
@@ -4891,8 +4891,8 @@ namespace OpenCiv1
 					int iCellWidth = Math.Min(iRectWidth, 16);
 
 					// Instruction address 0x1d12:0x7195, size: 5
-					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
-						208, 100, iCellWidth, iCellHeight, this.oParent.Var_aa_Rectangle, iRectXPos, iRectYPos);
+					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Screen2_Rectangle,
+						208, 100, iCellWidth, iCellHeight, this.oParent.Var_aa_Screen0_Rectangle, iRectXPos, iRectYPos);
 
 					iRectXPos += iCellWidth;
 					iRectWidth -= iCellWidth;
@@ -4921,23 +4921,23 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x1d12:0x71e8, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle,
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle,
 				xPos, yPos, xPos1 - xPos, yPos1 - yPos, mode);
 		
 			// Instruction address 0x1d12:0x720e, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle,
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle,
 				xPos, yPos, xPos1, yPos, (ushort)((mode < 8) ? (mode + 8) : 7));
 		
 			// Instruction address 0x1d12:0x7234, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle,
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle,
 				xPos, yPos, xPos, yPos1, (ushort)((mode < 8) ? (mode + 8) : 7));
 		
 			// Instruction address 0x1d12:0x725c, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle,
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle,
 				xPos + 1, yPos1, xPos1, yPos1, (ushort)((mode < 8) ? 8 : (mode - 8)));
 
 			// Instruction address 0x1d12:0x7282, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle,
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle,
 				xPos1, yPos, xPos1, yPos1, (ushort)((mode < 0x8) ? 8 : (mode - 8)));
 
 			// Instruction address 0x1d12:0x72ae, size: 5
@@ -4957,7 +4957,7 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x1d12:0x72d4, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 101, 117, 120, 75, 0);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 101, 117, 120, 75, 0);
 
 			for (int yPos = 0; yPos < 50; yPos++)
 			{
@@ -4978,12 +4978,12 @@ namespace OpenCiv1
 						if (this.oParent.MapManagement.GetTerrainType(mapXPos, mapYPos) != TerrainTypeEnum.Water)
 						{
 							// Instruction address 0x1d12:0x72f7, size: 5
-							this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, rectXPos, rectYPos, 2, 2, 2);
+							this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, rectXPos, rectYPos, 2, 2, 2);
 						}
 						else
 						{
 							// Instruction address 0x1d12:0x72f7, size: 5
-							this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, rectXPos, rectYPos, 2, 2, 1);
+							this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, rectXPos, rectYPos, 2, 2, 1);
 						}
 					}
 				}
@@ -5014,7 +5014,7 @@ namespace OpenCiv1
 					xPos - this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].XStart + 40);
 
 				// Instruction address 0x1d12:0x7444, size: 5
-				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle,
+				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle,
 					((xPos * 3) / 2) + 101, ((yPos * 3) / 2) + 118, 2, 2, mode);
 			}
 

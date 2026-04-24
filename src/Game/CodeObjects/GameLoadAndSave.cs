@@ -1,3 +1,4 @@
+using Avalonia.Threading;
 using IRB.VirtualCPU;
 using OpenCiv1.Graphics;
 using System.Text;
@@ -6,426 +7,287 @@ namespace OpenCiv1
 {
 	public class GameLoadAndSave
 	{
-		private OpenCiv1Game oParent;
-		private VCPU oCPU;
+		private OpenCiv1Game parent;
+		private VCPU CPU;
+
+		private int Var_681a = 0;
+		private int Var_e168 = 0;
 
 		public GameLoadAndSave(OpenCiv1Game parent)
 		{
-			this.oParent = parent;
-			this.oCPU = parent.CPU;
+			this.parent = parent;
+			this.CPU = parent.CPU;
 		}
 
 		/// <summary>
 		/// ?
 		/// </summary>
-		/// <param name="flag"></param>
+		/// <param name="saveIndex"></param>
 		/// <returns></returns>
-		public ushort F11_0000_0000(ushort flag)
+		public int F11_0000_0000_LoadGameDialog(int saveIndex)
 		{
-			this.oCPU.Log.EnterBlock($"F11_0000_0000({flag})");
+			//this.oCPU.Log.EnterBlock($"F11_0000_0000({flag})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x6);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x681a, 0x1);
+			/*LoadGameDialog? dialog = null;
+			bool creatingWindow = true;
 
-			// Instruction address 0x0000:0x000c, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			Dispatcher.UIThread.Invoke(() => { try { dialog = new LoadGameDialog(this.parent); dialog.ShowDialog(this.parent.MainWindow); } finally { creatingWindow = false; } });
 
-			F11_0000_05f8();
+			while (creatingWindow) { Thread.Sleep(1); }
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
-			if (this.oCPU.Flags.NE) goto L0020;
-			goto L00f7;
+			while (dialog != null && !dialog.IsClosed) { Thread.Sleep(1); }//*/
 
-		L0020:
-			this.oCPU.CMP_UInt16(flag, 0xffff);
-			if (this.oCPU.Flags.E) goto L0029;
-			goto L00ae;
+			int local_d74e = 0;
 
-		L0029:
-			// Instruction address 0x0000:0x0031, size: 5
-			this.oParent.CAPI.strcpy(0xba06, "\x008cSelect Load File...\n");
+			this.Var_681a = 1;
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd74e, 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x0);
-
-		L0044:
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.AX.LowUInt8 = this.oCPU.ADD_UInt8(this.oCPU.AX.LowUInt8, 0x30);
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x41cd, this.oCPU.AX.LowUInt8);
-
-			F11_0000_0103_LoadGame(0x41c6, 1);
-			
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.E) goto L006d;
-
-			this.oCPU.AX.UInt16 = 0x1;
-			this.oCPU.CX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xd74e, this.oCPU.OR_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd74e), this.oCPU.AX.UInt16));
-
-		L006d:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0xa);
-			if (this.oCPU.Flags.B) goto L0044;
-
-			// Instruction address 0x0000:0x0076, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
-
-			// Instruction address 0x0000:0x0087, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 48, 65, false, false, true);
-
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xe168, this.oCPU.AX.UInt16);
-
-			// Instruction address 0x0000:0x0092, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
-
-			this.oCPU.AX.UInt16 = 0x1;
-			this.oCPU.CX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xe168);
-			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
-			this.oCPU.TEST_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xd74e));
-			if (this.oCPU.Flags.NE) goto L00b4;
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xe168, 0xffff);
-			goto L00b4;
-
-		L00ae:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xe168, flag);
-
-		L00b4:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xe168), 0xffff);
-			if (this.oCPU.Flags.E) goto L00dc;
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xe168);
-			this.oCPU.AX.LowUInt8 = this.oCPU.ADD_UInt8(this.oCPU.AX.LowUInt8, 0x30);
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x41cd, this.oCPU.AX.LowUInt8);
-
-			F11_0000_0103_LoadGame(0x41c6, 0);
-			
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.NE) goto L00dc;
-
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xe168, 0xffff);
-
-		L00dc:
-			// Instruction address 0x0000:0x00ed, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
-
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xe168);
-			goto L00ff;
-
-		L00f7:
-			// Instruction address 0x0000:0x00f7, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
-
-			this.oCPU.AX.UInt16 = 0xffff;
-
-		L00ff:
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F11_0000_0000");
-
-			return this.oCPU.AX.UInt16;
-		}
-
-		/// <summary>
-		/// ?
-		/// </summary>
-		/// <param name="filenamePtr"></param>
-		/// <param name="flag"></param>
-		/// <returns></returns>
-		public ushort F11_0000_0103_LoadGame(ushort filenamePtr, ushort flag)
-		{
-			this.oCPU.Log.EnterBlock($"F11_0000_0103_LoadGame(0x{filenamePtr:x4}, {flag})");
-
-			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x10);
-
-			// Instruction address 0x0000:0x0114, size: 5
-			this.oParent.CAPI.strcpy((ushort)(filenamePtr + 9), "SVE");
-
-			this.oCPU.CMP_UInt16(flag, 0x0);
-			if (this.oCPU.Flags.NE) goto L0125;
-			goto L02fd;
-
-		L0125:
-			// Instruction address 0x0000:0x012c, size: 5
-			this.oParent.CAPI.open(filenamePtr, 0x8000);
-
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x681e, this.oCPU.AX.UInt16);
-			
-			if (this.oCPU.AX.UInt16 == 0xffff)
+			if ((short)F11_0000_05f8() != -1)
 			{
-				// Instruction address 0x0000:0x02d9, size: 5
-				this.oParent.CAPI.strcat(0xba06, " (EMPTY)\n");
-			}
-			else
-			{
-				// Instruction address 0x0000:0x014c, size: 5
-				this.oParent.CAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), 2, 0);
-
-				// Instruction address 0x0000:0x0160, size: 5
-				this.oParent.CAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), 0x6822, 2);
-
-				// Instruction address 0x0000:0x0175, size: 5
-				this.oParent.CAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), 8, 0);
-
-				// Instruction address 0x0000:0x0189, size: 5
-				this.oParent.CAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), 0x6826, 2);
-
-				// Instruction address 0x0000:0x0199, size: 5
-				this.oParent.CAPI.strcat(0xba06, " ");
-
-				// Instruction address 0x0000:0x01ae, size: 5
-				this.oParent.CAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), 10, 0);
-
-				// Instruction address 0x0000:0x01c2, size: 5
-				this.oParent.CAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), 0x6824, 2);
-
-				this.oCPU.BX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6824);
-				this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, 0x1);
-				// Instruction address 0x0000:0x01d8, size: 5
-				this.oParent.CAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x33a2)));
-
-				// Instruction address 0x0000:0x01e8, size: 5
-				this.oParent.CAPI.strcat(0xba06, " ");
-
-				// Instruction address 0x0000:0x0207, size: 5
-				this.oParent.CAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e),
-					((14 * (int)((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6822))) + 16), 0);
-
-				// Instruction address 0x0000:0x021b, size: 5
-				this.oParent.CAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), (ushort)(this.oCPU.BP.UInt16 - 0x10), 14);
-
-				// Instruction address 0x0000:0x022b, size: 5
-				this.oParent.CAPI.strcat(0xba06, (ushort)(this.oCPU.BP.UInt16 - 0x10));
-
-				// Instruction address 0x0000:0x024a, size: 5
-				this.oParent.CAPI.lseek((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e),
-					((12 * (int)((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6822))) + 0x80), 0);
-
-				// Instruction address 0x0000:0x025e, size: 5
-				this.oParent.CAPI.read((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), (ushort)(this.oCPU.BP.UInt16 - 0x10), 0xc);
-
-				// Instruction address 0x0000:0x026e, size: 5
-				this.oParent.CAPI.strcat(0xba06, ", ");
-
-				// Instruction address 0x0000:0x027e, size: 5
-				this.oParent.CAPI.strcat(0xba06, (ushort)(this.oCPU.BP.UInt16 - 0x10));
-
-				// Instruction address 0x0000:0x028e, size: 5
-				this.oParent.CAPI.strcat(0xba06, "/");
-
-				// Instruction address 0x0000:0x02b8, size: 5
-				this.oParent.CAPI.strcat(0xba06,
-					this.oParent.CAPI.itoa(Math.Abs((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6826)), 10));
-
-				if (this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x6826) < 0)
+				if (saveIndex == -1)
 				{
-					// Instruction address 0x0000:0x02d9, size: 5
-					this.oParent.CAPI.strcat(0xba06, " BC\n");
+					local_d74e = 0;
+
+					StringBuilder loadGameList = new();
+
+					loadGameList.Append("\x008cSelect Load File...\n");
+
+					for (int i = 0; i < 10; i++)
+					{
+						bool success;
+
+						loadGameList.Append(F11_0000_0103_ReadGameData($"CIVIL{i}.SVE", out success));
+
+						if (success)
+						{
+							local_d74e |= (0x1 << i);
+						}
+					}
+
+					// Instruction address 0x0000:0x0087, size: 5
+					this.Var_e168 = this.parent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(loadGameList.ToString(), 48, 65, false, false, true);
+
+					if (((0x1 << this.Var_e168) & local_d74e) == 0)
+					{
+						this.Var_e168 = -1;
+					}
 				}
 				else
 				{
-					// Instruction address 0x0000:0x02d9, size: 5
-					this.oParent.CAPI.strcat(0xba06, " AD\n");
+					this.Var_e168 = saveIndex;
 				}
+
+				if (this.Var_e168 != -1 && !F11_0000_0103_LoadGame($"CIVIL{this.Var_e168}.SVE"))
+				{
+					this.Var_e168 = -1;
+				}
+			
+				return this.Var_e168;
 			}
-		
-			// Instruction address 0x0000:0x02e5, size: 5
-			this.oParent.CAPI.close((short)this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e));
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681e), 0xffff);
-			if (this.oCPU.Flags.E) goto L02f9;
+			return -1;
+		}
 
-			L02f4:
-			this.oCPU.AX.UInt16 = 0x1;
-			goto L0366;
+		/// <summary>
+		/// Reads a data from a saved game
+		/// </summary>
+		/// <param name="filename"></param>
+		/// <param name="success"></param>
+		/// <returns>True if command succeeded</returns>
+		public string F11_0000_0103_ReadGameData(string filename, out bool success)
+		{
+			//this.oCPU.Log.EnterBlock($"F11_0000_0103_LoadGame(0x{filename:x4}, {flag})");
 
-		L02f9:
-			this.oCPU.AX.UInt16 = 0;
-			goto L0366;
+			// function body
+			try
+			{
+				FileStream reader = new FileStream($"{this.parent.ResourcePath}{filename}", FileMode.Open, FileAccess.Read);
 
-		L02fd:
-			string path = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr));
+				reader.Seek(2, SeekOrigin.Begin);
+				int humanPlayerID = ReadInt16(reader);
 
-			F11_0000_083b_LoadGameData(path);
+				reader.Seek(8, SeekOrigin.Begin);
+				int currentYear = ReadInt16(reader);
 
-			this.oParent.Var_aa_Rectangle.ScreenID = 2;
+				reader.Seek(10, SeekOrigin.Begin);
+				int gameDifficulty = ReadInt16(reader);
+
+				reader.Seek(16 + (humanPlayerID * 14), SeekOrigin.Begin);
+				string humanPlayerName = ReadString(reader, 14);
+
+				reader.Seek(128 + (humanPlayerID * 12), SeekOrigin.Begin);
+				string humanNationName = ReadString(reader, 12);
+
+				reader.Close();
+
+				success = true;
+
+				return $" {this.parent.Array_33a2_GameDifficultyNames[gameDifficulty]} {humanPlayerName}, {humanNationName}/{this.parent.CAPI.itoa(Math.Abs(currentYear), 10)}" + 
+					((currentYear < 0) ? " BC\n" : " AD\n");
+			}
+			catch
+			{
+				success = false;
+
+				return " (Empty)\n";
+			}
+		}
+
+		/// <summary>
+		/// Loads a data from a save game
+		/// </summary>
+		/// <param name="filename"></param>
+		/// <returns>True if command succeeded</returns>
+		public bool F11_0000_0103_LoadGame(string filename)
+		{
+			//this.oCPU.Log.EnterBlock($"F11_0000_0103_LoadGame(0x{filename:x4}, {flag})");
+
+			// function body
+			bool result = F11_0000_083b_LoadGameData(filename);
 
 			//this.oParent.GameInitAndIntro.F7_0000_1440_ConstructWaterPath();
 
-			this.oParent.Var_aa_Rectangle.ScreenID = 0;
+			if (this.Var_e168 < 4)
+			{
+				this.parent.Var_df60 = 1;
+			}
+			else
+			{
+				this.parent.Var_df60 = 2;
+			}
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6820, 0x1);
-			goto L0340;
+			this.parent.Var_3484 = -3;
+			this.parent.GameData.SpaceshipFlags &= 0x7ffe;
 
-		L033c:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x6820, this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6820)));
-
-		L0340:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6820), 0x8);
-			if (this.oCPU.Flags.L) goto L033c;
-
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0xe168), 0x4);
-			if (this.oCPU.Flags.GE) goto L0353;
-
-			this.oCPU.AX.UInt16 = 0x1;
-			goto L0356;
-
-		L0353:
-			this.oCPU.AX.UInt16 = 0x2;
-
-		L0356:
-			this.oParent.Var_df60 = this.oCPU.AX.Int16;
-			this.oParent.Var_3484 = -3;
-			this.oParent.GameData.SpaceshipFlags &= 0x7ffe;
-			goto L02f4;
-
-		L0366:
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F11_0000_0103_LoadGame");
-
-			return this.oCPU.AX.UInt16;
+			return result;
 		}
 
 		/// <summary>
 		/// ?
 		/// </summary>
 		/// <param name="param1"></param>
-		public void F11_0000_036a(ushort param1)
+		public void F11_0000_036a_SaveGameDialog(ushort param1)
 		{
-			this.oCPU.Log.EnterBlock($"F11_0000_036a({param1})");
+			this.CPU.Log.EnterBlock($"F11_0000_036a({param1})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x4);
+			this.CPU.PUSH_UInt16(this.CPU.BP.UInt16);
+			this.CPU.BP.UInt16 = this.CPU.SP.UInt16;
+			this.CPU.SP.UInt16 = this.CPU.SUB_UInt16(this.CPU.SP.UInt16, 0x4);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x681c, 0);
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x681a, 0);
+			this.CPU.WriteUInt16(this.CPU.DS.UInt16, 0x681c, 0);
+			this.Var_681a = 0;
 
 			// Instruction address 0x0000:0x0378, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.parent.MainCode.F0_11a8_0268_HideMouse();
 
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
+			this.parent.Graphics.F0_VGA_07d8_DrawImage(this.parent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, this.parent.Var_19d4_Screen1_Rectangle, 0, 0);
 
 			F11_0000_05f8();
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0xffff);
-			if (this.oCPU.Flags.NE) goto L0391;
+			this.CPU.WriteUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x4), this.CPU.AX.UInt16);
+			this.CPU.CMP_UInt16(this.CPU.AX.UInt16, 0xffff);
+			if (this.CPU.Flags.NE) goto L0391;
 			goto L04d0;
 
 		L0391:
 			// Instruction address 0x0000:0x0399, size: 5
-			this.oParent.CAPI.strcpy(0xba06, "\x008cSelect Save File...\n");
+			this.parent.CAPI.strcpy(0xba06, "\x008cSelect Save File...\n");
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x0);
+			this.CPU.WriteUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2), 0x0);
 
 		L03a6:
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2));
-			this.oCPU.AX.LowUInt8 = this.oCPU.ADD_UInt8(this.oCPU.AX.LowUInt8, 0x30);
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x41cd, this.oCPU.AX.LowUInt8);
-
-			F11_0000_0103_LoadGame(0x41c6, 1);
+			bool temp;
+			this.parent.CAPI.strcat(0xba06, F11_0000_0103_ReadGameData($"CIVIL{this.CPU.ReadUInt8(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2))}.SVE", out temp));
 			
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x4);
-			if (this.oCPU.Flags.L) goto L03a6;
+			this.CPU.WriteUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2), 
+				this.CPU.INC_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2))));
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0x4);
+			if (this.CPU.Flags.L) goto L03a6;
 
 			// Instruction address 0x0000:0x03d3, size: 5
-			this.oParent.Var_2f9a_MenuBoxDefaultOptionIndex = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xe168), 0, 3);
+			this.parent.Var_2f9a_MenuBoxDefaultOptionIndex = this.parent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.Var_e168, 0, 3);
 
-			this.oCPU.CMP_UInt16(param1, 0xffff);
-			if (this.oCPU.Flags.NE) goto L0405;
+			this.CPU.CMP_UInt16(param1, 0xffff);
+			if (this.CPU.Flags.NE) goto L0405;
 
 			// Instruction address 0x0000:0x03e4, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.parent.MainCode.F0_11a8_0250_ShowMouse();
 
 			// Instruction address 0x0000:0x03f5, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 48, 33, false, false, true);
+			this.CPU.AX.Int16 = (short)this.parent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 48, 33, false, false, true);
 
-			param1 = this.oCPU.AX.UInt16;
+			param1 = this.CPU.AX.UInt16;
 
 			// Instruction address 0x0000:0x0400, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.parent.MainCode.F0_11a8_0268_HideMouse();
 
 		L0405:
-			this.oCPU.CMP_UInt16(param1, 0xffff);
-			if (this.oCPU.Flags.NE) goto L040e;
+			this.CPU.CMP_UInt16(param1, 0xffff);
+			if (this.CPU.Flags.NE) goto L040e;
 			goto L04d0;
 
 		L040e:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0xe168, param1);
-			this.oCPU.AX.LowUInt8 = (byte)param1;
-			this.oCPU.AX.LowUInt8 = this.oCPU.ADD_UInt8(this.oCPU.AX.LowUInt8, 0x30);
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x41cd, this.oCPU.AX.LowUInt8);
+			this.Var_e168 = (short)param1;
+			this.CPU.AX.LowUInt8 = (byte)param1;
+			this.CPU.AX.LowUInt8 = this.CPU.ADD_UInt8(this.CPU.AX.LowUInt8, 0x30);
+			this.CPU.WriteUInt8(this.CPU.DS.UInt16, 0x41cd, this.CPU.AX.LowUInt8);
 
 			F11_0000_04ef_SaveGame(0x41c6);
 			
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.NE) goto L042e;
+			this.CPU.AX.UInt16 = this.CPU.OR_UInt16(this.CPU.AX.UInt16, this.CPU.AX.UInt16);
+			if (this.CPU.Flags.NE) goto L042e;
 			goto L04d0;
 
 		L042e:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681c);
-			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
-			this.oCPU.DX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.DX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.NE) goto L0448;
+			this.CPU.AX.UInt16 = this.CPU.ReadUInt16(this.CPU.DS.UInt16, 0x681c);
+			this.CPU.CWD(this.CPU.AX, this.CPU.DX);
+			this.CPU.DX.UInt16 = this.CPU.OR_UInt16(this.CPU.DX.UInt16, this.CPU.AX.UInt16);
+			if (this.CPU.Flags.NE) goto L0448;
 
 			// Instruction address 0x0000:0x043e, size: 5
-			this.oParent.CAPI.strcpy(0xba06, " Game has been saved.\n");
+			this.parent.CAPI.strcpy(0xba06, " Game has been saved.\n");
 
 			goto L0478;
 
 		L0448:
 			// Instruction address 0x0000:0x0450, size: 5
-			this.oParent.CAPI.strcpy(0xba06, " Game NOT saved.\n");
+			this.parent.CAPI.strcpy(0xba06, " Game NOT saved.\n");
 
 			// Instruction address 0x0000:0x0470, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 64, 127, 192, 34, 12);
+			this.parent.CommonTools.F0_1000_0bfa_FillRectangle(this.parent.Var_aa_Screen0_Rectangle, 64, 127, 192, 34, 12);
 
 		L0478:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681c), 0xd);
-			if (this.oCPU.Flags.NE) goto L048f;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.DS.UInt16, 0x681c), 0xd);
+			if (this.CPU.Flags.NE) goto L048f;
 
 			// Instruction address 0x0000:0x0487, size: 5
-			this.oParent.CAPI.strcat(0xba06, " Write access denied.\n");
+			this.parent.CAPI.strcat(0xba06, " Write access denied.\n");
 
 		L048f:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681c), 0x1c);
-			if (this.oCPU.Flags.NE) goto L04a6;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.DS.UInt16, 0x681c), 0x1c);
+			if (this.CPU.Flags.NE) goto L04a6;
 
 			// Instruction address 0x0000:0x049e, size: 5
-			this.oParent.CAPI.strcat(0xba06, " Disk Full.\n");
+			this.parent.CAPI.strcat(0xba06, " Disk Full.\n");
 
 		L04a6:
 			// Instruction address 0x0000:0x04ae, size: 5
-			this.oParent.CAPI.strcat(0xba06, " Press key to continue.\n");
+			this.parent.CAPI.strcat(0xba06, " Press key to continue.\n");
 
 			// Instruction address 0x0000:0x04c8, size: 5
-			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 64, 127, false, false, true);
+			this.parent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 64, 127, false, false, true);
 
 		L04d0:
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+			this.parent.Graphics.F0_VGA_07d8_DrawImage(this.parent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.parent.Var_aa_Screen0_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x04e6, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.parent.MainCode.F0_11a8_0250_ShowMouse();
 
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
+			this.CPU.SP.UInt16 = this.CPU.BP.UInt16;
+			this.CPU.BP.UInt16 = this.CPU.POP_UInt16();
 			// Far return
-			this.oCPU.Log.ExitBlock("F11_0000_036a");
+			this.CPU.Log.ExitBlock("F11_0000_036a");
 		}
 
 		/// <summary>
@@ -435,64 +297,62 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public ushort F11_0000_04ef_SaveGame(ushort filenamePtr)
 		{
-			this.oCPU.Log.EnterBlock($"F11_0000_04ef_SaveGame(0x{filenamePtr:x4})");
+			this.CPU.Log.EnterBlock($"F11_0000_04ef_SaveGame(0x{filenamePtr:x4})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x8);
+			this.CPU.PUSH_UInt16(this.CPU.BP.UInt16);
+			this.CPU.BP.UInt16 = this.CPU.SP.UInt16;
+			this.CPU.SP.UInt16 = this.CPU.SUB_UInt16(this.CPU.SP.UInt16, 0x8);
 
-			this.oParent.Var_db38 = 1;
+			this.parent.Var_db38 = 1;
 
 			// Instruction address 0x0000:0x0503, size: 5
-			this.oParent.CAPI.strcpy(0xba06, " ");
+			this.parent.CAPI.strcpy(0xba06, " ");
 
 			// Instruction address 0x0000:0x0512, size: 5
-			this.oParent.CAPI.strcat(0xba06, filenamePtr);
+			this.parent.CAPI.strcat(0xba06, filenamePtr);
 
 			// Instruction address 0x0000:0x0522, size: 5
-			this.oParent.CAPI.strcat(0xba06, "\n ");
+			this.parent.CAPI.strcat(0xba06, "\n ");
 
-			this.oCPU.BX.UInt16 = (ushort)this.oParent.GameData.DifficultyLevel;
-			this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, 0x1);
 			// Instruction address 0x0000:0x0538, size: 5
-			this.oParent.CAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x33a2)));
+			this.parent.CAPI.strcat(0xba06, this.parent.Array_33a2_GameDifficultyNames[this.parent.GameData.DifficultyLevel]);
 
 			// Instruction address 0x0000:0x0548, size: 5
-			this.oParent.CAPI.strcat(0xba06, " ");
+			this.parent.CAPI.strcat(0xba06, " ");
 
 			// Instruction address 0x0000:0x055e, size: 5
-			this.oParent.CAPI.strcat(0xba06, this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Name);
+			this.parent.CAPI.strcat(0xba06, this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].Name);
 
 			// Instruction address 0x0000:0x056e, size: 5
-			this.oParent.CAPI.strcat(0xba06, "\n ");
+			this.parent.CAPI.strcat(0xba06, "\n ");
 
 			// Instruction address 0x0000:0x0584, size: 5
-			this.oParent.CAPI.strcat(0xba06, this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Nation);
+			this.parent.CAPI.strcat(0xba06, this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].Nation);
 
 			// Instruction address 0x0000:0x0594, size: 5
-			this.oParent.CAPI.strcat(0xba06, "/");
+			this.parent.CAPI.strcat(0xba06, "/");
 
 			// Instruction address 0x0000:0x059c, size: 5
-			this.oParent.Segment_1238.F0_1238_1720_GetCurrentYearAsString();
+			this.parent.Segment_1238.F0_1238_1720_GetCurrentYearAsString();
 
 			// Instruction address 0x0000:0x05a9, size: 5
-			this.oParent.CAPI.strcat(0xba06, "\n ... save in progress.\n");
+			this.parent.CAPI.strcat(0xba06, "\n ... save in progress.\n");
 
 			// Instruction address 0x0000:0x05c3, size: 5
-			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 64, 86, true, false, true);
+			this.parent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 64, 86, true, false, true);
 
-			string path = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, filenamePtr));
+			string path = this.CPU.ReadString(VCPU.ToLinearAddress(this.CPU.DS.UInt16, filenamePtr));
 			F11_0000_08f6_SaveGameData(path);
 
-			this.oCPU.AX.UInt16 = 0x1;
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
+			this.CPU.AX.UInt16 = 0x1;
+			this.CPU.SP.UInt16 = this.CPU.BP.UInt16;
+			this.CPU.BP.UInt16 = this.CPU.POP_UInt16();
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F11_0000_04ef_SaveGame");
+			this.CPU.Log.ExitBlock("F11_0000_04ef_SaveGame");
 
-			return this.oCPU.AX.UInt16;
+			return this.CPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -501,175 +361,174 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public ushort F11_0000_05f8()
 		{
-			this.oCPU.Log.EnterBlock("F11_0000_05f8()");
+			this.CPU.Log.EnterBlock("F11_0000_05f8()");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x6);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x4384), 0xffff);
-			if (this.oCPU.Flags.NE) goto L0615;
+			this.CPU.PUSH_UInt16(this.CPU.BP.UInt16);
+			this.CPU.BP.UInt16 = this.CPU.SP.UInt16;
+			this.CPU.SP.UInt16 = this.CPU.SUB_UInt16(this.CPU.SP.UInt16, 0x6);
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.DS.UInt16, 0x4384), 0xffff);
+			if (this.CPU.Flags.NE) goto L0615;
 
 			// Instruction address 0x0000:0x0609, size: 5
-			this.oParent.CAPI._dos_getdrive(0x4384);
+			this.parent.CAPI._dos_getdrive(0x4384);
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384,
-				this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x4384)));
+			this.CPU.WriteUInt16(this.CPU.DS.UInt16, 0x4384,
+				this.CPU.DEC_UInt16(this.CPU.ReadUInt16(this.CPU.DS.UInt16, 0x4384)));
 
 		L0615:
 			// Instruction address 0x0000:0x0629, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 15);
+			this.parent.CommonTools.F0_1000_0bfa_FillRectangle(this.parent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, 15);
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681a), 0x0);
-			if (this.oCPU.Flags.NE) goto L063d;
+			if (this.Var_681a != 0) goto L063d;
 
 			// Instruction address 0x0000:0x0638, size: 5
-			this.oParent.UnitManagement.F0_1866_260e();
+			this.parent.UnitManagement.F0_1866_260e();
 
 		L063d:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x681a), 0x0);
-			if (this.oCPU.Flags.E) goto L0649;
+			if (this.Var_681a == 0) goto L0649;
+
 			// Instruction address 0x0000:0x0651, size: 5
-			this.oParent.CAPI.strcpy(0xba06, "  Which drive contains your\n    saved game files?\n\n            ");
+			this.parent.CAPI.strcpy(0xba06, "  Which drive contains your\n    saved game files?\n\n            ");
 			goto L064c;
 
 		L0649:
 			// Instruction address 0x0000:0x0651, size: 5
-			this.oParent.CAPI.strcpy(0xba06, "  Which drive contains your\n     Save Game disk?\n\n            ");
+			this.parent.CAPI.strcpy(0xba06, "  Which drive contains your\n     Save Game disk?\n\n            ");
 
 		L064c:
 			// Instruction address 0x0000:0x065d, size: 5
-			this.oParent.CAPI.strlen(0xba06);
+			this.parent.CAPI.strlen(0xba06);
 
-			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x4384);
-			this.oCPU.AX.LowUInt8 = this.oCPU.ADD_UInt8(this.oCPU.AX.LowUInt8, 0x41);
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0xba05), this.oCPU.AX.LowUInt8);
+			this.CPU.BX.UInt16 = this.CPU.AX.UInt16;
+			this.CPU.AX.LowUInt8 = this.CPU.ReadUInt8(this.CPU.DS.UInt16, 0x4384);
+			this.CPU.AX.LowUInt8 = this.CPU.ADD_UInt8(this.CPU.AX.LowUInt8, 0x41);
+			this.CPU.WriteUInt8(this.CPU.DS.UInt16, (ushort)(this.CPU.BX.UInt16 + 0xba05), this.CPU.AX.LowUInt8);
 
 			// Instruction address 0x0000:0x0678, size: 5
-			this.oParent.CAPI.strcat(0xba06, ":\n\n    Press drive letter and\nReturn when disk is inserted.\n");
+			this.parent.CAPI.strcat(0xba06, ":\n\n    Press drive letter and\nReturn when disk is inserted.\n");
 
 			// Instruction address 0x0000:0x0688, size: 5
-			this.oParent.CAPI.strcat(0xba06, "    Press Escape to cancel.\n");
+			this.parent.CAPI.strcat(0xba06, "    Press Escape to cancel.\n");
 
 			// Instruction address 0x0000:0x069f, size: 5
-			this.oParent.LanguageTools.F0_2f4d_0088_DrawTextBlock(99, 80, 72, 0);
+			this.parent.LanguageTools.F0_2f4d_0088_DrawTextBlock(99, 80, 72, 0);
 
 			// Instruction address 0x0000:0x06a7, size: 5
-			this.oCPU.AX.Int16 = (short)this.oParent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
+			this.CPU.AX.Int16 = (short)this.parent.MenuBoxDialog.F0_2d05_0ac9_GetNavigationKey();
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), this.oCPU.AX.UInt16);
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x41);
-			if (this.oCPU.Flags.E) goto L06b9;
-			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, 0x61);
-			if (this.oCPU.Flags.NE) goto L06bf;
+			this.CPU.WriteUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2), this.CPU.AX.UInt16);
+			this.CPU.CMP_UInt16(this.CPU.AX.UInt16, 0x41);
+			if (this.CPU.Flags.E) goto L06b9;
+			this.CPU.CMP_UInt16(this.CPU.AX.UInt16, 0x61);
+			if (this.CPU.Flags.NE) goto L06bf;
 
 		L06b9:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384, 0x0);
+			this.CPU.WriteUInt16(this.CPU.DS.UInt16, 0x4384, 0x0);
 
 		L06bf:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x42);
-			if (this.oCPU.Flags.E) goto L06cb;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x62);
-			if (this.oCPU.Flags.NE) goto L06d1;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0x42);
+			if (this.CPU.Flags.E) goto L06cb;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0x62);
+			if (this.CPU.Flags.NE) goto L06d1;
 
 			L06cb:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384, 0x1);
+			this.CPU.WriteUInt16(this.CPU.DS.UInt16, 0x4384, 0x1);
 
 		L06d1:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x43);
-			if (this.oCPU.Flags.E) goto L06dd;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x63);
-			if (this.oCPU.Flags.NE) goto L06e3;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0x43);
+			if (this.CPU.Flags.E) goto L06dd;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0x63);
+			if (this.CPU.Flags.NE) goto L06e3;
 
 		L06dd:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384, 0x2);
+			this.CPU.WriteUInt16(this.CPU.DS.UInt16, 0x4384, 0x2);
 
 		L06e3:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x44);
-			if (this.oCPU.Flags.E) goto L06ef;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x64);
-			if (this.oCPU.Flags.NE) goto L06f5;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0x44);
+			if (this.CPU.Flags.E) goto L06ef;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0x64);
+			if (this.CPU.Flags.NE) goto L06f5;
 
 		L06ef:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384, 0x3);
+			this.CPU.WriteUInt16(this.CPU.DS.UInt16, 0x4384, 0x3);
 
 		L06f5:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x45);
-			if (this.oCPU.Flags.E) goto L0701;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x65);
-			if (this.oCPU.Flags.NE) goto L0707;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0x45);
+			if (this.CPU.Flags.E) goto L0701;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0x65);
+			if (this.CPU.Flags.NE) goto L0707;
 
 		L0701:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384, 0x4);
+			this.CPU.WriteUInt16(this.CPU.DS.UInt16, 0x4384, 0x4);
 
 		L0707:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x46);
-			if (this.oCPU.Flags.E) goto L0713;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x66);
-			if (this.oCPU.Flags.NE) goto L0719;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0x46);
+			if (this.CPU.Flags.E) goto L0713;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0x66);
+			if (this.CPU.Flags.NE) goto L0719;
 
 		L0713:
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384, 0x5);
+			this.CPU.WriteUInt16(this.CPU.DS.UInt16, 0x4384, 0x5);
 
 		L0719:
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x1b);
-			if (this.oCPU.Flags.NE) goto L0725;
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x4384, 0xffff);
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0x1b);
+			if (this.CPU.Flags.NE) goto L0725;
+			this.CPU.WriteUInt16(this.CPU.DS.UInt16, 0x4384, 0xffff);
 
 		L0725:
 			// Instruction address 0x0000:0x073d, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 80, 88, 160, 24, 15);
+			this.parent.CommonTools.F0_1000_0bfa_FillRectangle(this.parent.Var_aa_Screen0_Rectangle, 80, 88, 160, 24, 15);
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0xd);
-			if (this.oCPU.Flags.E) goto L0754;
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x1b);
-			if (this.oCPU.Flags.E) goto L0754;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0xd);
+			if (this.CPU.Flags.E) goto L0754;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0x1b);
+			if (this.CPU.Flags.E) goto L0754;
 			goto L063d;
 
 		L0754:
 			// Instruction address 0x0000:0x0769, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 8, 8, 304, 184, 15);
+			this.parent.CommonTools.F0_1000_0bfa_FillRectangle(this.parent.Var_aa_Screen0_Rectangle, 8, 8, 304, 184, 15);
 
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x4384), 0xffff);
-			if (this.oCPU.Flags.E) goto L07c7;
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.DS.UInt16, 0x4384), 0xffff);
+			if (this.CPU.Flags.E) goto L07c7;
 
-			F11_0000_07d6(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x4384));
+			F11_0000_07d6(this.CPU.ReadUInt16(this.CPU.DS.UInt16, 0x4384));
 
-			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.NE) goto L07c7;
+			this.CPU.AX.UInt16 = this.CPU.OR_UInt16(this.CPU.AX.UInt16, this.CPU.AX.UInt16);
+			if (this.CPU.Flags.NE) goto L07c7;
 
 			// Instruction address 0x0000:0x078f, size: 5
-			this.oParent.CAPI.strcpy(0xba06, "No Disk in Drive A.\n");
+			this.parent.CAPI.strcpy(0xba06, "No Disk in Drive A.\n");
 
 			// Instruction address 0x0000:0x079b, size: 5
-			this.oParent.CAPI.strlen(0xba06);
+			this.parent.CAPI.strlen(0xba06);
 
-			this.oCPU.BX.UInt16 = this.oCPU.AX.UInt16;
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x4384);
-			this.oCPU.AX.LowUInt8 = this.oCPU.ADD_UInt8(this.oCPU.AX.LowUInt8, 0x41);
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0xba03), this.oCPU.AX.LowUInt8);
+			this.CPU.BX.UInt16 = this.CPU.AX.UInt16;
+			this.CPU.AX.LowUInt8 = this.CPU.ReadUInt8(this.CPU.DS.UInt16, 0x4384);
+			this.CPU.AX.LowUInt8 = this.CPU.ADD_UInt8(this.CPU.AX.LowUInt8, 0x41);
+			this.CPU.WriteUInt8(this.CPU.DS.UInt16, (ushort)(this.CPU.BX.UInt16 + 0xba03), this.CPU.AX.LowUInt8);
 
 			// Instruction address 0x0000:0x07ba, size: 5
-			this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 100, 80, true, false, true);
+			this.parent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 100, 80, true, false, true);
 
-			this.oCPU.AX.UInt16 = 0xffff;
+			this.CPU.AX.UInt16 = 0xffff;
 			goto L07d2;
 
 		L07c7:
-			this.oCPU.AX.LowUInt8 = this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0x4384);
-			this.oCPU.AX.LowUInt8 = this.oCPU.ADD_UInt8(this.oCPU.AX.LowUInt8, 0x61);
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x41c6, this.oCPU.AX.LowUInt8);
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x4384);
+			this.CPU.AX.LowUInt8 = this.CPU.ReadUInt8(this.CPU.DS.UInt16, 0x4384);
+			this.CPU.AX.LowUInt8 = this.CPU.ADD_UInt8(this.CPU.AX.LowUInt8, 0x61);
+			this.CPU.WriteUInt8(this.CPU.DS.UInt16, 0x41c6, this.CPU.AX.LowUInt8);
+			this.CPU.AX.UInt16 = this.CPU.ReadUInt16(this.CPU.DS.UInt16, 0x4384);
 
 		L07d2:
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
+			this.CPU.SP.UInt16 = this.CPU.BP.UInt16;
+			this.CPU.BP.UInt16 = this.CPU.POP_UInt16();
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F11_0000_05f8");
+			this.CPU.Log.ExitBlock("F11_0000_05f8");
 
-			return this.oCPU.AX.UInt16;
+			return this.CPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -679,52 +538,52 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public ushort F11_0000_07d6(ushort param1)
 		{
-			this.oCPU.Log.EnterBlock($"F11_0000_07d6({param1})");
+			this.CPU.Log.EnterBlock($"F11_0000_07d6({param1})");
 
 			// function body
-			this.oCPU.PUSH_UInt16(this.oCPU.BP.UInt16);
-			this.oCPU.BP.UInt16 = this.oCPU.SP.UInt16;
-			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x12);
-			this.oCPU.CMP_UInt16(param1, 0x1);
-			if (this.oCPU.Flags.LE) goto L07e7;
+			this.CPU.PUSH_UInt16(this.CPU.BP.UInt16);
+			this.CPU.BP.UInt16 = this.CPU.SP.UInt16;
+			this.CPU.SP.UInt16 = this.CPU.SUB_UInt16(this.CPU.SP.UInt16, 0x12);
+			this.CPU.CMP_UInt16(param1, 0x1);
+			if (this.CPU.Flags.LE) goto L07e7;
 
 		L07e2:
-			this.oCPU.AX.UInt16 = 0x1;
+			this.CPU.AX.UInt16 = 0x1;
 			goto L0837;
 
 		L07e7:
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), param1);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x10), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xe), 0x0);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xc), 0x2);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa), 0x1);
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2), 0x0);
+			this.CPU.WriteUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x12), param1);
+			this.CPU.WriteUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x10), 0x0);
+			this.CPU.WriteUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0xe), 0x0);
+			this.CPU.WriteUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0xc), 0x2);
+			this.CPU.WriteUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0xa), 0x1);
+			this.CPU.WriteUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2), 0x0);
 
 		L0806:
 			// Instruction address 0x0000:0x080e, size: 5
-			this.oParent.CAPI._bios_disk(4, (ushort)(this.oCPU.BP.UInt16 - 0x12));
+			this.parent.CAPI._bios_disk(4, (ushort)(this.CPU.BP.UInt16 - 0x12));
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4), this.oCPU.AX.UInt16);
-			this.oCPU.TEST_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 0xff00);
-			if (this.oCPU.Flags.E) goto L07e2;
+			this.CPU.WriteUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x4), this.CPU.AX.UInt16);
+			this.CPU.TEST_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x4)), 0xff00);
+			if (this.CPU.Flags.E) goto L07e2;
 
 			// Instruction address 0x0000:0x0824, size: 5
-			this.oParent.CAPI._bios_disk(0, 0);
+			this.parent.CAPI._bios_disk(0, 0);
 
-			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2),
-				this.oCPU.INC_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2))));
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)), 0x3);
-			if (this.oCPU.Flags.L) goto L0806;
-			this.oCPU.AX.UInt16 = 0;
+			this.CPU.WriteUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2),
+				this.CPU.INC_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2))));
+			this.CPU.CMP_UInt16(this.CPU.ReadUInt16(this.CPU.SS.UInt16, (ushort)(this.CPU.BP.UInt16 - 0x2)), 0x3);
+			if (this.CPU.Flags.L) goto L0806;
+			this.CPU.AX.UInt16 = 0;
 
 		L0837:
-			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
-			this.oCPU.BP.UInt16 = this.oCPU.POP_UInt16();
+			this.CPU.SP.UInt16 = this.CPU.BP.UInt16;
+			this.CPU.BP.UInt16 = this.CPU.POP_UInt16();
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F11_0000_07d6");
+			this.CPU.Log.ExitBlock("F11_0000_07d6");
 
-			return this.oCPU.AX.UInt16;
+			return this.CPU.AX.UInt16;
 		}
 
 		/// <summary>
@@ -736,7 +595,7 @@ namespace OpenCiv1
 		{
 			path = path.ToUpper();
 
-			this.oCPU.Log.EnterBlock($"F11_0000_083b_LoadGameData('{path}')");
+			this.CPU.Log.EnterBlock($"F11_0000_083b_LoadGameData('{path}')");
 
 			// function body
 			bool bSuccess = false;
@@ -747,21 +606,28 @@ namespace OpenCiv1
 				// read map file
 				GBitmap? map;
 
-				if ((map = GBitmap.FromPICFile($"{VCPU.DefaultCIVPath}{filename}.MAP", true)) == null)
+				if ((map = GBitmap.FromPICFile($"{this.parent.ResourcePath}{filename}.MAP", true)) == null)
 					throw new Exception($"Can't read Map file '{filename}.MAP'");
 
-				this.oParent.MapManagement.MapBitmap = map;
+				this.parent.GameData.Map = map;
+
+				if (this.parent.Graphics.Screens.ContainsKey(3))
+				{
+					this.parent.Graphics.Screens.RemoveByKey(3);
+				}
+
+				this.parent.Graphics.Screens.Add(3, this.parent.GameData.Map);
 
 				// read sve file
-				FileStream reader = new FileStream($"{VCPU.DefaultCIVPath}{filename}.SVE", FileMode.Open);
-				this.oParent.GameData.TurnCount = ReadInt16(reader);
-				this.oParent.GameData.HumanPlayerID = ReadInt16(reader);
-				this.oParent.GameData.PlayerFlags = ReadInt16(reader);
-				this.oParent.GameData.RandomSeed = ReadUInt16(reader);
-				this.oParent.GameData.Year = ReadInt16(reader);
-				this.oParent.GameData.DifficultyLevel = ReadInt16(reader);
-				this.oParent.GameData.ActiveCivilizations = ReadInt16(reader);
-				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].ResearchTechnologyID = ReadInt16(reader);
+				FileStream reader = new FileStream($"{this.parent.ResourcePath}{filename}.SVE", FileMode.Open);
+				this.parent.GameData.TurnCount = ReadInt16(reader);
+				this.parent.GameData.HumanPlayerID = ReadInt16(reader);
+				this.parent.GameData.PlayerFlags = ReadInt16(reader);
+				this.parent.GameData.RandomSeed = ReadUInt16(reader);
+				this.parent.GameData.Year = ReadInt16(reader);
+				this.parent.GameData.DifficultyLevel = ReadInt16(reader);
+				this.parent.GameData.ActiveCivilizations = ReadInt16(reader);
+				this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].ResearchTechnologyID = ReadInt16(reader);
 
 				for (int i = 0; i < 8; i++)
 				{
@@ -777,7 +643,7 @@ namespace OpenCiv1
 						sTemp = sTemp.Substring(0, iPosition);
 					}
 
-					this.oParent.GameData.Players[i].Name = sTemp;
+					this.parent.GameData.Players[i].Name = sTemp;
 				}
 
 				for (int i = 0; i < 8; i++)
@@ -794,7 +660,7 @@ namespace OpenCiv1
 						sTemp = sTemp.Substring(0, iPosition);
 					}
 
-					this.oParent.GameData.Players[i].Nation = sTemp;
+					this.parent.GameData.Players[i].Nation = sTemp;
 				}
 
 				for (int i = 0; i < 8; i++)
@@ -811,58 +677,58 @@ namespace OpenCiv1
 						sTemp = sTemp.Substring(0, iPosition);
 					}
 
-					this.oParent.GameData.Players[i].Nationality = sTemp;
+					this.parent.GameData.Players[i].Nationality = sTemp;
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].Coins = ReadInt16(reader);
+					this.parent.GameData.Players[i].Coins = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].ResearchProgress = ReadInt16(reader);
+					this.parent.GameData.Players[i].ResearchProgress = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameData.Players[i].ActiveUnits.Length; j++)
+					for (int j = 0; j < this.parent.GameData.Players[i].ActiveUnits.Length; j++)
 					{
-						this.oParent.GameData.Players[i].ActiveUnits[j] = ReadInt16(reader);
+						this.parent.GameData.Players[i].ActiveUnits[j] = ReadInt16(reader);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameData.Players[i].UnitsInProduction.Length; j++)
+					for (int j = 0; j < this.parent.GameData.Players[i].UnitsInProduction.Length; j++)
 					{
-						this.oParent.GameData.Players[i].UnitsInProduction[j] = ReadInt16(reader);
+						this.parent.GameData.Players[i].UnitsInProduction[j] = ReadInt16(reader);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].DiscoveredTechnologyCount = ReadInt16(reader);
+					this.parent.GameData.Players[i].DiscoveredTechnologyCount = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 5; j++)
 					{
-						this.oParent.GameData.Players[i].DiscoveredTechnologyFlags[j] = ReadUInt16(reader);
+						this.parent.GameData.Players[i].DiscoveredTechnologyFlags[j] = ReadUInt16(reader);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].GovernmentType = ReadInt16(reader);
+					this.parent.GameData.Players[i].GovernmentType = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameData.Players[i].Continents.Length; j++)
+					for (int j = 0; j < this.parent.GameData.Players[i].Continents.Length; j++)
 					{
-						this.oParent.GameData.Players[i].Continents[j].Strategy = ReadInt16(reader);
+						this.parent.GameData.Players[i].Continents[j].Strategy = ReadInt16(reader);
 					}
 				}
 
@@ -870,75 +736,75 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 8; j++)
 					{
-						this.oParent.GameData.Players[i].Diplomacy[j] = ReadUInt16(reader);
+						this.parent.GameData.Players[i].Diplomacy[j] = ReadUInt16(reader);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].CityCount = ReadInt16(reader);
+					this.parent.GameData.Players[i].CityCount = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].UnitCount = ReadInt16(reader);
+					this.parent.GameData.Players[i].UnitCount = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].LandCount = ReadInt16(reader);
+					this.parent.GameData.Players[i].LandCount = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].SettlerCount = ReadInt16(reader);
+					this.parent.GameData.Players[i].SettlerCount = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].TotalCitySize = ReadInt16(reader);
+					this.parent.GameData.Players[i].TotalCitySize = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].MilitaryPower = ReadInt16(reader);
+					this.parent.GameData.Players[i].MilitaryPower = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].Ranking = ReadInt16(reader);
+					this.parent.GameData.Players[i].Ranking = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].TaxRate = ReadInt16(reader);
+					this.parent.GameData.Players[i].TaxRate = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].Score = ReadInt16(reader);
+					this.parent.GameData.Players[i].Score = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].ContactPlayerCountdown = ReadInt16(reader);
+					this.parent.GameData.Players[i].ContactPlayerCountdown = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].XStart = ReadInt16(reader);
+					this.parent.GameData.Players[i].XStart = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].NationalityID = ReadInt16(reader);
+					this.parent.GameData.Players[i].NationalityID = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						this.oParent.GameData.Players[i].Continents[j].Attack = ReadInt16(reader);
+						this.parent.GameData.Players[i].Continents[j].Attack = ReadInt16(reader);
 					}
 				}
 
@@ -946,60 +812,60 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						this.oParent.GameData.Players[i].Continents[j].Defense = ReadInt16(reader);
+						this.parent.GameData.Players[i].Continents[j].Defense = ReadInt16(reader);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameData.Players[i].Continents.Length; j++)
+					for (int j = 0; j < this.parent.GameData.Players[i].Continents.Length; j++)
 					{
-						this.oParent.GameData.Players[i].Continents[j].CityCount = ReadInt16(reader);
+						this.parent.GameData.Players[i].Continents[j].CityCount = ReadInt16(reader);
 					}
 				}
 
 				for (int i = 0; i < 16; i++)
 				{
-					this.oParent.GameData.Continents[i].Size = ReadInt16(reader);
+					this.parent.GameData.Continents[i].Size = ReadInt16(reader);
 				}
 				reader.Seek(48 * 2, SeekOrigin.Current);
 
 				for (int i = 0; i < 16; i++)
 				{
-					this.oParent.GameData.Oceans[i].Size = ReadInt16(reader);
+					this.parent.GameData.Oceans[i].Size = ReadInt16(reader);
 				}
 				reader.Seek(48 * 2, SeekOrigin.Current);
 
 				for (int i = 0; i < 16; i++)
 				{
-					this.oParent.GameData.Continents[i].BuildSiteCount = ReadInt16(reader);
+					this.parent.GameData.Continents[i].BuildSiteCount = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 1200; i++)
 				{
-					this.oParent.GameData.ScoreGraphData[i] = ReadUInt8(reader);
+					this.parent.GameData.ScoreGraphData[i] = ReadUInt8(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.PeaceGraphData.Length; i++)
+				for (int i = 0; i < this.parent.GameData.PeaceGraphData.Length; i++)
 				{
-					this.oParent.GameData.PeaceGraphData[i] = ReadUInt8(reader);
+					this.parent.GameData.PeaceGraphData[i] = ReadUInt8(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Cities.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Cities.Length; i++)
 				{
-					this.oParent.GameData.Cities[i] = City.FromStream(i, reader);
+					this.parent.GameData.Cities[i] = City.FromStream(i, reader);
 				}
 
 				for (int i = 0; i < 28; i++)
 				{
-					this.oParent.GameData.Units[i] = UnitDefinition.FromStream(reader);
+					this.parent.GameData.Units[i] = UnitDefinition.FromStream(reader);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 128; j++)
 					{
-						this.oParent.GameData.Players[i].Units[j] = Unit.FromStream(reader);
+						this.parent.GameData.Players[i].Units[j] = Unit.FromStream(reader);
 					}
 				}
 
@@ -1007,7 +873,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 50; j++)
 					{
-						this.oParent.GameData.MapVisibility[i, j] = (ushort)((short)((sbyte)ReadUInt8(reader)));
+						this.parent.GameData.MapVisibility[i, j] = (ushort)((short)((sbyte)ReadUInt8(reader)));
 					}
 				}
 
@@ -1015,7 +881,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						this.oParent.GameData.Players[i].StrategicLocations[j].Active = (sbyte)ReadUInt8(reader);
+						this.parent.GameData.Players[i].StrategicLocations[j].Active = (sbyte)ReadUInt8(reader);
 					}
 				}
 
@@ -1023,7 +889,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						this.oParent.GameData.Players[i].StrategicLocations[j].Policy = ReadUInt8(reader);
+						this.parent.GameData.Players[i].StrategicLocations[j].Policy = ReadUInt8(reader);
 					}
 				}
 
@@ -1031,7 +897,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						this.oParent.GameData.Players[i].StrategicLocations[j].Position.X = (sbyte)ReadUInt8(reader);
+						this.parent.GameData.Players[i].StrategicLocations[j].Position.X = (sbyte)ReadUInt8(reader);
 					}
 				}
 
@@ -1039,24 +905,24 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						this.oParent.GameData.Players[i].StrategicLocations[j].Position.Y = (sbyte)ReadUInt8(reader);
+						this.parent.GameData.Players[i].StrategicLocations[j].Position.Y = (sbyte)ReadUInt8(reader);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.TechnologyFirstDiscoveredBy.Length; i++)
+				for (int i = 0; i < this.parent.GameData.TechnologyFirstDiscoveredBy.Length; i++)
 				{
-					this.oParent.GameData.TechnologyFirstDiscoveredBy[i] = ReadInt16(reader);
+					this.parent.GameData.TechnologyFirstDiscoveredBy[i] = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 8; j++)
 					{
-						this.oParent.GameData.Players[i].UnitsDestroyed[j] = ReadInt16(reader);
+						this.parent.GameData.Players[i].UnitsDestroyed[j] = ReadInt16(reader);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.CityNames.Length; i++)
+				for (int i = 0; i < this.parent.GameData.CityNames.Length; i++)
 				{
 					char[] acCityName = new char[13];
 
@@ -1064,45 +930,45 @@ namespace OpenCiv1
 					{
 						acCityName[j] = (char)GameLoadAndSave.ReadUInt8(reader);
 					}
-					this.oParent.GameData.CityNames[i] = new string(acCityName);
+					this.parent.GameData.CityNames[i] = new string(acCityName);
 				}
 
-				this.oParent.GameData.ReplayDataLength = ReadInt16(reader);
+				this.parent.GameData.ReplayDataLength = ReadInt16(reader);
 
-				for (int i = 0; i < this.oParent.GameData.ReplayData.Length; i++)
+				for (int i = 0; i < this.parent.GameData.ReplayData.Length; i++)
 				{
-					this.oParent.GameData.ReplayData[i] = ReadUInt8(reader);
+					this.parent.GameData.ReplayData[i] = ReadUInt8(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.WonderCityID.Length; i++)
+				for (int i = 0; i < this.parent.GameData.WonderCityID.Length; i++)
 				{
-					this.oParent.GameData.WonderCityID[i] = ReadInt16(reader);
+					this.parent.GameData.WonderCityID[i] = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameData.Players[i].LostUnits.Length; j++)
+					for (int j = 0; j < this.parent.GameData.Players[i].LostUnits.Length; j++)
 					{
-						this.oParent.GameData.Players[i].LostUnits[j] = ReadInt16(reader);
+						this.parent.GameData.Players[i].LostUnits[j] = ReadInt16(reader);
 
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameData.Players[i].TechnologyAcquiredFrom.Length; j++)
+					for (int j = 0; j < this.parent.GameData.Players[i].TechnologyAcquiredFrom.Length; j++)
 					{
-						this.oParent.GameData.Players[i].TechnologyAcquiredFrom[j] = (sbyte)ReadUInt8(reader);
+						this.parent.GameData.Players[i].TechnologyAcquiredFrom[j] = (sbyte)ReadUInt8(reader);
 					}
 				}
 
-				this.oParent.GameData.PollutedSquareCount = ReadInt16(reader);
-				this.oParent.GameData.PollutionEffectLevel = ReadInt16(reader);
-				this.oParent.GameData.GlobalWarmingCount = ReadInt16(reader);
-				this.oParent.GameData.GameSettingFlags.Value = ReadInt16(reader);
+				this.parent.GameData.PollutedSquareCount = ReadInt16(reader);
+				this.parent.GameData.PollutionEffectLevel = ReadInt16(reader);
+				this.parent.GameData.GlobalWarmingCount = ReadInt16(reader);
+				this.parent.GameData.GameSettingFlags.Value = ReadInt16(reader);
 
 				//reader.Seek(260, SeekOrigin.Current); // Skip corrupted Land path data
-				int[,] landPath = this.oParent.UnitGoTo.Arr_db44_LandPath;
+				int[,] landPath = this.parent.UnitGoTo.Arr_db44_LandPath;
 
 				for (int i = 0; i < 20; i++)
 				{
@@ -1112,20 +978,20 @@ namespace OpenCiv1
 					}
 				}
 
-				this.oParent.GameData.MaximumTechnologyCount = ReadInt16(reader);
-				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].FutureTechnologyCount = ReadInt16(reader);
-				this.oParent.GameData.DebugFlags = ReadInt16(reader);
+				this.parent.GameData.MaximumTechnologyCount = ReadInt16(reader);
+				this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].FutureTechnologyCount = ReadInt16(reader);
+				this.parent.GameData.DebugFlags = ReadInt16(reader);
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].ScienceTaxRate = ReadInt16(reader);
+					this.parent.GameData.Players[i].ScienceTaxRate = ReadInt16(reader);
 				}
 				
-				this.oParent.GameData.NextAnthologyTurn = ReadInt16(reader);
+				this.parent.GameData.NextAnthologyTurn = ReadInt16(reader);
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].CumulativeEpicRanking = ReadInt16(reader);
+					this.parent.GameData.Players[i].CumulativeEpicRanking = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 8; i++)
@@ -1135,54 +1001,54 @@ namespace OpenCiv1
 
 					for (int j = 0; j < 180; j++)
 					{
-						this.oParent.GameData.Players[i].SpaceshipData[j] = (sbyte)buffer[j];
+						this.parent.GameData.Players[i].SpaceshipData[j] = (sbyte)buffer[j];
 					}
 				}
 
-				this.oParent.GameData.SpaceshipFlags = ReadInt16(reader);
-				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].SpaceshipSuccessRate = ReadInt16(reader);
-				this.oParent.GameData.AISpaceshipSuccessRate = ReadInt16(reader);
+				this.parent.GameData.SpaceshipFlags = ReadInt16(reader);
+				this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].SpaceshipSuccessRate = ReadInt16(reader);
+				this.parent.GameData.AISpaceshipSuccessRate = ReadInt16(reader);
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].SpaceshipETAYear = ReadInt16(reader);
+					this.parent.GameData.Players[i].SpaceshipETAYear = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 12; i++)
 				{
-					this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].PalaceData1[i + 2] = ReadInt16(reader);
+					this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].PalaceData1[i + 2] = ReadInt16(reader);
 				}
 
 				for (int i = 0; i < 12; i++)
 				{
-					this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].PalaceData2[i] = ReadInt16(reader);
+					this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].PalaceData2[i] = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.CityPositions.Length; i++)
+				for (int i = 0; i < this.parent.GameData.CityPositions.Length; i++)
 				{
-					this.oParent.GameData.CityPositions[i].X = (sbyte)ReadUInt8(reader);
+					this.parent.GameData.CityPositions[i].X = (sbyte)ReadUInt8(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.CityPositions.Length; i++)
+				for (int i = 0; i < this.parent.GameData.CityPositions.Length; i++)
 				{
-					this.oParent.GameData.CityPositions[i].Y = (sbyte)ReadUInt8(reader);
+					this.parent.GameData.CityPositions[i].Y = (sbyte)ReadUInt8(reader);
 				}
 
-				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].PalaceLevel = ReadInt16(reader);
-				this.oParent.GameData.PeaceTurnCount = ReadInt16(reader);
-				this.oParent.GameData.AIOpponentCount = ReadInt16(reader);
+				this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].PalaceLevel = ReadInt16(reader);
+				this.parent.GameData.PeaceTurnCount = ReadInt16(reader);
+				this.parent.GameData.AIOpponentCount = ReadInt16(reader);
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].SpaceshipPopulation = ReadInt16(reader);
+					this.parent.GameData.Players[i].SpaceshipPopulation = ReadInt16(reader);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					this.oParent.GameData.Players[i].SpaceshipLaunchYear = ReadInt16(reader);
+					this.parent.GameData.Players[i].SpaceshipLaunchYear = ReadInt16(reader);
 				}
 
-				this.oParent.GameData.PlayerIdentityFlags = ReadInt16(reader);
+				this.parent.GameData.PlayerIdentityFlags = ReadInt16(reader);
 
 				reader.Close();
 
@@ -1190,16 +1056,16 @@ namespace OpenCiv1
 			}
 			catch (Exception ex)
 			{
-				this.oParent.CAPI.strcpy(0xba06, ex.Message);
+				this.parent.CAPI.strcpy(0xba06, ex.Message);
 
 				// Instruction address 0x0000:0x08a3, size: 5
-				this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
+				this.parent.Segment_1238.F0_1238_001e_ShowDialog(0xba06, 100, 80);
 
 				bSuccess = false;
 			}
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F11_0000_083b_LoadGameData");
+			this.CPU.Log.ExitBlock("F11_0000_083b_LoadGameData");
 
 			return bSuccess;
 		}
@@ -1212,8 +1078,8 @@ namespace OpenCiv1
 		/// <param name="length"></param>
 		private void ReadData(Stream reader, ushort bufferPtr, ushort length)
 		{
-			reader.Read(this.oCPU.Memory.MemoryContent,
-				(int)VCPU.ToLinearAddress(this.oCPU.DS.UInt16, bufferPtr), length);
+			reader.Read(this.CPU.Memory.MemoryContent,
+				(int)VCPU.ToLinearAddress(this.CPU.DS.UInt16, bufferPtr), length);
 		}
 
 		/// <summary>
@@ -1225,7 +1091,7 @@ namespace OpenCiv1
 		/// <param name="length"></param>
 		private void ReadData(Stream reader, ushort bufferSeg, ushort bufferPtr, ushort length)
 		{
-			reader.Read(this.oCPU.Memory.MemoryContent,
+			reader.Read(this.CPU.Memory.MemoryContent,
 				(int)VCPU.ToLinearAddress(bufferSeg, bufferPtr), length);
 		}
 
@@ -1303,7 +1169,7 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// Reads a null terminated string from the stream (null characher included)
+		/// Reads a null terminated string from the stream (null character included)
 		/// </summary>
 		/// <param name="reader">Reading stream</param>
 		/// <param name="length">Full string length, including null character</param>
@@ -1346,7 +1212,7 @@ namespace OpenCiv1
 		{
 			path = path.ToUpper();
 
-			this.oCPU.Log.EnterBlock($"F11_0000_08f6_SaveGameData('{path}')");
+			this.CPU.Log.EnterBlock($"F11_0000_08f6_SaveGameData('{path}')");
 
 			// function body
 			bool bSuccess = false;
@@ -1355,22 +1221,22 @@ namespace OpenCiv1
 			try
 			{
 				// write map file
-				this.oParent.MapManagement.MapBitmap.SaveToPIC($"{VCPU.DefaultCIVPath}{filename}.MAP", false);
+				this.parent.GameData.Map.SaveToPIC($"{this.parent.ResourcePath}{filename}.MAP", false);
 
 				// write sve file
-				FileStream writer = new FileStream($"{VCPU.DefaultCIVPath}{filename}.SVE", FileMode.Create);
-				WriteInt16(writer, this.oParent.GameData.TurnCount);
-				WriteInt16(writer, this.oParent.GameData.HumanPlayerID);
-				WriteInt16(writer, this.oParent.GameData.PlayerFlags);
-				WriteUInt16(writer, this.oParent.GameData.RandomSeed);
-				WriteInt16(writer, this.oParent.GameData.Year);
-				WriteInt16(writer, this.oParent.GameData.DifficultyLevel);
-				WriteInt16(writer, this.oParent.GameData.ActiveCivilizations);
-				WriteInt16(writer, this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].ResearchTechnologyID);
+				FileStream writer = new FileStream($"{this.parent.ResourcePath}{filename}.SVE", FileMode.Create);
+				WriteInt16(writer, this.parent.GameData.TurnCount);
+				WriteInt16(writer, this.parent.GameData.HumanPlayerID);
+				WriteInt16(writer, this.parent.GameData.PlayerFlags);
+				WriteUInt16(writer, this.parent.GameData.RandomSeed);
+				WriteInt16(writer, this.parent.GameData.Year);
+				WriteInt16(writer, this.parent.GameData.DifficultyLevel);
+				WriteInt16(writer, this.parent.GameData.ActiveCivilizations);
+				WriteInt16(writer, this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].ResearchTechnologyID);
 
 				for (int i = 0; i < 8; i++)
 				{
-					string sTemp = this.oParent.GameData.Players[i].Name;
+					string sTemp = this.parent.GameData.Players[i].Name;
 
 					for (int j = 0; j < 13; j++)
 					{
@@ -1388,7 +1254,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < 8; i++)
 				{
-					string sTemp = this.oParent.GameData.Players[i].Nation;
+					string sTemp = this.parent.GameData.Players[i].Nation;
 
 					for (int j = 0; j < 11; j++)
 					{
@@ -1406,7 +1272,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < 8; i++)
 				{
-					string sTemp = this.oParent.GameData.Players[i].Nationality;
+					string sTemp = this.parent.GameData.Players[i].Nationality;
 
 					for (int j = 0; j < 10; j++)
 					{
@@ -1422,55 +1288,55 @@ namespace OpenCiv1
 					writer.WriteByte(0);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].Coins);
+					WriteInt16(writer, this.parent.GameData.Players[i].Coins);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].ResearchProgress);
+					WriteInt16(writer, this.parent.GameData.Players[i].ResearchProgress);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameData.Players[i].ActiveUnits.Length; j++)
+					for (int j = 0; j < this.parent.GameData.Players[i].ActiveUnits.Length; j++)
 					{
-						WriteInt16(writer, this.oParent.GameData.Players[i].ActiveUnits[j]);
+						WriteInt16(writer, this.parent.GameData.Players[i].ActiveUnits[j]);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameData.Players[i].UnitsInProduction.Length; j++)
+					for (int j = 0; j < this.parent.GameData.Players[i].UnitsInProduction.Length; j++)
 					{
-						WriteInt16(writer, this.oParent.GameData.Players[i].UnitsInProduction[j]);
+						WriteInt16(writer, this.parent.GameData.Players[i].UnitsInProduction[j]);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].DiscoveredTechnologyCount);
+					WriteInt16(writer, this.parent.GameData.Players[i].DiscoveredTechnologyCount);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 5; j++)
 					{
-						WriteUInt16(writer, this.oParent.GameData.Players[i].DiscoveredTechnologyFlags[j]);
+						WriteUInt16(writer, this.parent.GameData.Players[i].DiscoveredTechnologyFlags[j]);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].GovernmentType);
+					WriteInt16(writer, this.parent.GameData.Players[i].GovernmentType);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameData.Players[i].Continents.Length; j++)
+					for (int j = 0; j < this.parent.GameData.Players[i].Continents.Length; j++)
 					{
-						WriteInt16(writer, this.oParent.GameData.Players[i].Continents[j].Strategy);
+						WriteInt16(writer, this.parent.GameData.Players[i].Continents[j].Strategy);
 					}
 				}
 
@@ -1478,75 +1344,75 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 8; j++)
 					{
-						WriteUInt16(writer, this.oParent.GameData.Players[i].Diplomacy[j]);
+						WriteUInt16(writer, this.parent.GameData.Players[i].Diplomacy[j]);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].CityCount);
+					WriteInt16(writer, this.parent.GameData.Players[i].CityCount);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].UnitCount);
+					WriteInt16(writer, this.parent.GameData.Players[i].UnitCount);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].LandCount);
+					WriteInt16(writer, this.parent.GameData.Players[i].LandCount);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].SettlerCount);
+					WriteInt16(writer, this.parent.GameData.Players[i].SettlerCount);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].TotalCitySize);
+					WriteInt16(writer, this.parent.GameData.Players[i].TotalCitySize);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].MilitaryPower);
+					WriteInt16(writer, this.parent.GameData.Players[i].MilitaryPower);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].Ranking);
+					WriteInt16(writer, this.parent.GameData.Players[i].Ranking);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].TaxRate);
+					WriteInt16(writer, this.parent.GameData.Players[i].TaxRate);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].Score);
+					WriteInt16(writer, this.parent.GameData.Players[i].Score);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].ContactPlayerCountdown);
+					WriteInt16(writer, this.parent.GameData.Players[i].ContactPlayerCountdown);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].XStart);
+					WriteInt16(writer, this.parent.GameData.Players[i].XStart);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].NationalityID);
+					WriteInt16(writer, this.parent.GameData.Players[i].NationalityID);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						WriteInt16(writer, this.oParent.GameData.Players[i].Continents[j].Attack);
+						WriteInt16(writer, this.parent.GameData.Players[i].Continents[j].Attack);
 					}
 				}
 
@@ -1554,7 +1420,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						WriteInt16(writer, this.oParent.GameData.Players[i].Continents[j].Defense);
+						WriteInt16(writer, this.parent.GameData.Players[i].Continents[j].Defense);
 					}
 				}
 				
@@ -1562,13 +1428,13 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						WriteInt16(writer, this.oParent.GameData.Players[i].Continents[j].CityCount);
+						WriteInt16(writer, this.parent.GameData.Players[i].Continents[j].CityCount);
 					}
 				}
 
 				for (int i = 0; i < 16; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Continents[i].Size);
+					WriteInt16(writer, this.parent.GameData.Continents[i].Size);
 				}
 
 				for (int i = 0; i < 48; i++)
@@ -1578,7 +1444,7 @@ namespace OpenCiv1
 
 				for (int i = 0; i < 16; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Oceans[i].Size);
+					WriteInt16(writer, this.parent.GameData.Oceans[i].Size);
 				}
 
 				for (int i = 0; i < 48; i++)
@@ -1588,34 +1454,34 @@ namespace OpenCiv1
 
 				for (int i = 0; i < 16; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Continents[i].BuildSiteCount);
+					WriteInt16(writer, this.parent.GameData.Continents[i].BuildSiteCount);
 				}
 
 				for (int i = 0; i < 1200; i++)
 				{
-					writer.WriteByte(this.oParent.GameData.ScoreGraphData[i]);
+					writer.WriteByte(this.parent.GameData.ScoreGraphData[i]);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.PeaceGraphData.Length; i++)
+				for (int i = 0; i < this.parent.GameData.PeaceGraphData.Length; i++)
 				{
-					writer.WriteByte(this.oParent.GameData.PeaceGraphData[i]);
+					writer.WriteByte(this.parent.GameData.PeaceGraphData[i]);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Cities.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Cities.Length; i++)
 				{
-					this.oParent.GameData.Cities[i].ToStream(writer);
+					this.parent.GameData.Cities[i].ToStream(writer);
 				}
 
 				for (int i = 0; i < 28; i++)
 				{
-					this.oParent.GameData.Units[i].ToStream(writer);
+					this.parent.GameData.Units[i].ToStream(writer);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 128; j++)
 					{
-						this.oParent.GameData.Players[i].Units[j].ToStream(writer);
+						this.parent.GameData.Players[i].Units[j].ToStream(writer);
 					}
 				}
 
@@ -1623,7 +1489,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 50; j++)
 					{
-						writer.WriteByte((byte)((sbyte)((short)this.oParent.GameData.MapVisibility[i, j])));
+						writer.WriteByte((byte)((sbyte)((short)this.parent.GameData.MapVisibility[i, j])));
 					}
 				}
 
@@ -1631,7 +1497,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						writer.WriteByte((byte)this.oParent.GameData.Players[i].StrategicLocations[j].Active);
+						writer.WriteByte((byte)this.parent.GameData.Players[i].StrategicLocations[j].Active);
 					}
 				}
 
@@ -1639,7 +1505,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						writer.WriteByte(this.oParent.GameData.Players[i].StrategicLocations[j].Policy);
+						writer.WriteByte(this.parent.GameData.Players[i].StrategicLocations[j].Policy);
 					}
 				}
 
@@ -1647,7 +1513,7 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						writer.WriteByte((byte)this.oParent.GameData.Players[i].StrategicLocations[j].Position.X);
+						writer.WriteByte((byte)this.parent.GameData.Players[i].StrategicLocations[j].Position.X);
 					}
 				}
 
@@ -1655,64 +1521,64 @@ namespace OpenCiv1
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						writer.WriteByte((byte)this.oParent.GameData.Players[i].StrategicLocations[j].Position.Y);
+						writer.WriteByte((byte)this.parent.GameData.Players[i].StrategicLocations[j].Position.Y);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.TechnologyFirstDiscoveredBy.Length; i++)
+				for (int i = 0; i < this.parent.GameData.TechnologyFirstDiscoveredBy.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.TechnologyFirstDiscoveredBy[i]);
+					WriteInt16(writer, this.parent.GameData.TechnologyFirstDiscoveredBy[i]);
 				}
 
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 8; j++)
 					{
-						WriteInt16(writer, this.oParent.GameData.Players[i].UnitsDestroyed[j]);
+						WriteInt16(writer, this.parent.GameData.Players[i].UnitsDestroyed[j]);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.CityNames.Length; i++)
+				for (int i = 0; i < this.parent.GameData.CityNames.Length; i++)
 				{
 					for (int j = 0; j < 13; j++)
 					{
-						writer.WriteByte((byte)this.oParent.GameData.CityNames[i][j]);
+						writer.WriteByte((byte)this.parent.GameData.CityNames[i][j]);
 					}
 				}
 
-				WriteInt16(writer, this.oParent.GameData.ReplayDataLength);
-				for (int i = 0; i < this.oParent.GameData.ReplayData.Length; i++)
+				WriteInt16(writer, this.parent.GameData.ReplayDataLength);
+				for (int i = 0; i < this.parent.GameData.ReplayData.Length; i++)
 				{
-					writer.WriteByte(this.oParent.GameData.ReplayData[i]);
+					writer.WriteByte(this.parent.GameData.ReplayData[i]);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.WonderCityID.Length; i++)
+				for (int i = 0; i < this.parent.GameData.WonderCityID.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.WonderCityID[i]);
+					WriteInt16(writer, this.parent.GameData.WonderCityID[i]);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameData.Players[i].LostUnits.Length; j++)
+					for (int j = 0; j < this.parent.GameData.Players[i].LostUnits.Length; j++)
 					{
-						WriteInt16(writer, this.oParent.GameData.Players[i].LostUnits[j]);
+						WriteInt16(writer, this.parent.GameData.Players[i].LostUnits[j]);
 					}
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					for (int j = 0; j < this.oParent.GameData.Players[i].TechnologyAcquiredFrom.Length; j++)
+					for (int j = 0; j < this.parent.GameData.Players[i].TechnologyAcquiredFrom.Length; j++)
 					{
-						writer.WriteByte((byte)((sbyte)this.oParent.GameData.Players[i].TechnologyAcquiredFrom[j]));
+						writer.WriteByte((byte)((sbyte)this.parent.GameData.Players[i].TechnologyAcquiredFrom[j]));
 					}
 				}
 
-				WriteInt16(writer, this.oParent.GameData.PollutedSquareCount);
-				WriteInt16(writer, this.oParent.GameData.PollutionEffectLevel);
-				WriteInt16(writer, this.oParent.GameData.GlobalWarmingCount);
-				WriteInt16(writer, this.oParent.GameData.GameSettingFlags.Value);
+				WriteInt16(writer, this.parent.GameData.PollutedSquareCount);
+				WriteInt16(writer, this.parent.GameData.PollutionEffectLevel);
+				WriteInt16(writer, this.parent.GameData.GlobalWarmingCount);
+				WriteInt16(writer, (short)this.parent.GameData.GameSettingFlags.Value);
 
-				int[,] landPath = this.oParent.UnitGoTo.Arr_db44_LandPath;
+				int[,] landPath = this.parent.UnitGoTo.Arr_db44_LandPath;
 
 				for (int i = 0; i < 20; i++)
 				{
@@ -1722,20 +1588,20 @@ namespace OpenCiv1
 					}
 				}
 
-				WriteInt16(writer, this.oParent.GameData.MaximumTechnologyCount);
-				WriteInt16(writer, this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].FutureTechnologyCount);
-				WriteInt16(writer, this.oParent.GameData.DebugFlags);
+				WriteInt16(writer, this.parent.GameData.MaximumTechnologyCount);
+				WriteInt16(writer, this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].FutureTechnologyCount);
+				WriteInt16(writer, this.parent.GameData.DebugFlags);
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].ScienceTaxRate);
+					WriteInt16(writer, this.parent.GameData.Players[i].ScienceTaxRate);
 				}
 				
-				WriteInt16(writer, this.oParent.GameData.NextAnthologyTurn);
+				WriteInt16(writer, this.parent.GameData.NextAnthologyTurn);
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].CumulativeEpicRanking);
+					WriteInt16(writer, this.parent.GameData.Players[i].CumulativeEpicRanking);
 				}
 
 				for (int i = 0; i < 8; i++)
@@ -1744,55 +1610,55 @@ namespace OpenCiv1
 
 					for (int j = 0; j < 180; j++)
 					{
-						buffer[j] = (byte)this.oParent.GameData.Players[i].SpaceshipData[j];
+						buffer[j] = (byte)this.parent.GameData.Players[i].SpaceshipData[j];
 					}
 
 					writer.Write(buffer, 0, 180);
 				}
 
-				WriteInt16(writer, this.oParent.GameData.SpaceshipFlags);
-				WriteInt16(writer, this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].SpaceshipSuccessRate);
-				WriteInt16(writer, this.oParent.GameData.AISpaceshipSuccessRate);
+				WriteInt16(writer, this.parent.GameData.SpaceshipFlags);
+				WriteInt16(writer, this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].SpaceshipSuccessRate);
+				WriteInt16(writer, this.parent.GameData.AISpaceshipSuccessRate);
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].SpaceshipETAYear);
+					WriteInt16(writer, this.parent.GameData.Players[i].SpaceshipETAYear);
 				}
 
 				for (int i = 0; i < 12; i++)
 				{
-					WriteInt16(writer, (short)this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].PalaceData1[i + 2]);
+					WriteInt16(writer, (short)this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].PalaceData1[i + 2]);
 				}
 
 				for (int i = 0; i < 12; i++)
 				{
-					WriteInt16(writer, (short)this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].PalaceData2[i]);
+					WriteInt16(writer, (short)this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].PalaceData2[i]);
 				}
 
 				for (int i = 0; i < 256; i++)
 				{
-					writer.WriteByte((byte)((sbyte)this.oParent.GameData.CityPositions[i].X));
+					writer.WriteByte((byte)((sbyte)this.parent.GameData.CityPositions[i].X));
 				}
 				for (int i = 0; i < 256; i++)
 				{
-					writer.WriteByte((byte)((sbyte)this.oParent.GameData.CityPositions[i].Y));
+					writer.WriteByte((byte)((sbyte)this.parent.GameData.CityPositions[i].Y));
 				}
 
-				WriteInt16(writer, this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].PalaceLevel);
-				WriteInt16(writer, this.oParent.GameData.PeaceTurnCount);
-				WriteInt16(writer, this.oParent.GameData.AIOpponentCount);
+				WriteInt16(writer, this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].PalaceLevel);
+				WriteInt16(writer, this.parent.GameData.PeaceTurnCount);
+				WriteInt16(writer, this.parent.GameData.AIOpponentCount);
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].SpaceshipPopulation);
+					WriteInt16(writer, this.parent.GameData.Players[i].SpaceshipPopulation);
 				}
 
-				for (int i = 0; i < this.oParent.GameData.Players.Length; i++)
+				for (int i = 0; i < this.parent.GameData.Players.Length; i++)
 				{
-					WriteInt16(writer, this.oParent.GameData.Players[i].SpaceshipLaunchYear);
+					WriteInt16(writer, this.parent.GameData.Players[i].SpaceshipLaunchYear);
 				}
 
-				WriteInt16(writer, this.oParent.GameData.PlayerIdentityFlags);
+				WriteInt16(writer, this.parent.GameData.PlayerIdentityFlags);
 
 				writer.Close();
 
@@ -1800,14 +1666,14 @@ namespace OpenCiv1
 			}
 			catch (Exception ex)
 			{
-				this.oParent.CAPI.strcpy(0xba06, ex.Message);
-				this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 4, 64, true, false, true);
+				this.parent.CAPI.strcpy(0xba06, ex.Message);
+				this.parent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 4, 64, true, false, true);
 
 				bSuccess = false;
 			}
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F11_0000_08f6_SaveGameData");
+			this.CPU.Log.ExitBlock("F11_0000_08f6_SaveGameData");
 
 			return bSuccess;
 		}
@@ -1820,8 +1686,8 @@ namespace OpenCiv1
 		/// <param name="length"></param>
 		private void WriteData(Stream writer, ushort bufferPtr, ushort length)
 		{
-			writer.Write(this.oCPU.Memory.MemoryContent,
-				(int)VCPU.ToLinearAddress(this.oCPU.DS.UInt16, bufferPtr), length);
+			writer.Write(this.CPU.Memory.MemoryContent,
+				(int)VCPU.ToLinearAddress(this.CPU.DS.UInt16, bufferPtr), length);
 		}
 
 		/// <summary>
@@ -1833,7 +1699,7 @@ namespace OpenCiv1
 		/// <param name="length"></param>
 		private void WriteData(Stream writer, ushort bufferSeg, ushort bufferPtr, ushort length)
 		{
-			writer.Write(this.oCPU.Memory.MemoryContent,
+			writer.Write(this.CPU.Memory.MemoryContent,
 				(int)VCPU.ToLinearAddress(bufferSeg, bufferPtr), length);
 		}
 

@@ -63,7 +63,7 @@ namespace OpenCiv1
 			this.oParent.Var_2f9c_MenuBoxHelpRequested = false;
 
 			// Determine maximum line width and height
-			int lineHeight = this.oParent.Graphics.F0_VGA_11ae_GetTextHeight(this.oParent.Var_aa_Rectangle.FontID);
+			int lineHeight = this.oParent.Graphics.F0_VGA_11ae_GetTextHeight(this.oParent.Var_aa_Screen0_Rectangle.FontID);
 
 			if (lineHeight == 9)
 			{
@@ -106,7 +106,7 @@ namespace OpenCiv1
 			for (int i = 0; i < menuItems.Length; i++)
 			{
 				string menuItem = menuItems[i];
-				int itemWidth = this.oParent.Graphics.GetDrawStringSize(this.oParent.Var_aa_Rectangle.FontID, menuItem).Width;
+				int itemWidth = this.oParent.Graphics.GetDrawStringSize(this.oParent.Var_aa_Screen0_Rectangle.FontID, menuItem).Width;
 
 				if (optionIndexes.Count > 0 && !menuItem.StartsWith(defaultCheckedChar) && menuItem.StartsWith(' '))
 				{
@@ -120,7 +120,7 @@ namespace OpenCiv1
 				while (itemWidth > maxContentWidth)
 				{
 					menuItem = menuItem.Substring(0, menuItem.Length - 1);
-					itemWidth = this.oParent.Graphics.GetDrawStringSize(this.oParent.Var_aa_Rectangle.FontID, menuItem + "...").Width;
+					itemWidth = this.oParent.Graphics.GetDrawStringSize(this.oParent.Var_aa_Screen0_Rectangle.FontID, menuItem + "...").Width;
 
 					if (itemWidth <= maxContentWidth)
 					{
@@ -201,14 +201,14 @@ namespace OpenCiv1
 						this.oParent.Var_2f9e_MessageBoxStyle == MenuBoxReportTypeEnum.ForeignMinisterReport ||
 						this.oParent.Var_2f9e_MessageBoxStyle == MenuBoxReportTypeEnum.ScienceAdvisorReport)
 					{
-						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle,
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Screen2_Rectangle,
 							40 + (40 * (int)this.oParent.Var_2f9e_MessageBoxStyle), 140, 40, 60,
-							this.oParent.Var_aa_Rectangle, contentLeft - 44, contentTop);
+							this.oParent.Var_aa_Screen0_Rectangle, contentLeft - 44, contentTop);
 					}
 					else
 					{
 						// Instruction address 0x2d05:0x06c8, size: 5
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, 
+						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Screen0_Rectangle, 
 							contentLeft - 44, contentTop, this.oParent.Array_df62[(int)this.oParent.Var_2f9e_MessageBoxStyle]);
 					}
 				}
@@ -216,19 +216,19 @@ namespace OpenCiv1
 
 			if (windowFrame && helpOption)
 			{
-				int fontID = this.oParent.Var_aa_Rectangle.FontID;
-				this.oParent.Var_aa_Rectangle.FontID = 2;
+				int fontID = this.oParent.Var_aa_Screen0_Rectangle.FontID;
+				this.oParent.Var_aa_Screen0_Rectangle.FontID = 2;
 
 				string helpText = "(HELP AVAILABLE)";
-				GSize helpSize = this.oParent.Graphics.GetDrawStringSize(this.oParent.Var_aa_Rectangle.FontID, helpText);
+				GSize helpSize = this.oParent.Graphics.GetDrawStringSize(this.oParent.Var_aa_Screen0_Rectangle.FontID, helpText);
 
 				// Instruction address 0x2d05:0x0787, size: 5
 				this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(helpText, contentLeft + contentWidth - helpSize.Width, contentTop + contentHeight - helpSize.Height, 10);
 
-				this.oParent.Var_aa_Rectangle.FontID = fontID;
+				this.oParent.Var_aa_Screen0_Rectangle.FontID = fontID;
 			}
 
-			this.oParent.Var_aa_Rectangle.FrontColor = (byte)textColor;
+			this.oParent.Var_aa_Screen0_Rectangle.FrontColor = (byte)textColor;
 
 			int optionIndex = -1;
 
@@ -446,13 +446,13 @@ namespace OpenCiv1
 							int oldLineIndex = optionIndexes[oldSelectedOptionIndex];
 
 							// Instruction address 0x2d05:0x027c, size: 5
-							this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
+							this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Screen0_Rectangle,
 								contentLeft, contentTop + (oldLineIndex * lineHeight) - 1, maxLineWidth, lineHeight, 11, (byte)backgroundColor);
 
 							if (highlightColor != -1)
 							{
 								// Instruction address 0x2d05:0x02b2, size: 5
-								this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
+								this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Screen0_Rectangle,
 									contentLeft, contentTop + (oldLineIndex * lineHeight) - 1, maxLineWidth, lineHeight, 3, (byte)highlightColor);
 							}
 						}
@@ -462,13 +462,13 @@ namespace OpenCiv1
 							int lineIndex = optionIndexes[selectedOptionIndex];
 
 							// Instruction address 0x2d05:0x02ee, size: 5
-							this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
+							this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Screen0_Rectangle,
 								contentLeft, contentTop + (lineIndex * lineHeight) - 1, maxLineWidth, lineHeight, (byte)backgroundColor, 11);
 
 							if (highlightColor != -1)
 							{
 								// Instruction address 0x2d05:0x0324, size: 5
-								this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle,
+								this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Screen0_Rectangle,
 									contentLeft, contentTop + (lineIndex * lineHeight) - 1, maxLineWidth, lineHeight, (byte)highlightColor, 3);
 							}
 						}
@@ -524,10 +524,10 @@ namespace OpenCiv1
 			else
 			{
 				// Instruction address 0x2d05:0x09b1, size: 5
-				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, x, y, width, height, mode);
+				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, x, y, width, height, mode);
 			}
 
-			this.oParent.Var_aa_Rectangle.BackColor = (byte)mode;
+			this.oParent.Var_aa_Screen0_Rectangle.BackColor = (byte)mode;
 
 			// Instruction address 0x2d05:0x09e1, size: 3
 			F0_2d05_0a66_DrawShadowRectangle(x - 1, y - 1, width + 1, height + 1, 15, 8);
@@ -555,10 +555,10 @@ namespace OpenCiv1
 			else
 			{
 				// Instruction address 0x2d05:0x09b1, size: 5
-				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, x + 1, y + 1, width, height, mode);
+				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, x + 1, y + 1, width, height, mode);
 			}
 		
-			this.oParent.Var_aa_Rectangle.BackColor = (byte)mode;
+			this.oParent.Var_aa_Screen0_Rectangle.BackColor = (byte)mode;
 
 			// Instruction address 0x2d05:0x09e1, size: 3
 			F0_2d05_0a66_DrawShadowRectangle(x + 1, y + 1, width, height, 15, 8);
@@ -579,16 +579,16 @@ namespace OpenCiv1
 		{
 			// function body
 			// Instruction address 0x2d05:0x0a1d, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, x, y, x + width, y, mode);
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, x, y, x + width, y, mode);
 
 			// Instruction address 0x2d05:0x0a34, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, x, y + height, x + width, y + height, mode);
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, x, y + height, x + width, y + height, mode);
 
 			// Instruction address 0x2d05:0x0a45, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, x + width, y, x + width, y + height, mode);
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, x + width, y, x + width, y + height, mode);
 
 			// Instruction address 0x2d05:0x0a5a, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, x, y, x, y + height, mode);
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, x, y, x, y + height, mode);
 		}
 
 		/// <summary>
@@ -604,16 +604,16 @@ namespace OpenCiv1
 		{
 			// function body
 			// Instruction address 0x2d05:0x0a7e, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, x, y, x + width, y, mode1);
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, x, y, x + width, y, mode1);
 
 			// Instruction address 0x2d05:0x0a95, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, x, y + height, x + width, y + height, mode);
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, x, y + height, x + width, y + height, mode);
 
 			// Instruction address 0x2d05:0x0aa6, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, x + width, y, x + width, y + height, mode1);
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, x + width, y, x + width, y + height, mode1);
 
 			// Instruction address 0x2d05:0x0abd, size: 5
-			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Rectangle, x, y + 1, x, y + height, mode);
+			this.oParent.Graphics.F0_VGA_0599_DrawLine(this.oParent.Var_aa_Screen0_Rectangle, x, y + 1, x, y + height, mode);
 		}
 
 		/// <summary>

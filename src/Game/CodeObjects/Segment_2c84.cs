@@ -37,12 +37,12 @@ namespace OpenCiv1
 			}
 		
 			// Instruction address 0x2c84:0x0031, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, this.oParent.Var_19d4_Screen1_Rectangle, 0, 0);
 
 			// Instruction address 0x2c84:0x003b, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			switch (menuIndex)
 			{
@@ -73,7 +73,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x2c84:0x0082, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
 			if (this.Var_654a == 1)
 			{
@@ -83,11 +83,11 @@ namespace OpenCiv1
 		
 			if (this.Var_654a == 0)
 			{
-				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+				this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Screen0_Rectangle, 0, 0);
 			}
 		
 			// Instruction address 0x2c84:0x00a6, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_2c84_0000_ShowTopMenu");
@@ -139,8 +139,6 @@ namespace OpenCiv1
 
 				case 3: // Options
 						// Instruction address 0x2c84:0x0143, size: 5
-					this.oParent.CAPI.strcpy(0xba06, "Options:\n Instant Advice\n AutoSave\n End of Turn\n Animations\n Sound\n Enemy Moves\n Civilopedia Text\n Palace\n");
-
 					int index;
 
 					do
@@ -148,7 +146,9 @@ namespace OpenCiv1
 						// Write current flags to show as checkmarks in options submenu
 						this.oParent.Var_d7f2_MenuBoxCheckedOptions = this.oParent.GameData.GameSettingFlags.Value;
 						// Process options submenu, return selected option index or -1 if selection was rejected
-						index = this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 24, 16, true, false, false);
+						index = this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(
+							"Options:\n Instant Advice\n AutoSave\n End of Turn\n Animations\n Sound\n Enemy Moves\n Civilopedia Text\n Palace\n Debug saves\n", 
+							24, 16, true, false, false);
 
 						if (index == -1)
 						{
@@ -431,12 +431,12 @@ namespace OpenCiv1
 			int selectedOption = this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 112, 8, true, false, false);
 
 			// Instruction address 0x2c84:0x0652, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Screen0_Rectangle, 0, 0);
 
 			// Instruction address 0x2c84:0x065c, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			Var_654a = -1;
 
@@ -502,12 +502,12 @@ namespace OpenCiv1
 			int selectedOption = this.oParent.MenuBoxDialog.F0_2d05_0031_ShowMenuBox(0xba06, 144, 8, true, false, false);
 
 			// Instruction address 0x2c84:0x072f, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Screen0_Rectangle, 0, 0);
 
 			// Instruction address 0x2c84:0x0739, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x654a, 0xffff);
 

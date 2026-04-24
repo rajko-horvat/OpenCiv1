@@ -31,10 +31,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.12" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.12" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.12" />
-	<PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.12" />
+    <PackageReference Include="Avalonia" Version="11.3.14" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.14" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.14" />
+	<PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.14" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +53,9 @@
     </Compile>
     <Compile Update="UI\MainWindow.axaml.cs">
       <DependentUpon>MainWindow.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\LoadGameDialog.axaml.cs">
+      <DependentUpon>LoadGameDialog.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\MessageBox\MessageBoxResources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -96,6 +99,14 @@
     <Content Include="..\.github\CONTRIBUTING.md">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="Z:\Civilization\OpenCiv1\src\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Z:\Civilization\OpenCiv1\src\.editorconfig" />
   </ItemGroup>
 	
 </Project>

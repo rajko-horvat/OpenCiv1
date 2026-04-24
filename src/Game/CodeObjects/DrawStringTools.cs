@@ -36,7 +36,7 @@ namespace OpenCiv1
 		/// <param name="frontColor"></param>
 		public void F0_1182_002a_DrawString(string text, int xPos, int yPos, byte frontColor)
 		{
-			this.oParent.Var_aa_Rectangle.FrontColor = frontColor;
+			this.oParent.Var_aa_Screen0_Rectangle.FrontColor = frontColor;
 
 			if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x6b8c) != 0x0)
 			{
@@ -44,7 +44,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x1182:0x0053, size: 5
-			this.oParent.Graphics.F0_VGA_11d7_DrawString(this.oParent.Var_aa_Rectangle, xPos, yPos, text);
+			this.oParent.Graphics.F0_VGA_11d7_DrawString(this.oParent.Var_aa_Screen0_Rectangle, xPos, yPos, text);
 		}
 
 		/// <summary>
@@ -70,11 +70,11 @@ namespace OpenCiv1
 		/// <param name="frontColor"></param>
 		public void F0_1182_005c_DrawStringToScreen0(string text, int xPos, int yPos, byte frontColor)
 		{
-			this.oParent.Var_aa_Rectangle.Flags = 0;
+			this.oParent.Var_aa_Screen0_Rectangle.Flags = 0;
 
 			F0_1182_002a_DrawString(text, xPos, yPos, frontColor);
 
-			this.oParent.Var_aa_Rectangle.Flags = 1;
+			this.oParent.Var_aa_Screen0_Rectangle.Flags = 1;
 		}
 
 		/// <summary>
@@ -128,11 +128,11 @@ namespace OpenCiv1
 		{
 			xPos -= F0_1182_00ef_GetStringWidth(text) / 2;
 
-			this.oParent.Var_aa_Rectangle.Flags = 0;
+			this.oParent.Var_aa_Screen0_Rectangle.Flags = 0;
 
 			F0_1182_002a_DrawString(text, xPos, yPos, frontColor);
 
-			this.oParent.Var_aa_Rectangle.Flags = 1;
+			this.oParent.Var_aa_Screen0_Rectangle.Flags = 1;
 		}
 
 		/// <summary>
@@ -160,12 +160,12 @@ namespace OpenCiv1
 		{
 			xPos -= F0_1182_00ef_GetStringWidth(text) / 2;
 
-			this.oParent.Var_aa_Rectangle.Flags = 0;
+			this.oParent.Var_aa_Screen0_Rectangle.Flags = 0;
 
 			F0_1182_002a_DrawString(text, xPos + 1, yPos + 1, 0);
 			F0_1182_002a_DrawString(text, xPos, yPos, frontColor);
 
-			this.oParent.Var_aa_Rectangle.Flags = 1;
+			this.oParent.Var_aa_Screen0_Rectangle.Flags = 1;
 		}
 
 		/// <summary>
@@ -187,7 +187,7 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public int F0_1182_00ef_GetStringWidth(string text)
 		{
-			int width = this.oParent.Graphics.GetDrawStringSize(this.oParent.Var_aa_Rectangle.FontID, text).Width;
+			int width = this.oParent.Graphics.GetDrawStringSize(this.oParent.Var_aa_Screen0_Rectangle.FontID, text).Width;
 
 			this.oCPU.AX.UInt16 = (ushort)((short)width);
 

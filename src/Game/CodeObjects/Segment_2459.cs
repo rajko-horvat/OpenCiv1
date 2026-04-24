@@ -332,12 +332,12 @@ namespace OpenCiv1
 			if (!this.oParent.GameData.GameSettingFlags.Animations) goto L03b7;
 
 			// Instruction address 0x2459:0x036c, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
 			this.oParent.CityView.F19_0000_0000(cityID, -2);
 			
 			// Instruction address 0x2459:0x0380, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			this.oParent.CityView.F19_0000_167b(playerID);
 

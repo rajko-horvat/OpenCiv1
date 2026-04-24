@@ -8,8 +8,8 @@ namespace OpenCiv1
 		private OpenCiv1Game oParent;
 		private VCPU oCPU;
 
-		private int Var_652e = 0;
-		private int Var_deea = 0;
+		private int Var_652e_MouseHideCountTemp = 0;
+		private int Var_deea_MouseHideCount = 0;
 
 		public MainCode(OpenCiv1Game parent)
 		{
@@ -27,8 +27,6 @@ namespace OpenCiv1
 			// function body
 
 			// Main menu selection
-			// 'M' - VGA
-			this.oParent.Var_1a22_VGAType = 'M';
 			// 'N' - No sound, 'A' - Sound blaster, 'R' - Roland MIDI board
 			this.oParent.Var_1a30_SoundDriverType = 'N';
 			this.oParent.Var_1a3c_MouseAvailable = true;
@@ -45,7 +43,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_1697(0, 0, this.oParent.Var_6e92_MouseIconHandle);
 			
 			// Instruction address 0x11a8:0x0142, size: 3
-			F0_11a8_0250();
+			F0_11a8_0250_ShowMouse();
 
 			// Game type, load, etc. menu
 			// And then after menu Intro
@@ -114,14 +112,14 @@ namespace OpenCiv1
 		/// <summary>
 		/// ?
 		/// </summary>
-		public void F0_11a8_0250()
+		public void F0_11a8_0250_ShowMouse()
 		{
 			//this.oCPU.Log.EnterBlock("F0_11a8_0250()");
 
 			// function body
-			this.Var_deea++;
+			this.Var_deea_MouseHideCount++;
 
-			if (this.oParent.Var_1a3c_MouseAvailable && this.Var_deea == 1)
+			if (this.oParent.Var_1a3c_MouseAvailable && this.Var_deea_MouseHideCount == 1)
 			{
 				// Instruction address 0x11a8:0x0262, size: 5
 				this.oParent.CommonTools.F0_1000_16db();
@@ -131,49 +129,49 @@ namespace OpenCiv1
 		/// <summary>
 		/// ?
 		/// </summary>
-		public void F0_11a8_0268()
+		public void F0_11a8_0268_HideMouse()
 		{
 			//this.oCPU.Log.EnterBlock("F0_11a8_0268()");
 
 			// function body
-			if (this.oParent.Var_1a3c_MouseAvailable && this.Var_deea == 1)
+			if (this.oParent.Var_1a3c_MouseAvailable && this.Var_deea_MouseHideCount == 1)
 			{
 				// Instruction address 0x11a8:0x0276, size: 5
 				this.oParent.CommonTools.F0_1000_170b();
 			}
 
-			this.Var_deea--;
+			this.Var_deea_MouseHideCount--;
 		}
 
 		/// <summary>
 		/// ?
 		/// </summary>
-		public void F0_11a8_0280()
+		public void F0_11a8_0280_ShowMouseAndSaveState()
 		{
 			//this.oCPU.Log.EnterBlock("F0_11a8_0280()");
 
 			// function body
-			this.Var_652e = this.Var_deea;
+			this.Var_652e_MouseHideCountTemp = this.Var_deea_MouseHideCount;
 
-			while (this.Var_deea < 1)
+			while (this.Var_deea_MouseHideCount < 1)
 			{
 				// Instruction address 0x11a8:0x0289, size: 3
-				F0_11a8_0250();
+				F0_11a8_0250_ShowMouse();
 			}
 		}
 
 		/// <summary>
 		/// ?
 		/// </summary>
-		public void F0_11a8_0294()
+		public void F0_11a8_0294_HideMouseAndSaveState()
 		{
 			//this.oCPU.Log.EnterBlock("F0_11a8_0294()");
 
 			// function body
-			while (this.Var_deea > this.Var_652e)
+			while (this.Var_deea_MouseHideCount > this.Var_652e_MouseHideCountTemp)
 			{
 				// Instruction address 0x11a8:0x0297, size: 3
-				F0_11a8_0268();
+				F0_11a8_0268_HideMouse();
 			}
 		}
 
@@ -225,7 +223,7 @@ namespace OpenCiv1
 				{
 					case 0:
 						// Instruction address 0x11a8:0x0512, size: 3
-						F0_11a8_0268();
+						F0_11a8_0268_HideMouse();
 
 						this.oParent.Var_7ef6_PlanetLandMass = 1;
 						this.oParent.Var_7ef8_PlanetTemperature = 1;
@@ -233,9 +231,9 @@ namespace OpenCiv1
 						this.oParent.Var_7efc_PlanetAge = 1;
 
 						// Intro...
-						this.oParent.GameInitAndIntro.F7_0000_0012_GenerateMap();
+						this.oParent.MapInitAndIntro.F7_0000_0012_GenerateMap();
 
-						this.oParent.Var_aa_Rectangle.ScreenID = 0;
+						this.oParent.Var_aa_Screen0_Rectangle.ScreenID = 0;
 
 						// Instruction address 0x11a8:0x053e, size: 5
 						this.oParent.CommonTools.F0_1000_0846(0);
@@ -244,33 +242,33 @@ namespace OpenCiv1
 						this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "sp299.pic", 0);
 
 						// Instruction address 0x11a8:0x0576, size: 5
-						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 160, 50, 160, 150, this.oParent.Var_19e8_Rectangle, 160, 50);
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 160, 50, 160, 150, this.oParent.Var_19e8_Screen2_Rectangle, 160, 50);
 						break;
 
 					case 1:
-						if ((short)this.oParent.GameLoadAndSave.F11_0000_0000(0xffff) == -1)
+						if (this.oParent.GameLoadAndSave.F11_0000_0000_LoadGameDialog(-1) == -1)
 						{
 							this.oParent.Var_6b32_SelectedGameType = -1;
 						}
 						else
 						{
 							// Instruction address 0x11a8:0x07cd, size: 3
-							F0_11a8_0268();
+							F0_11a8_0268_HideMouse();
 
 							// Instruction address 0x11a8:0x07e4, size: 5
-							this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 7);
+							this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, 7);
 						}
 						break;
 
 					case 2:
 						// Instruction address 0x11a8:0x0796, size: 3
-						F0_11a8_0268();
+						F0_11a8_0268_HideMouse();
 
 						this.oParent.Var_d76a_EarthMap = true;
 
-						this.oParent.GameInitAndIntro.F7_0000_0012_GenerateMap();
+						this.oParent.MapInitAndIntro.F7_0000_0012_GenerateMap();
 
-						this.oParent.Var_aa_Rectangle.ScreenID = 0;
+						this.oParent.Var_aa_Screen0_Rectangle.ScreenID = 0;
 
 						// Instruction address 0x11a8:0x07af, size: 5
 						this.oParent.CommonTools.F0_1000_0846(0);
@@ -279,28 +277,28 @@ namespace OpenCiv1
 						this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "sp299.pic", 0);
 
 						// Instruction address 0x11a8:0x0576, size: 5
-						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 160, 50, 160, 150, this.oParent.Var_19e8_Rectangle, 160, 50);
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 160, 50, 160, 150, this.oParent.Var_19e8_Screen2_Rectangle, 160, 50);
 
 						break;
 
 					case 3:
 						// Instruction address 0x11a8:0x0592, size: 3
-						F0_11a8_0268();
+						F0_11a8_0268_HideMouse();
 
 						// Instruction address 0x11a8:0x05b6, size: 5
 						this.oParent.CommonTools.F0_1000_04d4_TransformPaletteToColor(5, Color.FromRgb(0, 0, 0));
 
 						// Instruction address 0x11a8:0x05d1, size: 5
-						this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
+						this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, 0);
 
 						// Instruction address 0x11a8:0x05e1, size: 5
 						this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "custom.pic", 1);
 
 						// Instruction address 0x11a8:0x0611, size: 5
-						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Screen0_Rectangle, 0, 0);
 
 						// Instruction address 0x11a8:0x061a, size: 3
-						F0_11a8_0250();
+						F0_11a8_0250_ShowMouse();
 
 						this.oParent.Var_2f9a_MenuBoxDefaultOptionIndex = 1;
 						this.oParent.Var_7ef6_PlanetLandMass = -1;
@@ -383,12 +381,12 @@ namespace OpenCiv1
 						}
 
 						// Instruction address 0x11a8:0x078f, size: 3
-						F0_11a8_0268();
+						F0_11a8_0268_HideMouse();
 
 						// Intro...
-						this.oParent.GameInitAndIntro.F7_0000_0012_GenerateMap();
+						this.oParent.MapInitAndIntro.F7_0000_0012_GenerateMap();
 
-						this.oParent.Var_aa_Rectangle.ScreenID = 0;
+						this.oParent.Var_aa_Screen0_Rectangle.ScreenID = 0;
 
 						// Instruction address 0x11a8:0x053e, size: 5
 						this.oParent.CommonTools.F0_1000_0846(0);
@@ -397,20 +395,20 @@ namespace OpenCiv1
 						this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "sp299.pic", 0);
 
 						// Instruction address 0x11a8:0x0576, size: 5
-						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 160, 50, 160, 150, this.oParent.Var_19e8_Rectangle, 160, 50);
+						this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 160, 50, 160, 150, this.oParent.Var_19e8_Screen2_Rectangle, 160, 50);
 
 						break;
 
 					case 4:
 						// Instruction address 0x11a8:0x07ef, size: 3
-						F0_11a8_0268();
+						F0_11a8_0268_HideMouse();
 
 						this.oParent.HallOfFame.F3_0000_002b();
 
 						this.oParent.HallOfFame.F3_0000_00d7(-1);
 
 						// Instruction address 0x11a8:0x0804, size: 3
-						F0_11a8_0250();
+						F0_11a8_0250_ShowMouse();
 
 						this.oParent.Var_6b32_SelectedGameType = -1;
 						break;
@@ -432,7 +430,7 @@ namespace OpenCiv1
 			}
 
 			// Instruction address 0x11a8:0x085b, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 0, 320, 200, 0);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, 0);
 
 			// Instruction address 0x11a8:0x0867, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, "sp257.pic", 1);
@@ -441,7 +439,7 @@ namespace OpenCiv1
 			this.oParent.Segment_2dc4.F0_2dc4_05dd();
 
 			// Instruction address 0x11a8:0x0875, size: 3
-			F0_11a8_0250();
+			F0_11a8_0250_ShowMouse();
 		}
 
 		/// <summary>
@@ -460,7 +458,7 @@ namespace OpenCiv1
 				// Instruction address 0x11a8:0x08a8, size: 5
 				this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, "diffs.pic", 1);
 
-				this.oParent.StartGameMenu.F5_0000_0000();
+				this.oParent.StartGameMenu.F5_0000_0000_InitNewGameData();
 			}
 		
 			this.oParent.StartGameMenu.F5_0000_1af6_LoadGovernmentImage();

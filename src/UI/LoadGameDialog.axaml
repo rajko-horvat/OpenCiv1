@@ -1,0 +1,35 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		Width="600" Height="400"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="400"
+        x:Class="OpenCiv1.LoadGameDialog"
+        Title="Load game">
+	<Grid Margin="20" RowSpacing="10" ColumnSpacing="10" ColumnDefinitions="*,*" RowDefinitions="auto,*,auto">
+		<TextBlock Name="txtGameNameListStatus" IsTabStop="False" Grid.Row="0" Grid.Column="0">The game list is empty</TextBlock>
+		<TextBlock Name="txtSaveGameListStatus" IsTabStop="False" Grid.Row="0" Grid.Column="1"></TextBlock>
+		<ListBox Name="lstGameNames" TabIndex="0" IsTabStop="True" SelectionMode="Single" IsEnabled="False" Grid.Row="1" Grid.Column="0">
+			<ListBox.Styles>
+				<!--<Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+					<Setter Property="Background" Value="AliceBlue" />
+				</Style>
+				<Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+					<Setter Property="Background" Value="LightSteelBlue" />
+				</Style>-->
+			</ListBox.Styles>
+		</ListBox>
+		<ListBox Name="lstGameSaves" TabIndex="1" IsTabStop="True" SelectionMode="Single" IsEnabled="False" Grid.Row="1" Grid.Column="1">
+			<ListBox.Styles>
+				<!--<Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+					<Setter Property="Background" Value="AliceBlue" />
+				</Style>
+				<Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+					<Setter Property="Background" Value="LightSteelBlue" />
+				</Style>-->
+			</ListBox.Styles>
+		</ListBox>
+		<Button Name="btnImport" TabIndex="3" IsTabStop="True" IsEnabled="False" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Import</Button>
+		<Button Name="btnLoad" TabIndex="2" IsTabStop="True" IsEnabled="False" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Load</Button>
+	</Grid>
+</Window>

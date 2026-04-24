@@ -23,11 +23,9 @@ namespace OpenCiv1
 		// Layer 9: Per-Civ land exploration and active units, 160:0
 		// Layer 10: Mini-map render, 240:0
 
-		private OpenCiv1Game oParent;
-		private VCPU oCPU;
-
-		// Game map
-		private GBitmap mapBitmap = new GBitmap(320, 200);
+		private OpenCiv1Game parent;
+		private GameData gameData;
+		private VCPU CPU;
 
 		// Local variables used exclusively inside this section
 		public static GSize Size = new GSize(80, 50);
@@ -38,36 +36,20 @@ namespace OpenCiv1
 
 		public MapManagement(OpenCiv1Game parent)
 		{
-			this.oParent = parent;
-			this.oCPU = parent.CPU;
-			this.mapBitmap.Visible = false;
+			this.parent = parent;
+			this.gameData = parent.GameData;
+			this.CPU = parent.CPU;
+			this.gameData.Map.Visible = false;
 		}
 
 		#region Map management functions
-
-		public GBitmap MapBitmap
-		{
-			get => this.mapBitmap;
-			set
-			{
-				value.Visible = this.mapBitmap.Visible;
-				this.mapBitmap = value;
-
-				if (this.oParent.Graphics.Screens.ContainsKey(3))
-				{
-					this.oParent.Graphics.Screens.RemoveByKey(3);
-				}
-
-				this.oParent.Graphics.Screens.Add(3, this.mapBitmap);
-			}
-		}
 
 		/// <summary>
 		/// Creates a new map with preloaded Earth landscape
 		/// </summary>
 		public void LoadEarthMap()
 		{
-			GBitmap? earthMap = GBitmap.FromPICFile(VCPU.DefaultCIVPath + "map.pic", true);
+			GBitmap? earthMap = GBitmap.FromPICFile(this.parent.ResourcePath + "map.pic", true);
 
 			if (earthMap == null)
 			{
@@ -75,20 +57,20 @@ namespace OpenCiv1
 			}
 			else
 			{
-				bool visible = this.mapBitmap.Visible;
+				bool visible = this.gameData.Map.Visible;
 
-				this.mapBitmap = new GBitmap(320, 200);
-				this.mapBitmap.Visible = visible;
-				this.mapBitmap.DrawBitmap(0, 0, earthMap, false);
+				this.gameData.Map = new GBitmap(320, 200);
+				this.gameData.Map.Visible = visible;
+				this.gameData.Map.DrawBitmap(0, 0, earthMap, false);
 
 				// Add this Map to a screen collection so we can inspect it later
-				//this.mapBitmap.Visible = true;
-				if (this.oParent.Graphics.Screens.ContainsKey(3))
+				//this.gameData.Map.Visible = true;
+				if (this.parent.Graphics.Screens.ContainsKey(3))
 				{
-					this.oParent.Graphics.Screens.RemoveByKey(3);
+					this.parent.Graphics.Screens.RemoveByKey(3);
 				}
 
-				this.oParent.Graphics.Screens.Add(3, this.mapBitmap);
+				this.parent.Graphics.Screens.Add(3, this.gameData.Map);
 			}
 		}
 
@@ -97,20 +79,20 @@ namespace OpenCiv1
 		/// </summary>
 		public void CreateNewEmptyMap()
 		{
-			bool visible = this.mapBitmap.Visible;
+			bool visible = this.gameData.Map.Visible;
 
-			this.mapBitmap = new GBitmap(320, 200);
-			this.mapBitmap.Visible = visible;
-			this.mapBitmap.FillRectangle(new GRectangle(0, 0, 80, 50), 1, PixelWriteModeEnum.Normal);
+			this.gameData.Map = new GBitmap(320, 200);
+			this.gameData.Map.Visible = visible;
+			this.gameData.Map.FillRectangle(new GRectangle(0, 0, 80, 50), 1, PixelWriteModeEnum.Normal);
 
 			// Add this Map screen to a screen collection so we can inspect it later
-			//this.mapBitmap.Visible = true;
-			if (this.oParent.Graphics.Screens.ContainsKey(3))
+			//this.gameData.Map.Visible = true;
+			if (this.parent.Graphics.Screens.ContainsKey(3))
 			{
-				this.oParent.Graphics.Screens.RemoveByKey(3);
+				this.parent.Graphics.Screens.RemoveByKey(3);
 			}
 
-			this.oParent.Graphics.Screens.Add(3, this.mapBitmap);
+			this.parent.Graphics.Screens.Add(3, this.gameData.Map);
 		}
 		#endregion
 
@@ -127,17 +109,17 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x2aea:0x000f, size: 5
-			this.oParent.MainCode.F0_11a8_0268();
+			this.parent.MainCode.F0_11a8_0268_HideMouse();
 
-			this.oParent.Var_1ae0 = 0;
+			this.parent.Var_1ae0 = 0;
 
-			this.oParent.Segment_1238.F0_1238_0fea();
-			this.oParent.Segment_1238.F0_1238_107e();
+			this.parent.Segment_1238.F0_1238_0fea();
+			this.parent.Segment_1238.F0_1238_107e();
 
-			int tempValue = this.oParent.Var_d20a;
+			int tempValue = this.parent.Var_d20a;
 
-			this.oParent.Var_d4cc_MapViewX = this.oParent.MapManagement.AdjustXPosition(x);
-			this.oParent.Var_d75e_MapViewY = this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(y, 0, 38);
+			this.parent.Var_d4cc_MapViewX = this.parent.MapManagement.AdjustXPosition(x);
+			this.parent.Var_d75e_MapViewY = this.parent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(y, 0, 38);
 
 			// Another error, the code modified first parameter (playerID) to a
 			// Visibility Mask and that conflicts with other code which expects playerID.
@@ -148,7 +130,7 @@ namespace OpenCiv1
 			// redraw Visible Map on screen
 			int cellXPos;
 			int cellYPos;
-			int cellDrawOrder = this.oParent.CAPI.RNG.Next(256);
+			int cellDrawOrder = this.parent.CAPI.RNG.Next(256);
 
 			for (int i = 0; i < 256; i++)
 			{
@@ -157,17 +139,17 @@ namespace OpenCiv1
 
 				if (cellYPos < 12 && cellXPos < 15)
 				{
-					if (this.oParent.Var_d806_DebugFlag ||
-						(this.oParent.GameData.MapVisibility[this.oParent.MapManagement.AdjustXPosition(cellXPos + this.oParent.Var_d4cc_MapViewX),
-							cellYPos + this.oParent.Var_d75e_MapViewY] & mapPlayerVisibilityMask) != 0)
+					if (this.parent.Var_d806_DebugFlag ||
+						(this.parent.GameData.MapVisibility[this.parent.MapManagement.AdjustXPosition(cellXPos + this.parent.Var_d4cc_MapViewX),
+							cellYPos + this.parent.Var_d75e_MapViewY] & mapPlayerVisibilityMask) != 0)
 					{
 						// Instruction address 0x2aea:0x0122, size: 3
-						F0_2aea_11d4_DrawCellWithUnit(this.oParent.MapManagement.AdjustXPosition(cellXPos + this.oParent.Var_d4cc_MapViewX), cellYPos + this.oParent.Var_d75e_MapViewY);
+						F0_2aea_11d4_DrawCellWithUnit(this.parent.MapManagement.AdjustXPosition(cellXPos + this.parent.Var_d4cc_MapViewX), cellYPos + this.parent.Var_d75e_MapViewY);
 					}
 					else
 					{
 						// Instruction address 0x2aea:0x0094, size: 5
-						this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, (cellXPos * 16) + 80, (cellYPos * 16) + 8, 16, 16, 0);
+						this.parent.CommonTools.F0_1000_0bfa_FillRectangle(this.parent.Var_aa_Screen0_Rectangle, (cellXPos * 16) + 80, (cellYPos * 16) + 8, 16, 16, 0);
 					}
 				}
 
@@ -188,17 +170,17 @@ namespace OpenCiv1
 					continue;
 				}
 
-				this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
+				this.CPU.WriteUInt8(this.CPU.DS.UInt16, 0xba06, 0x0);
 
 				// Instruction address 0x2aea:0x0148, size: 5
-				this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityInfo.CityID));
+				this.parent.CAPI.strcat(0xba06, this.parent.Segment_2459.F0_2459_08c6_GetCityName(cityInfo.CityID));
 
 				// Instruction address 0x2aea:0x015c, size: 5
-				this.oParent.LanguageTools.F0_2f4d_04f7(0xba06, (ushort)(327 - cityInfo.ScreenPos.X));
+				this.parent.LanguageTools.F0_2f4d_04f7(0xba06, (ushort)(327 - cityInfo.ScreenPos.X));
 
 				// Instruction address 0x2aea:0x018d, size: 5
-				this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadow(0xba06,
-					this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(cityInfo.ScreenPos.X - 8, 80, 999), cityInfo.ScreenPos.Y + 16, 11);
+				this.parent.DrawStringTools.F0_1182_0086_DrawStringWithShadow(0xba06,
+					this.parent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(cityInfo.ScreenPos.X - 8, 80, 999), cityInfo.ScreenPos.Y + 16, 11);
 			}
 
 			int xMap = x - 32;
@@ -210,7 +192,7 @@ namespace OpenCiv1
 			int mapYOffset;
 
 			// Instruction address 0x2aea:0x01b9, size: 5
-			if (this.oParent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.Navigation))
+			if (this.parent.Segment_1ade.F0_1ade_22b5_PlayerHasTechnology(playerID, TechnologyEnum.Navigation))
 			{
 				yMap = 0;
 			}
@@ -240,66 +222,66 @@ namespace OpenCiv1
 				mapYDst -= yMap;
 			}
 
-			this.oParent.Var_6ed6 = xMap;
-			this.oParent.Var_70ea = yMap;
+			this.parent.Var_6ed6 = xMap;
+			this.parent.Var_70ea = yMap;
 
 			// Instruction address 0x2aea:0x0233, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 0, 8, 80, 50, 0);
+			this.parent.CommonTools.F0_1000_0bfa_FillRectangle(this.parent.Var_aa_Screen0_Rectangle, 0, 8, 80, 50, 0);
 
-			if (this.oParent.Var_d806_DebugFlag)
+			if (this.parent.Var_d806_DebugFlag)
 			{
-				this.oParent.Graphics.DrawBitmapToScreen(this.mapBitmap, mapXSrc, mapYSrc, mapXDst, mapYDst,
-					this.oParent.Var_aa_Rectangle, 0, mapYOffset + 8);
+				this.parent.Graphics.DrawBitmapToScreen(this.gameData.Map, mapXSrc, mapYSrc, mapXDst, mapYDst,
+					this.parent.Var_aa_Screen0_Rectangle, 0, mapYOffset + 8);
 
 				if (mapXDst < 80)
 				{
-					this.oParent.Graphics.DrawBitmapToScreen(this.mapBitmap, 0, mapYSrc, 80 - mapXDst, mapYDst,
-						this.oParent.Var_aa_Rectangle, mapXDst, mapYOffset + 8);
+					this.parent.Graphics.DrawBitmapToScreen(this.gameData.Map, 0, mapYSrc, 80 - mapXDst, mapYDst,
+						this.parent.Var_aa_Screen0_Rectangle, mapXDst, mapYOffset + 8);
 				}
 			}
 			else
 			{
 				// Instruction address 0x2aea:0x02af, size: 5
-				this.oParent.Graphics.DrawBitmapToScreen(this.mapBitmap, mapXSrc + 240, mapYSrc, mapXDst, mapYDst,
-					this.oParent.Var_aa_Rectangle, 0, mapYOffset + 8);
+				this.parent.Graphics.DrawBitmapToScreen(this.gameData.Map, mapXSrc + 240, mapYSrc, mapXDst, mapYDst,
+					this.parent.Var_aa_Screen0_Rectangle, 0, mapYOffset + 8);
 
 				if (mapXDst < 80)
 				{
 					// Instruction address 0x2aea:0x02da, size: 5
-					this.oParent.Graphics.DrawBitmapToScreen(this.mapBitmap, 240, mapYSrc, 80 - mapXDst, mapYDst,
-						this.oParent.Var_aa_Rectangle, mapXDst, mapYOffset + 8);
+					this.parent.Graphics.DrawBitmapToScreen(this.gameData.Map, 240, mapYSrc, 80 - mapXDst, mapYDst,
+						this.parent.Var_aa_Screen0_Rectangle, mapXDst, mapYOffset + 8);
 				}
 			}
 
 			for (int i = 0; i < 128; i++)
 			{
-				City city = this.oParent.GameData.Cities[i];
+				City city = this.parent.GameData.Cities[i];
 
-				if (city.StatusFlag != 0xff && (city.VisibleSize != 0 || city.PlayerID == this.oParent.GameData.HumanPlayerID))
+				if (city.StatusFlag != 0xff && (city.VisibleSize != 0 || city.PlayerID == this.parent.GameData.HumanPlayerID))
 				{
 					// Instruction address 0x2aea:0x031a, size: 5
-					cellXPos = this.oParent.MapManagement.AdjustXPosition(city.Position.X - mapXSrc);
+					cellXPos = this.parent.MapManagement.AdjustXPosition(city.Position.X - mapXSrc);
 					cellYPos = city.Position.Y - mapYSrc + mapYOffset;
 
 					if (cellYPos >= 0 && cellYPos < 50)
 					{
 						// Instruction address 0x2aea:0x0355, size: 3
-						this.oParent.Graphics.F0_VGA_0550_SetPixel(this.oParent.Var_aa_Rectangle.ScreenID, cellXPos, cellYPos + 8,
-							this.oParent.Array_1946[city.PlayerID]);
+						this.parent.Graphics.F0_VGA_0550_SetPixel(this.parent.Var_aa_Screen0_Rectangle.ScreenID, cellXPos, cellYPos + 8,
+							this.parent.Array_1946[city.PlayerID]);
 					}
 				}
 			}
 
 			// Instruction address 0x2aea:0x037c, size: 5
-			this.oParent.MenuBoxDialog.F0_2d05_0a66_DrawShadowRectangle(0, 8, 79, 49, 15, 8);
+			this.parent.MenuBoxDialog.F0_2d05_0a66_DrawShadowRectangle(0, 8, 79, 49, 15, 8);
 
 			// Instruction address 0x2aea:0x03a2, size: 5
-			this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(x - xMap - 1, y - yMap + 7, 17, 10, 15);
+			this.parent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(x - xMap - 1, y - yMap + 7, 17, 10, 15);
 
-			this.oParent.Var_d20a = tempValue;
+			this.parent.Var_d20a = tempValue;
 
 			// Instruction address 0x2aea:0x03b0, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.parent.MainCode.F0_11a8_0250_ShowMouse();
 		}
 
 		/// <summary>
@@ -314,8 +296,8 @@ namespace OpenCiv1
 
 			// function body
 			// Tile position in screen coordinates
-			int scrX = this.oParent.MapManagement.AdjustXPosition(x - this.oParent.Var_d4cc_MapViewX) * 16 + 80;
-			int scrY = (y - this.oParent.Var_d75e_MapViewY) * 16 + 8;
+			int scrX = this.parent.MapManagement.AdjustXPosition(x - this.parent.Var_d4cc_MapViewX) * 16 + 80;
+			int scrY = (y - this.parent.Var_d75e_MapViewY) * 16 + 8;
 
 			if (scrX < 80 || scrX >= 320 || scrY < 8 || scrY > 192)
 			{
@@ -328,14 +310,14 @@ namespace OpenCiv1
 				TerrainTypeEnum terrainType = GetTerrainType(x, y);
 				TerrainImprovementFlagsEnum terrainImprovements = F0_2aea_15c1_GetTerrainImprovements(x, y);
 
-				if (this.oParent.Var_d806_DebugFlag)
+				if (this.parent.Var_d806_DebugFlag)
 				{
 					// Instruction address 0x2aea:0x04a3, size: 3
 					terrainImprovements = F0_2aea_1585_GetVisibleTerrainImprovements(x, y);
 				}
 			
 				// Instruction address 0x2aea:0x04ac, size: 5
-				this.oParent.MainCode.F0_11a8_0268();
+				this.parent.MainCode.F0_11a8_0268_HideMouse();
 
 				if (terrainType == TerrainTypeEnum.Water)
 				{
@@ -346,10 +328,10 @@ namespace OpenCiv1
 					{
 						mask >>= 1;
 
-						GPoint direction = this.oParent.MoveDirections[i];
+						GPoint direction = this.parent.MoveDirections[i];
 
 						// Instruction address 0x2aea:0x0570, size: 3
-						if (GetTerrainType(this.oParent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y) != TerrainTypeEnum.Water &&
+						if (GetTerrainType(this.parent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y) != TerrainTypeEnum.Water &&
 							F0_2aea_1326_ValidateMapCoordinates(0, y + direction.Y))
 						{
 							mask |= 0x80;
@@ -364,14 +346,14 @@ namespace OpenCiv1
 						if (i < 2)
 						{
 							// Instruction address 0x2aea:0x05f4, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + ((i & 0x1) * 8), scrY,
-								this.oParent.Array_d294[(bitmapMask >> (i * 2)) & 0x7, i]);
+							this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX + ((i & 0x1) * 8), scrY,
+								this.parent.Array_d294[(bitmapMask >> (i * 2)) & 0x7, i]);
 						}
 						else
 						{
 							// Instruction address 0x2aea:0x05f4, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX - ((i & 0x1) * 8) + 8, scrY + 8,
-								this.oParent.Array_d294[(bitmapMask >> (i * 2)) & 0x7, i]);
+							this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX - ((i & 0x1) * 8) + 8, scrY + 8,
+								this.parent.Array_d294[(bitmapMask >> (i * 2)) & 0x7, i]);
 						}
 					}
 
@@ -379,45 +361,45 @@ namespace OpenCiv1
 					{
 						case 0x1c:
 							// Instruction address 0x2aea:0x0656, size: 5
-							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 224, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
+							this.parent.Graphics.F0_VGA_07d8_DrawImage(this.parent.Var_19e8_Screen2_Rectangle, 224, 100, 16, 16, this.parent.Var_aa_Screen0_Rectangle, scrX, scrY);
 							break;
 
 						case 0xc1:
 							// Instruction address 0x2aea:0x0680, size: 5
-							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 240, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
+							this.parent.Graphics.F0_VGA_07d8_DrawImage(this.parent.Var_19e8_Screen2_Rectangle, 240, 100, 16, 16, this.parent.Var_aa_Screen0_Rectangle, scrX, scrY);
 							break;
 
 						case 0x7:
 							// Instruction address 0x2aea:0x06a9, size: 5
-							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 256, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
+							this.parent.Graphics.F0_VGA_07d8_DrawImage(this.parent.Var_19e8_Screen2_Rectangle, 256, 100, 16, 16, this.parent.Var_aa_Screen0_Rectangle, scrX, scrY);
 							break;
 
 						case 0x70:
 							// Instruction address 0x2aea:0x06d2, size: 5
-							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 272, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
+							this.parent.Graphics.F0_VGA_07d8_DrawImage(this.parent.Var_19e8_Screen2_Rectangle, 272, 100, 16, 16, this.parent.Var_aa_Screen0_Rectangle, scrX, scrY);
 							break;
 
 						case 0x8f:
 							// Instruction address 0x2aea:0x06fc, size: 5
-							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 288, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
+							this.parent.Graphics.F0_VGA_07d8_DrawImage(this.parent.Var_19e8_Screen2_Rectangle, 288, 100, 16, 16, this.parent.Var_aa_Screen0_Rectangle, scrX, scrY);
 							break;
 
 						case 0xf8:
 							// Instruction address 0x2aea:0x0726, size: 5
-							this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 304, 100, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
+							this.parent.Graphics.F0_VGA_07d8_DrawImage(this.parent.Var_19e8_Screen2_Rectangle, 304, 100, 16, 16, this.parent.Var_aa_Screen0_Rectangle, scrX, scrY);
 							break;
 					}
 
 					// Draw river deltas on top of coastal cells
 					for (int i = 1; i < 9; i += 2)
 					{
-						GPoint direction = this.oParent.MoveDirections[i];
+						GPoint direction = this.parent.MoveDirections[i];
 
 						// Instruction address 0x2aea:0x0752, size: 3
-						if (GetTerrainType(this.oParent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y) == TerrainTypeEnum.River)
+						if (GetTerrainType(this.parent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y) == TerrainTypeEnum.River)
 						{
 							// Instruction address 0x2aea:0x0777, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d2d4[(i - 1) / 2]);
+							this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX, scrY, this.parent.Array_d2d4[(i - 1) / 2]);
 						}
 					}
 				}
@@ -426,15 +408,15 @@ namespace OpenCiv1
 				{
 					// Draw grassland background for land cells
 					// Instruction address 0x2aea:0x07cd, size: 5
-					this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19e8_Rectangle, 256, 120, 16, 16, this.oParent.Var_aa_Rectangle, scrX, scrY);
+					this.parent.Graphics.F0_VGA_07d8_DrawImage(this.parent.Var_19e8_Screen2_Rectangle, 256, 120, 16, 16, this.parent.Var_aa_Screen0_Rectangle, scrX, scrY);
 				}
 
 				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.Irrigation) && terrainType != TerrainTypeEnum.Water &&
-					this.oParent.Var_dcfc == 0 && !terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.City))
+					this.parent.Var_dcfc == 0 && !terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.City))
 				{
 					// Draw irrigation
 					// Instruction address 0x2aea:0x07f8, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d4ce[4]);
+					this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX, scrY, this.parent.Array_d4ce[4]);
 				}
 
 				if (terrainType == TerrainTypeEnum.River)
@@ -446,8 +428,8 @@ namespace OpenCiv1
 					{
 						mask >>= 1;
 
-						GPoint direction = this.oParent.MoveDirections[i];
-						TerrainTypeEnum terrainType1 = GetTerrainType(this.oParent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y);
+						GPoint direction = this.parent.MoveDirections[i];
+						TerrainTypeEnum terrainType1 = GetTerrainType(this.parent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y);
 
 						if (terrainType1 == TerrainTypeEnum.Water || terrainType1 == TerrainTypeEnum.River)
 						{
@@ -463,7 +445,7 @@ namespace OpenCiv1
 					if (mask > 0)
 					{
 						// Instruction address 0x2aea:0x0885, size: 5
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_6e00[mask - 1]);
+						this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX, scrY, this.parent.Array_6e00[mask - 1]);
 					}
 				}
 
@@ -476,9 +458,9 @@ namespace OpenCiv1
 					{
 						mask >>= 1;
 
-						GPoint direction = this.oParent.MoveDirections[i];
+						GPoint direction = this.parent.MoveDirections[i];
 
-						if (GetTerrainType(this.oParent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y) == terrainType &&
+						if (GetTerrainType(this.parent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y) == terrainType &&
 							F0_2aea_1326_ValidateMapCoordinates(0, y + direction.Y))
 						{
 							mask |= 0x8;
@@ -486,13 +468,13 @@ namespace OpenCiv1
 					}
 
 					// Instruction address 0x2aea:0x091e, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_b886[(int)terrainType, mask]);
+					this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX, scrY, this.parent.Array_b886[(int)terrainType, mask]);
 
 					if (terrainType == TerrainTypeEnum.Grassland && (((7 * x) + (11 * y)) & 0x2) == 0)
 					{
 						// Draw grassland tiles with production bonus
 						// Instruction address 0x2aea:0x0996, size: 5
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + 4, scrY + 4, this.oParent.Var_b880);
+						this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX + 4, scrY + 4, this.parent.Var_b880);
 					}
 				}
 
@@ -501,7 +483,7 @@ namespace OpenCiv1
 					// Draw pollution
 
 					// Instruction address 0x2aea:0x09bc, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d4ce[6]);
+					this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX, scrY, this.parent.Array_d4ce[6]);
 				}
 
 				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.Road))
@@ -511,11 +493,11 @@ namespace OpenCiv1
 
 					for (int i = 1; i < 9; i++)
 					{
-						GPoint direction = this.oParent.MoveDirections[i];
+						GPoint direction = this.parent.MoveDirections[i];
 
 						// Instruction address 0x2aea:0x0a9a, size: 3
 						TerrainImprovementFlagsEnum terrainImprovements1 =
-							F0_2aea_15c1_GetTerrainImprovements(this.oParent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y);
+							F0_2aea_15c1_GetTerrainImprovements(this.parent.MapManagement.AdjustXPosition(x + direction.X), y + direction.Y);
 
 						if (terrainImprovements1.HasFlag(TerrainImprovementFlagsEnum.Road))
 						{
@@ -526,12 +508,12 @@ namespace OpenCiv1
 							if ((terrainImprovements & railRoadOrCity) == 0 || (terrainImprovements1 & railRoadOrCity) == 0)
 							{
 								// Instruction address 0x2aea:0x0a73, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_b27a[i - 1]);
+								this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX, scrY, this.parent.Array_b27a[i - 1]);
 							}
 							else
 							{
 								// Instruction address 0x2aea:0x0a73, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_b29a[i - 1]);
+								this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX, scrY, this.parent.Array_b29a[i - 1]);
 							}
 						}
 					}
@@ -541,16 +523,16 @@ namespace OpenCiv1
 						// Draw single cell road or railroad
 
 						// Instruction address 0x2aea:0x0ae0, size: 5
-						this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, scrX + 7, scrY + 7, 2, 2, (ushort)roadIcon);
+						this.parent.CommonTools.F0_1000_0bfa_FillRectangle(this.parent.Var_aa_Screen0_Rectangle, scrX + 7, scrY + 7, 2, 2, (ushort)roadIcon);
 					}
 				}
 
-				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.Mines) && this.oParent.Var_dcfc == 0)
+				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.Mines) && this.parent.Var_dcfc == 0)
 				{
 					// Draw mines
 
 					// Instruction address 0x2aea:0x0aff, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d4ce[5]);
+					this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX, scrY, this.parent.Array_d4ce[5]);
 				}
 
 				// Instruction address 0x2aea:0x0b11, size: 3
@@ -559,7 +541,7 @@ namespace OpenCiv1
 					// Draw special resources
 
 					// Instruction address 0x2aea:0x0b28, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d4ce[(int)terrainType + 16]);
+					this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX, scrY, this.parent.Array_d4ce[(int)terrainType + 16]);
 				}
 
 				// Instruction address 0x2aea:0x0b3a, size: 3
@@ -568,7 +550,7 @@ namespace OpenCiv1
 					// Draw Minot tribe hut
 
 					// Instruction address 0x2aea:0x0b4e, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d4ce[31]);
+					this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX, scrY, this.parent.Array_d4ce[31]);
 				}
 
 				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.Fortress))
@@ -576,90 +558,90 @@ namespace OpenCiv1
 					// Draw fortresses
 
 					// Instruction address 0x2aea:0x0b66, size: 5
-					this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_d4ce[30]);
+					this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX, scrY, this.parent.Array_d4ce[30]);
 				}
 
-				if (!this.oParent.Var_d806_DebugFlag)
+				if (!this.parent.Var_d806_DebugFlag)
 				{
 					// Draw fog of war borders
 
 					for (int i = 1; i < 9; i += 2)
 					{
-						GPoint direction = this.oParent.MoveDirections[i];
+						GPoint direction = this.parent.MoveDirections[i];
 
 						// Instruction address 0x2aea:0x0b87, size: 5
 						int yTemp = y + direction.Y;
 						int visibilityMask = (yTemp >= 0 && yTemp < 50) ?
-							this.oParent.GameData.MapVisibility[this.oParent.MapManagement.AdjustXPosition(x + direction.X), yTemp] : 0;
+							this.parent.GameData.MapVisibility[this.parent.MapManagement.AdjustXPosition(x + direction.X), yTemp] : 0;
 
-						if ((visibilityMask & (0x1 << this.oParent.GameData.HumanPlayerID)) == 0)
+						if ((visibilityMask & (0x1 << this.parent.GameData.HumanPlayerID)) == 0)
 						{
 							// Instruction address 0x2aea:0x0bce, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX, scrY, this.oParent.Array_7eec[(i - 1) / 2]);
+							this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX, scrY, this.parent.Array_7eec[(i - 1) / 2]);
 						}
 					}
 				}
 
-				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.City) && this.oParent.Var_dcfc == 0)
+				if (terrainImprovements.HasFlag(TerrainImprovementFlagsEnum.City) && this.parent.Var_dcfc == 0)
 				{
 					// Draw city
 
 					// Instruction address 0x2aea:0x0c09, size: 5
-					int cityID = this.oParent.Segment_2dc4.F0_2dc4_00ba_GetCityID(x, y);
+					int cityID = this.parent.Segment_2dc4.F0_2dc4_00ba_GetCityID(x, y);
 
 					if (cityID != -1)
 					{
 						// Draw city white borders at the left and bottom sides
-						City city = this.oParent.GameData.Cities[cityID];
+						City city = this.parent.GameData.Cities[cityID];
 
-						if (city.PlayerID == this.oParent.GameData.HumanPlayerID || city.VisibleSize > 0 || this.oParent.Var_d806_DebugFlag)
+						if (city.PlayerID == this.parent.GameData.HumanPlayerID || city.VisibleSize > 0 || this.parent.Var_d806_DebugFlag)
 						{
 							// Instruction address 0x2aea:0x0c4b, size: 5
-							this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(scrX + 1, scrY + 1, 13, 13, 15);
+							this.parent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(scrX + 1, scrY + 1, 13, 13, 15);
 
 							// Draw city dark borders at the top and right sides
 
 							// Instruction address 0x2aea:0x0c7d, size: 5
-							this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(scrX + 2, scrY + 1, 12, 12, this.oParent.Array_1956[city.PlayerID]);
+							this.parent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(scrX + 2, scrY + 1, 12, 12, this.parent.Array_1956[city.PlayerID]);
 
 							// Draw city main color
 
 							// Instruction address 0x2aea:0x0cac, size: 5
-							this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, scrX + 2, scrY + 2, 12, 12,
-								this.oParent.Array_1946[city.PlayerID]);
+							this.parent.CommonTools.F0_1000_0bfa_FillRectangle(this.parent.Var_aa_Screen0_Rectangle, scrX + 2, scrY + 2, 12, 12,
+								this.parent.Array_1946[city.PlayerID]);
 
 							// Draw city 'streets'
 
 							// Instruction address 0x2aea:0x0cba, size: 5
-							this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + 1, scrY + 1, this.oParent.Array_d4ce[28]);
+							this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX + 1, scrY + 1, this.parent.Array_d4ce[28]);
 
 							// Color city 'streets' according to player nation
 
 							// Instruction address 0x2aea:0x0ce5, size: 5
-							this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, scrX + 2, scrY + 2, 12, 12, 5,
-								this.oParent.Array_1956[city.PlayerID]);
+							this.parent.Graphics.F0_VGA_009a_ReplaceColor(this.parent.Var_aa_Screen0_Rectangle, scrX + 2, scrY + 2, 12, 12, 5,
+								this.parent.Array_1956[city.PlayerID]);
 
-							int citySize = (city.PlayerID == this.oParent.GameData.HumanPlayerID || this.oParent.Var_d806_DebugFlag) ?
+							int citySize = (city.PlayerID == this.parent.GameData.HumanPlayerID || this.parent.Var_d806_DebugFlag) ?
 									city.ActualSize : city.VisibleSize;
 
-							this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
+							this.CPU.WriteUInt8(this.CPU.DS.UInt16, 0xba06, 0x0);
 
 							// Instruction address 0x2aea:0x0d42, size: 5
-							this.oParent.CAPI.strcat(0xba06, this.oParent.CAPI.itoa(citySize, 10));
+							this.parent.CAPI.strcat(0xba06, this.parent.CAPI.itoa(citySize, 10));
 
 							if ((city.StatusFlag & 0x1) != 0)
 							{
 								// Draw city disorder
 
 								// Instruction address 0x2aea:0x0d66, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + 5, scrY + 2, this.oParent.Array_6e96[4]);
+								this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX + 5, scrY + 2, this.parent.Array_6e96[4]);
 							}
 							else
 							{
 								// Draw city size
 
 								// Instruction address 0x2aea:0x0d8d, size: 5
-								this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, ((citySize < 10) ? 6 : 3) + scrX, scrY + 5, 0);
+								this.parent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, ((citySize < 10) ? 6 : 3) + scrX, scrY + 5, 0);
 							}
 
 							// Instruction address 0x2aea:0x0d9c, size: 3
@@ -668,7 +650,7 @@ namespace OpenCiv1
 								// Draw city defenders
 
 								// Instruction address 0x2aea:0x0dc2, size: 5
-								this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(scrX, scrY, 15, 15, 0);
+								this.parent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(scrX, scrY, 15, 15, 0);
 							}
 
 							if ((city.ImprovementFlags0 & 0x80) != 0)
@@ -676,7 +658,7 @@ namespace OpenCiv1
 								// Draw city walls
 
 								// Instruction address 0x2aea:0x0de7, size: 5
-								this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, scrX + 1, scrY + 1, this.oParent.Array_d4ce[29]);
+								this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, scrX + 1, scrY + 1, this.parent.Array_d4ce[29]);
 							}
 
 							this.VisibleCities.Add(new CityInfo(scrX, scrY, cityID));
@@ -685,7 +667,7 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x2aea:0x0e1b, size: 5
-				this.oParent.MainCode.F0_11a8_0250();
+				this.parent.MainCode.F0_11a8_0250_ShowMouse();
 			}
 
 			return true;
@@ -703,31 +685,31 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x2aea:0x0ecd, size: 5
-			Unit unit = this.oParent.GameData.Players[playerID].Units[unitID];
-			int x = this.oParent.MapManagement.AdjustXPosition(unit.Position.X - this.oParent.Var_d4cc_MapViewX) * 16 + 80;
-			int y = (unit.Position.Y - this.oParent.Var_d75e_MapViewY) * 16 + 8;
+			Unit unit = this.parent.GameData.Players[playerID].Units[unitID];
+			int x = this.parent.MapManagement.AdjustXPosition(unit.Position.X - this.parent.Var_d4cc_MapViewX) * 16 + 80;
+			int y = (unit.Position.Y - this.parent.Var_d75e_MapViewY) * 16 + 8;
 
 			if (x >= 80 && x < 320 && y >= 8 && y < 193)
 			{
 				if ((unit.Status & 0x1) == 0 || GetTerrainType(unit.Position.X, unit.Position.Y) != TerrainTypeEnum.Water ||
-					this.oParent.GameData.Units[unit.TypeID].MovementType == UnitMovementTypeEnum.Water)
+					this.parent.GameData.Units[unit.TypeID].MovementType == UnitMovementTypeEnum.Water)
 				{
 					// Instruction address 0x2aea:0x0f57, size: 5
-					this.oParent.MainCode.F0_11a8_0268();
+					this.parent.MainCode.F0_11a8_0268_HideMouse();
 
 					if (unit.NextUnitID != -1)
 					{
 						// There are multiple units stacked
 
-						this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, x + 1, y + 1,
-							this.oParent.Array_d4ce[64 + (playerID * 32) + unit.TypeID]);
+						this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, x + 1, y + 1,
+							this.parent.Array_d4ce[64 + (playerID * 32) + unit.TypeID]);
 					}
 
 					// Instruction address 0x2aea:0x0fa0, size: 3
 					F0_2aea_0fb3_DrawUnitWithStatus(playerID, unitID, x, y);
 
 					// Instruction address 0x2aea:0x0fa6, size: 5
-					this.oParent.MainCode.F0_11a8_0250();
+					this.parent.MainCode.F0_11a8_0250_ShowMouse();
 
 					return true;
 				}
@@ -748,34 +730,34 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock($"F0_2aea_0fb3({playerID}, {unitID}, {xPos}, {yPos})");
 
 			// function body
-			Unit unit = this.oParent.GameData.Players[playerID].Units[unitID];
+			Unit unit = this.parent.GameData.Players[playerID].Units[unitID];
 
 			// Instruction address 0x2aea:0x0fe2, size: 5
-			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, x, y,
-				this.oParent.Array_d4ce[64 + (playerID * 32) + unit.TypeID]);
+			this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, x, y,
+				this.parent.Array_d4ce[64 + (playerID * 32) + unit.TypeID]);
 
 			if ((unit.Status & 0x8) != 0)
 			{
 
 				// Instruction address 0x2aea:0x0ffb, size: 5
-				this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.oParent.Var_aa_Rectangle, x, y, this.oParent.Array_d4ce[29]);
+				this.parent.CommonTools.F0_1000_084d_DrawBitmapToScreen(this.parent.Var_aa_Screen0_Rectangle, x, y, this.parent.Array_d4ce[29]);
 			}
 			else
 			{
 				if ((unit.Status & 0x4) != 0)
 				{
 					// Instruction address 0x2aea:0x103d, size: 5
-					this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToScreen0("F", x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
+					this.parent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToScreen0("F", x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
 				}
 			}
 
-			if (playerID == this.oParent.GameData.HumanPlayerID && unit.GoToDestination.X != -1)
+			if (playerID == this.parent.GameData.HumanPlayerID && unit.GoToDestination.X != -1)
 			{
 				// Instruction address 0x2aea:0x1085, size: 5
-				this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToScreen0("G", x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
+				this.parent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToScreen0("G", x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
 			}
 
-			if (((UnitStatusEnum)unit.Status & UnitStatusEnum.SettlerBuildMask) != 0 && this.oParent.GameData.Units[unit.TypeID].MovementType != UnitMovementTypeEnum.Air)
+			if (((UnitStatusEnum)unit.Status & UnitStatusEnum.SettlerBuildMask) != 0 && this.parent.GameData.Units[unit.TypeID].MovementType != UnitMovementTypeEnum.Air)
 			{
 				string status = "R";
 
@@ -800,19 +782,19 @@ namespace OpenCiv1
 				}
 
 				// Instruction address 0x2aea:0x1157, size: 5
-				this.oParent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToScreen0(status, x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
+				this.parent.DrawStringTools.F0_1182_0086_DrawStringWithShadowToScreen0(status, x + 4, y + 7, (byte)((playerID == 1) ? 9 : 15));
 
 				// Instruction address 0x2aea:0x1172, size: 5
-				this.oParent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(x - 1, y - 1, 15, 15, 7);
+				this.parent.MenuBoxDialog.F0_2d05_0a05_DrawRectangle(x - 1, y - 1, 15, 15, 7);
 			}
 		
 			if ((unit.Status & 0x1) != 0)
 			{
 				// Instruction address 0x2aea:0x11a8, size: 5
-				this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, x, y, 16, 16, 5, 7);
+				this.parent.Graphics.F0_VGA_009a_ReplaceColor(this.parent.Var_aa_Screen0_Rectangle, x, y, 16, 16, 5, 7);
 
 				// Instruction address 0x2aea:0x11c7, size: 5
-				this.oParent.Graphics.F0_VGA_009a_ReplaceColor(this.oParent.Var_aa_Rectangle, x, y, 16, 16, 8, 7);
+				this.parent.Graphics.F0_VGA_009a_ReplaceColor(this.parent.Var_aa_Screen0_Rectangle, x, y, 16, 16, 8, 7);
 			}
 		}
 
@@ -829,17 +811,17 @@ namespace OpenCiv1
 			// Instruction address 0x2aea:0x11e2, size: 3
 			F0_2aea_03ba_DrawCell(x, y);
 
-			if (this.oParent.Var_dcfc == 0)
+			if (this.parent.Var_dcfc == 0)
 			{
 				// Instruction address 0x2aea:0x11f6, size: 3
 				int unitID = F0_2aea_1458_GetCellActiveUnitID(x, y);
 
 				if (unitID != -1)
 				{
-					int playerID = this.oParent.Var_d20a;
+					int playerID = this.parent.Var_d20a;
 
-					if (this.oParent.Var_d806_DebugFlag || playerID == this.oParent.GameData.HumanPlayerID ||
-						(this.oParent.GameData.Players[playerID].Units[unitID].VisibleByPlayer & (0x1 << this.oParent.GameData.HumanPlayerID)) != 0)
+					if (this.parent.Var_d806_DebugFlag || playerID == this.parent.GameData.HumanPlayerID ||
+						(this.parent.GameData.Players[playerID].Units[unitID].VisibleByPlayer & (0x1 << this.parent.GameData.HumanPlayerID)) != 0)
 					{
 						// Instruction address 0x2aea:0x123e, size: 3
 						if (!F0_2aea_1585_GetVisibleTerrainImprovements(x, y).HasFlag(TerrainImprovementFlagsEnum.City))
@@ -863,18 +845,18 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x2aea:0x127f, size: 3
-			Unit unit = this.oParent.GameData.Players[playerID].Units[unitID];
+			Unit unit = this.parent.GameData.Players[playerID].Units[unitID];
 
 			if (unit.NextUnitID != -1 && GetTerrainType(unit.Position.X, unit.Position.Y) == TerrainTypeEnum.Water &&
-				this.oParent.GameData.Units[unit.TypeID].MovementType != UnitMovementTypeEnum.Water)
+				this.parent.GameData.Units[unit.TypeID].MovementType != UnitMovementTypeEnum.Water)
 			{
 				int currentUnitID = unitID;
 
 				do
 				{
-					currentUnitID = this.oParent.GameData.Players[playerID].Units[currentUnitID].NextUnitID;
+					currentUnitID = this.parent.GameData.Players[playerID].Units[currentUnitID].NextUnitID;
 
-					if (this.oParent.GameData.Units[this.oParent.GameData.Players[playerID].Units[currentUnitID].TypeID].MovementType == UnitMovementTypeEnum.Water)
+					if (this.parent.GameData.Units[this.parent.GameData.Players[playerID].Units[currentUnitID].TypeID].MovementType == UnitMovementTypeEnum.Water)
 					{
 						// Instruction address 0x2aea:0x12e2, size: 3
 						F0_2aea_0e29_DrawUnit(playerID, currentUnitID);
@@ -893,7 +875,7 @@ namespace OpenCiv1
 			else
 			{
 				// Instruction address 0x2aea:0x131b, size: 3
-				F0_2aea_0e29_DrawUnit(playerID, (short)this.oParent.UnitManagement.F0_1866_1122(playerID, unitID));
+				F0_2aea_0e29_DrawUnit(playerID, (short)this.parent.UnitManagement.F0_1866_1122(playerID, unitID));
 			}
 		}
 		#endregion
@@ -960,7 +942,7 @@ namespace OpenCiv1
 		{
 			//this.oCPU.Log.EnterBlock($"F0_2aea_134a_GetTerrainID({xPos}, {yPos})");
 			// function body
-			return this.oParent.PixelValuesToTerrainTypes[this.mapBitmap.GetPixel(this.AdjustXPosition(x), y)];
+			return this.parent.PixelValuesToTerrainTypes[this.gameData.Map.GetPixel(this.AdjustXPosition(x), y)];
 		}
 
 		/// <summary>
@@ -977,17 +959,17 @@ namespace OpenCiv1
 				throw new Exception($"Trying to set invalid TerrainTypeEnum value at position {x}, {y}");
 			}
 
-			this.mapBitmap.SetPixel(this.AdjustXPosition(x), y, (byte)this.oParent.TerrainTypeToPixelValues[(int)terrainType]);
+			this.gameData.Map.SetPixel(this.AdjustXPosition(x), y, (byte)this.parent.TerrainTypeToPixelValues[(int)terrainType]);
 		}
 
 		public int GetPlayerLandOwnership(int x, int y)
 		{
-			return this.mapBitmap.GetPixel(80 + this.AdjustXPosition(x), y);
+			return this.gameData.Map.GetPixel(80 + this.AdjustXPosition(x), y);
 		}
 
 		public void SetPlayerLandOwnership(int x, int y, int playerID)
 		{
-			this.mapBitmap.SetPixel(80 + this.AdjustXPosition(x), y, (byte)playerID);
+			this.gameData.Map.SetPixel(80 + this.AdjustXPosition(x), y, (byte)playerID);
 		}
 
 		/// <summary>
@@ -999,7 +981,7 @@ namespace OpenCiv1
 		public int F0_2aea_1369_GetCityOwner(int x, int y)
 		{
 			// function body
-			return (this.mapBitmap.GetPixel(x + 160, y) & 0x7);
+			return (this.gameData.Map.GetPixel(x + 160, y) & 0x7);
 		}
 
 		/// <summary>
@@ -1012,10 +994,10 @@ namespace OpenCiv1
 		{
 			// function body
 			// Instruction address 0x2aea:0x13a2, size: 5
-			ushort usOldValue = this.mapBitmap.GetPixel(x + 160, y);
+			ushort usOldValue = this.gameData.Map.GetPixel(x + 160, y);
 
 			// Instruction address 0x2aea:0x13c0, size: 3
-			this.mapBitmap.SetPixel(x + 160, y, (byte)((usOldValue & 0x8) | playerID), 0);
+			this.gameData.Map.SetPixel(x + 160, y, (byte)((usOldValue & 0x8) | playerID), 0);
 		}
 
 		/// <summary>
@@ -1036,11 +1018,11 @@ namespace OpenCiv1
 			if (activeUnitID != -1)
 			{
 				// Instruction address 0x2aea:0x13ed, size: 5
-				this.oParent.Segment_29f3.F0_29f3_0b66((short)playerID, (short)unitID, (short)activeUnitID);
+				this.parent.Segment_29f3.F0_29f3_0b66((short)playerID, (short)unitID, (short)activeUnitID);
 			}
 		
 			// Instruction address 0x2aea:0x140b, size: 3
-			this.mapBitmap.SetPixel(x + 160, y, (byte)(playerID | 0x8));
+			this.gameData.Map.SetPixel(x + 160, y, (byte)(playerID | 0x8));
 		}
 
 		/// <summary>
@@ -1052,22 +1034,22 @@ namespace OpenCiv1
 		/// <param name="unitID"></param>
 		public void F0_2aea_1412_SetCellActivePlayerID(int x, int y, int playerID, int unitID)
 		{
-			this.oCPU.Log.EnterBlock($"F0_2aea_1412({playerID}, {unitID}, {x}, {y})");
+			this.CPU.Log.EnterBlock($"F0_2aea_1412({playerID}, {unitID}, {x}, {y})");
 
 			// function body			
-			if (this.oParent.GameData.Players[playerID].Units[unitID].NextUnitID != -1)
+			if (this.parent.GameData.Players[playerID].Units[unitID].NextUnitID != -1)
 			{
 				// Instruction address 0x2aea:0x1433, size: 5
-				this.oParent.Segment_29f3.F0_29f3_0bc9(playerID, unitID);
+				this.parent.Segment_29f3.F0_29f3_0bc9(playerID, unitID);
 			}
 			else
 			{
 				// Instruction address 0x2aea:0x144f, size: 3
-				this.mapBitmap.SetPixel(x + 160, y, (byte)playerID);
+				this.gameData.Map.SetPixel(x + 160, y, (byte)playerID);
 			}
 
 			// Far return
-			this.oCPU.Log.ExitBlock("F0_2aea_1412");
+			this.CPU.Log.ExitBlock("F0_2aea_1412");
 		}
 
 		/// <summary>
@@ -1088,19 +1070,19 @@ namespace OpenCiv1
 			{
 				for (int i = 0; i < 128; i++)
 				{
-					Unit unit = this.oParent.GameData.Players[playerID].Units[i];
+					Unit unit = this.parent.GameData.Players[playerID].Units[i];
 
 					if (unit.TypeID != -1 && unit.Position.X == x && unit.Position.Y == y)
 					{
-						this.oParent.Var_d7f0 = playerID;
-						this.oParent.Var_d20a = playerID;
+						this.parent.Var_d7f0 = playerID;
+						this.parent.Var_d20a = playerID;
 
 						return i;
 					}
 				}
 
 				// Instruction address 0x2aea:0x14d3, size: 3
-				this.mapBitmap.SetPixel(x + 160, y, 0);
+				this.gameData.Map.SetPixel(x + 160, y, 0);
 			}
 
 			return -1;
@@ -1116,7 +1098,7 @@ namespace OpenCiv1
 		{
 			// function body
 			// Instruction address 0x2aea:0x14f4, size: 5
-			int value = this.mapBitmap.GetPixel(x + 160, y);
+			int value = this.gameData.Map.GetPixel(x + 160, y);
 
 			if ((value & 8) != 0)
 			{
@@ -1139,7 +1121,7 @@ namespace OpenCiv1
 		{
 			// function body
 			// Instruction address 0x2aea:0x1539, size: 3
-			this.mapBitmap.SetPixel(x + 160, y, (byte)((this.mapBitmap.GetPixel(x + 160, y) & 0x7) | 0x8), 0);
+			this.gameData.Map.SetPixel(x + 160, y, (byte)((this.gameData.Map.GetPixel(x + 160, y) & 0x7) | 0x8), 0);
 		}
 
 		/// <summary>
@@ -1164,8 +1146,8 @@ namespace OpenCiv1
 		public TerrainImprovementFlagsEnum F0_2aea_1585_GetVisibleTerrainImprovements(int x, int y)
 		{
 			// function body
-			return (TerrainImprovementFlagsEnum)(this.mapBitmap.GetPixel(x, y + 100) |
-				(this.mapBitmap.GetPixel(x, y + 150) << 4));
+			return (TerrainImprovementFlagsEnum)(this.gameData.Map.GetPixel(x, y + 100) |
+				(this.gameData.Map.GetPixel(x, y + 150) << 4));
 		}
 
 		/// <summary>
@@ -1177,8 +1159,8 @@ namespace OpenCiv1
 		public TerrainImprovementFlagsEnum F0_2aea_15c1_GetTerrainImprovements(int x, int y)
 		{
 			// function body			
-			return (TerrainImprovementFlagsEnum)(this.mapBitmap.GetPixel(x + 80, y + 100) |
-				(this.mapBitmap.GetPixel(x + 80, y + 150) << 4));
+			return (TerrainImprovementFlagsEnum)(this.gameData.Map.GetPixel(x + 80, y + 100) |
+				(this.gameData.Map.GetPixel(x + 80, y + 150) << 4));
 		}
 
 		/// <summary>
@@ -1190,10 +1172,10 @@ namespace OpenCiv1
 		{
 			// function body			
 			// Instruction address 0x2aea:0x1627, size: 3
-			this.mapBitmap.SetPixel(x + 80, y + 100, (byte)this.mapBitmap.GetPixel(x, y + 100), 0);
+			this.gameData.Map.SetPixel(x + 80, y + 100, (byte)this.gameData.Map.GetPixel(x, y + 100), 0);
 
 			// Instruction address 0x2aea:0x1649, size: 3
-			this.mapBitmap.SetPixel(x + 80, y + 150, (byte)this.mapBitmap.GetPixel(x, y + 150), 0);
+			this.gameData.Map.SetPixel(x + 80, y + 150, (byte)this.gameData.Map.GetPixel(x, y + 150), 0);
 		}
 
 		/// <summary>
@@ -1210,29 +1192,29 @@ namespace OpenCiv1
 			if (improvements == TerrainImprovementFlagsEnum.None)
 			{
 				// Instruction address 0x2aea:0x16b7, size: 3
-				this.mapBitmap.SetPixel(x, y + 100, 0);
+				this.gameData.Map.SetPixel(x, y + 100, 0);
 
 				// Instruction address 0x2aea:0x16cf, size: 3
-				this.mapBitmap.SetPixel(x, y + 150, 0);
+				this.gameData.Map.SetPixel(x, y + 150, 0);
 			}
 			else if (improvements >= TerrainImprovementFlagsEnum.RailRoad)
 			{
 				// Instruction address 0x2aea:0x1691, size: 5
-				ushort current = this.mapBitmap.GetPixel(x, y + 150);
+				ushort current = this.gameData.Map.GetPixel(x, y + 150);
 
 				// Instruction address 0x2aea:0x16cf, size: 3
-				this.mapBitmap.SetPixel(x, y + 150, (byte)(((ushort)improvements >> 4) | current));
+				this.gameData.Map.SetPixel(x, y + 150, (byte)(((ushort)improvements >> 4) | current));
 			}
 			else
 			{
 				// Instruction address 0x2aea:0x1672, size: 5
-				ushort current = this.mapBitmap.GetPixel(x, y + 100);
+				ushort current = this.gameData.Map.GetPixel(x, y + 100);
 
 				// Instruction address 0x2aea:0x16cf, size: 3
-				this.mapBitmap.SetPixel(x, y + 100, (byte)(current | (ushort)improvements));
+				this.gameData.Map.SetPixel(x, y + 100, (byte)(current | (ushort)improvements));
 			}
 
-			if (this.oParent.Var_6b90 == this.oParent.GameData.HumanPlayerID)
+			if (this.parent.Var_6b90 == this.parent.GameData.HumanPlayerID)
 			{
 				// Instruction address 0x2aea:0x16e5, size: 3
 				F0_2aea_1601_UpdateVisibleCellStatus(x, y);
@@ -1251,15 +1233,15 @@ namespace OpenCiv1
 			if (((int)improvements & 0xf) != 0)
 			{
 				// Instruction address 0x2aea:0x171c, size: 3
-				this.mapBitmap.SetPixel(x, y + 100, 
-					(byte)(((~(int)improvements) & this.mapBitmap.GetPixel(x, y + 100)) & 0xff), 0);
+				this.gameData.Map.SetPixel(x, y + 100, 
+					(byte)(((~(int)improvements) & this.gameData.Map.GetPixel(x, y + 100)) & 0xff), 0);
 			}
 
 			if ((((int)improvements & 0xf0) != 0))
 			{
 				// Instruction address 0x2aea:0x1751, size: 3
-				this.mapBitmap.SetPixel(x, y + 150, 
-					(byte)(((~((int)improvements >> 4)) & this.mapBitmap.GetPixel(x, y + 150)) & 0xff), 0);
+				this.gameData.Map.SetPixel(x, y + 150, 
+					(byte)(((~((int)improvements >> 4)) & this.gameData.Map.GetPixel(x, y + 150)) & 0xff), 0);
 			}		
 		}
 
@@ -1267,14 +1249,14 @@ namespace OpenCiv1
 		{
 			x = AdjustXPosition(x);
 
-			this.mapBitmap.SetPixel(240 + x, y, (byte)value);
+			this.gameData.Map.SetPixel(240 + x, y, (byte)value);
 		}
 
 		public int GetMiniMapCell(int x, int y)
 		{
 			x = AdjustXPosition(x);
 
-			return this.mapBitmap.GetPixel(240 + x, y);
+			return this.gameData.Map.GetPixel(240 + x, y);
 		}
 
 		/// <summary>
@@ -1291,21 +1273,21 @@ namespace OpenCiv1
 			// Instruction address 0x2aea:0x1768, size: 3
 			for (int i = 0; i < 128; i++)
 			{
-				City city = this.oParent.GameData.Cities[i];
+				City city = this.parent.GameData.Cities[i];
 
 				if (city.StatusFlag != 0xff && city.Position.X == x && city.Position.Y == y)
 				{
 					int playerID = F0_2aea_1369_GetCityOwner(x, y);
 
-					this.oParent.Var_d7f0 = playerID;
-					this.oParent.Var_d20a = playerID;
+					this.parent.Var_d7f0 = playerID;
+					this.parent.Var_d20a = playerID;
 
 					return i;
 				}
 			}
 
 			// Instruction address 0x2aea:0x17bf, size: 5
-			this.oParent.Segment_1238.F0_1238_001e_ShowDialog(0x2bc6, 100, 80);
+			this.parent.Segment_1238.F0_1238_001e_ShowDialog(0x2bc6, 100, 80);
 
 			return -1;
 		}
@@ -1321,7 +1303,7 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock($"F0_2aea_1836_CellHasSpecialResource({xPos}, {yPos})");
 			// function body
 			if (y > 1 && y < 48 && 
-				(((x & 0x3) * 4) + (y & 0x3)) == ((((x / 4) * 13) + ((y / 4) * 11) + this.oParent.GameData.RandomSeed) & 0xf))
+				(((x & 0x3) * 4) + (y & 0x3)) == ((((x / 4) * 13) + ((y / 4) * 11) + this.parent.GameData.RandomSeed) & 0xf))
 			{
 				return true;
 			}
@@ -1342,8 +1324,8 @@ namespace OpenCiv1
 			// When 'Minor Tribe Hut' is explored the (this.oParent.GameData.MapVisibility[x, y] & 0x1) != 0
 			if (y > 1 && y < 48 && terrainType != TerrainTypeEnum.Water && 
 				!F0_2aea_1585_GetVisibleTerrainImprovements(x, y).HasFlag(TerrainImprovementFlagsEnum.City) &&
-				(this.oParent.GameData.MapVisibility[x, y] & 0x1) == 0 &&
-				(((x & 0x3) * 4) + (y & 0x3)) == ((((x / 4) * 13) + ((y / 4) * 11) + this.oParent.GameData.RandomSeed + 8) & 0x1f))
+				(this.parent.GameData.MapVisibility[x, y] & 0x1) == 0 &&
+				(((x & 0x3) * 4) + (y & 0x3)) == ((((x / 4) * 13) + ((y / 4) * 11) + this.parent.GameData.RandomSeed + 8) & 0x1f))
 			{
 				return true;
 			}
@@ -1360,7 +1342,7 @@ namespace OpenCiv1
 		public int F0_2aea_1942_GetGroupID(int x, int y)
 		{
 			// Instruction address 0x2aea:0x1953, size: 5
-			return this.mapBitmap.GetPixel(x, y + 50);
+			return this.gameData.Map.GetPixel(x, y + 50);
 		}
 
 		/// <summary>
@@ -1371,7 +1353,7 @@ namespace OpenCiv1
 		/// <returns></returns>
 		public void SetGroupID(int x, int y, int groupID)
 		{
-			this.mapBitmap.SetPixel(x, y + 50, (byte)groupID);
+			this.gameData.Map.SetPixel(x, y + 50, (byte)groupID);
 		}
 
 		/// <summary>
@@ -1389,23 +1371,23 @@ namespace OpenCiv1
 			if (GetTerrainType(x, y) != TerrainTypeEnum.Water)
 			{
 				// Land
-				return this.oParent.GameData.Continents[F0_2aea_1942_GetGroupID(x, y)].Size;
+				return this.parent.GameData.Continents[F0_2aea_1942_GetGroupID(x, y)].Size;
 			}
 			else
 			{
 				// Oceans
-				return this.oParent.GameData.Oceans[F0_2aea_1942_GetGroupID(x, y)].Size;
+				return this.parent.GameData.Oceans[F0_2aea_1942_GetGroupID(x, y)].Size;
 			}
 		}
 
 		public int GetBuildLocationScore(int x, int y)
 		{
-			return this.mapBitmap.GetPixel(x + 80, y + 50);
+			return this.gameData.Map.GetPixel(x + 80, y + 50);
 		}
 
 		public void SetBuildLocationScore(int x, int y, int score)
 		{
-			this.mapBitmap.SetPixel(x + 80, y + 50, (byte)score);
+			this.gameData.Map.SetPixel(x + 80, y + 50, (byte)score);
 		}
 
 		public TerrainMapGroupTypeEnum GetGroupType(int x, int y)
@@ -1514,7 +1496,7 @@ namespace OpenCiv1
 		{
 			int offsetIndex = -1;
 
-			GPoint[] moveDirections = this.oParent.MoveDirections;
+			GPoint[] moveDirections = this.parent.MoveDirections;
 
 			for (int i = 0; i < moveDirections.Length; i++)
 			{

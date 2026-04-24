@@ -4,6 +4,10 @@ namespace OpenCiv1
 {
 	public class GameData
 	{
+		// Game group data
+		public string GameKey = "";
+		public string GameName = "";
+
 		// Game common data
 		public short TurnCount = 0;
 		public short Year = 0;
@@ -23,48 +27,51 @@ namespace OpenCiv1
 		public GameSettings GameSettingFlags = new GameSettings();
 		public short DebugFlags = 0;
 
+		// Game map
+		private GBitmap map = new GBitmap(320, 200);
+
 		// Players
 		public Player[] Players = new Player[8];
 
 		// Nations
 		private NationDefinition[] nationTypes = new NationDefinition[] {
-			new NationDefinition(0, "Attila", "", "Barbarian", 0, 0, 0, 36, 36,
+			new NationDefinition(0, "Attila", "Barbarians", "Barbarian", 0, 0, 0, 36, 36,
 				new string[] {"Mecca", "Naples", "Sidon", "Tyre", "Tarsus", "Issus", "Cunaxa", "Cremona", "Cannae", "Capua",
 					"Turin", "Genoa", "Utica", "Crete", "Damascus", "Verona" }),
-			new NationDefinition(1, "Caesar", "", "Roman", 0, 1, 1, 24, 10, 
+			new NationDefinition(1, "Caesar", "Romans", "Roman", 0, 1, 1, 24, 10, 
 				new string[] {"Rome", "Caesarea", "Carthage", "Nicopolis", "Byzantium", "Brundisium", "Syracuse", "Antioch", "Palmyra", "Cyrene",
 					"Gordion", "Tyrus", "Jerusalem", "Seleucia", "Ravenna", "Artaxata" }),
-			new NationDefinition(2, "Hammurabi", "", "Babylonian", -1, -1, 1, 28, 14,
+			new NationDefinition(2, "Hammurabi", "Babylonians", "Babylonian", -1, -1, 1, 28, 14,
 				new string[] {"Babylon", "Sumer", "Uruk", "Nineveh", "Ashur", "Ellipi", "Akkad", "Eridu", "Kish", "Nippur",
 					"Shuruppak", "Zariqum", "Izibia", "Nimrud", "Arbela", "Zamua" }),
 			new NationDefinition(3, "Frederick", "Germans", "German", 1, -1, 1, 32, 18,
 				new string[] {"Berlin", "Leipzig", "Hamburg", "Bremen", "Frankfurt", "Bonn", "Nuremberg", "Cologne", "Hannover", "Munich",
 					"Stuttgart", "Heidelburg", "Salzburg", "Konigsberg", "Dortmund", "Brandenburg" }),
-			new NationDefinition(4, "Ramesses", "", "Egyptian", 0, 0, 1, 21, 7,
+			new NationDefinition(4, "Ramesses", "Egyptians", "Egyptian", 0, 0, 1, 21, 7,
 				new string[] {"Thebes", "Memphis", "Oryx", "Heliopolis", "Gaza", "Alexandria", "Byblos", "Cairo", "Coptos", "Edfu",
 					"Pithom", "Busiris", "Athribis", "Mendes", "Tanis", "Abydos" }),
-			new NationDefinition(5, "Abe Lincoln", "", "American", -1, 0, 1, 19, 5,
+			new NationDefinition(5, "Abe Lincoln", "Americans", "American", -1, 0, 1, 19, 5,
 				new string[] {"Washington", "New York", "Boston", "Philadelphia", "Atlanta", "Chicago", "Buffalo", "St.Louis", "Detroit", "New Orleans",
 					"Baltimore", "Denver", "Cincinnati", "Dallas", "Los Angeles", "Las Vegas" }),
-			new NationDefinition(6, "Alexander", "", "Greek", 0, 1, -1, 26, 12,
+			new NationDefinition(6, "Alexander", "Greeks", "Greek", 0, 1, -1, 26, 12,
 				new string[] {"Athens", "Sparta", "Corinth", "Delphi", "Eretria", "Pharsalos", "Argos", "Mycenae", "Herakleia", "Antioch",
 					"Ephesos", "Rhodes", "Knossos", "Troy", "Pergamon", "Miletos" }),
-			new NationDefinition(7, "M.Gandhi", "", "Indian", -1, -1, 0, 31, 17,
+			new NationDefinition(7, "M.Gandhi", "Indians", "Indian", -1, -1, 0, 31, 17,
 				new string[] {"Delhi", "Bombay", "Madras", "Bangalore", "Calcutta", "Lahore", "Karachi", "Kolhapur", "Jaipur", "Hyderabad",
 					"Bengal", "Chittagong", "Punjab", "Dacca", "Indus", "Ganges" }),
 			new NationDefinition(8, "", "", "", 0, 0, 0, 36, 36,
 				new string[] {"Salamis", "Lisbon", "Hamburg", "Prague", "Salzburg", "Bergen", "Venice", "Milan", "Ghent", "Pisa",
 					"Cordoba", "Seville", "Dublin", "Toronto", "Melbourne", "Sydney" }),
-			new NationDefinition(9, "Stalin", "", "Russian", 1, 0, -1, 25, 11,
+			new NationDefinition(9, "Stalin", "Russians", "Russian", 1, 0, -1, 25, 11,
 				new string[] {"Moscow", "Leningrad", "Kiev", "Minsk", "Smolensk", "Odessa", "Sevastopol", "Tblisi", "Sverdlovsk", "Yakutsk",
 					"Vladivostok", "Novograd", "Krasnoyarsk", "Riga", "Rostov", "Astrakhan" }),
-			new NationDefinition(10, "Shaka", "", "Zulu", 1, 0, 0, 22, 8,
+			new NationDefinition(10, "Shaka", "Zulus", "Zulu", 1, 0, 0, 22, 8,
 				new string[] {"Zimbabwe", "Ulundi", "Bapedi", "Hlobane", "Isandhlwana", "Intombe", "Mpondo", "Ngome", "Swazi", "Tugela",
 					"Umtata", "Umfolozi", "Ibabanago", "Isipezi", "Amatikulu", "Zunguin" }),
 			new NationDefinition(11, "Napoleon", "French", "French", 1, 1, 1, 23, 9,
 				new string[] {"Paris", "Orleans", "Lyons", "Tours", "Chartres", "Bordeaux", "Rouen", "Avignon", "Marseilles", "Grenoble",
 					"Dijon", "Amiens", "Cherbourg", "Poitiers", "Toulouse", "Bayonne" }),
-			new NationDefinition(12, "Montezuma", "", "Aztec", 0, -1, 1, 20, 6,
+			new NationDefinition(12, "Montezuma", "Aztecs", "Aztec", 0, -1, 1, 20, 6,
 				new string[] {"Tenochtitlan", "Chiauhtia", "Chapultepec", "Coatepec", "Ayotzinco", "Itzapalapa", "Iztapam", "Mitxcoac", "Tacubaya", "Tecamac",
 					"Tepezinco", "Ticoman", "Tlaxcala", "Xaltocan", "Xicalango", "Zumpanco" }),
 			new NationDefinition(13, "Mao Tse Tung", "Chinese", "Chinese", 0, 0, 1, 29, 15,
@@ -73,7 +80,7 @@ namespace OpenCiv1
 			new NationDefinition(14, "Elizabeth I", "English", "English", 0, 1, 0, 27, 13,
 				new string[] {"London", "Coventry", "Birmingham", "Dover", "Nottingham", "York", "Liverpool", "Brighton", "Oxford", "Reading",
 					"Exeter", "Cambridge", "Hastings", "Canterbury", "Banbury", "Newcastle" }),
-			new NationDefinition(15, "Genghis Khan", "", "Mongol", 1, 1, -1, 30, 16,
+			new NationDefinition(15, "Genghis Khan", "Mongols", "Mongol", 1, 1, -1, 30, 16,
 				new string[] {"Samarkand", "Bokhara", "Nishapur", "Karakorum", "Kashgar", "Tabriz", "Aleppo", "Kabul", "Ormuz", "Basra",
 					"Khanbalyk", "Khorasan", "Shangtu", "Kazan", "Quinsay", "Kerman" })};
 
@@ -455,6 +462,16 @@ namespace OpenCiv1
 			for (int i = 0; i < this.ReplayData.Length; i++)
 			{
 				this.ReplayData[i] = 0;
+			}
+		}
+
+		public GBitmap Map
+		{
+			get => this.map;
+			set
+			{
+				value.Visible = this.map.Visible;
+				this.map = value;
 			}
 		}
 

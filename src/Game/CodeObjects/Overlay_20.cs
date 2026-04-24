@@ -108,8 +108,8 @@ namespace OpenCiv1
 			this.oCPU.AX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.AX.UInt16, this.oCPU.CX.LowUInt8);
 			this.oCPU.TEST_UInt16(this.oCPU.AX.UInt16, (ushort)this.oParent.GameData.PlayerFlags);
 			if (this.oCPU.Flags.E) goto L0118;
-			
-			this.oParent.Overlay_23.F23_0000_0000_CityNameDialog(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
+
+			this.oCPU.AX.Int16 = (short)this.oParent.TextBoxDialogs.F23_0000_0000_CityNameDialog(this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
 			
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L00fe;
@@ -1167,7 +1167,7 @@ namespace OpenCiv1
 			
 			if (!flag) goto L0cc3;
 
-			this.oParent.Var_aa_Rectangle.ScreenID = 1;
+			this.oParent.Var_aa_Screen0_Rectangle.ScreenID = 1;
 
 		L0cc3:
 			if (!flag) goto L0cd9;
@@ -1185,16 +1185,16 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x0cfd, size: 5
 			this.oParent.DrawStringTools.F0_1182_00b3_DrawCenteredStringToScreen0("SCORING COMPLETED", 160, 100, 15);
 
-			this.oParent.Var_aa_Rectangle.ScreenID = 0;
+			this.oParent.Var_aa_Screen0_Rectangle.ScreenID = 0;
 
 			// Instruction address 0x0000:0x0d22, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Screen0_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x0d2a, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 
 			// Instruction address 0x0000:0x0d2f, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			// Instruction address 0x0000:0x0d34, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
@@ -1625,7 +1625,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x5116, this.oCPU.DEC_UInt16(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x5116)));
 
 			// Instruction address 0x0000:0x1340, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			goto L0cc3;
 
@@ -1637,7 +1637,7 @@ namespace OpenCiv1
 				goto L13f0;
 
 			// Instruction address 0x0000:0x136f, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 35, 192, 250, 7, 8);
+			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 35, 192, 250, 7, 8);
 
 			if (this.oParent.GameData.Players[0].Score > 0)
 			{
@@ -1645,19 +1645,19 @@ namespace OpenCiv1
 				this.oParent.Segment_2dc4.F0_2dc4_007c_CheckValueRange(this.oParent.GameData.Players[0].Score / 4, 0, 250);
 
 				// Instruction address 0x0000:0x13b4, size: 5
-				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Rectangle, 35, 192, (short)this.oCPU.AX.UInt16, 7, 11);
+				this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 35, 192, (short)this.oCPU.AX.UInt16, 7, 11);
 			}
 
-			this.oParent.Var_aa_Rectangle.ScreenID = 0;
+			this.oParent.Var_aa_Screen0_Rectangle.ScreenID = 0;
 
 			// Instruction address 0x0000:0x13d9, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Rectangle, 0, 0);
+			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Screen0_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x13e1, size: 5
 			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 
 			// Instruction address 0x0000:0x13e6, size: 5
-			this.oParent.MainCode.F0_11a8_0250();
+			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			// Instruction address 0x0000:0x13eb, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();
@@ -1704,7 +1704,7 @@ namespace OpenCiv1
 
 			// Instruction address 0x0000:0x143a, size: 5
 			this.oParent.CommonTools.F0_1000_084d_DrawBitmapToScreen(
-				this.oParent.Var_aa_Rectangle,
+				this.oParent.Var_aa_Screen0_Rectangle,
 				this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xb25c),
 				this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0xb2bc),
 				this.oParent.Array_6e96[param1]);

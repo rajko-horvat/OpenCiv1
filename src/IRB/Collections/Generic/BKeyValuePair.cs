@@ -32,7 +32,7 @@ namespace IRB.Collections.Generic
 	[Serializable]
 	public struct BKeyValuePair<TKey, TValue> 
 		where TKey: notnull
-		where TValue : notnull
+		//where TValue : notnull
 	{
 		private TKey key;
 		private TValue value;

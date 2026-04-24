@@ -1,14 +1,9 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using IRB.VirtualCPU;
 using OpenCiv1.Graphics;
 using OpenCiv1.Resources;
 using SkiaSharp;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace OpenCiv1
 {
@@ -18,6 +13,7 @@ namespace OpenCiv1
 
 		private static bool enableLog = false;
 
+		private Window mainWindow;
 		private VCPU oCPU;
 
 		#region Segment definitions
@@ -28,42 +24,42 @@ namespace OpenCiv1
 		private CheckPlayerTurn checkPlayerTurn;
 		private Segment_2dc4 oSegment_2dc4;
 		private DrawStringTools drawStringTools;
-		private ImageTools oImageTools;
+		private ImageTools imageTools;
 		private LanguageTools languageTools;
 		private MapManagement mapManagement;
-		private UnitManagement oUnitManagement;
-		private UnitGoTo oUnitGoTo;
+		private UnitManagement unitManagement;
+		private UnitGoTo unitGoTo;
 		private Segment_2459 oSegment_2459;
 		private Segment_25fb oSegment_25fb;
 		private Segment_1ade oSegment_1ade;
-		private CityWorker oCityWorker;
+		private CityWorker cityWorker;
 		private Segment_29f3 oSegment_29f3;
 		private Segment_2517 oSegment_2517;
 		private Segment_2c84 oSegment_2c84;
-		private MainIntro oMainIntro;
-		private MeetWithKing oMeetWithKing;
-		private GameInitAndIntro oGameInitAndIntro;
-		private Help oHelp;
-		private GameLoadAndSave oGameLoadAndSave;
-		private HallOfFame oHallOfFame;
-		private StartGameMenu oStartGameMenu;
-		private Overlay_23 oOverlay_23;
+		private MainIntro mainIntro;
+		private MeetWithKing meetWithKing;
+		private MapInitAndIntro mapInitAndIntro;
+		private Help help;
+		private GameLoadAndSave gameLoadAndSave;
+		private HallOfFame hallOfFame;
+		private StartGameMenu startGameMenu;
+		private TextBoxDialogs textBoxDialogs;
 		private Overlay_14 oOverlay_14;
-		private Civilopedia oCivilopedia;
+		private Civilopedia civilopedia;
 		private Overlay_21 oOverlay_21;
-		private CityView oCityView;
+		private CityView cityView;
 		private Overlay_18 oOverlay_18;
 		private Overlay_22 oOverlay_22;
-		private GameReplay oGameReplay;
+		private GameReplay gameReplay;
 		private Overlay_13 oOverlay_13;
-		private WorldMap oWorldMap;
+		private WorldMap worldMap;
 		private Overlay_20 oOverlay_20;
-		private Palace oPalace;
+		private Palace palace;
 		private Overlay_10 oOverlay_10;
 		private Schizm schizm;
-		private CAPI cApi;
-		private GDriver oGraphics;
-		private NSound oSound;
+		private CAPI CApi;
+		private GDriver graphics;
+		private NSound sound;
 		#endregion
 
 		private LogWrapper oLog;
@@ -74,8 +70,13 @@ namespace OpenCiv1
 
 		private GameData gameData;
 
-		public OpenCiv1Game()
+		private string gameResourcePath = "";
+		private string gameMainPath = "";
+		private string gameSavePath = "";
+
+		public OpenCiv1Game(Window mainWindow)
 		{
+			this.mainWindow = mainWindow;
 			this.oLog = new LogWrapper($"{VCPU.AssemblyPath}Log.txt", enableLog);
 			this.oInterruptLog = new LogWrapper($"{VCPU.AssemblyPath}InterruptLog.txt", enableLog);
 			this.oGoToLog = new LogWrapper($"{VCPU.AssemblyPath}GoToLog.txt", enableLog);
@@ -88,10 +89,47 @@ namespace OpenCiv1
 
 			this.gameData = new GameData();
 
+			char separator = Path.DirectorySeparatorChar;
+			string userProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+			try
+			{
+#if DEBUG
+				if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+				{
+					this.gameResourcePath = string.Format("C:{0}Dos{0}Civ1{0}", separator);
+				}
+				else
+				{
+					this.gameResourcePath = $"{userProfilePath}{separator}Dos{separator}Civ1{separator}";
+				}
+#else
+				this.gameResourcePath = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}{separator}";
+#endif
+
+				this.gameMainPath = $"{userProfilePath}{separator}Games{separator}OpenCiv1";
+
+				if (!Path.Exists(gameMainPath))
+				{
+					Directory.CreateDirectory(gameMainPath);
+				}
+
+				this.gameSavePath = $"{gameMainPath}{separator}Saves";
+
+				if (!Path.Exists(gameSavePath))
+				{
+					Directory.CreateDirectory(gameSavePath);
+				}
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"Could not create necessary game paths. The error is '{e.Message}'");
+			}
+
 			#region Initialize Segments
-			this.cApi = new CAPI(this);
-			this.oGraphics = new GDriver(this);
-			this.oSound = new NSound(this);
+			this.CApi = new CAPI(this);
+			this.graphics = new GDriver(this);
+			this.sound = new NSound(this);
 
 			this.mainCode = new MainCode(this);
 			this.commonTools = new CommonTools(this);
@@ -100,42 +138,42 @@ namespace OpenCiv1
 			this.checkPlayerTurn = new CheckPlayerTurn(this);
 			this.oSegment_2dc4 = new Segment_2dc4(this);
 			this.drawStringTools = new DrawStringTools(this);
-			this.oImageTools = new ImageTools(this);
+			this.imageTools = new ImageTools(this);
 			this.languageTools = new LanguageTools(this);
 			this.mapManagement = new MapManagement(this);
-			this.oUnitManagement = new UnitManagement(this);
-			this.oUnitGoTo = new UnitGoTo(this);
+			this.unitManagement = new UnitManagement(this);
+			this.unitGoTo = new UnitGoTo(this);
 			this.oSegment_2459 = new Segment_2459(this);
 			this.oSegment_25fb = new Segment_25fb(this);
 			this.oSegment_1ade = new Segment_1ade(this);
-			this.oCityWorker = new CityWorker(this);
+			this.cityWorker = new CityWorker(this);
 			this.oSegment_29f3 = new Segment_29f3(this);
 			this.oSegment_2517 = new Segment_2517(this);
 			this.oSegment_2c84 = new Segment_2c84(this);
-			this.oMainIntro = new MainIntro(this);
-			this.oMeetWithKing = new MeetWithKing(this);
-			this.oGameInitAndIntro = new GameInitAndIntro(this);
-			this.oHelp = new Help(this);
-			this.oGameLoadAndSave = new GameLoadAndSave(this);
-			this.oHallOfFame = new HallOfFame(this);
-			this.oStartGameMenu = new StartGameMenu(this);
-			this.oOverlay_23 = new Overlay_23(this);
+			this.mainIntro = new MainIntro(this);
+			this.meetWithKing = new MeetWithKing(this);
+			this.mapInitAndIntro = new MapInitAndIntro(this);
+			this.help = new Help(this);
+			this.gameLoadAndSave = new GameLoadAndSave(this);
+			this.hallOfFame = new HallOfFame(this);
+			this.startGameMenu = new StartGameMenu(this);
+			this.textBoxDialogs = new TextBoxDialogs(this);
 			this.oOverlay_14 = new Overlay_14(this);
-			this.oCivilopedia = new Civilopedia(this);
+			this.civilopedia = new Civilopedia(this);
 			this.oOverlay_21 = new Overlay_21(this);
-			this.oCityView = new CityView(this);
+			this.cityView = new CityView(this);
 			this.oOverlay_18 = new Overlay_18(this);
 			this.oOverlay_22 = new Overlay_22(this);
-			this.oGameReplay = new GameReplay(this);
+			this.gameReplay = new GameReplay(this);
 			this.oOverlay_13 = new Overlay_13(this);
-			this.oWorldMap = new WorldMap(this);
+			this.worldMap = new WorldMap(this);
 			this.oOverlay_20 = new Overlay_20(this);
-			this.oPalace = new Palace(this);
+			this.palace = new Palace(this);
 			this.oOverlay_10 = new Overlay_10(this);
 			this.schizm = new Schizm(this);
 			#endregion
 
-			/*string[] aFiles = Directory.GetFiles(VCPU.DefaultCIVPath, "*.pic");
+			/*string[] aFiles = Directory.GetFiles(this.oParent.ResourcePath, "*.pic");
 
 			for (int i = 0; i < aFiles.Length; i++)
 			{
@@ -188,9 +226,9 @@ namespace OpenCiv1
 		{
 			#region Check Resources
 			// Check for Default directory and individual Resource files
-			if (!string.IsNullOrEmpty(VCPU.DefaultCIVPath) && !Directory.Exists(VCPU.DefaultCIVPath))
+			if (!string.IsNullOrEmpty(this.gameResourcePath) && !Directory.Exists(this.gameResourcePath))
 			{
-				throw new ResourceMissingException($"Resource path not found at '{VCPU.DefaultCIVPath}'.");
+				throw new ResourceMissingException($"Resource path not found at '{this.gameResourcePath}'.");
 			}
 
 			string[] aResourceFiles = new string[] {
@@ -218,7 +256,7 @@ namespace OpenCiv1
 
 			for (int i = 0; i < aResourceFiles.Length; i++)
 			{
-				string sFilePath = $"{VCPU.DefaultCIVPath}{aResourceFiles[i].ToUpper()}";
+				string sFilePath = $"{this.gameResourcePath}{aResourceFiles[i].ToUpper()}";
 
 				if (!File.Exists(sFilePath))
 				{
@@ -269,7 +307,7 @@ namespace OpenCiv1
 			this.oCPU.DS.UInt16 = 0x3b01;
 
 			// Not important, but just for case it's still needed, to be removed later
-			string sPath = $"{VCPU.DefaultCIVPath}CIV.EXE";
+			string sPath = $"{this.gameResourcePath}CIV.EXE";
 
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x61ee, (byte)'C');
 			this.oCPU.WriteString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, 0x6156), sPath, sPath.Length);
@@ -1161,10 +1199,10 @@ namespace OpenCiv1
 			writer.Close();
 			this.oCPU.ES.Word = this.oCPU.SS.Word;//*/
 
-			// Call our 'short Main()' function
+			// Call our Main function
 			this.MainCode.F0_11a8_0008_Main();
 
-			this.CAPI.exit((short)this.oCPU.AX.UInt16);
+			this.CAPI.exit(0);
 		}
 
 		public static void LogUnit(OpenCiv1Game game, LogWrapper log, int playerID, int unitID, int humanPlayerID)
@@ -1181,15 +1219,17 @@ namespace OpenCiv1
 			}
 		}
 
-		public VCPU CPU
-		{
-			get { return this.oCPU; }
-		}
+		public Window MainWindow { get => this.mainWindow; }
 
-		public GameData GameData
-		{
-			get { return this.gameData; }
-		}
+		public VCPU CPU { get => this.oCPU; }
+
+		public GameData GameData { get => this.gameData; }
+
+		public string ResourcePath { get => this.gameResourcePath; }
+
+		public string MainPath { get => this.gameMainPath; }
+
+		public string SavePath { get => this.gameSavePath; }
 
 		#region Logs
 		public LogWrapper Log
@@ -1246,7 +1286,7 @@ namespace OpenCiv1
 
 		public ImageTools ImageTools
 		{
-			get { return this.oImageTools; }
+			get { return this.imageTools; }
 		}
 
 		public LanguageTools LanguageTools
@@ -1261,12 +1301,12 @@ namespace OpenCiv1
 
 		public UnitManagement UnitManagement
 		{
-			get { return this.oUnitManagement; }
+			get { return this.unitManagement; }
 		}
 
 		public UnitGoTo UnitGoTo
 		{
-			get { return this.oUnitGoTo; }
+			get { return this.unitGoTo; }
 		}
 
 		public Segment_2459 Segment_2459
@@ -1286,7 +1326,7 @@ namespace OpenCiv1
 
 		public CityWorker CityWorker
 		{
-			get { return this.oCityWorker; }
+			get { return this.cityWorker; }
 		}
 
 		public Segment_29f3 Segment_29f3
@@ -1306,42 +1346,42 @@ namespace OpenCiv1
 
 		public MainIntro MainIntro
 		{
-			get { return this.oMainIntro; }
+			get { return this.mainIntro; }
 		}
 
 		public MeetWithKing MeetWithKing
 		{
-			get { return this.oMeetWithKing; }
+			get { return this.meetWithKing; }
 		}
 
-		public GameInitAndIntro GameInitAndIntro
+		public MapInitAndIntro MapInitAndIntro
 		{
-			get { return this.oGameInitAndIntro; }
+			get { return this.mapInitAndIntro; }
 		}
 
 		public Help Help
 		{
-			get { return this.oHelp; }
+			get { return this.help; }
 		}
 
 		public GameLoadAndSave GameLoadAndSave
 		{
-			get { return this.oGameLoadAndSave; }
+			get { return this.gameLoadAndSave; }
 		}
 
 		public HallOfFame HallOfFame
 		{
-			get { return this.oHallOfFame; }
+			get { return this.hallOfFame; }
 		}
 
 		public StartGameMenu StartGameMenu
 		{
-			get { return this.oStartGameMenu; }
+			get { return this.startGameMenu; }
 		}
 
-		public Overlay_23 Overlay_23
+		public TextBoxDialogs TextBoxDialogs
 		{
-			get { return this.oOverlay_23; }
+			get { return this.textBoxDialogs; }
 		}
 
 		public Overlay_14 Overlay_14
@@ -1351,7 +1391,7 @@ namespace OpenCiv1
 
 		public Civilopedia Civilopedia
 		{
-			get { return this.oCivilopedia; }
+			get { return this.civilopedia; }
 		}
 
 		public Overlay_21 Overlay_21
@@ -1361,7 +1401,7 @@ namespace OpenCiv1
 
 		public CityView CityView
 		{
-			get { return this.oCityView; }
+			get { return this.cityView; }
 		}
 
 		public Overlay_18 Overlay_18
@@ -1376,7 +1416,7 @@ namespace OpenCiv1
 
 		public GameReplay GameReplay
 		{
-			get { return this.oGameReplay; }
+			get { return this.gameReplay; }
 		}
 
 		public Overlay_13 Overlay_13
@@ -1386,7 +1426,7 @@ namespace OpenCiv1
 
 		public WorldMap WorldMap
 		{
-			get { return this.oWorldMap; }
+			get { return this.worldMap; }
 		}
 
 		public Overlay_20 Overlay_20
@@ -1396,7 +1436,7 @@ namespace OpenCiv1
 
 		public Palace Palace
 		{
-			get { return this.oPalace; }
+			get { return this.palace; }
 		}
 
 		public Overlay_10 Overlay_10
@@ -1411,17 +1451,17 @@ namespace OpenCiv1
 
 		public CAPI CAPI
 		{
-			get { return this.cApi; }
+			get { return this.CApi; }
 		}
 
 		public GDriver Graphics
 		{
-			get { return this.oGraphics; }
+			get { return this.graphics; }
 		}
 
 		public NSound Sound
 		{
-			get { return this.oSound; }
+			get { return this.sound; }
 		}
 		#endregion
 	}

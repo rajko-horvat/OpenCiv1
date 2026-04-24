@@ -112,7 +112,7 @@ namespace OpenCiv1
 		/// <exception cref="Exception"></exception>
 		public void F0_2fa1_01a2_LoadBitmapOrPalette(short screenID, ushort xPos, ushort yPos, string filename, out byte[] palette)
 		{
-			string filename1 = VCPU.DefaultCIVPath + CAPI.GetDOSFileName(filename).ToUpper();
+			string filename1 = this.oParent.ResourcePath + CAPI.GetDOSFileName(filename).ToUpper();
 
 			this.oCPU.Log.EnterBlock($"F0_2fa1_01a2_LoadBitmapOrPalette(0x{screenID:x4}, 0x{xPos:x4}, 0x{yPos:x4}, '{filename1}')");
 

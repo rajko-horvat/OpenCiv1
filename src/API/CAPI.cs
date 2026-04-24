@@ -243,7 +243,7 @@ namespace OpenCiv1
 			}
 
 			short sHandle = -1;
-			string sPath = $"{VCPU.DefaultCIVPath}{GetDOSFileName(filename.ToUpper())}";
+			string sPath = $"{this.oParent.ResourcePath}{GetDOSFileName(filename.ToUpper())}";
 			//this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 
 			try
@@ -610,7 +610,7 @@ namespace OpenCiv1
 			}
 
 			short sHandle = -1;
-			string sPath = $"{VCPU.DefaultCIVPath}{GetDOSFileName(filename.ToUpper())}";
+			string sPath = $"{this.oParent.ResourcePath}{GetDOSFileName(filename.ToUpper())}";
 
 			//this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
 			try
@@ -764,7 +764,7 @@ namespace OpenCiv1
 				eMode = FileMode.Open;
 			}
 
-			string sPath = $"{VCPU.DefaultCIVPath}{GetDOSFileName(sName.ToUpper())}";
+			string sPath = $"{this.oParent.ResourcePath}{GetDOSFileName(sName.ToUpper())}";
 			if (File.Exists(sPath))
 			{
 				// this.oCPU.Log.WriteLine($"Opening file '{sPath}', with file handle {this.oCPU.FileHandleCount}");
