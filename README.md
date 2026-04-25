@@ -1,6 +1,6 @@
 ## About
-<p>OpenCiv1 project is an open source preservation effort and rewrite of the iconic <a href="https://en.wikipedia.org/wiki/Civilization_(video_game) target="_blank">Civilization Game</a> designed by Sid Meier and Bruce Shelley in year 1991.</p>
-<p>If you like games, and wan't to preserve our gaming heritage, please support:<a href="https://www.stopkillinggames.com/en" target="_blank">The Stop Killing Games Campaign</a></p>
+<p>OpenCiv1 project is an open source preservation effort and rewrite of the iconic <a href="https://en.wikipedia.org/wiki/Civilization_(video_game) target="_blank">Civilization game</a> designed by Sid Meier and Bruce Shelley in year 1991.</p>
+<p>If you like games, and wan't to preserve our gaming heritage, please support: <a href="https://www.stopkillinggames.com/en" target="_blank">The Stop Killing Games Campaign</a></p>
 <p><b>The final source code for the game, according to the sources from MicroProse Software, Inc. is lost forever.</b> The only copy that remains is the game prototype source code on Sid Meier's own IBM PC on which he designed the game (<a href="https://www.youtube.com/watch?v=XwUM33VJRbY" target="_blank">Video in which Sid Meier talks about his IBM PCs</a>).
 <ul>
 <li>The OpenCiv1 uses .NET 8 and Avalonia UI framework and is OS independent. It is currently compatible with desktops: Windows, Linux and MacOSX.</li>
@@ -21,7 +21,7 @@
 </ul>
 
 ## Copyright considerations
-<p>The sole purpose of this preservation project is to provide an open source code and resources to the game which is considered abandoned for at least 30 years since in that time the publishing company and/or its sucessor(s) that released the original game did not provide any updates or support and the sucessor publishing company is not selling that particular game for a least 20 years.</p>
+<p>The sole purpose of this preservation project is to provide an Open source code and resources to the game which is considered abandoned for at least 30 years since in that time the publishing company and/or its sucessor(s) that released the original game did not provide any updates or support and the sucessor publishing company is not selling that particular game for a least 20 years.</p>
 What this project will not do:
 <ul>
 <li>Copy any of the original game source code or it's executable code,</li>
@@ -29,32 +29,6 @@ What this project will not do:
 <li>Copy or use any of the protected trademarks,</li>
 <li>Associate itself in any way with any of the companies that sell games.</li>
 </ul>
-
-<p> </p>
-Relevant principles under EU law that apply to this project:
-<table>
-<tr>
-<td><b>Argument</b></td><td><b>Relevant EU Legal Principle</b></td><td><b>Case Law Support</b></td>
-</tr>
-<tr>
-<td>Observed functionality via disassembly</td><td>Right to study, observe, and test to determine underlying ideas</td><td>Article 5(3) of Directive 2009/24/EC ; SAS v. WPL</td>
-</tr>
-<tr>
-<td>Did not copy original code</td><td>Copyright protects expression (source code), not ideas (functionality)</td><td>Article 1(2) of Directive 2009/24/EC ; SAS v. WPL</td>
-</tr>
-<tr>
-<td>Created code independently (for example, didn't look at or copy any of the original source code).</td><td>Independent creation</td><td>Established principle; Mio/konektra (C-580/23) (There can be no infringement where a legitimate licensee, who has not had access to the source code, simply studies, observes, and tests the program in order to reproduce the functionality in its own program)</td>
-</tr>
-<tr>
-<td>Used no original graphics, music or any of it's copyrighted assets</td><td>Audiovisual works protected under InfoSoc Directive; Independent creation of the game resources</td><td>Directive 2001/29/EC</td>
-</tr>
-<tr>
-<td>The authors admitted in the <a href="https://arstechnica.com/gaming/2017/03/sid-meier-tells-civilizations-origin-story-cites-childrens-history-books/" target="_blank">Origin story of the game</a> that they mostly referenced and very likely used large parts of the text for 'Civilopedia' from external sources.</td><td>Only completely original work can be copyrighted</td><td>Directive 2001/29/EC; Article 1(2) of Directive 2009/24/EC ; SAS v. WPL; Mio/konektra (C-580/23)</td>
-</tr>
-<tr>
-<td>Used no trademarks</td><td>No likelihood of confusion; no "use in the course of trade" of a protected mark</td><td>EU Trade Mark Directive (EU 2015/2436)</td>
-</tr>
-</table>
 
 <p><b>The available source code and resources are not a full working copy of the game.</b>
 <b>To run OpenCiv1 you are legally required to own your own copy of the Original game.</b>

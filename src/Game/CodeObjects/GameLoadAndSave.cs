@@ -122,7 +122,7 @@ namespace OpenCiv1
 
 				success = true;
 
-				return $" {this.parent.Array_33a2_GameDifficultyNames[gameDifficulty]} {humanPlayerName}, {humanNationName}/{this.parent.CAPI.itoa(Math.Abs(currentYear), 10)}" + 
+				return $" {this.parent.Array_33a2_GameDifficultyNames[gameDifficulty]} {humanPlayerName}, {humanNationName}/{Math.Abs(currentYear)}" + 
 					((currentYear < 0) ? " BC\n" : " AD\n");
 			}
 			catch
