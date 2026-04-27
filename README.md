@@ -1,6 +1,6 @@
 ## About
 <p>OpenCiv1 project is an open source preservation effort and rewrite of the iconic <a href="https://en.wikipedia.org/wiki/Civilization_(video_game) target="_blank">Civilization game</a> designed by Sid Meier and Bruce Shelley in year 1991.</p>
-<p>If you like games, and wan't to preserve our gaming heritage, please support: <a href="https://www.stopkillinggames.com/en" target="_blank">The Stop Killing Games Campaign</a></p>
+<p>If you like games, and want to preserve our gaming heritage, please support: <a href="https://www.stopkillinggames.com/en" target="_blank">The Stop Killing Games Campaign</a></p>
 <p><b>The final source code for the game, according to the sources from MicroProse Software, Inc. is lost forever.</b> The only copy that remains is the game prototype source code on Sid Meier's own IBM PC on which he designed the game (<a href="https://www.youtube.com/watch?v=XwUM33VJRbY" target="_blank">Video in which Sid Meier talks about his IBM PCs</a>).
 <ul>
 <li>The OpenCiv1 uses .NET 8 and Avalonia UI framework and is OS independent. It is currently compatible with desktops: Windows, Linux and MacOSX.</li>
@@ -21,7 +21,7 @@
 </ul>
 
 ## Copyright considerations
-<p>The sole purpose of this preservation project is to provide an Open source code and resources to the game which is considered abandoned for at least 30 years since in that time the publishing company and/or its sucessor(s) that released the original game did not provide any updates or support and the sucessor publishing company is not selling that particular game for a least 20 years.</p>
+<p>The sole purpose of this preservation project is to provide an Open source code and resources to the game which is considered abandoned for at least 30 years since in that time the publishing company and/or its successor(s) that released the original game did not provide any updates or support and the successor publishing company is not selling that particular game for a least 20 years.</p>
 What this project will not do:
 <ul>
 <li>Copy any of the original game source code or it's executable code,</li>
@@ -57,7 +57,7 @@ Currently, you can contribute to this repository in one of the following ways:
 <p><b>Q:</b> Why does the OpenCiv1 differs, in some aspects, from the Original game?</p>
 <b>A:</b> There are numerous reasons:
 <ul>
-<li>Simply replicating all of the functionality to skip the DosBox emulation to be able to run the game natively is not a good enough reason (for me) to start a project of this magnitude.</li>
+<li>Simply replicating all of the functionality to skip the DOSBox emulation to be able to run the game natively is not a good enough reason (for me) to start a project of this magnitude.</li>
 <li>Copying the game Code, Functionality, Graphics and Audio would be considered a Copyright violation and that is prohibited by current Copyright laws.</li>
 <li>To make the OpenCiv1 available to anyone who wishes to play the game, and that means Copyright free Code, Graphics and Audio.</li>
 <li>To add additional functionalities (features) to the game (like online gaming, scalable HQ Graphics, HQ Audio, plugins, etc.).</li>
@@ -68,7 +68,7 @@ Currently, you can contribute to this repository in one of the following ways:
 <p><b>Q:</b> Will OpenCiv1 source code be identical to the Original game source code?</p>
 <p><b>A:</b> No. The OpenCiv1 source code does not contain any of the original source code. 
 The rewritten code performs the same function (as the original code does), but the code is completely different and under MIT license. 
-The Microprose and its successors never released the original source code which remains protected under copyright laws to this day.</p>
+MicroProse and its successors never released the original source code which remains protected under copyright laws to this day.</p>
 
 ***
 <p><b>Q:</b> Does that mean that the OpenCiv1 will be completely different from Original game, like, for example FreeCiv?</p>
@@ -129,7 +129,7 @@ You can also compile with CLI method:
 <li>HQ Graphics (the new graphics will be as close as possible to the spirit of the original version),</li>
 <li>HQ Audio (the new Audio will be as close as possible to the spirit of the original version),</li>
 <li>Some text where appropriate,</li>
-<li>Design (Map zoom functionality, some small updates, also some dialogs will be slightly different),</li>
+<li>Design (Map zoom functionality, some small updates, also some dialogues will be slightly different),</li>
 <li>Multilanguage capability,</li>
 <li>Multiplayer capability,</li>
 <li>Cheat capability,</li>
