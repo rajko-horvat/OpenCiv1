@@ -311,7 +311,7 @@ namespace OpenCiv1
 				if (this.oParent.GameData.GameSettingFlags.AutoSave)
 				{
 					// Game auto save
-					this.oParent.GameLoadAndSave.F11_0000_036a_SaveGameDialog((ushort)((((this.oParent.GameData.TurnCount / 50) - 1) % 6) + 4));
+					this.oParent.GameLoadAndSave.F11_0000_036a_SaveGameDialog(true);
 				}
 
 				this.oParent.GameData.MaximumTechnologyCount = 0;
@@ -573,36 +573,6 @@ namespace OpenCiv1
 		
 			// Instruction address 0x1238:0x0901, size: 5
 			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
-		}
-
-		/// <summary>
-		/// Shows popup with Microprose game advertisements.
-		/// </summary>
-		public void F0_1238_090a_ShowAdvertisementsPopup()
-		{
-			//this.oCPU.Log.EnterBlock("F0_1238_090a()");
-
-			// function body
-			// Instruction address 0x1238:0x090a, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_065f();
-
-			// Instruction address 0x1238:0x0926, size: 5
-			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(1, 0, 0, 0x1cf8, 0);
-
-			// Instruction address 0x1238:0x092e, size: 5
-			this.oParent.MainCode.F0_11a8_0268_HideMouse();
-
-			// Instruction address 0x1238:0x0946, size: 5
-			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, 0);
-
-			// Instruction address 0x1238:0x0952, size: 5
-			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, 0x1d05, 1);
-
-			// Instruction address 0x1238:0x0972, size: 5
-			this.oParent.Graphics.F0_VGA_07d8_DrawImage(this.oParent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.oParent.Var_aa_Screen0_Rectangle, 0, 0);
-
-			// Instruction address 0x1238:0x097a, size: 5
-			this.oParent.Segment_2459.F0_2459_0918_WaitForKeyPressOrMouseClick();
 		}
 
 		/// <summary>
@@ -1252,11 +1222,11 @@ namespace OpenCiv1
 		}
 
 		/// <summary>
-		/// ?
+		/// Draws the main menu items
 		/// </summary>
-		public void F0_1238_0fea()
+		public void F0_1238_0fea_DrawMainMenu()
 		{
-			this.oCPU.Log.EnterBlock("F0_1238_0fea()");
+			//this.oCPU.Log.EnterBlock("F0_1238_0fea()");
 
 			// function body
 			// Instruction address 0x1238:0x0ffd, size: 5
@@ -1276,9 +1246,6 @@ namespace OpenCiv1
 
 			// Instruction address 0x1238:0x1075, size: 5
 			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0("C\x0087IVILOPEDIA", 240, 1, 15);
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_1238_0fea");
 		}
 
 		/// <summary>
@@ -1479,6 +1446,7 @@ namespace OpenCiv1
 			this.oCPU.IMUL_UInt16(this.oCPU.AX, this.oCPU.DX, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)));
 			this.oCPU.CMP_UInt16(this.oCPU.AX.UInt16, this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)));
 			if (this.oCPU.Flags.GE) goto L1466;
+
 			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8));
 			this.oCPU.CWD(this.oCPU.AX, this.oCPU.DX);
 			this.oCPU.IDIV_UInt16(this.oCPU.AX, this.oCPU.DX, 0x64);
@@ -1496,19 +1464,17 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x1c24, this.oCPU.AX.UInt16);
 
 		L1466:
-			this.oCPU.AX.UInt16 = this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x1c24);
-			this.oCPU.CMP_UInt16(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)), this.oCPU.AX.UInt16);
-			if (this.oCPU.Flags.GE) goto L149e;
+			if (this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x6)) < this.oCPU.ReadInt16(this.oCPU.DS.UInt16, 0x1c24) &&
+				this.oParent.Var_3484 >= -1)
+			{
+				// Instruction address 0x1238:0x147d, size: 5
+				this.oParent.CAPI.strcat(0xba06, "00,000 citizens.\n");
 
-			if (this.oParent.Var_3484 < -1) goto L149e;
+				this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DomesticAdvisorReport;
 
-			// Instruction address 0x1238:0x147d, size: 5
-			this.oParent.CAPI.strcat(0xba06, "00,000 citizens.\n");
-
-			this.oParent.Var_2f9e_MessageBoxStyle = MenuBoxReportTypeEnum.DomesticAdvisorReport;
-
-			// Instruction address 0x1238:0x1498, size: 3
-			F0_1238_001e_ShowDialog(0xba06, 100, 80);
+				// Instruction address 0x1238:0x1498, size: 3
+				F0_1238_001e_ShowDialog(0xba06, 100, 80);
+			}
 
 		L149e:
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();

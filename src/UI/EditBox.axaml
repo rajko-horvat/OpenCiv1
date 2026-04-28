@@ -1,0 +1,18 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="380" d:DesignHeight="90"
+		Width="350" Height="90" SizeToContent="Width"
+        x:Class="OpenCiv1.EditBox"
+		ShowInTaskbar="False" WindowStartupLocation="CenterOwner"
+		CanResize="False" CanMaximize="False" CanMinimize="False" Title="">
+	<Grid Margin="10" VerticalAlignment="Center" ColumnSpacing="10" MaxWidth="350" RowSpacing="10" ColumnDefinitions="auto,*" RowDefinitions="auto,auto">
+		<TextBlock Name="lblDescription" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0"></TextBlock>
+		<TextBox Name="txtInput" TabIndex="1" IsTabStop="True" MinWidth="150" MaxWidth="350" Grid.Row="0" Grid.Column="1"></TextBox>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+		<Button Name="btnCancel" TabIndex="3" IsTabStop="True" IsEnabled="False">Cancel</Button>
+		<Button Name="btnOk" TabIndex="2" IsTabStop="True" IsEnabled="False">Ok</Button>
+		</StackPanel>
+	</Grid>
+</Window>

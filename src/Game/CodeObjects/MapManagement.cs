@@ -113,7 +113,7 @@ namespace OpenCiv1
 
 			this.parent.Var_1ae0 = 0;
 
-			this.parent.Segment_1238.F0_1238_0fea();
+			this.parent.Segment_1238.F0_1238_0fea_DrawMainMenu();
 			this.parent.Segment_1238.F0_1238_107e();
 
 			int tempValue = this.parent.Var_d20a;

@@ -1,5 +1,5 @@
 ## About
-<p>OpenCiv1 project is an open source preservation effort and rewrite of the iconic <a href="https://en.wikipedia.org/wiki/Civilization_(video_game) target="_blank">Civilization game</a> designed by Sid Meier and Bruce Shelley in year 1991.</p>
+<p>OpenCiv1 project is an open source preservation effort and rewrite of the iconic <a href="https://en.wikipedia.org/wiki/Civilization_(video_game)" target="_blank">Civilization game</a> designed by Sid Meier and Bruce Shelley in year 1991.</p>
 <p>If you like games, and want to preserve our gaming heritage, please support: <a href="https://www.stopkillinggames.com/en" target="_blank">The Stop Killing Games Campaign</a></p>
 <p><b>The final source code for the game, according to the sources from MicroProse Software, Inc. is lost forever.</b> The only copy that remains is the game prototype source code on Sid Meier's own IBM PC on which he designed the game (<a href="https://www.youtube.com/watch?v=XwUM33VJRbY" target="_blank">Video in which Sid Meier talks about his IBM PCs</a>).
 <ul>
@@ -57,7 +57,7 @@ Currently, you can contribute to this repository in one of the following ways:
 <p><b>Q:</b> Why does the OpenCiv1 differs, in some aspects, from the Original game?</p>
 <b>A:</b> There are numerous reasons:
 <ul>
-<li>Simply replicating all of the functionality to skip the DOSBox emulation to be able to run the game natively is not a good enough reason (for me) to start a project of this magnitude.</li>
+<li>Simply replicating all of the functionality to skip the DOSBox emulation to be able to run the game is not a good enough reason (for me) to start a project of this magnitude.</li>
 <li>Copying the game Code, Functionality, Graphics and Audio would be considered a Copyright violation and that is prohibited by current Copyright laws.</li>
 <li>To make the OpenCiv1 available to anyone who wishes to play the game, and that means Copyright free Code, Graphics and Audio.</li>
 <li>To add additional functionalities (features) to the game (like online gaming, scalable HQ Graphics, HQ Audio, plugins, etc.).</li>

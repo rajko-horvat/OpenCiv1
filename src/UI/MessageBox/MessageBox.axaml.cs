@@ -443,9 +443,9 @@ namespace OpenCiv1.UI
 
 			});
 
-			while (creatingWindow) { Thread.Sleep(1); }
+			while (creatingWindow) { Thread.Sleep(10); }
 
-			while (messageBox != null && !messageBox.DialogClosed) { Thread.Sleep(1); }
+			while (messageBox != null && !messageBox.DialogClosed) { Thread.Sleep(10); }
 
 			if (messageBox != null)
 			{

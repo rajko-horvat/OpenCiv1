@@ -842,9 +842,9 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock($"F0_2459_08c6_GetCityName({cityID})");
 
 			// function body
-			if (cityID != -1)
+			if (cityID >= 0 && cityID < 128)
 			{
-				return this.oParent.GameData.CityNames[this.oParent.GameData.Cities[cityID].NameID].Substring(0, 13);
+				return this.oParent.GameData.CityNames[this.oParent.GameData.Cities[cityID].NameID];
 			}
 
 			return "NONE";

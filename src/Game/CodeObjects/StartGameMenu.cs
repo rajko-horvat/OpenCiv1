@@ -238,10 +238,10 @@ namespace OpenCiv1
 
 			if (this.oParent.GameData.HumanPlayerID != 0)
 			{
-				int local_c = (this.oParent.GameData.HumanPlayerID > 7) ? 1 : 0;
+				int upperID = (this.oParent.GameData.HumanPlayerID > 7) ? 1 : 0;
 				this.oParent.GameData.HumanPlayerID &= 7;
 
-				if (local_c != 0)
+				if (upperID != 0)
 				{
 					this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID = (short)(this.oParent.GameData.HumanPlayerID + 8);
 				}
@@ -250,41 +250,41 @@ namespace OpenCiv1
 					this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID = this.oParent.GameData.HumanPlayerID;
 				}
 
-				// Instruction address 0x0000:0x04ec, size: 5
 				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Name =
 					this.oParent.GameData.Nations[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].Leader;
 
-				// Instruction address 0x0000:0x0509, size: 5
 				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Nationality =
 					this.oParent.GameData.Nations[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].Nationality;
 
-				// Instruction address 0x0000:0x0526, size: 5
-				this.oParent.CAPI.strcpy(0xba06,
-					this.oParent.GameData.Nations[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].Nation);
-
-				if (this.oCPU.ReadUInt8(this.oCPU.DS.UInt16, 0xba06) == 0)
+				if (string.IsNullOrEmpty(this.oParent.GameData.Nations[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].Nation))
 				{
-					// Instruction address 0x0000:0x0543, size: 5
-					this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Nationality);
-
-					// Instruction address 0x0000:0x0553, size: 5
-					this.oParent.CAPI.strcat(0xba06, "s");
+					this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Nation = this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Nationality + "s";
 				}
-
-				// Instruction address 0x0000:0x0569, size: 5
-				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Nation = this.oCPU.ReadString(this.oCPU.DS.UInt16, 0xba06);
+				else
+				{
+					this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Nation = 
+						this.oParent.GameData.Nations[this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID].Nation;
+				}
 			}
 			else
 			{
 				// Instruction address 0x0000:0x047f, size: 5
 				this.oParent.GameData.HumanPlayerID = (short)(this.oParent.CAPI.RNG.Next(this.oParent.GameData.AIOpponentCount) + 1);
 
+				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Name =
+					this.oParent.GameData.Nations[this.oParent.GameData.HumanPlayerID].Leader;
+
+				// For example 'Zulus', 'Americans', etc.
+				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Nation =
+					this.oParent.GameData.Nations[this.oParent.GameData.HumanPlayerID].Nation;
+
+				// For example 'Zulu', 'American', etc.
+				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Nationality =
+					this.oParent.GameData.Nations[this.oParent.GameData.HumanPlayerID].Nationality;
+
 				this.oParent.TextBoxDialogs.F23_0000_0173_TribeNameDialog();
 
 				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].NationalityID = this.oParent.GameData.HumanPlayerID;
-
-				// Instruction address 0x0000:0x0569, size: 5
-				this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID].Name = this.oParent.GameData.Nations[this.oParent.GameData.HumanPlayerID].Leader;
 			}
 
 			// Instruction address 0x0000:0x0587, size: 5
@@ -300,7 +300,7 @@ namespace OpenCiv1
 				F5_0000_07c7(i);
 			}
 
-			F5_0000_0fe6();
+			//F5_0000_0fe6();
 
 			this.oParent.GameData.PlayerFlags = (short)(0x1 << this.oParent.GameData.HumanPlayerID);
 
@@ -773,7 +773,7 @@ namespace OpenCiv1
 		/// ?
 		/// </summary>
 		/// <returns></returns>
-		private int F5_0000_0fe6()
+		/*private int F5_0000_0fe6()
 		{
 			//this.oCPU.Log.EnterBlock("F5_0000_0fe6()");
 
@@ -1000,7 +1000,7 @@ namespace OpenCiv1
 			}
 
 			return local_5c;
-		}
+		}*/
 
 		/// <summary>
 		/// This function loads all game bitmaps

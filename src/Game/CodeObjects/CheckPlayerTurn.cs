@@ -2131,7 +2131,7 @@ namespace OpenCiv1
 					// Enable Save game with zero turns
 					//if (this.oParent.GameData.TurnCount != 0)
 					//{
-						this.oParent.GameLoadAndSave.F11_0000_036a_SaveGameDialog(0xffff);
+						this.oParent.GameLoadAndSave.F11_0000_036a_SaveGameDialog(false);
 					//}
 					break;
 

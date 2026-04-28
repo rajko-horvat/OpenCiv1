@@ -1460,6 +1460,7 @@ namespace OpenCiv1
 							}
 
 							this.storyFile.Close();
+							this.storyFile = null;
 						}
 
 						// Instruction address 0x0000:0x1b8c, size: 5

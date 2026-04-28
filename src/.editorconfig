@@ -263,3 +263,7 @@ dotnet_style_explicit_tuple_names = true:suggestion
 dotnet_style_prefer_inferred_tuple_names = true:suggestion
 spelling_languages = en-us,en-gb
 spelling_checkable_types = strings,identifiers,comments
+
+[*.md]
+spelling_languages = en-us,en-gb
+spelling_checkable_types = strings,identifiers,comments

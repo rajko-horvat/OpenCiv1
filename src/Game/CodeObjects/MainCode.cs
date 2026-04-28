@@ -246,7 +246,7 @@ namespace OpenCiv1
 						break;
 
 					case 1:
-						if (this.oParent.GameLoadAndSave.F11_0000_0000_LoadGameDialog(-1) == -1)
+						if (this.oParent.GameLoadAndSave.F11_0000_0000_LoadGameDialog() == -1)
 						{
 							this.oParent.Var_6b32_SelectedGameType = -1;
 						}

@@ -25,6 +25,21 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock($"F23_0000_0000_CityNameDialog({cityID})");
 
 			// function body
+			if (cityID >= 0 && cityID < 128)
+			{
+				string oldName = this.parent.GameData.CityNames[this.parent.GameData.Cities[cityID].NameID];
+				string? cityName = EditBox.ShowEditBoxDialog(this.parent.MainWindow, "City name", "The name of your city",
+					this.parent.GameData.CityNames[this.parent.GameData.Cities[cityID].NameID], 12, false);
+
+				this.parent.GameData.CityNames[this.parent.GameData.Cities[cityID].NameID] =
+					(string.IsNullOrEmpty(cityName) ? this.parent.GameData.CityNames[this.parent.GameData.Cities[cityID].NameID] : cityName);
+
+				return (oldName.Equals(this.parent.GameData.CityNames[this.parent.GameData.Cities[cityID].NameID]) ? 0 : 1);
+			}
+
+			return 0;
+			
+			/*
 			// Instruction address 0x0000:0x0006, size: 5
 			this.parent.MainCode.F0_11a8_0268_HideMouse();
 
@@ -78,7 +93,7 @@ namespace OpenCiv1
 			// Instruction address 0x0000:0x00ca, size: 5
 			this.parent.MainCode.F0_11a8_0250_ShowMouse();
 
-			return editBoxResult;
+			return editBoxResult;//*/
 		}
 
 		/// <summary>
@@ -90,6 +105,13 @@ namespace OpenCiv1
 			//this.CPU.Log.EnterBlock("F23_0000_00d6_PlayerNameDialog()");
 
 			// function body
+			string? playerName = EditBox.ShowEditBoxDialog(this.parent.MainWindow, "Your name", "Please enter your name", 
+				this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].Name, 13, false);
+
+			this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].Name = 
+				(string.IsNullOrEmpty(playerName) ? this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].Name : playerName);
+
+			/*
 			// Instruction address 0x0000:0x00d6, size: 5
 			this.parent.MainCode.F0_11a8_0268_HideMouse();
 
@@ -114,7 +136,7 @@ namespace OpenCiv1
 			this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].Name = this.CPU.ReadString(this.CPU.DS.UInt16, 0xba06);
 
 			// Instruction address 0x0000:0x016d, size: 5
-			this.parent.MainCode.F0_11a8_0250_ShowMouse();
+			this.parent.MainCode.F0_11a8_0250_ShowMouse();*/
 		}
 
 		/// <summary>
@@ -125,6 +147,17 @@ namespace OpenCiv1
 			//this.CPU.Log.EnterBlock("F23_0000_0173()");
 
 			// function body
+
+			string? nationality = EditBox.ShowEditBoxDialog(this.parent.MainWindow, "Nation name", "For example 'Zulu' (not 'Zulus')",
+				 this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].Nationality, 10, false);
+
+			this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].Nationality =
+				(string.IsNullOrEmpty(nationality) ? this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].Nationality : nationality);
+
+			// !!! To Do: Would need to change this, as different languages have different declinations rules, for now we will not add "s" to the end
+			this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].Nation = this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].Nationality;
+
+			/*
 			// Instruction address 0x0000:0x0179, size: 5
 			this.parent.MainCode.F0_11a8_0268_HideMouse();
 
@@ -156,7 +189,7 @@ namespace OpenCiv1
 			this.parent.GameData.Players[this.parent.GameData.HumanPlayerID].Nationality = (nationName.Length > 9) ? nationName.Substring(0, 9) : nationName;
 
 			// Instruction address 0x0000:0x0252, size: 5
-			this.parent.MainCode.F0_11a8_0250_ShowMouse();
+			this.parent.MainCode.F0_11a8_0250_ShowMouse();*/
 		}
 
 		/// <summary>
@@ -169,6 +202,10 @@ namespace OpenCiv1
 			//this.oCPU.Log.EnterBlock("F23_0000_025b_FindCityDialog()");
 
 			// function body
+
+			string? cityName = EditBox.ShowEditBoxDialog(this.parent.MainWindow, "City name", "City name to search for", null, 12, true);
+
+			/*
 			// Instruction address 0x0000:0x0263, size: 5
 			this.parent.MainCode.F0_11a8_0268_HideMouse();
 
@@ -189,60 +226,50 @@ namespace OpenCiv1
 
 			this.CPU.WriteUInt8(this.CPU.DS.UInt16, 0xba06, 0x0);
 
-			F23_0000_0414_EditBoxDialog(66, 89, 16);
+			F23_0000_0414_EditBoxDialog(66, 89, 16);*/
 
-			int cityID = -1;
-			string cityName = this.CPU.ReadString(this.CPU.DS.UInt16, 0xba06);
-
-			// Search all city names
-			for (int j = 0; j < 128; j++)
+			if (!string.IsNullOrEmpty(cityName))
 			{
-				int cityNameID = this.parent.GameData.Cities[j].NameID;
+				int cityID = -1;
+				//string cityName = this.CPU.ReadString(this.CPU.DS.UInt16, 0xba06);
 
-				if (this.parent.GameData.Cities[j].StatusFlag != 0xff && cityNameID >= 0 && cityNameID < 256 &&
-					cityName.Equals(this.parent.GameData.CityNames[cityNameID], StringComparison.CurrentCultureIgnoreCase))
+				// Search all city names
+				for (int j = 0; j < 128; j++)
 				{
-					cityID = j;
-					break;
+					int cityNameID = this.parent.GameData.Cities[j].NameID;
+
+					if (this.parent.GameData.Cities[j].StatusFlag != 0xff && cityNameID >= 0 && cityNameID < 256 &&
+						cityName.StartsWith(this.parent.GameData.CityNames[cityNameID], StringComparison.CurrentCultureIgnoreCase))
+					{
+						cityID = j;
+						break;
+					}
 				}
+
+				if (cityID != -1)
+				{
+					City city = this.parent.GameData.Cities[cityID];
+
+					if ((this.parent.GameData.MapVisibility[city.Position.X, city.Position.Y] & (1 << this.parent.GameData.HumanPlayerID)) != 0)
+					{
+						// Center map at the found city
+						this.parent.MapManagement.F0_2aea_0008_DrawVisibleMap(this.parent.GameData.HumanPlayerID, city.Position.X - 7, city.Position.Y - 6);
+						//this.parent.MainCode.F0_11a8_0250_ShowMouse();
+
+						return;
+					}
+				}
+
+				// Could not find the city by name, or the city is not visible
+				MessageBox.Show(this.parent.MainWindow, $"Can not find the city named '{cityName}'.", "Unknown city", MessageBoxIcon.Information);
 			}
 
-			if (cityID != -1)
-			{
-				City city = this.parent.GameData.Cities[cityID];
-
-				if ((this.parent.GameData.MapVisibility[city.Position.X, city.Position.Y] & (1 << this.parent.GameData.HumanPlayerID)) != 0)
-				{
-					// Center map at the city
-					// Instruction address 0x0000:0x02c3, size: 5
-					this.parent.MapManagement.F0_2aea_0008_DrawVisibleMap(this.parent.GameData.HumanPlayerID, city.Position.X - 7, city.Position.Y - 6);
-					// Instruction address 0x0000:0x030e, size: 5
-					this.parent.MainCode.F0_11a8_0250_ShowMouse();
-					return;
-				}
-			}
-
-			// Could not find the city by name, or the city is not visible
-			MessageBox.Show(this.parent.MainWindow, $"Can not find the city named '{cityName}'.", "Unknown city", MessageBoxIcon.Information);
-
+			/*
 			// Restore main screen graphics, 'hide' dialog
 			this.parent.Graphics.F0_VGA_07d8_DrawImage(this.parent.Var_19d4_Screen1_Rectangle, 0, 0, 320, 200, this.parent.Var_aa_Screen0_Rectangle, 0, 0);
 
 			// Instruction address 0x0000:0x030e, size: 5
-			this.parent.MainCode.F0_11a8_0250_ShowMouse();
-		}
-
-		/// <summary>
-		/// Handles EditBox which allows player to enter and edit a single line of text.
-		/// </summary>
-		/// <param name="title">The title of the EditBox</param>
-		/// <param name="defaultValue">The default string value</param>
-		/// <param name="maxTextLength">Maximum permitted length of text</param>
-		/// <returns>the string that user provided or a NULL if user pressed escape key or Cancel button.</returns>
-		public string? EditBoxDialog(string title, string defaultValue, int maxTextLength, bool allowEmptyText)
-		{
-
-			return "";
+			this.parent.MainCode.F0_11a8_0250_ShowMouse();*/
 		}
 
 		/// <summary>
@@ -253,7 +280,7 @@ namespace OpenCiv1
 		/// <param name="yPos"></param>
 		/// <param name="maxTextLength">Maximum permitted length of text, determines width of edit box on the screen</param>
 		/// <returns>1 if player has finished editing by pressing enter, 0 in case of rejected input (player pressed escape).</returns>
-		public int F23_0000_0414_EditBoxDialog(int xPos, int yPos, int maxTextLength)
+		/*public int F23_0000_0414_EditBoxDialog(int xPos, int yPos, int maxTextLength)
 		{
 			this.CPU.Log.EnterBlock($"F23_0000_0414_EditBox({xPos}, {yPos}, {maxTextLength})");
 
@@ -573,6 +600,6 @@ namespace OpenCiv1
 			this.CPU.BP.UInt16 = this.CPU.POP_UInt16();
 			// Far return
 			this.CPU.Log.ExitBlock("F23_0000_06c1");
-		}
+		}*/
 	}
 }
