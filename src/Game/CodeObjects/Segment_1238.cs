@@ -69,7 +69,7 @@ namespace OpenCiv1
 			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
 			// Instruction address 0x1238:0x009f, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0626();
+			this.oParent.Segment_2dc4.F0_2dc4_0626_StartPaletteCycleSlots();
 
 			Player humanPlayer = this.oParent.GameData.Players[this.oParent.GameData.HumanPlayerID];
 
@@ -1314,13 +1314,8 @@ namespace OpenCiv1
 			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 2, 73, 0);
 
 		L119e:
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
-
-			// Instruction address 0x1238:0x11a4, size: 3
-			F0_1238_1720_GetCurrentYearAsString();
-
 			// Instruction address 0x1238:0x11b6, size: 5
-			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 2, 81, 0);
+			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(F0_1238_1720_GetCurrentYearAsString(), 2, 81, 0);
 
 			if (this.oParent.GameData.Year < 0)
 			{
@@ -1783,13 +1778,9 @@ namespace OpenCiv1
 		/// <summary>
 		/// Gets current year as a String, appends buffer at 0xba06
 		/// </summary>
-		public void F0_1238_1720_GetCurrentYearAsString()
+		public string F0_1238_1720_GetCurrentYearAsString()
 		{
-			// Instruction address 0x1238:0x1742, size: 5
-			this.oParent.CAPI.strcat(0xba06, this.oParent.CAPI.itoa(Math.Abs(this.oParent.GameData.Year), 10));
-
-			// Instruction address 0x1238:0x175e, size: 5
-			this.oParent.CAPI.strcat(0xba06, (this.oParent.GameData.Year >= 0) ? " AD" : " BC");
+			return $"{Math.Abs(this.oParent.GameData.Year)} {((this.oParent.GameData.Year >= 0) ? " AD" : " BC")}";
 		}
 
 		/// <summary>
@@ -2125,7 +2116,7 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x1238:0x1b48, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_065f();
+			this.oParent.Segment_2dc4.F0_2dc4_065f_StopPaletteCycleSlots();
 
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x1c28, 0x1);
 
@@ -2150,7 +2141,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x1c28, 0x0);
 
 			// Instruction address 0x1238:0x1bac, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0626();
+			this.oParent.Segment_2dc4.F0_2dc4_0626_StartPaletteCycleSlots();
 
 			// Far return
 			this.oCPU.Log.ExitBlock("F0_1238_1b44");
@@ -2187,7 +2178,7 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 
 			// Instruction address 0x1238:0x1bfc, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_065f();
+			this.oParent.Segment_2dc4.F0_2dc4_065f_StopPaletteCycleSlots();
 
 			// Instruction address 0x1238:0x1c09, size: 5
 			this.oParent.CAPI.strcpy((ushort)(this.oCPU.BP.UInt16 - 0x10), "back0a.pal");
@@ -2227,7 +2218,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_04aa_TransformPalette(5, 0xc5be);
 			
 			// Instruction address 0x1238:0x1c8e, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0626();
+			this.oParent.Segment_2dc4.F0_2dc4_0626_StartPaletteCycleSlots();
 
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;

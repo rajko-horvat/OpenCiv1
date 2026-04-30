@@ -24,7 +24,7 @@ namespace OpenCiv1
 
 			// function body
 			// Instruction address 0x0000:0x0006, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_065f();
+			this.oParent.Segment_2dc4.F0_2dc4_065f_StopPaletteCycleSlots();
 
 			// Instruction address 0x0000:0x000b, size: 5
 			this.oParent.MainCode.F0_11a8_0268_HideMouse();
@@ -53,7 +53,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1238.F0_1238_1b44();
 
 			// Instruction address 0x0000:0x0058, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0626();
+			this.oParent.Segment_2dc4.F0_2dc4_0626_StartPaletteCycleSlots();
 
 			// Instruction address 0x0000:0x005d, size: 5
 			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
@@ -662,7 +662,7 @@ namespace OpenCiv1
 			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0x3fa9, this.oCPU.AX.LowUInt8);
 
 			// Instruction address 0x0000:0x063a, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_065f();
+			this.oParent.Segment_2dc4.F0_2dc4_065f_StopPaletteCycleSlots();
 
 			// Instruction address 0x0000:0x063f, size: 5
 			this.oParent.MainCode.F0_11a8_0268_HideMouse();
@@ -878,7 +878,7 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)));
 
 			// Instruction address 0x0000:0x099d, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)), 0);
+			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0xa)), "");
 
 		L09a5:
 			// Instruction address 0x0000:0x09b3, size: 5
@@ -1682,7 +1682,7 @@ namespace OpenCiv1
 				this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x2)));
 
 			// Instruction address 0x0000:0x16b4, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0626();
+			this.oParent.Segment_2dc4.F0_2dc4_0626_StartPaletteCycleSlots();
 
 		L16b9:
 			// Instruction address 0x0000:0x16b9, size: 5

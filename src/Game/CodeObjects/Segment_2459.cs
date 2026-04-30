@@ -307,25 +307,6 @@ namespace OpenCiv1
 			this.oCPU.SI.UInt16 = (ushort)playerID;
 			this.oCPU.SI.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.SI.UInt16, 0x1);
 
-			// Instruction address 0x2459:0x02ee, size: 5
-			this.oParent.CAPI.strcpy(0xba06, this.oParent.GameData.Players[playerID].Nation);
-
-			// Instruction address 0x2459:0x02fe, size: 5
-			this.oParent.CAPI.strcat(0xba06, " capture\n");
-
-			// Instruction address 0x2459:0x030a, size: 3
-			this.oParent.CAPI.strcat(0xba06, F0_2459_08c6_GetCityName(cityID));
-
-			// Instruction address 0x2459:0x0318, size: 5
-			this.oParent.CAPI.strcat(0xba06, ". ");
-
-			// Instruction address 0x2459:0x0338, size: 5
-			this.oParent.CAPI.strcat(0xba06,
-				this.oParent.CAPI.itoa((short)this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4)), 10));
-
-			// Instruction address 0x2459:0x0348, size: 5
-			this.oParent.CAPI.strcat(0xba06, " gold\npieces plundered.\n");
-
 			// Instruction address 0x2459:0x035d, size: 5
 			this.oParent.CommonTools.F0_1000_0a32_PlayTune(this.oParent.GameData.Nations[this.oParent.GameData.Players[playerID].NationalityID].ShortTune, 0);
 
@@ -334,12 +315,14 @@ namespace OpenCiv1
 			// Instruction address 0x2459:0x036c, size: 5
 			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
-			this.oParent.CityView.F19_0000_0000(cityID, -2);
+			this.oParent.CityView.F19_0000_0000_ShowCityLayout(cityID, -2,
+				$"{this.oParent.GameData.Players[playerID].Nation} capture\n{F0_2459_08c6_GetCityName(cityID)}." +
+				$"{this.oCPU.ReadInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4))} gold\npieces plundered.\n");
 			
 			// Instruction address 0x2459:0x0380, size: 5
 			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
-			this.oParent.CityView.F19_0000_167b(playerID);
+			this.oParent.CityView.F19_0000_167b_InvadersAnimation(playerID);
 
 			// Instruction address 0x2459:0x03b0, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();

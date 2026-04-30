@@ -11,6 +11,8 @@ namespace OpenCiv1
 		private OpenCiv1Game oParent;
 		private VCPU oCPU;
 
+		private bool Var_2fec_PaletteCycleEnabled = false;
+
 		public Segment_2dc4(OpenCiv1Game parent)
 		{
 			this.oParent = parent;
@@ -486,13 +488,6 @@ namespace OpenCiv1
 			this.oCPU.Log.ExitBlock("F0_2dc4_047d_ReadAndSetPalette");
 		}
 
-		public void F0_2dc4_0523_FreeResource(int bitmapID, ushort textPtr)
-		{
-			string text = this.oCPU.ReadString(VCPU.ToLinearAddress(this.oCPU.DS.UInt16, textPtr));
-
-			F0_2dc4_0523_FreeResource(bitmapID, text);
-		}
-
 		/// <summary>
 		/// Free resource, show Memory error dialog if error happens
 		/// </summary>
@@ -530,9 +525,9 @@ namespace OpenCiv1
 		/// <summary>
 		/// ?
 		/// </summary>
-		public void F0_2dc4_05dd()
+		public void F0_2dc4_05dd_AddPaletteCycleSlots()
 		{
-			this.oCPU.Log.EnterBlock("F0_2dc4_05dd()");
+			//this.oCPU.Log.EnterBlock("F0_2dc4_05dd()");
 
 			// function body
 			// Instruction address 0x2dc4:0x05ed, size: 5
@@ -543,18 +538,15 @@ namespace OpenCiv1
 
 			// Instruction address 0x2dc4:0x061d, size: 5
 			this.oParent.CommonTools.F0_1000_0382_AddPaletteCycleSlot(3, 15, 112, 127);
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2dc4_05dd");
 		}
 
 		/// <summary>
 		/// ?
 		/// </summary>
-		public void F0_2dc4_0626()
+		public void F0_2dc4_0626_StartPaletteCycleSlots()
 		{
 			// function body
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2fec) == 0)
+			if (!this.Var_2fec_PaletteCycleEnabled)
 			{
 				// Instruction address 0x2dc4:0x0638, size: 5
 				this.oParent.CommonTools.F0_1000_03fa_StartPaletteCycleSlot(1);
@@ -565,19 +557,19 @@ namespace OpenCiv1
 				// Instruction address 0x2dc4:0x0650, size: 5
 				this.oParent.CommonTools.F0_1000_03fa_StartPaletteCycleSlot(3);
 			}
-		
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2fec, 0x1);
+
+			this.Var_2fec_PaletteCycleEnabled = true;
 		}
 
 		/// <summary>
 		/// ?
 		/// </summary>
-		public void F0_2dc4_065f()
+		public void F0_2dc4_065f_StopPaletteCycleSlots()
 		{
-			this.oCPU.Log.EnterBlock("F0_2dc4_065f()");
+			//this.oCPU.Log.EnterBlock("F0_2dc4_065f()");
 
 			// function body
-			if (this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x2fec) != 0)
+			if (this.Var_2fec_PaletteCycleEnabled)
 			{
 				// Instruction address 0x2dc4:0x0671, size: 5
 				this.oParent.CommonTools.F0_1000_042b_StopPaletteCycleSlot(1);
@@ -589,10 +581,7 @@ namespace OpenCiv1
 				this.oParent.CommonTools.F0_1000_042b_StopPaletteCycleSlot(3);
 			}
 
-			this.oCPU.WriteUInt16(this.oCPU.DS.UInt16, 0x2fec, 0x0);
-
-			// Far return
-			this.oCPU.Log.ExitBlock("F0_2dc4_065f");
+			this.Var_2fec_PaletteCycleEnabled = false;
 		}
 	}
 }

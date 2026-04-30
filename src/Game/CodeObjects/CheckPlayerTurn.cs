@@ -385,7 +385,7 @@ namespace OpenCiv1
 					this.oParent.Var_aa_Screen0_Rectangle.ScreenID = 0;
 
 					// Instruction address 0x1403:0x07af, size: 5
-					this.oParent.Segment_2dc4.F0_2dc4_065f();
+					this.oParent.Segment_2dc4.F0_2dc4_065f_StopPaletteCycleSlots();
 
 					// Instruction address 0x1403:0x07cc, size: 5
 					this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, 0);
@@ -406,7 +406,7 @@ namespace OpenCiv1
 					this.oParent.Segment_1238.F0_1238_1b44();
 
 					// Instruction address 0x1403:0x082b, size: 5
-					this.oParent.Segment_2dc4.F0_2dc4_0626();
+					this.oParent.Segment_2dc4.F0_2dc4_0626_StartPaletteCycleSlots();
 				}
 				else if (unitID >= 128)
 				{

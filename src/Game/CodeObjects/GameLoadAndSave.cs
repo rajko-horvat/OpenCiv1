@@ -1,4 +1,3 @@
-using Avalonia.Threading;
 using IRB.VirtualCPU;
 using OpenCiv1.Graphics;
 using OpenCiv1.UI;

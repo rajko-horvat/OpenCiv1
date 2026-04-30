@@ -342,7 +342,7 @@ namespace OpenCiv1.Graphics
 			}
 		}
 
-		public int F0_VGA_0b85_ScreenToBitmap(int screenID, int xPos, int yPos, int width, int height)
+		public int F0_VGA_0b85_ScreenToBitmap(int screenID, int x, int y, int width, int height)
 		{
 			int newScreenID = -1;
 
@@ -353,7 +353,7 @@ namespace OpenCiv1.Graphics
 				{
 					GBitmap screen = this.aScreens.GetValueByKey(screenID);
 					GBitmap bitmap = new GBitmap(width, height);
-					GRectangle rect = new GRectangle(xPos, yPos, width, height);
+					GRectangle rect = new GRectangle(x, y, width, height);
 					newScreenID = this.iNextBitmapID;
 
 					screen.CopyPalette(bitmap);
@@ -377,7 +377,7 @@ namespace OpenCiv1.Graphics
 			return newScreenID;
 		}
 
-		public void F0_VGA_0c3e_DrawBitmapToScreen(CRectangle rect, int xPos, int yPos, int bitmapID)
+		public void F0_VGA_0c3e_DrawBitmapToScreen(CRectangle rect, int x, int y, int bitmapID)
 		{
 			// function body
 			if (this.aScreens.ContainsKey(rect.ScreenID))
@@ -389,7 +389,7 @@ namespace OpenCiv1.Graphics
 						GBitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 						GBitmap bitmap = this.aBitmaps.GetValueByKey(bitmapID);
 
-						screen.DrawBitmap(rect.Left + xPos, rect.Top + yPos, bitmap, true);
+						screen.DrawBitmap(rect.Left + x, rect.Top + y, bitmap, true);
 					}
 				}
 				else
@@ -403,7 +403,7 @@ namespace OpenCiv1.Graphics
 			}
 		}
 
-		public void F0_VGA_0d47_DrawBitmapToScreen(CRectangle rect, int xPos, int yPos, int bitmapPtr)
+		public void F0_VGA_0d47_DrawBitmapToScreen(CRectangle rect, int x, int y, int bitmapPtr)
 		{
 			// function body
 			if (this.aScreens.ContainsKey(rect.ScreenID))
@@ -415,7 +415,7 @@ namespace OpenCiv1.Graphics
 						GBitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
 						GBitmap bitmap = this.aBitmaps.GetValueByKey(bitmapPtr);
 
-						screen.DrawBitmap(rect.Left + xPos, rect.Top + yPos, bitmap, true);
+						screen.DrawBitmap(rect.Left + x, rect.Top + y, bitmap, true);
 					}
 				}
 				else
@@ -465,14 +465,14 @@ namespace OpenCiv1.Graphics
 			return bitmapID;
 		}
 
-		public byte F0_VGA_038c_GetPixel(int screenID, int xPos, int yPos)
+		public byte F0_VGA_038c_GetPixel(int screenID, int x, int y)
 		{
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
 			{
 				lock (VCPU.GraphicsLock)
 				{
-					this.oCPU.AX.UInt16 = this.aScreens.GetValueByKey(screenID).GetPixel(xPos, yPos);
+					this.oCPU.AX.UInt16 = this.aScreens.GetValueByKey(screenID).GetPixel(x, y);
 				}
 			}
 			else
@@ -483,12 +483,12 @@ namespace OpenCiv1.Graphics
 			return this.oCPU.AX.LowUInt8;
 		}
 
-		public void F0_VGA_0550_SetPixel(int screenID, int xPos, int yPos, byte frontColor)
+		public void F0_VGA_0550_SetPixel(int screenID, int x, int y, byte frontColor)
 		{
-			F0_VGA_0550_SetPixel(screenID, xPos, yPos, frontColor, 0);
+			F0_VGA_0550_SetPixel(screenID, x, y, frontColor, 0);
 		}
 
-		public void F0_VGA_0550_SetPixel(int screenID, int xPos, int yPos, byte frontColor, byte pixelMode)
+		public void F0_VGA_0550_SetPixel(int screenID, int x, int y, byte frontColor, byte pixelMode)
 		{
 			// function body
 			if (this.aScreens.ContainsKey(screenID))
@@ -497,7 +497,7 @@ namespace OpenCiv1.Graphics
 				{
 					GBitmap screen = this.aScreens.GetValueByKey(screenID);
 
-					screen.SetPixel(xPos, yPos, frontColor, (PixelWriteModeEnum)pixelMode);
+					screen.SetPixel(x, y, frontColor, (PixelWriteModeEnum)pixelMode);
 				}
 			}
 			else
@@ -545,13 +545,13 @@ namespace OpenCiv1.Graphics
 			}
 		}
 
-		public void F0_VGA_009a_ReplaceColor(CRectangle rect, int xPos, int yPos, int width, int height, byte oldColor, byte newColor)
+		public void F0_VGA_009a_ReplaceColor(CRectangle rect, int x, int y, int width, int height, byte oldColor, byte newColor)
 		{
 			// function body
 			lock (VCPU.GraphicsLock)
 			{
-				int iLeft = rect.Left + xPos;
-				int iTop = rect.Top + yPos;
+				int iLeft = rect.Left + x;
+				int iTop = rect.Top + y;
 
 				if (this.aScreens.ContainsKey(rect.ScreenID))
 				{
@@ -629,7 +629,7 @@ namespace OpenCiv1.Graphics
 			return iValue;
 		}
 
-		public void F0_VGA_11d7_DrawString(CRectangle rect, int xPos, int yPos, string text)
+		public void F0_VGA_11d7_DrawString(CRectangle rect, int x, int y, string text)
 		{
 			if (!this.aFonts.ContainsKey(rect.FontID))
 			{
@@ -644,7 +644,7 @@ namespace OpenCiv1.Graphics
 				lock (VCPU.GraphicsLock)
 				{
 					GBitmap screen = this.aScreens.GetValueByKey(rect.ScreenID);
-					GRectangle rect1 = new GRectangle(rect.Left + xPos, rect.Top + yPos, rect.Width, rect.Height);
+					GRectangle rect1 = new GRectangle(rect.Left + x, rect.Top + y, rect.Width, rect.Height);
 
 					screen.DrawString(text, font, rect1, rect.FrontColor, rect.BackColor, (PixelWriteModeEnum)rect.PixelMode);
 				}

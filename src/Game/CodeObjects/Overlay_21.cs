@@ -249,7 +249,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcpy(0xba06, "January 1, ");
 
 			// Instruction address 0x0000:0x036c, size: 5
-			this.oParent.Segment_1238.F0_1238_1720_GetCurrentYearAsString();
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_1238.F0_1238_1720_GetCurrentYearAsString());
 
 			// Instruction address 0x0000:0x0380, size: 5
 			this.oParent.DrawStringTools.F0_1182_005c_DrawStringToScreen0(0xba06, 8, 28, 0);

@@ -738,7 +738,7 @@ namespace OpenCiv1
 			this.oParent.Var_aa_Screen0_Rectangle.FontID = 1;
 
 			// Instruction address 0x0000:0x0bca, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4e)), 0);
+			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x4e)), "");
 
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
@@ -781,7 +781,7 @@ namespace OpenCiv1
 			if (this.oCPU.Flags.L) goto L0c0c;
 
 			// Instruction address 0x0000:0x0c5b, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_065f();
+			this.oParent.Segment_2dc4.F0_2dc4_065f_StopPaletteCycleSlots();
 			
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x246), 0xec);
 			// Instruction address 0x0000:0x0c83, size: 5
@@ -1042,7 +1042,7 @@ namespace OpenCiv1
 
 		L119f:
 			// Instruction address 0x0000:0x11a3, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x238)), 0);
+			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x238)), "");
 
 			this.oParent.Var_aa_Screen0_Rectangle.ScreenID = 0;
 
@@ -1214,7 +1214,7 @@ namespace OpenCiv1
 			this.oParent.Segment_1238.F0_1238_1beb();
 
 			// Instruction address 0x0000:0x1520, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_05dd();
+			this.oParent.Segment_2dc4.F0_2dc4_05dd_AddPaletteCycleSlots();
 
 			this.oCPU.SI.UInt16 = this.oCPU.POP_UInt16();
 			this.oCPU.SP.UInt16 = this.oCPU.BP.UInt16;
@@ -1236,7 +1236,7 @@ namespace OpenCiv1
 			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x8);
 
 			// Instruction address 0x0000:0x1530, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_065f();
+			this.oParent.Segment_2dc4.F0_2dc4_065f_StopPaletteCycleSlots();
 
 			// Instruction address 0x0000:0x155a, size: 5
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, 0);

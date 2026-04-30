@@ -30,7 +30,7 @@ namespace OpenCiv1
 			this.oParent.MainCode.F0_11a8_0268_HideMouse();
 
 			// Instruction address 0x0000:0x000c, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_065f();
+			this.oParent.Segment_2dc4.F0_2dc4_065f_StopPaletteCycleSlots();
 
 			// Instruction address 0x0000:0x0038, size: 5
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, 0);
@@ -129,7 +129,7 @@ namespace OpenCiv1
 			this.oCPU.SP.UInt16 = this.oCPU.SUB_UInt16(this.oCPU.SP.UInt16, 0x12);
 
 			// Instruction address 0x0000:0x017b, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x682a), 0x4cda);
+			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, 0x682a), "Dock");
 
 			this.oCPU.WriteUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x12), 0x1);
 
@@ -177,7 +177,7 @@ namespace OpenCiv1
 			this.oParent.Graphics.F0_VGA_0162_SetColorsFromColorStruct(0xc5be);
 			
 			// Instruction address 0x0000:0x024b, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_05dd();
+			this.oParent.Segment_2dc4.F0_2dc4_05dd_AddPaletteCycleSlots();
 
 			// Instruction address 0x0000:0x0250, size: 5
 			this.oParent.Segment_1238.F0_1238_1b44();

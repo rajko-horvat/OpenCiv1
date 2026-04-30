@@ -896,7 +896,7 @@ namespace OpenCiv1
 
 		L0acf:
 			// Instruction address 0x0000:0x0ad2, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x38)), 0);
+			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x38)), "");
 
 			// Instruction address 0x0000:0x0aeb, size: 5
 			this.oParent.Segment_1238.F0_1238_1beb();
@@ -1250,7 +1250,7 @@ namespace OpenCiv1
 			this.oCPU.PUSH_UInt16(this.oCPU.SI.UInt16);
 
 			// Instruction address 0x0000:0x0ecd, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_065f();
+			this.oParent.Segment_2dc4.F0_2dc4_065f_StopPaletteCycleSlots();
 
 			// Instruction address 0x0000:0x0ed2, size: 5
 			this.oParent.MainCode.F0_11a8_0268_HideMouse();
@@ -1294,7 +1294,7 @@ namespace OpenCiv1
 			this.oParent.CAPI.strcat(0xba06, " founded: ");
 
 			// Instruction address 0x0000:0x0f9c, size: 5
-			this.oParent.Segment_1238.F0_1238_1720_GetCurrentYearAsString();
+			this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_1238.F0_1238_1720_GetCurrentYearAsString());
 
 			// Instruction address 0x0000:0x0fa9, size: 5
 			this.oParent.CAPI.strcat(0xba06, ".");
@@ -1375,12 +1375,10 @@ namespace OpenCiv1
 
 		L10cc:
 			// Instruction address 0x0000:0x10d3, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), 0x539a);
+			this.oParent.Segment_2dc4.F0_2dc4_0523_FreeResource(this.oCPU.ReadUInt16(this.oCPU.SS.UInt16, (ushort)(this.oCPU.BP.UInt16 - 0x8)), "Set");
 
 			// Instruction address 0x0000:0x10fc, size: 5
 			this.oParent.CommonTools.F0_1000_04d4_TransformPaletteToColor(10, Color.FromRgb(0, 0, 0));
-
-			this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
 			// Instruction address 0x0000:0x1109, size: 5
 			this.oParent.CAPI.kbhit();
@@ -1388,7 +1386,7 @@ namespace OpenCiv1
 			this.oCPU.AX.UInt16 = this.oCPU.OR_UInt16(this.oCPU.AX.UInt16, this.oCPU.AX.UInt16);
 			if (this.oCPU.Flags.NE) goto L1123;
 
-			this.oParent.CityView.F19_0000_0000(cityID, -3);
+			this.oParent.CityView.F19_0000_0000_ShowCityLayout(cityID, -3, null);
 
 			goto L1143;
 

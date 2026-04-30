@@ -1087,24 +1087,13 @@ namespace OpenCiv1
 
 									this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
 
-									// Instruction address 0x1d12:0x1d31, size: 5
-									this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
-
-									// Instruction address 0x1d12:0x1d41, size: 5
-									this.oParent.CAPI.strcat(0xba06, " builds\n");
-
-									// Instruction address 0x1d12:0x1d58, size: 5
-									this.oParent.CAPI.strcat(0xba06, this.oParent.GameData.GetImprovementType(local_e8).Name);
-
-									// Instruction address 0x1d12:0x1d68, size: 5
-									this.oParent.CAPI.strcat(0xba06, ".\n");
-
 									// Instruction address 0x1d12:0x1dbe, size: 5
 									if (this.Var_6548_PlayerID == this.oParent.GameData.HumanPlayerID && 
 										this.oParent.GameData.GameSettingFlags.Animations && 
 										(local_e8 <= 21 || local_e8 > 24) && (city.StatusFlag & 0x10) == 0 && local_e8 != 1)
 									{
-										this.oParent.CityView.F19_0000_0000(cityID, (short)local_e8);
+										this.oParent.CityView.F19_0000_0000_ShowCityLayout(cityID, local_e8,
+											$"{this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID)} builds\n{this.oParent.GameData.GetImprovementType(local_e8).Name}.\n");
 									}
 									else
 									{
@@ -2863,9 +2852,7 @@ namespace OpenCiv1
 
 						this.oParent.Var_aa_Screen0_Rectangle.FontID = 1;
 
-						this.oCPU.WriteUInt8(this.oCPU.DS.UInt16, 0xba06, 0x0);
-
-						this.oParent.CityView.F19_0000_0000(cityID, -1);
+						this.oParent.CityView.F19_0000_0000_ShowCityLayout(cityID, -1, null);
 
 						this.oParent.Var_6b64 = 1;
 						this.Var_2496 = 0;
@@ -3581,15 +3568,6 @@ namespace OpenCiv1
 				if ((this.oParent.GameData.PlayerFlags & (1 << this.Var_6548_PlayerID)) == 0)
 					goto L5df3;
 
-				// Instruction address 0x1d12:0x5d14, size: 5
-				this.oParent.CAPI.strcpy(0xba06, "Civil Disorder in\n");
-
-				// Instruction address 0x1d12:0x5d1f, size: 5
-				this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
-
-				// Instruction address 0x1d12:0x5d2f, size: 5
-				this.oParent.CAPI.strcat(0xba06, "! Mayor\nflees in panic.\n");
-
 				// Instruction address 0x1d12:0x5d3b, size: 5
 				this.oParent.CommonTools.F0_1000_0a32_PlayTune(0x24, 0);
 
@@ -3605,7 +3583,8 @@ namespace OpenCiv1
 				goto L5d9f;
 
 			L5d69:
-				this.oParent.CityView.F19_0000_0000(cityID, -2);
+				this.oParent.CityView.F19_0000_0000_ShowCityLayout(cityID, -2, 
+					$"Civil Disorder in\n{this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID)}! Mayor\nflees in panic.\n");
 
 				this.oParent.CityView.F19_0000_18c1_CivilDisorderAnimation();
 
@@ -3787,31 +3766,16 @@ namespace OpenCiv1
 				goto L619c;
 
 			L60e8:
-				// Instruction address 0x1d12:0x60f0, size: 5
-				this.oParent.CAPI.strcpy(0xba06, "'We love the ");
-
-				this.oCPU.BX.UInt16 = (ushort)this.oParent.GameData.Players[this.Var_6548_PlayerID].GovernmentType;
-				this.oCPU.BX.UInt16 = this.oCPU.SHL_UInt16(this.oCPU.BX.UInt16, 0x1);
-				// Instruction address 0x1d12:0x610c, size: 5
-				this.oParent.CAPI.strcat(0xba06, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(this.oCPU.BX.UInt16 + 0x19b2)));
-
-				// Instruction address 0x1d12:0x611c, size: 5
-				this.oParent.CAPI.strcat(0xba06, "'\nday celebrated in\n");
-
-				// Instruction address 0x1d12:0x6127, size: 5
-				this.oParent.CAPI.strcat(0xba06, this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID));
-
-				// Instruction address 0x1d12:0x6137, size: 5
-				this.oParent.CAPI.strcat(0xba06, "!\n");
-
 				// Instruction address 0x1d12:0x6143, size: 5
 				this.oParent.CommonTools.F0_1000_0a32_PlayTune(0x22, 0);
 
 				if (this.oParent.GameData.GameSettingFlags.Animations)
 				{
-					this.oParent.CityView.F19_0000_0000(cityID, -2);
+					this.oParent.CityView.F19_0000_0000_ShowCityLayout(cityID, -2,
+						$"'We love the {this.oCPU.ReadString(this.oCPU.DS.UInt16, this.oCPU.ReadUInt16(this.oCPU.DS.UInt16, (ushort)(0x19b2 + this.oParent.GameData.Players[this.Var_6548_PlayerID].GovernmentType * 2)))}'\n"+
+						$"day celebrated in\n{this.oParent.Segment_2459.F0_2459_08c6_GetCityName(cityID)}!\n");
 
-					this.oParent.CityView.F19_0000_1ae1();
+					this.oParent.CityView.F19_0000_1ae1_LoveOurLeaderAnimation();
 
 					// Instruction address 0x1d12:0x617d, size: 5
 					this.oParent.Segment_1238.F0_1238_1b44();

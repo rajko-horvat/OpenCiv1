@@ -2420,7 +2420,7 @@ namespace OpenCiv1
 			this.oParent.CommonTools.F0_1000_0bfa_FillRectangle(this.oParent.Var_aa_Screen0_Rectangle, 0, 0, 320, 200, 0);
 
 			// Instruction address 0x1ade:0x175b, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_065f();
+			this.oParent.Segment_2dc4.F0_2dc4_065f_StopPaletteCycleSlots();
 
 			// Instruction address 0x1ade:0x1764, size: 5
 			this.oParent.ImageTools.F0_2fa1_01a2_LoadBitmapOrPalette(-1, 0, 0, (ushort)(this.oCPU.BP.UInt16 - 0x10), 1);
@@ -2531,7 +2531,7 @@ namespace OpenCiv1
 			this.oParent.MainCode.F0_11a8_0250_ShowMouse();
 
 			// Instruction address 0x1ade:0x199e, size: 5
-			this.oParent.Segment_2dc4.F0_2dc4_0626();
+			this.oParent.Segment_2dc4.F0_2dc4_0626_StartPaletteCycleSlots();
 
 			goto L19b1;
 
