@@ -4,4 +4,4 @@
 
 # This repository has moved
 
-<p><b>This repository changed its home, the new home is at <a href="https://codeberg.org/rhorvat/OpenCiv1" target="_blank">Codeberg</a>. Please update your references.</b></p>
+<p><b>This repository changed its home, the new home is at <a href="https://codeberg.org/rhorvat/OpenCiv1" target="_blank">Codeberg</a>. Please update your references accordingly.</b></p>
